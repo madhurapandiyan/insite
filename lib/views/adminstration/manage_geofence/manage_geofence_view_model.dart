@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:geocore/geocore.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/base/insite_view_model.dart';
@@ -5,6 +6,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/views/adminstration/addgeofense/addgeofense_view.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
+import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:google_polyline_algorithm/google_polyline_algorithm.dart';
@@ -17,8 +19,8 @@ class ManageGeofenceViewModel extends InsiteViewModel {
   ManageGeofenceViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _geofenceservice!.setUp();
-    Future.delayed(Duration(seconds: 1), () {
-      getGeofencedata();
+    Future.delayed(Duration(seconds: 1), () async {
+      await getGeofencedata();
     });
   }
 
@@ -35,23 +37,21 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
   Geofence? _geofence;
   Geofence? get geofence => _geofence;
-
-  bool _isFavourite = false;
-  bool get isFavourite => _isFavourite;
-
   getGeofencedata() async {
     List<String?> listOfWKTstring = [];
 
     //MapLatLng latlo = MapLatLng(latitude, longitude);
     List<geo.PointSeries<geo.Point<num>>> listOfPointSeries = [];
     _geofence = await _geofenceservice!.getGeofenceData();
-    Logger().i(_geofence!.toJson());
+    
+    
     try {
       for (var i = 0; i < _geofence!.Geofences!.length; i++) {
         String? wktText = _geofence!.Geofences![i].GeometryWKT;
         //Logger().e(_geofence.Geofences.last.GeometryWKT);
         listOfWKTstring.add(wktText);
-        final geofenceData = geo.wktProjected.parse(listOfWKTstring[i]!)as geo.Polygon;
+        final geofenceData =
+            geo.wktProjected.parse(listOfWKTstring[i]!) as geo.Polygon;
         //Logger().d(geofenceData);
         //Logger().d(_polygonData);
         _polygonData.add(geofenceData);
@@ -60,7 +60,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
         //Logger().d(points);
         listOfPointSeries.add(points);
       }
-       getEncodedPolylines(listOfPointSeries);
+      getEncodedPolylines(listOfPointSeries);
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -70,23 +70,42 @@ class ManageGeofenceViewModel extends InsiteViewModel {
   markFavouriteStatus(String uid, int index) async {
     _geofence!.Geofences![index].IsFavorite =
         !_geofence!.Geofences![index].IsFavorite!;
-    //showLoadingDialog();
-    _isFavourite = !isFavourite;
-    notifyListeners();
+   notifyListeners();
     if (_geofence!.Geofences![index].IsFavorite!) {
-      await _geofenceservice!.markFavourite(uid, "MarkFavorite?");
+      await _geofenceservice!.markFavourite(uid, "MarkFavorite?", true);
     } else {
-      await _geofenceservice!.markFavourite(uid, "MarkUnfavorite?");
+      await _geofenceservice!.markFavourite(uid, "MarkUnfavorite?", false);
     }
   }
 
-  deleteGeofence(uid, actionUTC, int i) async {
+  deleteGeofence(uid, actionUTC, int i, BuildContext context) async {
     try {
-      geofence!.Geofences!.removeAt(i);
-      var data = await _geofenceservice!.deleteGeofence(uid, actionUTC);
+      var value = await showDialog(
+          context: context,
+          builder: (context) => Dialog(
+              backgroundColor: Theme.of(context).backgroundColor,
+              child: InsiteDialog(
+                title: "Delete Geofence",
+                message:
+                    "Are you sure you want to permanently remove this Geofence?",
+                onPositiveActionClicked: () {
+                  Navigator.pop(context, true);
+                },
+                onNegativeActionClicked: () {
+                  Navigator.pop(context, false);
+                },
+              )));
+      if (value) {
+        showLoadingDialog();
+        geofence!.Geofences!.removeAt(i);
+        var data = await _geofenceservice!.deleteGeofence(uid, actionUTC);
+      }
+
       notifyListeners();
+      hideLoadingDialog();
     } catch (e) {
       Logger().e(e.toString());
+      hideLoadingDialog();
     }
     notifyListeners();
   }
@@ -95,8 +114,8 @@ class ManageGeofenceViewModel extends InsiteViewModel {
     if (uid == null) {
       navigationService!.clearTillFirstAndShowView(AddgeofenseView());
     } else {
-      navigationService!.clearTillFirstAndShowView(AddgeofenseView(),
-          arguments: uid);
+      navigationService!
+          .clearTillFirstAndShowView(AddgeofenseView(), arguments: uid);
     }
   }
 
@@ -121,7 +140,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
             list.add(listOfNumber);
             listOfNumber = [];
           }
-          Logger().d(list);
+        
 
           encoding = encodePolyline(list, accuracyExponent: 5);
           listOfEncoded.add(encoding);

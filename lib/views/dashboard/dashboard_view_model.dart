@@ -22,6 +22,7 @@ import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:insite/core/services/date_range_service.dart';
 
 class DashboardViewModel extends InsiteViewModel {
   LocalService? _localService = locator<LocalService>();
@@ -119,8 +120,8 @@ class DashboardViewModel extends InsiteViewModel {
     setUp();
     Future.delayed(Duration(seconds: 1), () async {
       await getAssetCount();
-      getFilterData();
-      getData(false);
+      await getFilterData();
+      await getData(false);
     });
     _filterService!.clearFilterDatabase();
   }
@@ -172,13 +173,13 @@ class DashboardViewModel extends InsiteViewModel {
     this._isFilterApplied = false;
     this._currentFilterSelected = null;
     if (isIntial) {
-      await getFilterAssetCount();
+      await getAssetCount();
     }
 
     await clearDashboardFiltersDb();
     await getAssetStatusData();
     await getFuelLevelData();
-    await getIdlingLevelData(false);
+    await getIdlingLevelData(false, null);
     await getUtilizationSummary();
     await getFaultCountData();
     notifyListeners();
@@ -195,12 +196,12 @@ class DashboardViewModel extends InsiteViewModel {
   refresh() async {
     _refreshing = true;
     notifyListeners();
-    await getAssetCount();
-    await getAssetStatusData();
-    await getFuelLevelData();
-    await getUtilizationSummary();
+    // await getAssetCount();
+    // await getAssetStatusData();
+    // await getFuelLevelData();
+    // await getUtilizationSummary();
     await getFaultCountData();
-    await getIdlingLevelData(false);
+    await getIdlingLevelData(false, null);
     _refreshing = false;
     notifyListeners();
   }
@@ -275,10 +276,11 @@ class DashboardViewModel extends InsiteViewModel {
     _assetFuelloading = false;
   }
 
-  getIdlingLevelData(bool switching) async {
+  getIdlingLevelData(bool switching, IdlingLevelRange? range) async {
     Logger().i("get idling level data");
     _isSwitching = switching;
     notifyListeners();
+
     if (isFilterApplied) {
       AssetCount? result = await _assetService!.getIdlingLevelFilterData(
           getStartRange(),
@@ -288,8 +290,7 @@ class DashboardViewModel extends InsiteViewModel {
               idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
               endDate: DateTime.now().toString(),
               productFamily: currentFilterSelected!.title,
-              startDate:
-                  DateTime.now().subtract(Duration(days: 1)).toString()));
+              startDate: getStartRange()));
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -317,6 +318,7 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _idlingLevelDataloading = false;
+    notifyListeners();
   }
 
   getFaultCountData() async {
@@ -324,12 +326,12 @@ class DashboardViewModel extends InsiteViewModel {
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCount(
-        Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate),
         graphqlSchemaService!.getFaultCountData(
-            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(
+            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
                 startDate),
-            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate)));
     if (count != null) {
       _faultCountData = count;
     }
@@ -343,6 +345,16 @@ class DashboardViewModel extends InsiteViewModel {
       await addFilter(currentFilterSelected!);
     }
     await addFilter(data);
+  }
+
+  onDateAndFilterSelected(FilterData data, FilterData dateFilter) async {
+    Logger().d("onFilterSelected ${data.title}");
+    await clearFilterDb();
+    if (currentFilterSelected != null) {
+      await addFilter(currentFilterSelected!);
+    }
+    await addFilter(data);
+    await _dateRangeService!.updateDateFilter(dateFilter);
   }
 
   gotoFaultPage() {
@@ -517,10 +529,11 @@ class DashboardViewModel extends InsiteViewModel {
         dropDownValue,
         endDate,
         graphqlSchemaService!.getAssetCount(
-            idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
-            endDate: DateTime.now().toString(),
-            productFamily: dropDownValue,
-            startDate: DateTime.now().subtract(Duration(days: 1)).toString()));
+          idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
+          endDate: DateTime.now().toString(),
+          productFamily: dropDownValue,
+          startDate: getStartRange(),
+        ));
     if (result != null) {
       _idlingLevelData = result;
     }

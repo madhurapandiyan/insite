@@ -9,6 +9,7 @@ import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
@@ -333,11 +334,14 @@ class AssetLocationService extends BaseService {
     queryMap["sort"] = "-lastlocationupdateutc";
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(
-          query: _graphqlSchemaService!.assetLocationData(
-              no: pageNumber.toString(),
-              pageSize: "1",
-              sort: "-lastlocationupdateutc"),
+       var data = await Network().getGraphqlData(
+          query: await _graphqlSchemaService
+              ?.getFleetLocationDataProductFamilyFilterData(
+                  startDate: DateTime.now().toString(),
+                  endDate: DateTime.now().toString(),
+                  pageNo: 1,
+                  pageSize: 2000,
+                  prodFamilyFilter: ["\""+productFamilyKey+"\""]),
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
@@ -345,7 +349,7 @@ class AssetLocationService extends BaseService {
               : customerSelected?.CustomerUID,
         );
         AssetLocationData assetLocationDataResponse =
-            AssetLocationData.fromJson(data.data["assetLocation"]);
+            AssetLocationData.fromJson(data.data["fleetLocationDetails"]);
         return assetLocationDataResponse;
       }
       if (isVisionLink) {

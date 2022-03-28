@@ -53,10 +53,7 @@ class FaultService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
-
-        Logger().i(data.data!['faultdata']);
-
-        FaultSummaryResponse faultSummaryResponse =
+ FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);
 
         return faultSummaryResponse;
@@ -369,6 +366,7 @@ class FaultService extends BaseService {
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID,
                 Urls.faultPrefix);
+                Logger().w(healthListResponse.toJson());
         return healthListResponse;
       }
     } catch (e) {

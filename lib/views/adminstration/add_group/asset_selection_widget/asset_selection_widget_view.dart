@@ -7,6 +7,7 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -14,10 +15,11 @@ import 'asset_selection_widget_view_model.dart';
 
 class AssetSelectionWidgetView extends StatefulWidget {
   final Function(AssetGroupSummaryResponse)? assetData;
+  final bool? isLoading;
   AssetGroupSummaryResponse? assetResult;
   final Function(int i, Asset? assetData)? onAddingAsset;
   AssetSelectionWidgetView(
-      {this.assetData, this.assetResult, this.onAddingAsset});
+      {this.assetData, this.assetResult, this.onAddingAsset, this.isLoading});
 
   @override
   State<AssetSelectionWidgetView> createState() =>
@@ -97,7 +99,7 @@ class _AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                     viewModel.onAssetIdBackPressed();
                   },
                   onClickingNestedType: (i, value) {
-                    viewModel.getProductFamilyFilterData(value);
+                    viewModel.getProductFamilyFilterData(value, i);
                   },
                   displayList: viewModel.productFamilyData,
                   isLoading: viewModel.isloading,
@@ -343,12 +345,14 @@ class SelectedAsset extends StatefulWidget {
   final String? initialValue;
   final Function(String)? onChange;
   final Function(String)? onChangeSearchBox;
+  final bool? isLoading;
   SelectedAsset(
       {this.displayList,
       this.onDeletingSelectedAsset,
       this.dropDownList,
       this.initialValue,
       this.onChange,
+      this.isLoading,
       this.onChangeSearchBox});
 
   @override
@@ -356,6 +360,7 @@ class SelectedAsset extends StatefulWidget {
 }
 
 class _SelectedAssetState extends State<SelectedAsset> {
+  
   bool isSorting = false;
   @override
   Widget build(BuildContext context) {
@@ -469,10 +474,14 @@ class _SelectedAssetState extends State<SelectedAsset> {
                               SizedBox(
                                 height: 100,
                               ),
-                              EmptyView(
-                                bg: theme.cardColor,
-                                title: "No Asset Selected",
-                              ),
+                              widget.isLoading==true
+                                  ? Center(
+                                      child: InsiteProgressBar(),
+                                    )
+                                  : EmptyView(
+                                      bg: theme.cardColor,
+                                      title: "No Asset Selected",
+                                    ),
                             ],
                           ),
                         )

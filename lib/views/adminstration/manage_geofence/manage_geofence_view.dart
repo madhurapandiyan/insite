@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart' as type;
 import 'package:insite/views/adminstration/manage_geofence/manage_geofence_widget/manage_geofensewidget.dart';
@@ -76,7 +77,8 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                                     ManageGeofenceWidget(
                                       encodedPolyline:
                                           viewModel.listOfEncoded[i],
-                                      isFav: model[i].IsFavorite,
+                                      isFav: bool.fromEnvironment(
+                                          model[i].IsFavorite),
                                       onFavourite: (uid) {
                                         viewModel.markFavouriteStatus(uid!, i);
                                       },
@@ -86,8 +88,9 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                                       },
                                       ondeleting: (uid, actionutc) {
                                         viewModel.deleteGeofence(
-                                            uid, actionutc, i);
+                                            uid, actionutc, i, context);
                                       },
+                                      color: model[i].FillColor,
                                       geofenceName: model[i].GeofenceName,
                                       geofenceDate: model[i].EndDate,
                                       geofenceUID: model[i].GeofenceUID,

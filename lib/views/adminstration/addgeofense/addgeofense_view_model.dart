@@ -26,13 +26,17 @@ import 'package:maps_toolkit/maps_toolkit.dart' as polyUtils;
 import 'package:stacked_services/stacked_services.dart';
 import "package:point_in_polygon/point_in_polygon.dart" as point;
 
+import '../../../core/services/graphql_schemas_service.dart';
+
 class AddgeofenseViewModel extends InsiteViewModel {
   final Geofenceservice? _geofenceService = locator<Geofenceservice>();
   NavigationService? _navigationService = locator<NavigationService>();
+  GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
   Logger? log;
 
   AddgeofenseViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    _geofenceService!.setUp();
     isVisionlinkCheck = isVisionLink;
     if (isVisionlinkCheck!) {
       getMaterialData();
@@ -454,7 +458,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   convertingPolyOBJtoWKT() {
-    Logger().d("running too many times");
     try {
       listOfNumber.clear();
       lastLatLong = correctedListofLatlang.first;
@@ -463,7 +466,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
         double latitude = correctedListofLatlang[i]!.latitude;
         double longitude = correctedListofLatlang[i]!.longitude;
         List<num> json = [longitude, latitude];
-        Logger().d(json);
         listOfNumber.add(json);
       }
       List<geo.Point2> listOfPoints = [];
@@ -478,11 +480,9 @@ class AddgeofenseViewModel extends InsiteViewModel {
       lineStringSeries = geo.LineString(pointSeries);
       listOfLineSeries.add(lineStringSeries);
       String finalPolygonOBJ = "POLYGON((${lineStringSeries.toString()}))";
-
       if (finalPolygonOBJ.contains("((LineString<Point<num>>([Point2(")) {
         String polygonWKT1 = finalPolygonOBJ.replaceAll(
             "((LineString<Point<num>>([Point2(", "((");
-
         if (polygonWKT1.contains("), Point2(")) {
           String polygonWKT2 = polygonWKT1.replaceAll("), Point2(", ",");
           if (polygonWKT2.contains(", ")) {
@@ -507,9 +507,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
     try {
       //String titleText = titleText;
       //String descriptionText = descriptionController.text;
-      Logger().wtf(initialValue);
-      Logger().e(endingDate);
-      Logger().e(finalPolygonWKTstring);
       if (initialValue == dropDownlist[0] ||
           initialValue == dropDownlist[1] ||
           initialValue == dropDownlist[7]) {
@@ -573,10 +570,14 @@ class AddgeofenseViewModel extends InsiteViewModel {
         snackbarService!.showSnackbar(message: "Geofence not drawn in map");
         return;
       }
-      if (_polygon!.length < 3) {
-        snackbarService!.showSnackbar(message: "Please Draw a valid polygons");
-        return;
+      if (fetchedGeofenceUid == null) {
+        if (_polygon!.length < 3) {
+          snackbarService!
+              .showSnackbar(message: "Please Draw a valid polygons");
+          return;
+        }
       }
+
       // if (titleController.text.isEmpty && descriptionController.text.isEmpty) {
       //   snackbarService.showSnackbar(
       //       message: "Please enter title and description to proceed");
@@ -605,13 +606,31 @@ class AddgeofenseViewModel extends InsiteViewModel {
         if (initialValue == dropDownlist[0] ||
             initialValue == dropDownlist[1] ||
             initialValue == dropDownlist[7]) {
-          var data =
-              await _geofenceService!.postGeofenceData(geofenceRequestPayload!);
+          var data = await _geofenceService!.postGeofenceData(
+              geofenceRequestPayload,
+              graphqlSchemaService!.addGeofencePayload(
+                  actionUTC: DateTime.now().toIso8601String(),
+                  description: descriptionController.text,
+                  endDate:
+                      endingDate == null ? null : endingDate!.toIso8601String(),
+                  geofenceName: titleController.text,
+                  geometryWKT: finalPolygonWKTstring,
+                  geofenceType: initialValue,
+                  fillColor: 658170));
           _navigationService!.navigateToView(ManageGeofenceView());
           hideLoadingDialog();
         } else {
-          var data =
-              await _geofenceService!.postAddGeofenceData(addGeofencePayLoad);
+          var data = await _geofenceService!.postAddGeofenceData(
+              addGeofencePayLoad,
+              graphqlSchemaService!.addGeofencePayload(
+                  actionUTC: DateTime.now().toIso8601String(),
+                  description: descriptionController.text,
+                  endDate:
+                      endingDate == null ? null : endingDate!.toIso8601String(),
+                  geofenceName: titleController.text,
+                  geometryWKT: finalPolygonWKTstring,
+                  geofenceType: initialValue,
+                  fillColor: 658170));
           _navigationService!.clearTillFirstAndShowView(ManageGeofenceView());
           hideLoadingDialog();
         }
@@ -620,12 +639,31 @@ class AddgeofenseViewModel extends InsiteViewModel {
         if (initialValue == dropDownlist[0] ||
             initialValue == dropDownlist[1] ||
             initialValue == dropDownlist[7]) {
-          await _geofenceService!.putGeofenceData(geofenceRequestPayload!);
+          await _geofenceService!.putGeofenceData(
+              geofenceRequestPayload!,
+              graphqlSchemaService!.updateGeofencePayload(
+                  actionUTC: DateTime.now().toIso8601String(),
+                  description: descriptionController.text,
+                  endDate:
+                      endingDate == null ? null : endingDate!.toIso8601String(),
+                  geofenceName: titleController.text,
+                  geometryWKT: finalPolygonWKTstring,
+                  geofenceType: initialValue,
+                  fillColor: 658170));
           _navigationService!.clearTillFirstAndShowView(ManageGeofenceView());
           hideLoadingDialog();
         } else {
-          await _geofenceService!
-              .putGeofenceDataWithMaterial(geofenceWithMaterialData);
+          await _geofenceService!.putGeofenceDataWithMaterial(
+              geofenceWithMaterialData,
+              graphqlSchemaService!.updateGeofencePayload(
+                  actionUTC: DateTime.now().toIso8601String(),
+                  description: descriptionController.text,
+                  endDate:
+                      endingDate == null ? null : endingDate!.toIso8601String(),
+                  geofenceName: titleController.text,
+                  geometryWKT: finalPolygonWKTstring,
+                  geofenceType: initialValue,
+                  fillColor: 658170));
           _navigationService!.clearTillFirstAndShowView(ManageGeofenceView());
           hideLoadingDialog();
         }
@@ -691,8 +729,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
             data.GeofenceType == dropDownlist[5] ||
             data.GeofenceType == dropDownlist[6]) {
           geofenceInputsData = await _geofenceService!.getGeofenceInput(uid);
-          Logger().wtf(geofenceInputsData.Result!.toJson());
-          Logger().d("mappiy");
           targetController.text =
               geofenceInputsData.Result!.Target!.TargetVolumeInCuMeter == null
                   ? 0.0.toString()

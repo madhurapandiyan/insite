@@ -1,14 +1,10 @@
-import 'dart:isolate';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
-import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
@@ -184,8 +180,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         AssetCount? resultProductfamily = await _assetService!.getAssetCount(
             "productfamily",
             FilterType.PRODUCT_FAMILY,
-            graphqlSchemaService!.allAssets,
-            false);
+            graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
+            true);
         Logger().e(resultProductfamily!.toJson());
         if (resultProductfamily != null) {
           for (var productFamilyData in resultProductfamily.countData!) {
@@ -198,13 +194,17 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     } catch (e) {}
   }
 
-  getProductFamilyFilterData(String? productFamilKey) async {
+  getProductFamilyFilterData(String? productFamilKey, int i) async {
     try {
       showLoadingDialog();
       Logger().i(productFamilKey);
       AssetGroupSummaryResponse? result = await _manageUserService!
           .getAdminProductFamilyFilterData(
-              pageNumber, pageSize, productFamilKey!);
+              pageNumber,
+              pageSize,
+              productFamilKey!,
+              graphqlSchemaService!
+                  .getNotificationAssetList(productfamily: productFamilKey));
       _productFamilyCountData?.clear();
       for (var item in result!.assetDetailsRecords!) {
         _productFamilyCountData?.add(item);
@@ -225,8 +225,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         AssetCount? resultManufacturer = await _assetService!.getAssetCount(
             "manufacturer",
             FilterType.MAKE,
-            graphqlSchemaService!.allAssets,
-            false);
+            graphqlSchemaService!.getAssetCount(grouping: "manufacturer"),
+            true);
         for (var manfactureData in resultManufacturer!.countData!) {
           _manufacturerData.add(manfactureData);
         }
@@ -242,8 +242,12 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     try {
       showLoadingDialog();
       Logger().i(productFamilyKey);
-      assetIdresult = await _manageUserService!
-          .getManafactureFilterData(pageNumber, pageSize, "TATA HITACHI");
+      assetIdresult = await _manageUserService!.getManafactureFilterData(
+          pageNumber,
+          pageSize,
+          "TATA HITACHI",
+          graphqlSchemaService!
+              .getNotificationAssetList(manufacturer: "TATA HITACHI"));
       subManufacturerList?.clear();
       for (var item in assetIdresult!.assetDetailsRecords!) {
         subManufacturerList?.add(item);
@@ -262,7 +266,10 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
       if (_modelData.isEmpty) {
         showLoadingDialog();
         AssetCount? resultModel = await _assetService!.getAssetCount(
-            "model", FilterType.MODEL, graphqlSchemaService!.allAssets, false);
+            "model",
+            FilterType.MODEL,
+            graphqlSchemaService!.getAssetCount(grouping: "model"),
+            true);
         if (resultModel != null) {
           Logger().wtf(resultModel.countData!.last.toJson());
           for (var modelData in resultModel.countData!) {
@@ -281,8 +288,12 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     try {
       showLoadingDialog();
       Logger().w("running");
-      assetIdresult = await _manageUserService!
-          .getModelFilterData(pageNumber, pageSize, productFamilyKey);
+      assetIdresult = await _manageUserService!.getModelFilterData(
+          pageNumber,
+          pageSize,
+          productFamilyKey,
+          graphqlSchemaService!
+              .getNotificationAssetList(model: productFamilyKey));
       Logger().i(assetIdresult);
       _subModelData?.clear();
       for (var item in assetIdresult!.assetDetailsRecords!) {
@@ -305,8 +316,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         AssetCount? resultDeviceType = await _assetService!.getAssetCount(
             "deviceType",
             FilterType.DEVICE_TYPE,
-            graphqlSchemaService!.allAssets,
-            false);
+            graphqlSchemaService!.getAssetCount(grouping: "deviceType"),
+            true);
         deviceTypdeData.clear();
         for (var deviceTypeData in resultDeviceType!.countData!) {
           _deviceTypdeData.add(deviceTypeData);
@@ -321,19 +332,21 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
 
   getFilterDeviceTypeData(String productFamilyKey) async {
     try {
-      if (subDeviceList!.isEmpty) {
-        showLoadingDialog();
-        assetIdresult = await _manageUserService!
-            .getDeviceTypeData(pageNumber, pageSize, productFamilyKey);
-        subDeviceList?.clear();
-        for (var item in assetIdresult!.assetDetailsRecords!) {
-          subDeviceList?.add(item);
-        }
-        pageController!.animateToPage(10,
-            duration: Duration(microseconds: 200), curve: Curves.easeInOut);
-        hideLoadingDialog();
-        notifyListeners();
+      showLoadingDialog();
+      assetIdresult = await _manageUserService!.getDeviceTypeData(
+          pageNumber,
+          pageSize,
+          productFamilyKey,
+          graphqlSchemaService!
+              .getNotificationAssetList(deviceType: productFamilyKey));
+      subDeviceList?.clear();
+      for (var item in assetIdresult!.assetDetailsRecords!) {
+        subDeviceList?.add(item);
       }
+      pageController!.animateToPage(10,
+          duration: Duration(microseconds: 200), curve: Curves.easeInOut);
+      hideLoadingDialog();
+      notifyListeners();
     } catch (e) {
       hideLoadingDialog();
     }

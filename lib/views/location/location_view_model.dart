@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:custom_info_window/custom_info_window.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
@@ -14,7 +13,6 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/marker.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
-import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -255,12 +253,12 @@ class LocationViewModel extends InsiteViewModel {
     setUp();
     manager = initClusterManager();
     if (pageType == ScreenType.LOCATION) {
-      Future.delayed(Duration(seconds: 1), () {
-        getAssetLocation();
+      Future.delayed(Duration(seconds: 1), () async {
+        await getAssetLocation();
       });
     } else if (pageType == ScreenType.DASHBOARD) {
-      Future.delayed(Duration(seconds: 1), () {
-        getAssetLocationHome();
+      Future.delayed(Duration(seconds: 1), () async {
+        await getAssetLocationHome();
       });
     }
   }
@@ -268,6 +266,7 @@ class LocationViewModel extends InsiteViewModel {
   refresh() async {
     await getSelectedFilterData();
     await getDateRangeFilterData();
+    Logger().w(appliedFilters!.first);
     Logger().d("refresh getAssetLocation");
     _refreshing = true;
     clusterMarkers.clear();
@@ -281,7 +280,7 @@ class LocationViewModel extends InsiteViewModel {
         pageSize,
         '-lastlocationupdateutc',
         appliedFilters,
-      await  graphqlSchemaService!.getFleetLocationData(
+        await graphqlSchemaService!.getFleetLocationData(
             filtlerList: appliedFilters,
             pageNo: pageNumber,
             pageSize: pageSize,
@@ -292,9 +291,7 @@ class LocationViewModel extends InsiteViewModel {
       _totalCount = result.pagination!.totalCount;
       clusterMarker();
       manager!.updateMap();
-    }else{
-      
-    }
+    } else {}
     _loading = false;
     _refreshing = false;
     notifyListeners();
@@ -346,7 +343,7 @@ class LocationViewModel extends InsiteViewModel {
             pageNumber,
             pageSize,
             '-lastlocationupdateutc',
-          await  graphqlSchemaService!.getFleetLocationData(
+            await graphqlSchemaService!.getFleetLocationData(
                 filtlerList: appliedFilters,
                 pageNo: pageNumber,
                 pageSize: pageSize,
@@ -356,6 +353,7 @@ class LocationViewModel extends InsiteViewModel {
     if (result != null) {
       _assetLocation = result;
       clusterMarker();
+      manager!.updateMap();
     }
     _loading = false;
     notifyListeners();
@@ -371,7 +369,7 @@ class LocationViewModel extends InsiteViewModel {
         pageSize,
         '-lastlocationupdateutc',
         appliedFilters,
-      await  graphqlSchemaService!.getFleetLocationData(
+        await graphqlSchemaService!.getFleetLocationData(
             startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             filtlerList: appliedFilters,

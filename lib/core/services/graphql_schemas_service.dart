@@ -4,20 +4,12 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
+import '../logger.dart';
+import '../models/add_notification_payload.dart';
+
 class GraphqlSchemaService extends BaseService {
   GraphqlSchemaService._internal() {
-    productFamily = null;
-    model = null;
-    assetStatus = null;
-    fuelLevelPercentLt = null;
-    idleEficiencyGT = null;
-    idleEfficiencyLTE = null;
-    assetIDContains = null;
-    snContains = null;
-    location = null;
-    deviceType = null;
-    make = null;
-    manufacturer = null;
+    this.log = getLogger(this.runtimeType.toString());
   }
   static final GraphqlSchemaService _singleton =
       GraphqlSchemaService._internal();
@@ -35,6 +27,8 @@ class GraphqlSchemaService extends BaseService {
   String? location;
   String? deviceType;
   String? manufacturer;
+  String? severity;
+  String? faultTypeList;
 
   List<String> modelList = [];
   List<String> manufacturerList = [];
@@ -47,6 +41,7 @@ class GraphqlSchemaService extends BaseService {
   List<int> reportFrequency = [];
   List<int> reportFormat = [];
   List<int> reportType = [];
+  List<String> severityList = [];
 
   getReportFilterindividualList(
       {List<FilterData?>? filtlerList,
@@ -85,6 +80,7 @@ class GraphqlSchemaService extends BaseService {
     String doubleQuote = "\"";
     var data = filtlerList!.where((element) => element?.type == type).toList();
     data.forEach((element) {
+      Logger().w(element?.toJson());
       if (assetstatusList.contains(element)) {
       } else {
         individualList!.add(doubleQuote + element!.title! + doubleQuote);
@@ -104,45 +100,69 @@ class GraphqlSchemaService extends BaseService {
     reportFrequency.clear();
     reportFormat.clear();
     reportType.clear();
+    severityList.clear();
+  }
+
+  cleaValue() {
+    productFamily = null;
+    model = null;
+    assetStatus = null;
+    fuelLevelPercentLt = null;
+    idleEficiencyGT = null;
+    idleEfficiencyLTE = null;
+    assetIDContains = null;
+    snContains = null;
+    location = null;
+    deviceType = null;
+    make = null;
+    manufacturer = null;
+    severity = null;
+    faultTypeList = null;
   }
 
   Future gettingLocationFilter(List<FilterData?>? filtlerList) async {
     String doubleQuote = "\"";
 
-    if (filtlerList!.isNotEmpty) {
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: assetstatusList,
-          type: FilterType.ASSET_STATUS);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: productfamilyList,
-          type: FilterType.PRODUCT_FAMILY);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: modelList,
-          type: FilterType.MODEL);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: manufacturerList,
-          type: FilterType.MANUFACTURER);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: deviceTypeList,
-          type: FilterType.DEVICE_TYPE);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: fuelLevelList,
-          type: FilterType.FUEL_LEVEL);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: locationList,
-          type: FilterType.LOCATION_SEARCH);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: idleEfficiencyList,
-          type: FilterType.IDLING_LEVEL);
-    }
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: assetstatusList,
+        type: FilterType.ASSET_STATUS);
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: assetstatusList,
+        type: FilterType.ALL_ASSETS);
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: productfamilyList,
+        type: FilterType.PRODUCT_FAMILY);
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: modelList,
+        type: FilterType.MODEL);
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: manufacturerList,
+        type: FilterType.MANUFACTURER);
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: deviceTypeList,
+        type: FilterType.DEVICE_TYPE);
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: fuelLevelList,
+        type: FilterType.FUEL_LEVEL);
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: locationList,
+        type: FilterType.LOCATION_SEARCH);
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: idleEfficiencyList,
+        type: FilterType.IDLING_LEVEL);
+    getIndividualList(
+        filtlerList: filtlerList,
+        individualList: severityList,
+        type: FilterType.SEVERITY);
   }
 
   Future gettingFiltersValue(List<FilterData?>? filtlerList) async {
@@ -201,6 +221,12 @@ class GraphqlSchemaService extends BaseService {
             .toList();
         manufacturer = Utils.getFilterData(data, filterData!.type!);
         Logger().wtf("manucaturer $manufacturer");
+      } else if (filterData?.type == FilterType.SEVERITY) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.SEVERITY)
+            .toList();
+        severity = Utils.getFilterData(data, filterData!.type!);
+        Logger().wtf("severity $severity");
       }
     });
   }
@@ -268,76 +294,192 @@ query faultDataSummary{
   
 }
   """;
-  String getfaultQueryString(String startDate, String endDate) {
+  getfaultQueryString({
+    String? startDate,
+    String? endDate,
+    List<FilterData?>? applyFilter,
+    int? pageNo,
+    int? limit,
+  }) async {
+    await clearAllList();
+    await cleaValue();
+    await gettingFiltersValue(applyFilter);
+    await gettingLocationFilter(applyFilter);
     final String faultQueryString = """
-  query faultDataSummary{
-  faultdata(page: 1, limit: 100, startDateTime: "$startDate", endDateTime: "$endDate"){
-    
+query{
+  faultdata(
+page:$pageNo,
+    limit:100
+startDateTime:"$startDate"
+endDateTime:"$endDate",
+severityList:${severity == null ? "\"\"" : "${"\"" + severity! + "\""}"}
+faultTypeList: ${faultTypeList == null ? "\"\"" : "${"\"" + faultTypeList! + "\""}"}
+productFamilyList:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}
+manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
+modelList:${model == null ? "\"\"" : "${"\"" + model! + "\""}"}
+deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
+assetStatusList:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}
+fuelLevelPercentLT: ""
+fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
+){
     faults{
-      details {
-        faultCode
-        faultReceivedUTC
-        dataLinkType
-        occurrences
+      asset{
+        uid,
+        basic{
+          assetId,
+          serialNumber
+        }
+        details{
+          makeCode
+model
+productFamily
+assetIcon
+devices{
+  deviceType,
+  firmwareVersion
+}
+dealerCode
+dealerCustomerName
+dealerName
+universalCustomerName
+        }
+        dynamic{
+          status
+locationLatitude
+locationLongitude
+location
+hourMeter
+odometer
+locationReportedTimeUTC
+        }
+      }
+      faultUid,
+      basic{
+    faultIdentifiers
+description
+severityLabel
+severity
+faultType
+source
+faultOccuredUTC
+sourceIdentifierCode
+isResponseReceived
+esn
+externalFaultId
+faultClosureUTC
+isFaultActive
+priority
+  
+
+        
+      },
+      details{
+        faultCode,
+        faultReceivedUTC,
+        dataLinkType,
+        occurrences,
         url
       }
-    }}
+    },
+    page,
+    limit,
+    total,
+    pageLinks{
+      rel,
+      href,
+       method
+    }
+
+  }
 }
   """;
     return faultQueryString;
   }
 
-  String getAssetFaultQuery(String startDate, String endDate) {
+  getAssetFaultQuery({
+    String? startDate,
+    String? endDate,
+    int? pageNo,
+    int? limit,
+    List<FilterData?>? filtlerList,
+  }) async {
+    await cleaValue();
+    await clearAllList();
+    await gettingLocationFilter(filtlerList);
     final String assetFaultQuery = """
-  query assetDataSummary{
-  assetData(page: 1, limit: 100, startDateTime:"$startDate", endDateTime: "$endDate"){
-    pageLinks {
-      rel
-      href
-      method
-    }
-    assetFaults{
-      asset {
-        uid
-        basic {
-          serialNumber
-        }
-        details {
+query{
+assetData(
+  severityList: ${severityList.isEmpty ? [] : severityList}
+faultTypeList: []
+productFamilyList: ${productfamilyList.isEmpty ? [] : productfamilyList}
+manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
+modelList:${modelList.isEmpty ? [] : modelList}
+deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
+assetStatusList: ${assetstatusList.isEmpty ? [] : assetstatusList}
+fuelLevelPercentLT: ""
+fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
+startDateTime: "$startDate"
+endDateTime: "$endDate"
+page: $pageNo
+limit: 100
+assetUid: []
+){
+ 
+  assetFaults{
+    asset{
+      uid,
+      basic{
+        assetId,
+        serialNumber
+      }
+     details{
           makeCode
-          model
-          productFamily
-          assetIcon
-          dealerCode
-          dealerCustomerName
-          dealerName
-          universalCustomerName
+model
+productFamily
+assetIcon
+devices{
+  deviceType,
+  firmwareVersion
+}
+dealerCode
+dealerCustomerName
+dealerName
+universalCustomerName
         }
-        dynamic {
+      dynamic{
           status
-          locationLatitude
-          locationLongitude
-          location
-          hourMeter
-          odometer
-          locationReportedTimeUTC
+locationLatitude
+locationLongitude
+location
+hourMeter
+odometer
+locationReportedTimeUTC
         }
-      }
-      countData {
-        countOf
-        count
-      }
+    },
+    countData{
+      countOf,
+      count
     }
-    page
-    limit
-    total
+  },
+   page,
+  limit,
+  total,
+  status,
+  reqId,
+  mst,
+  pageLinks{
+    method
   }
 }
-  """;
+}""";
     return assetFaultQuery;
   }
 
   fleetSummary(List<FilterData?>? applyFilter, pagenumber) async {
+    await cleaValue();
+    await clearAllList();
     await gettingFiltersValue(applyFilter);
+
     var data = """{
   fleetSummary(pageNumber:$pagenumber,
     pageSize:50,
@@ -350,7 +492,7 @@ query faultDataSummary{
     idleEfficiencyLTE:"",
     assetIDContains:"",
     snContains:"",
-    manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"},
+  manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"},
     location:"") {
     fleetRecords {
       assetIdentifier
@@ -465,9 +607,9 @@ query faultDataSummary{
   manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
   assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
   fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}, 
-  idleEfficiencyGT:${idleEficiencyGT == null ? "\"\"" : "${"\"" + idleEficiencyGT! + "\""}"}, 
+  idleEfficiencyGT:"", 
   idleEfficiencyLTE: "", 
-  idleEfficiencyRanges: "", 
+  idleEfficiencyRanges: ${idleEficiencyGT == null ? "\"\"" : "${"\"" + idleEficiencyGT! + "\""}"}, 
   startDate: "$startDate", 
   EndDate: "$endDate") {
     countData {
@@ -561,7 +703,6 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
 }
 }
   """;
-    Logger().w(faultCountData);
     return faultCountData;
   }
 
@@ -831,10 +972,10 @@ userUid,
       List<FilterData?>? filtlerList,
       int? pageNo,
       int? pageSize}) async {
+    await cleaValue();
     await clearAllList();
-    if (filtlerList != null) {
-      await gettingLocationFilter(filtlerList);
-    }
+
+    await gettingLocationFilter(filtlerList);
 
     final String fleetLocationData = """
   query fleetLocationDetails{
@@ -904,6 +1045,87 @@ productfamily: ""
   
 }
   """;
+    return fleetLocationData;
+  }
+
+  getFleetLocationDataProductFamilyFilterData(
+      {String? startDate,
+      String? endDate,
+      List<FilterData?>? filtlerList,
+      int? pageNo,
+      List<String>? prodFamilyFilter,
+      int? pageSize}) async {
+    await cleaValue();
+    await clearAllList();
+    final String fleetLocationData = """
+  query fleetLocationDetails{
+  fleetLocationDetails
+ (
+  pageNumber:$pageNo
+pageSize:$pageSize
+sort:"assetid"
+assetIdentifier: ""
+startDateLocal:"$startDate"
+endDateLocal: "$endDate"
+search:{
+  manufacturer: ${manufacturerList.isEmpty ? [] : manufacturerList}
+model: ${modelList.isEmpty ? [] : modelList}
+assetstatus: ${assetstatusList.isEmpty ? [] : assetstatusList}
+deviceType: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
+idleEfficiency: ${idleEfficiencyList.isEmpty ? [] : idleEfficiencyList}
+fuelLevel: ${fuelLevelList.isEmpty ? [] : fuelLevelList}
+productfamily: ${prodFamilyFilter!.isEmpty ? [] : prodFamilyFilter}
+location: ${locationList.isEmpty ? [] : locationList}
+}
+productfamily: ""
+)
+{
+    pagination {
+      totalCount
+      pageNumber
+      pageSize
+    }
+    links {
+      self
+      next
+      prev
+    }
+    mapRecords {
+      assetIdentifier
+      assetSerialNumber
+      serialNumber
+      manufacturer
+      makeCode
+      model
+      assetIcon
+      status
+      assetStatus
+      hourMeter
+      hourmeter
+      latitude
+      longitude
+      lastReportedLocationLatitude
+      lastReportedLocationLongitude
+      lastReportedLocation
+      lastReportedUTC
+      fuelLevelLastReported
+      notifications
+      lastLocationUpdateUTC
+      assetEventHistoryID
+      locationEventUTC
+      locationEventLocalTime
+      locationEventLocalTimeZoneAbbrev
+      odometer
+    }
+    countData {
+      countOf
+      count
+    }
+  }
+  
+}
+  """;
+    Logger().w(fleetLocationData);
     return fleetLocationData;
   }
 
@@ -1354,6 +1576,7 @@ fleetFiltersGrouping(
           totalRuntimeDurationSeconds
           segments {
             startTimeUtc
+            endTimeUtc
           }
         }
         assetLastReceivedEvent {
@@ -1372,13 +1595,14 @@ fleetFiltersGrouping(
     return data;
   }
 
-  String singleAssetDetailLocation(String startDate, String endDate) {
+  String singleAssetDetailLocation(
+      String startDate, String endDate, String? assetUid) {
     var data = """
 query{
   singleAssetLocationDetails(
        pageNumber: 1,
     pageSize: 50,
-    assetIdentifier: "9798351c-c1d9-11eb-82df-0ae8ba8d3970",
+    assetIdentifier: "$assetUid",
     startTimeLocal: "$startDate",
     endTimeLocal: "$endDate"
   ){
@@ -1646,7 +1870,7 @@ lastLocationUpdateUTC
   reportFormat: $reportFormat,
     reportPeriod:1,
     reportTitle: "$reportTitle",
-  reportScheduledDate: "$reportEndDate",
+  reportScheduledDate: "$reportScheduledDate",
     reportStartDate:"$reportStartDate",
     emailSubject:"$emailSubject",
     emailRecipients:$emailRecipients,
@@ -1657,8 +1881,8 @@ lastLocationUpdateUTC
     queryUrl: "$queryUrl",
     reportType: "$reportType",
     reportColumns:${Utils.getStringListData(reportColumns!)}
-    svcbody:$svcbody,
-    reportEndDate:"$reportEndDate"
+    svcbody:${Utils.getStringListData(svcbody)}
+    reportEndDate:${reportEndDate == null ? "\"\"" : "${"\"" + reportEndDate + "\""}"}
     ){
     status,
     msg,
@@ -1710,8 +1934,7 @@ lastLocationUpdateUTC
         href,
          method
       },
-      reportSourcePageName,
-        reportTitle,
+      reportTitle,
       reportPeriod
     }
   }
@@ -1763,4 +1986,487 @@ lastLocationUpdateUTC
     }
      }
   }""";
+  String addGeofencePayload({
+    String? geofenceType,
+    String? geometryWKT,
+    String? geofenceName,
+    String? description,
+    String? actionUTC,
+    String? endDate,
+    int? fillColor,
+  }) {
+    var data = """
+mutation {
+  createGeofencesData(
+    geofenceType: "$geofenceType", 
+    geometryWKT: "$geometryWKT", 
+    geofenceName: "$geofenceName", 
+   actionUTC: "$actionUTC", 
+    endDate: ${endDate == null ? null : "$endDate"},
+     description: "$description",  
+    fillColor: 658170, 
+    isTransparent: false
+    ) {
+    geofenceUID
+  }
+}
+""";
+    return data;
+  }
+
+  String updateGeofencePayload({
+    String? geofenceType,
+    String? geometryWKT,
+    String? geofenceName,
+    String? description,
+    String? actionUTC,
+    String? endDate,
+    int? fillColor,
+  }) {
+    var data = """
+mutation {
+  updateGeofencesData(
+    geofenceType: "$geofenceType", 
+    geometryWKT: "$geometryWKT", 
+    geofenceName: "$geofenceName", 
+   actionUTC: "$actionUTC", 
+    endDate: ${endDate == null ? null : "$endDate"},
+     description: "$description",  
+    fillColor: 658170, 
+    isTransparent: false
+    )
+}
+""";
+    return data;
+  }
+
+  String geofenceSingleResponce(String uid) {
+    var data = """
+query{
+  geofenceSingleResponse(
+    geofenceUids:"$uid"
+  ){
+    geofenceName
+description
+geofenceType
+geometryWKT
+fillColor
+isTransparent
+customerUID
+areaSqMeters
+geofenceUID
+startDate
+endDate
+  }
+}""";
+    return data;
+  }
+
+  String getGeofenceData(List<int>? id, String? sort) {
+    var data = """
+query{
+  geofencesTypeId(geofenceTypeIds:$id,sort:$sort){
+geofences{
+  isFavorite
+geofenceName
+description
+geofenceType
+geometryWKT
+fillColor
+isTransparent
+customerUID
+areaSqMeters
+geofenceUID
+startDate
+endDate
+}
+  }
+}""";
+    return data;
+  }
+
+  String markFav(String uid) {
+    var data = """
+mutation{
+  markFavorite(geofenceUID:"$uid")
+}""";
+    return data;
+  }
+
+  String markUnfav(String uid) {
+    var data = """
+mutation{
+ markUnFavorite(geofenceUID:"$uid")
+}""";
+    return data;
+  }
+
+  String deleteGeofence(String uid, String utc) {
+    var data = """
+mutation{
+  geofenceDelete(
+    geofenceuid:"$uid",
+  actionutc:"$utc")
+}""";
+    return data;
+  }
+
+  String createNotification(
+      {int? alertCategoryID,
+      String? currentDate,
+      String? alertTitle,
+      int? alertGroupId,
+      int? notificationTypeGroupID,
+      int? notificationTypeId,
+      int? numberOfOccurences,
+      String? notificationDeliveryChannel,
+      List<Operand>? operand,
+      List<Schedule>? schedule,
+      List<String>? assetId,
+      NotificationSubscribers? notificationSubscribers}) {
+    var data = """
+mutation{
+  createNotification(
+    alertCategoryID: $alertCategoryID
+assetUIDs: ${Utils.getStringListData(assetId!)}
+notificationSubscribers:${Utils.getNotificationSubscribers(notificationSubscribers!)}
+allAssets: false
+currentDate: "$currentDate"
+schedule: ${Utils.getNotificationSchedule(schedule!)}
+alertTitle: "$alertTitle"
+alertGroupId: $alertGroupId
+notificationTypeGroupID: $notificationTypeGroupID
+operands:${Utils.getOperand(operand)}
+notificationTypeId: $notificationTypeId
+numberOfOccurences: $numberOfOccurences
+notificationDeliveryChannel:"$notificationDeliveryChannel"
+geofenceUIDs: null
+assetGroupUIDs: null
+siteOperands: null
+switchOperand: null
+zones: null
+  ){
+    alertConfig{
+      alertUID
+    }
+    responseStatus
+  }
+}""";
+    return data;
+  }
+
+  String updateNotification(
+      {int? alertCategoryID,
+      String? currentDate,
+      String? alertTitle,
+      int? alertGroupId,
+      int? notificationTypeGroupID,
+      int? notificationTypeId,
+      int? numberOfOccurences,
+      String? notificationDeliveryChannel,
+      List<Operand>? operand,
+      List<Schedule>? schedule,
+      List<String>? assetId,
+      NotificationSubscribers? notificationSubscribers,
+      String? alertId}) {
+    var data = """
+mutation{
+  updateNotification(
+    alertCategoryID: $alertCategoryID
+assetUIDs: ${Utils.getStringListData(assetId!)}
+notificationSubscribers:${Utils.getNotificationSubscribers(notificationSubscribers!)}
+allAssets: false
+currentDate: "$currentDate"
+schedule: ${Utils.getNotificationSchedule(schedule!)}
+alertTitle: "$alertTitle"
+alertGroupId: $alertGroupId
+notificationTypeGroupID: $notificationTypeGroupID
+operands:${Utils.getOperand(operand)}
+notificationTypeId: $notificationTypeId
+numberOfOccurences: $numberOfOccurences
+notificationDeliveryChannel:"$notificationDeliveryChannel"
+geofenceUIDs: null
+assetGroupUIDs: null
+siteOperands: null
+switchOperand: null
+zones: null
+notificationUid:"$alertId"
+  ){
+    isUpdated
+  }
+}""";
+    return data;
+  }
+
+  String checkNotificationTitle(String title) {
+    var data = """
+query{
+  getAlertTitleExistsData(
+    alertTitle:"$title",
+    alertConfigUID:""
+  ){
+    alertTitleExists,
+    responseStatus
+  }
+}""";
+    return data;
+  }
+
+  String getNotificationTypes() {
+    var data = """
+query{
+  getNotificationTypeGroupsData{
+    notificationTypeGroups{
+      notificationTypeGroupID,
+      notificationTypeGroupName,
+      notificationTypes{
+        notificationTypeID,
+        notificationTypeName,
+        appName,
+        appURL,
+        operands{
+          operandName,
+          operandID,
+          maxValue,
+          minValue,
+          maxOccurrence,
+          minOccurrence,
+          operators{
+            operatorID,
+            code,
+            name
+          }
+        }
+      }
+    }
+   
+  }
+}""";
+    return data;
+  }
+
+  String getNotificationAssetList(
+      {String? productfamily,
+      String? model,
+      String? manufacturer,
+      String? deviceType}) {
+    var data = """
+query{
+  notificationAssetList(
+pageNumber:1
+pageSize:9999
+minimalFields:false
+productfamily: ${productfamily == null ? "\"\"" : "${"\"" + productfamily + "\""}"}
+model: ${model == null ? "\"\"" : "${"\"" + model + "\""}"}
+manufacturer: ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer + "\""}"}
+deviceType: ${deviceType == null ? "\"\"" : "${"\"" + deviceType + "\""}"}
+){
+assetDetailsRecords{
+      assetIdentifier,
+      assetSerialNumber,
+      makeCode,
+      assetId,
+      model,
+      assetIcon
+    }
+  }
+}""";
+    return data;
+  }
+
+  String getNotificationData(
+      {int? pageNo,
+      int? count,
+      String? searchKey,
+      List<String>? notificationType}) {
+    var data = """
+query{
+  getConfiguredAlertsData(
+        pageNumber: $pageNo,
+    count: $count,
+    searchKey: ${searchKey == null ? "\"\"" : "${"\"" + searchKey + "\""}"},
+    notificationType: ${Utils.getStringListData(notificationType ?? [])}
+  ){
+    links{
+      prev,
+      next,
+      last
+    }
+    total{
+      items,
+      pages
+    }
+    responseStatus,
+    configuredAlerts{
+      alertConfigID
+alertConfigUID
+notificationTitle
+allAssetsInd
+notificationTypeGroupID
+notificationTypeID
+createdDate
+updatedDate
+notificationType
+numberOfAssets
+numberOfAssetGroups
+numberOfGeofences
+alertCategoryID
+alertGroupID
+operands{
+  operandID,
+  operandName,
+  operatorID,
+  condition,
+  value,
+  unit
+}
+siteOperands{
+  operandID,
+  operandName,
+  geoFenceID,
+  geoFenceUID,
+  name
+}
+    }
+  }
+}""";
+    return data;
+  }
+
+  String editSingleNotification(String? id, String? pageNo) {
+    var data = """
+query{
+  getNotificationAlertConfigData(
+    alertConfigUID:"$id",
+    page:"$pageNo"
+  ){
+    alertConfig{
+      alertConfigID
+alertConfigUID
+notificationTitle
+allAssetsInd
+notificationTypeGroupID
+numberOfAssetGroups
+numberOfGeofences
+notificationTypeID
+createdDate
+updatedDate
+notificationType
+numberOfAssets
+alertCategoryID
+alertGroupID
+notificationConfigID
+occurrenceCount
+geofences
+assets {
+  assetID
+  assetUID
+  assetName
+}
+assetGroups
+operands {
+  operandID
+  operandName
+  operatorID
+  condition
+  value
+}
+switchOperand {
+  operandID
+  operatorID
+}
+siteOperands {
+  operandID
+  operandName
+  geoFenceID
+  geoFenceUID
+  name
+}
+scheduleDetails {
+  alertConfigScheduleDtlID
+  scheduleDayNum
+  scheduleStartTime
+  scheduleEndTime
+}
+deliveryConfig {
+  deliveryConfigID
+  deliveryModeInd
+  recipientStr
+  isVLUser
+}
+zones {
+  zoneUID
+  isInclusion
+}
+    }
+  }
+}""";
+    return data;
+  }
+
+  String deleteNotification(List<String> uids) {
+    var data = """
+mutation{
+  deleteNotification(
+    notificationUID:${Utils.getStringListData(uids)}
+  ){
+    successCount,
+    failureCount,
+    status
+  }
+}""";
+    return data;
+  }
+
+  String seeAllNotification(
+      {int? pageNo,
+      List<int>? notificationStatus,
+      String? startDate,
+      String? endDate,
+      int? notificationUserStatus,
+      String? assetUIDs,
+      List<String>? notificationType}) {
+    var data = """
+query{
+  seeAllNotificationList(
+    pageNumber:$pageNo,
+    notificationStatus:${notificationStatus ?? []},
+    notificationUserStatus:$notificationUserStatus,
+    fromDate:"$startDate",
+    toDate:"$endDate",
+    assetUIDs:${assetUIDs == null ? "\"\"" : "${"\"" + assetUIDs + "\""}"},,
+     notificationType:${Utils.getStringListData(notificationType ?? [])}
+  ){
+    links{
+      next,
+      last
+    }
+    total{
+      items,
+      pages
+    },
+    notifications{
+      notificationUID
+notificationTitle
+occurUTC
+assetUID
+serialNumber
+assetName
+makeCode
+model
+location
+iconKey
+latitude
+longitude
+notificationType
+notificationSubType
+notificationConfigJSON
+resolvedStatus
+readStatus
+    },
+    status
+  }
+}""";
+    return data;
+  }
 }

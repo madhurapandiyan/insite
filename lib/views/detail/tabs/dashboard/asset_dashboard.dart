@@ -1,3 +1,4 @@
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/utils/enums.dart';
@@ -128,13 +129,12 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16.0,
                       ),
-                      child:
-                      FuelLevel(
+                      child: FuelLevel(
                           liquidColor: Theme.of(context).buttonColor,
                           value: widget.detail != null &&
                                   widget.detail!.percentDEFRemaining != null
-                              ? double.parse(
-                                  widget.detail!.percentDEFRemaining!.toString())
+                              ? double.parse(widget.detail!.percentDEFRemaining!
+                                  .toString())
                               : 0,
                           title: "Diesel Exhaust Fluid (DEF) Level ",
                           lifeTimeFuel: widget.detail!.lifetimeDEFLiters != null
@@ -164,37 +164,42 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16.0,
                             ),
-                            child: GoogleMapDetailWidget(
-                                isLoading: false,
-                                latitude: viewModel.assetDetail!
-                                            .lastReportedLocationLatitude !=
-                                        null
-                                    ? viewModel.assetDetail!
-                                        .lastReportedLocationLatitude
-                                    : null,
-                                screenType: ScreenType.ASSET_DETAIL,
-                                status: widget.detail!.lastLocationUpdateUTC !=
-                                        null
-                                    ? "Last Reported Time: ".toUpperCase() +
-                                        Utils.getLastReportedDateOneUTC(widget
-                                            .detail!.lastLocationUpdateUTC)
-                                    : "No Data Receiveed",
-                                onMarkerTap: () {
-                                  widget.switchTab!(3);
-                                },
-                                initLocation: null,
-                                location: viewModel.assetDetail!
-                                            .lastReportedLocation !=
-                                        null
-                                    ? viewModel
-                                        .assetDetail!.lastReportedLocation
-                                    : "",
-                                longitude: viewModel.assetDetail!
-                                            .lastReportedLocationLongitude !=
-                                        null
-                                    ? viewModel.assetDetail!
-                                        .lastReportedLocationLongitude
-                                    : null),
+                            child: Column(
+                              children: [
+                                GoogleMapDetailWidget(
+                                    isLoading: false,
+                                    details: viewModel.assetDetail,
+                                    latitude: viewModel.assetDetail!
+                                                .lastReportedLocationLatitude !=
+                                            null
+                                        ? viewModel.assetDetail!
+                                            .lastReportedLocationLatitude
+                                        : null,
+                                    screenType: ScreenType.ASSET_DETAIL,
+                                    status: widget.detail!.lastLocationUpdateUTC != null
+                                        ? "Last Reported Time: ".toUpperCase() +
+                                            Utils.getLastReportedDateOneUTC(
+                                                widget.detail!
+                                                    .lastLocationUpdateUTC)
+                                        : "No Data Receiveed",
+                                    onMarkerTap: () {
+                                      widget.switchTab!(3);
+                                    },
+                                    initLocation: null,
+                                    location:
+                                        viewModel.assetDetail!.lastReportedLocation != null
+                                            ? viewModel.assetDetail!
+                                                .lastReportedLocation
+                                            : "",
+                                    longitude: viewModel.assetDetail!
+                                                .lastReportedLocationLongitude !=
+                                            null
+                                        ? viewModel.assetDetail!
+                                            .lastReportedLocationLongitude
+                                        : null),
+                                
+                              ],
+                            ),
                           )
                         : SizedBox(),
                     SizedBox(

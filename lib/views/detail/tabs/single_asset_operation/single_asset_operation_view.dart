@@ -280,7 +280,6 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                 Align(
                                   alignment: Alignment.topRight,
                                   child: Padding(
-                                    
                                     padding: EdgeInsets.symmetric(
                                         vertical: 90, horizontal: 16),
                                     child: Column(
@@ -316,7 +315,6 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                             ),
                                           ),
                                         ),
-                                        
                                         GestureDetector(
                                           onTap: () {
                                             setState(() {

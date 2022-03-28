@@ -38,8 +38,8 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HealthDashboardViewModel>.reactive(
-      builder:
-          (BuildContext context, HealthDashboardViewModel viewModel, Widget? _) {
+      builder: (BuildContext context, HealthDashboardViewModel viewModel,
+          Widget? _) {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
@@ -80,7 +80,7 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                                 : null,
                             loading: viewModel.loading,
                             isRefreshing: viewModel.loading,
-                            onFilterSelected: (value) {},
+                            onFilterSelected: (value, dateRangeFilter) {},
                           ),
                         )
                       : SizedBox(),
@@ -93,6 +93,7 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                             horizontal: 16.0,
                           ),
                           child: GoogleMapDetailWidget(
+                              details: viewModel.assetDetail,
                               isLoading: false,
                               latitude: viewModel.assetDetail!
                                           .lastReportedLocationLatitude !=
@@ -119,8 +120,8 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                               longitude: viewModel.assetDetail!
                                           .lastReportedLocationLongitude !=
                                       null
-                                  ? viewModel
-                                      .assetDetail!.lastReportedLocationLongitude
+                                  ? viewModel.assetDetail!
+                                      .lastReportedLocationLongitude
                                   : null),
                         )
                       : SizedBox(),

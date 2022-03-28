@@ -1,6 +1,6 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_report_payload.dart';
@@ -9,7 +9,6 @@ import 'package:insite/core/models/edit_report_response.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/core/models/search_contact_report_list_response.dart';
 import 'package:insite/core/models/template_response.dart';
-import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
@@ -83,7 +82,11 @@ class AddReportViewModel extends InsiteViewModel {
 
   TextEditingController dateTimeController = new TextEditingController();
   TextEditingController emailController = TextEditingController();
-  List<String> dropvaluelist = [".CSV", ".XLS", ".PDF"];
+  List<String> dropvaluelist = [
+    ".CSV", 
+    ".XLSX", 
+    //".PDF"
+    ];
 
   AddReportViewModel(ScheduledReports? scheduledReports, bool? isEdit,
       String? dropdownValue, String? templateTitleValue) {
@@ -93,14 +96,18 @@ class AddReportViewModel extends InsiteViewModel {
       if (isEdit == true) {
         getEditReportData();
       } else if (isEdit == false) {
-        getTemplateReportAssetData();
-        getGroupListData();
+        Future.delayed(Duration.zero, () async {
+          await getTemplateReportAssetData();
+          await getGroupListData();
+        });
       }
       if (isEdit == null) {
-        getGroupListData();
-        getTemplateReportAssetData().then((_) {
-          getTemplateTitleValue(templateTitleValue!);
-          getDropDownValue(dropdownValue!);
+        Future.delayed(Duration.zero, () async {
+          getGroupListData();
+          getTemplateReportAssetData().then((_) {
+            getTemplateTitleValue(templateTitleValue!);
+            getDropDownValue(dropdownValue!);
+          });
         });
       }
     });
@@ -242,6 +249,7 @@ class AddReportViewModel extends InsiteViewModel {
           element == "Engine Idle" ||
           element == "Asset Event Count" ||
           element == "Fault Code");
+     // reportFleetAssets!.add("Asset Location History");
       assetsDropDownValue = reportFleetAssets![0];
       isLoading = false;
       notifyListeners();
@@ -351,7 +359,7 @@ class AddReportViewModel extends InsiteViewModel {
             resultData.scheduledReport!.emailSubject ?? "-";
         emailContentController.text =
             resultData.scheduledReport!.emailContent ?? "-";
-          
+
         isLoading = false;
         notifyListeners();
         await getGroupListData();
@@ -378,24 +386,36 @@ class AddReportViewModel extends InsiteViewModel {
       Logger().e(e.toString());
     }
   }
-
   onAddingAsset(int i, Asset? selectedData) {
-    if (selectedData != null) {
-      if (selectedAsset!.any((element) =>
-          element.assetIdentifier == selectedData.assetIdentifier)) {
-        snackbarService!.showSnackbar(message: "Asset Alerady Selected");
-      } else {
-        Logger().i(assetIdresult?.assetDetailsRecords?.length);
-        assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
-            element.assetIdentifier == selectedData.assetIdentifier);
-        selectedAsset?.add(selectedData);
-        Logger().d(assetIdresult?.assetDetailsRecords?.length);
+    if (selectedAsset!.isEmpty) {
+      selectedAsset?.add(selectedData!);
+    } else {
+      if (selectedAsset?.length == 1) {
+        if (assetsDropDownValue == "Utilization Details" ||
+            assetsDropDownValue == "Asset Location History" ||
+            assetsDropDownValue == "Fault Code Asset Details") {
+              snackbarService!.showSnackbar(message: "For $assetsDropDownValue Report Type You Must Be Able To Select Only One Asset");
+        } else {
+          if (selectedAsset!.any((element) =>
+              element.assetIdentifier == selectedData?.assetIdentifier)) {
+            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+          } else {
+            Logger().i(assetIdresult?.assetDetailsRecords?.length);
+            assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
+                element.assetIdentifier == selectedData?.assetIdentifier);
+            selectedAsset?.add(selectedData!);
+            Logger().d(assetIdresult?.assetDetailsRecords?.length);
+          }
+        }
+      }else{
+        selectedAsset?.add(selectedData!);
       }
     }
+
     notifyListeners();
   }
 
-  onDeletingAsset(int i) {
+     onDeletingAsset(int i) {
     try {
       if (selectedAsset != null) {
         Logger().e(selectedAsset?.length);
@@ -455,16 +475,17 @@ class AddReportViewModel extends InsiteViewModel {
   List<String>? emailIds = [];
 
   addContact() {
+    Logger().w(emailController.text);
+if (emailController.text.contains("@")) {
     isShowingSelectedContact = true;
-    var data = searchContactListName!
-        .where((element) => element.email!.contains(emailController.text));
-    if (selectedUser
-        .any((element) => element.email!.contains(data.first.email!))) {
-    } else {
-      emailController.clear();
-      selectedUser.add(data.first);
-      emailIds!.add(data.first.email!);
+   selectedUser.add(User(
+      email: emailController.text,
+    ));
+      emailIds!.add(emailController.text);
+    }else{
+      snackbarService!.showSnackbar(message: "Please Enter the valid device id");
     }
+
     notifyListeners();
   }
 
@@ -539,7 +560,7 @@ class AddReportViewModel extends InsiteViewModel {
           emailRecipients: emailIds,
           reportFormat: reportFormatDropDownValue == ".CSV"
               ? 1
-              : reportFormatDropDownValue == ".XLS"
+              : reportFormatDropDownValue == ".XLSX"
                   ? 2
                   : reportFormatDropDownValue == ".PDF"
                       ? 3
@@ -565,13 +586,14 @@ class AddReportViewModel extends InsiteViewModel {
                       : 0,
           allAssets: false,
           reportColumns: reportColum,
-          svcbody:assetsDropDownValue=="Fault Summary Faults List"?{"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:
-                       assetsDropDownValue=="Asset Operation"||assetsDropDownValue=="fleet summary"||
-          assetsDropDownValue=="Multi-Asset-Utilization"?
-            []:
+          svcbody:assetsDropDownValue=="Fault Summary Faults List"?
+          {"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:
+                       assetsDropDownValue=="Asset Operation"||assetsDropDownValue=="Fleet Summary"||
+          assetsDropDownValue=="Multi-Asset Utilization"?
+            associatedIdentifier:
             assetsDropDownValue=="Utilization Details"||assetsDropDownValue=="Fault Code Asset Details"?
             null:
-            associatedIdentifier,
+            [],
           reportTitle: nameController.text,
           reportCategoryID: 0,
           reportPeriod: frequencyDropDownValue == 'Daily'
@@ -585,7 +607,7 @@ class AddReportViewModel extends InsiteViewModel {
           emailRecipients: emailIds,
           reportFormat: reportFormatDropDownValue == ".CSV"
               ? 1
-              : reportFormatDropDownValue == ".XLS"
+              : reportFormatDropDownValue == ".XLSX"
                   ? 2
                   : reportFormatDropDownValue == ".PDF"
                       ? 3
@@ -640,53 +662,57 @@ class AddReportViewModel extends InsiteViewModel {
       }
 
       showLoadingDialog();
-      Logger().w(Utils.getReportColumn(assetsDropDownValue!));
-      print(addReportPayLoad.toJson());
+      Logger().w(addReportPayLoad.toJson());
+    
       ManageReportResponse? result = await _manageUserService!.getAddReportSaveData(
           addReportPayLoad,
           graphqlSchemaService!.addReportPayLoad(
               reportCategoryID: 0,
               reportFormat: reportFormatDropDownValue == ".CSV"
                   ? 1
-                  : reportFormatDropDownValue == ".XLS"
+                  : reportFormatDropDownValue == ".XLSX"
                       ? 2
                       : reportFormatDropDownValue == ".PDF"
                           ? 3
                           : 0,
               reportTitle: nameController.text,
-              reportEndDate: Utils.getLastReportedDateFilterData(DateTime.now()).toString(),
-              reportScheduledDate: dateTimeController.text,
+              reportEndDate: dateTimeController.text,
+              reportScheduledDate: Utils.getLastReportedDateFilterData(DateTime.now()).toString(),
               emailSubject: serviceDueController.text,
               emailRecipients: Utils.getStringListData(emailIds!),
               emailContent: emailContentController.text,
-              svcMethod: "POST",
+              svcMethod:assetsDropDownValue=="Utilization Details"?"":
+          assetsDropDownValue=="Fault Code Asset Details"?
+          "GET":
+           "POST",
               allAssets: false,
-              svcbody: 
-              assetsDropDownValue=="Fault Summary Faults List"?{"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:
-                       assetsDropDownValue=="Asset Operation"||assetsDropDownValue=="fleet summary"||
-          assetsDropDownValue=="Multi-Asset-Utilization"?
-            Utils.getStringListData(associatedIdentifier!):"",
-              queryUrl: assetsDropDownValue == "Fleet Summary"
-                  ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid"
-                  : assetsDropDownValue == "Multi-Asset Utilization"
-                      ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?startDate=&endDate=&sort=-RuntimeHours&pageNumber=1&pageSize=50000"
-                      : assetsDropDownValue == "Utilization Details"
-                          ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v1/Utilization/Details?assetUid=92A5ECE6-B301-11EB-82DE-0AE8BA8D3970&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=true&sort=-LastReportedUtilizationTime&startDate="
-                          : assetsDropDownValue == "Asset Operation"
-                              ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/AssetOperation?assetUid=c6cef15d-58c6-11ec-82e4-0282799e2450&startDate=&endDate="
-                              : assetsDropDownValue == "Fault Summary Faults List"
-                                  ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/Health/Faults/Search?startDateTime=&endDateTime="
-                                  : assetsDropDownValue == "Fault Code Asset Details"
-                                      ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=9e7082cc-2b28-11ec-82e0-0ae8ba8d3970&startDateTime=&endDateTime=&langDesc=en-US"
-                                      : "",
+              svcbody: Utils.reportSvcBody(assetsDropDownValue, associatedIdentifier),
               reportColumns: Utils.getReportColumn(assetsDropDownValue!),
               reportType: reportType!,
+          //     assetsDropDownValue=="Fault Summary Faults List"?{"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:
+          //              assetsDropDownValue=="Asset Operation"||assetsDropDownValue=="fleet summary"||
+          // assetsDropDownValue=="Multi-Asset-Utilization"?
+          //   Utils.getStringListData(associatedIdentifier!):"",
+              queryUrl: assetsDropDownValue == "Fleet Summary"
+                  ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v5?sort=assetid"
+                  : assetsDropDownValue == "Multi-Asset Utilization"
+                      ? "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization/v5?startDate=&endDate=&sort=-RuntimeHours"
+                      : assetsDropDownValue == "Utilization Details"
+                          ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/Details?assetUid=${associatedIdentifier!.first}&startDate=&endDate=&sort=-LastReportedUtilizationTime"
+                          : assetsDropDownValue == "Asset Operation"
+                              ? "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/AssetOperation?startDate=&endDate="
+                              : assetsDropDownValue == "Fault Summary Faults List"
+                                  ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/Health/Faults/Search?startDateTime=&endDateTime=&langDesc=en-US"
+                                  : assetsDropDownValue == "Fault Code Asset Details"
+                                      ? "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=${associatedIdentifier!.first}&startDateTime=&endDateTime=&langDesc=en-US"
+                                      :""
+                                      
+                                      
+              
               reportStartDate: ""));
-      Logger().wtf(result!.reqId);
-      Logger().d(addReportPayLoad.toJson());
       if (result != null) {
         _snackBarservice!.showSnackbar(message: "Report is added sucessfully");
-        //gotoScheduleReportPage();
+        gotoScheduleReportPage();
       }
       hideLoadingDialog();
       notifyListeners();
@@ -745,7 +771,7 @@ class AddReportViewModel extends InsiteViewModel {
           emailRecipients: selectedContactItems,
           reportFormat: reportFormatDropDownValue == ".CSV"
               ? 1
-              : reportFormatDropDownValue == ".XLS"
+              : reportFormatDropDownValue == ".XLSX"
                   ? 2
                   : reportFormatDropDownValue == ".PDF"
                       ? 3
@@ -785,7 +811,7 @@ class AddReportViewModel extends InsiteViewModel {
           emailRecipients: emailIds,
           reportFormat: reportFormatDropDownValue == ".CSV"
               ? 1
-              : reportFormatDropDownValue == ".XLS"
+              : reportFormatDropDownValue == ".XLSX"
                   ? 2
                   : reportFormatDropDownValue == ".PDF"
                       ? 3

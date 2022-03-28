@@ -85,7 +85,7 @@ class AssetService extends BaseService {
                                 ScreenType.ASSET_OPERATION),
                         accountSelected!.CustomerUID,
                       );
-          
+
           return assetResponse.assetOperations;
         } else {
           AssetResponse assetResponse =
@@ -138,6 +138,7 @@ class AssetService extends BaseService {
         );
         AssetDetail assetDetail =
             AssetDetail.fromJson(data.data["getSingleAssetDetails"]);
+
         return assetDetail;
       }
       if (isVisionLink) {

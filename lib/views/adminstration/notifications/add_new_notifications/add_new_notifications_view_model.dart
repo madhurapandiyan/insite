@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   final SnackbarService? _snackBarservice = locator<SnackbarService>();
   NavigationService? _navigationService = locator<NavigationService>();
   final Geofenceservice? _geofenceservice = locator<Geofenceservice>();
+  GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
   TabController? controller;
   Customer? accountSelected;
   @override
@@ -53,20 +55,25 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
     setUp();
-    getNotificationTypesData();
-    Future.delayed(Duration(seconds: 1), () {
-      onGettingFaultCodeData();
+
+    Future.delayed(Duration(seconds: 1), () async {
+      await getNotificationTypesData();
+      // onGettingFaultCodeData();
       if (data != null) {
-        editingNotification(data);
+        Future.delayed(Duration.zero, () async {
+          editingNotification(data);
+        });
       } else {
-        getGroupListData();
+        Future.delayed(Duration.zero, () async {
+          getGroupListData();
+        });
       }
       faultCodeScrollController.addListener(() {
         if (faultCodeScrollController.position.pixels ==
             faultCodeScrollController.position.maxScrollExtent) {
           page++;
           _loadingMore = true;
-          onGettingFaultCodeData();
+          //onGettingFaultCodeData();
         }
       });
     });
@@ -422,6 +429,14 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   getGroupListData() async {
     try {
       assetIdresult = await _manageUserService!.getGroupListData();
+      Logger().w(assetIdresult!.assetDetailsRecords!.length);
+     assetIdresult?.assetDetailsRecords?.forEach((element) { 
+       if (alertConfigData!.alertConfig!.assets!
+            .any((editData) => editData.assetUID == element.assetIdentifier)) {
+         Logger().wtf(element.toJson());
+       }
+     });
+          
       isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -531,6 +546,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notificationController.text = data.alertConfig!.notificationTitle!;
     notificationTypeGroupID = data.alertConfig!.notificationTypeGroupID!;
     notificationTypeId = data.alertConfig!.notificationTypeID!;
+
     if (assetList
         .any((element) => element == data.alertConfig!.notificationType)) {
       _noticationTypes.clear();
@@ -687,13 +703,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     assetIdresult?.assetDetailsRecords?.forEach((element) {
       if (alertConfigData!.alertConfig!.assets!
           .any((editData) => editData.assetUID == element.assetIdentifier)) {
-        selectedAsset!.add(Asset(
-            assetIcon: element.assetIcon,
-            assetId: element.assetId,
-            assetIdentifier: element.assetIdentifier,
-            assetSerialNumber: element.assetSerialNumber,
-            makeCode: element.makeCode,
-            model: element.model));
+            Logger().wtf(alertConfigData!.alertConfig!.assets!
+          .any((editData) => editData.assetUID == element.assetIdentifier));
+      //  selectedAsset!.add(Asset(
+      //       assetIcon: element.assetIcon,
+      //       assetId: element.assetId,
+      //       assetIdentifier: element.assetIdentifier,
+      //       assetSerialNumber: element.assetSerialNumber,
+      //       makeCode: element.makeCode,
+      //       model: element.model));
       }
     });
     notifyListeners();
@@ -814,9 +832,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
-  onChangingOccurence(String value){
-    operandData.forEach((element) { 
-      element.value=value;
+  onChangingOccurence(String value) {
+    operandData.forEach((element) {
+      element.value = value;
     });
   }
 
@@ -901,17 +919,18 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   addContact() {
-    isShowingSelectedContact = true;
-    var data = searchContactListName!
-        .where((element) => element.email!.contains(emailController.text));
-    if (selectedUser
-        .any((element) => element.email!.contains(data.first.email!))) {
-      snackbarService?.showSnackbar(message: "User Already Selected");
+    if (emailController.text.contains("@")) {
+      isShowingSelectedContact = true;
+      isShowingSelectedContact = true;
+      selectedUser.add(User(
+        email: emailController.text,
+      ));
+      emailIds!.add(emailController.text);
     } else {
-      emailController.clear();
-      selectedUser.add(data.first);
-      emailIds!.add(data.first.email!);
+      snackbarService!
+          .showSnackbar(message: "Please Enter the valid device id");
     }
+
     notifyListeners();
   }
 
@@ -1201,7 +1220,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   Future getNotificationTypesData() async {
     try {
-      alterTypes = await _notificationService!.getNotificationTypes();
+      alterTypes = await _notificationService!
+          .getNotificationTypes(graphqlSchemaService!.getNotificationTypes());
       if (alterTypes != null) {
         alterTypes!.notificationTypeGroups!.forEach((notificationTypeGroup) {
           if (notificationTypeGroup.notificationTypeGroupName!
@@ -1294,8 +1314,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   checkIfNotificationNameExist(String? value) async {
     try {
       if (value!.length >= 4) {
-        NotificationExist? notificationExists =
-            await _notificationService!.checkNotificationTitle(value);
+        NotificationExist? notificationExists = await _notificationService!
+            .checkNotificationTitle(
+                value, graphqlSchemaService!.checkNotificationTitle(value));
         // isTitleExist = notificationExists!.alertTitleExists!;
 
         if (notificationExists?.alertTitleExists == true) {
@@ -1492,6 +1513,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     selectedAsset?.forEach((element) {
       assetUidData.add(element.assetIdentifier!);
     });
+
     AddNotificationPayLoad payLoadData = AddNotificationPayLoad(
         alertCategoryID: alertConfigData!.alertConfig!.alertCategoryID,
         alertGroupId: alertConfigData!.alertConfig!.alertGroupID,
@@ -1507,8 +1529,28 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         schedule: scheduleDay,
         operands: operandData,
         numberOfOccurences: 1);
-    var data = await _notificationService!
-        .editNotification(payLoadData, alertConfigUid!);
+
+    Logger().e(payLoadData.toJson());
+    var data = await _notificationService!.editNotification(
+        payLoadData,
+        alertConfigUid!,
+        graphqlSchemaService!.updateNotification(
+            alertCategoryID: alertConfigData!.alertConfig!.alertCategoryID,
+            alertGroupId: alertConfigData!.alertConfig!.alertGroupID,
+            alertTitle: notificationController.text,
+            assetId: assetUidData,
+            currentDate: alertConfigData!.alertConfig!.createdDate,
+            notificationDeliveryChannel: "email",
+            notificationTypeGroupID:
+                alertConfigData!.alertConfig!.notificationTypeGroupID,
+            notificationSubscribers:
+                NotificationSubscribers(emailIds: emailIds),
+            notificationTypeId:
+                alertConfigData!.alertConfig!.notificationTypeID,
+            schedule: scheduleDay,
+            operand: operandData,
+            alertId: alertConfigUid!,
+            numberOfOccurences: 1));
     if (data != null) {
       _snackBarservice!.showSnackbar(message: "Edit Notification Success");
 
@@ -1595,7 +1637,23 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
       try {
         NotificationAdded? response =
-            await _notificationService!.addNewNotification(notificationPayLoad);
+            await _notificationService!.addNewNotification(
+                notificationPayLoad,
+                graphqlSchemaService!.createNotification(
+                  alertCategoryID: 1,
+                  alertGroupId: 1,
+                  alertTitle: notificationController.text,
+                  assetId: assetUidData,
+                  currentDate: DateFormat("MM/dd/yyyy").format(DateTime.now()),
+                  notificationDeliveryChannel: "email",
+                  notificationSubscribers: NotificationSubscribers(
+                      emailIds: emailIds, phoneNumbers: []),
+                  notificationTypeGroupID: notificationTypeGroupID,
+                  notificationTypeId: notificationTypeId,
+                  operand: operandData,
+                  numberOfOccurences: 1,
+                  schedule: scheduleDay,
+                ));
 
         if (response != null) {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");

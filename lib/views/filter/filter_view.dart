@@ -504,7 +504,7 @@ class _FilterViewState extends State<FilterView> {
                 ],
               );
       },
-      viewModelBuilder: () => FilterViewModel(),
+      viewModelBuilder: () => FilterViewModel(true),
     );
   }
 }

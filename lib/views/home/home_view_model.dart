@@ -29,6 +29,13 @@ class HomeViewModel extends InsiteViewModel {
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    Future.delayed(Duration.zero, () async {
+      var data = (await _localService!.getLoggedInUser())!.sub;
+      print(data);
+    });
+
+    // _localService?.saveToken(
+    //     "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJpc3MiOiJodHRwczovL2lkLnRyaW1ibGUuY29tIiwiZXhwIjoxNjQ4MTEyOTMxLCJuYmYiOjE2NDgxMDkzMzEsImlhdCI6MTY0ODEwOTMzMSwianRpIjoiZTFmYzI5M2UyZDNhNDU5NGJjODgxNTljYmM4YjJkZGEiLCJqd3RfdmVyIjoyLCJzdWIiOiIyMTgxODg1Ny01MTU1LTRjNmYtYTc0YS01NzRkYmU3NDE2NzUiLCJpZGVudGl0eV90eXBlIjoidXNlciIsImFtciI6WyJwYXNzd29yZCJdLCJhdXRoX3RpbWUiOjE2NDgxMDU0NDMsImF6cCI6IjBmYzcyYTcxLWU0ZTUtNGFjMS05YzdiLWU5NjYwNTAxNTRjOSIsImF1ZCI6WyIwZmM3MmE3MS1lNGU1LTRhYzEtOWM3Yi1lOTY2MDUwMTU0YzkiXSwic2NvcGUiOiJGcmFtZS1BZG1pbmlzdHJhdG9yLUlORCJ9.Rr8Am6r1BvpJQ5uEBE0aY1ZaTuWeJL46YvqT8rpS9w0MAPRt16YMb-NXlbzlWrwHVXcOjmfYXR1bt1uDMVdMusKRcJjqxASCvCFdTEiMbu7A0FUcqRSUC7jj3CF60ocHZLv6hjoBiB_dkRGuqDWpmXlIXAh3tgaRW5AOZtM8Azy0vDDaKzz1EbX6jOnbGmA3o07hNNN2U9_rZgsW_puZgQ-pAOr8nYxYiix1qAQf3Ovrw8mP5clPWsOHzW-is_H4EJ46UI2dmQ3wfrVj40NdFJ8-TX9T5tZHWJSEa8C5hkHg12YK3S3Y5aoEGINPSPdM0YJX-DnlvMkWjH7FE06gWA");
   }
 
   openRespectivePage(ScreenType type) {

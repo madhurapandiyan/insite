@@ -98,12 +98,12 @@ class ManageReportViewModel extends InsiteViewModel {
       }
     });
     if (isTemplateView) {
-      Future.delayed(Duration(seconds: 1), () {
-        getTemplateReportAssetData();
+      Future.delayed(Duration(seconds: 1), () async {
+        await getTemplateReportAssetData();
       });
     } else {
-      Future.delayed(Duration(seconds: 1), () {
-        getManageReportListData();
+      Future.delayed(Duration(seconds: 1), () async {
+        await getManageReportListData();
       });
     }
   }
@@ -214,10 +214,10 @@ class ManageReportViewModel extends InsiteViewModel {
         title: "Asset Operation",
         description:
             "The Asset Operation report provides the Asset operated hours detail for the selected Assets corresponding to the selected date range."),
-    TemplateDetails(
-        title: "Asset Location History",
-        description:
-            "The Asset History report provides a list of events reported by the device for a single asset. Event types displayed in the report depend on the capabilities of the device as well as its active service plan."),
+    // TemplateDetails(
+    //     title: "Asset Location History",
+    //     description:
+    //         "The Asset History report provides a list of events reported by the device for a single asset. Event types displayed in the report depend on the capabilities of the device as well as its active service plan."),
     // TemplateDetails(
     //     title: "Engine Idle",
     //     description:

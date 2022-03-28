@@ -29,8 +29,8 @@ class LocationInfoWindowWidget extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.30,
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
-            border:
-                Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
+            border: Border.all(
+                color: Theme.of(context).textTheme.bodyText1!.color!),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -49,12 +49,11 @@ class LocationInfoWindowWidget extends StatelessWidget {
                   GestureDetector(
                       onTap: onCustomWindowClose,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          "assets/images/mapclose.png",
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                      ))
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.close,
+                            color: Theme.of(context).textTheme.bodyText1?.color,
+                          )))
                 ],
               ),
               Container(

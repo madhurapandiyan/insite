@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/adminstration/manage_report/manage_report_view_model.dart';
-import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
@@ -113,7 +112,11 @@ class _NewReportTemplateWidgetState extends State<NewReportTemplateWidget> {
                           widget.dropDownValueCallBack!(value);
                           setState(() {});
                         },
-                        items: [".CSV", ".XLS", ".PDF"],
+                        items: [
+                          ".CSV", 
+                          ".XLSX", 
+                          //".PDF"
+                          ],
                       ),
                     ),
                   )

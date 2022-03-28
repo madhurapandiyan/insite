@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/locator.dart';
@@ -10,8 +11,10 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-
+import '../core/models/add_notification_payload.dart' as add;
+import '../core/models/add_notification_payload.dart';
 import '../core/models/manage_notifications.dart';
+import 'date.dart';
 
 class Utils {
   static String getLastReportedDate(date) {
@@ -213,6 +216,34 @@ class Utils {
     }
   }
 
+  static String getDateInFormatyyyyMMddTHHmmssZStartFaultDate(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString());
+      //.subtract(Duration(days: 1))
+      //.add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static String getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate =
+          DateTime.parse(parseDate.toString()).subtract(Duration(days: 1));
+      //.add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
   static String getDateInFormatReportCardDate(date) {
     try {
       DateTime parseDate =
@@ -234,6 +265,19 @@ class Utils {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
           .add(Duration(hours: 18, minutes: 29, seconds: 59));
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static String getDateInFormatyyyyMMddTHHmmssZEndFaultDate(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString())
+          .add(Duration(hours: 23, minutes: 59, seconds: 59));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -826,15 +870,18 @@ class Utils {
     }
   }
 
-  static List getStringListData(List listData) {
-    String doublequotes = "\"";
-    List<dynamic> value = [];
-    value.clear();
-    listData.forEach((element) {
-      value.add(doublequotes + element + doublequotes);
-    });
-
-    return value;
+  static getStringListData(List listData) {
+    if (listData == null) {
+      return null;
+    } else {
+      String doublequotes = "\"";
+      List<dynamic> value = [];
+      value.clear();
+      listData.forEach((element) {
+        value.add(doublequotes + element + doublequotes);
+      });
+      return value;
+    }
   }
 
   static String getNotificationCondition(ConfiguredAlerts? alert) {
@@ -872,7 +919,6 @@ class Utils {
         "assetSerialNumber",
         "lastEvent",
         "lastEventTime",
-        "customAssetState",
         "distanceTravelledKilometers",
         "lastKnownOperator",
         "totalDuration"
@@ -883,7 +929,6 @@ class Utils {
         "assetSerialNumber",
         "lastEvent",
         "lastEventTime",
-        "customAssetState",
         "distanceTravelledKilometers",
         "lastKnownOperator",
         "totalDuration"
@@ -893,7 +938,7 @@ class Utils {
         "callouts",
         "assetId",
         "assetSerialNumber",
-        "make-model",
+        "model",
         "latestUtzReport",
         "runtimeHours",
         "targetRuntime",
@@ -933,7 +978,7 @@ class Utils {
       list = [
         "assetId",
         "assetSerialNumber",
-        "make-model",
+        "model",
         "faultIdentifiers",
         "description",
         "source",
@@ -946,7 +991,6 @@ class Utils {
       list = [
         "assetId",
         "serialNo",
-        "make-model",
         "faultCode",
         "faultDate",
         "severityLabel",
@@ -956,7 +1000,97 @@ class Utils {
         "lastReportedDate",
         "hourMeter"
       ];
+    } else if (value == "Asset Location History") {
+      list = [
+        "assetName",
+        "serialNumber",
+        "locationEventLocalTime",
+        "hourmeter",
+        "odometer",
+        "location",
+        "assetStatus",
+        "fromDate",
+        "toDate",
+        "latitude",
+        "longitude"
+      ];
     }
     return list;
+  }
+
+  static reportSvcBody(String? value, List<String>? assetIds) {
+    if (value == "Asset Operation") {
+      return assetIds;
+    } else if (value == "Fleet Summary") {
+      return assetIds;
+    } else if (value == "Multi-Asset Utilization") {
+      return assetIds;
+    } else if (value == "Utilization Details") {
+      return null;
+    } else if (value == "Fault Code Asset Details") {
+      return null;
+    } else if (value == "Fault Summary Faults List") {
+      return assetIds;
+    } else {
+      return null;
+    }
+  }
+
+  static getNotificationSchedule(List<add.Schedule> data) {
+    List<Map<String, dynamic>> scheduleData = [];
+    String doubleQuote = "\"";
+    data.forEach((element) {
+      Map<String, dynamic>? singleSchedule = null;
+      singleSchedule = {
+        "day": element.day,
+        "startTime": doubleQuote + element.startTime! + doubleQuote,
+        "endTime": doubleQuote + element.endTime! + doubleQuote,
+      };
+      scheduleData.add(singleSchedule);
+    });
+    return scheduleData;
+  }
+
+  static getOperand(List<add.Operand>? data) {
+    List<Map<String, dynamic>> operandData = [];
+    String doubleQuote = "\"";
+    data?.forEach((element) {
+      Map<String, dynamic>? singleOperand = null;
+      singleOperand = {
+        "operandID": element.operandID,
+        "operatorId": element.operatorId,
+        "value": doubleQuote + element.value! + doubleQuote
+      };
+      operandData.add(singleOperand);
+    });
+    return operandData;
+  }
+
+  static getNotificationSubscribers(NotificationSubscribers data) {
+    Map<String, dynamic>? notificationSubscribers;
+    var email = getStringListData(data.emailIds!);
+    var phoneNo = getStringListData(data.phoneNumbers ?? []);
+    notificationSubscribers = {"emailIds": email, "phoneNumbers": phoneNo};
+    return notificationSubscribers;
+  }
+
+  static FilterData onFilterIdleDate(DateRangeType dateRangeType) {
+    Logger().d(
+        "on asset utilization filter selected ${describeEnum(dateRangeType)}");
+    DateTime? fromDate, toDate;
+    fromDate = DateUtil.calcFromDate(dateRangeType);
+    toDate = DateTime.now();
+    Logger().d("from date ${fromDate} to date ${toDate}");
+    FilterData data = FilterData(
+        title: "Date Range",
+        count: describeEnum(dateRangeType),
+        extras: [
+          '${fromDate!.year}-${fromDate.month}-${fromDate.day}',
+          '${toDate.year}-${toDate.month}-${toDate.day}',
+          describeEnum(dateRangeType)
+        ],
+        isSelected: true,
+        type: FilterType.DATE_RANGE);
+    return data;
   }
 }

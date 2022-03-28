@@ -78,7 +78,8 @@ class AssetDetailWidgt extends StatelessWidget {
                   ),
                   InsiteTableRowItem(
                     title: "Year",
-                    content: detail!.year != null ? detail!.year.toString() : "-",
+                    content:
+                        detail!.year != null ? detail!.year.toString() : "-",
                   )
                 ]),
                 TableRow(children: [
@@ -123,7 +124,10 @@ class AssetDetailWidgt extends StatelessWidget {
   }
 
   String getServiceNames() {
-    Logger().d(detail!.devices![0].activeServicePlans);
+    detail!.devices![0].activeServicePlans!.forEach((element) {
+      Logger().d("service plans ${element.toJson()} ");
+    });
+
     StringBuffer value = StringBuffer();
     if (detail!.devices!.isNotEmpty &&
         detail!.devices![0].activeServicePlans != null &&

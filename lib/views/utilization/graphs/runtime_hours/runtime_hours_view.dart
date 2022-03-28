@@ -72,6 +72,7 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                         ),
                       ),
                       Expanded(
+                        flex: 1,
                         child: viewModel.utilLizationListData.isNotEmpty
                             ? ListView.builder(
                                 itemCount:

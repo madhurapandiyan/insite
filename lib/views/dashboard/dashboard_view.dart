@@ -98,7 +98,7 @@ class _DashboardViewState extends State<DashboardView> {
                               // "BACKHOE LOADER"
                               FilterData filterData =
                                   viewModel.filterDataProductFamily[0];
-                              viewModel.getFilterDataApplied(filterData, false);
+                              viewModel.getFilterDataApplied(filterData, true);
                               filterLocationKey.currentState!
                                   .getAssetLocationHomeFilterData(
                                       filterData.title);
@@ -223,13 +223,14 @@ class _DashboardViewState extends State<DashboardView> {
                             ? viewModel.idlingLevelData!.countData
                             : [],
                         isLoading: viewModel.idlingLevelDataloading,
-                        onFilterSelected: (value) async {
-                          await viewModel.onFilterSelected(value);
+                        onFilterSelected: (value, dateFilter) async {
+                          await viewModel.onDateAndFilterSelected(
+                              value, dateFilter);
                           viewModel.gotoUtilizationPage();
                         },
                         onRangeSelected: (IdlingLevelRange catchedRange) {
                           viewModel.idlingLevelRange = catchedRange;
-                          viewModel.getIdlingLevelData(true);
+                          viewModel.getIdlingLevelData(true, catchedRange);
                         },
                         isSwitching: viewModel.isSwitching,
                         isRefreshing: viewModel.refreshing,
@@ -245,8 +246,9 @@ class _DashboardViewState extends State<DashboardView> {
                         countData: viewModel.faultCountData != null
                             ? viewModel.faultCountData!.countData
                             : [],
-                        onFilterSelected: (value) async {
-                          await viewModel.onFilterSelected(value);
+                        onFilterSelected: (value, dateFilter) async {
+                          await viewModel.onDateAndFilterSelected(
+                              value, dateFilter);
                           viewModel.gotoFaultPage();
                         },
                         loading: viewModel.faultCountloading,

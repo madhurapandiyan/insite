@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
@@ -18,6 +23,7 @@ class GoogleMapDetailWidget extends StatefulWidget {
   final ScreenType? screenType;
   final VoidCallback? onMarkerTap;
   final String? location;
+  final AssetDetail? details;
   GoogleMapDetailWidget(
       {required this.latitude,
       required this.longitude,
@@ -26,7 +32,8 @@ class GoogleMapDetailWidget extends StatefulWidget {
       this.screenType,
       this.location,
       this.isLoading,
-      this.initLocation});
+      this.initLocation,
+      this.details});
 
   @override
   _GoogleMapDetailWidgetState createState() => _GoogleMapDetailWidgetState();
@@ -39,6 +46,8 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
   LatLng? _lastMapPosition;
   Set<Marker> _markers = {};
   MapType currentType = MapType.normal;
+  CustomInfoWindowController _customInfoWindowController =
+      CustomInfoWindowController();
 
   @override
   void initState() {
@@ -236,6 +245,11 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
             compassEnabled: true,
             zoomControlsEnabled: false,
             markers: _markers,
+            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+              new Factory<OneSequenceGestureRecognizer>(
+                () => new EagerGestureRecognizer(),
+              ),
+            ].toSet(),
             initialCameraPosition: CameraPosition(
                 target: (widget.latitude == null && widget.longitude == null)
                     ? LatLng(30.666, 76.8127)
@@ -246,8 +260,15 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               _onmapcreated(controller);
+
+              _customInfoWindowController.googleMapController = controller;
             },
             onCameraMove: _oncameramove,
+          ),
+          CustomInfoWindow(
+            controller: _customInfoWindowController,
+            height: 200,
+            width: 200,
           ),
           Padding(
             padding: EdgeInsets.all(8.0),
@@ -270,7 +291,8 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                       boxShadow: [
                         BoxShadow(
                             blurRadius: 1.0,
-                            color: Theme.of(context).textTheme.bodyText1!.color!),
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color!),
                       ],
                       color: Theme.of(context).backgroundColor,
                       border: Border.all(
@@ -302,12 +324,14 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 1.0,
-                            color: Theme.of(context).textTheme.bodyText1!.color!,
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color!,
                           ),
                         ],
                         border: Border.all(
                             width: 1.0,
-                            color: Theme.of(context).textTheme.bodyText1!.color!),
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color!),
                         shape: BoxShape.rectangle,
                       ),
                       child: SvgPicture.asset(
@@ -324,6 +348,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
   }
 
   _oncameramove(CameraPosition position) {
+    _customInfoWindowController.onCameraMove!();
     _lastMapPosition = position.target;
   }
 
@@ -350,15 +375,101 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
       _markers.clear();
       if (widget.latitude != null && widget.longitude != null)
         _markers.add(Marker(
+            onTap: () {
+              addInfoWindow();
+            },
             markerId: MarkerId('id-1'),
-            infoWindow: InfoWindow(
-              title: widget.location != null ? widget.location : "",
-              onTap: () {
-                widget.onMarkerTap!();
-              },
-            ),
+            onDragStart: (latlng) {
+              Logger().wtf(latlng);
+              _oncameramove(CameraPosition(target: latlng));
+            },
+            // infoWindow: InfoWindow(
+            //   title: widget.location != null ? widget.location : "",
+            //   onTap: () {
+            //     widget.onMarkerTap!();
+            //   },
+            // ),
             position: LatLng(widget.latitude!, widget.longitude!)));
     });
+  }
+
+  addInfoWindow() {
+    _customInfoWindowController.addInfoWindow!(
+        Card(
+          child: Container(
+            height: 200,
+            width: 300,
+            padding: EdgeInsets.all(5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FittedBox(
+                      child: InsiteText(
+                        text: widget.details?.assetSerialNumber??"-",
+                        fontWeight: FontWeight.bold,
+                        size: 14,
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          widget.onMarkerTap!();
+                          _customInfoWindowController.hideInfoWindow!();
+                        },
+                        icon: Icon(
+                          Icons.exit_to_app_rounded,
+                          color: Theme.of(context).buttonColor,
+                        )),
+                    IconButton(
+                        onPressed: () {
+                          _customInfoWindowController.hideInfoWindow!();
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: Theme.of(context).buttonColor,
+                        )),
+                  ],
+                ),
+                Divider(
+                  color: Theme.of(context).dividerColor,
+                  thickness: 1,
+                ),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      InsiteTableRowItem(
+                        title: "Model",
+                        content: widget.details?.model ?? "-",
+                      ),
+                      InsiteTableRowItem(
+                        title: "Asset Status",
+                        content: widget.details?.status ?? "-",
+                      ),
+                      InsiteTableRowItem(
+                          title: "Hours",
+                          content: widget.details?.hourMeter ?? "-"),
+                      InsiteTableRowItem(
+                        title: "Last Reported Time",
+                        content: widget.details?.lastReportedTimeUTC ?? "-",
+                      ),
+                      InsiteTableRowItem(
+                        title: "Fuel % Remaining",
+                        content: widget.details?.fuelLevelLastReported,
+                      ),
+                      InsiteTableRowItem(
+                        title: "Location",
+                        content: widget.details?.lastReportedLocation,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        _markers.first.position);
   }
 
   MapType _changemap() {
@@ -366,15 +477,15 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
       case "MAP":
         Logger().i("map is in normal type ");
         return MapType.normal;
-        break;
+
       case "TERRAIN":
         Logger().i("map is in terrain type");
         return MapType.terrain;
-        break;
+
       case "SATELLITE":
         Logger().i("map is in satellite type ");
         return MapType.satellite;
-        break;
+
       case "HYBRID":
         Logger().i("map is in hybrid type ");
         return MapType.hybrid;

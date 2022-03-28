@@ -13,6 +13,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
+import 'package:insite/core/repository/db.dart';
 import 'package:stacked_services/stacked_services.dart' as service;
 
 class UtilizationListViewModel extends InsiteViewModel {
@@ -54,12 +55,13 @@ class UtilizationListViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        Logger().w(123);
-        _loadMore();
+        if (utilLizationListData.length != _totalCount) {
+          _loadMore();
+        }
       }
     });
-    Future.delayed(Duration(seconds: 2), () {
-      getUtilization(true);
+    Future.delayed(Duration(seconds: 2), () async {
+      await getUtilization(true);
     });
   }
 
@@ -114,7 +116,6 @@ class UtilizationListViewModel extends InsiteViewModel {
         await getDateRangeFilterData();
         await getUtilizationCount();
       }
-
       Utilization? result = await _utilizationService!.getUtilizationResult(
           startDate,
           endDate,
@@ -123,7 +124,7 @@ class UtilizationListViewModel extends InsiteViewModel {
           pageCount,
           appliedFilters,
           await graphqlSchemaService!.getFleetUtilization(
-            sort: null,
+              sort: null,
               applyFilter: appliedFilters,
               startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
               endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
@@ -173,8 +174,8 @@ class UtilizationListViewModel extends InsiteViewModel {
           pageNumber,
           pageCount,
           appliedFilters,
-        await  graphqlSchemaService!.getFleetUtilization(
-          sort: null,
+          await graphqlSchemaService!.getFleetUtilization(
+              sort: null,
               pageSize: pageCount,
               applyFilter: appliedFilters,
               startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
@@ -182,13 +183,15 @@ class UtilizationListViewModel extends InsiteViewModel {
               pageNo: pageNumber));
       if (result != null) {
         _utilLizationListData.clear();
-        _utilLizationListData.addAll(result.assetResults!);
+
+        Logger().wtf(_utilLizationListData.length);
         _refreshing = false;
         notifyListeners();
       } else {
         _refreshing = false;
         notifyListeners();
       }
+      _utilLizationListData.addAll(result!.assetResults!);
       Logger().i("list of _utilLizationListData " +
           _utilLizationListData.length.toString());
     } catch (e) {

@@ -320,7 +320,9 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   getManufacturerGroupData() async {
     if (_manufacturerData.isEmpty && _manufacturerCountData.isEmpty) {
       AssetCount? resultManufacturer = await _assetService!.getAssetCount(
-          "manufacturer", FilterType.MAKE, graphqlSchemaService!.allAssets,
+          "manufacturer",
+          FilterType.MAKE,
+          graphqlSchemaService!.allAssets,
           false);
       for (var manfactureData in resultManufacturer!.countData!) {
         _manufacturerData.add(manfactureData.countOf!);
@@ -492,21 +494,20 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   }
 
   getProductFamilyFilterData(String? productFamilKey) async {
-    Logger().i(productFamilKey);
-
-    AssetGroupSummaryResponse? result = await _manageUserService!
-        .getAdminProductFamilyFilterData(
-            pageNumber, pageSize, productFamilKey!);
-    subProductFamilyList.clear();
-    for (var item in result!.assetDetailsRecords!) {
-      subProductFamilyList.add(item.assetSerialNumber!);
-    }
-    Logger().i(result);
-    onNextClicked();
-    pageController!.jumpToPage(currentPage);
-    _isShowingState = true;
-    _isAssetLoading = false;
-    notifyListeners();
+    // Logger().i(productFamilKey);
+// AssetGroupSummaryResponse? result = await _manageUserService!
+    //     .getAdminProductFamilyFilterData(
+    //         pageNumber, pageSize, productFamilKey!);
+    // subProductFamilyList.clear();
+    // for (var item in result!.assetDetailsRecords!) {
+    //   subProductFamilyList.add(item.assetSerialNumber!);
+    // }
+    // Logger().i(result);
+    // onNextClicked();
+    // pageController!.jumpToPage(currentPage);
+    // _isShowingState = true;
+    // _isAssetLoading = false;
+    // notifyListeners();
   }
 
   getBackButtonState() {
@@ -521,56 +522,56 @@ class SelectionWidgetViewModel extends InsiteViewModel {
   }
 
   getFilterManufacturerData(String productFamilyKey) async {
-    Logger().i(productFamilyKey);
+    // Logger().i(productFamilyKey);
 
-    assetIdresult = await _manageUserService!
-        .getManafactureFilterData(pageNumber, pageSize, "TATA HITACHI");
-    subManufacturerList.clear();
-    for (var item in assetIdresult!.assetDetailsRecords!) {
-      subManufacturerList.add(item.assetSerialNumber!);
-    }
-    Logger().i(assetIdresult);
-    onNextClicked();
-    pageController!.jumpToPage(currentPage);
-    _isShowingManaFactureState = true;
-    _isAssetLoading = false;
-    notifyListeners();
+    // assetIdresult = await _manageUserService!
+    //     .getManafactureFilterData(pageNumber, pageSize, "TATA HITACHI");
+    // subManufacturerList.clear();
+    // for (var item in assetIdresult!.assetDetailsRecords!) {
+    //   subManufacturerList.add(item.assetSerialNumber!);
+    // }
+    // Logger().i(assetIdresult);
+    // onNextClicked();
+    // pageController!.jumpToPage(currentPage);
+    // _isShowingManaFactureState = true;
+    // _isAssetLoading = false;
+    // notifyListeners();
   }
 
   getFilterModelData(String productFamilyKey) async {
-    try {
-      Logger().w("running");
+    // try {
+    //   Logger().w("running");
 
-      assetIdresult = await _manageUserService!
-          .getModelFilterData(pageNumber, pageSize, productFamilyKey);
-      Logger().i(assetIdresult);
-      subModelList.clear();
-      for (var item in assetIdresult!.assetDetailsRecords!) {
-        subModelList.add(item.assetSerialNumber!);
-      }
-      onNextClicked();
-      pageController!.jumpToPage(currentPage);
-      _isShowingModelState = true;
-      _isAssetLoading = false;
-      notifyListeners();
-    } catch (e) {
-      Logger().e(e.toString());
-    }
+    //   assetIdresult = await _manageUserService!
+    //       .getModelFilterData(pageNumber, pageSize, productFamilyKey);
+    //   Logger().i(assetIdresult);
+    //   subModelList.clear();
+    //   for (var item in assetIdresult!.assetDetailsRecords!) {
+    //     subModelList.add(item.assetSerialNumber!);
+    //   }
+    //   onNextClicked();
+    //   pageController!.jumpToPage(currentPage);
+    //   _isShowingModelState = true;
+    //   _isAssetLoading = false;
+    //   notifyListeners();
+    // } catch (e) {
+    //   Logger().e(e.toString());
+    // }
   }
 
   getFilterDeviceTypeData(String productFamilyKey) async {
-    assetIdresult = await _manageUserService!
-        .getDeviceTypeData(pageNumber, pageSize, productFamilyKey);
-    deviceTypeList.clear();
-    for (var item in assetIdresult!.assetDetailsRecords!) {
-      deviceTypeList.add(item.assetSerialNumber!);
-    }
-    onNextClicked();
-    pageController!.jumpToPage(currentPage);
-    _isAssetLoading = false;
-    _isShowingDeviceTypeState = true;
-    Logger().i(assetIdresult);
-    notifyListeners();
+    // assetIdresult = await _manageUserService!
+    //     .getDeviceTypeData(pageNumber, pageSize, productFamilyKey);
+    // deviceTypeList.clear();
+    // for (var item in assetIdresult!.assetDetailsRecords!) {
+    //   deviceTypeList.add(item.assetSerialNumber!);
+    // }
+    // onNextClicked();
+    // pageController!.jumpToPage(currentPage);
+    // _isAssetLoading = false;
+    // _isShowingDeviceTypeState = true;
+    // Logger().i(assetIdresult);
+    // notifyListeners();
   }
 
   getAccountSelectionData(String productFamilyKey) async {

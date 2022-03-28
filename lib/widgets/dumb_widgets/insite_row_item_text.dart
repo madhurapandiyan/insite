@@ -29,8 +29,6 @@ class InsiteTableRowItem extends StatelessWidget {
           ),
           InsiteText(
             text: content.toString(),
-            size: 12,
-            fontWeight: FontWeight.normal,
           )
         ],
       ),

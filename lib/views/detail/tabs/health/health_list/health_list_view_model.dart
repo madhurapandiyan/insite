@@ -52,29 +52,33 @@ class HealthListViewModel extends InsiteViewModel {
 
   getHealthListData() async {
     await getDateRangeFilterData();
-    HealthListResponse? result = await _faultService!.getHealthListData(
-        _assetDetail!.assetUid,
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        limit,
-        page,
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
-    if (result != null && result.assetData != null) {
-      if (result.assetData!.faults!.isNotEmpty) {
-        _faults.addAll(result.assetData!.faults!);
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
+    try {
+      HealthListResponse? result = await _faultService!.getHealthListData(
+          _assetDetail!.assetUid,
+          Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+          limit,
+          page,
+          Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+      if (result != null && result.assetData != null) {
+        if (result.assetData!.faults!.isNotEmpty) {
+          _faults.addAll(result.assetData!.faults!);
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _faults.addAll(result.assetData!.faults!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
       } else {
-        _faults.addAll(result.assetData!.faults!);
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
-    } else {
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 

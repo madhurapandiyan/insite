@@ -33,13 +33,23 @@ class FilterViewModel extends InsiteViewModel {
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  FilterViewModel() {
+  FilterViewModel(bool isLoad) {
     setUp();
     _assetService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
-      getSelectedFilterData();
-      getFilterData();
+      if (isLoad) {
+        getSelectedFilterData();
+        getFilterData();
+      } else {
+        getData();
+      }
     });
+  }
+  getData() async {
+    selectedFilterData = await getSelectedFilterData();
+    _loading = false;
+    Logger().wtf(selectedFilterData?.first?.toJson());
+    notifyListeners();
   }
 
   getFilterData() async {
@@ -124,8 +134,8 @@ class FilterViewModel extends InsiteViewModel {
         null);
     addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
 
-    ReportCount? resultReportFrequencyType =
-        await _assetService!.getCountReportData(graphqlSchemaService!.reportFilterCountData);
+    ReportCount? resultReportFrequencyType = await _assetService!
+        .getCountReportData(graphqlSchemaService!.reportFilterCountData);
     addReportData(
         filterFrequencyType,
         resultReportFrequencyType,
