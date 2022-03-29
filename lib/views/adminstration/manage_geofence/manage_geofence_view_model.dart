@@ -43,12 +43,10 @@ class ManageGeofenceViewModel extends InsiteViewModel {
     //MapLatLng latlo = MapLatLng(latitude, longitude);
     List<geo.PointSeries<geo.Point<num>>> listOfPointSeries = [];
     _geofence = await _geofenceservice!.getGeofenceData();
-    
-    
+
     try {
       for (var i = 0; i < _geofence!.Geofences!.length; i++) {
         String? wktText = _geofence!.Geofences![i].GeometryWKT;
-        //Logger().e(_geofence.Geofences.last.GeometryWKT);
         listOfWKTstring.add(wktText);
         final geofenceData =
             geo.wktProjected.parse(listOfWKTstring[i]!) as geo.Polygon;
@@ -70,7 +68,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
   markFavouriteStatus(String uid, int index) async {
     _geofence!.Geofences![index].IsFavorite =
         !_geofence!.Geofences![index].IsFavorite!;
-   notifyListeners();
+    notifyListeners();
     if (_geofence!.Geofences![index].IsFavorite!) {
       await _geofenceservice!.markFavourite(uid, "MarkFavorite?", true);
     } else {
@@ -140,11 +138,9 @@ class ManageGeofenceViewModel extends InsiteViewModel {
             list.add(listOfNumber);
             listOfNumber = [];
           }
-        
 
           encoding = encodePolyline(list, accuracyExponent: 5);
           listOfEncoded.add(encoding);
-          Logger().w(listOfEncoded);
           list = [];
 
           notifyListeners();
@@ -161,6 +157,18 @@ class ManageGeofenceViewModel extends InsiteViewModel {
     } catch (e) {
       hideLoadingDialog();
       Logger().d(e.toString());
+    }
+  }
+}
+
+extension on String {
+  bool parseBool() {
+    if (this.toLowerCase() == "true") {
+      return true;
+    } else if (this.toLowerCase() == "false") {
+      return false;
+    } else {
+      throw "Formate Exception";
     }
   }
 }

@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "734540076067",
+    "project_id": "insite-34981",
+    "storage_bucket": "insite-34981.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734540076067:android:12195b592df37d985c4d96",
+        "android_client_info": {
+          "package_name": "com.trimble.insite.indiastack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734540076067-dapl7akk29ceongiqtqe191rasbbb74g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_oTanE_7aJJ4nqm5fYumKyhQ7whc8TVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734540076067-dapl7akk29ceongiqtqe191rasbbb74g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "734540076067-at6tf4jmmbh20sjin455rm1ph1d3q7bd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trimble.insite.visionlink"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734540076067:android:7a5485e4743ca6195c4d96",
+        "android_client_info": {
+          "package_name": "com.trimble.insite.trimble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734540076067-dapl7akk29ceongiqtqe191rasbbb74g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_oTanE_7aJJ4nqm5fYumKyhQ7whc8TVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734540076067-dapl7akk29ceongiqtqe191rasbbb74g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "734540076067-at6tf4jmmbh20sjin455rm1ph1d3q7bd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trimble.insite.visionlink"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734540076067:android:80883e4b3f13899b5c4d96",
+        "android_client_info": {
+          "package_name": "com.trimble.insite.visionlink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734540076067-dapl7akk29ceongiqtqe191rasbbb74g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_oTanE_7aJJ4nqm5fYumKyhQ7whc8TVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734540076067-dapl7akk29ceongiqtqe191rasbbb74g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "734540076067-at6tf4jmmbh20sjin455rm1ph1d3q7bd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trimble.insite.visionlink"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

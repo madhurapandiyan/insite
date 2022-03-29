@@ -77,8 +77,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                                     ManageGeofenceWidget(
                                       encodedPolyline:
                                           viewModel.listOfEncoded[i],
-                                      isFav: bool.fromEnvironment(
-                                          model[i].IsFavorite),
+                                      isFav: model[i].IsFavorite,
                                       onFavourite: (uid) {
                                         viewModel.markFavouriteStatus(uid!, i);
                                       },

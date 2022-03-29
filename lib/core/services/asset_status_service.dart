@@ -559,7 +559,7 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<AssetCount?> getFaultCountFilterApplied(
-      filter, startDate, endDate) async {
+      filter, startDate, endDate, String query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["startDateTime"] = startDate;
@@ -570,12 +570,7 @@ class AssetStatusService extends DataBaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query: graphqlSchemaService!.getFaultCountData(
-              prodFamily: filter,
-              startDate:
-                  Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(
-                      startDate),
-              endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)),
+          query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null

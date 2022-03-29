@@ -919,19 +919,22 @@ class Utils {
         "assetSerialNumber",
         "lastEvent",
         "lastEventTime",
-        "distanceTravelledKilometers",
-        "lastKnownOperator",
         "totalDuration"
       ];
     } else if (value == "Fleet Summary") {
       list = [
         "assetId",
         "assetSerialNumber",
-        "lastEvent",
-        "lastEventTime",
-        "distanceTravelledKilometers",
-        "lastKnownOperator",
-        "totalDuration"
+        "model",
+        "status",
+        "hourMeter",
+        "lastReportedLocation",
+        "lastReportedTime",
+        "fuelLevelLastReported",
+        "fuelReportedTime",
+        "notifications",
+        "geofenceList",
+        "isGpsRollOverAffected"
       ];
     } else if (value == "Multi-Asset Utilization") {
       list = [
@@ -991,6 +994,7 @@ class Utils {
       list = [
         "assetId",
         "serialNo",
+        "model",
         "faultCode",
         "faultDate",
         "severityLabel",
@@ -1093,4 +1097,27 @@ class Utils {
         type: FilterType.DATE_RANGE);
     return data;
   }
+
+  static hoursToPercentCalculate(dynamic value) {
+    var data = (value ?? 0.0 / 100) / 100;
+    if (data > 1.0) {
+      data = data / 100;
+    }
+    return data;
+  }
+
+  static efficiencyToPercent(dynamic value) {
+    var data = value / 100;
+    return data;
+  }
+
+  // static getSvcBody(List<String> value) {
+  //   List<String> data = [];
+  //   value.forEach((element) {
+  //     data = element.split("\",\"");
+  //   });
+  //   data.forEach((element) { 
+  //     element.replaceAll("", replace);
+  //   });
+  // }
 }

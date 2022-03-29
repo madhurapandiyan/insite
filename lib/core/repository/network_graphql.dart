@@ -66,6 +66,9 @@ class Network {
       // customerUserId = userId;
       // customerUid = customerId;
       // subUid = subId;
+      // Logger().w(customerId);
+      // Logger().w(userId);
+      // Logger().w(subId);
       
       final Link link = DioLink(
         graphqlEndpoint,
@@ -80,7 +83,7 @@ class Network {
           "sub-customeruid": subId!
         },
       );
-
+Logger().i(query);
       final res = await link
           .request(Request(
             operation: Operation(document: gql.parseString(query!)),

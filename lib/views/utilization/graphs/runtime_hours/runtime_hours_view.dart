@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
@@ -74,13 +75,28 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                       Expanded(
                         flex: 1,
                         child: viewModel.utilLizationListData.isNotEmpty
-                            ? ListView.builder(
+                            ? ListView.separated(
+                                separatorBuilder: (ctx, i) {
+                                  return SizedBox(
+                                    height: 10,
+                                  );
+                                },
                                 itemCount:
                                     viewModel.utilLizationListData.length,
                                 controller: viewModel.scrollController,
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
+                                  // return CustomBarChart(
+                                  //   label: viewModel.utilLizationListData[index]
+                                  //       .assetSerialNumber,
+                                  //   percentage: Utils.hoursToPercentCalculate(
+                                  //           viewModel
+                                  //               .utilLizationListData[index]
+                                  //               .runtimeHours) /
+                                  //       100,
+                                  // );
+
                                   return PercentageWidget(
                                       value: rangeChoice == 1
                                           ? ('${viewModel.utilLizationListData[index].runtimeHours}')
@@ -91,21 +107,21 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                                           .utilLizationListData[index]
                                           .assetSerialNumber,
                                       percentage: rangeChoice == 1
-                                          ? (viewModel
+                                          ? Utils.hoursToPercentCalculate(
+                                              viewModel
                                                   .utilLizationListData[index]
-                                                  .runtimeHours! /
-                                              100)
+                                                  .runtimeHours)
                                           : rangeChoice == 2
-                                              ? (viewModel
+                                              ? Utils.hoursToPercentCalculate(
+                                                  viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .workingHours! /
-                                                  100)
-                                              : (viewModel
+                                                      .workingHours)
+                                              : Utils.hoursToPercentCalculate(
+                                                  viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .idleHours! /
-                                                  10),
+                                                      .idleHours),
                                       color: Theme.of(context).buttonColor);
                                 })
                             : EmptyView(

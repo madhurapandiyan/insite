@@ -694,7 +694,7 @@ fuelLevelPercentLT: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelP
       {String? startDate, String? endDate, String? prodFamily}) {
     final String faultCountData = """
   query getFaultCountData{
-faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTime: "${endDate == null ? "" : endDate}",productFamily:"${productFamily == null ? "" : prodFamily}"){
+faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTime: "${endDate == null ? "" : endDate}",productFamily:"${prodFamily == null ? "" : prodFamily}"){
   countData {
     countOf
     assetCount

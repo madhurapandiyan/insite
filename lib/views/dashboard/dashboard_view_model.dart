@@ -14,6 +14,7 @@ import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
+import 'package:insite/utils/date.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
@@ -329,9 +330,10 @@ class DashboardViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(startDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate),
         graphqlSchemaService!.getFaultCountData(
-            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
-                startDate),
-            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate)));
+            startDate:DateUtil.calcFromDate(DateRangeType.lastSevenDays)?.toIso8601String()
+            //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
+            //     startDate),
+            endDate: DateTime.now().toIso8601String()));
     if (count != null) {
       _faultCountData = count;
     }
@@ -546,7 +548,11 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount? count = await _assetService!.getFaultCountFilterApplied(
         dropDownValue,
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        graphqlSchemaService!.getFaultCountData(
+              prodFamily: dropDownValue,
+              startDate:DateUtil.calcFromDate(DateRangeType.lastSevenDays)?.toIso8601String(),
+              endDate: DateTime.now().toIso8601String()));
     if (count != null) {
       _faultCountData = count;
     }

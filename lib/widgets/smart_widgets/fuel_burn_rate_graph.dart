@@ -31,9 +31,24 @@ class FuelBurnRateGraph extends StatelessWidget {
           labelStyle:
               TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
           majorGridLines: MajorGridLines(width: 0),
-          labelRotation: 270,
         ),
-        series: _getStackedColumnSeries(),
+        series: <ErrorBarSeries<CumulativeChartData, String>>[
+          ErrorBarSeries<CumulativeChartData, String>(
+              color: tango,
+              xValueMapper: (CumulativeChartData chartDate, _) => '',
+              yValueMapper: (CumulativeChartData chartDate, _) => 0,
+              emptyPointSettings:
+                  EmptyPointSettings(color: tango, borderWidth: 20),
+              isVisible: true,
+              dataSource: fuelBurnRateTrend!.intervals!.map((e) {
+                return CumulativeChartData(
+                    DateFormat('dd/MM/yyyy')
+                        .format(e.intervalEndDateLocalTime!),
+                    e.burnrates!.idleFuelBurnRate,
+                    e.burnrates!.workingFuelBurnRate,
+                    e.burnrates!.runtimeFuelBurnRate);
+              }).toList())
+        ],
         primaryYAxis: NumericAxis(
           title: AxisTitle(
               text: 'Fuel Burned Rate (Liters per hour)',

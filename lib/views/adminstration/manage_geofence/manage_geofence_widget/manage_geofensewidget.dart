@@ -43,7 +43,6 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
-    Logger().w(widget.isFav);
     return GestureDetector(
       onTap: () {
         widget.onNavigation!();

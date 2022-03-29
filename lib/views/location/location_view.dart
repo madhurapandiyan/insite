@@ -79,7 +79,7 @@ class _LocationViewState extends State<LocationView> {
                                         .assetLocation!.mapRecords!.length
                                         .toString() +
                                     " of " +
-                                    viewModel.totalCount.toString(),
+                                    viewModel.totalCount.toString()+" assets",
                                 size: 15,
                                 fontWeight: FontWeight.w700,
                               ),

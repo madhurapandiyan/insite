@@ -499,6 +499,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
       listOfLatLong.clear();
     } catch (e) {
       Logger().e(e.toString());
+      throw e;
     }
     Logger().d("parsing finished");
   }
@@ -668,19 +669,22 @@ class AddgeofenseViewModel extends InsiteViewModel {
           hideLoadingDialog();
         }
       }
-
-      // listOfLatLong.clear();
-      // correctedListofLatlang.clear();
-      // listOfNumber.clear();
-      // _polygon.clear();
-      // _polyline.clear();
-      // _circle.clear();
-
-    } on DioError catch (e) {
+      listOfLatLong.clear();
+      correctedListofLatlang.clear();
+      listOfNumber.clear();
+      _polygon?.clear();
+      _polyline?.clear();
+      _circle?.clear();
+    } catch (e) {
       hideLoadingDialog();
-      final val = DioException.fromDioError(e);
-      snackbarService!.showSnackbar(message: val.message!);
-      Logger().e(e.message);
+      if (e is DioException) {
+        final val = DioException.fromDioError(e as DioError);
+        snackbarService!.showSnackbar(message: val.message!);
+        Logger().e(e.message);
+      } else {
+        Logger().e(e.toString());
+        throw e;
+      }
     }
   }
 

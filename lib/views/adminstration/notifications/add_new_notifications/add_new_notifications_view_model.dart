@@ -429,14 +429,22 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   getGroupListData() async {
     try {
       assetIdresult = await _manageUserService!.getGroupListData();
-      Logger().w(assetIdresult!.assetDetailsRecords!.length);
-     assetIdresult?.assetDetailsRecords?.forEach((element) { 
-       if (alertConfigData!.alertConfig!.assets!
-            .any((editData) => editData.assetUID == element.assetIdentifier)) {
-         Logger().wtf(element.toJson());
-       }
-     });
-          
+      if (isEditing) {
+        assetIdresult?.assetDetailsRecords?.forEach((element) {
+          if (alertConfigData!.alertConfig!.assets!.any(
+              (editData) => editData.assetUID == element.assetIdentifier)) {
+            Logger().wtf(alertConfigData!.alertConfig!.assets!.any(
+                (editData) => editData.assetUID == element.assetIdentifier));
+            selectedAsset!.add(Asset(
+                assetIcon: element.assetIcon,
+                assetId: element.assetId,
+                assetIdentifier: element.assetIdentifier,
+                assetSerialNumber: element.assetSerialNumber,
+                makeCode: element.makeCode,
+                model: element.model));
+          }
+        });
+      }
       isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -700,21 +708,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     });
     notifyListeners();
     await getGroupListData();
-    assetIdresult?.assetDetailsRecords?.forEach((element) {
-      if (alertConfigData!.alertConfig!.assets!
-          .any((editData) => editData.assetUID == element.assetIdentifier)) {
-            Logger().wtf(alertConfigData!.alertConfig!.assets!
-          .any((editData) => editData.assetUID == element.assetIdentifier));
-      //  selectedAsset!.add(Asset(
-      //       assetIcon: element.assetIcon,
-      //       assetId: element.assetId,
-      //       assetIdentifier: element.assetIdentifier,
-      //       assetSerialNumber: element.assetSerialNumber,
-      //       makeCode: element.makeCode,
-      //       model: element.model));
-      }
-    });
-    notifyListeners();
   }
 
   onAddingFaultCode(int i) {

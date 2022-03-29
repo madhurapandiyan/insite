@@ -80,6 +80,8 @@ class AddReportViewModel extends InsiteViewModel {
 
   ScheduledReports? scheduledReportsId;
 
+  bool isEditing=false;
+
   TextEditingController dateTimeController = new TextEditingController();
   TextEditingController emailController = TextEditingController();
   List<String> dropvaluelist = [
@@ -94,6 +96,7 @@ class AddReportViewModel extends InsiteViewModel {
       this.scheduledReportsId = scheduledReports;
       this.log = getLogger(this.runtimeType.toString());
       if (isEdit == true) {
+        isEditing=isEdit!;
         getEditReportData();
       } else if (isEdit == false) {
         Future.delayed(Duration.zero, () async {
@@ -365,17 +368,7 @@ class AddReportViewModel extends InsiteViewModel {
         await getGroupListData();
         svcBody = resultData.scheduledReport!.svcBody;
         editReportColumn = resultData.scheduledReport!.reportColumns;
-        assetIdresult?.assetDetailsRecords?.forEach((element) {
-          if (svcBody!.any((editData) => editData == element.assetIdentifier)) {
-            selectedAsset!.add(Asset(
-                assetIcon: element.assetIcon,
-                assetId: element.assetId,
-                assetIdentifier: element.assetIdentifier,
-                assetSerialNumber: element.assetSerialNumber,
-                makeCode: element.makeCode,
-                model: element.model));
-          }
-        });
+        
 
         Logger().e(svcBody!.length);
 
@@ -400,15 +393,20 @@ class AddReportViewModel extends InsiteViewModel {
               element.assetIdentifier == selectedData?.assetIdentifier)) {
             snackbarService!.showSnackbar(message: "Asset Alerady Selected");
           } else {
-            Logger().i(assetIdresult?.assetDetailsRecords?.length);
             assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
                 element.assetIdentifier == selectedData?.assetIdentifier);
             selectedAsset?.add(selectedData!);
-            Logger().d(assetIdresult?.assetDetailsRecords?.length);
-          }
+           }
         }
       }else{
-        selectedAsset?.add(selectedData!);
+                  if (selectedAsset!.any((element) =>
+              element.assetIdentifier == selectedData?.assetIdentifier)) {
+            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+          } else {
+            assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
+                element.assetIdentifier == selectedData?.assetIdentifier);
+            selectedAsset?.add(selectedData!);
+           }
       }
     }
 
@@ -438,6 +436,20 @@ class AddReportViewModel extends InsiteViewModel {
   Future getGroupListData() async {
     try {
       assetIdresult = await _manageUserService!.getGroupListData();
+      if (isEditing) {
+        assetIdresult?.assetDetailsRecords?.forEach((element) {
+          if (svcBody!.any((editData) => editData == element.assetIdentifier)) {
+            Logger().e(element.toJson());
+            selectedAsset!.add(Asset(
+                assetIcon: element.assetIcon,
+                assetId: element.assetId,
+                assetIdentifier: element.assetIdentifier,
+                assetSerialNumber: element.assetSerialNumber,
+                makeCode: element.makeCode,
+                model: element.model));
+          }
+        });
+      }
       isAssetLoading = false;
       notifyListeners();
     } catch (e) {

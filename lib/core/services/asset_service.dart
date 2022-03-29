@@ -44,7 +44,7 @@ class AssetService extends BaseService {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
-          userId: (await _localService!.getLoggedInUser())!.sub,
+          userId: (await _localService?.getLoggedInUser())?.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
               : customerSelected?.CustomerUID,

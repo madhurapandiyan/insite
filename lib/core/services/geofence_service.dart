@@ -33,7 +33,7 @@ class Geofenceservice extends BaseService {
   Future<Geofence?> getGeofenceData() async {
     Customer? customer = await _localService!.getAccountInfo();
 
-    if (enableGraphQl) {
+    if (!enableGraphQl) {
       var data = await Network().getGraphqlData(
         query: graphqlSchemaService!.getGeofenceData(null, null),
         customerId: accountSelected?.CustomerUID,
@@ -275,7 +275,7 @@ class Geofenceservice extends BaseService {
     String querryUrlVL = "geofenceUID=$uid";
     String querryUrl = "geofenceUIDs=$uid";
     Logger().w(favToggle);
-    if (enableGraphQl) {
+    if (!enableGraphQl) {
       if (isFav) {
         var data = await Network().getGraphqlData(
             query: graphqlSchemaService!.markFav(uid),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/percentage_widget.dart';
@@ -83,6 +84,9 @@ class IdlePercentWorkingPercentViewState
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
                                   return PercentageWidget(
+                                      value: rangeChoice == 1
+                                          ? ('${viewModel.utilLizationListData[index].idleEfficiency?.toStringAsFixed(2)}')
+                                          : ('${viewModel.utilLizationListData[index].workingEfficiency?.toStringAsFixed(2)}'),
                                       label: viewModel
                                           .utilLizationListData[index]
                                           .assetSerialNumber,
@@ -92,23 +96,23 @@ class IdlePercentWorkingPercentViewState
                                                           index]
                                                       .idleEfficiency ==
                                                   null
-                                              ? null
-                                              : (viewModel
+                                              ? 0.0
+                                              : Utils.efficiencyToPercent(
+                                                  viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .idleEfficiency! *
-                                                  100).toStringAsFixed(2)
+                                                      .idleEfficiency)
                                           : viewModel
                                                       .utilLizationListData[
                                                           index]
                                                       .workingEfficiency ==
                                                   null
                                               ? null
-                                              : (viewModel
+                                              : Utils.efficiencyToPercent(
+                                                  viewModel
                                                       .utilLizationListData[
                                                           index]
-                                                      .workingEfficiency! *
-                                                  100).toStringAsFixed(2),
+                                                      .workingEfficiency),
                                       color: rangeChoice == 1
                                           ? Theme.of(context).buttonColor
                                           : olivine);
