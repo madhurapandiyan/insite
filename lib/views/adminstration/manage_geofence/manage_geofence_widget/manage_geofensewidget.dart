@@ -81,12 +81,13 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                               widget.onFavourite!(widget.geofenceUID);
                             },
                             icon: Icon(
+
                               Icons.favorite,
-                              color: widget.isFav! ? tango : white,
+                              color: widget.isFav! ? Theme.of(context).buttonColor : white,
                             )),
                         InsiteButton(
                             height: MediaQuery.of(context).size.height * 0.05,
-                            bgColor: tuna,
+                           // bgColor: tuna,
                             title: "",
                             onTap: () {
                               widget.ondeleting!(widget.geofenceUID,
@@ -103,14 +104,16 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InsiteText(
-                    text: widget.geofenceName,
-                    size: 14,
-                    fontWeight: FontWeight.w700,
+                  Expanded(
+                    flex: 2,
+                    child: InsiteText(
+                      text: widget.geofenceName,
+                      size: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   InsiteText(
                     text:

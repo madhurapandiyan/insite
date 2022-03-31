@@ -628,10 +628,10 @@ class _AddReportViewState extends State<AddReportView> {
                             ? Container(
                                 margin: EdgeInsets.all(8),
                                 // height: 120,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color,
+                                // color: Theme.of(context)
+                                //     .textTheme
+                                //     .bodyText1!
+                                //     .color,
                                 child: Column(
                                   children: List.generate(
                                       viewModel.searchContactListName!.length,
@@ -661,6 +661,7 @@ class _AddReportViewState extends State<AddReportView> {
                           fontSize: 16,
                           height: 50,
                           width: 200,
+                          textColor: white,
                           title: "Add contact",
                         ),
 
@@ -791,7 +792,7 @@ class _AddReportViewState extends State<AddReportView> {
                             Expanded(
                               flex: 2,
                               child: InsiteButton(
-                                bgColor: chipBackgroundOne,
+                                bgColor: Theme.of(context).backgroundColor,
                                 height:
                                     MediaQuery.of(context).size.height * 0.06,
                                 title: "Cancel",
@@ -810,6 +811,7 @@ class _AddReportViewState extends State<AddReportView> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.06,
                                 title: "Save",
+                                textColor: white,
                                 fontSize: 14,
                                 onTap: () {
                                   if (widget.scheduledReports == null) {
@@ -844,7 +846,7 @@ class _AddReportViewState extends State<AddReportView> {
 
     if (pickedStartDate != null) {
       print(pickedStartDate);
-      String formattedDate = DateFormat('yyyy/MM/dd').format(pickedStartDate);
+      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedStartDate);
 
       print(formattedDate);
       viewModel.getDatPickerData(formattedDate);

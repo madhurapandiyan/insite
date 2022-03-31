@@ -1344,7 +1344,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         searchContactListName!.clear();
         // Logger().i("result:${result.pageInfo!.totalPages}");
 
-        for (var name in result.users!) {
+        for (var name in result.Users!) {
           searchContactListName!.add(name);
         }
       }

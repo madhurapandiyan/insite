@@ -7,6 +7,7 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/reusable_widget/manage_notification_widget.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -29,72 +30,98 @@ class ManageNotificationsView extends StatelessWidget {
             onRefineApplied: () {
               //viewModel.refresh();
             },
-            body: Card(
-              margin: EdgeInsets.only(top: 30.0, right: 20, left: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(color: cardcolor),
-              ),
-              child: Container(
-                
-                margin: EdgeInsets.all(15),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: CustomTextBox(
-                        controller: viewModel.searchController,
-                        title: "SEARCH",
-                        showLoading: viewModel.isSearching,
-                        onChanged: (searchText) {
-                          if (searchText.isNotEmpty) {
-                            viewModel.getSearchListData(searchText);
-                          } else {
-                            viewModel.getManageNotificationsData();
-                          }
-                        },
+            body: Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5.0),
+                  child: InsiteText(
+                    text: " (" +
+                        viewModel.notifications.length.toString() +
+                        " of " +
+                        viewModel.totalCount.toString() +
+                        " )" +
+                        " " +
+                        "Notifications",
+                    size: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Expanded(
+                  child: Card(
+                    margin: EdgeInsets.only(top: 30.0, right: 20, left: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: BorderSide(color: cardcolor),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.all(15),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: CustomTextBox(
+                              controller: viewModel.searchController,
+                              title: "SEARCH",
+                              showLoading: viewModel.isSearching,
+                              onChanged: (searchText) {
+                                if (searchText.isNotEmpty) {
+                                  viewModel.getSearchListData(searchText);
+                                } else {
+                                  viewModel.getManageNotificationsData();
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Expanded(
+                            child: viewModel.loading
+                                ? InsiteProgressBar()
+                                : viewModel.notifications.isNotEmpty
+                                    ? ListView.separated(
+                                        controller: viewModel.controller,
+                                        itemBuilder: (context, int index) {
+                                          ConfiguredAlerts? alerts =
+                                              viewModel.notifications[index];
+                                          Logger().w(
+                                              viewModel.notifications.length);
+
+                                          return ManageNotificationWidget(
+                                            alerts: alerts,
+                                            onDelete: () {
+                                              viewModel.onDeleteClicked(context,
+                                                  alerts.alertConfigUID, index);
+                                            },
+                                            onEdit: () {
+                                              viewModel.editNotification(index);
+                                            },
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) =>
+                                            Divider(
+                                              color: backgroundColor3,
+                                              thickness: 2.0,
+                                            ),
+                                        itemCount:
+                                            viewModel.notifications.length)
+                                    : EmptyView(title: "No Notification Found"),
+                          ),
+                          viewModel.loadingMore
+                              ? Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: InsiteProgressBar())
+                              : SizedBox()
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Expanded(
-                      child: viewModel.loading
-                          ? InsiteProgressBar()
-                          : viewModel.notifications.isNotEmpty
-                              ? ListView.separated(
-                                controller: viewModel.controller,
-                                  itemBuilder: (context, int index) {
-                                    ConfiguredAlerts? alerts =
-                                        viewModel.notifications[index];
-                                    Logger().w(viewModel.notifications.length);
-
-                                    return ManageNotificationWidget(
-                                      alerts: alerts,
-                                      onDelete: () {
-                                        viewModel.onDeleteClicked(context,
-                                            alerts.alertConfigUID, index);
-                                      },
-                                      onEdit: () {
-                                        viewModel.editNotification(index);
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) => Divider(
-                                        color: backgroundColor3,
-                                        thickness: 2.0,
-                                      ),
-                                  itemCount: viewModel.notifications.length)
-                              : EmptyView(title: "No Notification Found"),
-                    ),
-                    viewModel.loadingMore
-                        ? Padding(
-                            padding: EdgeInsets.all(8),
-                            child: InsiteProgressBar())
-                        : SizedBox()
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         );

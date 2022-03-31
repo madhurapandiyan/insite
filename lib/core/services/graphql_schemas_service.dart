@@ -1504,7 +1504,7 @@ lastLocationUpdateUTC
       String? searchtext,
       int? limit,
       List<FilterData?>? appliedFilters}) async {
-        await clearAllList();
+    await clearAllList();
     await getReportFilterData(appliedFilters);
 
     var reportListData = """{
@@ -1599,7 +1599,7 @@ lastLocationUpdateUTC
   reportFormat: $reportFormat,
     reportPeriod:1,
     reportTitle: "$reportTitle",
-  reportScheduledDate: "$reportEndDate",
+  reportScheduledDate: "$reportScheduledDate",
     reportStartDate:"$reportStartDate",
     emailSubject:"$emailSubject",
     emailRecipients:$emailRecipients,
@@ -1609,9 +1609,9 @@ lastLocationUpdateUTC
     filterTag: [],
     queryUrl: "$queryUrl",
     reportType: "$reportType",
-    reportColumns:${Utils.getStringListData(reportColumns!)}
+    reportColumns:${Utils.getStringListData(reportColumns!)},
     svcbody:$svcbody,
-    reportEndDate:"$reportEndDate"
+    reportEndDate: "$reportEndDate"
     ){
     status,
     msg,

@@ -34,7 +34,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 0.47;
-    double maxheight = MediaQuery.of(context).size.height * 0.33;
+    double maxheight = MediaQuery.of(context).size.height * 0.30;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Container(
@@ -220,7 +220,8 @@ class _IdlingLevelState extends State<IdlingLevel> {
       width: 55,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.0),
-        border: Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
+        border:
+            Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
         boxShadow: [
           new BoxShadow(
               blurRadius: 1.0, color: Theme.of(context).backgroundColor)

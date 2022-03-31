@@ -630,10 +630,15 @@ class Utils {
         title = "Idle %: " + data.extras![0]! + "-" + data.extras![1]! + "%";
       }
     } else if (data.type == FilterType.FUEL_LEVEL) {
+      Logger().wtf(title);
       if (title == "100") {
-        title = "Fuel Level : " + "<=" + title! + "%";
-      } else {
-        title = "Fuel Level : " + "<" + title! + "%";
+        title = "Fuel Level : " + " " + "75-100" + "%";
+      } else if (title == "25") {
+        title = "Fuel Level : " + "" + "0-25" + "%";
+      } else if (title == "50") {
+        title = "Fuel Level : " + "" + "25-50" + "%";
+      } else if (title == "75") {
+        title = "Fuel Level : " + "" + "50-75" + "%";
       }
     } else if (data.type == FilterType.SEVERITY) {
       title = Utils.getFaultLabel(data.title!);

@@ -253,10 +253,7 @@ FilterData _$FilterDataFromJson(Map<String, dynamic> json) => FilterData(
       extras:
           (json['extras'] as List<dynamic>?)?.map((e) => e as String?).toList(),
       subType: _$enumDecodeNullable(_$FilterSubTypeEnumMap, json['subType']),
-<<<<<<< Updated upstream
-=======
       id: json['id'] as String?,
->>>>>>> Stashed changes
     );
 
 Map<String, dynamic> _$FilterDataToJson(FilterData instance) =>
@@ -267,10 +264,7 @@ Map<String, dynamic> _$FilterDataToJson(FilterData instance) =>
       'isSelected': instance.isSelected,
       'extras': instance.extras,
       'subType': _$FilterSubTypeEnumMap[instance.subType],
-<<<<<<< Updated upstream
-=======
       'id': instance.id,
->>>>>>> Stashed changes
     };
 
 K _$enumDecode<K, V>(

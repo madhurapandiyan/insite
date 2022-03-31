@@ -306,8 +306,9 @@ class DashboardViewModel extends InsiteViewModel {
           graphqlSchemaService!.getAssetCount(
               idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
               endDate: DateTime.now().toString(),
-              startDate:
-                  DateTime.now().subtract(Duration(days: 1)).toString()));
+              startDate:getStartDate(_idlingLevelRange)
+          ));
+                  // DateTime.now().subtract(Duration(days: 1)).toString()));
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -555,5 +556,18 @@ class DashboardViewModel extends InsiteViewModel {
           _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
+  }
+
+ String ? getStartDate(IdlingLevelRange idlingLevelRange) {
+    switch (idlingLevelRange) {
+      case  IdlingLevelRange.DAY :
+         return "3/31/2022";
+      case IdlingLevelRange.WEEK:
+      return "3/27/2022";
+      case IdlingLevelRange.MONTH:
+      return "3/1/2022";
+      default:
+      return "";
+    }
   }
 }

@@ -270,7 +270,7 @@ class AddReportViewModel extends InsiteViewModel {
         searchContactListName!.clear();
         // Logger().i("result:${result.pageInfo!.totalPages}");
 
-        for (var name in result.users!) {
+        for (var name in result.Users!) {
           searchContactListName!.add(name);
         }
       }
@@ -654,8 +654,8 @@ class AddReportViewModel extends InsiteViewModel {
                           ? 3
                           : 0,
               reportTitle: nameController.text,
-              reportEndDate: Utils.getLastReportedDateFilterData(DateTime.now()).toString(),
-              reportScheduledDate: dateTimeController.text,
+              reportEndDate: dateTimeController.text,
+              reportScheduledDate: Utils.getLastReportedDateFilterData(DateTime.now()).toString(),
               emailSubject: serviceDueController.text,
               emailRecipients: Utils.getStringListData(emailIds!),
               emailContent: emailContentController.text,
@@ -686,7 +686,7 @@ class AddReportViewModel extends InsiteViewModel {
       Logger().d(addReportPayLoad.toJson());
       if (result != null) {
         _snackBarservice!.showSnackbar(message: "Report is added sucessfully");
-        //gotoScheduleReportPage();
+        gotoScheduleReportPage();
       }
       hideLoadingDialog();
       notifyListeners();

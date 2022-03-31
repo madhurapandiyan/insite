@@ -67,7 +67,7 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
                   : Container(
                       margin: EdgeInsets.all(8),
                      // height: 120,
-                      color: Theme.of(context).textTheme.bodyText1!.color,
+                     // color: Theme.of(context).textTheme.bodyText1!.color,
                       child: Column(
                         children: List.generate(
                             searchList.length,
