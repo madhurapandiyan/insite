@@ -46,6 +46,9 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
     try {
       for (var i = 0; i < _geofence!.Geofences!.length; i++) {
+        // _geofence!.Geofences![i].IsFavorite =
+        //     (_geofence!.Geofences![i].IsFavorite as String).parseBool();
+
         String? wktText = _geofence!.Geofences![i].GeometryWKT;
         listOfWKTstring.add(wktText);
         final geofenceData =
@@ -161,14 +164,14 @@ class ManageGeofenceViewModel extends InsiteViewModel {
   }
 }
 
-extension on String {
-  bool parseBool() {
-    if (this.toLowerCase() == "true") {
-      return true;
-    } else if (this.toLowerCase() == "false") {
-      return false;
-    } else {
-      throw "Formate Exception";
-    }
-  }
-}
+// extension on String {
+//   bool parseBool() {
+//     if (this.toLowerCase() == "true") {
+//       return true;
+//     } else if (this.toLowerCase() == "false") {
+//       return false;
+//     } else {
+//       throw "Formate Exception";
+//     }
+//   }
+// }

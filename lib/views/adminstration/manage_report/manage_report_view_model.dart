@@ -92,7 +92,8 @@ class ManageReportViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        if (totalCount != assets.length) {
+        if (_totalCount == _assets.length) {
+        } else {
           _loadMore();
         }
       }
@@ -307,6 +308,7 @@ class ManageReportViewModel extends InsiteViewModel {
         } else {
           _assets.clear();
           _isSearching = false;
+           _loading = false;
           // for (var scheduledReport in result.scheduledReports!) {
           //   _assets.add(ScheduledReportsRow(
           //       scheduledReports: scheduledReport, isSelected: false));
@@ -327,6 +329,8 @@ class ManageReportViewModel extends InsiteViewModel {
         notifyListeners();
       }
     } catch (e) {
+      _loading = false;
+      notifyListeners();
       Logger().e(e.toString());
     }
   }

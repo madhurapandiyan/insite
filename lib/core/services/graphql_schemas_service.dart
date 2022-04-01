@@ -309,7 +309,7 @@ query faultDataSummary{
 query{
   faultdata(
 page:$pageNo,
-    limit:100
+    limit:$limit
 startDateTime:"$startDate"
 endDateTime:"$endDate",
 severityList:${severity == null ? "\"\"" : "${"\"" + severity! + "\""}"}
@@ -421,7 +421,7 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
 startDateTime: "$startDate"
 endDateTime: "$endDate"
 page: $pageNo
-limit: 100
+limit:$limit
 assetUid: []
 ){
  
@@ -488,8 +488,8 @@ locationReportedTimeUTC
     model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
     assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"},
     fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"},
-    idleEfficiencyGT:"",
-    idleEfficiencyLTE:"",
+    idleEfficiencyGT:"${Utils.getIdlingFilterData(idleEficiencyGT)?.first ?? ""}",
+    idleEfficiencyLTE:"${Utils.getIdlingFilterData(idleEficiencyGT)?.last ?? ""}",
     assetIDContains:"",
     snContains:"",
   manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"},
@@ -644,8 +644,8 @@ productfamily: ${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\"
 model: ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
 manufacturer: ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"},
 assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"},
-idleEfficiencyGT:${idleEficiencyGT == null ? "\"\"" : "${"\"" + idleEficiencyGT! + "\""}"},
-idleEfficiencyLTE: "",
+idleEfficiencyGT:"${Utils.getIdlingFilterData(idleEficiencyGT)?.first ?? ""}",
+idleEfficiencyLTE: "${Utils.getIdlingFilterData(idleEficiencyGT)?.last ?? ""}",
 fuelLevelPercentLT: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"},
     ){
     assetOperations{
@@ -776,6 +776,7 @@ userEmail(EmailID:"$emailId"){
       int? pageNo,
       List<FilterData?>? applyFilter,
       String? sort}) async {
+    await cleaValue();
     await gettingFiltersValue(applyFilter);
     final String fleetUtilization = """
   query getFleetUtilization{
@@ -784,9 +785,9 @@ userEmail(EmailID:"$emailId"){
   sort: ${sort == null ? "\"\"" : "${"\"" + sort + "\""}"}, 
   startDate: "$startDate", 
   endDate: "$endDate", 
-  idleEfficiencyGT: "", 
+  idleEfficiencyGT: "${Utils.getIdlingFilterData(idleEficiencyGT)?.first ?? ""}", 
   fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}, 
-  idleEfficiencyLTE: "", 
+  idleEfficiencyLTE: "${Utils.getIdlingFilterData(idleEficiencyGT)?.last ?? ""}", 
   productfamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}, 
   model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"}, 
   manufacturer: ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
@@ -1861,35 +1862,102 @@ lastLocationUpdateUTC
       bool? allAssets,
       dynamic svcbody,
       String? queryUrl,
-      List? reportColumns,
+      dynamic svcBodyJson,
+      dynamic reportColumns,
+      String? assetsDropDownValue,
       String? reportType}) {
-    var addReportPayLoad = """ mutation{
+    var addReportPayLoad;
+    if (assetsDropDownValue == "Asset Operation" ||
+        assetsDropDownValue == "Fleet Summary" ||
+        assetsDropDownValue == "Multi-Asset Utilization") {
+      addReportPayLoad = """mutation{
   createNotificationReport(
-      assetFilterCategoryID: 1,
+    assetFilterCategoryID: 1,
     reportCategoryID: 0,
-  reportFormat: $reportFormat,
-    reportPeriod:1,
-    reportTitle: "$reportTitle",
-  reportScheduledDate: "$reportScheduledDate",
-    reportStartDate:"$reportStartDate",
-    emailSubject:"$emailSubject",
-    emailRecipients:$emailRecipients,
-    svcMethod: "$svcMethod",
+    reportFormat: $reportFormat,
+    reportPeriod: 1,
+  reportTitle: "$reportTitle",
+    reportScheduledDate: "$reportScheduledDate",
+    reportStartDate: "$reportStartDate",
+    emailSubject: "$emailSubject",
+  emailRecipients:$emailRecipients,
+    svcMethod:"$svcMethod",
     allAssets: false,
-    filterOptions: [],
-    filterTag: [],
+    filterOptions: [
+      
+    ],
+    filterTag: [
+      
+    ],
     queryUrl: "$queryUrl",
     reportType: "$reportType",
-    reportColumns:${Utils.getStringListData(reportColumns!)}
-    svcbody:${Utils.getStringListData(svcbody)}
-    reportEndDate:${reportEndDate == null ? "\"\"" : "${"\"" + reportEndDate + "\""}"}
+    reportColumns: ${Utils.getStringListData(reportColumns)},
+    svcbody:$svcbody,
+   reportEndDate:${reportEndDate == null ? "\"\"" : "${"\"" + reportEndDate + "\""}"}
     ){
-    status,
-    msg,
-    reportUid
+reportUid
   }
 }""";
-    Logger().w(addReportPayLoad);
+    } else if (assetsDropDownValue == "Utilization Details" ||
+        assetsDropDownValue == "Fault Code Asset Details") {
+      addReportPayLoad = """mutation{
+  createNotificationReport(
+    assetFilterCategoryID: 1,
+    reportCategoryID: 0,
+    reportFormat: $reportFormat,
+    reportPeriod: 1,
+  reportTitle: "$reportTitle",
+    reportScheduledDate: "$reportScheduledDate",
+    reportStartDate: "$reportStartDate",
+    emailSubject: "$emailSubject",
+  emailRecipients:$emailRecipients,
+    svcMethod:"$svcMethod",
+    allAssets: false,
+    filterOptions: [
+      
+    ],
+    filterTag: [
+      
+    ],
+    queryUrl: "$queryUrl",
+    reportType: "$reportType",
+    reportColumns: ${Utils.getStringListData(reportColumns)},
+ reportEndDate:${reportEndDate == null ? "\"\"" : "${"\"" + reportEndDate + "\""}"}
+    ){
+reportUid
+  }
+}""";
+    } else if (assetsDropDownValue == "Fault Summary Faults List") {
+      addReportPayLoad = """mutation{
+  createNotificationReport(
+    assetFilterCategoryID: 1,
+    reportCategoryID: 0,
+    reportFormat: $reportFormat,
+    reportPeriod: 1,
+  reportTitle: "$reportTitle",
+    reportScheduledDate: "$reportScheduledDate",
+    reportStartDate: "$reportStartDate",
+    emailSubject: "$emailSubject",
+  emailRecipients:$emailRecipients,
+  svcbodyJson:$svcBodyJson
+    svcMethod:"$svcMethod",
+    allAssets: false,
+    filterOptions: [
+      
+    ],
+    filterTag: [
+      
+    ],
+    queryUrl: "$queryUrl",
+    reportType: "$reportType",
+    reportColumns: ${Utils.getStringListData(reportColumns)},
+ reportEndDate:${reportEndDate == null ? "\"\"" : "${"\"" + reportEndDate + "\""}"}
+    ){
+reportUid
+  }
+}""";
+    }
+
     return addReportPayLoad;
   }
 
@@ -1942,17 +2010,23 @@ lastLocationUpdateUTC
     return getReportData;
   }
 
-  String getEditReportsaveData({
-    String? reportUid,
-    String? emailSubject,
-    List? emailRecipients,
-    String? queryUrl,
-    List? svcbody,
-    String? emailContent,
-    String? reportTitle,
-    String? reportEndDate,
-  }) {
-    var editSaveData = """mutation{
+  String? getEditReportsaveData(
+      {String? reportUid,
+      String? emailSubject,
+      List? emailRecipients,
+      String? queryUrl,
+      dynamic svcbody,
+      String? emailContent,
+      String? reportTitle,
+      String? reportEndDate,
+      String? assetsDropDownValue,
+      dynamic svcbodyJson}) {
+    Logger().w(reportUid);
+    var editSaveData;
+    if (assetsDropDownValue == "Asset Operation" ||
+        assetsDropDownValue == "Fleet Summary" ||
+        assetsDropDownValue == "Multi-Asset Utilization") {
+      editSaveData = """mutation{
   updateNotificationReport(reportUid:"$reportUid",
     reportPeriod:1,
     emailSubject:"$emailSubject",
@@ -1966,14 +2040,56 @@ lastLocationUpdateUTC
     filterOptions:[],  
     reportTitle:"$reportTitle",
     reportEndDate:"$reportEndDate",
-    
-    
   ){
     status,
     reqId
   }
 }""";
-    return editSaveData;
+      return editSaveData;
+    } else if (assetsDropDownValue == "Utilization Details" ||
+        assetsDropDownValue == "Fault Code Asset Details") {
+      editSaveData = """mutation{
+  updateNotificationReport(reportUid:"$reportUid",
+    reportPeriod:1,
+    emailSubject:"$emailSubject",
+    emailRecipients:$emailRecipients ,
+    queryUrl:"$queryUrl",
+    emailContent:"$emailContent",
+    assetFilterCategoryID:1,
+    allAssets:false,
+    filterTag:[],
+    filterOptions:[],  
+    reportTitle:"$reportTitle",
+    reportEndDate:"$reportEndDate",
+  ){
+    status,
+    reqId
+  }
+}""";
+      return editSaveData;
+    } else if (assetsDropDownValue == "Fault Summary Faults List") {
+      editSaveData = """mutation{
+  updateNotificationReport(reportUid:"$reportUid",
+    reportPeriod:1,
+    emailSubject:"$emailSubject",
+    emailRecipients:$emailRecipients ,
+    queryUrl:"$queryUrl",
+    emailContent:"$emailContent",
+    assetFilterCategoryID:1,
+    allAssets:false,
+    filterTag:[],
+    filterOptions:[],
+    svcbodyJson:$svcbodyJson  
+    reportTitle:"$reportTitle",
+    reportEndDate:"$reportEndDate",
+  ){
+    status,
+    reqId
+  }
+}""";
+      return editSaveData;
+    }
+    return null;
   }
 
   var reportFilterCountData = """query{
@@ -2002,9 +2118,9 @@ mutation {
     geometryWKT: "$geometryWKT", 
     geofenceName: "$geofenceName", 
    actionUTC: "$actionUTC", 
-    endDate: ${endDate == null ? null : "$endDate"},
+    endDate: ${endDate == null ? null :"\""+ "$endDate"+ "\""},
      description: "$description",  
-    fillColor: 658170, 
+    fillColor: $fillColor, 
     isTransparent: false
     ) {
     geofenceUID
@@ -2249,12 +2365,14 @@ query{
       {String? productfamily,
       String? model,
       String? manufacturer,
+      int? pageNo,
+      int? pageSize,
       String? deviceType}) {
     var data = """
 query{
   notificationAssetList(
-pageNumber:1
-pageSize:9999
+pageNumber:${pageNo == null ? 1 : pageNo}
+pageSize:${pageSize == null ? 9999 : pageSize}
 minimalFields:false
 productfamily: ${productfamily == null ? "\"\"" : "${"\"" + productfamily + "\""}"}
 model: ${model == null ? "\"\"" : "${"\"" + model + "\""}"}

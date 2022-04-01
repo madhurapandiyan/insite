@@ -357,18 +357,19 @@ class NotificationService extends BaseService {
     try {
       Logger().i(query);
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(
-          query: query,
-          customerId: accountSelected?.CustomerUID,
-          userId: (await _localService!.getLoggedInUser())!.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
-        );
-        NotificationAdded? response =
-            NotificationAdded.fromJson(data.data["createNotification"]);
-        Logger().w(data);
-        return response;
+       print(query);
+        // var data = await Network().getGraphqlData(
+        //   query: query,
+        //   customerId: accountSelected?.CustomerUID,
+        //   userId: (await _localService!.getLoggedInUser())!.sub,
+        //   subId: customerSelected?.CustomerUID == null
+        //       ? ""
+        //       : customerSelected?.CustomerUID,
+        // );
+        // NotificationAdded? response =
+        //     NotificationAdded.fromJson(data.data["createNotification"]);
+        // Logger().w(data);
+        // return response;
       }
       if (isVisionLink) {
         NotificationAdded? response = await MyApi()
@@ -468,3 +469,5 @@ class NotificationService extends BaseService {
     }
   }
 }
+
+

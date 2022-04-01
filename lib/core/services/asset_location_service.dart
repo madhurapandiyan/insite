@@ -316,7 +316,7 @@ class AssetLocationService extends BaseService {
   }
 
   Future<AssetLocationData?> getLocationFilterData(
-      productFamilyKey, int pageNumber, int pageSize) async {
+      productFamilyKey, int pageNumber, int pageSize,String startDate,String endDate) async {
     Logger().i("getLocationFilterData");
     Map<String, String?> queryMap = Map();
     if (productFamilyKey != null) {
@@ -337,8 +337,8 @@ class AssetLocationService extends BaseService {
        var data = await Network().getGraphqlData(
           query: await _graphqlSchemaService
               ?.getFleetLocationDataProductFamilyFilterData(
-                  startDate: DateTime.now().toString(),
-                  endDate: DateTime.now().toString(),
+                  startDate: startDate,
+                  endDate: endDate,
                   pageNo: 1,
                   pageSize: 2000,
                   prodFamilyFilter: ["\""+productFamilyKey+"\""]),

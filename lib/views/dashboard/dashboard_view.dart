@@ -76,6 +76,14 @@ class _DashboardViewState extends State<DashboardView> {
                             title: "Refresh",
                             onTap: () {
                               viewModel.onRefereshClicked();
+                              if (assetDropDown == "All Assets") {
+                                filterLocationKey.currentState!
+                                    .getAssetLocationHomeData();
+                              } else {
+                                filterLocationKey.currentState!
+                                    .getAssetLocationHomeFilterData(viewModel
+                                        .filterDataProductFamily[0].title);
+                              }
                             },
                           ),
                         )
@@ -91,10 +99,12 @@ class _DashboardViewState extends State<DashboardView> {
                           value: assetDropDown,
                           items: ["All Assets", "Product Family"],
                           onChanged: (String? value) {
+                     
                             Logger().i("all assets dropdown change $value");
                             assetDropDown = value!;
-                            switchDropDownState = !switchDropDownState;
+                            
                             if (value != "All Assets") {
+                              switchDropDownState = true;
                               // "BACKHOE LOADER"
                               FilterData filterData =
                                   viewModel.filterDataProductFamily[0];
@@ -103,6 +113,7 @@ class _DashboardViewState extends State<DashboardView> {
                                   .getAssetLocationHomeFilterData(
                                       filterData.title);
                             } else {
+                              switchDropDownState =false;
                               viewModel.getData(true);
                               filterLocationKey.currentState!
                                   .getAssetLocationHomeData();
@@ -120,10 +131,10 @@ class _DashboardViewState extends State<DashboardView> {
                                         onValueSelected: (value) async {
                                           Logger().i(
                                               "product family dropdown change $value");
-                                          viewModel.getFilterDataApplied(
-                                              value!, true);
                                           viewModel
                                               .getProductFamilyAssetCount();
+                                          viewModel.getFilterDataApplied(
+                                              value!, true);
                                           filterLocationKey.currentState!
                                               .getAssetLocationHomeFilterData(
                                                   value.title);

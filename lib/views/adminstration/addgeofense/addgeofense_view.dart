@@ -778,7 +778,6 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                     InsiteButton(
                                       textColor: white,
                                       onTap: () {
-                                        FocusScope.of(context).unfocus();
                                         viewModel.onSavingData();
                                       },
                                       height: mediaquerry.size.height * 0.05,

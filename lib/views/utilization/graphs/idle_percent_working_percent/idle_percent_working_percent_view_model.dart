@@ -4,6 +4,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 
@@ -74,7 +75,13 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-      await  graphqlSchemaService!.getFleetUtilization(startDate: startDate,endDate: endDate,applyFilter: appliedFilters,pageNo: pageNumber,pageSize: pageCount,sort: null));
+        await graphqlSchemaService!.getFleetUtilization(
+            startDate: Utils.getIdlingDateParse(startDate),
+            endDate: Utils.getIdlingDateParse(endDate),
+            applyFilter: appliedFilters,
+            pageNo: pageNumber,
+            pageSize: pageCount,
+            sort: null));
     if (result != null) {
       if (result.assetResults!.isNotEmpty) {
         _utilLizationListData.addAll(result.assetResults!);
@@ -117,9 +124,14 @@ class IdlePercentWorkingPercentViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-        graphqlSchemaService!.getFleetUtilization);
-   
-    
+        graphqlSchemaService!.getFleetUtilization(
+            startDate: Utils.getIdlingDateParse(startDate),
+            endDate: Utils.getIdlingDateParse(endDate),
+            applyFilter: appliedFilters,
+            pageNo: pageNumber,
+            pageSize: pageCount,
+            sort: null));
+
     if (result != null &&
         result.assetResults != null &&
         result.assetResults!.isNotEmpty) {

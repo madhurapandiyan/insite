@@ -1057,8 +1057,10 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                           // height: 120,
 
                                           decoration: BoxDecoration(
-                                              color:
-                                                  Theme.of(context).cardColor,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color,
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: black,

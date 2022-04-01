@@ -212,7 +212,7 @@ class SelectionWidgetViewModel extends InsiteViewModel {
 
   Future<AssetGroupSummaryResponse?> getGroupListData() async {
     if (_assetId.isEmpty && _assetSerialNumber.isEmpty) {
-      assetIdresult = await _manageUserService!.getGroupListData();
+      assetIdresult = await _manageUserService!.getGroupListData(false);
       assetIdresult!.assetDetailsRecords!.forEach((element) {
         if (element.assetId != null) {
           _assetId.add(element.assetId!);

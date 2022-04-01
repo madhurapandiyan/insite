@@ -73,11 +73,11 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                 ),
                 Row(
                   children: [
-                    InsiteText(
-                      text: 'ALL ASSETS',
-                      fontWeight: FontWeight.w900,
-                      size: 12,
-                    ),
+                    // InsiteText(
+                    //   text: 'ALL ASSETS',
+                    //   fontWeight: FontWeight.w900,
+                    //   size: 12,
+                    // ),
                     SizedBox(
                       width: 35.0,
                     ),

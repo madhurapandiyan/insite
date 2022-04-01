@@ -117,35 +117,41 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   }
 
   getSearchListData(String? searchValue) async {
-    if (searchValue!.length >= 4) {
-      ManageNotificationsData? response = await _notificationService!
-          .getsearchNotificationsData(
-              pageNumber: pageNumber,
-              count: pageCount,
-              searchText: searchValue);
+    try {
+      if (searchValue!.length >= 4) {
+        showLoadingDialog();
+        notifications.clear();
+        ManageNotificationsData? response = await _notificationService!
+            .getsearchNotificationsData(
+                pageNumber: pageNumber,
+                count: pageCount,
+                searchText: searchValue);
 
-      if (response != null) {
-        if (response.configuredAlerts != null &&
-            response.configuredAlerts!.isNotEmpty) {
-          _notifications.clear();
-          _notifications.addAll(response.configuredAlerts!);
-          _isSearching = false;
-          notifyListeners();
+        if (response != null) {
+          if (response.configuredAlerts != null &&
+              response.configuredAlerts!.isNotEmpty) {
+            _notifications.clear();
+            _notifications.addAll(response.configuredAlerts!);
+            _isSearching = false;
+            notifyListeners();
+          } else {
+            _notifications.clear();
+            _isSearching = false;
+            notifyListeners();
+          }
         } else {
-          _notifications.clear();
+          _loading = false;
+          _loadingMore = false;
           _isSearching = false;
           notifyListeners();
         }
-      } else {
-        _loading = false;
-        _loadingMore = false;
-        _isSearching = false;
-        notifyListeners();
+        hideLoadingDialog();
+      } else if (searchValue.isEmpty) {
+        showLoadingDialog();
+        await getManageNotificationsData();
+        hideLoadingDialog();
       }
-      hideLoadingDialog();
-    } else if (searchValue.isEmpty) {
-      showLoadingDialog();
-      await getManageNotificationsData();
+    } catch (e) {
       hideLoadingDialog();
     }
   }
@@ -175,37 +181,39 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   }
 
   getManageNotificationsData() async {
-    _notifications.clear();
-    ManageNotificationsData? response = await _notificationService!
-        .getManageNotificationsData(pageNumber, pageCount, "");
-    Logger().i("eeeeeeeeeeeeeeeeeeeeeeeeee");
+    try {
+      _notifications.clear();
+      ManageNotificationsData? response = await _notificationService!
+          .getManageNotificationsData(pageNumber, pageCount, "");
+      Logger().wtf(response!.toJson());
 
-    Logger().wtf(response!.toJson());
-
-    if (response != null) {
-      if (response.configuredAlerts != null &&
-          response.configuredAlerts!.isNotEmpty) {
-        _notifications.addAll(response.configuredAlerts!);
-        for (var i = 0; i < _notifications.length; i++) {
-          _notifications
-              .sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+      if (response != null) {
+        if (response.configuredAlerts != null &&
+            response.configuredAlerts!.isNotEmpty) {
+          _notifications.addAll(response.configuredAlerts!);
+          for (var i = 0; i < _notifications.length; i++) {
+            _notifications
+                .sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+          }
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _notifications.addAll(response.configuredAlerts!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
         }
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
       } else {
-        _notifications.addAll(response.configuredAlerts!);
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
-    } else {
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
-    }
 
-    Logger().wtf(response);
+      Logger().wtf(response);
+    } catch (e) {
+      hideLoadingDialog();
+    }
   }
 }

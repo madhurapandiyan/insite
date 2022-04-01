@@ -235,7 +235,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                         onLongPress: (argument) {},
                                         onCameraMoveStarted: () {},
                                         onCameraMove: (position) {
-                                          viewModel.customInfoWindowController.onCameraMove!();
+                                          viewModel.customInfoWindowController
+                                              .onCameraMove!();
                                           viewModel.manager != null
                                               ? viewModel.manager!
                                                   .onCameraMove(position)
@@ -262,7 +263,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                           viewModel.zoomToMarkers();
                                         },
                                         onTap: (argument) {
-                                          viewModel.customInfoWindowController.hideInfoWindow!();
+                                          viewModel.customInfoWindowController
+                                              .hideInfoWindow!();
                                         },
                                         onCameraIdle: () {
                                           if (viewModel.manager != null) {
@@ -317,7 +319,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                             onTap: () {
                                               print("button is tapped");
                                               viewModel
-                                                  .customInfoWindowController.hideInfoWindow!();
+                                                  .customInfoWindowController
+                                                  .hideInfoWindow!();
                                               zoomVal++;
                                               _plus(
                                                   zoomVal,
@@ -374,7 +377,8 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                               onTap: () {
                                                 print("button is tapped");
                                                 viewModel
-                                                    .customInfoWindowController.hideInfoWindow!();
+                                                    .customInfoWindowController
+                                                    .hideInfoWindow!();
                                                 zoomVal--;
                                                 _minus(
                                                     zoomVal,

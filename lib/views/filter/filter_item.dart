@@ -13,12 +13,14 @@ class FilterItem extends StatefulWidget {
   final Function(List<FilterData>)? onApply;
   final Function? onClear;
   final bool isSingleSelection;
+  final bool isExpand;
   FilterItem({
     this.data,
     this.onApply,
     this.onClear,
     this.filterType,
     this.isSingleSelection = false,
+    required this.isExpand,
     Key? key,
   }) : super(key: key);
 
@@ -88,133 +90,136 @@ class FilterItemState extends State<FilterItem> {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      iconColor: Theme.of(context).iconTheme.color,
-      title: InsiteText(
-        text: Utils.getTitle(widget.filterType),
-        size: 14,
-        fontWeight: FontWeight.normal,
-      ),
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              color: Theme.of(context).backgroundColor,
-              border: Border.all(
-                  color: Theme.of(context).textTheme.bodyText1!.color!)),
-          child: Column(
-            children: [
-              list!.isNotEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SearchBox(
-                        controller: _textEditingController,
-                        hint: "Search",
-                        onTextChanged: onSearchTextChanged,
-                      ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InsiteText(
-                        text: "Not available",
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        size: 14,
-                      ),
-                    ),
-              _displayList!.where((element) => element.isSelected!).length > 0
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InsiteRichText(
-                            title: "",
-                            content: "CLEAR FILTERS",
-                            textColor: Theme.of(context).buttonColor,
-                            onTap: () {
-                              Logger().d("clear filter");
-                              clearFilter();
-                              widget.onClear!();
-                            },
-                          ),
-                          // InsiteButton(
-                          //   onTap: () {
-                          //     widget.onApply!(_displayList!
-                          //         .where((element) => element.isSelected!)
-                          //         .toList());
-                          //   },
-                          //   width: 100,
-                          //   height: 40,
-                          //   title: "APPLY",
-                          // )
-                        ],
-                      ),
-                    )
-                  : SizedBox(),
-              SizedBox(
-                height: 8,
-              ),
-              ListView.builder(
-                itemCount: _displayList!.length,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  FilterData data = _displayList![index];
-                  return GestureDetector(
-                    onTap: () {
-                      if (widget.isSingleSelection) {
-                        deSelect();
-                        _displayList![index].isSelected = true;
-                        setState(() {});
-                      } else {
-                        _displayList![index].isSelected = !data.isSelected!;
-                        setState(() {});
-                      }
-                      widget.onApply!(_displayList!
-                          .where((element) => element.isSelected!)
-                          .toList());
-                    },
-                    child: Container(
-                      color: data.isSelected!
-                          ? Theme.of(context).buttonColor
-                          : Theme.of(context).backgroundColor,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InsiteTextOverFlow(
-                              text: "(" + data.count! + ") ",
-                              overflow: TextOverflow.ellipsis,
-                              color: data.isSelected! ? white : null,
-                              fontWeight: FontWeight.bold,
-                              size: 16),
-                          Expanded(
-                            child: InsiteText(
-                                text: Utils.getFilterTitleForList(data),
-                                // overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.bold,
-                                color: data.isSelected! ? white : null,
-                                size: 16),
-                          ),
-                          IconButton(
-                              icon: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {})
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              )
-            ],
-          ),
+    return IgnorePointer(
+      ignoring: widget.isExpand,
+      child: ExpansionTile(
+        iconColor: Theme.of(context).iconTheme.color,
+        title: InsiteText(
+          text: Utils.getTitle(widget.filterType),
+          size: 14,
+          fontWeight: FontWeight.normal,
         ),
-      ],
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                color: Theme.of(context).backgroundColor,
+                border: Border.all(
+                    color: Theme.of(context).textTheme.bodyText1!.color!)),
+            child: Column(
+              children: [
+                list!.isNotEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SearchBox(
+                          controller: _textEditingController,
+                          hint: "Search",
+                          onTextChanged: onSearchTextChanged,
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InsiteText(
+                          text: "Not available",
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          size: 14,
+                        ),
+                      ),
+                _displayList!.where((element) => element.isSelected!).length > 0
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InsiteRichText(
+                              title: "",
+                              content: "CLEAR FILTERS",
+                              textColor: Theme.of(context).buttonColor,
+                              onTap: () {
+                                Logger().d("clear filter");
+                                clearFilter();
+                                widget.onClear!();
+                              },
+                            ),
+                            // InsiteButton(
+                            //   onTap: () {
+                            //     widget.onApply!(_displayList!
+                            //         .where((element) => element.isSelected!)
+                            //         .toList());
+                            //   },
+                            //   width: 100,
+                            //   height: 40,
+                            //   title: "APPLY",
+                            // )
+                          ],
+                        ),
+                      )
+                    : SizedBox(),
+                SizedBox(
+                  height: 8,
+                ),
+                ListView.builder(
+                  itemCount: _displayList!.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    FilterData data = _displayList![index];
+                    return GestureDetector(
+                      onTap: () {
+                        if (widget.isSingleSelection) {
+                          deSelect();
+                          _displayList![index].isSelected = true;
+                          setState(() {});
+                        } else {
+                          _displayList![index].isSelected = !data.isSelected!;
+                          setState(() {});
+                        }
+                        widget.onApply!(_displayList!
+                            .where((element) => element.isSelected!)
+                            .toList());
+                      },
+                      child: Container(
+                        color: data.isSelected!
+                            ? Theme.of(context).buttonColor
+                            : Theme.of(context).backgroundColor,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InsiteTextOverFlow(
+                                text: "(" + data.count! + ") ",
+                                overflow: TextOverflow.ellipsis,
+                                color: data.isSelected! ? white : null,
+                                fontWeight: FontWeight.bold,
+                                size: 16),
+                            Expanded(
+                              child: InsiteText(
+                                  text: Utils.getFilterTitleForList(data),
+                                  // overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.bold,
+                                  color: data.isSelected! ? white : null,
+                                  size: 16),
+                            ),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {})
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

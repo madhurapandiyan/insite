@@ -53,7 +53,7 @@ class FaultService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
- FaultSummaryResponse faultSummaryResponse =
+        FaultSummaryResponse faultSummaryResponse =
             FaultSummaryResponse.fromJson(data.data!['faultdata']);
 
         return faultSummaryResponse;
@@ -235,7 +235,7 @@ class FaultService extends BaseService {
       assetId,
       query) async {
     try {
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
@@ -320,14 +320,18 @@ class FaultService extends BaseService {
     }
   }
 
-  Future<HealthListResponse?> getHealthListData(
-      String? assetUid, endDateTime, limit, page, startDateTime) async {
+  Future<HealthListResponse?> getHealthListData(String? assetUid, endDateTime,
+      limit, page, startDateTime, String query) async {
     try {
-      if (enableGraphQl) {
-        // var data = await Network().getGraphqlData(
-        //     query,
-        //     accountSelected!.CustomerUID,
-        //     (await _localService!.getLoggedInUser())!.sub);
+      if (!enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
       }
       if (isVisionLink) {
         HealthListResponse healthListResponse =
@@ -366,7 +370,7 @@ class FaultService extends BaseService {
                     FilterUtils.constructQueryFromMap(queryMap),
                 accountSelected!.CustomerUID,
                 Urls.faultPrefix);
-                Logger().w(healthListResponse.toJson());
+        Logger().w(healthListResponse.toJson());
         return healthListResponse;
       }
     } catch (e) {

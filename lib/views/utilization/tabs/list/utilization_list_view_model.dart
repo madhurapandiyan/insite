@@ -126,11 +126,13 @@ class UtilizationListViewModel extends InsiteViewModel {
           await graphqlSchemaService!.getFleetUtilization(
               sort: null,
               applyFilter: appliedFilters,
-              startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-              endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              startDate: Utils.getIdlingDateParse(startDate),
+              endDate: Utils.getIdlingDateParse(endDate),
+              // startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+              // endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
               pageSize: pageCount,
               pageNo: pageNumber));
-
+      Logger().wtf(result?.assetResults?.length);
       if (result != null) {
         if (result.assetResults!.isNotEmpty) {
           _utilLizationListData.addAll(result.assetResults!);
@@ -178,8 +180,8 @@ class UtilizationListViewModel extends InsiteViewModel {
               sort: null,
               pageSize: pageCount,
               applyFilter: appliedFilters,
-              startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-              endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              startDate: Utils.getIdlingDateParse(startDate),
+              endDate: Utils.getIdlingDateParse(endDate),
               pageNo: pageNumber));
       if (result != null) {
         _utilLizationListData.clear();
@@ -200,22 +202,27 @@ class UtilizationListViewModel extends InsiteViewModel {
   }
 
   getUtilizationCount() async {
-    Logger().d("getUtilizationCount");
-    AssetCount? assetCount = await _assetService!.getAssetCountByFilter(
-        startDate,
-        endDate,
-        "-RuntimeHours",
-        ScreenType.UTILIZATION,
-        appliedFilters,
-        await graphqlSchemaService!
-            .utilizationToatlCount(startDate!, endDate!, appliedFilters));
-    if (assetCount != null) {
-      if (assetCount.countData!.isNotEmpty &&
-          assetCount.countData![0].count != null) {
-        _totalCount = assetCount.countData![0].count!;
+    try {
+      Logger().d("getUtilizationCount");
+      AssetCount? assetCount = await _assetService!.getAssetCountByFilter(
+          startDate,
+          endDate,
+          "-RuntimeHours",
+          ScreenType.UTILIZATION,
+          appliedFilters,
+          await graphqlSchemaService!.utilizationToatlCount(
+              Utils.getIdlingDateParse(startDate),
+              Utils.getIdlingDateParse(endDate),
+              appliedFilters));
+      if (assetCount != null) {
+        if (assetCount.countData!.isNotEmpty &&
+            assetCount.countData![0].count != null) {
+          _totalCount = assetCount.countData![0].count!;
+        }
       }
-      Logger().wtf("result ${assetCount.countData![0].toJson()}");
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
     }
-    notifyListeners();
   }
 }

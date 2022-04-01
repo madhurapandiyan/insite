@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:dio/dio.dart';
@@ -266,14 +267,14 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   ];
 
   List<SwitchState> severityState = [
-    SwitchState(state: true, text: "High"),
-    SwitchState(state: true, text: "Medium"),
-    SwitchState(state: true, text: "Low")
+    SwitchState(state: false, text: "High"),
+    SwitchState(state: false, text: "Medium"),
+    SwitchState(state: false, text: "Low")
   ];
 
   List<SwitchState> faultCodeType = [
-    SwitchState(state: true, text: "Event"),
-    SwitchState(state: true, text: "Diagnostic")
+    SwitchState(state: false, text: "Event"),
+    SwitchState(state: false, text: "Diagnostic")
   ];
 
   List<SwitchState> customizableState = [
@@ -428,9 +429,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   getGroupListData() async {
     try {
-      assetIdresult = await _manageUserService!.getGroupListData();
+      assetIdresult = await _manageUserService!.getGroupListData(false);
       if (isEditing) {
-        assetIdresult?.assetDetailsRecords?.forEach((element) {
+        var allAsset = await _manageUserService!.getGroupListData(true);
+        allAsset?.assetDetailsRecords?.forEach((element) {
           if (alertConfigData!.alertConfig!.assets!.any(
               (editData) => editData.assetUID == element.assetIdentifier)) {
             Logger().wtf(alertConfigData!.alertConfig!.assets!.any(
@@ -537,7 +539,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           .toList();
       searchAsset = data;
     }
-
     notifyListeners();
   }
 
@@ -609,14 +610,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     });
     _showZone = true;
     alertConfigData = data;
-
-    alertConfigData?.alertConfig?.operands?.forEach((element) {
-      assetStatusOccurenceController.text = element.value!;
-      operandData.add(Operand(
-          operandID: element.operandID,
-          operatorId: element.operatorID,
-          value: element.value));
-    });
+    await getEditOperandData(alertConfigData?.alertConfig?.operands);
 
     if (alertConfigData!.alertConfig!.scheduleDetails!.isNotEmpty) {
       scheduleDay.clear();
@@ -708,6 +702,32 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     });
     notifyListeners();
     await getGroupListData();
+  }
+
+  getEditOperandData(List<OperandData>? data) {
+    if (dropDownInitialValue == "Fault Code") {
+      var severityData =
+          data!.where((element) => element.operandName == "Severity");
+      var faultCodeData =
+          data.where((element) => element.operandName == "FaultCode Type");
+      if (severityData.any((element) => element.value == "1")) {
+        severityState[0].state = true;
+      }
+      if (severityData.any((element) => element.value == "2")) {
+        severityState[1].state = true;
+      }
+      if (severityData.any((element) => element.value == "3")) {
+        severityState[2].state = true;
+      }
+    }
+    data!.forEach((element) {
+      assetStatusOccurenceController.text = element.value!;
+      operandData.add(Operand(
+          operandID: element.operandID,
+          operatorId: element.operatorID,
+          value: element.value));
+    });
+    notifyListeners();
   }
 
   onAddingFaultCode(int i) {
@@ -1390,114 +1410,312 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   //   notifyListeners();
   // }
 
-  gettingNotificationIdandOperands() {
-    if (_dropDownInitialValue == "Fault Code") {
-      var notificationTypeGroups = alterTypes!.notificationTypeGroups!
-          .singleWhere(
-              (element) => element.notificationTypeGroupName == "Fault");
-      Logger().wtf(notificationTypeGroups.toJson());
-      notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
-      notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
-          (element) => element.notificationTypeName == _dropDownInitialValue);
-      Logger().wtf(notificationType!.toJson());
-      notificationTypeId = notificationType!.notificationTypeID!;
-    } else {
-      var notificationTypeGroups = alterTypes!.notificationTypeGroups!
-          .singleWhere((element) =>
-              element.notificationTypeGroupName == _dropDownInitialValue);
-      Logger().wtf(notificationTypeGroups.toJson());
-      notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
-      if (notificationTypeGroups.notificationTypes!
-          .any((element) => element.notificationTypeName == "Fuel Level")) {
-        notificationType = notificationTypeGroups.notificationTypes!
-            .singleWhere(
-                (element) => element.notificationTypeName == "Fuel Level");
-        notificationTypeId = notificationType!.notificationTypeID!;
-        Logger().w(notificationType!.toJson());
-      }
-      if (notificationTypeGroups.notificationTypes!.any(
-          (element) => element.notificationTypeName == _dropDownInitialValue)) {
-        notificationType = notificationTypeGroups.notificationTypes!
-            .singleWhere((element) =>
-                element.notificationTypeName == _dropDownInitialValue);
-        Logger().w(notificationType!.toJson());
-        notificationTypeId = notificationType!.notificationTypeID!;
-      }
-      if (notificationTypeGroups.notificationTypes!.any((element) =>
-          element.notificationTypeName == _dropDownSubInitialValue)) {
-        notificationType = notificationTypeGroups.notificationTypes!
-            .singleWhere((element) =>
-                element.notificationTypeName == _dropDownSubInitialValue);
-        Logger().w(notificationType!.toJson());
-        notificationTypeId = notificationType!.notificationTypeID!;
-      }
-    }
-    Logger().i("notificationGroupId : $notificationTypeGroupID");
-    Logger().i("notificationTypeId : $notificationTypeId");
-
-    notificationType?.operands?.forEach((operand) {
-      if (operand.operandName == "Fuel Loss") {
-        var operator = operand.operators!.forEach((element) {
-          Logger().e(element.toJson());
-          operandData.clear();
-          operandData.add(Operand(
-              operandID: operand.operandID,
-              operatorId: element.operatorID,
-              value: assetStatusOccurenceController.text));
-        });
-      }
-      if (operand.operandName == "Power Mode") {
-        var operator = operand.operators!.forEach((element) {
-          Logger().e(element.toJson());
-          if (SelectedfaultCodeTypeSearch!.isEmpty) {
-            operandData.clear();
+  getFaultCodeOperandsAndNotificationId() {
+    operandData.clear();
+    var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+        .singleWhere((element) => element.notificationTypeGroupName == "Fault");
+    Logger().wtf(notificationTypeGroups.toJson());
+    notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+    notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
+        (element) => element.notificationTypeName == _dropDownInitialValue);
+    var OperandData = notificationType?.operands;
+    notificationTypeId = notificationType!.notificationTypeID!;
+    if (severityState.any((element) => element.state == true)) {
+      var data = OperandData?.singleWhere(
+          (element) => element.operandName == "Severity");
+      severityState.forEach((SeveritySwitcState) {
+        if (SeveritySwitcState.text == "High") {
+          if (SeveritySwitcState.state == true) {
             operandData.add(Operand(
-                operandID: operand.operandID,
-                operatorId: element.operatorID,
-                value: assetStatusOccurenceController.text));
-          } else {
-            operandData.clear();
-            operandData.add(Operand(
-                operandID: operand.operandID,
-                operatorId: element.operatorID,
-                value: assetStatusOccurenceController.text));
+                operandID: data!.operandID,
+                operatorId: data.operators?.first.operatorID,
+                value: "1"));
           }
-        });
-      }
-      if (operand.operandName == "Fuel Level") {
-        var operator = operand.operators!
-            .singleWhere((element) => element.name == _dropDownSubInitialValue);
-        Logger().e(operator.toJson());
-        operandData.clear();
-        operandData.add(Operand(
-            operandID: operand.operandID,
-            operatorId: operator.operatorID,
-            value: assetStatusOccurenceController.text));
-      }
-      if (operand.operators!
-          .any((element) => element.name == _dropDownSubInitialValue)) {
-        var operator = operand.operators!
-            .singleWhere((element) => element.name == _dropDownSubInitialValue);
-        Logger().e(operator.toJson());
-        operandData.clear();
-        operandData.add(Operand(
-            operandID: operand.operandID,
-            operatorId: operator.operatorID,
-            value: assetStatusOccurenceController.text));
-      } else {
-        operand.operators!.forEach((operator) {
-          // Logger().e(operator.toJson());
-          operandData.clear();
-          operandData.add(Operand(
-              operandID: operand.operandID,
-              operatorId: operator.operatorID,
-              value: assetStatusOccurenceController.text));
-        });
-        operandData.forEach((element) {
-          Logger().e(element.toJson());
-        });
-      }
-    });
+        } else if (SeveritySwitcState.text == "Medium") {
+          if (SeveritySwitcState.state == true) {
+            operandData.add(Operand(
+                operandID: data!.operandID,
+                operatorId: data.operators?.first.operatorID,
+                value: "2"));
+          }
+        } else {
+          if (SeveritySwitcState.state == true) {
+            operandData.add(Operand(
+                operandID: data!.operandID,
+                operatorId: data.operators?.first.operatorID,
+                value: "3"));
+          }
+        }
+      });
+    }
+
+    if (faultCodeType.any((element) => element.state == true)) {
+      var data = OperandData?.singleWhere(
+          (element) => element.operandName == "FaultCode Type");
+      faultCodeType.forEach((faultCodeTypeSwitcState) {
+        if (faultCodeTypeSwitcState.text == "Event") {
+          if (faultCodeTypeSwitcState.state == true) {
+            operandData.add(Operand(
+                operandID: data!.operandID,
+                operatorId: data.operators?.first.operatorID,
+                value: "1"));
+          }
+        } else if (faultCodeTypeSwitcState.text == "Diagnostic") {
+          if (faultCodeTypeSwitcState.state == true) {
+            operandData.add(Operand(
+                operandID: data!.operandID,
+                operatorId: data.operators?.first.operatorID,
+                value: "2"));
+          }
+        }
+      });
+    }
+    Logger().wtf(notificationType!.toJson());
+    notificationTypeId = notificationType!.notificationTypeID!;
+  }
+
+  getAssetStatusOperandAndNotificationId() {
+    operandData.clear();
+    operandData.clear();
+    var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+        .singleWhere(
+            (element) => element.notificationTypeGroupName == "Asset Status");
+    notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+    notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
+        (element) => element.notificationTypeName == _dropDownSubInitialValue);
+    Logger().e(notificationType!.operands!.first.toJson());
+    Logger().e(notificationType!.operands!.first.operators!.first.toJson());
+    var OperandData = notificationType?.operands;
+    notificationTypeId = notificationType!.notificationTypeID!;
+    notificationTypeId = notificationType!.notificationTypeID!;
+    operandData.add(Operand(
+        operandID: OperandData!.first.operandID,
+        operatorId: OperandData.first.operators!.first.operatorID,
+        value: assetStatusOccurenceController.text));
+  }
+
+  getFuelOperandAndNotificationId() {
+    operandData.clear();
+    var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+        .singleWhere((element) => element.notificationTypeGroupName == "Fuel");
+    notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+    notificationType = notificationTypeGroups.notificationTypes!
+        .singleWhere((element) => element.notificationTypeName == "Fuel Level");
+    var OperandData = notificationType?.operands;
+    notificationTypeId = notificationType!.notificationTypeID!;
+    var fuelOperandData = OperandData?.singleWhere(
+        (element) => element.operandName == "Fuel Level");
+    if (fuelOperandData!.operators!
+        .any((element) => element.name == _dropDownSubInitialValue)) {
+      operandData.add(Operand(
+          operandID: OperandData!.first.operandID,
+          operatorId: OperandData.first.operators!.first.operatorID,
+          value: assetStatusOccurenceController.text));
+    }
+  }
+
+  getEngineHoursOperandAndNotificationId() {
+    operandData.clear();
+    var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+        .singleWhere(
+            (element) => element.notificationTypeGroupName == "Engine Hours");
+    notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+    notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
+        (element) => element.notificationTypeName == "Engine Hours");
+    var OperandData = notificationType?.operands;
+    notificationTypeId = notificationType!.notificationTypeID!;
+    var engineHoursOperandData = OperandData?.singleWhere(
+        (element) => element.operandName == "Engine Hours");
+    if (engineHoursOperandData!.operators!
+        .any((element) => element.name == _dropDownSubInitialValue)) {
+      operandData.add(Operand(
+          operandID: OperandData!.first.operandID,
+          operatorId: OperandData.first.operators!.first.operatorID,
+          value: assetStatusOccurenceController.text));
+    }
+  }
+
+  getExcessiveDailyIdleOperandAndNotificationId() {
+    operandData.clear();
+    var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+        .singleWhere((element) =>
+            element.notificationTypeGroupName == "Excessive Daily Idle");
+    notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+    notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
+        (element) => element.notificationTypeName == "Excessive Daily Idle");
+    var OperandData = notificationType?.operands;
+    notificationTypeId = notificationType!.notificationTypeID!;
+    var excessiveDailyIdleOperandData = OperandData?.singleWhere(
+        (element) => element.operandName == "Excessive Daily Idle");
+    if (excessiveDailyIdleOperandData!.operators!
+        .any((element) => element.name == _dropDownSubInitialValue)) {
+      operandData.add(Operand(
+          operandID: OperandData!.first.operandID,
+          operatorId: OperandData.first.operators!.first.operatorID,
+          value: assetStatusOccurenceController.text));
+    }
+  }
+
+  getFuelLossOperandAndNotificationId() {
+    operandData.clear();
+    var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+        .singleWhere(
+            (element) => element.notificationTypeGroupName == "Fuel Loss");
+    notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+    notificationType = notificationTypeGroups.notificationTypes!
+        .singleWhere((element) => element.notificationTypeName == "Fuel Loss");
+    var OperandData = notificationType?.operands;
+    notificationTypeId = notificationType!.notificationTypeID!;
+    var fuelLossOperandData = OperandData?.singleWhere(
+        (element) => element.operandName == "Fuel Loss");
+    // if (fuelLossOperandData!.operators!
+    //     .any((element) => element.name == _dropDownSubInitialValue)) {
+    operandData.add(Operand(
+        operandID: OperandData!.first.operandID,
+        operatorId: OperandData.first.operators!.first.operatorID,
+        value: assetStatusOccurenceController.text));
+    // }
+  }
+
+  gettingNotificationIdandOperands() async {
+    if (_dropDownInitialValue == "Fault Code") {
+      await getFaultCodeOperandsAndNotificationId();
+      Logger().w("notificationGroupid ${notificationTypeGroupID}");
+      Logger().i("notificationTypeId ${notificationTypeId}");
+      operandData.forEach((element) {
+        Logger().wtf("OperandData ${element.toJson()}");
+      });
+    } else if (_dropDownInitialValue == "Asset Status") {
+      await getAssetStatusOperandAndNotificationId();
+      Logger().w("notificationGroupid ${notificationTypeGroupID}");
+      Logger().i("notificationTypeId ${notificationTypeId}");
+      operandData.forEach((element) {
+        Logger().wtf("OperandData ${element.toJson()}");
+      });
+    } else if (_dropDownInitialValue == "Fuel") {
+      await getFuelOperandAndNotificationId();
+      Logger().w("notificationGroupid ${notificationTypeGroupID}");
+      Logger().i("notificationTypeId ${notificationTypeId}");
+      operandData.forEach((element) {
+        Logger().wtf("OperandData ${element.toJson()}");
+      });
+    } else if (_dropDownInitialValue == "Engine Hours") {
+      await getEngineHoursOperandAndNotificationId();
+      Logger().w("notificationGroupid ${notificationTypeGroupID}");
+      Logger().i("notificationTypeId ${notificationTypeId}");
+      operandData.forEach((element) {
+        Logger().wtf("OperandData ${element.toJson()}");
+      });
+    } else if (_dropDownInitialValue == "Excessive Daily Idle") {
+      await getExcessiveDailyIdleOperandAndNotificationId();
+      Logger().w("notificationGroupid ${notificationTypeGroupID}");
+      Logger().i("notificationTypeId ${notificationTypeId}");
+      operandData.forEach((element) {
+        Logger().wtf("OperandData ${element.toJson()}");
+      });
+    } else if (_dropDownInitialValue == "Fuel Loss") {
+      await getFuelLossOperandAndNotificationId();
+      Logger().w("notificationGroupid ${notificationTypeGroupID}");
+      Logger().i("notificationTypeId ${notificationTypeId}");
+      operandData.forEach((element) {
+        Logger().wtf("OperandData ${element.toJson()}");
+      });
+    }
+    // var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+    //     .singleWhere((element) =>
+    //         element.notificationTypeGroupName == _dropDownInitialValue);
+    // Logger().wtf(notificationTypeGroups.toJson());
+    // notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+    // if (notificationTypeGroups.notificationTypes!
+    //     .any((element) => element.notificationTypeName == "Fuel Level")) {
+    //   notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
+    //       (element) => element.notificationTypeName == "Fuel Level");
+    //   notificationTypeId = notificationType!.notificationTypeID!;
+    //   Logger().w(notificationType!.toJson());
+    // }
+    // if (notificationTypeGroups.notificationTypes!.any(
+    //     (element) => element.notificationTypeName == _dropDownInitialValue)) {
+    //   notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
+    //       (element) => element.notificationTypeName == _dropDownInitialValue);
+    //   Logger().w(notificationType!.toJson());
+    //   notificationTypeId = notificationType!.notificationTypeID!;
+    // }
+    // if (notificationTypeGroups.notificationTypes!.any((element) =>
+    //     element.notificationTypeName == _dropDownSubInitialValue)) {
+    //   notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
+    //       (element) =>
+    //           element.notificationTypeName == _dropDownSubInitialValue);
+    //   Logger().w(notificationType!.toJson());
+    //   notificationTypeId = notificationType!.notificationTypeID!;
+    // }
+
+    // Logger().i("notificationGroupId : $notificationTypeGroupID");
+    // Logger().i("notificationTypeId : $notificationTypeId");
+
+    // notificationType?.operands?.forEach((operand) {
+    //   if (operand.operandName == "Fuel Loss") {
+    //     var operator = operand.operators!.forEach((element) {
+    //       Logger().e("operands ${element.toJson()}");
+    //       operandData.clear();
+    //       operandData.add(Operand(
+    //           operandID: operand.operandID,
+    //           operatorId: element.operatorID,
+    //           value: assetStatusOccurenceController.text));
+    //     });
+    //   }
+    //   if (operand.operandName == "Power Mode") {
+    //     var operator = operand.operators!.forEach((element) {
+    //       Logger().e("operands ${element.toJson()}");
+    //       if (SelectedfaultCodeTypeSearch!.isEmpty) {
+    //         operandData.clear();
+    //         operandData.add(Operand(
+    //             operandID: operand.operandID,
+    //             operatorId: element.operatorID,
+    //             value: assetStatusOccurenceController.text));
+    //       } else {
+    //         Logger().e("operands ${element.toJson()}");
+    //         operandData.clear();
+    //         operandData.add(Operand(
+    //             operandID: operand.operandID,
+    //             operatorId: element.operatorID,
+    //             value: assetStatusOccurenceController.text));
+    //       }
+    //     });
+    //   }
+    //   if (operand.operandName == "Fuel Level") {
+    //     var operator = operand.operators!
+    //         .singleWhere((element) => element.name == _dropDownSubInitialValue);
+    //     Logger().e("operands ${operand.toJson()}");
+    //     operandData.clear();
+    //     operandData.add(Operand(
+    //         operandID: operand.operandID,
+    //         operatorId: operator.operatorID,
+    //         value: assetStatusOccurenceController.text));
+    //   }
+    //   if (operand.operators!
+    //       .any((element) => element.name == _dropDownSubInitialValue)) {
+    //     var operator = operand.operators!
+    //         .singleWhere((element) => element.name == _dropDownSubInitialValue);
+    //     Logger().e("operator ${operator.toJson()}");
+    //     operandData.clear();
+    //     operandData.add(Operand(
+    //         operandID: operand.operandID,
+    //         operatorId: operator.operatorID,
+    //         value: assetStatusOccurenceController.text));
+    //   } else {
+    //     operand.operators!.forEach((operator) {
+    //       Logger().e("operands ${operand.toJson()}");
+    //       operandData.clear();
+    //       operandData.add(Operand(
+    //           operandID: operand.operandID,
+    //           operatorId: operator.operatorID,
+    //           value: assetStatusOccurenceController.text));
+    //     });
+    //     operandData.forEach((element) {
+    //       Logger().e(element.toJson());
+    //     });
+    //   }
+    // });
   }
 
   editNotification() async {
@@ -1546,6 +1764,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             numberOfOccurences: 1));
     if (data != null) {
       _snackBarservice!.showSnackbar(message: "Edit Notification Success");
+      gotoManageNotificationsPage();
 
       hideLoadingDialog();
       // gotoManageNotificationsPage();
@@ -1652,7 +1871,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");
 
           hideLoadingDialog();
-          // gotoManageNotificationsPage();
+          gotoManageNotificationsPage();
         } else {
           _snackBarservice!
               .showSnackbar(message: "Kindly recheck credentials added");

@@ -35,7 +35,7 @@ class ConfiguredAlerts {
   int? numberOfGeofences;
   int? alertCategoryID;
   int? alertGroupID;
-  List<Operand>? operands;
+  List<OperandData>? operands;
   List<SiteOperand>? siteOperands;
   List<Assets>? assets;
   List<ScheduleDetails>? scheduleDetails;
@@ -69,7 +69,7 @@ class ConfiguredAlerts {
 }
 
 @JsonSerializable(explicitToJson: true)
-class Operand {
+class OperandData {
   int? operandID;
   String? operandName;
   int? operatorID;
@@ -77,7 +77,7 @@ class Operand {
   String? value;
   String? unit;
 
-  Operand(
+  OperandData(
       {this.operandID,
       this.operandName,
       this.operatorID,
@@ -85,10 +85,10 @@ class Operand {
       this.value,
       this.unit});
 
-  factory Operand.fromJson(Map<String, dynamic> json) =>
-      _$OperandFromJson(json);
+  factory OperandData.fromJson(Map<String, dynamic> json) =>
+      _$OperandDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$OperandToJson(this);
+  Map<String, dynamic> toJson() => _$OperandDataToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)

@@ -58,7 +58,15 @@ class HealthListViewModel extends InsiteViewModel {
           Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
           limit,
           page,
-          Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+          Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+          ""
+          // graphqlSchemaService?.getfaultQueryString(
+          //     applyFilter: appliedFilters,
+          //     endDate: endDate,
+          //     startDate: startDate,
+          //     limit: limit,
+          //     pageNo: page)
+              );
       if (result != null && result.assetData != null) {
         if (result.assetData!.faults!.isNotEmpty) {
           _faults.addAll(result.assetData!.faults!);
@@ -93,7 +101,15 @@ class HealthListViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         limit,
         page,
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        ""
+        // graphqlSchemaService?.getfaultQueryString(
+        //     applyFilter: appliedFilters,
+        //     endDate: endDate,
+        //     startDate: startDate,
+        //     limit: limit,
+        //     pageNo: page)
+            );
     if (result != null) {
       _faults.clear();
       _faults.addAll(result.assetData!.faults!);

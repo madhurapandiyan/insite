@@ -131,7 +131,6 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   int _currentPage = 0;
 
   getGroupListData(AssetGroupSummaryResponse data) async {
-    Logger().w(data.assetDetailsRecords!.length);
     try {
       assetIdresult = data;
       if (assetIdresult!.assetDetailsRecords!.isNotEmpty) {
@@ -203,8 +202,10 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
               pageNumber,
               pageSize,
               productFamilKey!,
-              graphqlSchemaService!
-                  .getNotificationAssetList(productfamily: productFamilKey));
+              graphqlSchemaService!.getNotificationAssetList(
+                  productfamily: productFamilKey,
+                  pageNo: pageNumber,
+                  pageSize: pageSize));
       _productFamilyCountData?.clear();
       for (var item in result!.assetDetailsRecords!) {
         _productFamilyCountData?.add(item);
@@ -246,8 +247,10 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
           pageNumber,
           pageSize,
           "TATA HITACHI",
-          graphqlSchemaService!
-              .getNotificationAssetList(manufacturer: "TATA HITACHI"));
+          graphqlSchemaService!.getNotificationAssetList(
+              manufacturer: "TATA HITACHI",
+              pageNo: pageNumber,
+              pageSize: pageSize));
       subManufacturerList?.clear();
       for (var item in assetIdresult!.assetDetailsRecords!) {
         subManufacturerList?.add(item);
@@ -292,8 +295,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
           pageNumber,
           pageSize,
           productFamilyKey,
-          graphqlSchemaService!
-              .getNotificationAssetList(model: productFamilyKey));
+          graphqlSchemaService!.getNotificationAssetList(
+              model: productFamilyKey, pageNo: pageNumber, pageSize: pageSize));
       Logger().i(assetIdresult);
       _subModelData?.clear();
       for (var item in assetIdresult!.assetDetailsRecords!) {
@@ -337,8 +340,10 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
           pageNumber,
           pageSize,
           productFamilyKey,
-          graphqlSchemaService!
-              .getNotificationAssetList(deviceType: productFamilyKey));
+          graphqlSchemaService!.getNotificationAssetList(
+              deviceType: productFamilyKey,
+              pageNo: pageNumber,
+              pageSize: pageSize));
       subDeviceList?.clear();
       for (var item in assetIdresult!.assetDetailsRecords!) {
         subDeviceList?.add(item);

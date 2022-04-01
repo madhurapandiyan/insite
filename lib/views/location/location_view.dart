@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:ui';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +80,8 @@ class _LocationViewState extends State<LocationView> {
                                         .assetLocation!.mapRecords!.length
                                         .toString() +
                                     " of " +
-                                    viewModel.totalCount.toString()+" assets",
+                                    viewModel.totalCount.toString() +
+                                    " assets",
                                 size: 15,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -165,22 +167,24 @@ class _LocationViewState extends State<LocationView> {
                               ],
                             ),
                           ),
-                          // Container(
-                          //   margin: EdgeInsets.all(16.0),
-                          //   color: Theme.of(context).cardColor,
-                          //   width: MediaQuery.of(context).size.width * 1,
-                          //   height: MediaQuery.of(context).size.height * 0.05,
-                          //   child: Center(
-                          //     child: InsiteText(
-                          //       text: viewModel
-                          //               .assetLocation!.countData!.first.count!
-                          //               .toString() +
-                          //           "out of " +
-                          //           viewModel.totalCount.toString() +
-                          //           " assets do not have location information",
-                          //     ),
-                          //   ),
-                          // ),
+                          viewModel.showingCard
+                              ? Container(
+                                  margin: EdgeInsets.all(16.0),
+                                  color: Theme.of(context).cardColor,
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: Center(
+                                    child: InsiteText(
+                                      text: viewModel.assetInvalidLocationCount
+                                              .toString() +
+                                          " out of " +
+                                          viewModel.assetLocationCount.toString() +
+                                          " assets do not have location information",
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(),
                           SizedBox(height: 10),
                           Expanded(
                             child: Stack(

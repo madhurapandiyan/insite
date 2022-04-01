@@ -168,21 +168,23 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetStatusloading = false;
+    //notifyListeners();
   }
 
   getData(bool isIntial) async {
     this._isFilterApplied = false;
     this._currentFilterSelected = null;
+    _refreshing = true;
     if (isIntial) {
       await getAssetCount();
     }
-
     await clearDashboardFiltersDb();
     await getAssetStatusData();
     await getFuelLevelData();
     await getIdlingLevelData(false, null);
     await getUtilizationSummary();
     await getFaultCountData();
+    _refreshing = false;
     notifyListeners();
   }
 
@@ -197,10 +199,10 @@ class DashboardViewModel extends InsiteViewModel {
   refresh() async {
     _refreshing = true;
     notifyListeners();
-    // await getAssetCount();
-    // await getAssetStatusData();
-    // await getFuelLevelData();
-    // await getUtilizationSummary();
+    await getAssetCount();
+    await getAssetStatusData();
+    await getFuelLevelData();
+    await getUtilizationSummary();
     await getFaultCountData();
     await getIdlingLevelData(false, null);
     _refreshing = false;
@@ -275,6 +277,7 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetFuelloading = false;
+    notifyListeners();
   }
 
   getIdlingLevelData(bool switching, IdlingLevelRange? range) async {
@@ -289,7 +292,7 @@ class DashboardViewModel extends InsiteViewModel {
           endDayRange,
           graphqlSchemaService!.getAssetCount(
               idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
-              endDate: DateTime.now().toString(),
+              endDate: Utils.getIdlingDateFormat(DateTime.now()),
               productFamily: currentFilterSelected!.title,
               startDate: getStartRange()));
       if (result != null) {
@@ -307,9 +310,8 @@ class DashboardViewModel extends InsiteViewModel {
           getFilterRange(),
           graphqlSchemaService!.getAssetCount(
               idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
-              endDate: DateTime.now().toString(),
-              startDate:
-                  DateTime.now().subtract(Duration(days: 1)).toString()));
+              endDate: Utils.getIdlingDateFormat(DateTime.now()),
+              startDate: getStartRange()));
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -327,13 +329,17 @@ class DashboardViewModel extends InsiteViewModel {
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCount(
-        Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate),
+        Utils.getFaultDateFormat(
+            DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
+        Utils.getFaultDateFormat(DateTime.now().subtract(Duration(days: 1))),
         graphqlSchemaService!.getFaultCountData(
-            startDate:DateUtil.calcFromDate(DateRangeType.lastSevenDays)?.toIso8601String()
+            startDate: Utils.getFaultDateFormat(
+                DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
+
             //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
             //     startDate),
-            endDate: DateTime.now().toIso8601String()));
+            endDate: Utils.getFaultDateFormat(
+                DateTime.now().subtract(Duration(days: 1)))));
     if (count != null) {
       _faultCountData = count;
     }
@@ -378,11 +384,12 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getUtilizationSummary() async {
-    UtilizationSummary? result = await _assetUtilizationService!.getUtilizationSummary(
-        '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}',
-        graphqlSchemaService!.getAssetGraphDetail(
-            date:
-                '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}'));
+    UtilizationSummary? result = await _assetUtilizationService!
+        .getUtilizationSummary(
+            '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}',
+            graphqlSchemaService!.getAssetGraphDetail(
+                date: Utils.getIdlingDateFormat(DateTime.now())));
+    //'${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}'));
     if (result != null) {
       _utilizationSummary = result;
       _utilizationTotalGreatestValue = Utils.greatestOfThree(
@@ -395,6 +402,7 @@ class DashboardViewModel extends InsiteViewModel {
           _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
+    notifyListeners();
   }
 
   FilterSubType? getFilterRange() {
@@ -416,15 +424,15 @@ class DashboardViewModel extends InsiteViewModel {
   String? getStartRange() {
     switch (_idlingLevelRange) {
       case IdlingLevelRange.DAY:
-        return DateFormat('yyyy-MM-dd').format(DateTime.now());
-
+        return DateFormat('MM/dd/yyyy')
+            .format(DateUtil.calcFromDate(DateRangeType.today)!);
       case IdlingLevelRange.WEEK:
-        return DateFormat('yyyy-MM-dd').format(DateTime.now()
-            .subtract(Duration(days: DateTime.now().weekday - 1)));
+        return DateFormat('MM/dd/yyyy')
+            .format(DateUtil.calcFromDate(DateRangeType.currentWeek)!);
 
       case IdlingLevelRange.MONTH:
-        return DateFormat('yyyy-MM-dd')
-            .format(DateTime.utc(DateTime.now().year, DateTime.now().month, 1));
+        return DateFormat('MM/dd/yyyy')
+            .format(DateUtil.calcFromDate(DateRangeType.currentMonth)!);
 
       default:
         return null;
@@ -532,7 +540,7 @@ class DashboardViewModel extends InsiteViewModel {
         endDate,
         graphqlSchemaService!.getAssetCount(
           idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
-          endDate: DateTime.now().toString(),
+          endDate: Utils.getIdlingDateFormat(DateTime.now()),
           productFamily: dropDownValue,
           startDate: getStartRange(),
         ));
@@ -550,9 +558,11 @@ class DashboardViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         graphqlSchemaService!.getFaultCountData(
-              prodFamily: dropDownValue,
-              startDate:DateUtil.calcFromDate(DateRangeType.lastSevenDays)?.toIso8601String(),
-              endDate: DateTime.now().toIso8601String()));
+            prodFamily: dropDownValue,
+            startDate: Utils.getFaultDateFormat(
+                DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
+            endDate: Utils.getFaultDateFormat(
+                DateTime.now().subtract(Duration(days: 1)))));
     if (count != null) {
       _faultCountData = count;
     }

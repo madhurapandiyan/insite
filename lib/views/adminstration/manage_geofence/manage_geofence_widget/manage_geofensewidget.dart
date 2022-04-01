@@ -70,7 +70,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                       ),
                       child: Image.network(
                           StaticMap().generatedimg(
-                              widget.encodedPolyline, widget.color),
+                              widget.encodedPolyline, Color(widget.color!)),
                           width: double.infinity,
                           fit: BoxFit.cover)),
                   Padding(

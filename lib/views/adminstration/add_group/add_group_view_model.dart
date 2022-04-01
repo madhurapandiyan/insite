@@ -132,7 +132,7 @@ class AddGroupViewModel extends InsiteViewModel {
 
   getGroupListData() async {
     try {
-      assetIdresult = await _manageUserService!.getGroupListData();
+      assetIdresult = await _manageUserService!.getGroupListData(false);
       notifyListeners();
       Future.delayed(Duration(seconds: 1), () {
         isLoading = false;

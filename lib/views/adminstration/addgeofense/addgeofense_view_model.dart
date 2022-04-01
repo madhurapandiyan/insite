@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:geobase/geobase.dart';
 import 'package:geodesy/geodesy.dart' as geodesy;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocore/base.dart' as geo;
+import 'package:point_in_polygon/point_in_polygon.dart' as point;
+
 import 'package:geocore/geocore.dart' as Geo;
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -22,9 +24,8 @@ import 'package:insite/views/adminstration/manage_geofence/manage_geofence_view.
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:maps_toolkit/maps_toolkit.dart' as polyUtils;
+
 import 'package:stacked_services/stacked_services.dart';
-import "package:point_in_polygon/point_in_polygon.dart" as point;
 
 import '../../../core/services/graphql_schemas_service.dart';
 
@@ -70,11 +71,6 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   List<LatLng?> correctedListofLatlang = [];
   List<geodesy.LatLng> correctedListofLatlangGeodesy = [];
-
-  List<polyUtils.LatLng> correctedListofLatlangPoly = [];
-  List<polyUtils.LatLng> correctedListofLatlangGeodesyPoly = [];
-
-  List<point.Point> points = [];
 
   bool? isVisionlinkCheck;
 
@@ -187,6 +183,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onChangePolygonColor() {
+    Logger().w(color.red);
     _polygon!.clear();
     _polyline!.clear();
     _circle!.clear();
@@ -207,11 +204,13 @@ class AddgeofenseViewModel extends InsiteViewModel {
         color: color,
         visible: true,
       );
+
       userPolygon = Polygon(
-          strokeColor: color,
+          strokeColor: color.withOpacity(0.2),
+          geodesic: true,
           strokeWidth: 3,
           polygonId: PolygonId(DateTime.now().toString()),
-          fillColor: color,
+          fillColor: color.withOpacity(0.2),
           visible: true,
           points: _listOfLatLong);
       _polygon!.add(userPolygon);
@@ -292,8 +291,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
     Circle userCircle;
     double latitude1 = userLatlong.longitude;
     double longitude1 = userLatlong.latitude;
-    Logger().wtf("$longitude1 last longitude1");
-    Logger().wtf("$latitude1 last latitude1");
+    Logger().wtf("$longitude1 longitude");
+    Logger().wtf("$latitude1 latitude");
     LatLng correctedLatLong = LatLng(longitude1, latitude1);
     Logger().v(correctedLatLong.toJson());
     geodesy.LatLng correctedLatLongGeodesy =
@@ -305,17 +304,17 @@ class AddgeofenseViewModel extends InsiteViewModel {
     lastLatLong = correctedLatLong;
     _listOfLatLong.add(userLatlong);
     correctedListofLatlang.add(correctedLatLong);
-    if (correctedListofLatlang.length >= 3) {
-      Logger().e(correctedListofLatlangGeodesy.length);
-      var checking = geodesic.isGeoPointInPolygon(
-          correctedLatLongGeodesy, correctedListofLatlangGeodesy);
-      Logger().e(checking);
-      if (checking) {
-        correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
-      }
-    } else {
-      correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
-    }
+    // if (correctedListofLatlang.length >= 3) {
+    //   Logger().e(correctedListofLatlangGeodesy.length);
+    //   var checking = geodesic.isGeoPointInPolygon(
+    //       correctedLatLongGeodesy, correctedListofLatlangGeodesy);
+    //   Logger().e(checking);
+    //   if (checking) {
+    //     correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
+    //   }
+    // } else {
+    //   correctedListofLatlangGeodesy.add(correctedLatLongGeodesy);
+    // }
 
     // if (correctedListofLatlangGeodesy.length >= 3) {
     //   var containsLocation = polyUtils.PolygonUtil.isLocationOnEdge(point, polygon, geodesic);
@@ -375,8 +374,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
     //   return;
     // } else {}
 
-    onZoomLatitude = _listOfLatLong.first.latitude;
-    onZoomLongitude = _listOfLatLong.first.longitude;
+    onZoomLatitude = userLatlong.latitude;
+    onZoomLongitude = userLatlong.longitude;
 
     userPolyline = Polyline(
       geodesic: true,
@@ -387,7 +386,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
       points: _listOfLatLong,
       polylineId: PolylineId(DateTime.now().toString()),
       consumeTapEvents: true,
-      color: color,
+      color: color.withOpacity(0.2),
       visible: true,
     );
     userPolygon = Polygon(
@@ -395,17 +394,17 @@ class AddgeofenseViewModel extends InsiteViewModel {
         geodesic: true,
         strokeWidth: 3,
         polygonId: PolygonId(DateTime.now().toString()),
-        fillColor: color,
+        fillColor: color.withOpacity(0.2),
         visible: true,
         points: _listOfLatLong);
     userCircle = Circle(
-        radius: 200,
+        radius: 20000,
         strokeWidth: 5,
-        strokeColor: black,
+        strokeColor: color,
         visible: true,
         circleId: CircleId(DateTime.now().toString()),
         center: userLatlong,
-        fillColor: Colors.white);
+        fillColor: Colors.transparent);
     _polygon!.add(userPolygon);
     _polyline!.add(userPolyline);
     _circle!.add(userCircle);
@@ -459,49 +458,63 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   convertingPolyOBJtoWKT() {
     try {
+      var writer = wktFormat().geometriesToText();
       listOfNumber.clear();
       lastLatLong = correctedListofLatlang.first;
       correctedListofLatlang.add(lastLatLong);
+      List<Geographic> data = [];
       for (var i = 0; i < correctedListofLatlang.length; i++) {
         double latitude = correctedListofLatlang[i]!.latitude;
         double longitude = correctedListofLatlang[i]!.longitude;
+        data.add(Geographic(lon: longitude, lat: latitude));
         List<num> json = [longitude, latitude];
-        listOfNumber.add(json);
       }
-      List<geo.Point2> listOfPoints = [];
-      geo.PointSeries pointSeries;
-      geo.LineString<geo.Point<num>> lineStringSeries;
-      List<geo.LineString<geo.Point<num>>> listOfLineSeries = [];
-      for (var i = 0; i < listOfNumber.length; i++) {
-        geo.Point2 point = geo.Point2.geometry.newFrom(listOfNumber[i]);
-        listOfPoints.add(point);
-      }
-      pointSeries = geo.PointSeries.make(listOfNumber, geo.Point2.geometry);
-      lineStringSeries = geo.LineString(pointSeries);
-      listOfLineSeries.add(lineStringSeries);
-      String finalPolygonOBJ = "POLYGON((${lineStringSeries.toString()}))";
-      if (finalPolygonOBJ.contains("((LineString<Point<num>>([Point2(")) {
-        String polygonWKT1 = finalPolygonOBJ.replaceAll(
-            "((LineString<Point<num>>([Point2(", "((");
-        if (polygonWKT1.contains("), Point2(")) {
-          String polygonWKT2 = polygonWKT1.replaceAll("), Point2(", ",");
-          if (polygonWKT2.contains(", ")) {
-            String polygonWKT3 = polygonWKT2.replaceAll(", ", " ");
-            if (polygonWKT3.contains(")])")) {
-              finalPolygonWKTstring = polygonWKT3.replaceAll(")])", "");
-              print(finalPolygonWKTstring);
-            }
-          }
-        }
-      }
-      correctedListofLatlang.clear();
-      listOfNumber.clear();
-      listOfLatLong.clear();
+      Logger().i(data);
+      var wridata = writer
+        ..geometryWithPositions2D(type: Geom.polygon, coordinates: [data])
+        ..toString();
+      finalPolygonWKTstring = wridata.toString();
+
+      // listOfNumber.forEach((element) {
+      //   element.forEach((values) {
+      //     data.add(Geographic(lon: lon, lat: lat));
+      //   });
+      // });
+
+      //   List<geo.Point2> listOfPoints = [];
+      //   geo.PointSeries pointSeries;
+      //   geo.LineString<geo.Point<num>> lineStringSeries;
+      //   List<geo.LineString<geo.Point<num>>> listOfLineSeries = [];
+      //   for (var i = 0; i < listOfNumber.length; i++) {
+      //     geo.Point2 point = geo.Point2.geometry.newFrom(listOfNumber[i]);
+      //     listOfPoints.add(point);
+      //   }
+      //   pointSeries = geo.PointSeries.make(listOfNumber, geo.Point2.geometry);
+      //   lineStringSeries = geo.LineString(pointSeries);
+      //   listOfLineSeries.add(lineStringSeries);
+      //   String finalPolygonOBJ = "POLYGON((${lineStringSeries.toString()}))";
+      //   if (finalPolygonOBJ.contains("((LineString<Point<num>>([Point2(")) {
+      //     String polygonWKT1 = finalPolygonOBJ.replaceAll(
+      //         "((LineString<Point<num>>([Point2(", "((");
+      //     if (polygonWKT1.contains("), Point2(")) {
+      //       String polygonWKT2 = polygonWKT1.replaceAll("), Point2(", ",");
+      //       if (polygonWKT2.contains(", ")) {
+      //         String polygonWKT3 = polygonWKT2.replaceAll(", ", " ");
+      //         if (polygonWKT3.contains(")])")) {
+      //           finalPolygonWKTstring = polygonWKT3.replaceAll(")])", "");
+      //           print(finalPolygonWKTstring);
+      //         }
+      //       }
+      //     }
+      //   }
+      //   correctedListofLatlang.clear();
+      //   listOfNumber.clear();
+      //   listOfLatLong.clear();
     } catch (e) {
       Logger().e(e.toString());
       throw e;
     }
-    Logger().d("parsing finished");
+    // Logger().d("parsing finished");
   }
 
   convertingOBJtoModel() {

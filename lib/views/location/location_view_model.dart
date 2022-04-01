@@ -60,6 +60,10 @@ class LocationViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 2500;
 
+  int assetLocationCount = 0;
+  int assetInvalidLocationCount = 0;
+  bool showingCard=true;
+
   List<flutter_map.Marker> allMarkers = [];
 
   clusterMarker() {
@@ -284,7 +288,7 @@ class LocationViewModel extends InsiteViewModel {
             filtlerList: appliedFilters,
             pageNo: pageNumber,
             pageSize: pageSize,
-            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            startDate: Utils.fleetLocationDateFormate(startDate),
             endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _assetLocation = result;
@@ -338,6 +342,7 @@ class LocationViewModel extends InsiteViewModel {
 
   getAssetLocationHome() async {
     print('getAssetLocationHome');
+    _refreshing = true;
     AssetLocationData? result =
         await _assetLocationService.getAssetLocationWithoutFilter(
             pageNumber,
@@ -347,14 +352,14 @@ class LocationViewModel extends InsiteViewModel {
                 filtlerList: appliedFilters,
                 pageNo: pageNumber,
                 pageSize: pageSize,
-                startDate:
-                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+                startDate: Utils.fleetLocationDateFormate(startDate),
+                endDate: Utils.fleetLocationDateFormate(endDate)));
     if (result != null) {
       _assetLocation = result;
       clusterMarker();
       manager!.updateMap();
     }
+    _refreshing = false;
     _loading = false;
     notifyListeners();
   }
@@ -370,14 +375,29 @@ class LocationViewModel extends InsiteViewModel {
         '-lastlocationupdateutc',
         appliedFilters,
         await graphqlSchemaService!.getFleetLocationData(
-            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+            startDate:
+                //startDate,
+                Utils.fleetLocationDateFormate(startDate),
+            endDate:
+                //endDate,
+                Utils.fleetLocationDateFormate(endDate),
             filtlerList: appliedFilters,
             pageNo: pageNumber,
             pageSize: pageSize));
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;
+      _assetLocation?.countData?.forEach((count) {
+        if (count.countOf != null) {
+          if (count.countOf == "Invalid Location") {
+            assetInvalidLocationCount = count.count!;
+          }else if(count.countOf == "Valid Location"){
+             assetLocationCount = count.count!;
+          }else{
+            showingCard=false;
+          }
+        }
+      });
       clusterMarker();
     }
     _loading = false;
@@ -439,8 +459,13 @@ class LocationViewModel extends InsiteViewModel {
   getLocationFilterData(dropDownValue) async {
     _refreshing = true;
     notifyListeners();
-    AssetLocationData? result = await _assetLocationService
-        .getLocationFilterData(dropDownValue, pageNumber, pageSize);
+    AssetLocationData? result =
+        await _assetLocationService.getLocationFilterData(
+            dropDownValue,
+            pageNumber,
+            pageSize,
+            Utils.fleetLocationDateFormate(startDate),
+            Utils.fleetLocationDateFormate(endDate));
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;

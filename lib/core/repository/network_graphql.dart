@@ -27,8 +27,10 @@ class Network {
     return randomAlphaNumeric(43);
   }
 
-  static final graphqlEndpoint =
-      "https://cloud.api.trimble.com/osg-in/frame-gateway-gql/1.0/graphql";
+  // static final graphqlEndpoint =
+  //     "https://cloud.api.trimble.com/osg-in/frame-gateway-gql/1.0/graphql";
+        static final graphqlEndpoint =
+      "https://cloud.api.trimble.com/osg-in/gateway-gql-pre-prod/1.0/graphql";
   final LocalService? _localService = locator<LocalService>();
 
   Network._internal() {
@@ -83,8 +85,7 @@ class Network {
           "sub-customeruid": subId!
         },
       );
-Logger().i(query);
-      final res = await link
+final res = await link
           .request(Request(
             operation: Operation(document: gql.parseString(query!)),
           ))
