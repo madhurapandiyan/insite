@@ -76,6 +76,14 @@ class _DashboardViewState extends State<DashboardView> {
                             title: "Refresh",
                             onTap: () {
                               viewModel.onRefereshClicked();
+                              if (assetDropDown == "All Assets") {
+                                filterLocationKey.currentState!
+                                    .getAssetLocationHomeData();
+                              } else {
+                                filterLocationKey.currentState!
+                                    .getAssetLocationHomeFilterData(viewModel
+                                        .filterDataProductFamily[0].title);
+                              }
                             },
                           ),
                         )
@@ -93,16 +101,18 @@ class _DashboardViewState extends State<DashboardView> {
                           onChanged: (String? value) {
                             Logger().i("all assets dropdown change $value");
                             assetDropDown = value!;
-                            switchDropDownState = !switchDropDownState;
+
                             if (value != "All Assets") {
+                              switchDropDownState = true;
                               // "BACKHOE LOADER"
                               FilterData filterData =
                                   viewModel.filterDataProductFamily[0];
-                              viewModel.getFilterDataApplied(filterData, false);
+                              viewModel.getFilterDataApplied(filterData, true);
                               filterLocationKey.currentState!
                                   .getAssetLocationHomeFilterData(
                                       filterData.title);
                             } else {
+                              switchDropDownState = false;
                               viewModel.getData(true);
                               filterLocationKey.currentState!
                                   .getAssetLocationHomeData();
@@ -120,10 +130,10 @@ class _DashboardViewState extends State<DashboardView> {
                                         onValueSelected: (value) async {
                                           Logger().i(
                                               "product family dropdown change $value");
-                                          viewModel.getFilterDataApplied(
-                                              value!, true);
                                           viewModel
                                               .getProductFamilyAssetCount();
+                                          viewModel.getFilterDataApplied(
+                                              value!, true);
                                           filterLocationKey.currentState!
                                               .getAssetLocationHomeFilterData(
                                                   value.title);
@@ -223,13 +233,14 @@ class _DashboardViewState extends State<DashboardView> {
                             ? viewModel.idlingLevelData!.countData
                             : [],
                         isLoading: viewModel.idlingLevelDataloading,
-                        onFilterSelected: (value) async {
-                          await viewModel.onFilterSelected(value);
+                        onFilterSelected: (value, dateFilter) async {
+                          await viewModel.onDateAndFilterSelected(
+                              value, dateFilter);
                           viewModel.gotoUtilizationPage();
                         },
                         onRangeSelected: (IdlingLevelRange catchedRange) {
                           viewModel.idlingLevelRange = catchedRange;
-                          viewModel.getIdlingLevelData(true);
+                          viewModel.getIdlingLevelData(true, catchedRange);
                         },
                         isSwitching: viewModel.isSwitching,
                         isRefreshing: viewModel.refreshing,
@@ -245,8 +256,9 @@ class _DashboardViewState extends State<DashboardView> {
                         countData: viewModel.faultCountData != null
                             ? viewModel.faultCountData!.countData
                             : [],
-                        onFilterSelected: (value) async {
-                          await viewModel.onFilterSelected(value);
+                        onFilterSelected: (value, dateFilter) async {
+                          await viewModel.onDateAndFilterSelected(
+                              value, dateFilter);
                           viewModel.gotoFaultPage();
                         },
                         loading: viewModel.faultCountloading,

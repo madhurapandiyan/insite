@@ -44,10 +44,11 @@ class HealthDashboardViewModel extends InsiteViewModel {
   }
 
   getDashboardListData() async {
-    SingleAssetFaultResponse? result = await _faultService!.getDashboardListData(
-        _assetDetail!.assetUid,
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate));
+    SingleAssetFaultResponse? result = await _faultService!
+        .getDashboardListData(
+            _assetDetail!.assetUid,
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate));
 
     if (result != null) {
       _faultData = result.summaryData![0].countData;

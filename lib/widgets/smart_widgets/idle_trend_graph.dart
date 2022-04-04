@@ -17,6 +17,9 @@ class IdleTrendGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    idlePercentTrend?.intervals?.forEach((element) {
+      Logger().w(element.toJson());
+    });
     return Container(
       child: SfCartesianChart(
         title: ChartTitle(
@@ -31,9 +34,7 @@ class IdleTrendGraph extends StatelessWidget {
           labelStyle:
               TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
           majorGridLines: MajorGridLines(width: 0),
-          labelRotation: 270,
         ),
-        series: _getStackedColumnSeries(context),
         primaryYAxis: NumericAxis(
             title: AxisTitle(
                 text: '',
@@ -45,8 +46,28 @@ class IdleTrendGraph extends StatelessWidget {
                 TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
             majorGridLines: MajorGridLines(width: 0),
             minimum: 0,
-            maximum: 100,
+            maximum: 25,
             labelFormat: '{value}%'),
+        series: <SplineSeries<CumulativeChartData, String>>[
+          SplineSeries<CumulativeChartData, String>(
+              // Bind data source
+              markerSettings: MarkerSettings(
+             isVisible: true,
+             height: 20,
+             width: 20,
+             shape: DataMarkerType.circle,
+             borderWidth: 3,
+             color: tango,
+             borderColor:tango),
+              dataSource: idlePercentTrend!.intervals!.map((e) {
+                return CumulativeChartData(
+                    DateFormat('dd/MM/yyyy')
+                        .format(e.intervalEndDateLocalTime!),
+                    e.idlePercentage);
+              }).toList(),
+              xValueMapper: (CumulativeChartData sales, _) => sales.x,
+              yValueMapper: (CumulativeChartData sales, _) => sales.percentage)
+        ],
         tooltipBehavior: TooltipBehavior(),
         plotAreaBorderWidth: 0,
       ),
@@ -65,8 +86,35 @@ class IdleTrendGraph extends StatelessWidget {
           DateFormat('dd/MM/yyyy').format(item.intervalEndDateLocalTime!),
           item.idlePercentage));
     }
+    <SplineSeries<CumulativeChartData, String>>[
+      SplineSeries<CumulativeChartData, String>(
+        dataSource: chartData,
+        splineType: SplineType.natural,
+        color: Theme.of(context).buttonColor,
+        width: 1,
+        xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+        yValueMapper: (CumulativeChartData chartDate, _) =>
+            chartDate.percentage,
+      ),
+    ].forEach((element) {
+      element.dataSource.forEach((element1) {
+        Logger().i(element1.percentage);
+      });
+    });
+    // List<SplineSeries<CumulativeChartData, String>> data = [];
 
-    
+    // chartData.forEach((element) {
+    //   data.add(SplineSeries<CumulativeChartData, String>(
+    //       splineType: SplineType.natural,
+    //       color: Theme.of(context).buttonColor,
+    //       width: 1,
+    //       xValueMapper: (CumulativeChartData chartDate, _) => chartDate.x,
+    //       yValueMapper: (CumulativeChartData chartDate, _) =>
+    //           chartDate.percentage,
+    //       dataSource: chartData));
+    // });
+
+    // return data;
 
     return <SplineSeries<CumulativeChartData, String>>[
       SplineSeries<CumulativeChartData, String>(

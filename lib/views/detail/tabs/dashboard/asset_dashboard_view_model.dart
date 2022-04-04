@@ -1,3 +1,4 @@
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
@@ -38,10 +39,10 @@ class AssetDashboardViewModel extends InsiteViewModel {
     Logger().w(assetDetail?.toJson());
     this.log = getLogger(this.runtimeType.toString());
     _assetSingleHistoryService!.setUp();
-    Future.delayed(Duration(seconds: 1), () {
-      getAssetDetail();
-      getAssetUtilization();
-      getNotes();
+    Future.delayed(Duration(seconds: 1), () async {
+      await getAssetDetail();
+      await getAssetUtilization();
+      await getNotes();
     });
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:logger/logger.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class PercentageWidget extends StatelessWidget {
@@ -73,11 +74,7 @@ class PercentageWidget extends StatelessWidget {
                 size: 12,
                 fontWeight: FontWeight.bold,
               ),
-        percent: percentage == null
-            ? 0
-            : percentage!.runtimeType == String
-                ? double.parse(percentage!.toString()) / 100
-                : percentage! / 100,
+        percent: percentage == null ? 0.0 : (percentage as double ),
         linearStrokeCap: LinearStrokeCap.butt,
         progressColor: color,
         backgroundColor: concrete,
@@ -85,3 +82,4 @@ class PercentageWidget extends StatelessWidget {
     );
   }
 }
+

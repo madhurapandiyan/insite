@@ -49,8 +49,8 @@ class AssetViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-    Future.delayed(Duration(seconds: 2), () {
-      getAssetViewList();
+    Future.delayed(Duration(seconds: 2), () async {
+      await getAssetViewList();
     });
   }
 
@@ -65,9 +65,13 @@ class AssetViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters,
-            graphqlSchemaService!.getAssetFaultQuery(
-                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+            await graphqlSchemaService!.getAssetFaultQuery(
+                filtlerList: appliedFilters,
+                pageNo: pageNumber,
+                limit: pageSize,
+                startDate:
+                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null && result.assetFaults != null) {
       _totalCount = result.total;
       if (result.assetFaults!.isNotEmpty) {
@@ -111,9 +115,13 @@ class AssetViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters,
-            graphqlSchemaService!.getAssetFaultQuery(
-                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+            await graphqlSchemaService!.getAssetFaultQuery(
+                startDate:
+                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                filtlerList: appliedFilters,
+                pageNo: pageNumber,
+                limit: pageSize,
+                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();

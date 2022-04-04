@@ -486,7 +486,6 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                               .symmetric(
                                                           horizontal: 8),
                                                       child: TextFormField(
-                                                        autofocus: false,
                                                         onChanged: (value) {
                                                           viewModel
                                                               .materialSelection(
@@ -577,7 +576,6 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                           focusNode: viewModel.targetFocus,
                                           controller:
                                               viewModel.targetController,
-                                          autofocus: false,
                                           style: TextStyle(color: white),
                                           keyboardType: TextInputType.number,
                                           decoration: InputDecoration(
@@ -779,7 +777,6 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                     InsiteButton(
                                       textColor: white,
                                       onTap: () {
-                                        FocusScope.of(context).unfocus();
                                         viewModel.onSavingData();
                                       },
                                       height: mediaquerry.size.height * 0.05,

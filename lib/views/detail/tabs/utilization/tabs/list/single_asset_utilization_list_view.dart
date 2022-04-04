@@ -36,7 +36,8 @@ class _SingleAssetUtilizationListViewState
 
   @override
   void initState() {
-    Logger().d("selected asset product familiy ${widget.detail!.productFamily}");
+    Logger()
+        .d("selected asset product familiy ${widget.detail!.productFamily}");
     if (widget.detail!.productFamily == "BACKHOE LOADER") {
       productFamilyType = ProductFamilyType.BACKHOE_LOADER;
     } else if (widget.detail!.productFamily == "EXCAVATOR") {
@@ -111,64 +112,59 @@ class _SingleAssetUtilizationListViewState
                     // ),
                   ],
                 ),
-                productFamilyType != ProductFamilyType.ALL
-                    ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InsiteButtonWithSelectable(
-                              onTap: (value) {
-                                setState(() {
-                                  isProductFamilySelected = value;
-                                });
-                              },
-                              textColor: Colors.white,
-                              bgColor: Theme.of(context).backgroundColor,
-                              isSelectable: true,
-                              height: 30,
-                              fontSize: 12,
-                              title: productFamilyType ==
-                                      ProductFamilyType.BACKHOE_LOADER
-                                  ? "BACKHOE LOADER"
-                                  : productFamilyType ==
-                                          ProductFamilyType.EXCAVATOR
-                                      ? "EXCAVATOR"
-                                      : "",
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            InsiteButton(
-                              title: "Date Range",
-                              width: 90,
-                              bgColor: Theme.of(context).backgroundColor,
-                              textColor:
-                                  Theme.of(context).textTheme.bodyText1!.color,
-                              onTap: () async {
-                                dateRange = [];
-                                dateRange = await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => Dialog(
-                                      backgroundColor: transparent,
-                                      child: DateRangeView()),
-                                );
-                                if (dateRange != null && dateRange!.isNotEmpty) {
-                                  viewModel.refresh();
-                                }
-                              },
-                            )
-                          ],
-                        ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // if (productFamilyType ==
+                      //         ProductFamilyType.BACKHOE_LOADER ||
+                      //     productFamilyType == ProductFamilyType.EXCAVATOR)
+                      //   InsiteButtonWithSelectable(
+                      //     onTap: (value) {
+                      //       setState(() {
+                      //         isProductFamilySelected = value;
+                      //       });
+                      //     },
+                      //     textColor: Colors.white,
+                      //     bgColor: Theme.of(context).backgroundColor,
+                      //     isSelectable: true,
+                      //     height: 30,
+                      //     fontSize: 12,
+                      //     title: productFamilyType ==
+                      //             ProductFamilyType.BACKHOE_LOADER
+                      //         ? "BACKHOE LOADER"
+                      //         : productFamilyType == ProductFamilyType.EXCAVATOR
+                      //             ? "EXCAVATOR"
+                      //             : "",
+                      //   ),
+                      // SizedBox(
+                      //   width: 10,
+                      // ),
+                      InsiteButton(
+                        title: "Date Range",
+                        width: 90,
+                        bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        onTap: () async {
+                          dateRange = [];
+                          dateRange = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                backgroundColor: transparent,
+                                child: DateRangeView()),
+                          );
+                          if (dateRange != null && dateRange!.isNotEmpty) {
+                            viewModel.refresh();
+                          }
+                        },
                       )
-                    : SizedBox(
-                        height: 12,
-                      ),
-                productFamilyType != ProductFamilyType.ALL
-                    ? SizedBox(
-                        height: 24,
-                      )
-                    : SizedBox(),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
                 Flexible(
                   child: viewModel.loading
                       ? Container(

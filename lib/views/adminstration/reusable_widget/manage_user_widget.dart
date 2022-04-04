@@ -78,7 +78,7 @@ class ManageUserWidget extends StatelessWidget {
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: 'Job Type :',
-                      content: user!.user!.job_type == null
+                      content: user!.user!.job_type == "UnKnown"
                           ? "-"
                           : user!.user!.job_type.toString(),
                     ),

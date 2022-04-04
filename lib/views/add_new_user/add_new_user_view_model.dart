@@ -47,7 +47,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   Users? user;
   List<String> dropDownlist = [
     "Administrator",
-   // "Contributor",
+    // "Contributor",
     //"Creator",
     "Viewer"
   ];
@@ -116,8 +116,8 @@ class AddNewUserViewModel extends InsiteViewModel {
     _manageUserService.setUp();
     this.log = getLogger(this.runtimeType.toString());
     showLoadingDialog();
-    Future.delayed(Duration(seconds: 1), () {
-      getData();
+    Future.delayed(Duration(seconds: 1), () async {
+      await getData();
     });
   }
 

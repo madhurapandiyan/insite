@@ -64,9 +64,13 @@ class FaultListItemViewModel extends InsiteViewModel {
             pageNumber,
             appliedFilters,
             fault!.asset["uid"],
-            graphqlSchemaService!.getfaultQueryString(
-                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+            await graphqlSchemaService!.getfaultQueryString(
+              pageNo: pageNumber,
+              limit: pageSize,
+                startDate:
+                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                applyFilter: appliedFilters,
+                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null && result.faults != null) {
       if (result.faults!.isNotEmpty) {
         _faults.addAll(result.faults!);

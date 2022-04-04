@@ -254,7 +254,10 @@ class _AddReportViewState extends State<AddReportView> {
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: widget.scheduledReports == null
                                         ? CustomDropDownWidget(
-                                            items: [".CSV", ".XLS", ".PDF"],
+                                            items: [
+                                              ".CSV",
+                                              ".XLSX",
+                                            ],
                                             value: viewModel
                                                 .reportFormatDropDownValue,
                                             onChanged: (String? value) {
@@ -488,15 +491,21 @@ class _AddReportViewState extends State<AddReportView> {
                                     height: 20,
                                   ),
                                   SelectedAsset(
+                                    isLoading: viewModel.isAssetLoading,
                                     dropDownList: viewModel.dropDownList,
                                     initialValue: viewModel.initialValue,
+                                    onChangeSearchBox: (value) {
+                                      viewModel.onChangingSelectedAsset(value);
+                                    },
                                     onChange: (value) {
                                       viewModel.onChangingInitialValue(value);
                                     },
                                     onDeletingSelectedAsset: (i) {
                                       viewModel.onDeletingAsset(i);
                                     },
-                                    displayList: viewModel.selectedAsset,
+                                    displayList: viewModel.isSearching
+                                        ? viewModel.searchAsset
+                                        : viewModel.selectedAsset,
                                   ),
                                 ],
                               )
@@ -675,9 +684,16 @@ class _AddReportViewState extends State<AddReportView> {
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .backgroundColor,
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            color: Theme.of(context).cardColor),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: black,
+                                                blurRadius: 2,
+                                              )
+                                            ]),
                                         child: Center(
                                           child: Row(
                                             crossAxisAlignment:
@@ -686,6 +702,10 @@ class _AddReportViewState extends State<AddReportView> {
                                                 MainAxisAlignment.spaceAround,
                                             children: [
                                               InsiteText(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1!
+                                                    .color,
                                                 text: viewModel
                                                     .selectedUser[i].email!,
                                               ),

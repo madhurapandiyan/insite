@@ -35,8 +35,8 @@ class Notification {
   String? model;
   String? location;
   int? iconKey;
-  double? latitude;
-  double? longitude;
+  dynamic latitude;
+  dynamic longitude;
   String? notificationType;
   String? notificationSubType;
   String notificationConfigJSON;

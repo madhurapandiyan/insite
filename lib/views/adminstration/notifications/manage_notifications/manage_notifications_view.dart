@@ -36,7 +36,6 @@ class ManageNotificationsView extends StatelessWidget {
                 side: BorderSide(color: cardcolor),
               ),
               child: Container(
-                
                 margin: EdgeInsets.all(15),
                 child: Column(
                   children: [
@@ -47,11 +46,7 @@ class ManageNotificationsView extends StatelessWidget {
                         title: "SEARCH",
                         showLoading: viewModel.isSearching,
                         onChanged: (searchText) {
-                          if (searchText.isNotEmpty) {
-                            viewModel.getSearchListData(searchText);
-                          } else {
-                            viewModel.getManageNotificationsData();
-                          }
+                          viewModel.getSearchListData(searchText);
                         },
                       ),
                     ),
@@ -63,7 +58,7 @@ class ManageNotificationsView extends StatelessWidget {
                           ? InsiteProgressBar()
                           : viewModel.notifications.isNotEmpty
                               ? ListView.separated(
-                                controller: viewModel.controller,
+                                  controller: viewModel.controller,
                                   itemBuilder: (context, int index) {
                                     ConfiguredAlerts? alerts =
                                         viewModel.notifications[index];

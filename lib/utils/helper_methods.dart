@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/locator.dart';
@@ -10,8 +11,10 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-
+import '../core/models/add_notification_payload.dart' as add;
+import '../core/models/add_notification_payload.dart';
 import '../core/models/manage_notifications.dart';
+import 'date.dart';
 
 class Utils {
   static String getLastReportedDate(date) {
@@ -213,6 +216,34 @@ class Utils {
     }
   }
 
+  static String getDateInFormatyyyyMMddTHHmmssZStartFaultDate(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString());
+      //.subtract(Duration(days: 1))
+      //.add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static String getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate =
+          DateTime.parse(parseDate.toString()).subtract(Duration(days: 1));
+      //.add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
   static String getDateInFormatReportCardDate(date) {
     try {
       DateTime parseDate =
@@ -234,6 +265,20 @@ class Utils {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
           .add(Duration(hours: 18, minutes: 29, seconds: 59));
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static String getDateInFormatyyyyMMddTHHmmssZEndFaultDate(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString())
+          .subtract(Duration(days: 1))
+          .add(Duration(hours: 23, minutes: 59, seconds: 59));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -795,7 +840,7 @@ class Utils {
   static String getFilterData(
       List<FilterData?> appliedFilter, FilterType type) {
     String? filterDetails;
-
+//Logger().w(appliedFilter.first?.toJson());
     if (appliedFilter.isNotEmpty) {
       for (var i = 0; i < appliedFilter.length; i++) {
         // if (type == FilterType.ASSET_STATUS) {
@@ -826,15 +871,22 @@ class Utils {
     }
   }
 
-  static List getStringListData(List listData) {
-    String doublequotes = "\"";
-    List<dynamic> value = [];
-    value.clear();
-    listData.forEach((element) {
-      value.add(doublequotes + element + doublequotes);
-    });
-
-    return value;
+  static getStringListData(List? listData) {
+    if (listData == null) {
+      return null;
+    } else {
+      String doublequotes = "\"";
+      List<dynamic> value = [];
+      value.clear();
+      listData.forEach((element) {
+        if (value.any((data) => (data as String).contains(data))) {
+        } else {
+          value.add(doublequotes + element + doublequotes);
+        }
+      });
+      Logger().w(value);
+      return value;
+    }
   }
 
   static String getNotificationCondition(ConfiguredAlerts? alert) {
@@ -844,9 +896,34 @@ class Utils {
           "Asset Staus ${alert?.operands?.first.condition} ${alert?.operands?.first.operandName}";
       return data;
     } else if (alert?.notificationTypeGroupID == 8) {
-      data =
-          "Fault Code ${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
-      return data;
+      String faultCondition = "Fault Code";
+      var OperandData = alert!.operands
+          ?.where((element) => element.operandName == "Severity")
+          .toList();
+      if (OperandData!.length == 1) {
+        if (OperandData.any((element) => element.value == "1")) {
+          faultCondition = faultCondition + " High";
+        }
+        if (OperandData.any((element) => element.value == "2")) {
+          faultCondition = faultCondition + " Medium";
+        }
+        if (OperandData.any((element) => element.value == "3")) {
+          faultCondition = faultCondition + " Low";
+        }
+      } else if (OperandData.length >= 2) {
+        if (OperandData.any((element) => element.value == "1")) {
+          faultCondition = faultCondition + " High";
+        }
+        if (OperandData.any((element) => element.value == "2")) {
+          faultCondition = faultCondition + " And Medium";
+        }
+        if (OperandData.any((element) => element.value == "3")) {
+          faultCondition = faultCondition + " And Low";
+        }
+      } else {
+        faultCondition = "Fault Code";
+      }
+      return faultCondition;
     } else if (alert?.notificationTypeGroupID == 5) {
       data =
           "Engine Hours ${alert?.operands?.first.condition}  ${alert?.operands?.first.value}${alert?.operands?.first.unit}";
@@ -864,36 +941,41 @@ class Utils {
     }
   }
 
-  static getReportColumn(String value) {
-    var list = [];
+  static List<String>? getReportColumn(String value) {
+    List<String>? list = [];
     if (value == "Asset Operation") {
       list = [
         "assetId",
         "assetSerialNumber",
         "lastEvent",
         "lastEventTime",
-        "customAssetState",
         "distanceTravelledKilometers",
         "lastKnownOperator",
         "totalDuration"
       ];
+      return list;
     } else if (value == "Fleet Summary") {
       list = [
         "assetId",
         "assetSerialNumber",
-        "lastEvent",
-        "lastEventTime",
-        "customAssetState",
-        "distanceTravelledKilometers",
-        "lastKnownOperator",
-        "totalDuration"
+        "model",
+        "status",
+        "hourMeter",
+        "lastReportedLocation",
+        "lastReportedTime",
+        "fuelLevelLastReported",
+        "fuelReportedTime",
+        "notifications",
+        "geofenceList",
+        "isGpsRollOverAffected"
       ];
+      return list;
     } else if (value == "Multi-Asset Utilization") {
       list = [
         "callouts",
         "assetId",
         "assetSerialNumber",
-        "make-model",
+        "model",
         "latestUtzReport",
         "runtimeHours",
         "targetRuntime",
@@ -909,6 +991,7 @@ class Utils {
         "startDate",
         "endDate"
       ];
+      return list;
     } else if (value == "Utilization Details") {
       list = [
         "callouts",
@@ -929,11 +1012,12 @@ class Utils {
         "startDate",
         "endDate"
       ];
+      return list;
     } else if (value == "Fault Code Asset Details") {
       list = [
         "assetId",
         "assetSerialNumber",
-        "make-model",
+        "model",
         "faultIdentifiers",
         "description",
         "source",
@@ -942,11 +1026,12 @@ class Utils {
         "hourMeter",
         "lastReportedLocation"
       ];
+      return list;
     } else if (value == "Fault Summary Faults List") {
       list = [
         "assetId",
         "serialNo",
-        "make-model",
+        "model",
         "faultCode",
         "faultDate",
         "severityLabel",
@@ -956,7 +1041,380 @@ class Utils {
         "lastReportedDate",
         "hourMeter"
       ];
+      return list;
+    } else if (value == "Asset Location History") {
+      list = [
+        "assetName",
+        "serialNumber",
+        "locationEventLocalTime",
+        "hourmeter",
+        "odometer",
+        "location",
+        "assetStatus",
+        "fromDate",
+        "toDate",
+        "latitude",
+        "longitude"
+      ];
+      return list;
     }
-    return list;
+    return null;
   }
+
+  static String? getQueryUrl(
+      String assetsDropDownValue, List<String>? associatedIdentifier) {
+    String querUrl;
+    switch (assetsDropDownValue) {
+      case "Fleet Summary":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v5?sort=assetid";
+        return querUrl;
+      case "Multi-Asset Utilization":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization/v5?startDate=&endDate=&sort=-RuntimeHours";
+
+        return querUrl;
+      case "Utilization Details":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?assetUid=${associatedIdentifier!.first}&startDate=&endDate=&sort=-RuntimeHours";
+
+        return querUrl;
+      case "Asset Operation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/AssetOperation?startDate=&endDate=";
+        return querUrl;
+      case "Fault Summary Faults List":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/Health/Faults/Search?startDateTime=&endDateTime=&langDesc=en-US";
+        return querUrl;
+      case "Fault Code Asset Details":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=${associatedIdentifier!.first}&startDateTime=&endDateTime=&langDesc=en-US";
+        return querUrl;
+    }
+  }
+
+  static String? getEditQueryUrl(
+      String assetsDropDownValue, List<String>? associatedIdentifier) {
+    String querUrl;
+    switch (assetsDropDownValue) {
+      case "FleetSummary":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v5?sort=assetid";
+        return querUrl;
+      case "MultiAssetUtilization":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization/v5?startDate=&endDate=&sort=-RuntimeHours";
+
+        return querUrl;
+      case "UtilizationDetails":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?assetUid=${associatedIdentifier!.first}&startDate=&endDate=&sort=-RuntimeHours";
+
+        return querUrl;
+      case "AssetOperation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/AssetOperation?startDate=&endDate=";
+        return querUrl;
+      case "FaultSummaryFaultsList":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/Health/Faults/Search?startDateTime=&endDateTime=&langDesc=en-US";
+        return querUrl;
+      case "FaultCodeAssetDetails":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=${associatedIdentifier!.first}&startDateTime=&endDateTime=&langDesc=en-US";
+        return querUrl;
+    }
+  }
+
+  static reportSvcBody(String? value, List<String>? assetIds) {
+    Logger().i(value);
+    if (value == "Asset Operation" || value == "AssetOperation") {
+      return assetIds;
+    } else if (value == "Fleet Summary" || value == "FleetSummary") {
+      return assetIds;
+    } else if (value == "Multi-Asset Utilization" ||
+        value == "MultiAssetUtilization") {
+      return assetIds;
+    } else if (value == "Utilization Details" ||
+        value == "UtilizationDetails") {
+      return null;
+    } else if (value == "Fault Code Asset Details" ||
+        value == "FaultCodeAssetDetails") {
+      return null;
+    } else if (value == "Fault Summary Faults List" ||
+        value == "FaultSummaryFaultsList") {
+      return {
+        "colFilters": getStringListData([
+          "basic",
+          "details",
+          "dynamic",
+          "asset.basic",
+          "asset.details",
+          "asset.dynamic"
+        ]),
+        "assetuids": getStringListData(assetIds!)
+      };
+    } else {
+      return null;
+    }
+  }
+
+  static String getSvcMethod(String? assetsDropDownValue) {
+    if (assetsDropDownValue == "Utilization Details") {
+      return "";
+    } else if (assetsDropDownValue == "Fault Code Asset Details") {
+      return "GET";
+    } else {
+      return "POST";
+    }
+  }
+
+  static getNotificationSchedule(List<add.Schedule> data) {
+    List<Map<String, dynamic>> scheduleData = [];
+    String doubleQuote = "\"";
+    data.forEach((element) {
+      Map<String, dynamic>? singleSchedule = null;
+      singleSchedule = {
+        "day": element.day,
+        "startTime": doubleQuote + element.startTime! + doubleQuote,
+        "endTime": doubleQuote + element.endTime! + doubleQuote,
+      };
+      scheduleData.add(singleSchedule);
+    });
+    return scheduleData;
+  }
+
+  static getOperand(List<add.Operand>? data) {
+    List<Map<String, dynamic>> operandData = [];
+    String doubleQuote = "\"";
+    data?.forEach((element) {
+      Map<String, dynamic>? singleOperand = null;
+      singleOperand = {
+        "operandID": element.operandID,
+        "operatorId": element.operatorId,
+        "value": doubleQuote + element.value! + doubleQuote
+      };
+      operandData.add(singleOperand);
+    });
+    return operandData;
+  }
+
+  static getNotificationSubscribers(NotificationSubscribers data) {
+    Map<String, dynamic>? notificationSubscribers;
+    var email = getStringListData(data.emailIds!);
+    var phoneNo = getStringListData(data.phoneNumbers ?? []);
+    notificationSubscribers = {"emailIds": email, "phoneNumbers": phoneNo};
+    return notificationSubscribers;
+  }
+
+  static FilterData onFilterIdleDate(DateRangeType dateRangeType) {
+    Logger().d(
+        "on asset utilization filter selected ${describeEnum(dateRangeType)}");
+    DateTime? fromDate, toDate;
+    fromDate = DateUtil.calcFromDate(dateRangeType);
+    toDate = DateTime.now();
+    Logger().d("from date ${fromDate} to date ${toDate}");
+    FilterData data = FilterData(
+        title: "Date Range",
+        count: describeEnum(dateRangeType),
+        extras: [
+          '${fromDate!.year}-${fromDate.month}-${fromDate.day}',
+          '${toDate.year}-${toDate.month}-${toDate.day}',
+          describeEnum(dateRangeType)
+        ],
+        isSelected: true,
+        type: FilterType.DATE_RANGE);
+    return data;
+  }
+
+  static hoursToPercentCalculate(dynamic value) {
+    var data = (value ?? 0.0 / 100) / 100;
+    if (data > 1.0) {
+      data = data / 100;
+    }
+    return data;
+  }
+
+  static efficiencyToPercent(dynamic value) {
+    var data = value / 100;
+    return data;
+  }
+
+  static List<String>? getIdlingFilterData(String? value) {
+    if (value != null) {
+      List<String> data = [];
+      switch (value) {
+        case "[10,15]":
+          data.addAll(["10", "15"]);
+          break;
+        case "[0,10]":
+          data.addAll(["0", "10"]);
+          break;
+        case "[15,25]":
+          data.addAll(["15", "25"]);
+          break;
+        case "[25,]":
+          data.addAll(["25", ""]);
+          break;
+        default:
+      }
+      return data;
+    } else {
+      return null;
+    }
+  }
+
+  static String getIdlingDateFormat(dynamic value) {
+    var data = DateFormat('MM/dd/yyyy').format(value);
+    return data;
+  }
+
+  static String getIdlingDateParse(dynamic value) {
+    var data = DateFormat('yyyy-MM-dd').parse(value);
+    var parsedDate = DateFormat('MM/dd/yyyy').format(data);
+    return parsedDate;
+  }
+
+  static fleetLocationDateFormate(dynamic startDate) {
+    var data = DateFormat("yyyy-MM-dd").parse(startDate);
+    var formatDate = DateFormat("yyyy-MM-dd").format(data);
+    return formatDate;
+  }
+
+  static getFaultDateFormat(dynamic value) {
+    var data = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(value);
+    Logger().wtf(data);
+    return data;
+  }
+
+  static getFaultStartDateParsing(dynamic value) {
+    var data = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(value);
+    return data;
+  }
+
+  static getFaultEndDateParsing(dynamic value) {
+    var data = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        .parse(value)
+        .add(Duration(hours: 23, minutes: 59, seconds: 59));
+    return data;
+  }
+
+  static List<String>? getAssetIdentifier(String? value) {
+    if (value!.isEmpty) {
+      return null;
+    } else {
+      List<String> listData = [];
+      List<String> formatedList = [];
+      var correctedString = value.replaceAll(r'\', r'\\');
+      var splitedList = correctedString.split(",");
+      splitedList.forEach((element) {
+        if (element.contains("[")) {
+          var first = element.replaceAll("[", "");
+          listData.add(first);
+        } else if (element.contains("]")) {
+          var last = element.replaceAll("]", "");
+          listData.add(last);
+        } else {
+          listData.add(element);
+        }
+      });
+      listData.forEach((element) {
+        String? data;
+        if (element.contains("]")) {
+          data = element.replaceAll("]", "");
+          var assetId = data.replaceAll("\"", "");
+          formatedList.add(assetId.trimLeft().trimRight());
+        } else if (element.contains("[")) {
+          data = element.replaceAll("[", "");
+          var assetId = data.replaceAll("\"", "");
+          formatedList.add(assetId.trimLeft().trimRight());
+        } else {
+          data = element;
+          var assetId = data.replaceAll("\"", "");
+          formatedList.add(assetId.trimLeft().trimRight());
+        }
+      });
+      Logger().i(formatedList);
+      return formatedList;
+    }
+  }
+
+  static String? getAssetIdentifierFromUrl(String? value) {
+    var data = value?.split("assetUid=");
+    var assetIdentifierList = data![1].split("&");
+    Logger().i(assetIdentifierList.first);
+    return assetIdentifierList.first;
+  }
+
+  static List<String>? getAssetIdentifierForFaultSummaryType(String? value) {
+    if (value!.isEmpty) {
+      return null;
+    } else {
+      List<String> formatedList = [];
+      List<String> testListData = [];
+      List<String> correctedListData = [];
+      var data = value.replaceAll(r'\', r'\\');
+      var list = data.split("\"assetuids\":");
+      var listData = list[1].replaceAll("}", "").split(",");
+      listData.forEach((element) {
+        if (element.contains("[")) {
+          var first = element.replaceAll("[", "");
+          testListData.add(first);
+        } else if (element.contains("]")) {
+          var last = element.replaceAll("]", "");
+          testListData.add(last);
+        } else {
+          testListData.add(element);
+        }
+      });
+      testListData.forEach((element) {
+        formatedList.add(element.replaceAll("\"", ""));
+      });
+
+      formatedList.forEach((element) {
+        if (element.contains("]")) {
+          var data = element.replaceAll("]", "");
+          correctedListData.add(data);
+        } else {
+          correctedListData.add(element);
+        }
+      });
+
+      Logger().i(correctedListData);
+      return correctedListData;
+    }
+  }
+
+  static String? getAssetDropdownValue(String value) {
+    if (value == "Asset Operation" || value == "AssetOperation") {
+      return "Asset Operation";
+    } else if (value == "Fleet Summary" || value == "FleetSummary") {
+      return "Fleet Summary";
+    } else if (value == "Multi-Asset Utilization" ||
+        value == "MultiAssetUtilization") {
+      return "Multi-Asset Utilization";
+    } else if (value == "Utilization Details" ||
+        value == "UtilizationDetails") {
+      return "Utilization Details";
+    } else if (value == "Fault Code Asset Details" ||
+        value == "FaultCodeAssetDetails") {
+      return "Fault Code Asset Details";
+    } else if (value == "Fault Summary Faults List" ||
+        value == "FaultSummaryFaultsList") {
+      return "Fault Summary Faults List";
+    } else {
+      return null;
+    }
+  }
+
+  // static getSvcBody(List<String> value) {
+  //   List<String> data = [];
+  //   value.forEach((element) {
+  //     data = element.split("\",\"");
+  //   });
+  //   data.forEach((element) {
+  //     element.replaceAll("", replace);
+  //   });
+  // }
 }

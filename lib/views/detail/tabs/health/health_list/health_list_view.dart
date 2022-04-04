@@ -26,12 +26,14 @@ class _HealthListViewState extends State<HealthListView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<HealthListViewModel>.reactive(
-      builder: (BuildContext context, HealthListViewModel viewModel, Widget? _) {
+      builder:
+          (BuildContext context, HealthListViewModel viewModel, Widget? _) {
         return Container(
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             border: Border.all(
-                color: Theme.of(context).textTheme.bodyText1!.color!, width: 0.0),
+                color: Theme.of(context).textTheme.bodyText1!.color!,
+                width: 0.0),
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           child: Stack(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
+import '../../theme/colors.dart';
+
 class DayCheck extends StatelessWidget {
   final String? day;
   final Color? color;
@@ -30,6 +32,7 @@ class DayCheck extends StatelessWidget {
         width: 40,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
+            border: Border.all(width: 1, color: Theme.of(context).buttonColor),
             color: isSelected == true
                 ? Theme.of(context).buttonColor
                 : Theme.of(context).cardColor),
@@ -39,14 +42,15 @@ class DayCheck extends StatelessWidget {
             FittedBox(
               child: InsiteText(
                 text: day!,
-                color: color,
+                color:
+                    isSelected == true ? white : Theme.of(context).buttonColor,
                 //size: day=="fri"?10:null,
               ),
             ),
             Icon(
               Icons.check,
               size: 20,
-              color: color,
+              color: isSelected == true ? white : Theme.of(context).buttonColor,
             )
           ],
         ),

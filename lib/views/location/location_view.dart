@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:ui';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
@@ -72,11 +73,15 @@ class _LocationViewState extends State<LocationView> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(4))),
                             child: Padding(
-                              padding: EdgeInsets.only(top: 10,left: 10,bottom: 5),
+                              padding:
+                                  EdgeInsets.only(top: 10, left: 10, bottom: 5),
                               child: InsiteText(
-                                text: viewModel.pageSize.toString() +
+                                text: viewModel
+                                        .assetLocation!.mapRecords!.length
+                                        .toString() +
                                     " of " +
-                                    viewModel.totalCount.toString(),
+                                    viewModel.totalCount.toString() +
+                                    " assets",
                                 size: 15,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -162,27 +167,31 @@ class _LocationViewState extends State<LocationView> {
                               ],
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.all(16.0),
-                            color: Theme.of(context).cardColor,
-                            width: MediaQuery.of(context).size.width * 1,
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            child: Center(
-                              child: InsiteText(
-                                text: viewModel
-                                        .assetLocation!.countData!.first.count!
-                                        .toString() +
-                                    "out of " +
-                                    viewModel.totalCount.toString() +
-                                    " assets do not have location information",
-                              ),
-                            ),
-                          ),
+                          viewModel.showingCard
+                              ? Container(
+                                  margin: EdgeInsets.all(16.0),
+                                  color: Theme.of(context).cardColor,
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: Center(
+                                    child: InsiteText(
+                                      text: viewModel.assetInvalidLocationCount
+                                              .toString() +
+                                          " out of " +
+                                          viewModel.assetLocationCount
+                                              .toString() +
+                                          " assets do not have location information",
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(),
                           SizedBox(height: 10),
                           Expanded(
                             child: Stack(
                               children: [
                                 GoogleMap(
+                                  zoomGesturesEnabled: true,
                                   onCameraMove: (position) {
                                     viewModel.customInfoWindowController
                                         .onCameraMove!();

@@ -39,7 +39,7 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
 
   SavingSmsModel? _savingSmsModel;
 
-  List<SavingSmsModel?> listOSavingSmsModel = [];
+  List<SavingSmsModel> listOSavingSmsModel = [];
 
   SavingSmsResponce? savingData;
 
@@ -214,7 +214,7 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
             Model: singleAssetModelResponce![i].Model,
             Name: nameList[i],
             StartDate: singleAssetModelResponce![i].StartDate);
-        listOSavingSmsModel.add(_savingSmsModel);
+        listOSavingSmsModel.add(_savingSmsModel!);
       }
       Logger().d(_savingSmsModel!.toJson());
       savingData = await _smsScheduleService!.savingSms(listOSavingSmsModel);

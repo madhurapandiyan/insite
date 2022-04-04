@@ -84,11 +84,11 @@ class ManageUserViewModel extends InsiteViewModel {
           }
         }
       });
-      Future.delayed(Duration(seconds: 1), () {
-        getSelectedFilterData();
+      Future.delayed(Duration(seconds: 1), () async {
+        await getSelectedFilterData();
       });
-      Future.delayed(Duration(seconds: 2), () {
-        getManagerUserAssetList();
+      Future.delayed(Duration(seconds: 2), () async {
+        await getManagerUserAssetList();
       });
     } catch (e) {
       Logger().e(e.toString());

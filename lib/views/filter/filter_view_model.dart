@@ -4,13 +4,15 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/services/asset_status_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
   AssetStatusService? _assetService = locator<AssetStatusService>();
 
-  bool _loading = true;
+  bool _loading = false;
   bool get loading => _loading;
   List<FilterData> filterDataDeviceType = [];
   List<FilterData> filterDataMake = [];
@@ -29,64 +31,122 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterFormatType = [];
   List<FilterData> filterReportType = [];
 
+  bool isShowing = true;
+
   List<FilterData?>? selectedFilterData = [];
   bool _isRefreshing = false;
   bool get isRefreshing => _isRefreshing;
 
-  FilterViewModel() {
+  FilterViewModel(bool isLoad, ScreenType? type) {
     setUp();
     _assetService!.setUp();
-    Future.delayed(Duration(seconds: 1), () {
-      getSelectedFilterData();
-      getFilterData();
+    Future.delayed(Duration(seconds: 1), () async {
+      if (isLoad) {
+        await getSelectedFilterData();
+        await getFilterData(type);
+        await getData();
+      } else {
+        await getSelectedFilterData();
+        getData();
+      }
     });
   }
+  getData() async {
+    selectedFilterData = appliedFilters;
+    _loading = false;
+    notifyListeners();
+  }
 
-  getFilterData() async {
-    AssetCount? resultModel = await _assetService!.getAssetCount("model",
-        FilterType.MODEL, graphqlSchemaService!.getFilterData("model"), false);
-    addData(filterDataModel, resultModel, FilterType.MODEL);
+  getFilterData(ScreenType? screenType) async {
+    showLoadingDialog();
+    if (screenType == ScreenType.FLEET ||
+        screenType == ScreenType.LOCATION ||
+        screenType == ScreenType.UTILIZATION ||
+        screenType == ScreenType.ASSET_OPERATION ||
+        screenType == ScreenType.HEALTH) {
+      AssetCount? resultModel = await _assetService!.getAssetCount(
+          "model",
+          FilterType.MODEL,
+          graphqlSchemaService!.getFilterData("model"),
+          false);
+      addData(filterDataModel, resultModel, FilterType.MODEL);
+      AssetCount? resultDeviceType = await _assetService!.getAssetCount(
+          "deviceType",
+          FilterType.DEVICE_TYPE,
+          graphqlSchemaService!.getFilterData("deviceType"),
+          false);
+      addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
+      AssetCount? resultManufacturer = await _assetService!.getAssetCount(
+          "manufacturer",
+          FilterType.MAKE,
+          graphqlSchemaService!.getFilterData("manufacturer"),
+          false);
+      addData(filterDataMake, resultManufacturer, FilterType.MAKE);
+      addData(
+          filterDataManufacturer, resultManufacturer, FilterType.MANUFACTURER);
+      AssetCount? resultProductfamily = await _assetService!.getAssetCount(
+          "productfamily",
+          FilterType.PRODUCT_FAMILY,
+          graphqlSchemaService!.getFilterData("productfamily"),
+          false);
+      addData(filterDataProductFamily, resultProductfamily,
+          FilterType.PRODUCT_FAMILY);
 
-    AssetCount? resultDeviceType = await _assetService!.getAssetCount(
-        "deviceType",
-        FilterType.DEVICE_TYPE,
-        graphqlSchemaService!.getFilterData("deviceType"),
-        false);
-    addData(filterDataDeviceType, resultDeviceType, FilterType.DEVICE_TYPE);
+      AssetCount? resultAllAssets = await _assetService!.getAssetCount(
+          "assetstatus",
+          FilterType.ALL_ASSETS,
+          graphqlSchemaService!.getFilterData("assetstatus"),
+          false);
+      addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
-    // AssetCount resultSubscriptiontype = await _assetService.getAssetCount(
-    //     "subscriptiontype", FilterType.SUBSCRIPTION_DATE);
-    // addData(filterDataSubscription, resultSubscriptiontype,
-    //     FilterType.SUBSCRIPTION_DATE);
+      AssetCount? resultFuelLevel = await _assetService!.getFuellevel(
+          FilterType.FUEL_LEVEL, graphqlSchemaService!.fuelLevelCount);
+      filterDataFuelLevel.removeWhere((element) => element.title == "");
+      addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
-    AssetCount? resultManufacturer = await _assetService!.getAssetCount(
-        "manufacturer",
-        FilterType.MAKE,
-        graphqlSchemaService!.getFilterData("manufacturer"),
-        false);
-    addData(filterDataMake, resultManufacturer, FilterType.MAKE);
-    addData(
-        filterDataManufacturer, resultManufacturer, FilterType.MANUFACTURER);
+      // AssetCount? resultSubscriptiontype = await _assetService?.getAssetCount(
+      //     "subscriptiontype",
+      //     FilterType.SUBSCRIPTION_DATE,
+      //     graphqlSchemaService!.getFilterData("subscriptiontype"),
+      //     false);
+      // addData(filterDataSubscription, resultSubscriptiontype,
+      //     FilterType.SUBSCRIPTION_DATE);
+    } else if (screenType == ScreenType.HEALTH) {
+      AssetCount? resultSeverity = await _assetService!.getFaultCount(
+          Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
+          Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+          graphqlSchemaService!.getFaultCountData(
+            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(
+                startDate),
+            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+          ));
+      addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
+    } else if (screenType == ScreenType.USER_MANAGEMENT) {
+      AssetCount? resultJobType = await _assetService!.getAssetCount(
+          "JobType",
+          FilterType.JOBTYPE,
+          graphqlSchemaService!.getUserManagementRefine("JobType"),
+          null);
+      addUserData(filterDataJobType, resultJobType, FilterType.JOBTYPE);
 
-    AssetCount? resultProductfamily = await _assetService!.getAssetCount(
-        "productfamily",
-        FilterType.PRODUCT_FAMILY,
-        graphqlSchemaService!.getFilterData("productfamily"),
-        false);
-    addData(filterDataProductFamily, resultProductfamily,
-        FilterType.PRODUCT_FAMILY);
-
-    AssetCount? resultAllAssets = await _assetService!.getAssetCount(
-        "assetstatus",
-        FilterType.ALL_ASSETS,
-        graphqlSchemaService!.getFilterData("assetstatus"),
-        false);
-    addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
-
-    AssetCount? resultFuelLevel = await _assetService!.getFuellevel(
-        FilterType.FUEL_LEVEL, graphqlSchemaService!.fuelLevelCount);
-    filterDataFuelLevel.removeWhere((element) => element.title == "");
-    addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
+      AssetCount? resultUserType = await _assetService!.getAssetCount(
+          "UserType",
+          FilterType.USERTYPE,
+          graphqlSchemaService!.getUserManagementRefine("UserType"),
+          null);
+      addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
+    } else if (screenType == ScreenType.MANAGE_REPORT) {
+      ReportCount? resultReportFrequencyType = await _assetService!
+          .getCountReportData(graphqlSchemaService!.reportFilterCountData);
+      addReportData(
+          filterFrequencyType,
+          resultReportFrequencyType,
+          FilterType.FREQUENCYTYPE,
+          filterFormatType,
+          filterReportType,
+          FilterType.REPORT_FORMAT,
+          FilterType.REPORT_TYPE);
+    }
 
     AssetCount? resultIdlingLevel = await _assetService!.getIdlingLevelData(
         startDate,
@@ -99,43 +159,10 @@ class FilterViewModel extends InsiteViewModel {
             startDate: DateTime.now().subtract(Duration(days: 1)).toString()));
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
-
-    AssetCount? resultSeverity = await _assetService!.getFaultCount(
-        Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        graphqlSchemaService!.getFaultCountData(
-          startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(
-              startDate),
-          endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        ));
-    addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
-
-    AssetCount? resultJobType = await _assetService!.getAssetCount(
-        "JobType",
-        FilterType.JOBTYPE,
-        graphqlSchemaService!.getUserManagementRefine("JobType"),
-        null);
-    addUserData(filterDataJobType, resultJobType, FilterType.JOBTYPE);
-
-    AssetCount? resultUserType = await _assetService!.getAssetCount(
-        "UserType",
-        FilterType.USERTYPE,
-        graphqlSchemaService!.getUserManagementRefine("UserType"),
-        null);
-    addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
-
-    ReportCount? resultReportFrequencyType =
-        await _assetService!.getCountReportData(graphqlSchemaService!.reportFilterCountData);
-    addReportData(
-        filterFrequencyType,
-        resultReportFrequencyType,
-        FilterType.FREQUENCYTYPE,
-        filterFormatType,
-        filterReportType,
-        FilterType.REPORT_FORMAT,
-        FilterType.REPORT_TYPE);
+    isShowing = false;
 
     _loading = false;
+    hideLoadingDialog();
     notifyListeners();
   }
 
@@ -311,6 +338,7 @@ class FilterViewModel extends InsiteViewModel {
     if (list.isEmpty) {
       clearFilterOfType(type);
     } else {
+      Logger().e(type);
       list.forEach((element) {
         updateFilter(element);
       });

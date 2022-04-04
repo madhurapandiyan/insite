@@ -195,13 +195,11 @@ class HttpWrapper {
 
   Future<Response<dynamic>> dioFiveRetryInterceptor(
       RequestOptions requestOption) async {
-    Logger().i(requestOption.baseUrl);
-    Logger().i(requestOption.path);
     final options = Options(
         method: requestOption.method,
         headers: requestOption.headers,
         extra: requestOption.extra);
-    return dioTwo.request(requestOption.baseUrl + requestOption.path,
+    return dioFive.request(requestOption.baseUrl + requestOption.path,
         data: requestOption.data,
         queryParameters: requestOption.queryParameters,
         options: options);
@@ -274,7 +272,7 @@ class HttpWrapper {
         method: requestOption.method,
         headers: requestOption.headers,
         extra: requestOption.extra);
-    return dioTwo.request(requestOption.baseUrl + requestOption.path,
+    return dioTen.request(requestOption.baseUrl + requestOption.path,
         data: requestOption.data,
         queryParameters: requestOption.queryParameters,
         options: options);
@@ -316,23 +314,15 @@ class HttpWrapper {
             ErrorInterceptorHandler errorInterceptorHandler) async {
           dio.interceptors.requestLock;
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler
-            //       .resolve(await dioRetryInterceptor(error.requestOptions));
-
-            // await _loginService!.saveToken(
-            //     result.access_token, result.expires_in.toString(), false);
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -376,20 +366,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler
-            //       .resolve(await dioOneRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioOneRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -414,20 +399,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler
-            //       .resolve(await dioTwoRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioTwoRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -451,20 +431,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler.resolve(
-            //       await dioThreeRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler.resolve(
+                  await dioThreeRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -489,20 +464,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler
-            //       .resolve(await dioFourRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioFourRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -527,20 +497,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler
-            //       .resolve(await dioFiveRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioSixRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -562,20 +527,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler
-            //       .resolve(await dioSixRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioSixRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -600,20 +560,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler.resolve(
-            //       await dioSevenRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler.resolve(
+                  await dioSevenRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -638,20 +593,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler.resolve(
-            //       await dioEightRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler.resolve(
+                  await dioEightRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -678,20 +628,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler
-            //       .resolve(await dioNineRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioNineRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -717,20 +662,15 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            snackbarService!
-                .showSnackbar(message: "Session Expired Please Try Again");
-            navigationService!
-                .navigateToView(IndiaStackSplashView(showingSnackbar: true));
-            return errorInterceptorHandler.next(error);
-            // var refreshLoginResponce = await refreshToken();
-            // if (refreshLoginResponce != null) {
-            //   await _localService!.saveTokenInfo(refreshLoginResponce);
-            //   await _localService!.saveToken(refreshLoginResponce.access_token);
-            //   await _localService!
-            //       .saveRefreshToken(refreshLoginResponce.refresh_token);
-            //   return errorInterceptorHandler
-            //       .resolve(await dioNineRetryInterceptor(error.requestOptions));
-            // }
+            var refreshLoginResponce = await refreshToken();
+            if (refreshLoginResponce != null) {
+              await _localService!.saveTokenInfo(refreshLoginResponce);
+              await _localService!.saveToken(refreshLoginResponce.access_token);
+              await _localService!
+                  .saveRefreshToken(refreshLoginResponce.refresh_token);
+              return errorInterceptorHandler
+                  .resolve(await dioTenRetryInterceptor(error.requestOptions));
+            }
           } else {
             return errorInterceptorHandler.next(error);
           }
@@ -761,7 +701,7 @@ class HttpWrapper {
     clientSeven = RestClient(dioSeven, baseUrl: _baseUrlSeven);
     clientEight = RestClient(dioEight, baseUrl: _baseUrlEight);
     clientNine = RestClient(dioNine, baseUrl: _baseUrlSix);
-    clientTen = RestClient(dioTen, baseUrl: _baseUrlEight);
+    clientTen = RestClient(dioTen, baseUrl: _baseUrlFive);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();

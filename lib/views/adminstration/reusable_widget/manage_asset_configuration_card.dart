@@ -85,9 +85,10 @@ class ManageAssetConfigurationCard extends StatelessWidget {
                     ),
                     InsiteTableRowItem(
                       title: 'Make :',
-                      content: assetSetting!.assetSettings!.assetMakeCode != null
-                          ? assetSetting!.assetSettings!.assetMakeCode
-                          : "-",
+                      content:
+                          assetSetting!.assetSettings!.assetMakeCode != null
+                              ? assetSetting!.assetSettings!.assetMakeCode
+                              : "-",
                     ),
                     InsiteTableRowItem(
                       title: 'Model :',
@@ -107,7 +108,8 @@ class ManageAssetConfigurationCard extends StatelessWidget {
                     InsiteTableRowItem(
                       title: "Device ID :",
                       content:
-                          assetSetting!.assetSettings!.deviceSerialNumber != null
+                          assetSetting!.assetSettings!.deviceSerialNumber !=
+                                  null
                               ? assetSetting!.assetSettings!.deviceSerialNumber
                               : "-",
                     ),

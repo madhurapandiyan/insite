@@ -65,12 +65,21 @@ class NotificationService extends BaseService {
     }
   }
 
-  Future<NotificationsData?> getNotificationsData(
-    notificationUserStatus,
-    notificationStatus,
-    startDate,
-    endDate,
-  ) async {
+  Future<NotificationsData?> getNotificationsData(notificationUserStatus,
+      notificationStatus, startDate, endDate, String query) async {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      NotificationsData? notificationsData =
+          NotificationsData.fromJson(data.data["seeAllNotificationList"]);
+      return notificationsData;
+    }
     if (isVisionLink) {
       try {
         Map<String, String> queryMap = Map();
@@ -117,7 +126,20 @@ class NotificationService extends BaseService {
     }
   }
 
-  Future<AlertConfigEdit?> alertConfigEdit(String uid) async {
+  Future<AlertConfigEdit?> alertConfigEdit(String uid, String query) async {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      AlertConfigEdit? response =
+          AlertConfigEdit.fromJson(data.data["getNotificationAlertConfigData"]);
+      return response;
+    }
     if (isVisionLink) {
     } else {
       var data = await MyApi().getClient()!.getAlertConfig(
@@ -224,7 +246,20 @@ class NotificationService extends BaseService {
     }
   }
 
-  Future<AlertTypes?> getNotificationTypes() async {
+  Future<AlertTypes?> getNotificationTypes(String query) async {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      AlertTypes? response =
+          AlertTypes.fromJson(data.data["getNotificationTypeGroupsData"]);
+      return response;
+    }
     if (isVisionLink) {
       AlertTypes? response = await MyApi()
           .getClientSeven()!
@@ -271,7 +306,21 @@ class NotificationService extends BaseService {
     }
   }
 
-  Future<NotificationExist?> checkNotificationTitle(String? value) async {
+  Future<NotificationExist?> checkNotificationTitle(
+      String? value, String query) async {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      NotificationExist? response =
+          NotificationExist.fromJson(data.data["getAlertTitleExistsData"]);
+      return response;
+    }
     if (isVisionLink) {
       Map<String, String> queryMap = Map();
 
@@ -302,8 +351,25 @@ class NotificationService extends BaseService {
   }
 
   Future<NotificationAdded?> addNewNotification(
-      AddNotificationPayLoad addNotificationPayLoad) async {
+    AddNotificationPayLoad addNotificationPayLoad,
+    String query,
+  ) async {
     try {
+      Logger().i(query);
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        NotificationAdded? response =
+            NotificationAdded.fromJson(data.data["createNotification"]);
+        Logger().w(data);
+        return response;
+      }
       if (isVisionLink) {
         NotificationAdded? response = await MyApi()
             .getClientSeven()!
@@ -341,8 +407,22 @@ class NotificationService extends BaseService {
   }
 
   Future<UpdateResponse?> deleteManageNotification(
-      String? notificationId) async {
+      String? notificationId, String query) async {
     try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        Logger().w(data);
+        UpdateResponse updateResponse =
+            UpdateResponse.fromJson(data.data["deleteNotification"]);
+        return updateResponse;
+      }
       if (isVisionLink) {
         UpdateResponse updateResponse = await MyApi()
             .getClientSeven()!
@@ -363,7 +443,20 @@ class NotificationService extends BaseService {
     return null;
   }
 
-  editNotification(AddNotificationPayLoad payload, String alertUid) async {
+  editNotification(
+      AddNotificationPayLoad payload, String alertUid, String query) async {
+    if (enableGraphQl) {
+      Logger().e(query);
+      var data = await Network().getGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      return data;
+    }
     if (isVisionLink) {
     } else {
       var data = await MyApi().getClient()!.editNotificationSaveData(

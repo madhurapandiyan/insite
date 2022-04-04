@@ -6,6 +6,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 
 import 'package:logger/logger.dart';
 
@@ -48,7 +49,10 @@ class UtilizationGraphViewModel extends InsiteViewModel {
         "-RuntimeHours",
         ScreenType.UTILIZATION,
         appliedFilters,
-      await  graphqlSchemaService!.utilizationToatlCount(startDate!, endDate!,appliedFilters));
+        await graphqlSchemaService!.utilizationToatlCount(
+            Utils.getIdlingDateParse(startDate),
+            Utils.getIdlingDateParse(endDate),
+            appliedFilters));
     if (assetCount != null) {
       if (assetCount.countData!.isNotEmpty &&
           assetCount.countData![0].count != null) {

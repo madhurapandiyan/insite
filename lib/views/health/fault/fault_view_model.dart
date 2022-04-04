@@ -50,8 +50,8 @@ class FaultViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-    Future.delayed(Duration(seconds: 2), () {
-      getFaultViewList();
+    Future.delayed(Duration(seconds: 2), () async {
+      await getFaultViewList();
     });
   }
 
@@ -62,14 +62,19 @@ class FaultViewModel extends InsiteViewModel {
     // Logger().d("start date " + startDate!);
     // Logger().d("end date " + endDate!);
     FaultSummaryResponse? result = await _faultService!.getFaultSummaryList(
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(startDate),
+        Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate),
         pageSize,
         pageNumber,
         appliedFilters,
-        graphqlSchemaService!.getfaultQueryString(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+        await graphqlSchemaService!.getfaultQueryString(
+            limit: pageSize,
+            pageNo: pageNumber,
+            applyFilter: appliedFilters,
+            startDate:
+                Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(startDate),
+            endDate:
+                Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate)));
 
     // result!.faults!.forEach((element) {
     //   Logger().i(element.details!.toJson());
@@ -117,9 +122,12 @@ class FaultViewModel extends InsiteViewModel {
         pageSize,
         pageNumber,
         appliedFilters,
-        graphqlSchemaService!.getfaultQueryString(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+        await graphqlSchemaService!.getfaultQueryString(
+            pageNo: pageNumber,
+            limit: pageSize,
+            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            applyFilter: appliedFilters,
+            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();

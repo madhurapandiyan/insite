@@ -146,7 +146,7 @@ class _RefineState extends State<Refine> {
                 ],
               );
       },
-      viewModelBuilder: () => FilterViewModel(),
+      viewModelBuilder: () => FilterViewModel(false, null),
     );
   }
 }

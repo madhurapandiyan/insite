@@ -3,12 +3,12 @@ import 'package:insite/core/base/insite_view_model.dart';
 class HealthViewModel extends InsiteViewModel {
   HealthViewModel() {
     setUp();
-    Future.delayed(Duration(seconds: 1), () {
-      refresh();
+    Future.delayed(Duration(seconds: 1), () async {
+      await refresh();
     });
   }
 
-  void refresh() async {
+  refresh() async {
     await getSelectedFilterData();
   }
 }

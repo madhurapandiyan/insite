@@ -9,6 +9,7 @@ import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
@@ -314,8 +315,8 @@ class AssetLocationService extends BaseService {
     }
   }
 
-  Future<AssetLocationData?> getLocationFilterData(
-      productFamilyKey, int pageNumber, int pageSize) async {
+  Future<AssetLocationData?> getLocationFilterData(productFamilyKey,
+      int pageNumber, int pageSize, String startDate, String endDate) async {
     Logger().i("getLocationFilterData");
     Map<String, String?> queryMap = Map();
     if (productFamilyKey != null) {
@@ -334,10 +335,13 @@ class AssetLocationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query: _graphqlSchemaService!.assetLocationData(
-              no: pageNumber.toString(),
-              pageSize: "1",
-              sort: "-lastlocationupdateutc"),
+          query: await _graphqlSchemaService
+              ?.getFleetLocationDataProductFamilyFilterData(
+                  startDate: startDate,
+                  endDate: endDate,
+                  pageNo: 1,
+                  pageSize: 2000,
+                  prodFamilyFilter: ["\"" + productFamilyKey + "\""]),
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
@@ -345,7 +349,7 @@ class AssetLocationService extends BaseService {
               : customerSelected?.CustomerUID,
         );
         AssetLocationData assetLocationDataResponse =
-            AssetLocationData.fromJson(data.data["assetLocation"]);
+            AssetLocationData.fromJson(data.data["fleetLocationDetails"]);
         return assetLocationDataResponse;
       }
       if (isVisionLink) {

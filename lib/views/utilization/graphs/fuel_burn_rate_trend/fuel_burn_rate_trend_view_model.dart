@@ -8,7 +8,8 @@ import 'package:insite/core/logger.dart';
 class FuelBurnRateTrendViewModel extends InsiteViewModel {
   Logger? log;
 
-  UtilizationGraphsService? _utilizationGraphService = locator<UtilizationGraphsService>();
+  UtilizationGraphsService? _utilizationGraphService =
+      locator<UtilizationGraphsService>();
 
   String _range = 'daily';
   set range(String range) {

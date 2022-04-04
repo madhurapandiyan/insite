@@ -71,7 +71,7 @@ class AddUserData {
   Map<String, dynamic> toJson() => _$AddUserDataToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class AddUserDataIndStack {
   AddUserDataIndStack(
       {this.fname,
@@ -140,7 +140,7 @@ class UpdateUserData {
   Map<String, dynamic> toJson() => _$UpdateUserDataToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class AddressData {
   String? addressline1;
   String? addressline2;
@@ -160,7 +160,7 @@ class AddressData {
   Map<String, dynamic> toJson() => _$AddressDataToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Details {
   Details({
     this.job_title,
@@ -177,7 +177,7 @@ class Details {
   Map<String, dynamic> toJson() => _$DetailsToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Role {
   Role({
     this.role_id,

@@ -7,6 +7,7 @@ import 'package:insite/core/models/main_notification.dart' as notification;
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/notification_service.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -23,6 +24,7 @@ class NotificationViewModel extends InsiteViewModel {
   NotificationService? _mainNotificationService =
       locator<NotificationService>();
   NavigationService? _navigationService = locator<NavigationService>();
+  GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
   FleetService? _fleetService = locator<FleetService>();
   LocalService? _localService = locator<LocalService>();
 
@@ -85,8 +87,8 @@ class NotificationViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-    Future.delayed(Duration(seconds: 1), () {
-      getNotificationData();
+    Future.delayed(Duration(seconds: 1), () async {
+      await getNotificationData();
     });
   }
   onItemDeselect() {
@@ -116,7 +118,13 @@ class NotificationViewModel extends InsiteViewModel {
       await getNotificationData();
 
       notification.NotificationsData? response = await _mainNotificationService!
-          .getNotificationsData("0", "0", startDate!, endDate!);
+          .getNotificationsData(
+              "0",
+              "0",
+              startDate!,
+              endDate!,
+              _graphqlSchemaService!.seeAllNotification(
+                  endDate: endDate, startDate: startDate, pageNo: 1));
       if (response != null) {
         _assets.clear();
         if (response.total!.items != null) {
@@ -212,7 +220,13 @@ class NotificationViewModel extends InsiteViewModel {
 
   getNotificationData() async {
     notification.NotificationsData? response = await _mainNotificationService!
-        .getNotificationsData("0", "0", startDate, endDate);
+        .getNotificationsData(
+            "0",
+            "0",
+            startDate,
+            endDate,
+            _graphqlSchemaService!.seeAllNotification(
+                endDate: endDate, startDate: startDate, pageNo: 1));
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;

@@ -48,7 +48,7 @@ ConfiguredAlerts _$ConfiguredAlertsFromJson(Map<String, dynamic> json) =>
       alertCategoryID: json['alertCategoryID'] as int?,
       alertGroupID: json['alertGroupID'] as int?,
       operands: (json['operands'] as List<dynamic>?)
-          ?.map((e) => Operand.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => OperandData.fromJson(e as Map<String, dynamic>))
           .toList(),
       siteOperands: (json['siteOperands'] as List<dynamic>?)
           ?.map((e) => SiteOperand.fromJson(e as Map<String, dynamic>))
@@ -89,7 +89,7 @@ Map<String, dynamic> _$ConfiguredAlertsToJson(ConfiguredAlerts instance) =>
           instance.deliveryConfig?.map((e) => e.toJson()).toList(),
     };
 
-Operand _$OperandFromJson(Map<String, dynamic> json) => Operand(
+OperandData _$OperandDataFromJson(Map<String, dynamic> json) => OperandData(
       operandID: json['operandID'] as int?,
       operandName: json['operandName'] as String?,
       operatorID: json['operatorID'] as int?,
@@ -98,7 +98,8 @@ Operand _$OperandFromJson(Map<String, dynamic> json) => Operand(
       unit: json['unit'] as String?,
     );
 
-Map<String, dynamic> _$OperandToJson(Operand instance) => <String, dynamic>{
+Map<String, dynamic> _$OperandDataToJson(OperandData instance) =>
+    <String, dynamic>{
       'operandID': instance.operandID,
       'operandName': instance.operandName,
       'operatorID': instance.operatorID,
