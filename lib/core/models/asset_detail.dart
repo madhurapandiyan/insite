@@ -67,6 +67,7 @@ class AssetDetail {
   final String? lastPercentFuelRemainingUTC;
   final String? fuelReportedTimeUTC;
   final dynamic lifetimeFuel;
+  @JsonKey(name: "lastLocationUpdateUtc")
   final String? lastReportedTimeUTC;
   final String? lastLocationUpdateUTC;
   final dynamic percentDEFRemaining;

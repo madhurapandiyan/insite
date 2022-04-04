@@ -11,7 +11,7 @@ class DeviceIdListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: padding,
+     // contentPadding: padding,
       selectedTileColor: tango,
       onTap: onSelected as void Function()?,
      title: InsiteTextOverFlow(

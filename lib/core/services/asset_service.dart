@@ -44,7 +44,7 @@ class AssetService extends BaseService {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
-          userId: (await _localService!.getLoggedInUser())!.sub,
+          userId: (await _localService?.getLoggedInUser())?.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
               : customerSelected?.CustomerUID,
@@ -85,7 +85,7 @@ class AssetService extends BaseService {
                                 ScreenType.ASSET_OPERATION),
                         accountSelected!.CustomerUID,
                       );
-          
+
           return assetResponse.assetOperations;
         } else {
           AssetResponse assetResponse =
@@ -138,6 +138,7 @@ class AssetService extends BaseService {
         );
         AssetDetail assetDetail =
             AssetDetail.fromJson(data.data["getSingleAssetDetails"]);
+
         return assetDetail;
       }
       if (isVisionLink) {

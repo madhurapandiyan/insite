@@ -52,29 +52,41 @@ class HealthListViewModel extends InsiteViewModel {
 
   getHealthListData() async {
     await getDateRangeFilterData();
-    HealthListResponse? result = await _faultService!.getHealthListData(
-        _assetDetail!.assetUid,
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        limit,
-        page,
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
-    if (result != null && result.assetData != null) {
-      if (result.assetData!.faults!.isNotEmpty) {
-        _faults.addAll(result.assetData!.faults!);
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
+    try {
+      HealthListResponse? result = await _faultService!.getHealthListData(
+          _assetDetail!.assetUid,
+          Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+          limit,
+          page,
+          Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+          ""
+          // graphqlSchemaService?.getfaultQueryString(
+          //     applyFilter: appliedFilters,
+          //     endDate: endDate,
+          //     startDate: startDate,
+          //     limit: limit,
+          //     pageNo: page)
+          );
+      if (result != null && result.assetData != null) {
+        if (result.assetData!.faults!.isNotEmpty) {
+          _faults.addAll(result.assetData!.faults!);
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _faults.addAll(result.assetData!.faults!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
       } else {
-        _faults.addAll(result.assetData!.faults!);
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
-    } else {
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 
@@ -89,7 +101,15 @@ class HealthListViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         limit,
         page,
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        ""
+        // graphqlSchemaService?.getfaultQueryString(
+        //     applyFilter: appliedFilters,
+        //     endDate: endDate,
+        //     startDate: startDate,
+        //     limit: limit,
+        //     pageNo: page)
+        );
     if (result != null) {
       _faults.clear();
       _faults.addAll(result.assetData!.faults!);

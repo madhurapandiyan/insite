@@ -40,10 +40,12 @@ import 'package:insite/views/adminstration/addgeofense/model/asset_icon_payload.
 import 'package:logger/logger.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
 import 'package:insite/core/models/device_type.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class AssetAdminManagerUserService extends BaseService {
   LocalService? _localService = locator<LocalService>();
   GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
+  SnackbarService? snackbarService = locator<SnackbarService>();
 
   Customer? accountSelected;
   Customer? customerSelected;
@@ -500,7 +502,7 @@ class AssetAdminManagerUserService extends BaseService {
         Logger().d(
             "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
         Logger().d(
-            "details ${Details(job_title: jobTitle, job_type: jobType.toString(), user_type: userType).toJson()}");
+            "details ${Details(job_title: jobTitle, job_type: jobType == 1 ? "-Employee" : "-Non-Employee", user_type: userType).toJson()}");
         AddUser addUserResponse = await MyApi().getClientSeven()!.addUserData(
             Urls.addUserSummaryVL,
             accountSelected!.CustomerUID,
@@ -523,14 +525,14 @@ class AssetAdminManagerUserService extends BaseService {
                 roles: roles,
                 details: Details(
                     job_title: jobTitle,
-                    job_type: jobType.toString(),
+                    job_type: jobType == 1 ? "-Employee" : "-Non-Employee",
                     user_type: userType)));
         return addUserResponse;
       } else {
         Logger().d(
             "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
         Logger().d(
-            "details ${Details(job_title: jobTitle, job_type: jobType.toString(), user_type: userType).toJson()}");
+            "details ${Details(job_title: jobTitle, job_type: jobType == 1 ? "-Employee" : "-Non-Employee", user_type: userType).toJson()}");
         Logger().w(AddUserDataIndStack(
                 fname: firstName,
                 customerUid: customerSelected != null
@@ -552,9 +554,10 @@ class AssetAdminManagerUserService extends BaseService {
                 roles: roles,
                 details: Details(
                     job_title: jobTitle,
-                    job_type: jobType.toString(),
+                    job_type: jobType == 1 ? "-Employee" : "-Non-Employee",
                     user_type: "Standard"))
             .toJson());
+
         AddUser addUserResponse = await MyApi().getClient()!.inviteUser(
             Urls.adminManagerUserSumary + "/Invite",
             AddUserDataIndStack(
@@ -578,7 +581,7 @@ class AssetAdminManagerUserService extends BaseService {
                 roles: roles,
                 details: Details(
                     job_title: jobTitle,
-                    job_type: jobType.toString(),
+                    job_type: jobType == 1 ? "-Employee" : "-Non-Employee",
                     user_type: "Standard")),
             accountSelected!.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub,
@@ -594,6 +597,12 @@ class AssetAdminManagerUserService extends BaseService {
   Future<dynamic> deleteUsers(List<String> users) async {
     Logger().i("deleteUsers");
     try {
+      var userid = (await _localService!.getLoggedInUser())!.sub;
+      if (users.any((element) => element == userid)) {
+        snackbarService?.showSnackbar(
+            message: "You cannot delete your own account");
+        return;
+      }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query: graphqlSchemaService!
@@ -1005,7 +1014,8 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AssetGroupSummaryResponse?> getGroupListData() async {
+  Future<AssetGroupSummaryResponse?> getGroupListData(
+      bool isLoadAllAsset) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["pageNumber"] = "1";
@@ -1016,18 +1026,21 @@ class AssetAdminManagerUserService extends BaseService {
       //   queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
       //   Logger().wtf(customerSelected!.CustomerUID);
       // }
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query: graphqlSchemaService!
                 .notificationAssetList(no: "1", pageSize: "99999"),
             customerId: accountSelected?.CustomerUID,
             subId: customerSelected?.CustomerUID == null
                 ? ""
-                : customerSelected?.CustomerUID,
+                : isLoadAllAsset
+                    ? ""
+                    : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
         AssetGroupSummaryResponse groupSummaryResponse =
             AssetGroupSummaryResponse.fromJson(
                 data.data["notificationAssetList"]);
+        Logger().w(groupSummaryResponse.assetDetailsRecords!.length);
         return groupSummaryResponse;
       }
       if (isVisionLink) {
@@ -1134,7 +1147,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<AssetGroupSummaryResponse?> getAdminProductFamilyFilterData(
-      pageNumber, pageSize, String productFamilyKey) async {
+      pageNumber, pageSize, String productFamilyKey, String query) async {
     try {
       // Logger().e(productFamilyKey);
       Map<String, String> queryMap = Map();
@@ -1146,6 +1159,20 @@ class AssetAdminManagerUserService extends BaseService {
       if (customerSelected != null) {
         queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
         Logger().wtf(customerSelected!.CustomerUID);
+      }
+
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        AssetGroupSummaryResponse groupSummaryResponse =
+            AssetGroupSummaryResponse.fromJson(
+                data.data["notificationAssetList"]);
+        return groupSummaryResponse;
       }
 
       if (isVisionLink) {
@@ -1172,8 +1199,8 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AssetGroupSummaryResponse?> getManafactureFilterData(
-      int? pageNumber, int? pageSize, String? productFamilyKey) async {
+  Future<AssetGroupSummaryResponse?> getManafactureFilterData(int? pageNumber,
+      int? pageSize, String? productFamilyKey, String query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["pageNumber"] = pageNumber.toString();
@@ -1185,6 +1212,19 @@ class AssetAdminManagerUserService extends BaseService {
       if (customerSelected != null) {
         queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
         Logger().wtf(customerSelected!.CustomerUID);
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        AssetGroupSummaryResponse groupSummaryResponse =
+            AssetGroupSummaryResponse.fromJson(
+                data.data["notificationAssetList"]);
+        return groupSummaryResponse;
       }
       if (isVisionLink) {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
@@ -1210,8 +1250,8 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AssetGroupSummaryResponse?> getModelFilterData(
-      int? pageNumber, int? pageSize, String? productFamilyKey) async {
+  Future<AssetGroupSummaryResponse?> getModelFilterData(int? pageNumber,
+      int? pageSize, String? productFamilyKey, String? query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["pageNumber"] = pageNumber.toString();
@@ -1223,6 +1263,19 @@ class AssetAdminManagerUserService extends BaseService {
       if (customerSelected != null) {
         queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
         Logger().wtf(customerSelected!.CustomerUID);
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        AssetGroupSummaryResponse groupSummaryResponse =
+            AssetGroupSummaryResponse.fromJson(
+                data.data["notificationAssetList"]);
+        return groupSummaryResponse;
       }
       if (isVisionLink) {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
@@ -1246,8 +1299,8 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AssetGroupSummaryResponse?> getDeviceTypeData(
-      int? pageNumber, int? pageSize, String? productFamilyKey) async {
+  Future<AssetGroupSummaryResponse?> getDeviceTypeData(int? pageNumber,
+      int? pageSize, String? productFamilyKey, String query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["pageNumber"] = pageNumber.toString();
@@ -1257,6 +1310,19 @@ class AssetAdminManagerUserService extends BaseService {
       if (customerSelected != null) {
         queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
         Logger().wtf(customerSelected!.CustomerUID);
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        AssetGroupSummaryResponse groupSummaryResponse =
+            AssetGroupSummaryResponse.fromJson(
+                data.data["notificationAssetList"]);
+        return groupSummaryResponse;
       }
       if (isVisionLink) {
         AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
@@ -1373,7 +1439,7 @@ class AssetAdminManagerUserService extends BaseService {
         // Logger().w(appliedFilters![0]!.title);
         //  Logger().w(appliedFilters[1]!.title);
         //    Logger().w(appliedFilters[2]!.title);
-        Logger().wtf(query);
+
         var data = await Network().getGraphqlData(
             query: query,
             subId: customerSelected?.CustomerUID == null
@@ -1381,7 +1447,6 @@ class AssetAdminManagerUserService extends BaseService {
                 : customerSelected?.CustomerUID,
             customerId: accountSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())?.sub);
-        Logger().wtf(data.data['gridReport']);
         ManageReportResponse manageReportResponse =
             ManageReportResponse.fromJson(data.data['gridReport']);
 
@@ -1398,7 +1463,6 @@ class AssetAdminManagerUserService extends BaseService {
 
           return manageReportResponse;
         } else {
-          
           ManageReportResponse manageReportResponse = await MyApi()
               .getClient()!
               .getManageReportListData(
@@ -1413,8 +1477,8 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      throw e;
     }
-    return null;
   }
 
   Future<ManageReportDeleteAssetResponse?> getDeleteManageReportAsset(
@@ -1457,6 +1521,16 @@ class AssetAdminManagerUserService extends BaseService {
 
   Future<TemplateResponse?> getTemplateReportAssetData() async {
     try {
+      // if (enableGraphQl) {
+      //           var data = await Network().getGraphqlData(
+      //       query: query,
+      //       subId: customerSelected?.CustomerUID == null
+      //           ? ""
+      //           : customerSelected?.CustomerUID,
+      //       customerId: accountSelected!.CustomerUID,
+      //       userId: (await _localService!.getLoggedInUser())!.sub);
+      //        TemplateResponse templateResponse = TemplateResponse.fromJson(data.data[""]);
+      // }
       if (isVisionLink) {
         TemplateResponse templateResponse = await MyApi()
             .getClientSeven()!
@@ -1521,7 +1595,6 @@ class AssetAdminManagerUserService extends BaseService {
 
   Future<EditReportResponse?> getEditReportData(String reportId, query) async {
     try {
-      Logger().w(query);
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query: query,
@@ -1588,11 +1661,12 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
   }
 
   Future<ManageReportResponse?> getEditReportSaveData(
-      String reqId, AddReportPayLoad addReportPayLoad, query) async {
+      String reqId, AddReportPayLoad addReportPayLoad, String query) async {
     try {
       Logger().w(query);
       if (enableGraphQl) {

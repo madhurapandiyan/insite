@@ -67,11 +67,11 @@ class _AssetStatusState extends State<AssetStatus> {
                   ),
                   Row(
                     children: [
-                      InsiteText(
-                        fontWeight: FontWeight.w900,
-                        text: "ALL ASSETS",
-                        size: 12,
-                      ),
+                      // InsiteText(
+                      //   fontWeight: FontWeight.w900,
+                      //   text: "ALL ASSETS",
+                      //   size: 12,
+                      // ),
                       SizedBox(
                         width: 35.0,
                       ),

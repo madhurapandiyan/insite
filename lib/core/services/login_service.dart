@@ -44,7 +44,7 @@ class LoginService extends BaseService {
             .getUserInfoVl("application/json", "Bearer" + " " + token);
         return userInfo;
       } else {
-        UserInfo userInfo = await MyApi().getClientFive()!.getUserInfoV4(
+        UserInfo userInfo = await MyApi().getClientTen()!.getUserInfoV4(
             "application/x-www-form-urlencoded",
             "Bearer" + " " + token,
             AccessToken(access_token: await _localService!.getToken()));
@@ -347,6 +347,14 @@ class LoginService extends BaseService {
     try {
       if (isVisionLink) {
       } else {
+        Logger().i(RefreshTokenPayload(
+                client_id: Urls.indiaStackClientId,
+                code_challenge: code_challenge,
+                grant_type: "refresh_token",
+                refresh_token: token,
+                code_verifier: code_verifier,
+                code_challenge_method: "S256")
+            .toJson());
         LoginResponse loginResponse = await MyApi()
             .getClientFive()!
             .getRefreshLoginData(

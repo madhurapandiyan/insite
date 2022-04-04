@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/date.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -14,7 +16,7 @@ class IdlingLevel extends StatefulWidget {
   final bool? isLoading;
   final bool? isSwitching;
   final bool? isRefreshing;
-  final Function(FilterData)? onFilterSelected;
+  final Function(FilterData, FilterData)? onFilterSelected;
   final Function? onRangeSelected;
 
   IdlingLevel(
@@ -30,6 +32,38 @@ class IdlingLevel extends StatefulWidget {
 
 class _IdlingLevelState extends State<IdlingLevel> {
   IdlingLevelRange idlingLevelRange = IdlingLevelRange.DAY;
+
+  FilterData getDateFilterDataForIdlingLevel(IdlingLevelRange value) {
+    FilterData dateFilter;
+    if (value == IdlingLevelRange.DAY) {
+      dateFilter = onFilterIdleDate(DateRangeType.today);
+    } else if (value == IdlingLevelRange.WEEK) {
+      dateFilter = onFilterIdleDate(DateRangeType.currentWeek);
+    } else {
+      dateFilter = onFilterIdleDate(DateRangeType.currentMonth);
+    }
+    return dateFilter;
+  }
+
+  FilterData onFilterIdleDate(DateRangeType dateRangeType) {
+    Logger().d(
+        "on asset utilization filter selected ${describeEnum(dateRangeType)}");
+    DateTime? fromDate, toDate;
+    fromDate = DateUtil.calcFromDate(dateRangeType);
+    toDate = DateTime.now();
+    Logger().d("from date ${fromDate} to date ${toDate}");
+    FilterData data = FilterData(
+        title: "Date Range",
+        count: describeEnum(dateRangeType),
+        extras: [
+          '${fromDate!.year}-${fromDate.month}-${fromDate.day}',
+          '${toDate.year}-${toDate.month}-${toDate.day}',
+          describeEnum(dateRangeType)
+        ],
+        isSelected: true,
+        type: FilterType.DATE_RANGE);
+    return data;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +197,10 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                         title: countDatum.countOf,
                                         extras: [x, y],
                                         type: FilterType.IDLING_LEVEL);
-                                    widget.onFilterSelected!(data);
+                                    widget.onFilterSelected!(
+                                        data,
+                                        getDateFilterDataForIdlingLevel(
+                                            idlingLevelRange));
                                   },
                                   primaryYAxis: NumericAxis(
                                       majorGridLines: MajorGridLines(

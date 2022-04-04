@@ -195,7 +195,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: CustomDropDownWidget(
                                       items: viewModel.dropDownlist,
-                                      istappable: viewModel.assetsData.any((element) => element.isSelected!),
+                                      istappable: viewModel.assetsData.any(
+                                          (element) => element.isSelected!),
                                       onChanged: (String? value) {
                                         unfocus();
                                         viewModel.onPermissionSelected(value);

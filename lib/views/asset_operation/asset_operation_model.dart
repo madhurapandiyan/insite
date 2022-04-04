@@ -81,12 +81,12 @@ class AssetOperationViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-    Future.delayed(Duration(seconds: 1), () {
-      getSelectedFilterData();
-      getDateRangeFilterData();
+    Future.delayed(Duration(seconds: 1), () async {
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
     });
-    Future.delayed(Duration(seconds: 2), () {
-      getAssetSummaryList();
+    Future.delayed(Duration(seconds: 2), () async {
+      await getAssetSummaryList();
     });
   }
 
@@ -113,7 +113,7 @@ class AssetOperationViewModel extends InsiteViewModel {
         pageNumber,
         _menuItem,
         appliedFilters,
-      await graphqlSchemaService!.getAssetOperationData(
+        await graphqlSchemaService!.getAssetOperationData(
             assetId: "",
             pageNo: pageNumber,
             pageSize: pageSize,
@@ -137,7 +137,7 @@ class AssetOperationViewModel extends InsiteViewModel {
   getAssetSummaryList() async {
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-   // await getAssetOperationCount();
+    // await getAssetOperationCount();
     updateDateRangeList();
     AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
       startDate,
@@ -146,7 +146,7 @@ class AssetOperationViewModel extends InsiteViewModel {
       pageNumber,
       _menuItem,
       appliedFilters,
-    await graphqlSchemaService!.getAssetOperationData(
+      await graphqlSchemaService!.getAssetOperationData(
           startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
           endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
           assetId: "",

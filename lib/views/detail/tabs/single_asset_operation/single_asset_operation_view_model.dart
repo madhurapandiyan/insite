@@ -115,7 +115,7 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
     }
 
     if (_assetOperationDates.isEmpty) return;
-    _minDate = Utils.getMinDate(_assetOperationDates);
-    _maxDate = Utils.getMaxDate(_assetOperationDates);
+    _minDate = _assetOperationDates.first!;
+    _maxDate = _assetOperationDates.last;
   }
 }

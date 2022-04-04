@@ -41,7 +41,7 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
 
   SavingSmsModel? _savingSmsModel;
 
-  List<SavingSmsModel?> listOSavingSmsModel = [];
+  List<SavingSmsModel> listOSavingSmsModel = [];
 
   List<SingleAssetModelResponce>? singleAssetModelResponce = [];
 
@@ -155,7 +155,7 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
             Model: singleAssetModelResponce![i].Model,
             Name: name,
             StartDate: singleAssetModelResponce![i].StartDate);
-        listOSavingSmsModel.add(_savingSmsModel);
+        listOSavingSmsModel.add(_savingSmsModel!);
       }
       var data = await _smsScheduleService!.savingSms(listOSavingSmsModel);
       clearingControllerValue();

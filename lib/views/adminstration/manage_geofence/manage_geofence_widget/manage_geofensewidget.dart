@@ -4,6 +4,8 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/views/adminstration/manage_geofence/static_map.dart/staticmapapi.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class ManageGeofenceWidget extends StatefulWidget {
   //const ({ Key? key }) : super(key: key);
@@ -16,6 +18,7 @@ class ManageGeofenceWidget extends StatefulWidget {
   final VoidCallback? callBack;
   final Function? onNavigation;
   final Function(String?)? onFavourite;
+  final int? color;
   ManageGeofenceWidget(
       {this.geofenceName,
       this.geofenceDate,
@@ -25,7 +28,8 @@ class ManageGeofenceWidget extends StatefulWidget {
       this.encodedPolyline,
       this.geofenceUID,
       this.onNavigation,
-      this.onFavourite});
+      this.onFavourite,
+      this.color});
   @override
   State<ManageGeofenceWidget> createState() => _ManageGeofenceWidgetState();
 }
@@ -65,7 +69,8 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                         bottomLeft: Radius.circular(10),
                       ),
                       child: Image.network(
-                          StaticMap().generatedimg(widget.encodedPolyline),
+                          StaticMap().generatedimg(
+                              widget.encodedPolyline, Color(widget.color!)),
                           width: double.infinity,
                           fit: BoxFit.cover)),
                   Padding(
@@ -104,21 +109,23 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 2,
+                  FittedBox(
                     child: InsiteText(
-                      text: widget.geofenceName,
-                      size: 14,
+                      text: "Geofence Name: ${widget.geofenceName}",
                       fontWeight: FontWeight.w700,
+                      size: 14,
                     ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   InsiteText(
                     text:
-                        "End Date : ${widget.geofenceDate == null ? "No End Date" : widget.geofenceDate}",
-                    size: 14,
+                        "End Date : ${widget.geofenceDate == null ? "No End Date" : DateFormat("yyyy-MM-dd").parse(widget.geofenceDate!)}",
                     fontWeight: FontWeight.w700,
                   )
                 ],

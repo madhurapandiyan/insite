@@ -9,7 +9,7 @@ part of 'search_contact_report_list_response.dart';
 SearchContactReportListResponse _$SearchContactReportListResponseFromJson(
         Map<String, dynamic> json) =>
     SearchContactReportListResponse(
-      Users: (json['users'] as List<dynamic>?)
+      Users: (json['Users'] as List<dynamic>?)
           ?.map((e) => User.fromJson(e as Map<String, dynamic>))
           .toList(),
       pageInfo: json['pageInfo'] == null
@@ -20,7 +20,7 @@ SearchContactReportListResponse _$SearchContactReportListResponseFromJson(
 Map<String, dynamic> _$SearchContactReportListResponseToJson(
         SearchContactReportListResponse instance) =>
     <String, dynamic>{
-      'users': instance.Users,
+      'Users': instance.Users,
       'pageInfo': instance.pageInfo,
     };
 

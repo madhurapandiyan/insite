@@ -113,7 +113,7 @@ class _DaysReusableWidgetState extends State<DaysReusableWidget> {
                     : InsiteText(
                         text: "(Hrs)" +
                             " " +
-                            "(${widget.percentCountValue} "+" " +"%)",
+                            "(${widget.percentCountValue==null?"0":widget.percentCountValue} "+" " +"%)",
                         size: 14,
                         fontWeight: FontWeight.w700,
                       ))

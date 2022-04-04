@@ -252,7 +252,8 @@ class Urls {
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/UnifiedFleet/FleetSummary/v5";
   static String authenticateUrl = "$subscriptionPrefix/authenticate";
-  static String assetSummary = "$utilization/1.0/AssetOperation";
+  static String assetSummary =
+      "$utilization/1.0/api/v4/AssetOperation/AssetOperationDailyTotals";
   static String utlizationSummary = "$fleet/1.0/UnifiedFleet/Utilization/v5";
   static String utilizationSummaryV1 =
       "$fleet/1.0/UnifiedFleet/Utilization/Summary/v1";
@@ -261,7 +262,7 @@ class Urls {
   static String utilizationAggregate =
       "$utilization/1.0/api/v1/Utilization/Details/Aggregate";
   static String assetoperationsegments =
-      "$utilization/1.0/assetoperationsegments";
+      "$utilization/1.0/api/v4/AssetOperation/assetoperationsegments";
   static String locationSummary = "$locationMap/1.0/location/maps/v2";
   static String locationHistory = "$assetHistory/1.0/AssetLocationHistory/";
   static String assetCountSummary = "$fleet/1.0/UnifiedFleet/AssetCount/v1";
@@ -335,7 +336,7 @@ class Urls {
   static String addReportSaveData = "/frame-reports/1.0/ScheduledReports";
   static String contactSearchData = "/frame-contact/1.0/Contact";
   static String groupListData = "/frame-fleet-map/1.0/api/v1/assetlist";
-  static String countReportData="/frame-reports/1.0/ScheduledReports/Count";
+  static String countReportData = "/frame-reports/1.0/ScheduledReports/Count";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";

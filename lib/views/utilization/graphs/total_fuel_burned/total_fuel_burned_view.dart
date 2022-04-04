@@ -42,8 +42,8 @@ class TotalFuelBurnedViewState extends State<TotalFuelBurnedView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TotalFuelBurnedViewModel>.reactive(
-      builder:
-          (BuildContext context, TotalFuelBurnedViewModel viewModel, Widget? _) {
+      builder: (BuildContext context, TotalFuelBurnedViewModel viewModel,
+          Widget? _) {
         if (viewModel.loading) return InsiteProgressBar();
         return Stack(
           children: [

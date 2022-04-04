@@ -135,40 +135,60 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                         SizedBox(
                           height: 10,
                         ),
-                        Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color!,
+                        viewModel.isEditing
+                            ? Container(
+                                width: double.infinity,
+                                height: mediaquerry.size.height * 0.06,
+                                padding: EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .color!,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: InsiteText(
+                                    text: viewModel.dropDownInitialValue,
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: CustomDropDownWidget(
-                              //istappable: !viewModel.isEditing,
-                              items: viewModel.notificationTypes,
-                              onChanged: (value) {
-                                viewModel.updateModelValue(value!);
-                              },
-                              // isEnabled: viewModel.isEditing,
-                              value: viewModel.dropDownInitialValue,
-                            )
-                            // CustomDropDownAddNotificationWidget(
-                            //   dropDownValue: (value) {
-                            //
-                            //   },
-                            //   value: viewModel.dropDownInitialValue,
-                            //   administratortAssets:
-                            //       viewModel.administratortAssets,
-                            //   geofenceAssets: viewModel.geofenceAssets,
-                            //   reportFleetAssets:
-                            //       viewModel.notificationFleetType,
-                            //   reportServiceAssets:
-                            //       viewModel.notificationServiceType,
-                            //   isShowingDropDownState: true,
-                            // )
-                            ),
+                              )
+                            : Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .color!,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: CustomDropDownWidget(
+                                  //istappable: !viewModel.isEditing,
+                                  items: viewModel.notificationTypes,
+                                  onChanged: (value) {
+                                    viewModel.updateModelValue(value!);
+                                  },
+                                  // isEnabled: viewModel.isEditing,
+                                  value: viewModel.dropDownInitialValue,
+                                )
+                                // CustomDropDownAddNotificationWidget(
+                                //   dropDownValue: (value) {
+                                //
+                                //   },
+                                //   value: viewModel.dropDownInitialValue,
+                                //   administratortAssets:
+                                //       viewModel.administratortAssets,
+                                //   geofenceAssets: viewModel.geofenceAssets,
+                                //   reportFleetAssets:
+                                //       viewModel.notificationFleetType,
+                                //   reportServiceAssets:
+                                //       viewModel.notificationServiceType,
+                                //   isShowingDropDownState: true,
+                                // )
+                                ),
                         SizedBox(
                           height: 20,
                         ),
@@ -275,11 +295,11 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                         },
                                                       )),
                                                       SizedBox(height: 10),
-                                                      showingSwitchableWidget(
-                                                          viewModel
-                                                              .customizable,
-                                                          viewModel
-                                                              .onCustomiozablestateChange),
+                                                      // showingSwitchableWidget(
+                                                      //     viewModel
+                                                      //         .customizable,
+                                                      //     viewModel
+                                                      //         .onCustomiozablestateChange),
                                                       viewModel.customizable
                                                               .first.state!
                                                           ? Padding(
@@ -705,7 +725,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                             .assetStatusOccurenceController,
                                                                     onChange:
                                                                         (value) {
-                                                                     viewModel.onChangingOccurence(value);
+                                                                      viewModel
+                                                                          .onChangingOccurence(
+                                                                              value);
                                                                     },
                                                                   )
                                                                 : viewModel.dropDownInitialValue ==
@@ -717,7 +739,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                             viewModel.assetStatusOccurenceController,
                                                                         onChange:
                                                                             (value) {
-                                                                       viewModel.onChangingOccurence(value);
+                                                                          viewModel
+                                                                              .onChangingOccurence(value);
                                                                         },
                                                                       )
                                                                     : viewModel.dropDownInitialValue ==
@@ -962,6 +985,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                 height: 20,
                               ),
                               SelectedAsset(
+                                isLoading: viewModel.isLoading,
                                 dropDownList: viewModel.dropDownList,
                                 initialValue: viewModel.initialValue,
                                 onChange: (value) {
@@ -1033,8 +1057,10 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                           // height: 120,
 
                                           decoration: BoxDecoration(
-                                              color:
-                                                  Theme.of(context).cardColor,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color,
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: black,

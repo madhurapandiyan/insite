@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/flavor/flavor.dart';
@@ -13,26 +16,30 @@ import 'core/router_india_stack.dart' as router1;
 import 'core/setup_snackbar_ui.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  await FlutterDownloader.initialize(debug: true);
-  Hive.registerAdapter<FilterData>(FilterDataAdapter());
-  Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
-  Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
-  Hive.registerAdapter<CountData>(CountDataAdapter());
-  Hive.registerAdapter<FilterSubType?>(FilterSubTypeAdapter());
-  AppConfig(
-      baseUrl: "https://unifiedfleet.myvisionlink.com",
-      apiFlavor: "visionlink",
-      productFlavor: "unifiedFleet",
-      enableLogin: true,
-      enalbeNativeLogin: false,
-      isProd: false,
-      enableGraphql: false,
-      iconPath: "assets/images/hitachi.png");
-  await LocatorInjector.setUpLocator();
-  SnackbarStyling.setupSnackbarUi();
-  runApp(MyApp());
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Hive.initFlutter();
+    await FlutterDownloader.initialize(debug: true);
+    Hive.registerAdapter<FilterData>(FilterDataAdapter());
+    Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
+    Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
+    Hive.registerAdapter<CountData>(CountDataAdapter());
+    Hive.registerAdapter<FilterSubType?>(FilterSubTypeAdapter());
+    AppConfig(
+        baseUrl: "https://unifiedfleet.myvisionlink.com",
+        apiFlavor: "visionlink",
+        productFlavor: "unifiedFleet",
+        enableLogin: true,
+        enalbeNativeLogin: false,
+        isProd: false,
+        enableGraphql: false,
+        iconPath: "assets/images/hitachi.png");
+    await LocatorInjector.setUpLocator();
+    SnackbarStyling.setupSnackbarUi();
+    runApp(MyApp());
+  },
+      (error, stack) =>
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
 }
 
 class MyApp extends StatelessWidget {

@@ -58,7 +58,6 @@ class SplashViewModel extends InsiteViewModel {
       bool? val = await _localService!.getIsloggedIn();
       Customer? account = await _localService!.getAccountInfo();
       Logger().d("checkLoggedIn " + val.toString());
-      // val = true;
       if (val == null || !val) {
         //use this user name and password
         // nitin_r@gmail.com

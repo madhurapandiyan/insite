@@ -68,11 +68,7 @@ class ManageNotificationsView extends StatelessWidget {
                               title: "SEARCH",
                               showLoading: viewModel.isSearching,
                               onChanged: (searchText) {
-                                if (searchText.isNotEmpty) {
-                                  viewModel.getSearchListData(searchText);
-                                } else {
-                                  viewModel.getManageNotificationsData();
-                                }
+                                viewModel.getSearchListData(searchText);
                               },
                             ),
                           ),

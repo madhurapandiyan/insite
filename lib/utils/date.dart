@@ -9,14 +9,13 @@ class DateUtil {
         return (DateTime.now().subtract(Duration(days: 1)));
       case DateRangeType.currentWeek:
         return (DateTime.now()
-            .subtract(Duration(days: DateTime.now().weekday - 1)));
+            .subtract(Duration(days: DateTime.now().weekday)));
       case DateRangeType.lastSevenDays:
-        return (DateTime.now().subtract(Duration(days: 6)));
+        return (DateTime.now().subtract(Duration(days: 7)));
       case DateRangeType.lastThirtyDays:
-        return (DateTime.now().subtract(Duration(days: 29)));
+        return (DateTime.now().subtract(Duration(days: 30)));
       case DateRangeType.currentMonth:
         return (DateTime.utc(DateTime.now().year, DateTime.now().month, 1));
-
       default:
         return null;
     }

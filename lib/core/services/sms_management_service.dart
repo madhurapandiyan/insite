@@ -31,8 +31,8 @@ class SmsManagementService extends BaseService {
     return data;
   }
 
-  Future<SavingSmsResponce?> savingSms(List<SavingSmsModel?> model) async {
-    Logger().wtf(model.first!.toJson());
+  Future<SavingSmsResponce?> savingSms(List<SavingSmsModel> model) async {
+    Logger().wtf(model.first.toJson());
     if (isVisionLink) {
     } else {
       var data = MyApi().getClientNine()!.savingSms(Urls.savingSms, model);

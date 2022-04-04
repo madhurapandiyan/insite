@@ -17,8 +17,8 @@ class IdleWorkingGraphWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger().d("idle $idleLength");
-    Logger().d("working $workingLength");
+    Logger().d("idle ${idleLength}");
+    Logger().d("working ${workingLength}");
     double width = MediaQuery.of(context).size.width * 0.35;
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16.0),
@@ -97,8 +97,10 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             width: 2,
           ),
           InsiteText(
-            text:idleLength.toString(),
-               // "${double.parse((idleLength.toString() + workingLength.toString())).toStringAsFixed(1)}",
+            text: idleLength.runtimeType == double ||
+                    workingLength.runtimeType == double
+                ? (idleLength + workingLength).toString()
+                : "${double.parse((idleLength.toString() + workingLength.toString())).toStringAsFixed(1)}",
             size: 10,
             fontWeight: FontWeight.bold,
           ),

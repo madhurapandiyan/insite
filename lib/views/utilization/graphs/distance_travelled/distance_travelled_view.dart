@@ -76,7 +76,7 @@ class DistanceTravelledViewState extends State<DistanceTravelledView> {
                                                   .utilLizationListData[index]
                                                   .distanceTravelledKilometers ==
                                               null
-                                          ? 0
+                                          ? 0.0
                                           : viewModel
                                                   .utilLizationListData[index]
                                                   .distanceTravelledKilometers! /

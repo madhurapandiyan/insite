@@ -13,7 +13,7 @@ class FaultHealthDashboard extends StatefulWidget {
   final List<Count>? countData;
   final bool? isRefreshing;
   final bool? loading;
-  final Function(FilterData)? onFilterSelected;
+  final Function(FilterData, FilterData)? onFilterSelected;
   FaultHealthDashboard(
       {this.countData,
       this.loading,
@@ -104,11 +104,15 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                             screenType: widget.screenType,
                             onSelected: () {
                               if (countResponse.faultCount! > 0) {
-                                widget.onFilterSelected!(FilterData(
-                                    isSelected: true,
-                                    count: countResponse.assetCount.toString(),
-                                    title: countResponse.countOf,
-                                    type: FilterType.SEVERITY));
+                                widget.onFilterSelected!(
+                                    FilterData(
+                                        isSelected: true,
+                                        count:
+                                            countResponse.assetCount.toString(),
+                                        title: countResponse.countOf,
+                                        type: FilterType.SEVERITY),
+                                    Utils.onFilterIdleDate(
+                                        DateRangeType.lastSevenDays));
                               }
                             },
                             buttonColor: buttonColor[index],

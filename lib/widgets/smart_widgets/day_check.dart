@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
+import '../../theme/colors.dart';
+
 class DayCheck extends StatelessWidget {
   final String? day;
   final Color? color;
@@ -32,6 +34,7 @@ class DayCheck extends StatelessWidget {
             border: Border.all(
                 width: 1, color: Theme.of(context).textTheme.bodyText1!.color!),
             borderRadius: BorderRadius.circular(5),
+           // border: Border.all(width: 1, color: Theme.of(context).buttonColor),
             color: isSelected == true
                 ? Theme.of(context).buttonColor
                 : Theme.of(context).cardColor),
