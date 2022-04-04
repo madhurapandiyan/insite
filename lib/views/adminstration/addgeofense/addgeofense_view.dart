@@ -118,7 +118,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                     height: mediaquerry.size.height * 0.6,
                                     margin: EdgeInsets.symmetric(
                                         vertical: 2, horizontal: 2),
-                                  decoration: BoxDecoration(
+                                    decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: theme.backgroundColor,
                                     ),
@@ -486,7 +486,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                               .symmetric(
                                                           horizontal: 8),
                                                       child: TextFormField(
-                                                      onChanged: (value) {
+                                                        onChanged: (value) {
                                                           viewModel
                                                               .materialSelection(
                                                                   value);
@@ -576,7 +576,6 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                           focusNode: viewModel.targetFocus,
                                           controller:
                                               viewModel.targetController,
-                                        
                                           style: TextStyle(color: white),
                                           keyboardType: TextInputType.number,
                                           decoration: InputDecoration(

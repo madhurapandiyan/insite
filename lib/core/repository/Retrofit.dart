@@ -955,7 +955,7 @@ abstract class RestClient {
 
   @POST("{url}")
   Future<SavingSmsResponce> savingSms(
-      @Path() String url, @Body() List<SavingSmsModel?> singleAssetData);
+      @Path() String url, @Body() List<SavingSmsModel> singleAssetData);
 
   @GET('{url}')
   Future<SmsReportSummaryModel> gettingReportSummary(@Path() String url);

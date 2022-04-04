@@ -1014,7 +1014,8 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AssetGroupSummaryResponse?> getGroupListData(bool isLoadAllAsset) async {
+  Future<AssetGroupSummaryResponse?> getGroupListData(
+      bool isLoadAllAsset) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["pageNumber"] = "1";
@@ -1032,12 +1033,14 @@ class AssetAdminManagerUserService extends BaseService {
             customerId: accountSelected?.CustomerUID,
             subId: customerSelected?.CustomerUID == null
                 ? ""
-                :isLoadAllAsset?"": customerSelected?.CustomerUID,
+                : isLoadAllAsset
+                    ? ""
+                    : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
         AssetGroupSummaryResponse groupSummaryResponse =
             AssetGroupSummaryResponse.fromJson(
                 data.data["notificationAssetList"]);
-                Logger().w(groupSummaryResponse.assetDetailsRecords!.length);
+        Logger().w(groupSummaryResponse.assetDetailsRecords!.length);
         return groupSummaryResponse;
       }
       if (isVisionLink) {
@@ -1663,7 +1666,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ManageReportResponse?> getEditReportSaveData(
-      String reqId, AddReportPayLoad addReportPayLoad,String query) async {
+      String reqId, AddReportPayLoad addReportPayLoad, String query) async {
     try {
       Logger().w(query);
       if (enableGraphQl) {

@@ -99,10 +99,9 @@ class _DashboardViewState extends State<DashboardView> {
                           value: assetDropDown,
                           items: ["All Assets", "Product Family"],
                           onChanged: (String? value) {
-                     
                             Logger().i("all assets dropdown change $value");
                             assetDropDown = value!;
-                            
+
                             if (value != "All Assets") {
                               switchDropDownState = true;
                               // "BACKHOE LOADER"
@@ -113,7 +112,7 @@ class _DashboardViewState extends State<DashboardView> {
                                   .getAssetLocationHomeFilterData(
                                       filterData.title);
                             } else {
-                              switchDropDownState =false;
+                              switchDropDownState = false;
                               viewModel.getData(true);
                               filterLocationKey.currentState!
                                   .getAssetLocationHomeData();

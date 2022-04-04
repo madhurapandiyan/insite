@@ -73,7 +73,7 @@ class DistanceTravelledViewModel extends InsiteViewModel {
         pageNumber,
         pageCount,
         appliedFilters,
-       await graphqlSchemaService!.getFleetUtilization(
+        await graphqlSchemaService!.getFleetUtilization(
             applyFilter: appliedFilters,
             endDate: endDate,
             startDate: startDate,

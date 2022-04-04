@@ -62,7 +62,7 @@ class LocationViewModel extends InsiteViewModel {
 
   int assetLocationCount = 0;
   int assetInvalidLocationCount = 0;
-  bool showingCard=true;
+  bool showingCard = true;
 
   List<flutter_map.Marker> allMarkers = [];
 
@@ -391,10 +391,10 @@ class LocationViewModel extends InsiteViewModel {
         if (count.countOf != null) {
           if (count.countOf == "Invalid Location") {
             assetInvalidLocationCount = count.count!;
-          }else if(count.countOf == "Valid Location"){
-             assetLocationCount = count.count!;
-          }else{
-            showingCard=false;
+          } else if (count.countOf == "Valid Location") {
+            assetLocationCount = count.count!;
+          } else {
+            showingCard = false;
           }
         }
       });

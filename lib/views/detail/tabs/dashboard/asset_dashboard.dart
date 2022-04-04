@@ -197,7 +197,6 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                         ? viewModel.assetDetail!
                                             .lastReportedLocationLongitude
                                         : null),
-                                
                               ],
                             ),
                           )

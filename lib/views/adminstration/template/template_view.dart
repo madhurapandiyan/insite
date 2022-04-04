@@ -36,16 +36,17 @@ class _TemplateViewState extends State<TemplateView> {
                           itemBuilder: (context, index) {
                             TemplateDetails templateDetails =
                                 viewModel.templateDetaillist![index];
-                            
+
                             return NewReportTemplateWidget(
                               templateDetails: templateDetails,
                               dropDownValueCallBack: (String value) {
-                                viewModel.templateTitleValue=templateDetails.title!;
-                               
+                                viewModel.templateTitleValue =
+                                    templateDetails.title!;
+
                                 viewModel.templateDropDownValue = value;
                                 viewModel.onClickTemplateTypeAddReportSelected(
-                                    viewModel.templateDropDownValue,viewModel.templateTitleValue);
-                               
+                                    viewModel.templateDropDownValue,
+                                    viewModel.templateTitleValue);
                               },
                             );
                           }),
@@ -58,6 +59,3 @@ class _TemplateViewState extends State<TemplateView> {
     );
   }
 }
-
-
- 

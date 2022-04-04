@@ -113,10 +113,10 @@ class _NewReportTemplateWidgetState extends State<NewReportTemplateWidget> {
                           setState(() {});
                         },
                         items: [
-                          ".CSV", 
-                          ".XLSX", 
+                          ".CSV",
+                          ".XLSX",
                           //".PDF"
-                          ],
+                        ],
                       ),
                     ),
                   )

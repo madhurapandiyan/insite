@@ -23,7 +23,8 @@ class _SingleAssetUtilizationViewState
   ProductFamilyType productFamilyType = ProductFamilyType.ALL;
   @override
   void initState() {
-    Logger().d("selected asset product familiy ${widget.detail!.productFamily}");
+    Logger()
+        .d("selected asset product familiy ${widget.detail!.productFamily}");
     if (widget.detail!.productFamily == "BACKHOE LOADER") {
       productFamilyType = ProductFamilyType.BACKHOE_LOADER;
     } else if (widget.detail!.productFamily == "EXCAVATOR") {

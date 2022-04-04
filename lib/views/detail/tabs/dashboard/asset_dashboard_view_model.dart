@@ -41,8 +41,8 @@ class AssetDashboardViewModel extends InsiteViewModel {
     _assetSingleHistoryService!.setUp();
     Future.delayed(Duration(seconds: 1), () async {
       await getAssetDetail();
-     // await getAssetUtilization();
-     // await getNotes();
+      await getAssetUtilization();
+      await getNotes();
     });
   }
 

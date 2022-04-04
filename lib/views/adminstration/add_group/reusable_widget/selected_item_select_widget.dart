@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
-import 'package:insite/views/adminstration/add_group/add_group_view_model.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_group/reusable_widget/selected_assets_widget.dart';
-import 'package:insite/views/adminstration/add_group/selection_widget/selection_widget_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';

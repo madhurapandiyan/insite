@@ -29,7 +29,7 @@ class Network {
 
   // static final graphqlEndpoint =
   //     "https://cloud.api.trimble.com/osg-in/frame-gateway-gql/1.0/graphql";
-        static final graphqlEndpoint =
+  static final graphqlEndpoint =
       "https://cloud.api.trimble.com/osg-in/gateway-gql-pre-prod/1.0/graphql";
   final LocalService? _localService = locator<LocalService>();
 
@@ -71,7 +71,7 @@ class Network {
       // Logger().w(customerId);
       // Logger().w(userId);
       // Logger().w(subId);
-      
+
       final Link link = DioLink(
         graphqlEndpoint,
         client: client,
@@ -85,7 +85,7 @@ class Network {
           "sub-customeruid": subId!
         },
       );
-final res = await link
+      final res = await link
           .request(Request(
             operation: Operation(document: gql.parseString(query!)),
           ))

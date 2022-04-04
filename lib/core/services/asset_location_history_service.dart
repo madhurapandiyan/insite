@@ -36,7 +36,8 @@ class AssetLocationHistoryService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query: _graphqlSchemaService!.singleAssetDetailLocation(startTimeLocal!,endTimeLocal!,assetUid),
+          query: _graphqlSchemaService!.singleAssetDetailLocation(
+              startTimeLocal!, endTimeLocal!, assetUid),
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
@@ -47,7 +48,7 @@ class AssetLocationHistoryService extends BaseService {
           AssetLocationHistory? locationHistoryResponse =
               AssetLocationHistory.fromJson(
                   data.data["singleAssetLocationDetails"]);
-                 
+
           return locationHistoryResponse;
         } else {
           return null;

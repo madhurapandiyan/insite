@@ -306,9 +306,9 @@ query faultDataSummary{
     await gettingFiltersValue(applyFilter);
     await gettingLocationFilter(applyFilter);
     final String faultQueryString = """
-query{
+{
   faultdata(
-page:$pageNo,
+    page:$pageNo,
     limit:$limit
 startDateTime:"$startDate"
 endDateTime:"$endDate",
@@ -321,77 +321,74 @@ deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
 assetStatusList:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}
 fuelLevelPercentLT: ""
 fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
-){
-    faults{
-      asset{
-        uid,
-        basic{
-          assetId,
+  ) {
+    faults {
+      asset {
+        uid
+        basic {
+          assetId
           serialNumber
         }
-        details{
+        details {
           makeCode
-model
-productFamily
-assetIcon
-devices{
-  deviceType,
-  firmwareVersion
-}
-dealerCode
-dealerCustomerName
-dealerName
-universalCustomerName
+          model
+          productFamily
+          assetIcon
+          devices {
+            deviceType
+            firmwareVersion
+          }
+          dealerCode
+          dealerCustomerName
+          dealerName
+          universalCustomerName
         }
-        dynamic{
+        dynamic {
           status
-locationLatitude
-locationLongitude
-location
-hourMeter
-odometer
-locationReportedTimeUTC
+          locationLatitude
+          locationLongitude
+          location
+          hourMeter
+          odometer
+          locationReportedTimeUTC
         }
       }
-      faultUid,
-      basic{
-    faultIdentifiers
-description
-severityLabel
-severity
-faultType
-source
-faultOccuredUTC
-sourceIdentifierCode
-isResponseReceived
-esn
-externalFaultId
-faultClosureUTC
-isFaultActive
-priority
-  
-
-        
-      },
-      details{
-        faultCode,
-        faultReceivedUTC,
-        dataLinkType,
-        occurrences,
+      faultUid
+      basic {
+        faultIdentifiers
+        description
+        severityLabel
+        severity
+        faultType
+        source
+        faultOccuredUTC
+        sourceIdentifierCode
+        isResponseReceived
+        esn
+        externalFaultId
+        faultClosureUTC
+        isFaultActive
+        priority
+      }
+      details {
+        faultCode
+        faultReceivedUTC
+        dataLinkType
+        occurrences
         url
       }
-    },
-    page,
-    limit,
-    total,
-    pageLinks{
-      rel,
-      href,
-       method
     }
-
+    page
+    limit
+    total
+    pageLinks {
+      rel
+      href
+      method
+    }
   }
 }
+
   """;
     return faultQueryString;
   }
@@ -2118,7 +2115,7 @@ mutation {
     geometryWKT: "$geometryWKT", 
     geofenceName: "$geofenceName", 
    actionUTC: "$actionUTC", 
-    endDate: ${endDate == null ? null :"\""+ "$endDate"+ "\""},
+    endDate: ${endDate == null ? null : "\"" + "$endDate" + "\""},
      description: "$description",  
     fillColor: $fillColor, 
     isTransparent: false

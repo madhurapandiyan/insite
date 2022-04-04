@@ -179,7 +179,8 @@ class _LocationViewState extends State<LocationView> {
                                       text: viewModel.assetInvalidLocationCount
                                               .toString() +
                                           " out of " +
-                                          viewModel.assetLocationCount.toString() +
+                                          viewModel.assetLocationCount
+                                              .toString() +
                                           " assets do not have location information",
                                     ),
                                   ),

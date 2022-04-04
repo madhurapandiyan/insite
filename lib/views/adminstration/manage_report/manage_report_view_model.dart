@@ -308,7 +308,7 @@ class ManageReportViewModel extends InsiteViewModel {
         } else {
           _assets.clear();
           _isSearching = false;
-           _loading = false;
+          _loading = false;
           // for (var scheduledReport in result.scheduledReports!) {
           //   _assets.add(ScheduledReportsRow(
           //       scheduledReports: scheduledReport, isSelected: false));

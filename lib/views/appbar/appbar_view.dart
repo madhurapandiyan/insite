@@ -262,8 +262,8 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
       },
     );
     if (value != null && value) {
-     // ProgressDialog.show(context);
+      // ProgressDialog.show(context);
       viewModel.logout();
-     }
+    }
   }
 }

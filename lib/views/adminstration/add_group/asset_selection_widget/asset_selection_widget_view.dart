@@ -360,7 +360,6 @@ class SelectedAsset extends StatefulWidget {
 }
 
 class _SelectedAssetState extends State<SelectedAsset> {
-  
   bool isSorting = false;
   @override
   Widget build(BuildContext context) {
@@ -474,7 +473,7 @@ class _SelectedAssetState extends State<SelectedAsset> {
                               SizedBox(
                                 height: 100,
                               ),
-                              widget.isLoading==true
+                              widget.isLoading == true
                                   ? Center(
                                       child: InsiteProgressBar(),
                                     )

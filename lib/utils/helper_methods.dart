@@ -1321,7 +1321,7 @@ class Utils {
       });
       listData.forEach((element) {
         String? data;
-       if (element.contains("]")) {
+        if (element.contains("]")) {
           data = element.replaceAll("]", "");
           var assetId = data.replaceAll("\"", "");
           formatedList.add(assetId.trimLeft().trimRight());
