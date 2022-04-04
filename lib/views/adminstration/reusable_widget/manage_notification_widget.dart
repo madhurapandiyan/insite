@@ -32,17 +32,19 @@ class ManageNotificationWidget extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
+                    color: Theme.of(context).buttonColor,
                     onPressed: onEdit,
                     icon: Icon(
                       Icons.edit,
-                      color: Theme.of(context).textTheme.bodyText1!.color!,
+                      //color: Theme.of(context).textTheme.bodyText1!.color!,
                     ),
                   ),
                   IconButton(
+                     color: Theme.of(context).buttonColor,
                     onPressed: onDelete,
                     icon: Icon(
                       Icons.delete,
-                      color: Theme.of(context).textTheme.bodyText1!.color!,
+                      //color: Theme.of(context).textTheme.bodyText1!.color!,
                     ),
                   ),
                 ],

@@ -31,8 +31,10 @@ class DayCheck extends StatelessWidget {
         height: 40,
         width: 40,
         decoration: BoxDecoration(
+            border: Border.all(
+                width: 1, color: Theme.of(context).textTheme.bodyText1!.color!),
             borderRadius: BorderRadius.circular(5),
-            border: Border.all(width: 1, color: Theme.of(context).buttonColor),
+           // border: Border.all(width: 1, color: Theme.of(context).buttonColor),
             color: isSelected == true
                 ? Theme.of(context).buttonColor
                 : Theme.of(context).cardColor),
@@ -42,15 +44,14 @@ class DayCheck extends StatelessWidget {
             FittedBox(
               child: InsiteText(
                 text: day!,
-                color:
-                    isSelected == true ? white : Theme.of(context).buttonColor,
+                color: Theme.of(context).textTheme.bodyText1!.color!,
                 //size: day=="fri"?10:null,
               ),
             ),
             Icon(
               Icons.check,
               size: 20,
-              color: isSelected == true ? white : Theme.of(context).buttonColor,
+              color: Theme.of(context).textTheme.bodyText1!.backgroundColor,
             )
           ],
         ),

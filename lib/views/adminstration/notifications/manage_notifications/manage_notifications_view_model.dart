@@ -51,6 +51,10 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   bool _isSearching = false;
   bool get isSearching => _isSearching;
 
+  int _totalCount = 0;
+
+  int get totalCount => _totalCount;
+
   bool _loading = true;
   bool get loading => _loading;
 
@@ -188,6 +192,9 @@ class ManageNotificationsViewModel extends InsiteViewModel {
       Logger().wtf(response!.toJson());
 
       if (response != null) {
+        if (response.total!.items != null) {
+          _totalCount = response.total!.items!;
+        }
         if (response.configuredAlerts != null &&
             response.configuredAlerts!.isNotEmpty) {
           _notifications.addAll(response.configuredAlerts!);

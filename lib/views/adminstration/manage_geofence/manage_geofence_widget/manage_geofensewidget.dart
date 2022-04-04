@@ -86,12 +86,13 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                               widget.onFavourite!(widget.geofenceUID);
                             },
                             icon: Icon(
+
                               Icons.favorite,
-                              color: widget.isFav! ? tango : white,
+                              color: widget.isFav! ? Theme.of(context).buttonColor : white,
                             )),
                         InsiteButton(
                             height: MediaQuery.of(context).size.height * 0.05,
-                            bgColor: tuna,
+                           // bgColor: tuna,
                             title: "",
                             onTap: () {
                               widget.ondeleting!(widget.geofenceUID,

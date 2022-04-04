@@ -310,8 +310,8 @@ class DashboardViewModel extends InsiteViewModel {
           getFilterRange(),
           graphqlSchemaService!.getAssetCount(
               idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
-              endDate: Utils.getIdlingDateFormat(DateTime.now()),
-              startDate: getStartRange()));
+              endDate: DateTime.now().toString(),
+              startDate:DateTime.now().subtract(Duration(days: 1)).toString()));
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -585,4 +585,6 @@ class DashboardViewModel extends InsiteViewModel {
     }
     _assetUtilizationLoading = false;
   }
+
+ 
 }

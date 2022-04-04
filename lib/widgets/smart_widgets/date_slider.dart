@@ -47,6 +47,7 @@ class DateSlider extends StatelessWidget {
                       child: InsiteText(
                         size: 14,
                         text: "-",
+                        color: Theme.of(context).textTheme.bodyText1!.color,
                         fontWeight: FontWeight.w700,
                       ),
                     )
@@ -54,8 +55,8 @@ class DateSlider extends StatelessWidget {
                       title: data.value,
                       padding: EdgeInsets.all(8),
                       margin: EdgeInsets.all(8),
-                      bgColor: Theme.of(context).buttonColor,
-                     
+                      bgColor: Theme.of(context).backgroundColor,
+                      textColor: Theme.of(context).textTheme.bodyText1!.color,
                     ),
             ],
           );

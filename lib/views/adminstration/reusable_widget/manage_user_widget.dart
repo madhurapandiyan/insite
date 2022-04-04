@@ -69,11 +69,10 @@ class ManageUserWidget extends StatelessWidget {
                       content: user!.user!.loginId,
                     ),
                     InsiteTableRowItem(
-                      title: 'User Type:',
-                      content: user!.user!.user_type == null
-                          ? "-"
-                          : user!.user!.user_type.toString(),
-                    ),
+                        title: "Created At",
+                        content: Utils.getDateInFormatddMMyyyy(
+                            user!.user!.createdOn),
+                      ),
                   ]),
                   TableRow(children: [
                     InsiteTableRowItem(
@@ -111,9 +110,8 @@ class ManageUserWidget extends StatelessWidget {
                         content: user!.user!.createdBy,
                       ),
                       InsiteTableRowItem(
-                        title: "Created On",
-                        content: Utils.getDateInFormatddMMyyyy(
-                            user!.user!.createdOn),
+                        title: "",
+                        content: ""
                       ),
                     ])
                   ],
