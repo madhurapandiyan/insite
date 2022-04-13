@@ -327,7 +327,13 @@ class LocationViewModel extends InsiteViewModel {
             '-lastlocationupdateutc',
             smallLatLng.latitude,
             largeLatLng.longitude,
-            radiusKm);
+            radiusKm,
+            await graphqlSchemaService!.getFleetLocationData(
+                filtlerList: appliedFilters,
+                pageNo: pageNumber,
+                pageSize: pageSize,
+                startDate: Utils.fleetLocationDateFormate(startDate),
+                endDate: Utils.fleetLocationDateFormate(endDate)));
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;

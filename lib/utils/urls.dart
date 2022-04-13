@@ -74,12 +74,15 @@ class Urls {
           "&nonce=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y&navigationRedirectUri=/";
 
   static getV4LoginUrl(state, codeChallenge) {
+   // Logger().e(state);
+    //Logger().v(codeChallenge);
     Logger().i("indiaStack");
     String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
         "&client_id=$indiaStackClientId&state=$state" +
         "&redirect_uri=$tataHitachiRedirectUri&scope=openid $tataHitachiApplicationName" +
         "&code_challenge=$codeChallenge&code_challenge_method=S256" +
         "&nonce=$state&navigationRedirectUri=/";
+    print(url);
     return url;
   }
 

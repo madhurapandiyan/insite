@@ -39,8 +39,8 @@ class NotificationService extends BaseService {
     }
   }
 
-  Future<FaultCodeTypeSearch?> getFaultCodeTypeSearch(
-      String queryValue, int pageValue, String faultCodeType) async {
+  Future<FaultCodeTypeSearch?> getFaultCodeTypeSearch(String queryValue,
+      int pageValue, String faultCodeType, String query) async {
     Map<String, String> queryMap = Map();
 
     if (faultCodeType.isNotEmpty) {
@@ -49,15 +49,28 @@ class NotificationService extends BaseService {
     if (queryValue.isNotEmpty) {
       queryMap["faultDescription"] = queryValue;
     }
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      FaultCodeTypeSearch notificationsData =
+          FaultCodeTypeSearch.fromJson(data.data["getFaultCodeData"]);
+      return notificationsData;
+    }
     if (isVisionLink) {
       queryMap["lang"] = "en-US";
       queryMap["page"] = pageValue.toString();
-      var data = MyApi().getClientSeven()!.getFaultCodeTypeSearchVL(
+      var data = await MyApi().getClientSeven()!.getFaultCodeTypeSearchVL(
           accountSelected!.CustomerUID,
           Urls.faultCodeSearchVL + FilterUtils.constructQueryFromMap(queryMap));
       return data;
     } else {
-      var data = MyApi().getClient()!.getFaultCodeTypeSearch(
+      var data = await MyApi().getClient()!.getFaultCodeTypeSearch(
           "in-alertmanager-api",
           accountSelected!.CustomerUID,
           Urls.faultCodeSearch + FilterUtils.constructQueryFromMap(queryMap));

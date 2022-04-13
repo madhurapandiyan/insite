@@ -27,10 +27,10 @@ class Network {
     return randomAlphaNumeric(43);
   }
 
-  static final graphqlEndpoint =
-      "https://cloud.api.trimble.com/osg-in/frame-gateway-gql/1.0/graphql";
   // static final graphqlEndpoint =
-  //     "https://cloud.api.trimble.com/osg-in/gateway-gql-pre-prod/1.0/graphql";
+  //     "https://cloud.api.trimble.com/osg-in/frame-gateway-gql/1.0/graphql";
+  static final graphqlEndpoint =
+      "https://cloud.api.trimble.com/osg-in/gateway-gql-pre-prod/1.0/graphql";
   final LocalService? _localService = locator<LocalService>();
 
   Network._internal() {
@@ -68,9 +68,9 @@ class Network {
       // customerUserId = userId;
       // customerUid = customerId;
       // subUid = subId;
-      Logger().w(customerId);
-      Logger().w(userId);
-      Logger().w(subId);
+      // Logger().w(customerId);
+      // Logger().w(userId);
+      // Logger().w(subId);
 
       final Link link = DioLink(
         graphqlEndpoint,

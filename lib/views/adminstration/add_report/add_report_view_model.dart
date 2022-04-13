@@ -280,11 +280,11 @@ class AddReportViewModel extends InsiteViewModel {
       SearchContactReportListResponse? result = await _manageUserService!
           .getSearchContactResposeData(_searchKeyword,
               graphqlSchemaService!.getContactSearchData(_searchKeyword));
-      if (result != null) {
-        searchContactListName!.clear();
-        // Logger().i("result:${result.pageInfo!.totalPages}");
 
-        for (var name in result.Users!) {
+      if (result != null) {
+        searchContactListName?.clear();
+        // Logger().i("result:${result.pageInfo!.totalPages}");
+        for (var name in result.users!) {
           searchContactListName!.add(name);
         }
       }
@@ -741,7 +741,7 @@ class AddReportViewModel extends InsiteViewModel {
                           : null,
                   svcbody: assetsDropDownValue == "Fault Summary Faults List"
                       ? null
-                      : Utils.getStringListData(data) ?? null,
+                      :data!=null? Utils.getStringListData(data) : null,
                   reportColumns: Utils.getReportColumn(assetsDropDownValue!),
                   reportType: reportType!,
                   //     assetsDropDownValue=="Fault Summary Faults List"?{"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:

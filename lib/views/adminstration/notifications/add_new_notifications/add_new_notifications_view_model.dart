@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
     Future.delayed(Duration(seconds: 1), () async {
       await getNotificationTypesData();
-      // onGettingFaultCodeData();
+      onGettingFaultCodeData();
       if (data != null) {
         Future.delayed(Duration.zero, () async {
           editingNotification(data);
@@ -267,9 +268,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   ];
 
   List<SwitchState> severityState = [
-    SwitchState(state: false, text: "High"),
-    SwitchState(state: false, text: "Medium"),
-    SwitchState(state: false, text: "Low")
+    SwitchState(state: true, text: "High"),
+    SwitchState(state: true, text: "Medium"),
+    SwitchState(state: true, text: "Low")
   ];
 
   List<SwitchState> faultCodeType = [
@@ -278,7 +279,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   ];
 
   List<SwitchState> customizableState = [
-    SwitchState(state: false, text: "Include"),
+    SwitchState(state: true, text: "Include"),
     SwitchState(state: false, text: "Exclude")
   ];
   List<SwitchState> customizable = [
@@ -773,6 +774,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   onCustomiozablestateChange(int i) {
     customizable[i].state = !customizable[i].state!;
+    severityState.forEach((element) {
+      element.state = false;
+    });
+    faultCodeType.forEach((element) {
+      element.state = true;
+    });
     // customizableState.forEach((element) {
     //   element.state = !element.state!;
     // });
@@ -800,6 +807,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   checkingCustomizeableState(int i) {
+    customizableState.forEach((element) {
+      if (element.state == true) {
+        element.state = false;
+      }
+    });
     customizableState[i].state = !customizableState[i].state!;
     notifyListeners();
   }
@@ -834,8 +846,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onChangingFaultCode(String value) async {
     try {
       if (value.length >= 3) {
-        var faultCodeType =
-            await _notificationService!.getFaultCodeTypeSearch(value, page, "");
+        var faultCodeType = await _notificationService!.getFaultCodeTypeSearch(
+            value,
+            page,
+            "",
+            graphqlSchemaService?.getFaultCodeTypesData(
+                faultDescription: value,
+                pageNo: page,
+                lang: "en-US",
+                codeType: ""));
 
         faultCodeTypeSearch = faultCodeType!.descriptions;
         notifyListeners();
@@ -950,8 +969,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onGettingFaultCodeData() async {
     try {
       showLoadingDialog();
-      var faultCodeType =
-          await _notificationService!.getFaultCodeTypeSearch("", page, "");
+      var faultCodeType = await _notificationService!.getFaultCodeTypeSearch(
+          "",
+          page,
+          "",
+          graphqlSchemaService?.getFaultCodeTypesData(
+              faultDescription: "", pageNo: page, lang: "en-US", codeType: ""));
       if (_loadingMore) {
         faultCodeType!.descriptions!.forEach((element) {
           faultCodeTypeSearch!.add(FaultCodeDetails(
@@ -998,8 +1021,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onDiagnosticFrontPressed() async {
     showLoadingDialog();
     expansionTitle = "Fault Code Type";
-    var faultCodeType = await _notificationService!
-        .getFaultCodeTypeSearch("", page, "DIAGNOSTIC");
+    page = 1;
+    var faultCodeType = await _notificationService!.getFaultCodeTypeSearch(
+        "",
+        page,
+        "DIAGNOSTIC",
+        graphqlSchemaService?.getFaultCodeTypesData(
+            faultDescription: "",
+            pageNo: page,
+            lang: "en-US",
+            codeType: "DIAGNOSTIC"));
     faultCodeTypeSearch = faultCodeType!.descriptions;
     Future.delayed(Duration(seconds: 1), () {
       pageController.animateToPage(2,
@@ -1012,8 +1043,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onEventFrontPressed() async {
     showLoadingDialog();
     expansionTitle = "Fault Code Type";
-    var faultCodeType =
-        await _notificationService!.getFaultCodeTypeSearch("", page, "EVENT");
+    page = 1;
+    var faultCodeType = await _notificationService!.getFaultCodeTypeSearch(
+        "",
+        page,
+        "EVENT",
+        graphqlSchemaService?.getFaultCodeTypesData(
+            faultDescription: "",
+            pageNo: page,
+            lang: "en-US",
+            codeType: "EVENT"));
     faultCodeTypeSearch = faultCodeType!.descriptions;
     Future.delayed(Duration(seconds: 1), () {
       pageController.animateToPage(2,
@@ -1378,7 +1417,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         searchContactListName!.clear();
         // Logger().i("result:${result.pageInfo!.totalPages}");
 
-        for (var name in result.Users!) {
+        for (var name in result.users!) {
           searchContactListName!.add(name);
         }
       }
@@ -1773,9 +1812,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   saveAddNotificationData() async {
     assetUidData.clear();
+    Logger().w(selectedAsset!.length);
     selectedAsset!.forEach((element) {
       assetUidData.add(element.assetIdentifier!);
     });
+    Logger().w(Utils.getStringListData(assetUidData));
+
     if (notificationController.text.isEmpty) {
       _snackBarservice!.showSnackbar(message: "Notification Name is required");
       return;

@@ -125,7 +125,6 @@ class Notes extends StatelessWidget {
                       title: 'Add',
                       showLoad: isLoading,
                       width: 90,
-                     
                       onTap: onTap as void Function()?,
                       textColor: white,
                     ),

@@ -30,7 +30,7 @@ AssetSetting _$AssetSettingFromJson(Map<String, dynamic> json) => AssetSetting(
       assetSerialNumber: json['assetSerialNumber'] as String?,
       assetModel: json['assetModel'] as String?,
       assetMakeCode: json['assetMakeCode'] as String?,
-      assetIconKey: json['assetIconKey'] as int?,
+      assetIconKey: json['assetIconKey'],
       deviceSerialNumber: json['deviceSerialNumber'] as String?,
       devicetype: json['devicetype'] as String?,
       targetStatus: json['targetStatus'] as bool?,

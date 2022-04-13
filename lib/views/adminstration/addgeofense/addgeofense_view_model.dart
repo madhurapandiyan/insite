@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geobase/geobase.dart';
 import 'package:geodesy/geodesy.dart' as geodesy;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:point_in_polygon/point_in_polygon.dart' as point;
 
 import 'package:geocore/geocore.dart' as Geo;
@@ -752,8 +753,14 @@ class AddgeofenseViewModel extends InsiteViewModel {
                   : geofenceInputsData.Result!.Target!.TargetVolumeInCuMeter
                       .toString();
         }
+        
         titleController.text = data.GeofenceName.toString();
         descriptionController.text = data.Description.toString();
+        if (data.EndDate!=null) {
+           endingDate = DateTime.parse(data.EndDate!);
+          isNoendDate=false;
+        }
+       
         initialValue = data.GeofenceType == "Unknown"
             ? dropDownlist[4]
             : data.GeofenceType;

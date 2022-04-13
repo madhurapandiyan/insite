@@ -513,7 +513,7 @@ class HttpWrapper {
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers
-              .addAll({"Accept": "application/json", "timezoneoffset": -330});
+              .addAll({"Accept": "*/*", "timezoneoffset": -330});
           return handler.next(options);
         },
       ))

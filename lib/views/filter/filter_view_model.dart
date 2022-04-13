@@ -14,6 +14,8 @@ class FilterViewModel extends InsiteViewModel {
 
   bool _loading = false;
   bool get loading => _loading;
+    bool _refineLoading = true;
+  bool get refineLoading => _refineLoading;
   List<FilterData> filterDataDeviceType = [];
   List<FilterData> filterDataMake = [];
   List<FilterData> filterDataManufacturer = [];
@@ -53,12 +55,12 @@ class FilterViewModel extends InsiteViewModel {
   }
   getData() async {
     selectedFilterData = appliedFilters;
-    _loading = false;
+    _refineLoading = false;
     notifyListeners();
   }
 
   getFilterData(ScreenType? screenType) async {
-    showLoadingDialog();
+    showLoadingDialog(tapDismiss: false);
     if (screenType == ScreenType.FLEET ||
         screenType == ScreenType.LOCATION ||
         screenType == ScreenType.UTILIZATION ||

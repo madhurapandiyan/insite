@@ -57,33 +57,33 @@ class CustomerAdapter extends TypeAdapter<Customer> {
 // **************************************************************************
 
 Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
-      CustomerUID: json['customerUid'] as String?,
-      Name: json['name'] as String?,
-      CustomerType: json['customerType'] as String?,
-      Children: (json['children'] as List<dynamic>?)
+      CustomerUID: json['CustomerUID'] as String?,
+      Name: json['Name'] as String?,
+      CustomerType: json['CustomerType'] as String?,
+      Children: (json['Children'] as List<dynamic>?)
           ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
-      DisplayName: json['displayName'] as String?,
+      DisplayName: json['DisplayName'] as String?,
     );
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
-      'customerUid': instance.CustomerUID,
-      'name': instance.Name,
-      'customerType': instance.CustomerType,
-      'displayName': instance.DisplayName,
-      'children': instance.Children,
+      'CustomerUID': instance.CustomerUID,
+      'Name': instance.Name,
+      'CustomerType': instance.CustomerType,
+      'DisplayName': instance.DisplayName,
+      'Children': instance.Children,
     };
 
 CustomersResponse _$CustomersResponseFromJson(Map<String, dynamic> json) =>
     CustomersResponse(
-      UserUID: json['userUid'] as String?,
-      Customers: (json['customers'] as List<dynamic>?)
+      UserUID: json['UserUid'] as String?,
+      Customers: (json['Customers'] as List<dynamic>?)
           ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$CustomersResponseToJson(CustomersResponse instance) =>
     <String, dynamic>{
-      'userUid': instance.UserUID,
-      'customers': instance.Customers,
+      'UserUid': instance.UserUID,
+      'Customers': instance.Customers,
     };

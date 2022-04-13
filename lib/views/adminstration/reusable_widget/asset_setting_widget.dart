@@ -23,7 +23,7 @@ class AssetSettingWidget extends StatelessWidget {
     return Card(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.90,
-        height: MediaQuery.of(context).size.height * 0.17,
+        height: MediaQuery.of(context).size.height * 0.20,
         child: Column(
           children: [
             SizedBox(

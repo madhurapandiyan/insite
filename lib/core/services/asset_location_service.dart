@@ -33,13 +33,13 @@ class AssetLocationService extends BaseService {
   }
 
   Future<AssetLocationData?> getAssetLocationWithCluster(
-    int pageNumber,
-    int pageSize,
-    String sort,
-    double latitude,
-    double longitude,
-    double radiusKm,
-  ) async {
+      int pageNumber,
+      int pageSize,
+      String sort,
+      double latitude,
+      double longitude,
+      double radiusKm,
+      String query) async {
     Logger().i("getAssetLocationWithCluster");
     try {
       Map<String, String> queryMap = Map();
@@ -61,6 +61,26 @@ class AssetLocationService extends BaseService {
       if (radiusKm != null) {
         queryMap["radiuskm"] = radiusKm.toString();
       }
+      if (customerSelected != null) {
+        queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
+        Logger().wtf(customerSelected!.CustomerUID);
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        Logger()
+            .wtf("get asset location ${data.data!["fleetLocationDetails"]}");
+        AssetLocationData assetOperationData =
+            AssetLocationData.fromJson(data.data!["fleetLocationDetails"]);
+
+        return assetOperationData;
+      }
       if (isVisionLink) {
         if (pageNumber != null && pageSize != null && sort != null) {
           AssetLocationData result = await MyApi()
@@ -74,13 +94,14 @@ class AssetLocationService extends BaseService {
           AssetLocationData result = await MyApi()
               .getClient()!
               .assetLocationWithCluster(
-                  Urls.locationSummary,
-                  latitude,
-                  longitude,
-                  pageNumber,
-                  pageSize,
-                  radiusKm,
-                  sort,
+                  Urls.locationSummary +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  // latitude,
+                  // longitude,
+                  // pageNumber,
+                  // pageSize,
+                  // radiusKm,
+                  // sort,
                   accountSelected!.CustomerUID,
                   Urls.vfleetMapPrefix);
           return result;

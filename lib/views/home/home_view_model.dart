@@ -29,6 +29,9 @@ class HomeViewModel extends InsiteViewModel {
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    // Future.delayed(Duration.zero, () async {
+    //   var data = await _localService!.getTokenInfo();
+    // });
   }
 
   openRespectivePage(ScreenType type) {

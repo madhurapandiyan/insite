@@ -9,16 +9,20 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/native_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/urls.dart';
 import 'package:insite/views/login/india_stack_login_view.dart';
 import 'package:insite/views/splash/india_stack_splash_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart' as service;
+
+import '../../core/services/login_service.dart';
 
 class AppbarViewModel extends InsiteViewModel {
   var _navigationService = locator<service.NavigationService>();
   var _localService = locator<LocalService>();
   var _localStorageService = locator<LocalStorageService>();
   var _nativeService = locator<NativeService>();
+  LoginService? _loginService = locator<LoginService>();
 
   Customer? _accountSelected;
   Customer? get accountSelected => _accountSelected;
@@ -65,6 +69,12 @@ class AppbarViewModel extends InsiteViewModel {
   Future<void> logout() async {
     // _localService.removeTokenInfo();
     LoginResponse? response = await _localService.getTokenInfo();
+    // await _loginService!.logout(response!.id_token!);
+
+    // print(Urls.getV4LogoutUrl(response!.id_token, Urls.tataHitachiLogoutUrl))
+    // Logger()
+    //     .w(Urls.getV4LogoutUrl(response!.id_token, Urls.tataHitachiLogoutUrl));
+    // return;
     _localService.clearAll();
     _localStorageService.clearAll();
     Future.delayed(Duration(seconds: 2), () async {
@@ -96,8 +106,8 @@ class AppbarViewModel extends InsiteViewModel {
           _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
               arguments: LoginArguments(response: response));
         } else {
-          _navigationService.clearTillFirstAndShowView(
-              IndiaStackSplashView(showingSnackbar: false));
+          _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
+              arguments: LoginArguments(response: response));
         }
       }
     });

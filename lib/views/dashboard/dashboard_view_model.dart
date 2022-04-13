@@ -157,6 +157,7 @@ class DashboardViewModel extends InsiteViewModel {
         FilterType.ALL_ASSETS,
         graphqlSchemaService!.getAssetCount(grouping: "assetstatus"),
         true);
+    Logger().w(result?.toJson());
     if (result != null) {
       _assetStatusData = result;
       statusChartData.clear();
@@ -167,6 +168,7 @@ class DashboardViewModel extends InsiteViewModel {
         ));
       }
     }
+
     _assetStatusloading = false;
     //notifyListeners();
   }
@@ -190,7 +192,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   onRefereshClicked() {
     if (currentFilterSelected != null) {
-      getFilterDataApplied(currentFilterSelected!, false);
+      getFilterDataApplied(currentFilterSelected!, true);
     } else {
       refresh();
     }
@@ -310,8 +312,8 @@ class DashboardViewModel extends InsiteViewModel {
           getFilterRange(),
           graphqlSchemaService!.getAssetCount(
               idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
-              endDate: DateTime.now().toString(),
-              startDate:DateTime.now().subtract(Duration(days: 1)).toString()));
+              endDate: Utils.getIdlingDateFormat(DateTime.now()),
+              startDate: getStartRange()));
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -329,17 +331,18 @@ class DashboardViewModel extends InsiteViewModel {
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCount(
-        Utils.getFaultDateFormat(
+        Utils.getFaultDateFormatStartDate(
             DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
-        Utils.getFaultDateFormat(DateTime.now().subtract(Duration(days: 1))),
+        Utils.getFaultDateFormatEndDate(
+            DateTime.now().subtract(Duration(days: 1))),
         graphqlSchemaService!.getFaultCountData(
-            startDate: Utils.getFaultDateFormat(
-                DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
+          startDate: Utils.getFaultDateFormatStartDate(
+              DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
 
-            //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
-            //     startDate),
-            endDate: Utils.getFaultDateFormat(
-                DateTime.now().subtract(Duration(days: 1)))));
+          //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
+          //     startDate),
+          endDate: Utils.getFaultDateFormatEndDate(DateTime.now()),
+        ));
     if (count != null) {
       _faultCountData = count;
     }
@@ -559,9 +562,9 @@ class DashboardViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         graphqlSchemaService!.getFaultCountData(
             prodFamily: dropDownValue,
-            startDate: Utils.getFaultDateFormat(
+            startDate: Utils.getFaultDateFormatStartDate(
                 DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
-            endDate: Utils.getFaultDateFormat(
+            endDate: Utils.getFaultDateFormatEndDate(
                 DateTime.now().subtract(Duration(days: 1)))));
     if (count != null) {
       _faultCountData = count;
@@ -585,6 +588,4 @@ class DashboardViewModel extends InsiteViewModel {
     }
     _assetUtilizationLoading = false;
   }
-
- 
 }

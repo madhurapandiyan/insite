@@ -98,6 +98,20 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                                   // );
 
                                   return PercentageWidget(
+                                      // trailText: rangeChoice == 1
+                                      //     ? viewModel
+                                      //         .utilLizationListData[index]
+                                      //         .runtimeHours
+                                      //         .toString()
+                                      //     : rangeChoice == 2
+                                      //         ? viewModel
+                                      //             .utilLizationListData[index]
+                                      //             .workingHours
+                                      //             .toString()
+                                      //         : viewModel
+                                      //             .utilLizationListData[index]
+                                      //             .idleHours
+                                      //             .toString(),
                                       value: rangeChoice == 1
                                           ? ('${viewModel.utilLizationListData[index].runtimeHours}')
                                           : rangeChoice == 2

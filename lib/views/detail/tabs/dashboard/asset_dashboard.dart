@@ -110,16 +110,17 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16.0,
                             ),
-                            child: SingleAssetUtilizationWidget(
-                              assetUtilization:
-                                  viewModel.assetUtilization != null
-                                      ? viewModel.assetUtilization
-                                      : null,
-                              greatestNumber:
-                                  viewModel.utilizationGreatestValue != null
-                                      ? viewModel.utilizationGreatestValue
-                                      : null,
-                            ),
+                            child: SizedBox()
+                            // SingleAssetUtilizationWidget(
+                            //   assetUtilization:
+                            //       viewModel.assetUtilization != null
+                            //           ? viewModel.assetUtilization
+                            //           : null,
+                            //   greatestNumber:
+                            //       viewModel.utilizationGreatestValue != null
+                            //           ? viewModel.utilizationGreatestValue
+                            //           : null,
+                            // ),
                           )
                         : SizedBox(),
                     SizedBox(
@@ -181,7 +182,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                             Utils.getLastReportedDateOneUTC(
                                                 widget.detail!
                                                     .lastLocationUpdateUTC)
-                                        : "No Data Receiveed",
+                                        : "No Data Received",
                                     onMarkerTap: () {
                                       widget.switchTab!(3);
                                     },

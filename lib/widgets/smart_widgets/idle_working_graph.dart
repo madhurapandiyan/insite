@@ -6,8 +6,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class IdleWorkingGraphWidget extends StatelessWidget {
   final String label;
-  final idleLength;
-  final workingLength;
+  final double? idleLength;
+  final double? workingLength;
   const IdleWorkingGraphWidget({
     Key? key,
     required this.label,
@@ -45,20 +45,20 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             isRTL: true,
             width: width,
             center: InsiteText(
-              text: idleLength.runtimeType == num
-                  ? double.parse(idleLength.toString()).toString()
-                  : idleLength.toString(),
+              text: idleLength.toString(),
               size: 12,
               color: Colors.black,
             ),
             lineHeight: 20.0,
-            percent: idleLength.runtimeType == num
-                ? ((double.parse(idleLength.toString())) * 10 / 100) > 1
-                    ? 1
-                    : ((double.parse(idleLength.toString())) * 10 / 100)
-                : (double.parse(idleLength.toString()) * 10 / 100) > 1
-                    ? 1
-                    : (double.parse(idleLength.toString()) * 10 / 100),
+            percent:
+                (idleLength! * 10 / 100) > 1 ? 1 : (idleLength! * 10 / 100),
+            // idleLength.runtimeType == num
+            //     ? ((double.parse(idleLength.toString())) * 10 / 100) > 1
+            //         ? 1
+            //         : ((double.parse(idleLength.toString())) * 10 / 100)
+            //     : (double.parse(idleLength.toString()) * 10 / 100) > 1
+            //         ? 1
+            //         : (double.parse(idleLength.toString()) * 10 / 100),
             linearStrokeCap: LinearStrokeCap.butt,
             progressColor: tango,
             backgroundColor: concrete,
@@ -81,14 +81,14 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             center: InsiteText(
                 // "${(idleLength + workingLength).toStringAsFixed(1)}",
                 color: Colors.black,
-                text: "${(workingLength).toStringAsFixed(1)}",
+                text: "${(workingLength)!.toStringAsFixed(1)}",
                 size: 12),
             // percent: ((idleLength + workingLength) * 10 / 100) > 1
             //     ? 1
             //     : ((idleLength + workingLength) * 10 / 100),
-            percent: ((workingLength) * 10 / 100) > 1
+            percent: ((workingLength)! * 10 / 100) > 1
                 ? 1
-                : ((workingLength) * 10 / 100),
+                : ((workingLength)! * 10 / 100),
             linearStrokeCap: LinearStrokeCap.butt,
             progressColor: Colors.green,
             backgroundColor: concrete,
@@ -97,10 +97,7 @@ class IdleWorkingGraphWidget extends StatelessWidget {
             width: 2,
           ),
           InsiteText(
-            text: idleLength.runtimeType == double ||
-                    workingLength.runtimeType == double
-                ? (idleLength + workingLength).toString()
-                : "${double.parse((idleLength.toString() + workingLength.toString())).toStringAsFixed(1)}",
+            text: (idleLength! + workingLength!).toStringAsFixed(1),
             size: 10,
             fontWeight: FontWeight.bold,
           ),

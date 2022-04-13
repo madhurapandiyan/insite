@@ -145,9 +145,9 @@ class UtilizationListItem extends StatelessWidget {
                                         content: utilizationData!
                                                     .targetRuntimePerformance !=
                                                 null
-                                            ? double.parse(utilizationData!
-                                                    .targetRuntimePerformance!).toStringAsFixed(2)
-                                                     +
+                                            ? (utilizationData!
+                                                    .targetRuntimePerformance!*100)
+                                                    .toStringAsFixed(2) +
                                                 " %"
                                             : "",
                                       ),
@@ -233,20 +233,11 @@ class UtilizationListItem extends StatelessWidget {
                                       content: utilizationData!
                                                   .targetIdlePerformance !=
                                               null
-                                          ? utilizationData!
-                                                      .targetIdlePerformance!
-                                                      .runtimeType ==
-                                                  num
-                                              ? (utilizationData!
+                                          ? (utilizationData!
                                                           .targetIdlePerformance! *
                                                       100)
-                                                  .toStringAsFixed(2)
-                                              : (double.parse(utilizationData!
-                                                              .targetIdlePerformance!
-                                                              .toString()) *
-                                                          100)
-                                                      .toStringAsFixed(2) +
-                                                  " %"
+                                                  .toStringAsFixed(2) +
+                                              " %"
                                           : "-",
                                     ),
                                   ])
@@ -496,21 +487,11 @@ class UtilizationListItem extends StatelessWidget {
                                               content: utilizationData!
                                                           .targetRuntimePerformance !=
                                                       null
-                                                  ? utilizationData!
-                                                              .targetRuntimePerformance!
-                                                              .runtimeType ==
-                                                          num
-                                                      ? (utilizationData!
+                                                  ? (utilizationData!
                                                                   .targetRuntimePerformance! *
                                                               100)
-                                                          .toString()
-                                                      : (double.parse(utilizationData!
-                                                                      .targetRuntimePerformance!
-                                                                      .toString()) *
-                                                                  100)
-                                                              .toStringAsFixed(
-                                                                  2) +
-                                                          " %"
+                                                          .toString() +
+                                                      " %"
                                                   : "",
                                             ),
                                             InsiteTableRowItem(
@@ -570,21 +551,11 @@ class UtilizationListItem extends StatelessWidget {
                                               content: utilizationData!
                                                           .targetIdlePerformance !=
                                                       null
-                                                  ? utilizationData!
-                                                              .targetIdlePerformance!
-                                                              .runtimeType ==
-                                                          num
-                                                      ? (utilizationData!
+                                                  ? (utilizationData!
                                                                   .targetIdlePerformance! *
                                                               100)
-                                                          .toString()
-                                                      : (double.parse(utilizationData!
-                                                                      .targetIdlePerformance!
-                                                                      .toString()) *
-                                                                  100)
-                                                              .toStringAsFixed(
-                                                                  2) +
-                                                          " %"
+                                                          .toString() +
+                                                      " %"
                                                   : "",
                                             ),
                                           ],

@@ -167,25 +167,25 @@ class _LocationViewState extends State<LocationView> {
                               ],
                             ),
                           ),
-                          viewModel.showingCard
-                              ? Container(
-                                  margin: EdgeInsets.all(16.0),
-                                  color: Theme.of(context).cardColor,
-                                  width: MediaQuery.of(context).size.width * 1,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  child: Center(
-                                    child: InsiteText(
-                                      text: viewModel.assetInvalidLocationCount
-                                              .toString() +
-                                          " out of " +
-                                          viewModel.assetLocationCount
-                                              .toString() +
-                                          " assets do not have location information",
-                                    ),
-                                  ),
-                                )
-                              : SizedBox(),
+                          // viewModel.showingCard
+                          //     ? Container(
+                          //         margin: EdgeInsets.all(16.0),
+                          //         color: Theme.of(context).cardColor,
+                          //         width: MediaQuery.of(context).size.width * 1,
+                          //         height:
+                          //             MediaQuery.of(context).size.height * 0.05,
+                          //         child: Center(
+                          //           child: InsiteText(
+                          //             text: viewModel.assetInvalidLocationCount
+                          //                     .toString() +
+                          //                 " out of " +
+                          //                 viewModel.assetLocationCount
+                          //                     .toString() +
+                          //                 " assets do not have location information",
+                          //           ),
+                          //         ),
+                          //       )
+                          //     : SizedBox(),
                           SizedBox(height: 10),
                           Expanded(
                             child: Stack(

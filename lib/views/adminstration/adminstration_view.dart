@@ -113,18 +113,18 @@ class _AdminstrationViewState extends State<AdminstrationView> {
                 SizedBox(
                   height: 20,
                 ),
-                AssetSettingWidget(
-                  headerText: "asset settings",
-                  showExapansionMenu: false,
-                  icon: "assets/images/assessment.svg",
-                  buttonText: "Manage Asset configurations",
-                  onButtonClicked: () {
-                    viewModel.onAssetSettingStateButtonClicked();
-                  },
-                ),
-                SizedBox(
-                  height: 21,
-                ),
+                // AssetSettingWidget(
+                //   headerText: "asset settings",
+                //   showExapansionMenu: false,
+                //   icon: "assets/images/assessment.svg",
+                //   buttonText: "Manage Asset configurations",
+                //   onButtonClicked: () {
+                //     viewModel.onAssetSettingStateButtonClicked();
+                //   },
+                // ),
+                // SizedBox(
+                //   height: 21,
+                // ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [

@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
@@ -387,6 +389,16 @@ class LoginService extends BaseService {
       Logger().e(e);
     }
     return null;
+  }
+
+  logout(String id_token) async {
+    try {
+      var data = await MyApi()
+          .getClientFive()!
+          .logout(id_token, Urls.tataHitachiRedirectUri);
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   void onTokenReceivedWithoutLogin(LoginResponse response) {

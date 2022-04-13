@@ -23,7 +23,7 @@ class _RefineState extends State<Refine> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<FilterViewModel>.reactive(
       builder: (BuildContext context, FilterViewModel viewModel, Widget? _) {
-        return viewModel.loading
+        return viewModel.refineLoading
             ? Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).backgroundColor,
