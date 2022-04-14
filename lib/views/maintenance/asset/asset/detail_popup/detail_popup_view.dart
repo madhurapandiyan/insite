@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/serviceItem.dart';
@@ -20,6 +21,7 @@ import 'detail_popup_view_model.dart';
 class DetailPopupView extends StatefulWidget {
   final ServiceItem? serviceItem;
   final AssetCentricData? assetData;
+  final SummaryData? summaryData;
   final AssetData? assetDataValue;
   final List<Services?>? services;
 
@@ -28,6 +30,7 @@ class DetailPopupView extends StatefulWidget {
       this.serviceItem,
       this.assetData,
       this.assetDataValue,
+      this.summaryData,
       this.services});
 
   @override
@@ -130,7 +133,12 @@ class _DetailPopupViewState extends State<DetailPopupView>
                                                   title: "",
                                                   onTap: () {},
                                                   content: widget.assetData!
-                                                      .assetSerialNumber,
+                                                              .assetSerialNumber ==
+                                                          null
+                                                      ? widget.summaryData!
+                                                          .assetSerialNumber
+                                                      : widget.assetData!
+                                                          .assetSerialNumber,
                                                 ),
                                                 padding: EdgeInsets.only(
                                                     right: 38.0),
@@ -139,7 +147,7 @@ class _DetailPopupViewState extends State<DetailPopupView>
                                           ),
                                           SizedBox(height: 15.0),
                                           Text(
-                                            "${widget.assetData!.makeCode.toString().toUpperCase()} ${widget.assetData!.model.toString().toUpperCase()}",
+                                            "${widget.assetData!.makeCode == null ? widget.summaryData!.makeCode.toString().toUpperCase() : widget.assetData!.makeCode.toString().toUpperCase()} ${widget.assetData!.model == null ? widget.summaryData!.model.toString().toUpperCase() : widget.assetData!.model.toString().toUpperCase()}",
                                             maxLines: 2,
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -307,139 +315,181 @@ class _DetailPopupViewState extends State<DetailPopupView>
                 text:
                     " No checklist/parts list to display for the given interval"),
           )
-        : ListView.builder(
-            itemCount: viewModel.checkLists!.length,
-            itemBuilder: (BuildContext context, int index) {
-              Checklists? checklistsItem = viewModel.checkLists![index];
-              return Container(
-                height: 400,
-                child: Expanded(
-                  child: InsiteExpansionTile(
-                    // childrenPadding: EdgeInsets.all(0),
-                    title: Column(
-                      children: [
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Table(
-                          border: TableBorder.all(),
-                          columnWidths: {
-                            0: FlexColumnWidth(1.8),
-                            1: FlexColumnWidth(1),
-                          },
-                          children: [
-                            TableRow(
-                              children: [
-                                InsiteTableRowItem(
-                                  title: " ",
-                                  content: checklistsItem!.checklistName,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-
-                    onExpansionChanged: (value) {
-                      // viewModel.onExpanded();
-                    },
-                    initiallyExpanded: false,
-                    tilePadding: EdgeInsets.all(0),
-                    children: [
-                      viewModel.refreshing
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: InsiteProgressBar(),
-                            )
-                          : SizedBox(),
-                      checklistsItem.parts!.isNotEmpty
-                          ? Table(
-                              columnWidths: {
-                                0: FlexColumnWidth(1),
-                                1: FlexColumnWidth(1),
-                                2: FlexColumnWidth(1),
-                              },
-                              border: TableBorder.all(),
-                              children: [
-                                TableRow(children: [
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "Name",
-                                    size: 12,
-                                  ),
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "Part No.",
-                                    size: 12,
-                                  ),
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "#",
-                                    size: 12,
-                                  ),
-                                ]),
-                              ],
-                            )
-                          : InsiteText(
-                              text:
-                                  " No checklist/parts list to display for the given interval"),
-                      checklistsItem.parts!.isNotEmpty
-                          ? Container(
-                              height: 200,
-                              child: Scrollbar(
-                                isAlwaysShown: true,
-                                child: SingleChildScrollView(
-                                  controller: viewModel.scrollController,
-                                  child: Column(
-                                    children: [
-                                      Table(
-                                        columnWidths: {
-                                          0: FlexColumnWidth(1),
-                                          1: FlexColumnWidth(2),
-                                          2: FlexColumnWidth(1),
-                                        },
-                                        border: TableBorder.all(),
-                                        children: List.generate(
-                                            checklistsItem.parts!.length,
-                                            (index) {
-                                          Parts? parts =
-                                              checklistsItem.parts![index];
-                                          Logger().i(parts);
-                                          return TableRow(children: [
-                                            InsiteTableRowItem(
-                                              title: " ",
-                                              content: parts.name,
-                                            ),
-                                            InsiteTableRowItem(
-                                              title: " ",
-                                              content: parts.partNo,
-                                            ),
+        : Padding(
+            padding: EdgeInsets.only(top: 20.0),
+            child: Card(
+              color: backgroundColor3,
+              child: ListView.builder(
+                  itemCount: viewModel.checkLists!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Checklists? checklistsItem = viewModel.checkLists![index];
+                    return Container(
+                      height: 320,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Card(
+                              child: InsiteExpansionTile(
+                                // childrenPadding: EdgeInsets.all(0),
+                                title: Column(
+                                  children: [
+                                    Table(
+                                      border: TableBorder.all(),
+                                      columnWidths: {
+                                        0: FlexColumnWidth(1.8),
+                                        1: FlexColumnWidth(1),
+                                      },
+                                      children: [
+                                        TableRow(
+                                          children: [
                                             InsiteTableRowItem(
                                               title: " ",
                                               content:
-                                                  parts.quantity.toString(),
+                                                  checklistsItem!.checklistName,
                                             ),
-                                          ]);
-                                        }),
-                                      ),
-                                      viewModel.loadingMore
-                                          ? Padding(
-                                              padding: EdgeInsets.all(8),
-                                              child: InsiteProgressBar(),
-                                            )
-                                          : SizedBox(),
-                                    ],
-                                  ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
+
+                                onExpansionChanged: (value) {
+                                  // viewModel.onExpanded();
+                                },
+                                initiallyExpanded: false,
+                                tilePadding: EdgeInsets.all(0),
+                                children: [
+                                  viewModel.refreshing
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InsiteProgressBar(),
+                                        )
+                                      : SizedBox(),
+                                  checklistsItem.parts!.isNotEmpty
+                                      ? Table(
+                                          columnWidths: {
+                                            0: FlexColumnWidth(1),
+                                            1: FlexColumnWidth(1),
+                                            2: FlexColumnWidth(1),
+                                          },
+                                          border: TableBorder.all(),
+                                          children: [
+                                            TableRow(children: [
+                                              InsiteTextWithPadding(
+                                                padding: EdgeInsets.all(8),
+                                                text: "Name",
+                                                size: 12,
+                                              ),
+                                              InsiteTextWithPadding(
+                                                padding: EdgeInsets.all(8),
+                                                text: "Part No.",
+                                                size: 12,
+                                              ),
+                                              InsiteTextWithPadding(
+                                                padding: EdgeInsets.all(8),
+                                                text: "#",
+                                                size: 12,
+                                              ),
+                                            ]),
+                                          ],
+                                        )
+                                      : InsiteText(
+                                          text:
+                                              " No checklist/parts list to display for the given interval"),
+                                  checklistsItem.parts!.isNotEmpty
+                                      ? Container(
+                                          height: 200,
+                                          child: Scrollbar(
+                                            isAlwaysShown: true,
+                                            child: SingleChildScrollView(
+                                              controller:
+                                                  viewModel.scrollController,
+                                              child: Column(
+                                                children: [
+                                                  Table(
+                                                    columnWidths: {
+                                                      0: FlexColumnWidth(1),
+                                                      1: FlexColumnWidth(2),
+                                                      2: FlexColumnWidth(1),
+                                                    },
+                                                    border: TableBorder.all(),
+                                                    children: List.generate(
+                                                        checklistsItem.parts!
+                                                            .length, (index) {
+                                                      Parts? parts =
+                                                          checklistsItem
+                                                              .parts![index];
+                                                      Logger().i(parts);
+                                                      return TableRow(
+                                                          children: [
+                                                            InsiteTableRowItem(
+                                                              title: " ",
+                                                              content:
+                                                                  parts.name,
+                                                            ),
+                                                            InsiteTableRowItem(
+                                                              title: " ",
+                                                              content:
+                                                                  parts.partNo,
+                                                            ),
+                                                            InsiteTableRowItem(
+                                                              title: " ",
+                                                              content: parts
+                                                                  .quantity
+                                                                  .toString(),
+                                                            ),
+                                                          ]);
+                                                    }),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  InsiteButton(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.4,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.06,
+                                                    title: "Next".toUpperCase(),
+                                                    fontSize: 12,
+                                                    textColor: white,
+                                                    onTap: () {
+                                                      _tabController!.index = 1;
+                                                    },
+                                                  ),
+                                                  SizedBox(
+                                                    height: 50,
+                                                  ),
+                                                  viewModel.loadingMore
+                                                      ? Padding(
+                                                          padding:
+                                                              EdgeInsets.all(8),
+                                                          child:
+                                                              InsiteProgressBar(),
+                                                        )
+                                                      : SizedBox(),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                ],
                               ),
-                            )
-                          : SizedBox(),
-                    ],
-                  ),
-                ),
-              );
-            });
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+            ),
+          );
   }
 
   Widget complete(BuildContext context, viewModel) {

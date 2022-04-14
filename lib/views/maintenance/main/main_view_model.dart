@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/maintenance.dart';
+import 'package:insite/core/models/maintenance_list_services.dart';
+import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
+import 'package:insite/views/maintenance/asset/asset/detail_popup/detail_popup_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
@@ -19,7 +22,7 @@ class MainViewModel extends InsiteViewModel {
   NavigationService? _navigationService = locator<NavigationService>();
 
   int pageNumber = 1;
-  int pageSize = 60;
+  int pageSize = 20;
 
   num? _totalCount = 0;
   num? get totalCount => _totalCount;
@@ -36,12 +39,21 @@ class MainViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
+  AssetData? _assetDataValue;
+  AssetData? get assetDataValue => _assetDataValue;
+
   List<SummaryData> _maintenanceList = [];
   List<SummaryData> get maintenanceList => _maintenanceList;
 
+  List<Services?> _services = [];
+  List<Services?> get services => _services;
+
+  SummaryData? _summaryData;
+  SummaryData? get summaryData => _summaryData;
+
   late ScrollController scrollController;
 
-  MainViewModel() {
+  MainViewModel(SummaryData? summaryData) {
     setUp();
     _maintenanceService!.setUp();
     scrollController = new ScrollController();
@@ -74,6 +86,7 @@ class MainViewModel extends InsiteViewModel {
       _totalCount = result.total;
       if (result.summaryData!.isNotEmpty) {
         _maintenanceList.addAll(result.summaryData!);
+        getMaintenanceListItemData();
         _loading = false;
         _loadingMore = false;
         notifyListeners();
@@ -89,6 +102,47 @@ class MainViewModel extends InsiteViewModel {
       _loadingMore = false;
       notifyListeners();
     }
+  }
+
+  getMaintenanceListItemData() async {
+    await getSelectedFilterData();
+    await getDateRangeFilterData();
+
+    notifyListeners();
+    Logger().d("start date " + startDate!);
+    Logger().d("end date " + endDate!);
+
+    MaintenanceListService? result =
+        await _maintenanceService?.getMaintenanceServiceList(
+            _summaryData!.assetUID,
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+            pageSize,
+            pageNumber,
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+
+    Logger().i("result ${result!.toJson()}");
+
+    if (result != null && result.services != null) {
+      if (result.services!.isNotEmpty) {
+        _assetDataValue = result.assetData;
+        _services.clear();
+        _services.addAll(result.services!);
+        _refreshing = false;
+        _loadingMore = false;
+        notifyListeners();
+      } else {
+        // _services.addAll(result.services!);
+        _refreshing = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        notifyListeners();
+      }
+    } else {
+      _refreshing = false;
+      notifyListeners();
+    }
+
+    notifyListeners();
   }
 
   refresh() async {
@@ -150,6 +204,19 @@ class MainViewModel extends InsiteViewModel {
           ),
           type: screen.ScreenType.MAINTENANCE,
           index: 1),
+    );
+  }
+
+  onServiceSelected(num? serviceId, AssetData? assetDataValue,
+      SummaryData? assetData, List<Services?>? services) async {
+    ServiceItem? serviceItem =
+        await _maintenanceService!.getServiceItemCheckList(serviceId!);
+    _navigationService!.navigateToView(
+      DetailPopupView(
+          serviceItem: serviceItem!,
+          summaryData: assetData!,
+          assetDataValue: assetDataValue,
+          services: services!),
     );
   }
 }

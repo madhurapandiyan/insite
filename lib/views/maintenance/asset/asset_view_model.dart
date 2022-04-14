@@ -22,7 +22,7 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
   NavigationService? _navigationService = locator<NavigationService>();
   int page = 1;
 
-  int limit = 40;
+  int limit = 20;
 
   int? _totalCount = 0;
   int? get totalCount => _totalCount;
