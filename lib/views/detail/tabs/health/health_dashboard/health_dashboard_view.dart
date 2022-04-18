@@ -102,11 +102,11 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                                       .assetDetail!.lastReportedLocationLatitude
                                   : null,
                               screenType: ScreenType.ASSET_DETAIL,
-                              status: widget.detail!.lastLocationUpdateUTC !=
+                              status: widget.detail!.lastLocationUpdateUtc !=
                                       null
                                   ? "Last Reported Time: ".toUpperCase() +
                                       Utils.getLastReportedDateOneUTC(
-                                          widget.detail!.lastLocationUpdateUTC)
+                                          widget.detail!.lastLocationUpdateUtc)
                                   : "No Data Received",
                               onMarkerTap: () {
                                 widget.switchTab!(3);

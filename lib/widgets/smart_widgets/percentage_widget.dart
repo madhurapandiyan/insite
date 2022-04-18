@@ -78,7 +78,7 @@ class PercentageWidget extends StatelessWidget {
                     size: 12,
                     fontWeight: FontWeight.bold,
                   ),
-            percent: percentage == null ? 0.0 : (percentage as double),
+            percent: percentage == null ? 0.0 :double.parse(percentage.toString()) ,
             linearStrokeCap: LinearStrokeCap.butt,
             progressColor: color,
             backgroundColor: concrete,

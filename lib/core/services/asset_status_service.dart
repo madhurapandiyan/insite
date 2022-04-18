@@ -150,7 +150,7 @@ class AssetStatusService extends DataBaseService {
       startDate, endDate, sort, screenType, appliedFilters, query) async {
     Logger().d("getAssetCountByFilter");
     try {
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,

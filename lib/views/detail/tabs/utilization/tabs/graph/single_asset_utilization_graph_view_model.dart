@@ -54,13 +54,13 @@ class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
             : data.data!.idleHours);
       }
       for (Range data in _singleAssetUtilization!.weekly!) {
-        Logger().w(data.data!.idleHours!.runtimeType);
+       // Logger().w(data.data!.idleHours!.runtimeType);
         //listWeekDay.add(Utils.parseStringToDouble(data.data!.idleHours!));
-        listWeekDay.add(data.data!.idleHours!);
+        listWeekDay.add(data.data!.idleHours);
       }
       for (Range data in _singleAssetUtilization!.monthly!) {
         // listMonthDay.add(Utils.parseStringToDouble(data.data!.idleHours!));
-        listWeekDay.add(data.data!.idleHours!);
+        listWeekDay.add(data.data!.idleHours);
       }
       Logger().d("listIdleDay ${listIdleDay.length}");
       Logger().d("listWeekDay ${listWeekDay.length}");

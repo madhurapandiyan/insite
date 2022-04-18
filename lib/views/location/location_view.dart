@@ -77,7 +77,7 @@ class _LocationViewState extends State<LocationView> {
                                   EdgeInsets.only(top: 10, left: 10, bottom: 5),
                               child: InsiteText(
                                 text: viewModel
-                                        .assetLocation!.mapRecords!.length
+                                        .assetLocationCount
                                         .toString() +
                                     " of " +
                                     viewModel.totalCount.toString() +

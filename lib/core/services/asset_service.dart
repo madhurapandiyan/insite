@@ -40,7 +40,7 @@ class AssetService extends BaseService {
       List<FilterData?>? appliedFilters,
       query) async {
     try {
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,

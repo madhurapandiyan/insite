@@ -96,10 +96,10 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                               ? widget.detail!.fuelLevelLastReported.toString()
                               : null,
                           lastReported:
-                              widget.detail!.fuelReportedTimeUTC != null
+                              widget.detail!.fuelReportedTimeUtc != null
                                   ? "Last Reported Time: ".toUpperCase() +
                                       Utils.getLastReportedDateOneUTC(
-                                          widget.detail!.fuelReportedTimeUTC)
+                                          widget.detail!.fuelReportedTimeUtc)
                                   : "No Data Received"),
                     ),
                     SizedBox(
@@ -177,11 +177,11 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                             .lastReportedLocationLatitude
                                         : null,
                                     screenType: ScreenType.ASSET_DETAIL,
-                                    status: widget.detail!.lastLocationUpdateUTC != null
+                                    status: widget.detail!.lastLocationUpdateUtc != null
                                         ? "Last Reported Time: ".toUpperCase() +
                                             Utils.getLastReportedDateOneUTC(
                                                 widget.detail!
-                                                    .lastLocationUpdateUTC)
+                                                    .lastLocationUpdateUtc)
                                         : "No Data Received",
                                     onMarkerTap: () {
                                       widget.switchTab!(3);

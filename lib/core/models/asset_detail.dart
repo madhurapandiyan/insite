@@ -65,11 +65,11 @@ class AssetDetail {
   final double? lastReportedLocationLongitude;
   final double? fuelLevelLastReported;
   final String? lastPercentFuelRemainingUTC;
-  final String? fuelReportedTimeUTC;
+  final String? fuelReportedTimeUtc;
   final dynamic lifetimeFuel;
-  @JsonKey(name: "lastLocationUpdateUtc")
-  final String? lastReportedTimeUTC;
-  final String? lastLocationUpdateUTC;
+  
+  final String? lastReportedTimeUtc;
+  final String? lastLocationUpdateUtc;
   final dynamic percentDEFRemaining;
   final double? lifetimeDEFLiters;
   final String? lastLifetimeDEFLitersUTC;
@@ -85,8 +85,8 @@ class AssetDetail {
       this.makeCode,
       this.lastReportedLocation,
       this.fuelLevelLastReported,
-      this.lastReportedTimeUTC,
-      this.lastLocationUpdateUTC,
+      this.lastReportedTimeUtc,
+      this.lastLocationUpdateUtc,
       this.percentDEFRemaining,
       this.lifetimeDEFLiters,
       this.manufacturer,
@@ -95,7 +95,7 @@ class AssetDetail {
       this.lastPercentFuelRemainingUTC,
       this.lastLifetimeDEFLitersUTC,
       this.lastPercentDEFRemainingUTC,
-      this.fuelReportedTimeUTC,
+      this.fuelReportedTimeUtc,
       this.year,
       this.assetIcon,
       this.productFamily,

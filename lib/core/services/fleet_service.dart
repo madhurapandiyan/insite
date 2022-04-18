@@ -40,7 +40,7 @@ class FleetService extends BaseService {
   ) async {
     try {
     
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: await _graphqlSchemaService.fleetSummary(
               appliedFilters, pageNumber,startDate,endDate),

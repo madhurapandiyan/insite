@@ -1283,7 +1283,8 @@ class Utils {
   }
 
   static String getIdlingFleetDateParse(dynamic value) {
-    var data = DateFormat('yyyy-MM-dd').parse(value).add(Duration(days: 1));
+    var data = DateFormat('yyyy-MM-dd').parse(value);
+    //.add(Duration(days: 1));
     var parsedDate = DateFormat('MM/dd/yyyy').format(data);
     return parsedDate;
   }

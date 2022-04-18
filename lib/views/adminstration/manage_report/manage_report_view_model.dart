@@ -33,7 +33,7 @@ class ManageReportViewModel extends InsiteViewModel {
   List<FilterData?>? selectedFilter;
 
   int pageNumber = 1;
-  int limit = 50;
+  int limit = 20;
 
   bool _showEdit = false;
   bool get showEdit => _showEdit;
@@ -92,7 +92,7 @@ class ManageReportViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-            Logger().w(_totalCount == _assets.length);
+        Logger().w(_totalCount == _assets.length);
         if (_totalCount == _assets.length) {
         } else {
           _loadMore();
@@ -354,7 +354,7 @@ class ManageReportViewModel extends InsiteViewModel {
         _loadingMore.toString());
     if (_shouldLoadmore && !_loadingMore) {
       log!.i("load more called");
-       pageNumber++;
+      pageNumber++;
       _loadingMore = true;
       notifyListeners();
       getManageReportListData();
