@@ -452,7 +452,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                           content: widget.details?.hourMeter ?? "-"),
                       InsiteTableRowItem(
                         title: "Last Reported Time",
-                        content: widget.details?.lastReportedTimeUTC ?? "-",
+                        content: widget.details?.lastReportedTimeUtc ?? "-",
                       ),
                       InsiteTableRowItem(
                         title: "Fuel % Remaining",

@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.0.0+1
+version: 2.0.5+4
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
@@ -164,6 +164,9 @@ flutter:
     - assets/images/assessment.svg
     - assets/images/descending_filter_group.png
     - assets/images/ascending_filter_group.png
+    - assets/images/10001.png
+    - assets/images/10002.png
+    - assets/images/0.png
     
   fonts:
     - family: Roboto

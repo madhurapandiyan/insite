@@ -37,6 +37,7 @@ import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:insite/views/adminstration/addgeofense/model/asset_icon_payload.dart';
+import 'package:insite/views/adminstration/asset_settings_configure/model/configure_grid_view_model.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
 import 'package:insite/core/models/device_type.dart';
@@ -650,6 +651,18 @@ class AssetAdminManagerUserService extends BaseService {
     try {
       DeviceTypeRequest request =
           DeviceTypeRequest(allAssets: true, assetUID: []);
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!.assetSettingsType(true, []),
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        ListDeviceTypeResponse response = ListDeviceTypeResponse.fromJson(
+            data.data["assetSettingDeviceTypes"]);
+        return response;
+      }
       if (isVisionLink) {
         ListDeviceTypeResponse response = await MyApi()
             .getClientSeven()!
@@ -688,6 +701,19 @@ class AssetAdminManagerUserService extends BaseService {
       }
       if (customerSelected != null) {
         queryMap["subAccountCustomerUid"] = customerSelected!.CustomerUID!;
+      }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!
+                .getAssetSettingData(pageNumber, pageSize, deviceTypeSelected),
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        ManageAssetConfiguration responce =
+            ManageAssetConfiguration.fromJson(data.data["assetSettingsGrid"]);
+        return responce;
       }
       if (isVisionLink) {
         ManageAssetConfiguration manageAssetConfigurationResponse =
@@ -929,9 +955,37 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
+  Future<AssetListSettings?> getAssetListData(String assetUid) async {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlData(
+          query: graphqlSchemaService!.getAssetListData(assetUid),
+          customerId: accountSelected?.CustomerUID,
+          subId: customerSelected?.CustomerUID??"",
+          userId: (await _localService!.getLoggedInUser())!.sub);
+      AssetListSettings assetData = AssetListSettings.fromJson(data.data["assetListSettings"]);
+      return assetData;
+    }
+  }
+
   getAssetIconData(String actionUTC, String? assetUID, int iconKey,
-      int legacyAssetID, modelYear) async {
+      int legacyAssetID, modelYear, AssetListSettingsData assetsetting) async {
     try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!.assetIcon(
+                actionUTC: actionUTC,
+                assetName: assetsetting.assetName,
+                assetType: assetsetting.assetTypeName,
+                assetUID: assetsetting.assetUID,
+                iconKey: iconKey,
+                equipmentVIN: assetsetting.equipmentVIN,
+                model: assetsetting.model,
+                legacyAssetID: assetsetting.legacyAssetID,
+                modelYear: assetsetting.modelYear),
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+      }
       if (isVisionLink) {
         var assetIconData = await MyApi().getClientSeven()!.getAssetIconDataVL(
             Urls.getAssetIconVL,
@@ -954,7 +1008,6 @@ class AssetAdminManagerUserService extends BaseService {
                 modelYear: modelYear),
             accountSelected!.CustomerUID,
             "in-vlmasterdata-api-vlmd-asset");
-
         return assetIconData;
       }
     } catch (e) {
@@ -1385,8 +1438,17 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<AddGroupDataResponse?> getAddGroupSaveData(
-      AddGroupPayLoad addGroupPayLoad) async {
+      AddGroupPayLoad addGroupPayLoad, String query) async {
     try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+      }
       if (isVisionLink) {
         AddGroupDataResponse addGroupDataResponse = await MyApi()
             .getClientSeven()!

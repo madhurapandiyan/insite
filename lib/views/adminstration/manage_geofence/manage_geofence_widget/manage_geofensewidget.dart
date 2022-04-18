@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/manage_geofence/static_map.dart/staticmapapi.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -86,13 +87,14 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                               widget.onFavourite!(widget.geofenceUID);
                             },
                             icon: Icon(
-
                               Icons.favorite,
-                              color: widget.isFav! ? Theme.of(context).buttonColor : white,
+                              color: widget.isFav!
+                                  ? Theme.of(context).buttonColor
+                                  : white,
                             )),
                         InsiteButton(
                             height: MediaQuery.of(context).size.height * 0.05,
-                           // bgColor: tuna,
+                            // bgColor: tuna,
                             title: "",
                             onTap: () {
                               widget.ondeleting!(widget.geofenceUID,
@@ -125,7 +127,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                   ),
                   InsiteText(
                     text:
-                        "End Date : ${widget.geofenceDate == null ? "No End Date" : DateFormat("yyyy-MM-dd").parse(widget.geofenceDate!)}",
+                        "End Date : ${widget.geofenceDate == null ? "No End Date" : Utils.dateFormat(widget.geofenceDate!)}",
                     fontWeight: FontWeight.w700,
                   )
                 ],

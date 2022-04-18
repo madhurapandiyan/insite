@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -277,7 +278,7 @@ class Utils {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
-          .subtract(Duration(days: 1))
+          // .subtract(Duration(days: 1))
           .add(Duration(hours: 23, minutes: 59, seconds: 59));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
@@ -876,7 +877,7 @@ class Utils {
     }
   }
 
-  static getStringListData(List? listData) {
+  static getStringListData(List<String> listData) {
     if (listData == null) {
       return null;
     } else {
@@ -884,7 +885,7 @@ class Utils {
       List<dynamic> value = [];
       value.clear();
       listData.forEach((element) {
-        if (value.any((data) => (data as String).contains(data))) {
+        if (value.any((data) => (data).contains(element))) {
         } else {
           value.add(doublequotes + element + doublequotes);
         }
@@ -1081,7 +1082,7 @@ class Utils {
         return querUrl;
       case "Utilization Details":
         querUrl =
-            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?assetUid=${associatedIdentifier!.first}&startDate=&endDate=&sort=-RuntimeHours";
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v1/Utilization/Details?assetUid=${associatedIdentifier!.first}&startDate=&endDate=&sort=-RuntimeHours";
 
         return querUrl;
       case "Asset Operation":
@@ -1234,7 +1235,7 @@ class Utils {
   }
 
   static hoursToPercentCalculate(dynamic value) {
-    var data = (value ?? 0.0 / 100) / 100;
+    var data = (value ?? 0.0 / 100);
     if (data > 1.0) {
       data = data / 100;
     }
@@ -1242,11 +1243,11 @@ class Utils {
   }
 
   static efficiencyToPercent(dynamic value) {
-    var data = value / 100;
-    return data;
+    //var data = value / 100;
+    return value;
   }
 
-  static List<String>? getIdlingFilterData(String? value) {
+  static List<String?>? getIdlingFilterData(String? value) {
     if (value != null) {
       List<String> data = [];
       switch (value) {
@@ -1281,28 +1282,65 @@ class Utils {
     return parsedDate;
   }
 
+  static String getIdlingFleetDateParse(dynamic value) {
+    var data = DateFormat('yyyy-MM-dd').parse(value);
+    //.add(Duration(days: 1));
+    var parsedDate = DateFormat('MM/dd/yyyy').format(data);
+    return parsedDate;
+  }
+
   static fleetLocationDateFormate(dynamic startDate) {
     var data = DateFormat("yyyy-MM-dd").parse(startDate);
     var formatDate = DateFormat("yyyy-MM-dd").format(data);
     return formatDate;
   }
 
-  static getFaultDateFormat(dynamic value) {
-    var data = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(value);
-    Logger().wtf(data);
-    return data;
+  static fleetLocationSingleAssetStartDateFormate(dynamic startDate) {
+    var data = DateFormat("yyyy-MM-dd")
+        .parse(startDate)
+        .add(Duration(hours: 0, minutes: 0, seconds: 0));
+    var formatDate = DateFormat("yyyy-MM-dd HH:mm:ss").format(data);
+    return formatDate;
   }
 
-  static getFaultStartDateParsing(dynamic value) {
-    var data = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(value);
-    return data;
-  }
-
-  static getFaultEndDateParsing(dynamic value) {
-    var data = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        .parse(value)
+  static fleetLocationSingleAssetEndDateFormate(dynamic startDate) {
+    var data = DateFormat("yyyy-MM-dd")
+        .parse(startDate)
         .add(Duration(hours: 23, minutes: 59, seconds: 59));
-    return data;
+    var formatDate = DateFormat("yyyy-MM-dd HH:mm:ss").format(data);
+    return formatDate;
+  }
+
+  static getFaultDateFormatStartDate(DateTime? value) {
+    try {
+      var parseDate = DateFormat("yyyy-MM-dd").format(value!);
+
+      var inputDate = DateTime.parse(parseDate)
+          .add(Duration(hours: 0, seconds: 0, minutes: 0));
+      //.subtract(Duration(days: 1))
+
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static getFaultDateFormatEndDate(DateTime? value) {
+    try {
+      var parseDate = DateFormat("yyyy-MM-dd").format(value!);
+
+      var inputDate = DateTime.parse(parseDate)
+          .add(Duration(hours: 23, seconds: 59, minutes: 59));
+      //.subtract(Duration(days: 1))
+
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static List<String>? getAssetIdentifier(String? value) {
@@ -1413,6 +1451,38 @@ class Utils {
     }
   }
 
+  static getImage(String value) {
+    switch (value) {
+      case "10001":
+        return "assets/images/10001.png";
+      case "10002":
+        return "assets/images/10002.png";
+      default:
+        return "assets/images/0.png";
+    }
+  }
+
+  static double parseStringToDouble(String value) {
+    return double.parse(value);
+  }
+
+  static String dateFormat(String value) {
+    var inputDate = DateFormat("yyyy-MM-dd").parse(value);
+    return DateFormat("yyyy-MM-dd").format(inputDate);
+  }
+
+  static findMaxAndMinvalues(List<AssetResult> data) {
+    List<double> minMax = [];
+    if (data.any((element) => element.idleEfficiency != null)) {
+      data.sort((a, b) {
+        return a.idleEfficiency!.compareTo(b.idleEfficiency ?? 0.0);
+      });
+    }
+    Logger().w(data.first.idleEfficiency!);
+    Logger().wtf(data.last.idleEfficiency!);
+    minMax.addAll([data.first.idleEfficiency!, data.last.idleEfficiency!]);
+    return minMax;
+  }
   // static getSvcBody(List<String> value) {
   //   List<String> data = [];
   //   value.forEach((element) {

@@ -296,7 +296,8 @@ class _TabPageState extends State<AssetDetailView> {
                                   ? HealthListView(
                                       detail: viewModel.assetDetail,
                                     )
-                                  : SingleAssetUtilizationView(
+                                  : 
+                                  SingleAssetUtilizationView(
                                       detail: viewModel.assetDetail,
                                     )
                               : selectedTabIndex == 2

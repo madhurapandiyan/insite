@@ -151,7 +151,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
         if (url.isNotEmpty &&
             url.startsWith(AppConfig.instance!.apiFlavor == "visionlink"
                 ? Urls.administratorBaseUrl + "/?code="
-                : Urls.tataHitachiLogoutUrl )) {
+                : Urls.tataHitachiLogoutUrl)) {
           try {
             gotoSplashview();
             // List<String> list = url.split("=");
@@ -159,26 +159,26 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
             // if (list.isNotEmpty) {
             //   _onUrlChanged!.cancel();
             //   gotoSplashview();
-              //for vision link (oauth style login)
-              // String accessTokenString = list[1];
-              // String expiresTokenString = list[2];
-              // List<String> accessTokenList = accessTokenString.split("&");
-              // List<String> expiryList = expiresTokenString.split("&");
-              // print("accessToken split list $list");
-              // String accessToken = accessTokenList[0];
-              // String expiryTime = expiryList[0];
-              // print("accessToken $accessToken");
-              // print("expiryTime $expiryTime");
-              // saveToken(accessToken, expiryTime);
+            //for vision link (oauth style login)
+            // String accessTokenString = list[1];
+            // String expiresTokenString = list[2];
+            // List<String> accessTokenList = accessTokenString.split("&");
+            // List<String> expiryList = expiresTokenString.split("&");
+            // print("accessToken split list $list");
+            // String accessToken = accessTokenList[0];
+            // String expiryTime = expiryList[0];
+            // print("accessToken $accessToken");
+            // print("expiryTime $expiryTime");
+            // saveToken(accessToken, expiryTime);
 
-              // String codeString = list[1];
-              // List<String> codeStringList = codeString.split("&");
-              // if (codeStringList.isNotEmpty) {
-              //   getLoginDataV4(
-              //     codeStringList[0],
-              //   );
-              // }
-           // }
+            // String codeString = list[1];
+            // List<String> codeStringList = codeString.split("&");
+            // if (codeStringList.isNotEmpty) {
+            //   getLoginDataV4(
+            //     codeStringList[0],
+            //   );
+            // }
+            // }
             flutterWebviewPlugin.close();
           } catch (e) {
             Logger().e(e.toString());
@@ -248,7 +248,8 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     //   }
     // });
     if (AppConfig.instance!.apiFlavor == "indiastack") {
-      _navigationService!.clearTillFirstAndShowView(IndiaStackSplashView(showingSnackbar: false));
+      _navigationService!.clearTillFirstAndShowView(
+          IndiaStackSplashView(showingSnackbar: false));
     } else {
       _navigationService!.navigateTo(indiaStack.indiaStackLogoutViewRoute);
     }
@@ -279,7 +280,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
     return ViewModelBuilder<LoginViewModel>.reactive(
       builder: (BuildContext context, LoginViewModel viewModel, Widget? _) {
         return WillPopScope(
-           onWillPop: () {
+          onWillPop: () {
             return Future.value(false);
           },
           child: Scaffold(
@@ -291,7 +292,8 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
                         ? Uri.encodeFull(
                             Urls.logoutUrlVl(loginResponse!.id_token))
                         : Uri.encodeFull(Urls.getV4LogoutUrl(
-                            loginResponse!.id_token, Urls.tataHitachiLogoutUrl)),
+                            loginResponse!.id_token,
+                            Urls.tataHitachiLogoutUrl)),
                   ),
                   isLoading ? InsiteProgressBar() : SizedBox()
                 ],

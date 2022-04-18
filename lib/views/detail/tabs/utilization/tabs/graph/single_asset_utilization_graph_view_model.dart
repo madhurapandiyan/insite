@@ -3,6 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_utilization.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
 class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
@@ -47,20 +48,19 @@ class SingleAssetUtilizationGraphViewModel extends InsiteViewModel {
     if (result != null) {
       _singleAssetUtilization = result;
       for (Range data in _singleAssetUtilization!.daily!) {
-        listIdleDay.add(data.data!.idleHours.runtimeType == double
-            ? data.data!.idleHours
-            : double.parse(data.data!.idleHours==null?"0.0": data.data!.idleHours.toString()));
+        //listIdleDay.add(Utils.parseStringToDouble(data.data!.idleHours!));
+        listWeekDay.add(data.data!.idleHours.runtimeType == String
+            ? Utils.parseStringToDouble(data.data!.idleHours!)
+            : data.data!.idleHours);
       }
       for (Range data in _singleAssetUtilization!.weekly!) {
-        listWeekDay.add(data.data!.idleHours.runtimeType == double
-            ? data.data!.idleHours
-            : double.parse(
-                data.data!.idleHours==null?"0.0": data.data!.idleHours.toString()));
+       // Logger().w(data.data!.idleHours!.runtimeType);
+        //listWeekDay.add(Utils.parseStringToDouble(data.data!.idleHours!));
+        listWeekDay.add(data.data!.idleHours);
       }
       for (Range data in _singleAssetUtilization!.monthly!) {
-        listMonthDay.add(data.data!.idleHours.runtimeType == double
-            ? data.data!.idleHours
-            : double.parse(data.data!.idleHours==null?"0.0": data.data!.idleHours.toString()));
+        // listMonthDay.add(Utils.parseStringToDouble(data.data!.idleHours!));
+        listWeekDay.add(data.data!.idleHours);
       }
       Logger().d("listIdleDay ${listIdleDay.length}");
       Logger().d("listWeekDay ${listWeekDay.length}");

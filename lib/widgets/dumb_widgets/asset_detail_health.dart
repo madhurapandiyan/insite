@@ -94,9 +94,9 @@ class AssetDetailHealth extends StatelessWidget {
                   ),
                   InsiteTableRowItem(
                     title: "Last Reported time",
-                    content: detail!.lastReportedTimeUTC != null
+                    content: detail!.lastReportedTimeUtc != null
                         ? Utils.getLastReportedDateOneUTC(
-                            detail!.lastReportedTimeUTC)
+                            detail!.lastReportedTimeUtc)
                         : "-",
                   )
                 ]),

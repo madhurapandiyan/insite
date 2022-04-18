@@ -279,11 +279,11 @@ class _SingleAssetUtilizationGraphViewState
                                             .targetRuntimePerformance ==
                                         null
                                     ? null
-                                    : viewModel
+                                    : Utils.parseStringToDouble(viewModel
                                                     .singleAssetUtilization!
                                                     .daily![index]
                                                     .data!
-                                                    .targetRuntimePerformance! *
+                                                    .targetRuntimePerformance!) *
                                                 100 >
                                             100
                                         ? 100
@@ -300,18 +300,18 @@ class _SingleAssetUtilizationGraphViewState
                                             .targetRuntimePerformance ==
                                         null
                                     ? ""
-                                    : viewModel
+                                    : Utils.parseStringToDouble(viewModel
                                                     .singleAssetUtilization!
                                                     .daily![index]
                                                     .data!
-                                                    .targetRuntimePerformance! *
+                                                    .targetRuntimePerformance!) *
                                                 100 >
                                             100
-                                        ? (viewModel
+                                        ? (Utils.parseStringToDouble(viewModel
                                                         .singleAssetUtilization!
                                                         .daily![index]
                                                         .data!
-                                                        .targetRuntimePerformance! *
+                                                        .targetRuntimePerformance!) *
                                                     100)
                                                 .toStringAsFixed(1) +
                                             "%"
@@ -327,8 +327,20 @@ class _SingleAssetUtilizationGraphViewState
                                                 .data!
                                                 .idleHours !=
                                             null
-                                        ? viewModel.singleAssetUtilization!
-                                            .daily![index].data!.idleHours
+                                        ? viewModel
+                                                    .singleAssetUtilization!
+                                                    .daily![index]
+                                                    .data!
+                                                    .idleHours
+                                                    .runtimeType ==
+                                                String
+                                            ? Utils.parseStringToDouble(viewModel
+                                                .singleAssetUtilization!
+                                                .daily![index]
+                                                .data!
+                                                .idleHours!)
+                                            : viewModel.singleAssetUtilization!
+                                                .daily![index].data!.idleHours
                                         : 0
                                     : rangeChoice == 2
                                         ? viewModel
@@ -337,8 +349,24 @@ class _SingleAssetUtilizationGraphViewState
                                                     .data!
                                                     .idleHours !=
                                                 null
-                                            ? viewModel.singleAssetUtilization!
-                                                .weekly![index].data!.idleHours
+                                            ? viewModel
+                                                        .singleAssetUtilization!
+                                                        .weekly![index]
+                                                        .data!
+                                                        .idleHours!
+                                                        .runtimeType ==
+                                                    String
+                                                ? Utils.parseStringToDouble(
+                                                    viewModel
+                                                        .singleAssetUtilization!
+                                                        .weekly![index]
+                                                        .data!
+                                                        .idleHours!)
+                                                : viewModel
+                                                    .singleAssetUtilization!
+                                                    .weekly![index]
+                                                    .data!
+                                                    .idleHours!
                                             : 0
                                         : viewModel
                                                     .singleAssetUtilization!
@@ -346,8 +374,9 @@ class _SingleAssetUtilizationGraphViewState
                                                     .data!
                                                     .idleHours !=
                                                 null
-                                            ? viewModel.singleAssetUtilization!
-                                                .monthly![index].data!.idleHours
+                                            ? viewModel.singleAssetUtilization!.monthly![index].data!.idleHours!.runtimeType == String
+                                                ? Utils.parseStringToDouble(viewModel.singleAssetUtilization!.monthly![index].data!.idleHours!)
+                                                : viewModel.singleAssetUtilization!.monthly![index].data!.idleHours!
                                             : 0,
                                 workingLength: rangeChoice == 1
                                     ? viewModel
@@ -414,10 +443,11 @@ class _SingleAssetUtilizationGraphViewState
                                                 100
                                             ? 100
                                             : (viewModel
-                                                .singleAssetUtilization!
-                                                .daily![index]
-                                                .data!
-                                                .distanceTravelledKilometers))
+                                                    .singleAssetUtilization!
+                                                    .daily![index]
+                                                    .data!
+                                                    .distanceTravelledKilometers)! /
+                                                1000)
                                         : 0
                                     : rangeChoice == 2
                                         ? viewModel
@@ -427,17 +457,18 @@ class _SingleAssetUtilizationGraphViewState
                                                     .distanceTravelledKilometers !=
                                                 null
                                             ? (viewModel
+                                                            .singleAssetUtilization!
+                                                            .weekly![index]
+                                                            .data!
+                                                            .distanceTravelledKilometers! >
+                                                        100
+                                                    ? 100
+                                                    : viewModel
                                                         .singleAssetUtilization!
                                                         .weekly![index]
                                                         .data!
-                                                        .distanceTravelledKilometers! >
-                                                    100
-                                                ? 100
-                                                : viewModel
-                                                    .singleAssetUtilization!
-                                                    .weekly![index]
-                                                    .data!
-                                                    .distanceTravelledKilometers)
+                                                        .distanceTravelledKilometers)! /
+                                                1000
                                             : 0
                                         : viewModel
                                                     .singleAssetUtilization!
@@ -446,17 +477,18 @@ class _SingleAssetUtilizationGraphViewState
                                                     .distanceTravelledKilometers !=
                                                 null
                                             ? (viewModel
+                                                            .singleAssetUtilization!
+                                                            .monthly![index]
+                                                            .data!
+                                                            .distanceTravelledKilometers! >
+                                                        100
+                                                    ? 100
+                                                    : viewModel
                                                         .singleAssetUtilization!
                                                         .monthly![index]
                                                         .data!
-                                                        .distanceTravelledKilometers! >
-                                                    100
-                                                ? 100
-                                                : viewModel
-                                                    .singleAssetUtilization!
-                                                    .monthly![index]
-                                                    .data!
-                                                    .distanceTravelledKilometers)
+                                                        .distanceTravelledKilometers)! /
+                                                1000
                                             : 0,
                                 value: rangeChoice == 1
                                     ? viewModel
@@ -499,7 +531,7 @@ class _SingleAssetUtilizationGraphViewState
                                                     .distanceTravelledKilometers!
                                                     .toStringAsFixed(1)
                                                 : null
-                                            : "0" 
+                                            : "0"
                                         : viewModel
                                                     .singleAssetUtilization!
                                                     .monthly![index]

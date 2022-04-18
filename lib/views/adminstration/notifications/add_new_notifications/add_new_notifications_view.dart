@@ -295,11 +295,11 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                         },
                                                       )),
                                                       SizedBox(height: 10),
-                                                      // showingSwitchableWidget(
-                                                      //     viewModel
-                                                      //         .customizable,
-                                                      //     viewModel
-                                                      //         .onCustomiozablestateChange),
+                                                      showingSwitchableWidget(
+                                                          viewModel
+                                                              .customizable,
+                                                          viewModel
+                                                              .onCustomiozablestateChange),
                                                       viewModel.customizable
                                                               .first.state!
                                                           ? Padding(

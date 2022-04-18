@@ -57,7 +57,7 @@ class ManageNotificationsView extends StatelessWidget {
                       side: BorderSide(color: cardcolor),
                     ),
                     child: Container(
-                      margin: EdgeInsets.all(15),
+                      margin: EdgeInsets.only(right: 15, left: 15, top: 15),
                       child: Column(
                         children: [
                           Padding(
@@ -66,7 +66,6 @@ class ManageNotificationsView extends StatelessWidget {
                             child: CustomTextBox(
                               controller: viewModel.searchController,
                               title: "SEARCH",
-                              showLoading: viewModel.isSearching,
                               onChanged: (searchText) {
                                 viewModel.getSearchListData(searchText);
                               },
@@ -79,14 +78,11 @@ class ManageNotificationsView extends StatelessWidget {
                             child: viewModel.loading
                                 ? InsiteProgressBar()
                                 : viewModel.notifications.isNotEmpty
-                                    ? ListView.separated(
-                                        controller: viewModel.controller,
+                                    ? ListView.builder(
+                                        controller: viewModel.scrollController,
                                         itemBuilder: (context, int index) {
                                           ConfiguredAlerts? alerts =
                                               viewModel.notifications[index];
-                                          Logger().w(
-                                              viewModel.notifications.length);
-
                                           return ManageNotificationWidget(
                                             alerts: alerts,
                                             onDelete: () {
@@ -98,20 +94,18 @@ class ManageNotificationsView extends StatelessWidget {
                                             },
                                           );
                                         },
-                                        separatorBuilder: (context, index) =>
-                                            Divider(
-                                              color: backgroundColor3,
-                                              thickness: 2.0,
-                                            ),
                                         itemCount:
                                             viewModel.notifications.length)
+                                    // ListView.separated(
+
+                                    //     separatorBuilder: (context, index) =>
+                                    //         Divider(
+                                    //           color: backgroundColor3,
+                                    //           thickness: 2.0,
+                                    //         ),
+                                    //    )
                                     : EmptyView(title: "No Notification Found"),
                           ),
-                          viewModel.loadingMore
-                              ? Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: InsiteProgressBar())
-                              : SizedBox()
                         ],
                       ),
                     ),

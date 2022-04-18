@@ -20,26 +20,28 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   final GraphqlSchemaService? _graphqlSchemaService =
       locator<GraphqlSchemaService>();
 
-  ScrollController? controller;
+  ScrollController? scrollController;
   bool? isLoadMore;
   int pageNumber = 1;
-  int pageCount = 20;
+  int pageCount = 50;
   ManageNotificationsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
+    scrollController = new ScrollController();
+    scrollController?.addListener(() async {
+      if (scrollController!.position.pixels ==
+          scrollController!.position.maxScrollExtent) {
+        if (totalCount != notifications.length) {
+          _loadingMore = true;
+          pageNumber = pageNumber++;
+          await getManageNotificationsData();
+          notifyListeners();
+        }
+      }
+    });
     setUp();
     Future.delayed(Duration.zero, () async {
       await getManageNotificationsData();
-    });
-
-    controller?.addListener(() {
-      if (controller!.position.pixels == controller!.position.maxScrollExtent) {
-        Logger().e(1);
-        _loadingMore = true;
-        pageNumber = pageNumber++;
-        getManageNotificationsData();
-        notifyListeners();
-      }
     });
   }
 
@@ -48,7 +50,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   List<ConfiguredAlerts> _notifications = [];
   List<ConfiguredAlerts> get notifications => _notifications;
 
-  bool _isSearching = false;
+  bool _isSearching = true;
   bool get isSearching => _isSearching;
 
   int _totalCount = 0;
@@ -123,33 +125,33 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   getSearchListData(String? searchValue) async {
     try {
       if (searchValue!.length >= 4) {
-        showLoadingDialog();
-        notifications.clear();
-        ManageNotificationsData? response = await _notificationService!
-            .getsearchNotificationsData(
-                pageNumber: pageNumber,
-                count: pageCount,
-                searchText: searchValue);
-
-        if (response != null) {
-          if (response.configuredAlerts != null &&
-              response.configuredAlerts!.isNotEmpty) {
-            _notifications.clear();
-            _notifications.addAll(response.configuredAlerts!);
-            _isSearching = false;
-            notifyListeners();
+        if (_isSearching) {
+          showLoadingDialog(tapDismiss: false);
+          _notifications.clear();
+          ManageNotificationsData? response = await _notificationService!
+              .getsearchNotificationsData(
+                  pageNumber: pageNumber,
+                  count: pageCount,
+                  searchText: searchValue);
+          if (response != null) {
+            if (response.configuredAlerts != null &&
+                response.configuredAlerts!.isNotEmpty) {
+              _notifications.clear();
+              _notifications.addAll(response.configuredAlerts!);
+              _isSearching = true;
+              notifyListeners();
+            } else {
+              _isSearching = false;
+              _notifications.clear();
+              notifyListeners();
+            }
           } else {
+            _loading = false;
             _notifications.clear();
-            _isSearching = false;
             notifyListeners();
           }
-        } else {
-          _loading = false;
-          _loadingMore = false;
-          _isSearching = false;
-          notifyListeners();
+          hideLoadingDialog();
         }
-        hideLoadingDialog();
       } else if (searchValue.isEmpty) {
         showLoadingDialog();
         await getManageNotificationsData();
@@ -186,7 +188,6 @@ class ManageNotificationsViewModel extends InsiteViewModel {
 
   getManageNotificationsData() async {
     try {
-      _notifications.clear();
       ManageNotificationsData? response = await _notificationService!
           .getManageNotificationsData(pageNumber, pageCount, "");
       Logger().wtf(response!.toJson());

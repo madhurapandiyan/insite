@@ -437,17 +437,10 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AssetLocationData> assetLocationWithCluster(url, latitude, longitude,
-      pageNumber, pageSize, radiusKm, sort, customerId, serviceHeader) async {
+  Future<AssetLocationData> assetLocationWithCluster(
+      url, customerId, serviceHeader) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'latitude': latitude,
-      r'longitude': longitude,
-      r'pageNumber': pageNumber,
-      r'pageSize': pageSize,
-      r'radiuskm': radiusKm,
-      r'sort': sort
-    };
+    final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
       r'service': serviceHeader
@@ -4564,6 +4557,24 @@ class _RestClient implements RestClient {
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Complete.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> logout(id_Token, redirectUrl) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'id_token_hint': id_Token,
+      r'post_logout_redirect_uri': redirectUrl
+    };
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch(_setStreamType<dynamic>(
+        Options(method: 'GET', headers: _headers, extra: _extra)
+            .compose(_dio.options, '/oauth/logout',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
     return value;
   }
 

@@ -229,6 +229,7 @@ class GraphqlSchemaService extends BaseService {
         Logger().wtf("severity $severity");
       }
     });
+    Logger().i("asset filter running");
   }
 
   final String allAssets = """
@@ -472,21 +473,25 @@ locationReportedTimeUTC
     return assetFaultQuery;
   }
 
-  fleetSummary(List<FilterData?>? applyFilter, pagenumber) async {
+  fleetSummary(
+      List<FilterData?>? applyFilter, pagenumber, startDate, endDate) async {
     await cleaValue();
     await clearAllList();
     await gettingFiltersValue(applyFilter);
 
+
     var data = """{
   fleetSummary(pageNumber:$pagenumber,
     pageSize:50,
+    startDateLocal:${startDate == null ? "\"\"" : "${"\"" + startDate + "\""}"}
+    endDateLocal: ${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"}
     sort:"AssetSerialNumber",
     productfamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"},
     model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
     assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"},
     fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"},
-    idleEfficiencyGT:"${Utils.getIdlingFilterData(idleEficiencyGT)?.first ?? ""}",
-    idleEfficiencyLTE:"${Utils.getIdlingFilterData(idleEficiencyGT)?.last ?? ""}",
+    idleEfficiencyGT:${idleEficiencyGT==null?null: int.parse(Utils.getIdlingFilterData(idleEficiencyGT)!.first!)},
+    idleEfficiencyLTE:${idleEficiencyGT==null?null: int.parse(Utils.getIdlingFilterData(idleEficiencyGT)!.last!)},
     assetIDContains:"",
     snContains:"",
   manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"},
@@ -552,6 +557,7 @@ locationReportedTimeUTC
   }
 }
 """;
+
     return data;
   }
 
@@ -2143,7 +2149,7 @@ mutation {
     geometryWKT: "$geometryWKT", 
     geofenceName: "$geofenceName", 
    actionUTC: "$actionUTC", 
-    endDate: ${endDate == null ? null : "$endDate"},
+    endDate: ${endDate == null ? null : "\"" + "$endDate" + "\""},
      description: "$description",  
     fillColor: 658170, 
     isTransparent: false
@@ -2582,6 +2588,192 @@ readStatus
     status
   }
 }""";
+    return data;
+  }
+
+  createGroup(List assetUids, String groupName, String? description) {
+    var data = """
+mutation{
+  createGroups(
+    assetUID:$assetUids,
+    description:"$description",
+    groupName:"$groupName"
+  ){
+    groupUID
+  }
+}""";
+    return data;
+  }
+
+  getAssetSettingData(int pageNo, int pageSize, String deviceType) {
+    var data = """
+query{
+  assetSettingsGrid(
+    startDate: ""
+endDate:""
+pageNumber:$pageNo
+pageSize: $pageSize
+filterName: ""
+filterValue: ""
+sortColumn: ""
+deviceType: ${deviceType == "ALL" ? "\"\"" : "${"\"" + deviceType + "\""}"}
+  ){
+    assetSettings{
+      assetUid
+assetId
+assetSerialNumber
+assetModel
+assetMakeCode
+assetIconKey
+deviceSerialNumber
+devicetype
+targetStatus
+dailyReportingTime
+hoursMeter
+movingOrStoppedThreshold
+movingThresholdsDuration
+movingThresholdsRadius
+odometer
+smhOdometerConfig
+speedThreshold
+speedThresholdDuration
+speedThresholdEnabled
+configuredSwitches
+totalSwitches
+fuelType
+workDefinition
+pendingDeviceConfigInfo{
+  reportingSchedule{
+    lastUpdatedOn
+  }
+  meters{
+    lastUpdatedOn
+  }
+  switches{
+    lastUpdatedOn
+  }
+  movingThresholds{
+    lastUpdatedOn
+  }
+  speedingThresholds{
+    lastUpdatedOn
+  }
+}
+    },
+    pageInfo{
+      totalRecords,
+      totalPages,
+      currentPageNumber,
+      currentPageSize
+    },
+    errors
+  }
+}""";
+
+    return data;
+  }
+
+  getAssetListData(String assetUids) {
+    var data = """
+mutation {
+  assetListSettings(
+    assetUIDs:"$assetUids"
+  ) {
+    assetUID
+    assetName
+    legacyAssetID
+    serialNumber
+    makeCode
+    model
+    assetTypeName
+    equipmentVIN
+    iconKey
+    modelYear
+    statusInd
+  }
+}
+""";
+    return data;
+  }
+
+  assetIcon(
+      {String? actionUTC,
+      String? assetType,
+      String? assetUID,
+      String? equipmentVIN,
+      int? iconKey,
+      int? legacyAssetID,
+      String? model,
+      int? modelYear,
+      String? assetName}) {
+    var data = """
+mutation{
+  assetIcon(
+    assetName:""
+legacyAssetID:$legacyAssetID
+model:"$model"
+assetType: "$assetType"
+iconKey: $iconKey
+equipmentVIN: "$equipmentVIN"
+modelYear: $modelYear
+owningCustomerUID: ""
+assetUID: "$assetUID"
+objectType:""
+category:""
+projectStatus: ""
+sortField: ""
+source:""
+userEnteredRuntimeHours: ""
+classification: ""
+planningGroup: ""
+actionUTC: "$actionUTC"
+receivedUTC: ""
+  )
+}""";
+    return data;
+  }
+
+  assetSettingsType(bool allAssets, List<String> assetUids) {
+    var data = """
+mutation{
+  assetSettingDeviceTypes(
+    allAssets:$allAssets,
+    assetUID:$assetUids
+  ){
+    deviceTypes{
+      id,
+      name,
+      assetCount
+    }
+  }
+}""";
+    return data;
+  }
+
+  getFaultCodeTypesData(
+      {String? lang, int? pageNo, String? codeType, String? faultDescription}) {
+    var data = """
+{
+  getFaultCodeData(lang: ${lang == null ? "\"\"" : "${"\"" + lang + "\""}"}, page: $pageNo, faultCodeType: ${codeType == null ? "\"\"" : "${"\"" + codeType + "\""}"}, faultDescription: ${faultDescription == null ? "\"\"" : "${"\"" + faultDescription + "\""}"}) {
+    descriptions {
+      faultCodeIdentifier
+      faultDescription
+      faultCodeType
+    }
+    page
+    limit
+    total
+    pageLinks {
+      rel
+      href
+      method
+    }
+    status
+    reqId
+    msg
+  }
+}
+""";
     return data;
   }
 }

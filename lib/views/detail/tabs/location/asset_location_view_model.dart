@@ -71,7 +71,10 @@ class AssetLocationViewModel extends InsiteViewModel {
   getAssetLocationHistoryResult() async {
     await getDateRangeFilterData();
     AssetLocationHistory? result = await _assetLocationHistoryService!
-        .getAssetLocationHistory(startDate, endDate, assetDetail!.assetUid);
+        .getAssetLocationHistory(
+            Utils.fleetLocationSingleAssetStartDateFormate(startDate),
+            Utils.fleetLocationSingleAssetEndDateFormate(endDate),
+            assetDetail!.assetUid);
     if (result != null) {
       _assetLocationHistory = result;
       updateMarkers();
@@ -89,7 +92,7 @@ class AssetLocationViewModel extends InsiteViewModel {
     _refreshing = true;
     notifyListeners();
     AssetLocationHistory? result = await _assetLocationHistoryService!
-        .getAssetLocationHistory(startDate, endDate, assetDetail!.assetUid);
+        .getAssetLocationHistory(Utils.fleetLocationSingleAssetStartDateFormate(startDate), Utils.fleetLocationSingleAssetEndDateFormate(endDate), assetDetail!.assetUid);
     if (result != null) {
       _assetLocationHistory = result;
       updateMarkers();

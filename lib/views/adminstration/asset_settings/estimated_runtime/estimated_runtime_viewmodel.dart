@@ -50,7 +50,8 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   bool isChangingState = false;
   bool get changedState => isChangingState;
 
-  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
+  AssetAdminManagerUserService? _manageUserService =
+      locator<AssetAdminManagerUserService>();
 
   getStartDateData(String formattedDate) {
     startDateController.text = formattedDate;
@@ -351,6 +352,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
               runTimecount: data.runtime!.saturday!.toDouble(),
               runtimeDays: "Sat");
           dateFilterUpdateListValue.addAll([sun, mon, tue, wed, thu, fri, sat]);
+          countValue = dateFilterUpdateListValue;
         }
 
         notifyListeners();

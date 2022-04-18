@@ -46,7 +46,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
   @override
   void initState() {
     Logger().d("IndiaStackLogoutView  codeVerifier $codeVerifier");
-    codeChallenge = Utils.generateCodeChallenge(codeVerifier,false);
+    codeChallenge = Utils.generateCodeChallenge(codeVerifier, false);
     Logger().d("IndiaStackLogoutView  codeChallenge $codeChallenge");
     Logger().d("IndiaStackLogoutView  state $state");
     Logger().d(
@@ -133,7 +133,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
     _onUrlChanged = flutterWebviewPlugin.onUrlChanged.listen((String url) {
       if (mounted) {
         Logger().i("IndiaStackLogoutView  URL changed: $url");
-       if (url.isNotEmpty &&
+        if (url.isNotEmpty &&
             url.startsWith(Urls.tataHitachiRedirectUri + "?code=")) {
           Logger().i("IndiaStackLogoutView URL changed with auth code : $url");
           try {
@@ -180,7 +180,7 @@ class _IndiaStackLogoutViewState extends State<IndiaStackLogoutView> {
 
   getLoginDataV4(code) async {
     Logger().i("IndiaStackLogoutView getLoginDataV4 for code $code");
-    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier(),false);
+    codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier(), false);
     LoginResponse? result =
         await _loginService!.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {

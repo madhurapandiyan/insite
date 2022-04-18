@@ -74,9 +74,9 @@ List<Customer> customerList = [
 
 @JsonSerializable()
 class CustomersResponse {
-  @JsonKey(name: "userUid")
+  @JsonKey(name: "UserUid")
   final String? UserUID;
-   @JsonKey(name: "customers")
+   @JsonKey(name: "Customers")
   final List<Customer>? Customers;
   CustomersResponse({this.UserUID, this.Customers});
   factory CustomersResponse.fromJson(Map<String, dynamic> json) =>

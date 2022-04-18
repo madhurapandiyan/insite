@@ -258,6 +258,8 @@ class LocationViewModel extends InsiteViewModel {
     manager = initClusterManager();
     if (pageType == ScreenType.LOCATION) {
       Future.delayed(Duration(seconds: 1), () async {
+        await getSelectedFilterData();
+        await getDateRangeFilterData();
         await getAssetLocation();
       });
     } else if (pageType == ScreenType.DASHBOARD) {
@@ -270,7 +272,7 @@ class LocationViewModel extends InsiteViewModel {
   refresh() async {
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    Logger().w(appliedFilters!.first);
+    //Logger().w(appliedFilters!.first);
     Logger().d("refresh getAssetLocation");
     _refreshing = true;
     clusterMarkers.clear();
@@ -327,7 +329,16 @@ class LocationViewModel extends InsiteViewModel {
             '-lastlocationupdateutc',
             smallLatLng.latitude,
             largeLatLng.longitude,
-            radiusKm);
+            radiusKm,
+            appliedFilters,
+            startDate!,
+            endDate!,
+            await graphqlSchemaService!.getFleetLocationData(
+                filtlerList: appliedFilters,
+                pageNo: pageNumber,
+                pageSize: pageSize,
+                startDate: Utils.fleetLocationDateFormate(startDate),
+                endDate: Utils.fleetLocationDateFormate(endDate)));
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;
@@ -365,11 +376,11 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   getAssetLocation() async {
-    await getSelectedFilterData();
     Logger().d("getAssetLocation");
+
     AssetLocationData? result = await _assetLocationService.getAssetLocation(
-        startDate,
-        endDate,
+        Utils.fleetLocationDateFormate(startDate),
+        Utils.fleetLocationDateFormate(endDate),
         pageNumber,
         pageSize,
         '-lastlocationupdateutc',

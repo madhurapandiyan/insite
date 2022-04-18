@@ -69,9 +69,10 @@ class AssetViewModel extends InsiteViewModel {
                 filtlerList: appliedFilters,
                 pageNo: pageNumber,
                 limit: pageSize,
-                startDate:
-                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+                startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(
+                    startDate),
+                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(
+                    endDate)));
     if (result != null && result.assetFaults != null) {
       _totalCount = result.total;
       if (result.assetFaults!.isNotEmpty) {
