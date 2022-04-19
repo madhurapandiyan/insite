@@ -48,7 +48,7 @@ class _DetailPopupViewState extends State<DetailPopupView>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     viewModel = DetailPopupViewModel(widget.serviceItem, widget.assetData,
-        widget.assetDataValue, widget.services);
+        widget.assetDataValue, widget.services, widget.summaryData);
   }
 
   @override
@@ -302,8 +302,12 @@ class _DetailPopupViewState extends State<DetailPopupView>
                 ),
         );
       },
-      viewModelBuilder: () => DetailPopupViewModel(widget.serviceItem,
-          widget.assetData, widget.assetDataValue, widget.services),
+      viewModelBuilder: () => DetailPopupViewModel(
+          widget.serviceItem,
+          widget.assetData,
+          widget.assetDataValue,
+          widget.services,
+          widget.summaryData),
     );
   }
 
@@ -337,7 +341,7 @@ class _DetailPopupViewState extends State<DetailPopupView>
                                       border: TableBorder.all(),
                                       columnWidths: {
                                         0: FlexColumnWidth(1.8),
-                                        1: FlexColumnWidth(1),
+                                        1: FlexColumnWidth(0.2),
                                       },
                                       children: [
                                         TableRow(
@@ -445,26 +449,59 @@ class _DetailPopupViewState extends State<DetailPopupView>
                                                   SizedBox(
                                                     height: 20,
                                                   ),
-                                                  InsiteButton(
-                                                    width:
-                                                        MediaQuery.of(context)
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      InsiteButton(
+                                                        width: MediaQuery.of(
+                                                                    context)
                                                                 .size
                                                                 .width *
                                                             0.4,
-                                                    height:
-                                                        MediaQuery.of(context)
+                                                        height: MediaQuery.of(
+                                                                    context)
                                                                 .size
                                                                 .height *
                                                             0.06,
-                                                    title: "Next".toUpperCase(),
-                                                    fontSize: 12,
-                                                    textColor: white,
-                                                    onTap: () {
-                                                      _tabController!.index = 1;
-                                                    },
+                                                        title: "Save"
+                                                            .toUpperCase(),
+                                                        fontSize: 12,
+                                                        textColor: white,
+                                                        onTap: () {
+                                                          viewModel.onComplete(
+                                                              checklistsItem
+                                                                  .checklistId,
+                                                              checklistsItem
+                                                                  .checklistName,
+                                                              true);
+                                                        },
+                                                      ),
+                                                      InsiteButton(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.4,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.06,
+                                                        title: "Next"
+                                                            .toUpperCase(),
+                                                        fontSize: 12,
+                                                        textColor: white,
+                                                        onTap: () {
+                                                          _tabController!
+                                                              .index = 1;
+                                                        },
+                                                      ),
+                                                    ],
                                                   ),
                                                   SizedBox(
-                                                    height: 50,
+                                                    height: 70,
                                                   ),
                                                   viewModel.loadingMore
                                                       ? Padding(
