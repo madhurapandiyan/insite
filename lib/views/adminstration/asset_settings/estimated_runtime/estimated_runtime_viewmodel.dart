@@ -1,15 +1,11 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
-import 'package:insite/core/models/asset_settings_data.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
-import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/model/increment_decrement_model.dart';
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -71,15 +67,30 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
       percentCount: 0,
     ),
     IncrementDecrementValue(
-        runTimecount: 8, runtimeDays: "Mon", idleCount: 1, percentCount: 0),
+        runTimecount: 8,
+        runtimeDays: "Mon",
+        idleCount: 1.6,
+        percentCount: Utils.getEstimatedPercentValue(8, 1.6)),
     IncrementDecrementValue(
-        runTimecount: 8, runtimeDays: "Tue", idleCount: 1, percentCount: 0),
+        runTimecount: 8,
+        runtimeDays: "Tue",
+        idleCount: 1.6,
+        percentCount: Utils.getEstimatedPercentValue(8, 1.6)),
     IncrementDecrementValue(
-        runTimecount: 8, runtimeDays: "Wed", idleCount: 1, percentCount: 0),
+        runTimecount: 8,
+        runtimeDays: "Wed",
+        idleCount: 1.6,
+        percentCount: Utils.getEstimatedPercentValue(8, 1.6)),
     IncrementDecrementValue(
-        runTimecount: 8, runtimeDays: "Thu", idleCount: 1, percentCount: 0),
+        runTimecount: 8,
+        runtimeDays: "Thu",
+        idleCount: 1.6,
+        percentCount: Utils.getEstimatedPercentValue(8, 1.6)),
     IncrementDecrementValue(
-        runTimecount: 8, runtimeDays: "Fri", idleCount: 1, percentCount: 0),
+        runTimecount: 8,
+        runtimeDays: "Fri",
+        idleCount: 1.6,
+        percentCount: Utils.getEstimatedPercentValue(8, 1.6)),
     IncrementDecrementValue(
         runTimecount: 0, runtimeDays: "Sat", idleCount: 0, percentCount: 0),
   ];
@@ -319,40 +330,42 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     try {
       result =
           await _manageUserService!.getEstimatedTargetSettingListData(assetUId);
-
       if (result != null) {
-        for (var i = 0; i < result!.assetTargetSettings!.length; i++) {
-          final data = result!.assetTargetSettings![i];
-          var sun = IncrementDecrementValue(
-              idleCount: data.idle!.sunday!.toDouble(),
-              runTimecount: data.runtime!.sunday!.toDouble(),
-              runtimeDays: "Sun");
-          var mon = IncrementDecrementValue(
-              idleCount: data.idle!.monday!.toDouble(),
-              runTimecount: data.runtime!.monday!.toDouble(),
-              runtimeDays: "Mon");
-          var tue = IncrementDecrementValue(
-              idleCount: data.idle!.tuesday!.toDouble(),
-              runTimecount: data.runtime!.tuesday!.toDouble(),
-              runtimeDays: "Tue");
-          var wed = IncrementDecrementValue(
-              idleCount: data.idle!.wednesday!.toDouble(),
-              runTimecount: data.runtime!.wednesday!.toDouble(),
-              runtimeDays: "Wed");
-          var thu = IncrementDecrementValue(
-              idleCount: data.idle!.thursday!.toDouble(),
-              runTimecount: data.runtime!.thursday!.toDouble(),
-              runtimeDays: "Thu");
-          var fri = IncrementDecrementValue(
-              idleCount: data.idle!.friday!.toDouble(),
-              runTimecount: data.runtime!.friday!.toDouble(),
-              runtimeDays: "Fri");
-          var sat = IncrementDecrementValue(
-              idleCount: data.idle!.saturday!.toDouble(),
-              runTimecount: data.runtime!.saturday!.toDouble(),
-              runtimeDays: "Sat");
-          dateFilterUpdateListValue.addAll([sun, mon, tue, wed, thu, fri, sat]);
-          countValue = dateFilterUpdateListValue;
+        if (result!.assetTargetSettings!.isNotEmpty) {
+          for (var i = 0; i < result!.assetTargetSettings!.length; i++) {
+            final data = result!.assetTargetSettings![i];
+            var sun = IncrementDecrementValue(
+                idleCount: data.idle!.sunday!.toDouble(),
+                runTimecount: data.runtime!.sunday!.toDouble(),
+                runtimeDays: "Sun");
+            var mon = IncrementDecrementValue(
+                idleCount: data.idle!.monday!.toDouble(),
+                runTimecount: data.runtime!.monday!.toDouble(),
+                runtimeDays: "Mon");
+            var tue = IncrementDecrementValue(
+                idleCount: data.idle!.tuesday!.toDouble(),
+                runTimecount: data.runtime!.tuesday!.toDouble(),
+                runtimeDays: "Tue");
+            var wed = IncrementDecrementValue(
+                idleCount: data.idle!.wednesday!.toDouble(),
+                runTimecount: data.runtime!.wednesday!.toDouble(),
+                runtimeDays: "Wed");
+            var thu = IncrementDecrementValue(
+                idleCount: data.idle!.thursday!.toDouble(),
+                runTimecount: data.runtime!.thursday!.toDouble(),
+                runtimeDays: "Thu");
+            var fri = IncrementDecrementValue(
+                idleCount: data.idle!.friday!.toDouble(),
+                runTimecount: data.runtime!.friday!.toDouble(),
+                runtimeDays: "Fri");
+            var sat = IncrementDecrementValue(
+                idleCount: data.idle!.saturday!.toDouble(),
+                runTimecount: data.runtime!.saturday!.toDouble(),
+                runtimeDays: "Sat");
+            dateFilterUpdateListValue
+                .addAll([sun, mon, tue, wed, thu, fri, sat]);
+            countValue = dateFilterUpdateListValue;
+          }
         }
 
         notifyListeners();

@@ -167,7 +167,7 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
     Logger().i(result.toString());
     _isLoading = false;
     notifyListeners();
-    //  gotoAssetingSettingsPage();
+    gotoAssetingSettingsPage();
   }
 
   gotoAssetingSettingsPage() {

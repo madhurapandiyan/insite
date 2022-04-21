@@ -1492,4 +1492,9 @@ class Utils {
   //     element.replaceAll("", replace);
   //   });
   // }
+
+  static getEstimatedPercentValue(idle, runtime) {
+    var data = (runtime / idle) * 100;
+    return data;
+  }
 }
