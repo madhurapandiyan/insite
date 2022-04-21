@@ -28,6 +28,8 @@ import 'package:insite/views/adminstration/notifications/manage_notifications/ma
 import 'package:insite/views/maintenance/asset/asset/detail_popup/detail_popup_view.dart'
     as view47;
 import 'package:insite/views/maintenance/asset/asset_view.dart' as view45;
+import 'package:insite/views/maintenance/main/main_detail_popup/main_detail_popup_view.dart'
+    as view46;
 import 'package:insite/views/maintenance/main/main_view.dart' as view46;
 import 'package:insite/views/maintenance/maintenance_view.dart' as view44;
 import 'package:insite/views/notification/notification_view.dart' as view37;
@@ -229,6 +231,9 @@ class Router {
         return MaterialPageRoute(builder: (_) => view46.MainView());
       case detailPopupViewRoute:
         return MaterialPageRoute(builder: (_) => view47.DetailPopupView());
+
+      case mainDetailPopupViewRoute:
+        return MaterialPageRoute(builder: (_) => view46.MainDetailPopupView());
 
       default:
         return MaterialPageRoute(
