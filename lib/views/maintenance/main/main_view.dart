@@ -114,9 +114,9 @@ class MainViewState extends State<MainView> {
                                         .onDetailPageSelected(summaryData!);
                                   },
                                   serviceCalBack:
-                                      (value, assetDataVaue, services) {
+                                      (value, assetDataValue, services) {
                                     viewModel.onServiceSelected(value,
-                                        assetDataVaue, summaryData, services);
+                                        assetDataValue, summaryData, services);
                                   },
                                 );
                               },

@@ -30,7 +30,6 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
       builder: (BuildContext context, MainViewModel viewModel, Widget? _) {
-        print("tttttttttttttt ${viewModel.services}");
         return GestureDetector(
           onTap: () {
             widget.onCallback!();

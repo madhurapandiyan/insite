@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/maintenance.dart';
+import 'package:insite/core/models/maintenance_asset.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
@@ -53,8 +54,12 @@ class MainViewModel extends InsiteViewModel {
 
   late ScrollController scrollController;
 
-  MainViewModel(SummaryData? summaryData) {
+  MainViewModel(
+    SummaryData? summaryData,
+  ) {
+    _summaryData = summaryData;
     setUp();
+
     _maintenanceService!.setUp();
     scrollController = new ScrollController();
     scrollController.addListener(() {
@@ -66,6 +71,7 @@ class MainViewModel extends InsiteViewModel {
 
     Future.delayed(Duration(seconds: 2), () {
       getMaintenanceViewList();
+      getMaintenanceListItemData();
     });
   }
 
@@ -86,7 +92,7 @@ class MainViewModel extends InsiteViewModel {
       _totalCount = result.total;
       if (result.summaryData!.isNotEmpty) {
         _maintenanceList.addAll(result.summaryData!);
-        getMaintenanceListItemData();
+
         _loading = false;
         _loadingMore = false;
         notifyListeners();
@@ -119,8 +125,6 @@ class MainViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
-
-    Logger().i("result ${result!.toJson()}");
 
     if (result != null && result.services != null) {
       if (result.services!.isNotEmpty) {
@@ -211,6 +215,7 @@ class MainViewModel extends InsiteViewModel {
       SummaryData? assetData, List<Services?>? services) async {
     ServiceItem? serviceItem =
         await _maintenanceService!.getServiceItemCheckList(serviceId!);
+
     _navigationService!.navigateToView(
       DetailPopupView(
           serviceItem: serviceItem!,
