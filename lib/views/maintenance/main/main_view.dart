@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:insite/core/models/maintenance.dart';
+//import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -26,23 +27,24 @@ class MainView extends StatefulWidget {
 
 class MainViewState extends State<MainView> {
   onFilterApplied() {
-    viewModel.refresh();
+    //viewModel.refresh();
   }
 
   List<DateTime>? dateRange = [];
-  late var viewModel;
+  //late var viewModel;
 
-  @override
-  void initState() {
-    viewModel = MainViewModel();
+  // @override
+  // void initState() {
+  //   viewModel = ;
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
+  SummaryData? summaryData;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
-      builder: (BuildContext context, MainViewModel model, Widget? _) {
+      builder: (BuildContext context, MainViewModel viewModel, Widget? _) {
         return Stack(
           children: [
             Column(
@@ -88,7 +90,7 @@ class MainViewState extends State<MainView> {
                 ),
                 PageHeader(
                   isDashboard: false,
-                  total: viewModel.totalCount,
+                  total: viewModel.totalCount!.toInt(),
                   screenType: ScreenType.MAINTENANCE,
                   count: viewModel.maintenanceList.length,
                 ),
@@ -103,13 +105,18 @@ class MainViewState extends State<MainView> {
                                   EdgeInsets.only(left: 12, right: 12, top: 4),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                SummaryData? summaryData =
-                                    viewModel.maintenanceList[index];
+                                summaryData = viewModel.maintenanceList[index];
 
                                 return MaintenanceListItem(
                                   summaryData: summaryData,
                                   onCallback: () {
-                                    viewModel.onDetailPageSelected(summaryData);
+                                    viewModel
+                                        .onDetailPageSelected(summaryData!);
+                                  },
+                                  serviceCalBack:
+                                      (value, assetDataValue, services) {
+                                    viewModel.onServiceSelected(value,
+                                        assetDataValue, summaryData, services);
                                   },
                                 );
                               },
@@ -134,7 +141,7 @@ class MainViewState extends State<MainView> {
           ],
         );
       },
-      viewModelBuilder: () => viewModel,
+      viewModelBuilder: () => MainViewModel(summaryData),
     );
   }
 }

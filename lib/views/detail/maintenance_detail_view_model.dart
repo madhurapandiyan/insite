@@ -83,7 +83,6 @@ class MaintenanceItemDetailViewModel extends InsiteViewModel {
             page,
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
 
-    ;
     if (result != null && result.services != null) {
       if (result.services!.isNotEmpty) {
         _assetDataValue = result.assetData;

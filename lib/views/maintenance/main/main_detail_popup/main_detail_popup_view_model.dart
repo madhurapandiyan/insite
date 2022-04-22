@@ -14,7 +14,7 @@ import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class DetailPopupViewModel extends InsiteViewModel {
+class MainDetailPopupViewModel extends InsiteViewModel {
   Logger? log;
   ScrollController? scrollController;
   MaintenanceService? _maintenanceService = locator<MaintenanceService>();
@@ -85,12 +85,8 @@ class DetailPopupViewModel extends InsiteViewModel {
   List<String?>? _serviceList = [];
   List<String?>? get serviceList => _serviceList;
 
-  DetailPopupViewModel(
-      ServiceItem? serviceItem,
-      AssetCentricData? assetData,
-      AssetData? assetDataValue,
-      List<Services?>? services,
-      SummaryData? summaryData) {
+  MainDetailPopupViewModel(ServiceItem? serviceItem, AssetData? assetDataValue,
+      List<Services?>? services, SummaryData? summaryData) {
     this.log = getLogger(this.runtimeType.toString());
     scrollController = ScrollController();
     services!.forEach((element) {
@@ -105,33 +101,29 @@ class DetailPopupViewModel extends InsiteViewModel {
     _hourMeter = assetDataValue!.currentHourmeter == null
         ? summaryData!.currentHourMeter!.toStringAsFixed(0)
         : assetDataValue.currentHourmeter!.toStringAsFixed(0);
-    _odoMeter = assetData!.currentOdometer == null
-        ? summaryData!.currentOdometer!.toStringAsFixed(0)
-        : assetDataValue.currentOdometer!.toStringAsFixed(0);
+    _odoMeter = summaryData!.currentOdometer!.toStringAsFixed(0);
+
     _dueAt = serviceItem.dueInfo!.dueAt!.toStringAsFixed(0);
     _overdueBy = serviceItem.dueInfo!.dueBy!.abs().toStringAsFixed(0);
     _dueDate = serviceItem.dueInfo!.dueDate;
 
     _occurenceId = serviceItem.dueInfo!.occurrenceId;
     _assetUid = assetDataValue.assetUID == null
-        ? summaryData!.assetUID
+        ? summaryData.assetUID
         : assetDataValue.assetUID;
     _assetId = assetDataValue.assetID == null
-        ? summaryData!.assetID
+        ? summaryData.assetID
         : assetDataValue.assetID;
     _serialNo = assetDataValue.assetSerialNumber == null
-        ? summaryData!.assetSerialNumber
+        ? summaryData.assetSerialNumber
         : assetDataValue.assetSerialNumber;
     _makeCode = assetDataValue.makeCode == null
-        ? summaryData!.makeCode
+        ? summaryData.makeCode
         : assetDataValue.makeCode;
-    _model = assetDataValue.model == null
-        ? summaryData!.model
-        : assetDataValue.model;
-
-    Logger().wtf(
-        " $_assetId,$_assetUid, $_checkLists, $_dueAt, $_dueDate, $_hourMeter $_makeCode, $_model, $_serviceName, $_serviceId, $_occurenceId, $_hourMeter, $_odoMeter, $overdueBy");
+    _model =
+        assetDataValue.model == null ? summaryData.model : assetDataValue.model;
   }
+
   //Todo: change initial value to true once api integration is done.
   bool _loading = false;
   bool get loading => _loading;

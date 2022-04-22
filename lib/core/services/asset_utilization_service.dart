@@ -67,9 +67,9 @@ class AssetUtilizationService extends BaseService {
       // }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query: _graphqlSchemaService!.singleAssetUtilizationDetail(
+          query: _graphqlSchemaService!.singleAssetUtilizationDetail(
               assetId: assetUID, endDate: endDate, startDate: startDate),
-              customerId: accountSelected?.CustomerUID,
+          customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
@@ -120,9 +120,9 @@ class AssetUtilizationService extends BaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query: _graphqlSchemaService!
+          query: _graphqlSchemaService!
               .getAssetGraphDetail(date: date, assetId: assetUID),
-               customerId: accountSelected?.CustomerUID,
+          customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
@@ -166,18 +166,17 @@ class AssetUtilizationService extends BaseService {
     try {
       if (!enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query:  query,
-              customerId: accountSelected?.CustomerUID,
+          query: query,
+          customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
               : customerSelected?.CustomerUID,
         );
 
-       
         Utilization assetCountFromGraphql =
             Utilization.fromJson(data.data!['getfleetUtilization']);
-            
+
         return assetCountFromGraphql;
       } else {
         if (isVisionLink) {
@@ -283,9 +282,9 @@ class AssetUtilizationService extends BaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query: _graphqlSchemaService!.getSingleAssetUtilizationGraphAggregate(
+          query: _graphqlSchemaService!.getSingleAssetUtilizationGraphAggregate(
               assetId: assetUID, startDate: startDate, endDate: endDate),
-              customerId: accountSelected?.CustomerUID,
+          customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
@@ -326,8 +325,8 @@ class AssetUtilizationService extends BaseService {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query:  query,
-             customerId: accountSelected?.CustomerUID,
+          query: query,
+          customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""
@@ -397,11 +396,11 @@ class AssetUtilizationService extends BaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-           query:  _graphqlSchemaService!.getAssetGraphDetail(
+          query: _graphqlSchemaService!.getAssetGraphDetail(
               productFamily: productFamilyKey,
               date:
                   '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}'),
-             customerId: accountSelected?.CustomerUID,
+          customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
               ? ""

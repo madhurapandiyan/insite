@@ -1497,4 +1497,8 @@ class Utils {
     var data = (runtime / idle) * 100;
     return data;
   }
+    static getEstimatedTargetRuntimePercentValue(idle, runtime) {
+    var data = (idle / 100)*runtime as double;
+    return data.roundToDouble();
+  }
 }

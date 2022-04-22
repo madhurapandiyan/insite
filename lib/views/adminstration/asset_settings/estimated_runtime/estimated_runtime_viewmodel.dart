@@ -216,6 +216,8 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
       var data = countValue[i];
       if (data != null) {
         data.runTimecount = double.parse(value);
+        data.percentCount = Utils.getEstimatedTargetRuntimePercentValue(
+            data.idleCount, data.runTimecount);
       }
       notifyListeners();
     }
