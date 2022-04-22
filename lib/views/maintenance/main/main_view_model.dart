@@ -10,6 +10,7 @@ import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/views/maintenance/asset/asset/detail_popup/detail_popup_view.dart';
+import 'package:insite/views/maintenance/main/main_detail_popup/main_detail_popup_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
@@ -217,7 +218,7 @@ class MainViewModel extends InsiteViewModel {
         await _maintenanceService!.getServiceItemCheckList(serviceId!);
 
     _navigationService!.navigateToView(
-      DetailPopupView(
+      MainDetailPopupView(
           serviceItem: serviceItem!,
           summaryData: assetData!,
           assetDataValue: assetDataValue,
