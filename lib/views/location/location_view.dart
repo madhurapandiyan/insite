@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:ui';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
@@ -77,11 +74,15 @@ class _LocationViewState extends State<LocationView> {
                                   EdgeInsets.only(top: 10, left: 10, bottom: 5),
                               child: InsiteText(
                                 text: viewModel
-                                        .assetLocationCount
+                                        .assetLocation!.mapRecords!.length
                                         .toString() +
-                                    " of " +
-                                    viewModel.totalCount.toString() +
-                                    " assets",
+                                    " Assets",
+// text: viewModel
+                                //         .assetLocation!.mapRecords!.length
+                                //         .toString() +
+                                //     " of " +
+                                //     viewModel.totalCount.toString() +
+                                //     " assets",
                                 size: 15,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -167,25 +168,24 @@ class _LocationViewState extends State<LocationView> {
                               ],
                             ),
                           ),
-                          // viewModel.showingCard
-                          //     ? Container(
-                          //         margin: EdgeInsets.all(16.0),
-                          //         color: Theme.of(context).cardColor,
-                          //         width: MediaQuery.of(context).size.width * 1,
-                          //         height:
-                          //             MediaQuery.of(context).size.height * 0.05,
-                          //         child: Center(
-                          //           child: InsiteText(
-                          //             text: viewModel.assetInvalidLocationCount
-                          //                     .toString() +
-                          //                 " out of " +
-                          //                 viewModel.assetLocationCount
-                          //                     .toString() +
-                          //                 " assets do not have location information",
-                          //           ),
-                          //         ),
-                          //       )
-                          //     : SizedBox(),
+                          viewModel.showingCard
+                              ? Container(
+                                  margin: EdgeInsets.all(16.0),
+                                  color: Theme.of(context).cardColor,
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: Center(
+                                    child: InsiteText(
+                                      text: viewModel.assetInvalidLocationCount
+                                              .toString() +
+                                          " out of " +
+                                          viewModel.totalCount.toString() +
+                                          " assets do not have location information",
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(),
                           SizedBox(height: 10),
                           Expanded(
                             child: Stack(

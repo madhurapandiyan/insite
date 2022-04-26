@@ -7,7 +7,7 @@ class Utilization {
   Utilization({
     this.assetResults,
     this.totals,
-   this.message,
+    this.message,
   });
 
   List<AssetResult>? assetResults;

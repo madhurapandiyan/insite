@@ -136,6 +136,9 @@ class MaintenanceService extends BaseService {
     String? serialNumber,
     String? makecode,
     String? model,
+    bool? isComplete,
+    String? checkListName,
+    num? checkListId,
   }) async {
     try {
       if (isVisionLink) {
@@ -148,7 +151,11 @@ class MaintenanceService extends BaseService {
             "workOrder": workOrder,
             "serviceId": serviceId,
             "occurrenceId": occurenceId,
-            "checklist": []
+            "checklist": {
+        "checklistName": checkListName,
+        "checklistId": checkListId,
+        "isChecked": true
+      }
           },
           "timezone": "Central America Standard Time",
           "assetUID": assetUid,
@@ -156,7 +163,7 @@ class MaintenanceService extends BaseService {
           "assetSerialNumber": serialNumber,
           "makeCode": makecode,
           "model": model,
-          "isCompleted": true
+          "isCompleted": isComplete
         };
         Logger().i(queryContent);
         Complete? updateResponse = await MyApi()

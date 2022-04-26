@@ -76,7 +76,7 @@ List<Customer> customerList = [
 class CustomersResponse {
   @JsonKey(name: "UserUid")
   final String? UserUID;
-   @JsonKey(name: "Customers")
+  @JsonKey(name: "Customers")
   final List<Customer>? Customers;
   CustomersResponse({this.UserUID, this.Customers});
   factory CustomersResponse.fromJson(Map<String, dynamic> json) =>

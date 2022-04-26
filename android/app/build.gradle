@@ -51,8 +51,8 @@ android {
         applicationId "com.trimble.insite"
         minSdkVersion 20
         targetSdkVersion 30
-        versionCode 4
-        versionName '2.0.5'
+        versionCode 6
+        versionName '2.0.6'
     }
 
    signingConfigs {

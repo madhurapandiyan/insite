@@ -88,6 +88,7 @@ class Checklists {
   String? actionType;
   String? insertedUtc;
   String? updatedUtc;
+  final bool isSelected;
 
   Checklists(
       {this.checklistName,
@@ -100,6 +101,7 @@ class Checklists {
       this.datasource,
       this.actionType,
       this.insertedUtc,
+      this.isSelected = false,
       this.updatedUtc});
   factory Checklists.fromJson(Map<String, dynamic> json) =>
       _$ChecklistsFromJson(json);

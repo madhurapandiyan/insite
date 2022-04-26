@@ -951,7 +951,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   addContact() {
-    if (emailController.text.contains("@")) {
+    if (emailController.text.isEmail) {
       isShowingSelectedContact = true;
       isShowingSelectedContact = true;
       selectedUser.add(User(

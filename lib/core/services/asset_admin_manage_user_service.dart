@@ -962,7 +962,9 @@ class AssetAdminManagerUserService extends BaseService {
           customerId: accountSelected?.CustomerUID,
           subId: customerSelected?.CustomerUID??"",
           userId: (await _localService!.getLoggedInUser())!.sub);
-      AssetListSettings assetData = AssetListSettings.fromJson(data.data["assetListSettings"]);
+          
+      AssetListSettings assetData = AssetListSettings.fromJson(data.data);
+      
       return assetData;
     }
   }
@@ -983,7 +985,7 @@ class AssetAdminManagerUserService extends BaseService {
                 legacyAssetID: assetsetting.legacyAssetID,
                 modelYear: assetsetting.modelYear),
             customerId: accountSelected?.CustomerUID,
-            subId: customerSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID??"",
             userId: (await _localService!.getLoggedInUser())!.sub);
       }
       if (isVisionLink) {

@@ -8,6 +8,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_date_picker.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
+import 'package:insite/views/maintenance/main/main_detail_popup/main_detail_popup_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
@@ -16,28 +17,26 @@ import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-import 'detail_popup_view_model.dart';
 
-class DetailPopupView extends StatefulWidget {
+class MainDetailPopupView extends StatefulWidget {
   final ServiceItem? serviceItem;
-  final AssetCentricData? assetData;
+
   final SummaryData? summaryData;
   final AssetData? assetDataValue;
   final List<Services?>? services;
 
-  const DetailPopupView(
+  const MainDetailPopupView(
       {Key? key,
       this.serviceItem,
-      this.assetData,
       this.assetDataValue,
       this.summaryData,
       this.services});
 
   @override
-  State<DetailPopupView> createState() => _DetailPopupViewState();
+  State<MainDetailPopupView> createState() => _MainDetailPopupViewState();
 }
 
-class _DetailPopupViewState extends State<DetailPopupView>
+class _MainDetailPopupViewState extends State<MainDetailPopupView>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   late var viewModel;
@@ -47,16 +46,17 @@ class _DetailPopupViewState extends State<DetailPopupView>
     // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    viewModel = DetailPopupViewModel(widget.serviceItem, widget.assetData,
+    viewModel = MainDetailPopupViewModel(widget.serviceItem,
         widget.assetDataValue, widget.services, widget.summaryData);
-   
+    Logger().wtf(
+        "wwwwwwwwwwwwwwwwwww serviceItem: ${widget.serviceItem}  summaryData: ${widget.summaryData} asetDataValue: ${widget.assetDataValue} services: ${widget.services}");
   }
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<DetailPopupViewModel>.reactive(
-      builder:
-          (BuildContext context, DetailPopupViewModel viewModel, Widget? _) {
+    return ViewModelBuilder<MainDetailPopupViewModel>.reactive(
+      builder: (BuildContext context, MainDetailPopupViewModel viewModel,
+          Widget? _) {
         return InsiteScaffold(
           viewModel: viewModel,
           onFilterApplied: () {},
@@ -133,13 +133,8 @@ class _DetailPopupViewState extends State<DetailPopupView>
                                                 child: InsiteRichText(
                                                   title: "",
                                                   onTap: () {},
-                                                  content: widget.assetData!
-                                                              .assetSerialNumber ==
-                                                          null
-                                                      ? widget.summaryData!
-                                                          .assetSerialNumber
-                                                      : widget.assetData!
-                                                          .assetSerialNumber,
+                                                  content: widget.summaryData!
+                                                      .assetSerialNumber,
                                                 ),
                                                 padding: EdgeInsets.only(
                                                     right: 38.0),
@@ -148,7 +143,7 @@ class _DetailPopupViewState extends State<DetailPopupView>
                                           ),
                                           SizedBox(height: 15.0),
                                           Text(
-                                            "${widget.assetData!.makeCode == null ? widget.summaryData!.makeCode.toString().toUpperCase() : widget.assetData!.makeCode.toString().toUpperCase()} ${widget.assetData!.model == null ? widget.summaryData!.model.toString().toUpperCase() : widget.assetData!.model.toString().toUpperCase()}",
+                                            "${widget.summaryData!.makeCode.toString().toUpperCase()} ${widget.summaryData!.model.toString().toUpperCase()}",
                                             maxLines: 2,
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -303,12 +298,8 @@ class _DetailPopupViewState extends State<DetailPopupView>
                 ),
         );
       },
-      viewModelBuilder: () => DetailPopupViewModel(
-          widget.serviceItem,
-          widget.assetData,
-          widget.assetDataValue,
-          widget.services,
-          widget.summaryData),
+      viewModelBuilder: () => MainDetailPopupViewModel(widget.serviceItem,
+          widget.assetDataValue, widget.services, widget.summaryData),
     );
   }
 
