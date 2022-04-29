@@ -13,12 +13,15 @@ class AccountSearchView extends StatefulWidget {
   final Function(AccountData?)? onSelected;
   final VoidCallback? onReset;
   final List<AccountData>? list;
+  final bool? isAccountSelected;
+
   AccountSearchView(
       {this.selectionType,
       this.selected,
       this.onSelected,
       this.list,
-      this.onReset});
+      this.onReset,
+      this.isAccountSelected});
 
   @override
   _AccountSearchViewState createState() => _AccountSearchViewState();
@@ -51,7 +54,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                 : widget.selectionType == AccountType.ACCOUNT
                     ? "Select"
                     : "Search and Select",
-           // overflow: TextOverflow.ellipsis,
+            // overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 color: Theme.of(context).textTheme.bodyText1!.color,
                 fontWeight: FontWeight.bold,
@@ -64,10 +67,10 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                   color: Theme.of(context).backgroundColor,
                   border: Border.all(
                       color: Theme.of(context).textTheme.bodyText1!.color!)),
-              height:
-                  viewModel.displayList!.isNotEmpty && viewModel.selected != null
-                      ? MediaQuery.of(context).size.height * 0.42
-                      : MediaQuery.of(context).size.height * 0.32,
+              height: viewModel.displayList!.isNotEmpty &&
+                      viewModel.selected != null
+                  ? MediaQuery.of(context).size.height * 0.42
+                  : MediaQuery.of(context).size.height * 0.32,
               child: Column(
                 children: [
                   Container(
@@ -78,9 +81,16 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SearchBox(
-                                  controller: viewModel.textEditingController,
+                                  //controller: viewModel.textEditingController,
                                   hint: "Search",
-                                 // onTextChanged: viewModel.onSearchTextChanged,
+                                  onTextChanged: (value) {
+                                    if (widget.isAccountSelected == true) {
+                                      viewModel.onSearchTextChanged(value);
+                                    } else {
+                                      viewModel.onSearchingTextChanged(value);
+                                    }
+                                    // widget.onChange!(value);
+                                  },
                                 ),
                               )
                             : SizedBox(),
@@ -104,9 +114,10 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                   //     value: customer));
                                 },
                                 child: Container(
-                                  color: viewModel.displayList![index].isSelected!
-                                      ? Theme.of(context).buttonColor
-                                      : Theme.of(context).backgroundColor,
+                                  color:
+                                      viewModel.displayList![index].isSelected!
+                                          ? Theme.of(context).buttonColor
+                                          : Theme.of(context).backgroundColor,
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 4),
                                   child: Row(
@@ -151,7 +162,8 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                       ],
                     ),
                   ),
-                  viewModel.displayList!.isNotEmpty && viewModel.selected != null
+                  viewModel.displayList!.isNotEmpty &&
+                          viewModel.selected != null
                       ? Container(
                           height: MediaQuery.of(context).size.height * 0.1,
                           padding: EdgeInsets.all(10),

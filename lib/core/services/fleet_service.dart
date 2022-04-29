@@ -39,18 +39,17 @@ class FleetService extends BaseService {
     List<FilterData?>? appliedFilters,
   ) async {
     try {
-    
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: await _graphqlSchemaService.fleetSummary(
-              appliedFilters, pageNumber,startDate,endDate),
+              appliedFilters, pageNumber, startDate, endDate),
           userId: (await _localService?.getLoggedInUser())?.sub,
           customerId: accountSelected!.CustomerUID,
           subId: customerSelected?.CustomerUID == null
               ? ""
               : customerSelected?.CustomerUID,
         );
-        
+
         FleetSummaryResponse fleetSummaryResponse =
             FleetSummaryResponse.fromJson(data.data['fleetSummary']);
         return fleetSummaryResponse;

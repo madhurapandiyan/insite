@@ -29,6 +29,9 @@ class GraphqlSchemaService extends BaseService {
   String? manufacturer;
   String? severity;
   String? faultTypeList;
+  double? latitude;
+  double? longitude;
+  double? radiusKms;
 
   List<String> modelList = [];
   List<String> manufacturerList = [];
@@ -118,6 +121,9 @@ class GraphqlSchemaService extends BaseService {
     manufacturer = null;
     severity = null;
     faultTypeList = null;
+    latitude = null;
+    longitude = null;
+    radiusKms = null;
   }
 
   Future gettingLocationFilter(List<FilterData?>? filtlerList) async {
@@ -227,6 +233,13 @@ class GraphqlSchemaService extends BaseService {
             .toList();
         severity = Utils.getFilterData(data, filterData!.type!);
         Logger().wtf("severity $severity");
+      } else if (filterData?.type == FilterType.CLUSTOR) {
+        var data = filtlerList
+            .where((element) => element?.type == FilterType.CLUSTOR)
+            .toList();
+        latitude = double.parse(data.last!.extras![0]!);
+        longitude = double.parse(data.last!.extras![1]!);
+        radiusKms = double.parse(data.last!.extras![2]!);
       }
     });
     Logger().i("asset filter running");
@@ -479,7 +492,6 @@ locationReportedTimeUTC
     await clearAllList();
     await gettingFiltersValue(applyFilter);
 
-
     var data = """{
   fleetSummary(pageNumber:$pagenumber,
     pageSize:50,
@@ -490,9 +502,12 @@ locationReportedTimeUTC
     model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
     assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"},
     fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"},
-    idleEfficiencyGT:${idleEficiencyGT==null?null: int.parse(Utils.getIdlingFilterData(idleEficiencyGT)!.first!)},
-    idleEfficiencyLTE:${idleEficiencyGT==null?null: int.parse(Utils.getIdlingFilterData(idleEficiencyGT)!.last!)},
+    idleEfficiencyGT:${idleEficiencyGT == null ? null : int.parse(Utils.getIdlingFilterData(idleEficiencyGT)!.first!)},
+    idleEfficiencyLTE:${idleEficiencyGT == null ? null : int.parse(Utils.getIdlingFilterData(idleEficiencyGT)!.last!)},
     assetIDContains:"",
+    latitude:$latitude,
+    longitude:$longitude,
+    radiuskm:$radiusKms
     snContains:"",
   manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"},
     location:"") {
@@ -912,9 +927,11 @@ userEmail(EmailID:"$emailId"){
     return addUserData;
   }
 
-  String getAccountHierarchy() {
+  String getAccountHierarchy({int? limit, int? start, String? searchKey}) {
     String getAccountHierarchyData = """query {
-accountHierarchy(targetcustomeruid:"",toplevelsonly:"true"){
+accountHierarchy(targetcustomeruid:"",toplevelsonly:"true",limit: $limit,
+searchKey: "${searchKey == null ? "" : searchKey}",
+start: $start){
   userUid,
   customers{
     customerUid,
@@ -932,9 +949,12 @@ accountHierarchy(targetcustomeruid:"",toplevelsonly:"true"){
     return getAccountHierarchyData;
   }
 
-  String getSubAccountHeirachryData(String data) {
+  String getSubAccountHeirachryData(
+      {int? limit, int? start, String? searchKey, String? data}) {
     var schema = """query {
-accountHierarchy(targetcustomeruid:"$data"){
+accountHierarchy(targetcustomeruid:"$data",limit: $limit,
+searchKey: "${searchKey == null ? "" : searchKey}",
+start: $start){
 userUid,
   customers{
    customerUid,

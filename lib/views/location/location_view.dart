@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -55,7 +56,19 @@ class _LocationViewState extends State<LocationView> {
                 ? InsiteProgressBar()
                 : viewModel.assetLocation != null
                     ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16, top: 16),
+                            child: InsiteTextOverFlow(
+                              text: Utils.getPageTitle(ScreenType.LOCATION),
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                              size: 16,
+                            ),
+                          ),
                           Container(
                             margin: EdgeInsets.all(16.0),
                             width: MediaQuery.of(context).size.width * 1,

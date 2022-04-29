@@ -12,12 +12,16 @@ class AccountSelectionDropDownWidget extends StatefulWidget {
   final Function(AccountData?)? onSelected;
   final VoidCallback? onReset;
   final List<AccountData>? list;
+  final ScrollController? scrollController;
+  final Function(String)? onChange;
   AccountSelectionDropDownWidget(
       {this.selectionType,
       this.selected,
       this.onSelected,
       this.list,
-      this.onReset});
+      this.onReset,
+      this.onChange,
+      this.scrollController});
 
   @override
   _AccountSelectionDropDownWidgetState createState() =>
@@ -134,9 +138,12 @@ class _AccountSelectionDropDownWidgetState
                           ? Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: SearchBox(
-                                controller: _textEditingController,
+                                //controller: _textEditingController,
                                 hint: "Search",
-                                onTextChanged: onSearchTextChanged,
+                                onTextChanged: onSearchTextChanged
+                                // (value) {
+                                //   widget.onChange!(value);
+                                // },
                               ),
                             )
                           : SizedBox(),

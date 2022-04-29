@@ -67,110 +67,113 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
       builder: (BuildContext context, UtilizationGraphViewModel viewModel,
           Widget? _) {
         var startDate2 = startDate;
-        return Column(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InsiteText(
-                      text: Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                          " - " +
-                          Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                      fontWeight: FontWeight.bold,
-                      size: 11),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  InsiteButton(
-                    title: "Date Range",
-                    width: 90,
-                    bgColor: Theme.of(context).backgroundColor,
-                    textColor: Theme.of(context).textTheme.bodyText1!.color,
-                    onTap: () async {
-                      dateRange = [];
-                      dateRange = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) => Dialog(
-                            backgroundColor: transparent,
-                            child: DateRangeView()),
-                      );
-                      if (dateRange != null && dateRange!.isNotEmpty) {
-                        onFilterApplied();
-                      }
-                    },
-                  ),
-                ],
+        return Padding(
+           padding: const EdgeInsets.only(top: 40),
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InsiteText(
+                        text: Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
+                            " - " +
+                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                        fontWeight: FontWeight.bold,
+                        size: 11),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    InsiteButton(
+                      title: "Date Range",
+                      width: 90,
+                      bgColor: Theme.of(context).backgroundColor,
+                      textColor: Theme.of(context).textTheme.bodyText1!.color,
+                      onTap: () async {
+                        dateRange = [];
+                        dateRange = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) => Dialog(
+                              backgroundColor: transparent,
+                              child: DateRangeView()),
+                        );
+                        if (dateRange != null && dateRange!.isNotEmpty) {
+                          onFilterApplied();
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            PageHeader(
-              isDashboard: graphType == UtilizationGraphType.IDLEORWORKING ||
-                      graphType == UtilizationGraphType.RUNTIMEHOURS ||
-                      graphType == UtilizationGraphType.DISTANCETRAVELLED
-                  ? false
-                  : true,
-              screenType: ScreenType.UTILIZATION,
-              total: viewModel.totalCount,
-              count: viewModel.count,
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: InsiteText(
-                text:
-                    'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
-                size: 12,
-                fontWeight: FontWeight.bold,
+              PageHeader(
+                isDashboard: graphType == UtilizationGraphType.IDLEORWORKING ||
+                        graphType == UtilizationGraphType.RUNTIMEHOURS ||
+                        graphType == UtilizationGraphType.DISTANCETRAVELLED
+                    ? false
+                    : true,
+                screenType: ScreenType.UTILIZATION,
+                total: viewModel.totalCount,
+                count: viewModel.count,
               ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * 1,
-              margin: const EdgeInsets.only(left: 12.0, right: 12),
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.all(Radius.circular(8)),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: InsiteText(
+                  text:
+                      'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
+                  size: 12,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              child: Padding(
-                padding: EdgeInsets.all(6.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                    border: Border.all(
-                        color: Theme.of(context).textTheme.bodyText1!.color!,
-                        width: 0.0),
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                  ),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
-                    child: Center(
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: UtilGraphDropdownWidget(
-                          graphType: (UtilizationGraphType selectedGraph) {
-                            setState(() {
-                              graphType = selectedGraph;
-                            });
-                          },
+              Container(
+                width: MediaQuery.of(context).size.width * 1,
+                margin: const EdgeInsets.only(left: 12.0, right: 12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).backgroundColor,
+                      border: Border.all(
+                          color: Theme.of(context).textTheme.bodyText1!.color!,
+                          width: 0.0),
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
+                      child: Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          child: UtilGraphDropdownWidget(
+                            graphType: (UtilizationGraphType selectedGraph) {
+                              setState(() {
+                                graphType = selectedGraph;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Flexible(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: getGraphView(graphType, startDate2, endDate, (value) {
-                  viewModel.updateCurrentCount(value);
-                }),
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: getGraphView(graphType, startDate2, endDate, (value) {
+                    viewModel.updateCurrentCount(value);
+                  }),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
       viewModelBuilder: () => viewModel,

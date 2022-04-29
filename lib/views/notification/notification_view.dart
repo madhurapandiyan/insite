@@ -45,7 +45,18 @@ class _NotificationViewState extends State<NotificationView> {
                 child: Stack(
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                           padding: const EdgeInsets.only(left: 16, top: 16),
+                          child: InsiteTextOverFlow(
+                            text: "NOTIFICATIONS",
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.bold,
+                            size: 16,
+                          ),
+                        ),
                         SizedBox(
                           height: 20,
                         ),
@@ -81,7 +92,7 @@ class _NotificationViewState extends State<NotificationView> {
                                   ),
                                   InsiteButton(
                                     title: "Date Range",
-                                  bgColor: Theme.of(context).backgroundColor,
+                                    bgColor: Theme.of(context).backgroundColor,
                                     textColor: Theme.of(context)
                                         .textTheme
                                         .bodyText1!
@@ -95,8 +106,10 @@ class _NotificationViewState extends State<NotificationView> {
                                                 backgroundColor: transparent,
                                                 child: DateRangeView()),
                                       );
-                                      viewModel.startDate=dateRange!.first.toString();
-                                      viewModel.endDate=dateRange!.last.toString();
+                                      viewModel.startDate =
+                                          dateRange!.first.toString();
+                                      viewModel.endDate =
+                                          dateRange!.last.toString();
                                       viewModel.refresh();
                                     },
                                   ),

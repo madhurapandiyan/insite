@@ -478,13 +478,24 @@ class _AddReportViewState extends State<AddReportView> {
                                           ),
                                         )
                                       : AssetSelectionWidgetView(
+                                          isAddingAllAsset: viewModel
+                                                          .assetsDropDownValue ==
+                                                      "Utilization Details" ||
+                                                  viewModel.assetsDropDownValue ==
+                                                      "Fault Code Asset Details"
+                                              ? false
+                                              : true,
+                                          onRemoving: () {
+                                            viewModel.onRemoving();
+                                          },
+                                          key: viewModel.assetSelectionState,
+                                          addingAllAsset: (data) {
+                                            viewModel.onAddingAllAsset(data);
+                                          },
                                           onAddingAsset: (i, value) {
                                             viewModel.onAddingAsset(i, value);
                                           },
-                                          assetData: (value) {
-                                            Logger().e(
-                                                value.pagination!.totalCount);
-                                          },
+                                          assetData: (value) {},
                                           assetResult: viewModel.assetIdresult,
                                         ),
                                   SizedBox(

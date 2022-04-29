@@ -5,10 +5,12 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/location/home/google_map.dart';
 import 'package:insite/widgets/dumb_widgets/filter_dropdown_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
@@ -52,8 +54,18 @@ class _DashboardViewState extends State<DashboardView> {
             body: SingleChildScrollView(
               child: Container(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, top: 16),
+                      child: InsiteTextOverFlow(
+                        text: Utils.getPageTitle(ScreenType.DASHBOARD),
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        overflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.bold,
+                        size: 16,
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

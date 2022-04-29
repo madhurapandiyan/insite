@@ -412,7 +412,7 @@ class Utils {
         title = "UTILIZATION";
         break;
       case ScreenType.ASSET_OPERATION:
-        title = "OPERATION";
+        title = "ASSET OPERATION";
         break;
       case ScreenType.LOCATION:
         title = "LOCATION";

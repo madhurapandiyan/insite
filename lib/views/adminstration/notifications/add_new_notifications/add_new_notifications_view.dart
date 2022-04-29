@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -974,6 +975,13 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     )
                                   : Center(
                                       child: AssetSelectionWidgetView(
+                                        onRemoving: () {
+                                          viewModel.onRemoving();
+                                        },
+                                        key: viewModel.assetSelectionState,
+                                        addingAllAsset: (data) {
+                                          viewModel.onAddingAllAsset(data);
+                                        },
                                         onAddingAsset: (i, value) {
                                           viewModel.onAddingAsset(i, value);
                                         },
