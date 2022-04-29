@@ -38,6 +38,8 @@ class AssetDetailViewModel extends InsiteViewModel {
         await _assetService!.getAssetDetail(fleet!.assetIdentifier);
     _assetDetail = assetDetail;
 
+    Logger().wtf(assetDetail!.assetSerialNumber);
+
     _loading = false;
     notifyListeners();
   }

@@ -96,6 +96,33 @@ class _TabPageState extends State<AssetDetailView> {
     ),
   ];
 
+  List<Category> typeThree = [
+    Category(
+      1,
+      "DASHBOARD",
+      "assets/images/clock.svg",
+      ScreenType.DASHBOARD,
+    ),
+    Category(
+      2,
+      "FAULTCODES",
+      "assets/images/health.svg",
+      ScreenType.HEALTH,
+    ),
+    Category(
+      3,
+      "MAINTENANCE",
+      "assets/images/maint.svg",
+      ScreenType.HEALTH,
+    ),
+    Category(
+      4,
+      "LOCATION",
+      "assets/images/location.svg",
+      ScreenType.LOCATION,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetDetailViewModel>.reactive(
@@ -127,7 +154,8 @@ class _TabPageState extends State<AssetDetailView> {
                         color: Theme.of(context).backgroundColor,
                         border: Border.all(
                             width: 1,
-                            color: Theme.of(context).textTheme.bodyText1!.color!),
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color!),
                         shape: BoxShape.rectangle,
                       ),
                       child: Table(children: [
@@ -219,8 +247,10 @@ class _TabPageState extends State<AssetDetailView> {
                           color: Theme.of(context).backgroundColor,
                           border: Border.all(
                               width: 1,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color!),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!),
                           shape: BoxShape.rectangle,
                         ),
                         child: Padding(
@@ -237,8 +267,8 @@ class _TabPageState extends State<AssetDetailView> {
                                       ? viewModel.assetDetail!
                                                   .universalCustomerName !=
                                               null
-                                          ? viewModel
-                                              .assetDetail!.universalCustomerName
+                                          ? viewModel.assetDetail!
+                                              .universalCustomerName
                                           : "-"
                                       : "-",
                                   fontWeight: FontWeight.w700,
@@ -261,17 +291,29 @@ class _TabPageState extends State<AssetDetailView> {
                               },
                             ),
                           )
-                        : Container(
-                            height: 80,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: typeOne.length,
-                              itemBuilder: (context, index) {
-                                Category category = typeOne[index];
-                                return _tabcontainer(index, category);
-                              },
-                            ),
-                          ),
+                        : widget.type == ScreenType.MAINTENANCE
+                            ? Container(
+                                height: 80,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: typeThree.length,
+                                  itemBuilder: (context, index) {
+                                    Category category = typeThree[index];
+                                    return _tabcontainer(index, category);
+                                  },
+                                ),
+                              )
+                            : Container(
+                                height: 80,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: typeOne.length,
+                                  itemBuilder: (context, index) {
+                                    Category category = typeOne[index];
+                                    return _tabcontainer(index, category);
+                                  },
+                                ),
+                              ),
                     Flexible(
                       child: selectedTabIndex == 0
                           ? widget.type == ScreenType.HEALTH
@@ -304,9 +346,11 @@ class _TabPageState extends State<AssetDetailView> {
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,
                                           screenType: widget.type)
-                                      : SingleAssetOperationView(
-                                          detail: viewModel.assetDetail,
-                                        )
+                                      : widget.type == ScreenType.MAINTENANCE
+                                          ? SizedBox()
+                                          : SingleAssetOperationView(
+                                              detail: viewModel.assetDetail,
+                                            )
                                   : selectedTabIndex == 3
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,

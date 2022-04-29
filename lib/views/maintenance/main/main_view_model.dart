@@ -199,16 +199,18 @@ class MainViewModel extends InsiteViewModel {
   }
 
   onDetailPageSelected(SummaryData summaryData) {
+    Logger().i("bbbbbbbbbbbbbbbbb ${summaryData.toJson()}");
+
     _navigationService!.navigateTo(
       assetDetailViewRoute,
       arguments: DetailArguments(
           fleet: Fleet(
-            assetSerialNumber: summaryData.assetSerialNumber,
-            assetId: summaryData.assetID,
+            assetSerialNumber: summaryData.assetUID,
+            assetId: summaryData.assetUID,
             assetIdentifier: summaryData.assetUID,
           ),
           type: screen.ScreenType.MAINTENANCE,
-          index: 1),
+          index: 2),
     );
   }
 
