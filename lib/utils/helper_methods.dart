@@ -388,11 +388,11 @@ class Utils {
     if (title == "25") {
       return "0-25%";
     } else if (title == "50") {
-      return "25-50%";
+      return "26-50%";
     } else if (title == "75") {
-      return "50-75%";
+      return "51-75%";
     } else if (title == "100") {
-      return "75-100%";
+      return "76-100%";
     } else {
       return title;
     }

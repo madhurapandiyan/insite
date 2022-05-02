@@ -85,14 +85,16 @@ class _HomeViewState extends State<HomeView> {
                     : Theme.of(context).iconTheme.color,
               ),
               SizedBox(height: 8.0),
-              InsiteTextAlign(
-                textAlign: TextAlign.center,
-                color: selectedIndex != null && selectedIndex == index
-                    ? Colors.white
-                    : null,
-                fontWeight: FontWeight.bold,
-                size: 12,
-                text: category.name,
+              FittedBox(
+                child: InsiteTextAlign(
+                  textAlign: TextAlign.center,
+                  color: selectedIndex != null && selectedIndex == index
+                      ? Colors.white
+                      : null,
+                  fontWeight: FontWeight.bold,
+                  size: 12,
+                  text: category.name,
+                ),
               ),
             ],
           ),

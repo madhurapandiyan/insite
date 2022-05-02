@@ -56,7 +56,7 @@ class _UtilGraphDropdownWidgetState extends State<UtilGraphDropdownWidget> {
       items: <String>[
         'Idle % / Working %',
         'Runtime Hours',
-        'Distance Traveled (Kilometers)',
+        //'Distance Traveled (Kilometers)',
         'Cumulative',
          'Total Hours',
         'Total Fuel Burned (Liters)',

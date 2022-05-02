@@ -275,71 +275,20 @@ class _LocationViewState extends State<LocationView> {
                                       MediaQuery.of(context).size.height * 0.36,
                                   offset: 1,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 50.0,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          zoomVal++;
-                                          _plus(
-                                              zoomVal,
-                                              LatLng(
-                                                  viewModel
-                                                      .assetLocation!
-                                                      .mapRecords!
-                                                      .first!
-                                                      .lastReportedLocationLatitude!,
-                                                  viewModel
-                                                      .assetLocation!
-                                                      .mapRecords!
-                                                      .first!
-                                                      .lastReportedLocationLongitude!),
-                                              viewModel);
-                                        },
-                                        child: Container(
-                                          width: 27.47,
-                                          height: 26.97,
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .backgroundColor,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5.0)),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                blurRadius: 1.0,
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1!
-                                                    .color!,
-                                              ),
-                                            ],
-                                            border: Border.all(
-                                                width: 1.0,
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1!
-                                                    .color!),
-                                            shape: BoxShape.rectangle,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            "assets/images/plus.svg",
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
-                                          ),
+                                Positioned(
+                                   top: MediaQuery.of(context).size.height*0.35,
+                                   left: MediaQuery.of(context).size.width*0.85,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 50.0,
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      GestureDetector(
+                                        GestureDetector(
                                           onTap: () {
-                                            zoomVal--;
-                                            _minus(
+                                            zoomVal++;
+                                            _plus(
                                                 zoomVal,
                                                 LatLng(
                                                     viewModel
@@ -380,13 +329,68 @@ class _LocationViewState extends State<LocationView> {
                                               shape: BoxShape.rectangle,
                                             ),
                                             child: SvgPicture.asset(
-                                              "assets/images/minus.svg",
+                                              "assets/images/plus.svg",
                                               color: Theme.of(context)
                                                   .iconTheme
                                                   .color,
                                             ),
-                                          )),
-                                    ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        GestureDetector(
+                                            onTap: () {
+                                              zoomVal--;
+                                              _minus(
+                                                  zoomVal,
+                                                  LatLng(
+                                                      viewModel
+                                                          .assetLocation!
+                                                          .mapRecords!
+                                                          .first!
+                                                          .lastReportedLocationLatitude!,
+                                                      viewModel
+                                                          .assetLocation!
+                                                          .mapRecords!
+                                                          .first!
+                                                          .lastReportedLocationLongitude!),
+                                                  viewModel);
+                                            },
+                                            child: Container(
+                                              width: 27.47,
+                                              height: 26.97,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .backgroundColor,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(5.0)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    blurRadius: 1.0,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .color!,
+                                                  ),
+                                                ],
+                                                border: Border.all(
+                                                    width: 1.0,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .color!),
+                                                shape: BoxShape.rectangle,
+                                              ),
+                                              child: SvgPicture.asset(
+                                                "assets/images/minus.svg",
+                                                color: Theme.of(context)
+                                                    .iconTheme
+                                                    .color,
+                                              ),
+                                            )),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Container(
