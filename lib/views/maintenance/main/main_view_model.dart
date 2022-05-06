@@ -53,6 +53,8 @@ class MainViewModel extends InsiteViewModel {
   SummaryData? _summaryData;
   SummaryData? get summaryData => _summaryData;
 
+  bool dataNotFound = false;
+
   late ScrollController scrollController;
 
   MainViewModel(
@@ -70,7 +72,7 @@ class MainViewModel extends InsiteViewModel {
       }
     });
 
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 1), () {
       getMaintenanceViewList();
       getMaintenanceListItemData();
     });
@@ -198,18 +200,25 @@ class MainViewModel extends InsiteViewModel {
     }
   }
 
-  onDetailPageSelected(SummaryData summaryData) {
-    Logger().i("bbbbbbbbbbbbbbbbb ${summaryData.toJson()}");
-
-    _navigationService!.navigateTo(
-      assetDetailViewRoute,
-      arguments: DetailArguments(
+  onDetailPageSelected(SummaryData? summaryData) {
+    _navigationService!.navigateToView(
+      AssetDetailView(
           fleet: Fleet(
-            assetSerialNumber: summaryData.assetUID,
-            assetId: summaryData.assetUID,
+            assetSerialNumber: summaryData!.assetSerialNumber,
+            assetId: summaryData.assetID,
             assetIdentifier: summaryData.assetUID,
           ),
           type: screen.ScreenType.MAINTENANCE,
+          summaryData: summaryData,
+          tabIndex: 2),
+      arguments: DetailArguments(
+          fleet: Fleet(
+            assetSerialNumber: summaryData.assetSerialNumber,
+            assetId: summaryData.assetID,
+            assetIdentifier: summaryData.assetUID,
+          ),
+          type: screen.ScreenType.MAINTENANCE,
+          summaryData: summaryData,
           index: 2),
     );
   }

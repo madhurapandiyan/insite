@@ -2,26 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
 import 'package:insite/views/detail/tabs/health/health_dashboard/health_dashboard_view.dart';
 import 'package:insite/views/detail/tabs/health/health_list/health_list_view.dart';
 import 'package:insite/views/detail/tabs/location/asset_location.dart';
+import 'package:insite/views/detail/tabs/maintenance_tab/maintenance_tab_view.dart';
 import 'package:insite/views/detail/tabs/single_asset_operation/single_asset_operation_view.dart';
 import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view.dart';
+
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
+import '../../core/models/maintenance_list_services.dart';
 import 'asset_detail_view_model.dart';
 
 class AssetDetailView extends StatefulWidget {
   final Fleet? fleet;
   final int? tabIndex;
   final ScreenType? type;
-  AssetDetailView({this.fleet, this.tabIndex, this.type = ScreenType.FLEET});
+  final SummaryData? summaryData;
+
+  AssetDetailView(
+      {this.fleet,
+      this.tabIndex,
+      this.type = ScreenType.FLEET,
+      this.summaryData});
 
   @override
   _TabPageState createState() => _TabPageState();
@@ -31,7 +42,10 @@ class DetailArguments {
   final Fleet? fleet;
   final int? index;
   final ScreenType? type;
-  DetailArguments({this.fleet, this.index, this.type = ScreenType.FLEET});
+  final SummaryData? summaryData;
+
+  DetailArguments(
+      {this.fleet, this.index, this.type = ScreenType.FLEET, this.summaryData});
 }
 
 class _TabPageState extends State<AssetDetailView> {
@@ -347,7 +361,17 @@ class _TabPageState extends State<AssetDetailView> {
                                           detail: viewModel.assetDetail,
                                           screenType: widget.type)
                                       : widget.type == ScreenType.MAINTENANCE
-                                          ? SizedBox()
+                                          ? MaintenanceTabView(
+                                              summaryData: widget.summaryData,
+                                              serviceCalBack: (value,
+                                                  assetDataValue, services) {
+                                                viewModel.onServiceSelected(
+                                                    value,
+                                                    assetDataValue,
+                                                    widget.summaryData,
+                                                    services);
+                                              },
+                                            )
                                           : SingleAssetOperationView(
                                               detail: viewModel.assetDetail,
                                             )
