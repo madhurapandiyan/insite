@@ -11,6 +11,7 @@ import 'package:insite/core/setup_snackbar_ui.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:load/load.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/flavor/flavor.dart';
 import 'core/locator.dart';
@@ -19,6 +20,7 @@ import 'core/router_india_stack.dart' as router;
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
+  Logger().d("main indiastack");
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();

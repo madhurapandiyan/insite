@@ -2,6 +2,7 @@ import UIKit
 import Flutter
 import GoogleMaps
 import flutter_downloader
+import Firebase
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
