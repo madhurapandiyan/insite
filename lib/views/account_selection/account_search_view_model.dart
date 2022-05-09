@@ -1,9 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/account.dart';
+import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/services/local_storage_service.dart';
+import 'package:insite/core/services/login_service.dart';
+import 'package:insite/utils/enums.dart';
+import 'package:load/load.dart';
 import 'package:logger/logger.dart';
+
+import '../../core/services/local_service.dart';
 
 class AccountSearchViewModel extends InsiteViewModel {
   bool _loading = true;
@@ -17,6 +25,8 @@ class AccountSearchViewModel extends InsiteViewModel {
 
   LocalStorageService? _localStorageService = locator<LocalStorageService>();
   TextEditingController textEditingController = TextEditingController();
+  LocalService? _localService = locator<LocalService>();
+  LoginService? _loginService = locator<LoginService>();
   AccountData? selected;
   List<AccountData>? list = [];
   List<AccountData>? displayList = [];
@@ -28,8 +38,11 @@ class AccountSearchViewModel extends InsiteViewModel {
   }
 
   ScrollController? scrollController;
+  int start = 0;
+  int limit = 99;
 
-  AccountSearchViewModel(AccountData? accountSelected, List<AccountData>? data) {
+  AccountSearchViewModel(
+      AccountData? accountSelected, List<AccountData>? data) {
     selected = accountSelected != null ? accountSelected : null;
     list!.clear();
     list = data;
@@ -38,9 +51,10 @@ class AccountSearchViewModel extends InsiteViewModel {
     if (selected != null) {
       Logger().i(selected!.value!.DisplayName);
     }
-    textEditingController.addListener(() {
-      onSearchTextChanged(textEditingController.text);
-    });
+    // textEditingController.addListener(() {
+    //   onSearchTextChanged(textEditingController.text);
+    // });
+
     Future.delayed(Duration(seconds: 2), () {
       notifyListeners();
     });
@@ -48,7 +62,9 @@ class AccountSearchViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        _loadMore();
+        limit = limit + 100;
+        start = start + 100;
+        loadMoreAccount();
       }
     });
   }
@@ -86,6 +102,98 @@ class AccountSearchViewModel extends InsiteViewModel {
     //   });
     // }
   }
+  loadMoreAccount() async {
+    showLoadingDialog();
+    var accountSelected = await _localService!.getAccountInfo();
+    List<Customer>? result = await _loginService!.getSubCustomers(
+        limit: textEditingController.text.isEmpty ? limit : 100,
+        start: textEditingController.text.isEmpty ? start : displayList!.length,
+        searchKey: textEditingController.text.isEmpty
+            ? ""
+            : textEditingController.text,
+        customerId: accountSelected!.CustomerUID,
+        isFromPagination: true);
+    if (result!.isNotEmpty) {
+      result.forEach((element) {
+        displayList!.add(AccountData(
+            isSelected: false,
+            selectionType: AccountType.CUSTOMER,
+            value: element));
+      });
+    }
+
+    notifyListeners();
+    hideLoadingDialog();
+  }
+
+  onSearchValueEmpty() {
+    displayList = list;
+    notifyListeners();
+  }
+
+  Timer? deBounce;
+  onChange() {
+    Logger().w(textEditingController.text);
+    if (textEditingController.text.length >= 4) {
+      if (deBounce?.isActive ?? false) {
+        deBounce!.cancel();
+      }
+      deBounce = Timer(Duration(seconds: 2), () {
+        onSearchingTextChanged();
+      });
+    } else {
+      displayList = list;
+      notifyListeners();
+    }
+  }
+
+  onSearchingTextChanged() async {
+    try {
+      if (textEditingController.text.length >= 4) {
+        showLoadingDialog();
+        var accountSelected = await _localService!.getAccountInfo();
+        Logger().d("getCustomerList");
+        List<AccountData> searchList = [];
+        List<Customer>? result = await _loginService!.getSubCustomers(
+            limit: 100,
+            start: 0,
+            searchKey: textEditingController.text,
+            isFromPagination: textEditingController.text.isEmpty ? false : true,
+            customerId: accountSelected!.CustomerUID);
+        searchList.clear();
+
+        result!.forEach((element) {
+          searchList.add(AccountData(
+              isSelected: false,
+              selectionType: AccountType.CUSTOMER,
+              value: element));
+        });
+        searchList.insert(
+            0,
+            AccountData(
+                isSelected: false,
+                selectionType: AccountType.CUSTOMER,
+                value: Customer(
+                    CustomerUID: "",
+                    Name: "ALL ACCOUNTS",
+                    CustomerType: "ALL",
+                    DisplayName: "ALL ACCOUNTS",
+                    Children: [])));
+        displayList = searchList;
+        Logger().d("getCustomerList " + displayList!.length.toString());
+
+        notifyListeners();
+        hideLoadingDialog();
+      } else {
+        displayList = list;
+        notifyListeners();
+        hideLoadingDialog();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      hideLoadingDialog();
+    }
+  }
 
   onSearchTextChanged(String text) async {
     Logger().i("query typeed " + text);
@@ -94,8 +202,9 @@ class AccountSearchViewModel extends InsiteViewModel {
         List<AccountData> tempList = [];
         tempList.clear();
         list!.forEach((item) {
-          if (item.value!.DisplayName!.toLowerCase().contains(text.toLowerCase()))
-            tempList.add(item);
+          if (item.value!.DisplayName!
+              .toLowerCase()
+              .contains(text.toLowerCase())) tempList.add(item);
         });
         displayList = tempList;
         Logger().i("total list size " + list!.length.toString());

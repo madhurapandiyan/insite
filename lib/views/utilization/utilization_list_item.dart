@@ -111,7 +111,7 @@ class UtilizationListItem extends StatelessWidget {
                                   children: [
                                     TableRow(children: [
                                       InsiteTableRowItem(
-                                        title: "Meter",
+                                        title: "Meter (hr)",
                                         content: utilizationData!
                                                     .lastRuntimeHourMeter !=
                                                 null
@@ -121,7 +121,7 @@ class UtilizationListItem extends StatelessWidget {
                                             : "-",
                                       ),
                                       InsiteTableRowItem(
-                                        title: "Daily",
+                                        title: "Daily (hr)",
                                         content:
                                             utilizationData!.runtimeHours !=
                                                     null
@@ -132,7 +132,7 @@ class UtilizationListItem extends StatelessWidget {
                                     ]),
                                     TableRow(children: [
                                       InsiteTableRowItem(
-                                        title: "Target",
+                                        title: "Target (hr)",
                                         content: utilizationData!
                                                     .targetRuntime !=
                                                 null
@@ -146,7 +146,8 @@ class UtilizationListItem extends StatelessWidget {
                                                     .targetRuntimePerformance !=
                                                 null
                                             ? (utilizationData!
-                                                    .targetRuntimePerformance!*100)
+                                                            .targetRuntimePerformance! *
+                                                        100)
                                                     .toStringAsFixed(2) +
                                                 " %"
                                             : "",
@@ -155,11 +156,11 @@ class UtilizationListItem extends StatelessWidget {
                                     TableRow(
                                       children: [
                                         InsiteTableRowItem(
-                                          title: "Lifetime Fuel",
+                                          title: "Lifetime Fuel (gal)",
                                           content: "-",
                                         ),
                                         InsiteTableRowItem(
-                                          title: "Fuel Burned",
+                                          title: "Fuel Burned (gal)",
                                           content: utilizationData!
                                                       .runtimeFuelConsumedLiters !=
                                                   null
@@ -172,7 +173,7 @@ class UtilizationListItem extends StatelessWidget {
                                     ),
                                     TableRow(children: [
                                       InsiteTableRowItem(
-                                        title: "Burned Rate",
+                                        title: "Burn Rate (gal/hr)",
                                         content: utilizationData!
                                                     .runtimeFuelConsumptionRate !=
                                                 null
@@ -201,7 +202,7 @@ class UtilizationListItem extends StatelessWidget {
                                   TableRow(
                                     children: [
                                       InsiteTableRowItem(
-                                        title: "Meter",
+                                        title: "Meter (hr)",
                                         content: utilizationData!
                                                     .lastIdleHourMeter !=
                                                 null
@@ -211,7 +212,7 @@ class UtilizationListItem extends StatelessWidget {
                                             : "",
                                       ),
                                       InsiteTableRowItem(
-                                        title: "Daily",
+                                        title: "Daily (hr)",
                                         content:
                                             utilizationData!.idleHours != null
                                                 ? utilizationData!.idleHours!
@@ -221,7 +222,7 @@ class UtilizationListItem extends StatelessWidget {
                                   ),
                                   TableRow(children: [
                                     InsiteTableRowItem(
-                                      title: "Target",
+                                      title: "Target (hr)",
                                       content:
                                           utilizationData!.targetIdle != null
                                               ? utilizationData!.targetIdle!
@@ -240,9 +241,45 @@ class UtilizationListItem extends StatelessWidget {
                                               " %"
                                           : "-",
                                     ),
+                                  ]),
+                                  TableRow(
+                                    children: [
+                                      InsiteTableRowItem(
+                                        title: "Lifetime Fuel (gal)",
+                                        content: utilizationData
+                                                ?.lastIdleFuelConsumptionLitersMeter ??
+                                            "-",
+                                      ),
+                                      InsiteTableRowItem(
+                                        title: "Fuel Burned (gal)",
+                                        content: utilizationData!
+                                                    .idleFuelConsumedLiters !=
+                                                null
+                                            ? utilizationData!
+                                                .idleFuelConsumedLiters!
+                                                .toStringAsFixed(1)
+                                            : "-",
+                                      ),
+                                    ],
+                                  ),
+                                  TableRow(children: [
+                                    InsiteTableRowItem(
+                                      title: "Burn Rate (gal/hr)",
+                                      content: utilizationData!
+                                                  .idleFuelConsumptionRate !=
+                                              null
+                                          ? utilizationData!
+                                              .idleFuelConsumptionRate!
+                                              .toStringAsFixed(2)
+                                          : "-",
+                                    ),
+                                    InsiteTableRowItem(
+                                      title: "",
+                                      content: "",
+                                    ),
                                   ])
                                 ],
-                              )
+                              ),
                             ]),
                             TableRow(
                               children: [
@@ -254,7 +291,7 @@ class UtilizationListItem extends StatelessWidget {
                                       : "-",
                                 ),
                                 InsiteTableRowItem(
-                                  title: "Daily",
+                                  title: "Daily (hr)",
                                   content: utilizationData!.workingHours != null
                                       ? utilizationData!.workingHours!
                                           .toStringAsFixed(1)
@@ -464,7 +501,7 @@ class UtilizationListItem extends StatelessWidget {
                                         children: [
                                           TableRow(children: [
                                             InsiteTableRowItem(
-                                              title: "Daily",
+                                              title: "Daily (hr)",
                                               content: utilizationData!
                                                           .runtimeHours !=
                                                       null
@@ -495,7 +532,7 @@ class UtilizationListItem extends StatelessWidget {
                                                   : "",
                                             ),
                                             InsiteTableRowItem(
-                                              title: "Fuel Burned",
+                                              title: "Fuel Burned (gal)",
                                               content: utilizationData!
                                                           .runtimeFuelConsumedLiters !=
                                                       null
@@ -538,7 +575,7 @@ class UtilizationListItem extends StatelessWidget {
                                         TableRow(
                                           children: [
                                             InsiteTableRowItem(
-                                              title: "Daily",
+                                              title: "Daily (hr)",
                                               content: utilizationData!
                                                           .idleHours !=
                                                       null

@@ -46,39 +46,57 @@ class BarChartWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   shouldShowLabel![0]
-                      ? BarWidget(
-                          value: workingValue,
-                          color: emerald,
-                          onColumnSelected: () {
-                            onTap!();
-                          },
-                          averageGreatestNumber: averageGreatestNumber,
-                          isAverageButtonSelected: isAverageButtonSelected,
-                          totalGreatestNumber: totalGreatestNumber,
+                      ? Tooltip(
+                          message: "$title \n Working :- $workingValue",
+                          height: 50,
+                          decoration: BoxDecoration(color: cardcolor),
+                          padding: EdgeInsets.all(10),
+                          child: BarWidget(
+                            value: workingValue,
+                            color: emerald,
+                            onColumnSelected: () {
+                              onTap!();
+                            },
+                            averageGreatestNumber: averageGreatestNumber,
+                            isAverageButtonSelected: isAverageButtonSelected,
+                            totalGreatestNumber: totalGreatestNumber,
+                          ),
                         )
                       : SizedBox(),
                   shouldShowLabel![1]
-                      ? BarWidget(
-                          value: idleValue,
-                          color: burntSienna,
-                          onColumnSelected: () {
-                            onTap!();
-                          },
-                          averageGreatestNumber: averageGreatestNumber,
-                          isAverageButtonSelected: isAverageButtonSelected,
-                          totalGreatestNumber: totalGreatestNumber,
+                      ? Tooltip(
+                          message: "$title \n Idle :- $idleValue",
+                          height: 50,
+                          decoration: BoxDecoration(color: cardcolor),
+                          padding: EdgeInsets.all(10),
+                          child: BarWidget(
+                            value: idleValue,
+                            color: burntSienna,
+                            onColumnSelected: () {
+                              onTap!();
+                            },
+                            averageGreatestNumber: averageGreatestNumber,
+                            isAverageButtonSelected: isAverageButtonSelected,
+                            totalGreatestNumber: totalGreatestNumber,
+                          ),
                         )
                       : SizedBox(),
                   shouldShowLabel![2]
-                      ? BarWidget(
-                          value: runningValue,
-                          color: creamCan,
-                          onColumnSelected: () {
-                            onTap!();
-                          },
-                          averageGreatestNumber: averageGreatestNumber,
-                          isAverageButtonSelected: isAverageButtonSelected,
-                          totalGreatestNumber: totalGreatestNumber,
+                      ? Tooltip(
+                          message: "$title \n Running :- $runningValue",
+                          height: 50,
+                          decoration: BoxDecoration(color: cardcolor),
+                          padding: EdgeInsets.all(10),
+                          child: BarWidget(
+                            value: runningValue,
+                            color: creamCan,
+                            onColumnSelected: () {
+                              onTap!();
+                            },
+                            averageGreatestNumber: averageGreatestNumber,
+                            isAverageButtonSelected: isAverageButtonSelected,
+                            totalGreatestNumber: totalGreatestNumber,
+                          ),
                         )
                       : SizedBox(),
                 ],

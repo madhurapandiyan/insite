@@ -49,7 +49,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
         // _geofence!.Geofences![i].IsFavorite =
         //     (_geofence!.Geofences![i].IsFavorite as String).parseBool();
 
-        String? wktText = _geofence!.Geofences![i].GeometryWKT;
+        String? wktText = _geofence?.Geofences?[i].GeometryWKT;
         listOfWKTstring.add(wktText);
         final geofenceData =
             geo.wktProjected.parse(listOfWKTstring[i]!) as geo.Polygon;

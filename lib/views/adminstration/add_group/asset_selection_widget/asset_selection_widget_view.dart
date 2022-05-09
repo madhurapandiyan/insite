@@ -16,17 +16,42 @@ import 'asset_selection_widget_view_model.dart';
 class AssetSelectionWidgetView extends StatefulWidget {
   final Function(AssetGroupSummaryResponse)? assetData;
   final bool? isLoading;
-  AssetGroupSummaryResponse? assetResult;
+  final bool? isAddingAllAsset;
+  final AssetGroupSummaryResponse? assetResult;
+  final Function(List<Asset>? allAsset)? addingAllAsset;
   final Function(int i, Asset? assetData)? onAddingAsset;
-  AssetSelectionWidgetView(
-      {this.assetData, this.assetResult, this.onAddingAsset, this.isLoading});
+  final Function? onRemoving;
+  const AssetSelectionWidgetView(
+      {Key? key,
+      this.assetData,
+      this.assetResult,
+      this.onAddingAsset,
+      this.isLoading,
+      this.onRemoving,
+      this.addingAllAsset,
+      this.isAddingAllAsset})
+      : super(key: key);
 
   @override
   State<AssetSelectionWidgetView> createState() =>
-      _AssetSelectionWidgetViewState();
+      AssetSelectionWidgetViewState();
 }
 
-class _AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
+class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
+  // late AssetSelectionWidgetViewModel viewModel;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   viewModel = AssetSelectionWidgetViewModel(null);
+  // }
+
+  // Asset? assetData;
+
+  // onAddingDeletedAsset(Asset data) {
+  //   assetData = data;
+  //   //viewModel.onAddingDeletedAsset(data);
+  // }
+
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
@@ -34,156 +59,208 @@ class _AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
     return ViewModelBuilder<AssetSelectionWidgetViewModel>.reactive(
       builder: (BuildContext context, AssetSelectionWidgetViewModel viewModel,
           Widget? _) {
-        return Container(
-          height: mediaQuery.size.height * 0.45,
-          width: mediaQuery.size.width * 0.85,
-          child: Card(
-            child: PageView(
-              controller: viewModel.pageController,
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                // widget.assetResult == null
-                //     ? Center(
-                //         child: InsiteProgressBar(),
-                //       )
-                //     :
-                ListView(
-                    children: List.generate(
-                        viewModel.assetSelectionCategory!.length,
-                        (i) => ListTile(
-                              onTap: () {
-                                viewModel.onClickingRespectiveAssetCategory(
-                                    viewModel.assetSelectionCategory![i]
-                                        .assetCategoryType!);
-                                widget.assetData!(viewModel.assetIdresult!);
-                              },
-                              leading: InsiteText(
-                                text: viewModel.assetSelectionCategory![i].name,
-                              ),
-                              trailing: Icon(
-                                Icons.keyboard_arrow_right_rounded,
-                                color: theme.textTheme.bodyText1!.color,
-                              ),
-                            ))),
-                SelectionAssetWidget(
-                  onAddingAsset: (i, value) {
-                    widget.onAddingAsset!(i, value);
-                    viewModel.getGroupListData(widget.assetResult!);
-                  },
-                  displayList: viewModel.assetId,
-                  onBackPressed: () {
-                    viewModel.onAssetIdBackPressed();
-                  },
-                  title: "Asset Id",
+        // viewModel.onAddingDeletedAsset(assetData);
+        return Column(
+          children: [
+            Container(
+              height: mediaQuery.size.height * 0.45,
+              width: mediaQuery.size.width * 0.85,
+              child: Card(
+                child: PageView(
+                  controller: viewModel.pageController,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    // widget.assetResult == null
+                    //     ? Center(
+                    //         child: InsiteProgressBar(),
+                    //       )
+                    //     :
+                    ListView(
+                        children: List.generate(
+                            viewModel.assetSelectionCategory!.length,
+                            (i) => ListTile(
+                                  onTap: () {
+                                    viewModel.selectedType = viewModel
+                                        .assetSelectionCategory![i]
+                                        .assetCategoryType;
+                                    viewModel.onClickingRespectiveAssetCategory(
+                                        viewModel.assetSelectionCategory![i]
+                                            .assetCategoryType!);
+                                    widget.assetData!(viewModel.assetIdresult!);
+                                  },
+                                  leading: InsiteText(
+                                    text: viewModel
+                                        .assetSelectionCategory![i].name,
+                                  ),
+                                  trailing: Icon(
+                                    Icons.keyboard_arrow_right_rounded,
+                                    color: theme.textTheme.bodyText1!.color,
+                                  ),
+                                ))),
+                    SelectionAssetWidget(
+                      onAddingAsset: (i, value) {
+                        widget.onAddingAsset!(i, value);
+                        // viewModel.onDeletingSelectedAsset(i, value.type!);
+                        //viewModel.getGroupListData(widget.assetResult!);
+                      },
+                      displayList: viewModel.assetId,
+                      onBackPressed: () {
+                        viewModel.onAssetIdBackPressed();
+                      },
+                      title: "Asset Id",
+                    ),
+                    SelectionAssetWidget(
+                      onAddingAsset: (i, value) {
+                        Logger().e(value.toJson());
+                        widget.onAddingAsset!(i, value);
+                        //viewModel.onDeletingSelectedAsset(i, value.type!);
+                        // viewModel.onAddingSerialNo(i,value);
+                        // viewModel.getGroupListData(widget.assetResult!);
+                      },
+                      displayList: viewModel.isSearchingSerialNo
+                          ? viewModel.serialNoSearch
+                          : viewModel.assetSerialNumber,
+                      onBackPressed: () {
+                        viewModel.onAssetIdBackPressed();
+                      },
+                      onChange: (value) {
+                        viewModel.onSearchingSerialNo(value);
+                      },
+                      title: "Serial Number",
+                    ),
+                    SelectionAssetCountWidget(
+                      onBackPressed: () {
+                        viewModel.onAssetIdBackPressed();
+                      },
+                      onClickingNestedType: (i, value) {
+                        viewModel.getProductFamilyFilterData(value, i);
+                      },
+                      displayList: viewModel.productFamilyData,
+                      isLoading: viewModel.isloading,
+                      title: "Product Family",
+                    ),
+                    SelectionAssetWidget(
+                      onAddingAsset: (i, value) {
+                        widget.onAddingAsset!(i, value);
+                        //viewModel.onDeletingSelectedAsset(i, value.type!);
+                      },
+                      onChange: (value) {
+                        viewModel.onSearchingProductFamily(value);
+                      },
+                      displayList: viewModel.isSearchingProductFamily
+                          ? viewModel.searchProductFamilyCountData
+                          : viewModel.productFamilyCountData,
+                      onBackPressed: () {
+                        viewModel.onProductFamilyBackPressed();
+                        viewModel.clearAllValues();
+                      },
+                      title: "Product Family",
+                    ),
+                    SelectionAssetCountWidget(
+                      onBackPressed: () {
+                        viewModel.onAssetIdBackPressed();
+                      },
+                      onClickingNestedType: (i, value) {
+                        viewModel.getFilterManufacturerData(value);
+                      },
+                      displayList: viewModel.manufacturerData,
+                      isLoading: viewModel.isloading,
+                      title: "Manufacture",
+                    ),
+                    SelectionAssetWidget(
+                      onAddingAsset: (i, value) {
+                        widget.onAddingAsset!(i, value);
+                        // viewModel.onDeletingSelectedAsset(i, value.type!);
+                      },
+                      displayList: viewModel.subManufacturerList,
+                      onBackPressed: () {
+                        viewModel.onManufacturueBackPressed();
+                        viewModel.clearAllValues();
+                      },
+                      title: "Manufacture",
+                    ),
+                    SelectionAssetCountWidget(
+                      onBackPressed: () {
+                        viewModel.onAssetIdBackPressed();
+                      },
+                      onClickingNestedType: (i, value) {
+                        viewModel.getFilterModelData(value);
+                      },
+                      displayList: viewModel.modelData,
+                      title: "Model",
+                    ),
+                    SelectionAssetWidget(
+                      onAddingAsset: (i, value) {
+                        widget.onAddingAsset!(i, value);
+                        //viewModel.onDeletingSelectedAsset(i, value.type!);
+                      },
+                      displayList: viewModel.subModelData,
+                      onBackPressed: () {
+                        viewModel.onModelBackPressed();
+                        viewModel.clearAllValues();
+                      },
+                      title: "Model",
+                    ),
+                    SelectionAssetCountWidget(
+                      onBackPressed: () {
+                        viewModel.onAssetIdBackPressed();
+                      },
+                      onClickingNestedType: (i, value) {
+                        viewModel.getFilterDeviceTypeData(value);
+                      },
+                      displayList: viewModel.deviceTypdeData,
+                      title: "Device Type",
+                    ),
+                    SelectionAssetWidget(
+                      onAddingAsset: (i, value) {
+                        widget.onAddingAsset!(i, value);
+                        //  viewModel.onDeletingSelectedAsset(i, value.type!);
+                      },
+                      displayList: viewModel.subDeviceList,
+                      onBackPressed: () {
+                        viewModel.onDeviceTypeBackPressed();
+                        viewModel.clearAllValues();
+                      },
+                      title: "Device Type",
+                    ),
+                  ],
                 ),
-                SelectionAssetWidget(
-                  onAddingAsset: (i, value) {
-                    Logger().e(value.toJson());
-                    widget.onAddingAsset!(i, value);
-                    // viewModel.onAddingSerialNo(i,value);
-                    // viewModel.getGroupListData(widget.assetResult!);
-                  },
-                  displayList: viewModel.isSearchingSerialNo
-                      ? viewModel.serialNoSearch
-                      : viewModel.assetSerialNumber,
-                  onBackPressed: () {
-                    viewModel.onAssetIdBackPressed();
-                  },
-                  onChange: (value) {
-                    viewModel.onSearchingSerialNo(value);
-                  },
-                  title: "Serial Number",
-                ),
-                SelectionAssetCountWidget(
-                  onBackPressed: () {
-                    viewModel.onAssetIdBackPressed();
-                  },
-                  onClickingNestedType: (i, value) {
-                    viewModel.getProductFamilyFilterData(value, i);
-                  },
-                  displayList: viewModel.productFamilyData,
-                  isLoading: viewModel.isloading,
-                  title: "Product Family",
-                ),
-                SelectionAssetWidget(
-                  onAddingAsset: (i, value) {
-                    widget.onAddingAsset!(i, value);
-                  },
-                  onChange: (value) {
-                    viewModel.onSearchingProductFamily(value);
-                  },
-                  displayList: viewModel.isSearchingProductFamily
-                      ? viewModel.searchProductFamilyCountData
-                      : viewModel.productFamilyCountData,
-                  onBackPressed: () {
-                    viewModel.onProductFamilyBackPressed();
-                  },
-                  title: "Product Family",
-                ),
-                SelectionAssetCountWidget(
-                  onBackPressed: () {
-                    viewModel.onAssetIdBackPressed();
-                  },
-                  onClickingNestedType: (i, value) {
-                    viewModel.getFilterManufacturerData(value);
-                  },
-                  displayList: viewModel.manufacturerData,
-                  isLoading: viewModel.isloading,
-                  title: "Manufacture",
-                ),
-                SelectionAssetWidget(
-                  onAddingAsset: (i, value) {
-                    widget.onAddingAsset!(i, value);
-                  },
-                  displayList: viewModel.subManufacturerList,
-                  onBackPressed: () {
-                    viewModel.onManufacturueBackPressed();
-                  },
-                  title: "Manufacture",
-                ),
-                SelectionAssetCountWidget(
-                  onBackPressed: () {
-                    viewModel.onAssetIdBackPressed();
-                  },
-                  onClickingNestedType: (i, value) {
-                    viewModel.getFilterModelData(value);
-                  },
-                  displayList: viewModel.modelData,
-                  title: "Model",
-                ),
-                SelectionAssetWidget(
-                  onAddingAsset: (i, value) {
-                    widget.onAddingAsset!(i, value);
-                  },
-                  displayList: viewModel.subModelData,
-                  onBackPressed: () {
-                    viewModel.onModelBackPressed();
-                  },
-                  title: "Model",
-                ),
-                SelectionAssetCountWidget(
-                  onBackPressed: () {
-                    viewModel.onAssetIdBackPressed();
-                  },
-                  onClickingNestedType: (i, value) {
-                    viewModel.getFilterDeviceTypeData(value);
-                  },
-                  displayList: viewModel.deviceTypdeData,
-                  title: "Device Type",
-                ),
-                SelectionAssetWidget(
-                  onAddingAsset: (i, value) {
-                    widget.onAddingAsset!(i, value);
-                  },
-                  displayList: viewModel.subDeviceList,
-                  onBackPressed: () {
-                    viewModel.onDeviceTypeBackPressed();
-                  },
-                  title: "Device Type",
-                ),
-              ],
+              ),
             ),
-          ),
+            SizedBox(
+              height: 20,
+            ),
+            widget.isAddingAllAsset == true || widget.isAddingAllAsset == null
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InsiteButton(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        title: "Add All".toUpperCase(),
+                        onTap: () {
+                          var data = viewModel.onAddingAllAsset();
+                          Logger().w(data!.length);
+                          widget.addingAllAsset!(data);
+                        },
+                        textColor: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      InsiteButton(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        title: "Remove all".toUpperCase(),
+                        onTap: () {
+                          widget.onRemoving!();
+                        },
+                        textColor: Colors.white,
+                      )
+                    ],
+                  )
+                : SizedBox()
+          ],
         );
       },
       viewModelBuilder: () => AssetSelectionWidgetViewModel(widget.assetResult),
@@ -210,18 +287,22 @@ class SelectionAssetWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextButton.icon(
-            onPressed: () {
-              onBackPressed!();
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_new_rounded,
-              color: theme.textTheme.bodyText1!.color,
-            ),
-            label: InsiteText(
-              text: title,
-              size: 14,
-            )),
+        Row(
+          children: [
+            TextButton.icon(
+                onPressed: () {
+                  onBackPressed!();
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: theme.textTheme.bodyText1!.color,
+                ),
+                label: InsiteText(
+                  text: title,
+                  size: 14,
+                )),
+          ],
+        ),
         // displayList!.isNotEmpty
         //     ? Container(
         //         width: mediaQuery.size.width * 0.8,
@@ -262,7 +343,7 @@ class SelectionAssetWidget extends StatelessWidget {
                   bg: theme.cardColor,
                   title: "No Asset Found",
                 ),
-              )
+              ),
       ],
     );
   }

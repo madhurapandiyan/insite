@@ -60,6 +60,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               viewModel.updateSearchDataToEmpty();
                             }
                           },
+                          
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: white,
@@ -71,6 +72,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                     Theme.of(context).textTheme.bodyText1!.color!,
                               ),
                             ),
+                            hintText: "Search S/N",
                             focusedBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16.0)),

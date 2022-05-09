@@ -97,7 +97,7 @@ class _AssetStatusState extends State<AssetStatus> {
                 : Row(
                     children: [
                       Expanded(
-                        flex: 2,
+                        flex: 1,
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.20,
                           height: MediaQuery.of(context).size.height * 0.20,
@@ -124,9 +124,10 @@ class _AssetStatusState extends State<AssetStatus> {
                             tooltipBehavior: TooltipBehavior(enable: true),
                           ),
                         ),
-                      ),
-                      Flexible(
+                      ),SizedBox(width: 40,),
+                      Expanded(
                         child: Container(
+                          margin: EdgeInsets.only(right: 20),
                           alignment: Alignment.center,
                           padding: EdgeInsets.symmetric(vertical: 8),
                           child: ListView.separated(

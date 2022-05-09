@@ -57,7 +57,7 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       message: json['message'],
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
-      idleHours: json['idleHours'],
+      idleHours: (json['idleHours'] as num?)?.toDouble(),
       supportsIdle: json['supportsIdle'] as bool?,
       runtimeHours: (json['runtimeHours'] as num?)?.toDouble(),
       workDefinitionType: json['workDefinitionType'] as String?,

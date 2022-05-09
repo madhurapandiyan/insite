@@ -103,7 +103,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
               : Row(
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 1,
                       child: Container(
                           alignment: Alignment.center,
                           width: MediaQuery.of(context).size.width * 0.20,
@@ -123,9 +123,10 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                             series: _getSemiDoughnutSeries(),
                             tooltipBehavior: TooltipBehavior(enable: true),
                           )),
-                    ),
+                    ),SizedBox(width: 40,),
                     Flexible(
                       child: Container(
+                          margin: EdgeInsets.only(right: 20),
                         child: ListView.separated(
                             separatorBuilder: (context, index) {
                               return Container(

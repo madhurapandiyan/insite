@@ -70,7 +70,7 @@ class AssetLocationService extends BaseService {
       //   Logger().wtf(customerSelected!.CustomerUID);
       // }
       var data=FilterUtils.constructQueryFromMap(queryMap).replaceAll("?","");
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
@@ -133,7 +133,7 @@ class AssetLocationService extends BaseService {
     Logger().i("getAssetLocation");
     try {
      
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
@@ -267,7 +267,7 @@ class AssetLocationService extends BaseService {
       queryMap["sort"] = "-lastlocationupdateutc";
     }
     try {
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
@@ -369,7 +369,7 @@ class AssetLocationService extends BaseService {
     }
     queryMap["sort"] = "-lastlocationupdateutc";
     try {
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: await _graphqlSchemaService
               ?.getFleetLocationDataProductFamilyFilterData(

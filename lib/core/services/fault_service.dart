@@ -321,9 +321,9 @@ class FaultService extends BaseService {
   }
 
   Future<HealthListResponse?> getHealthListData(String? assetUid, endDateTime,
-      limit, page, startDateTime, String query) async {
+      limit, page, startDateTime, String? query) async {
     try {
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,

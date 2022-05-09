@@ -164,7 +164,7 @@ class AssetUtilizationService extends BaseService {
       List<FilterData?>? appliedFilters,
       query) async {
     try {
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
@@ -292,7 +292,10 @@ class AssetUtilizationService extends BaseService {
         );
         SingleAssetUtilization response = SingleAssetUtilization.fromJson(
             data.data["getAssetDetailsAggregate"]);
-        Logger().w(response.daily?.first.data?.toJson());
+        response.daily?.forEach((element) {
+          Logger().w(element.data!.idleHours.runtimeType);
+        });
+
         return response;
       }
       if (isVisionLink) {

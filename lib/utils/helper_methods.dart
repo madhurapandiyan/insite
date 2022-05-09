@@ -220,9 +220,9 @@ class Utils {
   static String getDateInFormatyyyyMMddTHHmmssZStartFaultDate(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
-      var inputDate = DateTime.parse(parseDate.toString());
-      //.subtract(Duration(days: 1))
-      //.add(Duration(hours: 18, minutes: 30));
+      var inputDate = DateTime.parse(parseDate.toString())
+      .subtract(Duration(days: 1))
+      .add(Duration(hours: 18, minutes: 30,seconds: 0));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -279,7 +279,7 @@ class Utils {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
           // .subtract(Duration(days: 1))
-          .add(Duration(hours: 23, minutes: 59, seconds: 59));
+          .add(Duration(hours: 18, minutes: 29, seconds: 59));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -388,11 +388,11 @@ class Utils {
     if (title == "25") {
       return "0-25%";
     } else if (title == "50") {
-      return "25-50%";
+      return "26-50%";
     } else if (title == "75") {
-      return "50-75%";
+      return "51-75%";
     } else if (title == "100") {
-      return "75-100%";
+      return "76-100%";
     } else {
       return title;
     }
@@ -412,7 +412,7 @@ class Utils {
         title = "UTILIZATION";
         break;
       case ScreenType.ASSET_OPERATION:
-        title = "OPERATION";
+        title = "ASSET OPERATION";
         break;
       case ScreenType.LOCATION:
         title = "LOCATION";
@@ -1316,7 +1316,7 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 0, seconds: 0, minutes: 0));
+          .add(Duration(hours: 18, seconds: 00, minutes: 30));
       //.subtract(Duration(days: 1))
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -1332,7 +1332,7 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 23, seconds: 59, minutes: 59));
+          .add(Duration(hours: 18, seconds: 59, minutes: 29));
       //.subtract(Duration(days: 1))
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

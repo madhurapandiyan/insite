@@ -120,9 +120,9 @@ class DashboardViewModel extends InsiteViewModel {
     _dateRangeService!.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () async {
-      await getAssetCount();
-      await getFilterData();
-      await getData(false);
+      getAssetCount();
+      getFilterData();
+      getData(false);
     });
     _filterService!.clearFilterDatabase();
   }
@@ -168,9 +168,8 @@ class DashboardViewModel extends InsiteViewModel {
         ));
       }
     }
-
     _assetStatusloading = false;
-    //notifyListeners();
+    notifyListeners();
   }
 
   getData(bool isIntial) async {
@@ -178,16 +177,16 @@ class DashboardViewModel extends InsiteViewModel {
     this._currentFilterSelected = null;
     _refreshing = true;
     if (isIntial) {
-      await getAssetCount();
+      getAssetCount();
     }
-    await clearDashboardFiltersDb();
-    await getAssetStatusData();
-    await getFuelLevelData();
-    await getIdlingLevelData(false, null);
-    await getUtilizationSummary();
-    await getFaultCountData();
+    clearDashboardFiltersDb();
+    getAssetStatusData();
+    getFuelLevelData();
+    getIdlingLevelData(false, null);
+    getUtilizationSummary();
+    getFaultCountData();
     _refreshing = false;
-    notifyListeners();
+    // notifyListeners();
   }
 
   onRefereshClicked() {
@@ -214,7 +213,6 @@ class DashboardViewModel extends InsiteViewModel {
   getAssetCount() async {
     AssetCount? result = await _assetService!.getAssetCount(null,
         FilterType.ASSET_STATUS, graphqlSchemaService!.getAssetCount(), true);
-
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();
@@ -337,7 +335,8 @@ class DashboardViewModel extends InsiteViewModel {
             DateTime.now().subtract(Duration(days: 1))),
         graphqlSchemaService!.getFaultCountData(
           startDate: Utils.getFaultDateFormatStartDate(
-              DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
+              DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
+                  .subtract(Duration(days: 1))),
 
           //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
           //     startDate),
@@ -347,6 +346,7 @@ class DashboardViewModel extends InsiteViewModel {
       _faultCountData = count;
     }
     _faultCountloading = false;
+    notifyListeners();
   }
 
   onFilterSelected(FilterData data) async {

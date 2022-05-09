@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/health/asset/asset_view.dart';
 import 'package:insite/views/health/fault/fault_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
@@ -71,17 +73,30 @@ class _HealthViewState extends State<HealthView> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 16),
-                    child: Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ToggleButton(
-                            label1: 'Fault View',
-                            label2: 'Asset View',
-                            optionSelected: (bool value) {
-                              setState(() {
-                                isListSelected = value;
-                              });
-                            }),
-                        Spacer(),
+                        InsiteTextOverFlow(
+                          text: Utils.getPageTitle(ScreenType.HEALTH),
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.bold,
+                          size: 16,
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          children: [
+                            ToggleButton(
+                                label1: 'Fault View',
+                                label2: 'Asset View',
+                                optionSelected: (bool value) {
+                                  setState(() {
+                                    isListSelected = value;
+                                  });
+                                }),
+                            Spacer(),
+                          ],
+                        ),
                       ],
                     ),
                   ),

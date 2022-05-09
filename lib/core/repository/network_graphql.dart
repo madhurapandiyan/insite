@@ -8,9 +8,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
-
 import '../../utils/helper_methods.dart';
-import '../../views/adminstration/addgeofense/exception_handle.dart';
 import '../models/login_response.dart';
 import '../services/login_service.dart';
 

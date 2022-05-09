@@ -93,7 +93,6 @@ class HttpWrapper {
   final String _baseUrlSix = "https://cloud.api.trimble.com";
   final String _baseUrlSeven = "https://administrator.myvisionlink.com";
   final String _baseUrlEight = "https://cloud.stage.api.trimblecloud.com/";
-
   final bool SHOW_LOGS = true;
   final LocalService? _localService = locator<LocalService>();
   final LoginService? _loginService = locator<LoginService>();
@@ -512,8 +511,7 @@ class HttpWrapper {
         },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
-          options.headers
-              .addAll({"Accept": "*/*", "timezoneoffset": -330});
+          options.headers.addAll({"Accept": "*/*", "timezoneoffset": -330});
           return handler.next(options);
         },
       ))

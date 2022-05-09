@@ -49,9 +49,9 @@ class FleetViewModel extends InsiteViewModel {
         }
       }
     });
-    Future.delayed(Duration(seconds: 1), () async{
-     await getSelectedFilterData();
-     await getDateRangeFilterData();
+    Future.delayed(Duration(seconds: 1), () async {
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
     });
     Future.delayed(Duration(seconds: 2), () {
       getFleetSummaryList();

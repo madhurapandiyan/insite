@@ -3,9 +3,7 @@ part 'geofencemodel.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Geofence {
-  @JsonKey(
-    name: "geofences",
-  )
+  
   final List<Geofencemodeldata>? Geofences;
   Geofence({this.Geofences});
   factory Geofence.fromJson(Map<String, dynamic> json) =>

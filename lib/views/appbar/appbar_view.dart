@@ -96,13 +96,13 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                   SizedBox(
                     width: 20,
                   ),
-                  InsiteTextOverFlow(
-                    text: Utils.getPageTitle(screenType),
-                    color: Theme.of(context).buttonColor,
-                    overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.bold,
-                    size: 16,
-                  )
+                  // InsiteTextOverFlow(
+                  //   text: Utils.getPageTitle(screenType),
+                  //   color: Theme.of(context).buttonColor,
+                  //   overflow: TextOverflow.ellipsis,
+                  //   fontWeight: FontWeight.bold,
+                  //   size: 16,
+                  // )
                 ],
               ),
               actions: [

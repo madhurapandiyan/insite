@@ -224,6 +224,7 @@ class LocationViewModel extends InsiteViewModel {
           largeLatLng.longitude.toString(),
           radiusKm.toString()
         ]);
+    await clearFilterDb();
     await addFilter(filterData);
     if (shouldGoToLocationPage) {
       goToLocationPageSelected();
