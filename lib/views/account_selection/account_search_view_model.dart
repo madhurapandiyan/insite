@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -49,9 +51,10 @@ class AccountSearchViewModel extends InsiteViewModel {
     if (selected != null) {
       Logger().i(selected!.value!.DisplayName);
     }
-    textEditingController.addListener(() {
-      onSearchTextChanged(textEditingController.text);
-    });
+    // textEditingController.addListener(() {
+    //   onSearchTextChanged(textEditingController.text);
+    // });
+
     Future.delayed(Duration(seconds: 2), () {
       notifyListeners();
     });
@@ -103,33 +106,62 @@ class AccountSearchViewModel extends InsiteViewModel {
     showLoadingDialog();
     var accountSelected = await _localService!.getAccountInfo();
     List<Customer>? result = await _loginService!.getSubCustomers(
-        limit: limit,
-        start: start,
+        limit: textEditingController.text.isEmpty ? limit : 100,
+        start: textEditingController.text.isEmpty ? start : displayList!.length,
+        searchKey: textEditingController.text.isEmpty
+            ? ""
+            : textEditingController.text,
         customerId: accountSelected!.CustomerUID,
         isFromPagination: true);
-    result!.forEach((element) {
-      displayList!.add(AccountData(
-          isSelected: false,
-          selectionType: AccountType.CUSTOMER,
-          value: element));
-    });
+    if (result!.isNotEmpty) {
+      result.forEach((element) {
+        displayList!.add(AccountData(
+            isSelected: false,
+            selectionType: AccountType.CUSTOMER,
+            value: element));
+      });
+    }
+
     notifyListeners();
     hideLoadingDialog();
   }
 
-  onSearchingTextChanged(String text) async {
+  onSearchValueEmpty() {
+    displayList = list;
+    notifyListeners();
+  }
+
+  Timer? deBounce;
+  onChange() {
+    Logger().w(textEditingController.text);
+    if (textEditingController.text.length >= 4) {
+      if (deBounce?.isActive ?? false) {
+        deBounce!.cancel();
+      }
+      deBounce = Timer(Duration(seconds: 2), () {
+        onSearchingTextChanged();
+      });
+    } else {
+      displayList = list;
+      notifyListeners();
+    }
+  }
+
+  onSearchingTextChanged() async {
     try {
-      if (text.length >= 4) {
+      if (textEditingController.text.length >= 4) {
+        showLoadingDialog();
         var accountSelected = await _localService!.getAccountInfo();
         Logger().d("getCustomerList");
         List<AccountData> searchList = [];
         List<Customer>? result = await _loginService!.getSubCustomers(
             limit: 100,
             start: 0,
-            searchKey: text,
-            isFromPagination: true,
+            searchKey: textEditingController.text,
+            isFromPagination: textEditingController.text.isEmpty ? false : true,
             customerId: accountSelected!.CustomerUID);
         searchList.clear();
+
         result!.forEach((element) {
           searchList.add(AccountData(
               isSelected: false,
@@ -147,9 +179,9 @@ class AccountSearchViewModel extends InsiteViewModel {
                     CustomerType: "ALL",
                     DisplayName: "ALL ACCOUNTS",
                     Children: [])));
-
         displayList = searchList;
         Logger().d("getCustomerList " + displayList!.length.toString());
+
         notifyListeners();
         hideLoadingDialog();
       } else {

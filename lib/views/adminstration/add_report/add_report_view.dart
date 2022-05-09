@@ -481,7 +481,8 @@ class _AddReportViewState extends State<AddReportView> {
                                           isAddingAllAsset: viewModel
                                                           .assetsDropDownValue ==
                                                       "Utilization Details" ||
-                                                  viewModel.assetsDropDownValue ==
+                                                  viewModel
+                                                          .assetsDropDownValue ==
                                                       "Fault Code Asset Details"
                                               ? false
                                               : true,

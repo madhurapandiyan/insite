@@ -120,9 +120,9 @@ class DashboardViewModel extends InsiteViewModel {
     _dateRangeService!.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () async {
-      await getAssetCount();
-      await getFilterData();
-      await getData(false);
+      getAssetCount();
+      getFilterData();
+      getData(false);
     });
     _filterService!.clearFilterDatabase();
   }
@@ -186,7 +186,7 @@ class DashboardViewModel extends InsiteViewModel {
     getUtilizationSummary();
     getFaultCountData();
     _refreshing = false;
-    notifyListeners();
+    // notifyListeners();
   }
 
   onRefereshClicked() {
@@ -335,7 +335,8 @@ class DashboardViewModel extends InsiteViewModel {
             DateTime.now().subtract(Duration(days: 1))),
         graphqlSchemaService!.getFaultCountData(
           startDate: Utils.getFaultDateFormatStartDate(
-              DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
+              DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
+                  .subtract(Duration(days: 1))),
 
           //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
           //     startDate),
@@ -345,7 +346,7 @@ class DashboardViewModel extends InsiteViewModel {
       _faultCountData = count;
     }
     _faultCountloading = false;
-     notifyListeners();
+    notifyListeners();
   }
 
   onFilterSelected(FilterData data) async {

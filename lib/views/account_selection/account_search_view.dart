@@ -81,15 +81,15 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SearchBox(
-                                  //controller: viewModel.textEditingController,
+                                  controller: viewModel.textEditingController,
                                   hint: "Search",
                                   onTextChanged: (value) {
-                                    if (widget.isAccountSelected == true) {
+                                    if (widget.selectionType ==
+                                        AccountType.ACCOUNT) {
                                       viewModel.onSearchTextChanged(value);
                                     } else {
-                                      viewModel.onSearchingTextChanged(value);
+                                      viewModel.onChange();
                                     }
-                                    // widget.onChange!(value);
                                   },
                                 ),
                               )

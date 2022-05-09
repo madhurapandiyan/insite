@@ -327,19 +327,7 @@ class _SingleAssetUtilizationGraphViewState
                                                 .data!
                                                 .idleHours !=
                                             null
-                                        ? viewModel
-                                                    .singleAssetUtilization!
-                                                    .daily![index]
-                                                    .data!
-                                                    .idleHours
-                                                    .runtimeType ==
-                                                String
-                                            ? Utils.parseStringToDouble(viewModel
-                                                .singleAssetUtilization!
-                                                .daily![index]
-                                                .data!
-                                                .idleHours!)
-                                            : viewModel.singleAssetUtilization!
+                                        ? viewModel.singleAssetUtilization!
                                                 .daily![index].data!.idleHours
                                         : 0
                                     : rangeChoice == 2
@@ -350,19 +338,6 @@ class _SingleAssetUtilizationGraphViewState
                                                     .idleHours !=
                                                 null
                                             ? viewModel
-                                                        .singleAssetUtilization!
-                                                        .weekly![index]
-                                                        .data!
-                                                        .idleHours!
-                                                        .runtimeType ==
-                                                    String
-                                                ? Utils.parseStringToDouble(
-                                                    viewModel
-                                                        .singleAssetUtilization!
-                                                        .weekly![index]
-                                                        .data!
-                                                        .idleHours!)
-                                                : viewModel
                                                     .singleAssetUtilization!
                                                     .weekly![index]
                                                     .data!
@@ -374,9 +349,7 @@ class _SingleAssetUtilizationGraphViewState
                                                     .data!
                                                     .idleHours !=
                                                 null
-                                            ? viewModel.singleAssetUtilization!.monthly![index].data!.idleHours!.runtimeType == String
-                                                ? Utils.parseStringToDouble(viewModel.singleAssetUtilization!.monthly![index].data!.idleHours!)
-                                                : viewModel.singleAssetUtilization!.monthly![index].data!.idleHours!
+                                            ? viewModel.singleAssetUtilization!.monthly![index].data!.idleHours!
                                             : 0,
                                 workingLength: rangeChoice == 1
                                     ? viewModel

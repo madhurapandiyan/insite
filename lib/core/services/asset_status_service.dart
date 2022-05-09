@@ -62,17 +62,52 @@ class AssetStatusService extends DataBaseService {
           if (isFromDashboard == true) {
             AssetCount assetCountFromGraphql =
                 AssetCount.fromJson(data.data['getDashboardAsset']);
-            return assetCountFromGraphql;
+            if (assetCountFromGraphql != null) {
+              bool updated =
+                  await updateAssetCount(assetCountFromGraphql, type);
+              Logger().d("updated $updated");
+              if (updated) {
+                return assetCountFromGraphql;
+              } else {
+                return null;
+              }
+            } else {
+              return null;
+            }
           }
           if (isFromDashboard == false) {
             AssetCount assetCountFromGraphql =
                 AssetCount.fromJson(data.data['fleetFiltersGrouping']);
-            return assetCountFromGraphql;
+            if (assetCountFromGraphql != null) {
+              bool updated =
+                  await updateAssetCount(assetCountFromGraphql, type);
+              Logger().d("updated $updated");
+              if (updated) {
+                return assetCountFromGraphql;
+              } else {
+                return null;
+              }
+            } else {
+              return null;
+            }
+            //return assetCountFromGraphql;
           }
           if (isFromDashboard == null) {
             AssetCount assetCountFromGraphql =
                 AssetCount.fromJson(data.data['userManagementRefine']);
-            return assetCountFromGraphql;
+            if (assetCountFromGraphql != null) {
+              bool updated =
+                  await updateAssetCount(assetCountFromGraphql, type);
+              Logger().d("updated $updated");
+              if (updated) {
+                return assetCountFromGraphql;
+              } else {
+                return null;
+              }
+            } else {
+              return null;
+            }
+            //return assetCountFromGraphql;
           }
         } else {
           if (isVisionLink) {
@@ -339,7 +374,17 @@ class AssetStatusService extends DataBaseService {
           );
           AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data['getDashboardAsset']);
-          return assetCountFromGraphql;
+          if (assetCountFromGraphql != null) {
+            bool updated = await updateAssetCount(assetCountFromGraphql, type);
+            if (updated) {
+              return assetCountFromGraphql;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
+          //return assetCountFromGraphql;
           // else {
           //     // AssetCount assetCountFromGraphql =
           //     //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
@@ -440,7 +485,19 @@ class AssetStatusService extends DataBaseService {
           // if (isFromDashboard) {
           AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data['getDashboardAsset']);
-          return assetCountFromGraphql;
+          if (assetCountFromGraphql != null) {
+            bool updated =
+                await updateAssetCount(assetCountFromGraphql, type);
+            Logger().d("updated $updated");
+            if (updated) {
+              return assetCountFromGraphql;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
+         // return assetCountFromGraphql;
           // } else {
           //   // AssetCount assetCountFromGraphql =
           //   //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);

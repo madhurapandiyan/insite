@@ -73,7 +73,6 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                         ),
                       ),
                       Expanded(
-                        flex: 1,
                         child: viewModel.utilLizationListData.isNotEmpty
                             ? ListView.separated(
                                 separatorBuilder: (ctx, i) {
@@ -97,7 +96,8 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
                                   //       100,
                                   // );
 
-                                  return PercentageWidget(
+                                  return CustomPercentageWidget(
+                                    trailText: "",
                                       // trailText: rangeChoice == 1
                                       //     ? viewModel
                                       //         .utilLizationListData[index]

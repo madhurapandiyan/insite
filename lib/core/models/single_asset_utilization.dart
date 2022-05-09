@@ -100,7 +100,7 @@ class Data {
   dynamic capabilities;
   dynamic message;
   DateTime? date;
-  dynamic idleHours;
+  double? idleHours;
   bool? supportsIdle;
   double? runtimeHours;
   String? workDefinitionType;

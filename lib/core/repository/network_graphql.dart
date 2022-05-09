@@ -66,9 +66,9 @@ class Network {
       // customerUserId = userId;
       // customerUid = customerId;
       // subUid = subId;
-      Logger().w(customerId);
-      Logger().w(userId);
-      Logger().w(subId);
+      // Logger().w(customerId);
+      // Logger().w(userId);
+      // Logger().w(subId);
 
       final Link link = DioLink(
         graphqlEndpoint,

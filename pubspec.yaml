@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.0.6+6
+version: 2.0.7+7
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
@@ -46,7 +46,7 @@ dependencies:
 
   syncfusion_flutter_calendar: ^19.1.69
   badges: ^2.0.2
-  flutter_map: ^0.14.0
+  
   flutter_map_marker_cluster: ^0.4.4 # or the latest version on Pub
   fluttertoast: ^8.0.8
   graphql_flutter: any

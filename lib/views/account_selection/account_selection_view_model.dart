@@ -252,9 +252,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
         _secondaryLoading = false;
         notifyListeners();
       }
-    } else {
-      Logger().e("mappiy");
-    }
+    } else {}
   }
 
   setSubAccountSelected(Customer value) {
