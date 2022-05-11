@@ -113,7 +113,7 @@ class FilterViewModel extends InsiteViewModel {
       //     false);
       // addData(filterDataSubscription, resultSubscriptiontype,
       //     FilterType.SUBSCRIPTION_DATE);
-    } else if (screenType == ScreenType.HEALTH) {
+    } if (screenType == ScreenType.HEALTH) {
       AssetCount? resultSeverity = await _assetService!.getFaultCount(
           Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
           Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
@@ -123,7 +123,7 @@ class FilterViewModel extends InsiteViewModel {
             endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
           ));
       addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
-    } else if (screenType == ScreenType.USER_MANAGEMENT) {
+    } if (screenType == ScreenType.USER_MANAGEMENT) {
       AssetCount? resultJobType = await _assetService!.getAssetCount(
           "JobType",
           FilterType.JOBTYPE,
@@ -137,7 +137,7 @@ class FilterViewModel extends InsiteViewModel {
           graphqlSchemaService!.getUserManagementRefine("UserType"),
           null);
       addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
-    } else if (screenType == ScreenType.MANAGE_REPORT) {
+    } if (screenType == ScreenType.MANAGE_REPORT) {
       ReportCount? resultReportFrequencyType = await _assetService!
           .getCountReportData(graphqlSchemaService!.reportFilterCountData);
       addReportData(

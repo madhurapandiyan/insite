@@ -1004,10 +1004,13 @@ userUid,
       String? endDate,
       List<FilterData?>? filtlerList,
       int? pageNo,
+      double? lati,
+      double? longi,
+      double? radius,
       int? pageSize}) async {
     await cleaValue();
     await clearAllList();
-
+    await gettingFiltersValue(filtlerList);
     await gettingLocationFilter(filtlerList);
 
     final String fleetLocationData = """
@@ -1020,6 +1023,9 @@ sort:"assetid"
 assetIdentifier: ""
 startDateLocal:"$startDate"
 endDateLocal: "$endDate"
+latitude:$lati
+longitude:$longi
+radiuskm:$radius
 search:{
   manufacturer: ${manufacturerList.isEmpty ? [] : manufacturerList}
 model: ${modelList.isEmpty ? [] : modelList}

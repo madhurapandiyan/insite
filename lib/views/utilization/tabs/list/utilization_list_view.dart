@@ -54,26 +54,30 @@ class UtilizationListViewState extends State<UtilizationListView> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 24),
+                          vertical: 10.0, horizontal: 24),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          InsiteText(
-                              text: Utils.getDateInFormatddMMyyyy(
+                          // InsiteText(
+                          //     text: Utils.getDateInFormatddMMyyyy(
+                          //             viewModel.startDate) +
+                          //         " - " +
+                          //         Utils.getDateInFormatddMMyyyy(
+                          //             viewModel.endDate),
+                          //     fontWeight: FontWeight.bold,
+                          //     size: 11),
+                          // SizedBox(
+                          //   width: 4,
+                          // ),
+                          InsiteButton(
+                            title:  Utils.getDateInFormatddMMyyyy(
                                       viewModel.startDate) +
                                   " - " +
                                   Utils.getDateInFormatddMMyyyy(
                                       viewModel.endDate),
-                              fontWeight: FontWeight.bold,
-                              size: 11),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          InsiteButton(
-                            title: "Date Range",
-                            width: 90,
-                            bgColor: Theme.of(context).backgroundColor,
+                            //width: 90,
+                            //bgColor: Theme.of(context).backgroundColor,
                             textColor:
                                 Theme.of(context).textTheme.bodyText1!.color,
                             onTap: () async {

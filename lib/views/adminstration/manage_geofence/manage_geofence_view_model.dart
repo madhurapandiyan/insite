@@ -45,11 +45,11 @@ class ManageGeofenceViewModel extends InsiteViewModel {
     _geofence = await _geofenceservice!.getGeofenceData();
 
     try {
-      for (var i = 0; i < _geofence!.Geofences!.length; i++) {
+      for (var i = 0; i < _geofence!.geofences!.length; i++) {
         // _geofence!.Geofences![i].IsFavorite =
         //     (_geofence!.Geofences![i].IsFavorite as String).parseBool();
 
-        String? wktText = _geofence?.Geofences?[i].GeometryWKT;
+        String? wktText = _geofence?.geofences?[i].GeometryWKT;
         listOfWKTstring.add(wktText);
         final geofenceData =
             geo.wktProjected.parse(listOfWKTstring[i]!) as geo.Polygon;
@@ -69,10 +69,10 @@ class ManageGeofenceViewModel extends InsiteViewModel {
   }
 
   markFavouriteStatus(String uid, int index) async {
-    _geofence!.Geofences![index].IsFavorite =
-        !_geofence!.Geofences![index].IsFavorite!;
+    _geofence!.geofences![index].IsFavorite =
+        !_geofence!.geofences![index].IsFavorite!;
     notifyListeners();
-    if (_geofence!.Geofences![index].IsFavorite!) {
+    if (_geofence!.geofences![index].IsFavorite!) {
       await _geofenceservice!.markFavourite(uid, "MarkFavorite?", true);
     } else {
       await _geofenceservice!.markFavourite(uid, "MarkUnfavorite?", false);
@@ -98,7 +98,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
               )));
       if (value) {
         showLoadingDialog();
-        geofence!.Geofences!.removeAt(i);
+        geofence!.geofences!.removeAt(i);
         var data = await _geofenceservice!.deleteGeofence(uid, actionUTC);
       }
 
@@ -122,7 +122,7 @@ class ManageGeofenceViewModel extends InsiteViewModel {
 
   getEncodedPolylines(List<geo.PointSeries<geo.Point<num>>> pointslist) {
     try {
-      if (_geofence!.Geofences!.isEmpty) {
+      if (_geofence!.geofences!.isEmpty) {
         isLoading = false;
         notifyListeners();
       } else {

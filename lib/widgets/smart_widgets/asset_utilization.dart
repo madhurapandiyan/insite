@@ -37,7 +37,7 @@ class AssetUtilizationWidget extends StatefulWidget {
 }
 
 class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
-  bool isAverageButtonSelected = true;
+  bool isAverageButtonSelected = false;
   List<bool> shouldShowLabel = [true, true, true];
   @override
   Widget build(BuildContext context) {
@@ -91,11 +91,11 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                         child: Row(
                           children: [
                             ToggleButton(
-                                label1: 'average',
-                                label2: 'total',
+                                label2: 'average',
+                                label1: 'total',
                                 optionSelected: (bool value) {
                                   setState(() {
-                                    isAverageButtonSelected = value;
+                                    isAverageButtonSelected = !value;
                                   });
                                 }),
                             Expanded(

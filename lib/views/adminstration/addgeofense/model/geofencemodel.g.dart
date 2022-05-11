@@ -7,13 +7,13 @@ part of 'geofencemodel.dart';
 // **************************************************************************
 
 Geofence _$GeofenceFromJson(Map<String, dynamic> json) => Geofence(
-      Geofences: (json['Geofences'] as List<dynamic>?)
+      geofences: (json['geofences'] as List<dynamic>?)
           ?.map((e) => Geofencemodeldata.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$GeofenceToJson(Geofence instance) => <String, dynamic>{
-      'Geofences': instance.Geofences?.map((e) => e.toJson()).toList(),
+      'geofences': instance.geofences?.map((e) => e.toJson()).toList(),
     };
 
 Geofencemodeldata _$GeofencemodeldataFromJson(Map<String, dynamic> json) =>

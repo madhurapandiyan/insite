@@ -74,6 +74,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                           color: Theme.of(context).buttonColor),
                       onPressed: () {
                         viewModel.onHomePressed();
+                        viewModel.onClearFilterValue();
                       })
                   : (screenType == ScreenType.ACCOUNT ||
                           screenType == ScreenType.HOME)

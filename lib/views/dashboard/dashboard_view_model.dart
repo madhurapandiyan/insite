@@ -51,7 +51,7 @@ class DashboardViewModel extends InsiteViewModel {
   bool _assetLocationloading = true;
   bool get assetLocationloading => _assetLocationloading;
 
-  IdlingLevelRange _idlingLevelRange = IdlingLevelRange.DAY;
+  IdlingLevelRange _idlingLevelRange = IdlingLevelRange.WEEK;
   IdlingLevelRange get idlingLevelRange => _idlingLevelRange;
   set idlingLevelRange(IdlingLevelRange catchedRange) {
     this._idlingLevelRange = catchedRange;
@@ -221,18 +221,18 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getFilterAssetCount() async {
-    AssetCount? result = await _assetService!.getAssetCount(
-        null,
-        FilterType.ASSET_STATUS,
-        graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
-        true);
-    if (result != null) {
-      if (result.countData!.isNotEmpty && result.countData![0].count != null) {
-        _totalCount = result.countData![0].count!.toInt();
-      }
-    }
-  }
+  // getFilterAssetCount() async {
+  //   AssetCount? result = await _assetService!.getAssetCount(
+  //       null,
+  //       FilterType.ASSET_STATUS,
+  //       graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
+  //       true);
+  //   if (result != null) {
+  //     if (result.countData!.isNotEmpty && result.countData![0].count != null) {
+  //       _totalCount = result.countData![0].count!.toInt();
+  //     }
+  //   }
+  // }
 
   getProductFamilyAssetCount() async {
     if (_currentFilterSelected != null) {
@@ -481,11 +481,11 @@ class DashboardViewModel extends InsiteViewModel {
       // await addFilter(filterData);
       _refreshing = true;
       notifyListeners();
-      if (isFromProdFamily) {
-        await getProductFamilyAssetCount();
-      } else {
-        await getAssetCount();
-      }
+      // if (isFromProdFamily) {
+      //   await getProductFamilyAssetCount();
+      // } else {
+      //   await getAssetCount();
+      // }
 
       await getAssetStatusFilterApplied(filterData.title);
       await getFuelLevelFilterApplied(filterData.title);

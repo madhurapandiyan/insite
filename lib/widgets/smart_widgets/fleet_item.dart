@@ -141,10 +141,11 @@ class FleetListItem extends StatelessWidget {
                               ),
                               InsiteTableRowItem(
                                 title: "Fuel - Last Reported     ",
-                                content: fleet!.lastPercentFuelRemainingUTC != null
-                                    ? Utils.getLastReportedDateOneUTC(
-                                        fleet!.lastPercentFuelRemainingUTC)
-                                    : "-",
+                                content:
+                                    fleet!.lastPercentFuelRemainingUTC != null
+                                        ? Utils.getLastReportedDateOneUTC(
+                                            fleet!.lastPercentFuelRemainingUTC)
+                                        : "-",
                               ),
                             ]),
                             TableRow(children: [
@@ -207,7 +208,9 @@ class FleetListItem extends StatelessWidget {
                             // ])
                           ],
                         ),
-                        SizedBox(height: 10,)
+                        SizedBox(
+                          height: 10,
+                        )
                       ],
                     )
                   ],

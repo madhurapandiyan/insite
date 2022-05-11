@@ -267,29 +267,29 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                            widget.screenType != ScreenType.USER_MANAGEMENT &&
-                                    widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
-                                // widget.screenType != ScreenType.FLEET &&
-                                // widget.screenType !=
-                                //     ScreenType.UTILIZATION &&
-                                // widget.screenType !=
-                                //     ScreenType.ASSET_OPERATION &&
+                            // widget.screenType != ScreenType.USER_MANAGEMENT &&
+                            //         widget.screenType !=
+                            //             ScreenType.MANAGE_REPORT
+                            //     // widget.screenType != ScreenType.FLEET &&
+                            //     // widget.screenType !=
+                            //     //     ScreenType.UTILIZATION &&
+                            //     // widget.screenType !=
+                            //     //     ScreenType.ASSET_OPERATION &&
 
-                                // widget.screenType != ScreenType.HEALTH
-                                ? LocationSearch(
-                                    filterType: FilterType.LOCATION_SEARCH,
-                                    data: [],
-                                    onApply: (List<FilterData> list) {
-                                      viewModel.onFilterSelected(
-                                          list, FilterType.LOCATION_SEARCH);
-                                    },
-                                    onClear: () {
-                                      viewModel.onFilterCleared(
-                                          FilterType.LOCATION_SEARCH);
-                                    },
-                                  )
-                                : SizedBox(),
+                            //     // widget.screenType != ScreenType.HEALTH
+                            //     ? LocationSearch(
+                            //         filterType: FilterType.LOCATION_SEARCH,
+                            //         data: [],
+                            //         onApply: (List<FilterData> list) {
+                            //           viewModel.onFilterSelected(
+                            //               list, FilterType.LOCATION_SEARCH);
+                            //         },
+                            //         onClear: () {
+                            //           viewModel.onFilterCleared(
+                            //               FilterType.LOCATION_SEARCH);
+                            //         },
+                            //       )
+                            //     : SizedBox(),
 
                             // FilterItem(
                             //   filterType: FilterType.APPLICATION,
@@ -305,57 +305,57 @@ class _FilterViewState extends State<FilterView> {
                             //   },
                             // ),
 
-                            widget.screenType != ScreenType.USER_MANAGEMENT &&
-                                    widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
-                                //  widget.screenType != ScreenType.FLEET &&
-                                //   widget.screenType !=
-                                //       ScreenType.UTILIZATION &&
-                                //   widget.screenType !=
-                                //       ScreenType.ASSET_OPERATION &&
-                                //   widget.screenType != ScreenType.HEALTH&&
-                                //   widget.screenType!=ScreenType.LOCATION
-                                ? FilterItem(
-                                    isExpand: viewModel.isShowing,
-                                    filterType: FilterType.ASSET_COMMISION_DATE,
-                                    key: filterAssetCommisionDateKey,
-                                    data: [],
-                                    onApply: (List<FilterData> list) {
-                                      viewModel.onFilterSelected(list,
-                                          FilterType.ASSET_COMMISION_DATE);
-                                    },
-                                    onClear: () {
-                                      viewModel.onFilterCleared(
-                                          FilterType.ASSET_COMMISION_DATE);
-                                    },
-                                  )
-                                : SizedBox(),
+                            // widget.screenType != ScreenType.USER_MANAGEMENT &&
+                            //         widget.screenType !=
+                            //             ScreenType.MANAGE_REPORT
+                            //     //  widget.screenType != ScreenType.FLEET &&
+                            //     //   widget.screenType !=
+                            //     //       ScreenType.UTILIZATION &&
+                            //     //   widget.screenType !=
+                            //     //       ScreenType.ASSET_OPERATION &&
+                            //     //   widget.screenType != ScreenType.HEALTH&&
+                            //     //   widget.screenType!=ScreenType.LOCATION
+                            //     ? FilterItem(
+                            //         isExpand: viewModel.isShowing,
+                            //         filterType: FilterType.ASSET_COMMISION_DATE,
+                            //         key: filterAssetCommisionDateKey,
+                            //         data: [],
+                            //         onApply: (List<FilterData> list) {
+                            //           viewModel.onFilterSelected(list,
+                            //               FilterType.ASSET_COMMISION_DATE);
+                            //         },
+                            //         onClear: () {
+                            //           viewModel.onFilterCleared(
+                            //               FilterType.ASSET_COMMISION_DATE);
+                            //         },
+                            //       )
+                            //     : SizedBox(),
 
-                            widget.screenType != ScreenType.USER_MANAGEMENT &&
-                                    widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
-                                //  widget.screenType != ScreenType.FLEET &&
-                                //   widget.screenType !=
-                                //       ScreenType.UTILIZATION &&
-                                //   widget.screenType !=
-                                //       ScreenType.ASSET_OPERATION &&
-                                //   widget.screenType != ScreenType.HEALTH &&
-                                //   widget.screenType != ScreenType.LOCATION
-                                ? FilterItem(
-                                    isExpand: viewModel.isShowing,
-                                    filterType: FilterType.SUBSCRIPTION_DATE,
-                                    key: filterSubscriptionTypesKey,
-                                    data: viewModel.filterDataSubscription,
-                                    onApply: (List<FilterData> list) {
-                                      viewModel.onFilterSelected(
-                                          list, FilterType.SUBSCRIPTION_DATE);
-                                    },
-                                    onClear: () {
-                                      viewModel.onFilterCleared(
-                                          FilterType.SUBSCRIPTION_DATE);
-                                    },
-                                  )
-                                : SizedBox(),
+                            // widget.screenType != ScreenType.USER_MANAGEMENT &&
+                            //         widget.screenType !=
+                            //             ScreenType.MANAGE_REPORT
+                            //     //  widget.screenType != ScreenType.FLEET &&
+                            //     //   widget.screenType !=
+                            //     //       ScreenType.UTILIZATION &&
+                            //     //   widget.screenType !=
+                            //     //       ScreenType.ASSET_OPERATION &&
+                            //     //   widget.screenType != ScreenType.HEALTH &&
+                            //     //   widget.screenType != ScreenType.LOCATION
+                            //     ? FilterItem(
+                            //         isExpand: viewModel.isShowing,
+                            //         filterType: FilterType.SUBSCRIPTION_DATE,
+                            //         key: filterSubscriptionTypesKey,
+                            //         data: viewModel.filterDataSubscription,
+                            //         onApply: (List<FilterData> list) {
+                            //           viewModel.onFilterSelected(
+                            //               list, FilterType.SUBSCRIPTION_DATE);
+                            //         },
+                            //         onClear: () {
+                            //           viewModel.onFilterCleared(
+                            //               FilterType.SUBSCRIPTION_DATE);
+                            //         },
+                            //       )
+                            //     : SizedBox(),
 
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=

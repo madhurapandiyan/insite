@@ -16,6 +16,8 @@ import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../theme/colors.dart';
+
 class LocationView extends StatefulWidget {
   @override
   _LocationViewState createState() => _LocationViewState();
@@ -56,7 +58,7 @@ class _LocationViewState extends State<LocationView> {
                 ? InsiteProgressBar()
                 : viewModel.assetLocation != null
                     ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 16, top: 16),
@@ -69,136 +71,55 @@ class _LocationViewState extends State<LocationView> {
                               size: 16,
                             ),
                           ),
-                          Container(
-                            margin: EdgeInsets.all(16.0),
-                            width: MediaQuery.of(context).size.width * 1,
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).backgroundColor,
-                                border: Border.all(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1!
-                                        .color!),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(4))),
-                            child: Padding(
-                              padding:
-                                  EdgeInsets.only(top: 10, left: 10, bottom: 5),
-                              child: InsiteText(
-                                text: viewModel
-                                        .assetLocation!.mapRecords!.length
-                                        .toString() +
-                                    " Assets",
-// text: viewModel
-                                //         .assetLocation!.mapRecords!.length
-                                //         .toString() +
-                                //     " of " +
-                                //     viewModel.totalCount.toString() +
-                                //     " assets",
-                                size: 15,
-                                fontWeight: FontWeight.w700,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: PageHeader(
+                                  isDashboard: true,
+                                  total: viewModel
+                                      .assetLocation!.mapRecords!.length,
+                                  screenType: ScreenType.LOCATION,
+                                  count: 0,
+                                ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InsiteButton(
+                              Padding(
+                                padding: EdgeInsets.only(top: 16, right: 16),
+                                child: InsiteButton(
+                                  fontSize: 13,
+                                  width: 100,
+                                  height: 40,
+                                  textColor: white,
                                   title: "Refresh",
-                                  width: 90,
-                                  height: 30,
-                                  bgColor: Theme.of(context).backgroundColor,
-                                  textColor: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color,
                                   onTap: () {
                                     viewModel.customInfoWindowController
                                         .hideInfoWindow!();
                                     viewModel.refresh();
                                   },
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // // // Text(
-                                    // // //   Utils.getDateInFormatddMMyyyy(
-                                    // // //           viewModel.startDate) +
-                                    // // //       " - " +
-                                    // // //       Utils.getDateInFormatddMMyyyy(
-                                    // // //           viewModel.endDate),
-                                    // // //   style: TextStyle(
-                                    // // //       color: white,
-                                    // // //       fontWeight: FontWeight.bold,
-                                    // // //       fontSize: 12),
-                                    // // // ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    // // // GestureDetector(
-                                    // // //   onTap: () async {
-                                    // // //     dateRange = await showDialog(
-                                    // // //       context: context,
-                                    // // //       builder: (BuildContext context) =>
-                                    // // //           Dialog(
-                                    // // //               backgroundColor: transparent,
-                                    // // //               child: DateRangeView()),
-                                    // // //     );
-                                    // // //     if (dateRange != null &&
-                                    // // //         dateRange.isNotEmpty) {
-                                    // // //       viewModel.customInfoWindowController
-                                    // // //           .hideInfoWindow();
-                                    // // //       viewModel.refresh();
-                                    // // //     }
-                                    // // //   },
-                                    // // //   child: Container(
-                                    // // //     width: 90,
-                                    // // //     height: 30,
-                                    // // //     decoration: BoxDecoration(
-                                    // // //       color: tuna,
-                                    // // //       borderRadius: BorderRadius.all(
-                                    // // //         Radius.circular(4),
-                                    // // //       ),
-                                    // // //     ),
-                                    // // //     child: Center(
-                                    // // //       child: Text(
-                                    // // //         'Date Range',
-                                    // // //         style: TextStyle(
-                                    // // //           color: white,
-                                    // // //           fontSize: 12,
-                                    // // //           fontWeight: FontWeight.bold,
-                                    // // //         ),
-                                    // // //       ),
-                                    // // //     ),
-                                    // // //   ),
-                                    // // // ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                              )
+                            ],
                           ),
-                          viewModel.showingCard
-                              ? Container(
-                                  margin: EdgeInsets.all(16.0),
-                                  color: Theme.of(context).cardColor,
-                                  width: MediaQuery.of(context).size.width * 1,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  child: Center(
-                                    child: InsiteText(
-                                      text: viewModel.assetInvalidLocationCount
-                                              .toString() +
-                                          " out of " +
-                                          viewModel.totalCount.toString() +
-                                          " assets do not have location information",
-                                    ),
-                                  ),
-                                )
-                              : SizedBox(),
+
+                          // viewModel.showingCard
+                          //     ? Container(
+                          //         margin: EdgeInsets.all(16.0),
+                          //         color: Theme.of(context).cardColor,
+                          //         width: MediaQuery.of(context).size.width * 1,
+                          //         height:
+                          //             MediaQuery.of(context).size.height * 0.05,
+                          //         child: Center(
+                          //           child: InsiteText(
+                          //             text: viewModel.assetInvalidLocationCount
+                          //                     .toString() +
+                          //                 " out of " +
+                          //                 viewModel.totalCount.toString() +
+                          //                 " assets do not have location information",
+                          //           ),
+                          //         ),
+                          //       )
+                          //     : SizedBox(),
                           SizedBox(height: 10),
                           Expanded(
                             child: Stack(
@@ -275,183 +196,199 @@ class _LocationViewState extends State<LocationView> {
                                       MediaQuery.of(context).size.height * 0.36,
                                   offset: 1,
                                 ),
-                                Positioned(
-                                   top: MediaQuery.of(context).size.height*0.35,
-                                   left: MediaQuery.of(context).size.width*0.85,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 10, top: 10, bottom: 10),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
                                     child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        SizedBox(
-                                          height: 50.0,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            zoomVal++;
-                                            _plus(
-                                                zoomVal,
-                                                LatLng(
-                                                    viewModel
-                                                        .assetLocation!
-                                                        .mapRecords!
-                                                        .first!
-                                                        .lastReportedLocationLatitude!,
-                                                    viewModel
-                                                        .assetLocation!
-                                                        .mapRecords!
-                                                        .first!
-                                                        .lastReportedLocationLongitude!),
-                                                viewModel);
-                                          },
-                                          child: Container(
-                                            width: 27.47,
-                                            height: 26.97,
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .backgroundColor,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  blurRadius: 1.0,
+                                        Container(
+                                          color:
+                                              Theme.of(context).backgroundColor,
+
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
+                                          // decoration: BoxDecoration(
+                                          //     border:
+                                          //         Border.all(width: 2, color: tuna)),
+                                          child: DropdownButton(
+                                            dropdownColor: Theme.of(context)
+                                                .backgroundColor,
+                                            icon: Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 4.0),
+                                              child: Container(
+                                                child: SvgPicture.asset(
+                                                  "assets/images/arrowdown.svg",
+                                                  width: 10,
                                                   color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1!
-                                                      .color!,
+                                                      .iconTheme
+                                                      .color,
+                                                  height: 10,
                                                 ),
-                                              ],
-                                              border: Border.all(
-                                                  width: 1.0,
+                                              ),
+                                            ),
+                                            isExpanded: false,
+                                            hint: Text(
+                                              _currentSelectedItem,
+                                              style: TextStyle(
                                                   color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1!
-                                                      .color!),
-                                              shape: BoxShape.rectangle,
+                                                      .backgroundColor),
                                             ),
-                                            child: SvgPicture.asset(
-                                              "assets/images/plus.svg",
-                                              color: Theme.of(context)
-                                                  .iconTheme
-                                                  .color,
-                                            ),
+                                            items: [
+                                              'MAP',
+                                              'TERRAIN',
+                                              'SATELLITE',
+                                              'HYBRID'
+                                            ]
+                                                .map((map) => DropdownMenuItem(
+                                                      value: map,
+                                                      child: InsiteText(
+                                                        text: map,
+                                                        size: 11.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ))
+                                                .toList(),
+                                            value: _currentSelectedItem,
+                                            onChanged: (String? value) {
+                                              setState(() {
+                                                _currentSelectedItem = value!;
+                                              });
+                                            },
+                                            underline: Container(
+                                                height: 1.0,
+                                                decoration: BoxDecoration(
+                                                    border: Border(
+                                                        bottom: BorderSide(
+                                                            color: Colors
+                                                                .transparent,
+                                                            width: 0.0)))),
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        GestureDetector(
-                                            onTap: () {
-                                              zoomVal--;
-                                              _minus(
-                                                  zoomVal,
-                                                  LatLng(
-                                                      viewModel
-                                                          .assetLocation!
-                                                          .mapRecords!
-                                                          .first!
-                                                          .lastReportedLocationLatitude!,
-                                                      viewModel
-                                                          .assetLocation!
-                                                          .mapRecords!
-                                                          .first!
-                                                          .lastReportedLocationLongitude!),
-                                                  viewModel);
-                                            },
-                                            child: Container(
-                                              width: 27.47,
-                                              height: 26.97,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .backgroundColor,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0)),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    blurRadius: 1.0,
+                                        Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                zoomVal++;
+                                                _plus(
+                                                    zoomVal,
+                                                    LatLng(
+                                                        viewModel
+                                                            .assetLocation!
+                                                            .mapRecords!
+                                                            .first!
+                                                            .lastReportedLocationLatitude!,
+                                                        viewModel
+                                                            .assetLocation!
+                                                            .mapRecords!
+                                                            .first!
+                                                            .lastReportedLocationLongitude!),
+                                                    viewModel);
+                                              },
+                                              child: Container(
+                                                width: 27.47,
+                                                height: 26.97,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .backgroundColor,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5.0)),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      blurRadius: 1.0,
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .color!,
+                                                    ),
+                                                  ],
+                                                  border: Border.all(
+                                                      width: 1.0,
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText1!
+                                                          .color!),
+                                                  shape: BoxShape.rectangle,
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  "assets/images/plus.svg",
+                                                  color: Theme.of(context)
+                                                      .iconTheme
+                                                      .color,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            GestureDetector(
+                                                onTap: () {
+                                                  zoomVal--;
+                                                  _minus(
+                                                      zoomVal,
+                                                      LatLng(
+                                                          viewModel
+                                                              .assetLocation!
+                                                              .mapRecords!
+                                                              .first!
+                                                              .lastReportedLocationLatitude!,
+                                                          viewModel
+                                                              .assetLocation!
+                                                              .mapRecords!
+                                                              .first!
+                                                              .lastReportedLocationLongitude!),
+                                                      viewModel);
+                                                },
+                                                child: Container(
+                                                  width: 27.47,
+                                                  height: 26.97,
+                                                  decoration: BoxDecoration(
                                                     color: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1!
-                                                        .color!,
+                                                        .backgroundColor,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                5.0)),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        blurRadius: 1.0,
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1!
+                                                            .color!,
+                                                      ),
+                                                    ],
+                                                    border: Border.all(
+                                                        width: 1.0,
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1!
+                                                            .color!),
+                                                    shape: BoxShape.rectangle,
                                                   ),
-                                                ],
-                                                border: Border.all(
-                                                    width: 1.0,
+                                                  child: SvgPicture.asset(
+                                                    "assets/images/minus.svg",
                                                     color: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1!
-                                                        .color!),
-                                                shape: BoxShape.rectangle,
-                                              ),
-                                              child: SvgPicture.asset(
-                                                "assets/images/minus.svg",
-                                                color: Theme.of(context)
-                                                    .iconTheme
-                                                    .color,
-                                              ),
-                                            )),
+                                                        .iconTheme
+                                                        .color,
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                ),
-                                Container(
-                                  color: Theme.of(context).backgroundColor,
-                                  margin: EdgeInsets.only(left: 10, top: 5),
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
-                                  // decoration: BoxDecoration(
-                                  //     border:
-                                  //         Border.all(width: 2, color: tuna)),
-                                  child: DropdownButton(
-                                    dropdownColor:
-                                        Theme.of(context).backgroundColor,
-                                    icon: Padding(
-                                      padding: EdgeInsets.only(right: 4.0),
-                                      child: Container(
-                                        child: SvgPicture.asset(
-                                          "assets/images/arrowdown.svg",
-                                          width: 10,
-                                          color:
-                                              Theme.of(context).iconTheme.color,
-                                          height: 10,
-                                        ),
-                                      ),
-                                    ),
-                                    isExpanded: false,
-                                    hint: Text(
-                                      _currentSelectedItem,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .backgroundColor),
-                                    ),
-                                    items: [
-                                      'MAP',
-                                      'TERRAIN',
-                                      'SATELLITE',
-                                      'HYBRID'
-                                    ]
-                                        .map((map) => DropdownMenuItem(
-                                              value: map,
-                                              child: InsiteText(
-                                                text: map,
-                                                size: 11.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ))
-                                        .toList(),
-                                    value: _currentSelectedItem,
-                                    onChanged: (String? value) {
-                                      setState(() {
-                                        _currentSelectedItem = value!;
-                                      });
-                                    },
-                                    underline: Container(
-                                        height: 1.0,
-                                        decoration: BoxDecoration(
-                                            border: Border(
-                                                bottom: BorderSide(
-                                                    color: Colors.transparent,
-                                                    width: 0.0)))),
                                   ),
                                 ),
                                 viewModel.refreshing
