@@ -60,22 +60,26 @@ class _SingleAssetUtilizationGraphViewState
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    InsiteText(
-                        text: Utils.getDateInFormatddMMyyyy(
-                                viewModel.startDate) +
-                            " - " +
-                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                        fontWeight: FontWeight.bold,
-                        size: 11),
-                    SizedBox(
-                      width: 4,
-                    ),
+                    // InsiteText(
+                    //     text: Utils.getDateInFormatddMMyyyy(
+                    //             viewModel.startDate) +
+                    //         " - " +
+                    //         Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                    //     fontWeight: FontWeight.bold,
+                    //     size: 11),
+                    // SizedBox(
+                    //   width: 4,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: InsiteButton(
-                        title: "Date Range",
-                        width: 90,
-                        bgColor: Theme.of(context).backgroundColor,
+                        title: Utils.getDateInFormatddMMyyyy(
+                                        viewModel.startDate) +
+                                    " - " +
+                                    Utils.getDateInFormatddMMyyyy(
+                                        viewModel.endDate),
+                       // width: 90,
+                        //bgColor: Theme.of(context).backgroundColor,
                         textColor: Theme.of(context).textTheme.bodyText1!.color,
                         onTap: () async {
                           dateRange = [];

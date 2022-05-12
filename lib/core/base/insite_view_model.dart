@@ -4,6 +4,7 @@ import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants.dart';
+import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
@@ -45,6 +46,7 @@ abstract class InsiteViewModel extends BaseViewModel {
   GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
   NotificationService? _mainNotificationService =
       locator<NotificationService>();
+  AssetStatusService? _assetStatusService = locator<AssetStatusService>();
 
   bool _youDontHavePermission = false;
   bool get youDontHavePermission => _youDontHavePermission;
@@ -153,6 +155,11 @@ abstract class InsiteViewModel extends BaseViewModel {
       Logger().w("start date $startDate");
       Logger().w("end date $endDate");
     }
+  }
+
+  onClearFilterValue() async {
+    await _assetStatusService!.setUp();
+    _assetStatusService!.onClearLocalFilter();
   }
 
   bool isAlreadSelected(String? name, FilterType type) {

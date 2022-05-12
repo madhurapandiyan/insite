@@ -486,8 +486,7 @@ class AssetStatusService extends DataBaseService {
           AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data['getDashboardAsset']);
           if (assetCountFromGraphql != null) {
-            bool updated =
-                await updateAssetCount(assetCountFromGraphql, type);
+            bool updated = await updateAssetCount(assetCountFromGraphql, type);
             Logger().d("updated $updated");
             if (updated) {
               return assetCountFromGraphql;
@@ -497,7 +496,7 @@ class AssetStatusService extends DataBaseService {
           } else {
             return null;
           }
-         // return assetCountFromGraphql;
+          // return assetCountFromGraphql;
           // } else {
           //   // AssetCount assetCountFromGraphql =
           //   //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
@@ -884,6 +883,12 @@ class AssetStatusService extends DataBaseService {
     } catch (e) {
       Logger().e(e);
       return null;
+    }
+  }
+
+  onClearLocalFilter() {
+    if (assetCountBox != null) {
+      assetCountBox.clear();
     }
   }
 

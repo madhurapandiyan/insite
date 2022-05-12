@@ -53,7 +53,7 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                             ],
                           ),
                         ),
-                        viewModel.geofence!.Geofences!.isEmpty
+                        viewModel.geofence!.geofences!.isEmpty
                             ? Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -70,8 +70,8 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                               )
                             : Column(
                                 children: List.generate(
-                                    viewModel.geofence!.Geofences!.length, (i) {
-                                var model = viewModel.geofence!.Geofences!;
+                                    viewModel.geofence!.geofences!.length, (i) {
+                                var model = viewModel.geofence!.geofences!;
                                 return Column(
                                   children: [
                                     ManageGeofenceWidget(

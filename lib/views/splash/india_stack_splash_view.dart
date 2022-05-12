@@ -12,6 +12,7 @@ import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
+
 import 'splash_view_model.dart';
 
 class IndiaStackSplashView extends StatefulWidget {
