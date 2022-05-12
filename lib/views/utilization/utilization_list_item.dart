@@ -526,8 +526,8 @@ class UtilizationListItem extends StatelessWidget {
                                                       null
                                                   ? (utilizationData!
                                                                   .targetRuntimePerformance! *
-                                                              100)
-                                                          .toString() +
+                                                              100).toStringAsFixed(2)
+                                                           +
                                                       " %"
                                                   : "",
                                             ),
@@ -591,7 +591,7 @@ class UtilizationListItem extends StatelessWidget {
                                                   ? (utilizationData!
                                                                   .targetIdlePerformance! *
                                                               100)
-                                                          .toString() +
+                                                          .toStringAsFixed(2)+
                                                       " %"
                                                   : "",
                                             ),

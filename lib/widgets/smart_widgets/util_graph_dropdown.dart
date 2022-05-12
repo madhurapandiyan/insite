@@ -61,7 +61,7 @@ class _UtilGraphDropdownWidgetState extends State<UtilGraphDropdownWidget> {
         // 'Total Hours',
         'Total Fuel Burned (Liters)',
         // 'Idle % Trend',
-        'Fuel Burn Rate Trend'
+        //'Fuel Burn Rate Trend'
       ].map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,

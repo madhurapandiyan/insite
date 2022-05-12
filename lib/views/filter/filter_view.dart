@@ -193,31 +193,31 @@ class _FilterViewState extends State<FilterView> {
                                   )
                                 : SizedBox(),
 
-                            widget.screenType != ScreenType.USER_MANAGEMENT &&
-                                    widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
-                                // widget.screenType != ScreenType.FLEET &&
-                                // widget.screenType !=
-                                //     ScreenType.UTILIZATION &&
-                                // widget.screenType !=
-                                //     ScreenType.ASSET_OPERATION &&
-                                // widget.screenType != ScreenType.LOCATION &&
-                                // widget.screenType != ScreenType.HEALTH
-                                ? FilterItem(
-                                    isExpand: viewModel.isShowing,
-                                    filterType: FilterType.MAKE,
-                                    key: filterMakeKey,
-                                    data: viewModel.filterDataMake,
-                                    onApply: (List<FilterData> list) {
-                                      viewModel.onFilterSelected(
-                                          list, FilterType.MAKE);
-                                    },
-                                    onClear: () {
-                                      viewModel
-                                          .onFilterCleared(FilterType.MAKE);
-                                    },
-                                  )
-                                : SizedBox(),
+                            // widget.screenType != ScreenType.USER_MANAGEMENT &&
+                            //         widget.screenType !=
+                            //             ScreenType.MANAGE_REPORT
+                            //     // widget.screenType != ScreenType.FLEET &&
+                            //     // widget.screenType !=
+                            //     //     ScreenType.UTILIZATION &&
+                            //     // widget.screenType !=
+                            //     //     ScreenType.ASSET_OPERATION &&
+                            //     // widget.screenType != ScreenType.LOCATION &&
+                            //     // widget.screenType != ScreenType.HEALTH
+                            //     ? FilterItem(
+                            //         isExpand: viewModel.isShowing,
+                            //         filterType: FilterType.MAKE,
+                            //         key: filterMakeKey,
+                            //         data: viewModel.filterDataMake,
+                            //         onApply: (List<FilterData> list) {
+                            //           viewModel.onFilterSelected(
+                            //               list, FilterType.MAKE);
+                            //         },
+                            //         onClear: () {
+                            //           viewModel
+                            //               .onFilterCleared(FilterType.MAKE);
+                            //         },
+                            //       )
+                            //     : SizedBox(),
 
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=

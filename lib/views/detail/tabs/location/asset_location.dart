@@ -87,18 +87,22 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             SizedBox(
                               width: 20,
                             ),
-                            InsiteText(
-                                text: Utils.getDateInFormatddMMyyyy(
+                            // InsiteText(
+                            //     text: Utils.getDateInFormatddMMyyyy(
+                            //             viewModel.startDate) +
+                            //         " - " +
+                            //         Utils.getDateInFormatddMMyyyy(
+                            //             viewModel.endDate),
+                            //     fontWeight: FontWeight.bold,
+                            //     size: 12),
+                            InsiteButton(
+                              title:  Utils.getDateInFormatddMMyyyy(
                                         viewModel.startDate) +
                                     " - " +
                                     Utils.getDateInFormatddMMyyyy(
                                         viewModel.endDate),
-                                fontWeight: FontWeight.bold,
-                                size: 12),
-                            InsiteButton(
-                              title: "Date Range",
-                              width: 90,
-                              bgColor: Theme.of(context).backgroundColor,
+                             // width: 90,
+                              //bgColor: Theme.of(context).backgroundColor,
                               textColor:
                                   Theme.of(context).textTheme.bodyText1!.color,
                               onTap: () async {
