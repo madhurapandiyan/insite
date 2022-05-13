@@ -9,6 +9,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:load/load.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/locator.dart';
 import 'core/models/db/asset_count_data.dart';
@@ -17,6 +18,7 @@ import 'core/router_india_stack.dart' as router1;
 import 'core/setup_snackbar_ui.dart';
 
 void main() async {
+  Logger().d("main visionlink");
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();

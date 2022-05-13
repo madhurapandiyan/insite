@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/utils/dialog.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/appbar/appbar_view_model.dart';
@@ -68,27 +67,62 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             AppBar(
               titleSpacing: 0,
-              leading: Platform.isAndroid
-                  ? IconButton(
-                      icon: SvgPicture.asset("assets/images/menubar.svg",
-                          color: Theme.of(context).buttonColor),
-                      onPressed: () {
-                        viewModel.onHomePressed();
-                        viewModel.onClearFilterValue();
-                      })
-                  : (screenType == ScreenType.ACCOUNT ||
-                          screenType == ScreenType.HOME)
+              leadingWidth: 0,
+              // leading: Platform.isAndroid
+              //     ? IconButton(
+              //         icon: SvgPicture.asset("assets/images/menubar.svg",
+              //             color: Theme.of(context).buttonColor),
+              //         onPressed: () {
+              //           viewModel.onHomePressed();
+              //         })
+              //     : (screenType == ScreenType.ACCOUNT ||
+              //             screenType == ScreenType.HOME)
+              //         ? IconButton(
+              //             icon: SvgPicture.asset("assets/images/menubar.svg",
+              //                 color: Theme.of(context).buttonColor),
+              //             onPressed: () {
+              //               viewModel.onHomePressed();
+              //             })
+              //         : BackButton(
+              //             color: Theme.of(context).buttonColor,
+              //           ),
+              title: Row(
+                children: [
+                  Platform.isAndroid
                       ? IconButton(
                           icon: SvgPicture.asset("assets/images/menubar.svg",
                               color: Theme.of(context).buttonColor),
                           onPressed: () {
                             viewModel.onHomePressed();
                           })
-                      : BackButton(
-                          color: Theme.of(context).buttonColor,
-                        ),
-              title: Row(
-                children: [
+                      : (screenType == ScreenType.ACCOUNT ||
+                              screenType == ScreenType.HOME)
+                          ? IconButton(
+                              icon: SvgPicture.asset(
+                                  "assets/images/menubar.svg",
+                                  width: 20,
+                                  height: 20,
+                                  color: Theme.of(context).buttonColor),
+                              onPressed: () {
+                                viewModel.onHomePressed();
+                              })
+                          : BackButton(
+                              color: Theme.of(context).buttonColor,
+                            ),
+                  Platform.isIOS &&
+                          !(screenType == ScreenType.ACCOUNT ||
+                              screenType == ScreenType.HOME)
+                      ? IconButton(
+                          icon: SvgPicture.asset(
+                            "assets/images/menubar.svg",
+                            color: Theme.of(context).buttonColor,
+                            width: 20,
+                            height: 20,
+                          ),
+                          onPressed: () {
+                            viewModel.onHomePressed();
+                          })
+                      : SizedBox(),
                   InsiteImage(
                     height: 65,
                     width: 65,
