@@ -181,12 +181,12 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
         }
       }
     });
-
   }
 
   getLoginDataV4(code) async {
     Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier, true);
+
     LoginResponse? result =
         await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
@@ -194,6 +194,10 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       await _localService.saveRefreshToken(result.refresh_token);
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString(), false);
+    }
+    LoginResponse? stagedResult = await _loginService.stagedToken();
+    if (stagedResult != null) {
+      _localService.saveStaggedToken(stagedResult.access_token);
     }
   }
 
@@ -222,8 +226,8 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
                   viewModel.shouldLoadWebview &&
                           !AppConfig.instance!.enalbeNativeLogin
                       ? WebviewScaffold(
-                        clearCache: true,
-                        clearCookies: true,
+                          clearCache: true,
+                          clearCookies: true,
                           url: AppConfig.instance!.apiFlavor == "visionlink"
                               ? Uri.encodeFull(
                                   Urls.getV4LoginUrlVL(state, codeChallenge))

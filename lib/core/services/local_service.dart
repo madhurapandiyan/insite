@@ -20,7 +20,9 @@ class LocalService extends BaseService {
   static const String HAS_PERMISSION = "hasPermission";
   static const String USERID = "userId";
   static const String REFRESH_TOKEN = "refresh_token";
-  static const String CODE_VERIFIER="code_verifier";
+  static const String CODE_VERIFIER = "code_verifier";
+  static const String STAGGED_TOKEN = "token";
+
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences!.setBool(IS_LOGGEDIN, isLoggedIn);
   }
@@ -29,11 +31,15 @@ class LocalService extends BaseService {
     return await preferences!.setString(TOKEN, token);
   }
 
-  Future saveCodeVerfier(code_verifier) async{
+  Future saveStaggedToken(token) async {
+    return await preferences!.setString(STAGGED_TOKEN, token);
+  }
+
+  Future saveCodeVerfier(code_verifier) async {
     return await preferences!.setString(CODE_VERIFIER, code_verifier);
   }
 
-  Future getCodeVerifier()async{
+  Future getCodeVerifier() async {
     return await preferences!.getString(CODE_VERIFIER);
   }
 
@@ -53,6 +59,10 @@ class LocalService extends BaseService {
 
   Future<String> getToken() async {
     return preferences!.getString(TOKEN)!;
+  }
+
+  Future<String> getStaggedToken() async {
+    return preferences!.getString(STAGGED_TOKEN)!;
   }
 
   Future saveUserId(String userId) async {

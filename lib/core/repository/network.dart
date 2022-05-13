@@ -71,6 +71,10 @@ class MyApi {
   RestClient? getClientTen() {
     return httpWrapper.clientTen;
   }
+
+  RestClient? getClientEleven() {
+    return httpWrapper.clientEleven;
+  }
 }
 
 class HttpWrapper {
@@ -93,6 +97,7 @@ class HttpWrapper {
   final String _baseUrlSix = "https://cloud.api.trimble.com";
   final String _baseUrlSeven = "https://administrator.myvisionlink.com";
   final String _baseUrlEight = "https://cloud.stage.api.trimblecloud.com/";
+  final String _baseUrlNine = "https://stage.id.trimblecloud.com";
   final bool SHOW_LOGS = true;
   final LocalService? _localService = locator<LocalService>();
   final LoginService? _loginService = locator<LoginService>();
@@ -109,6 +114,7 @@ class HttpWrapper {
   Dio dioEight = new Dio();
   Dio dioNine = new Dio();
   Dio dioTen = new Dio();
+  Dio dioEleven = new Dio();
 
   var client;
   var clientOne;
@@ -121,6 +127,21 @@ class HttpWrapper {
   var clientEight;
   var clientNine;
   var clientTen;
+  var clientEleven;
+
+   Future<Response<dynamic>> dioElevenRetryInterceptor(
+      RequestOptions requestOption) async {
+    Logger().i(requestOption.baseUrl);
+    Logger().i(requestOption.path);
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioEleven.request(requestOption.baseUrl + requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
 
   Future<Response<dynamic>> dioRetryInterceptor(
       RequestOptions requestOption) async {
@@ -689,6 +710,29 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
+    dioEleven.interceptors
+      ..add(InterceptorsWrapper(
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async{
+              if(error.response!.statusCode==401) {
+                await dioElevenRetryInterceptor(error.requestOptions);
+              }
+            },
+        onRequest:
+            (RequestOptions options, RequestInterceptorHandler handler) async {
+          options.headers.addAll({
+            "content-type": "application/x-www-form-urlencoded",
+            "Authorization":
+                "Basic OGM3NTQzYjYtMmE4Ny00NGI4LWE0Y2YtNTA5ZTdmNzc5ODAyOjY3M2Y3MWVmZDQzMTQyMzNhZDFjZDZkODhkZDcxZGFm",
+          });
+          return handler.next(options);
+        },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
+      ));
+
     client = RestClient(dio, baseUrl: AppConfig.instance!.baseUrl);
     clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
     clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
@@ -700,6 +744,7 @@ class HttpWrapper {
     clientEight = RestClient(dioEight, baseUrl: _baseUrlEight);
     clientNine = RestClient(dioNine, baseUrl: _baseUrlSix);
     clientTen = RestClient(dioTen, baseUrl: _baseUrlFive);
+    clientEleven = RestClient(dioEleven, baseUrl: _baseUrlNine);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();

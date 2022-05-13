@@ -426,4 +426,12 @@ class LoginService extends BaseService {
     await getUser(token, shouldRemovePrevRoutes);
     await saveExpiryTime(expiryTime);
   }
+
+  Future<LoginResponse> stagedToken() async {
+    LoginResponse loginResponse =
+        await MyApi().getClientEleven()!.getStagedToken(
+              Urls.loginTokenStaged,
+            );
+    return loginResponse;
+  }
 }

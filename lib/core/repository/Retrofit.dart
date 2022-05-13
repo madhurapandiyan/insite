@@ -1432,6 +1432,11 @@ abstract class RestClient {
     @Query("id_token_hint") String id_Token,
     @Query("post_logout_redirect_uri") String redirectUrl,
   );
+  @POST('{url}')
+  Future<LoginResponse> getStagedToken(
+    @Path() String url,
+  
+  );
 }
 
 @JsonSerializable()
