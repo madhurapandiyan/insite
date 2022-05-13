@@ -625,6 +625,7 @@ locationReportedTimeUTC
   """;
   utilizationToatlCount(
       String startDate, String endDate, List<FilterData?>? applyFilter) async {
+    await cleaValue();
     await gettingFiltersValue(applyFilter);
     final String utilizationTotalCount = """
 {

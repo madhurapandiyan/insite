@@ -74,11 +74,10 @@ class _SingleAssetUtilizationGraphViewState
                       padding: const EdgeInsets.all(12.0),
                       child: InsiteButton(
                         title: Utils.getDateInFormatddMMyyyy(
-                                        viewModel.startDate) +
-                                    " - " +
-                                    Utils.getDateInFormatddMMyyyy(
-                                        viewModel.endDate),
-                       // width: 90,
+                                viewModel.startDate) +
+                            " - " +
+                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                        // width: 90,
                         //bgColor: Theme.of(context).backgroundColor,
                         textColor: Theme.of(context).textTheme.bodyText1!.color,
                         onTap: () async {
@@ -332,7 +331,7 @@ class _SingleAssetUtilizationGraphViewState
                                                 .idleHours !=
                                             null
                                         ? viewModel.singleAssetUtilization!
-                                                .daily![index].data!.idleHours
+                                            .daily![index].data!.idleHours
                                         : 0
                                     : rangeChoice == 2
                                         ? viewModel
@@ -341,11 +340,8 @@ class _SingleAssetUtilizationGraphViewState
                                                     .data!
                                                     .idleHours !=
                                                 null
-                                            ? viewModel
-                                                    .singleAssetUtilization!
-                                                    .weekly![index]
-                                                    .data!
-                                                    .idleHours!
+                                            ? viewModel.singleAssetUtilization!
+                                                .weekly![index].data!.idleHours!
                                             : 0
                                         : viewModel
                                                     .singleAssetUtilization!
@@ -353,7 +349,11 @@ class _SingleAssetUtilizationGraphViewState
                                                     .data!
                                                     .idleHours !=
                                                 null
-                                            ? viewModel.singleAssetUtilization!.monthly![index].data!.idleHours!
+                                            ? viewModel
+                                                .singleAssetUtilization!
+                                                .monthly![index]
+                                                .data!
+                                                .idleHours!
                                             : 0,
                                 workingLength: rangeChoice == 1
                                     ? viewModel
@@ -397,7 +397,13 @@ class _SingleAssetUtilizationGraphViewState
                                         : '${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization!.monthly![index].startDate!)}   \n${DateFormat('dd/MM/yy').format(viewModel.singleAssetUtilization!.monthly![index].endDate!)}',
                               );
                             else
-                              return PercentageWidget(
+                              return CustomPercentageWidget(
+                                trailText: viewModel
+                                    .singleAssetUtilization!
+                                    .daily![index]
+                                    .data!
+                                    .distanceTravelledKilometers
+                                    .toString(),
                                 isPercentage: false,
                                 color: periwinkleGrey,
                                 label: rangeChoice == 1

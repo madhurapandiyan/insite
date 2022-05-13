@@ -221,8 +221,8 @@ class Utils {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
-      .subtract(Duration(days: 1))
-      .add(Duration(hours: 18, minutes: 30,seconds: 0));
+          .subtract(Duration(days: 1))
+          .add(Duration(hours: 18, minutes: 30, seconds: 0));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -735,21 +735,53 @@ class Utils {
   }
 
   imageData(String model) {
-    if (model.contains("SHINRAI")) {
-      return "assets/images/shinrai.png";
-    } else if (model.contains("EX130")) {
-      return "assets/images/EX130.png";
-    } else if (model.contains("EX210")) {
-      return "assets/images/EX210.png";
-    } else if (model.contains("EX210LC")) {
-      return "assets/images/EX210LC.png";
-    } else if (model.contains("TH86")) {
-      return "assets/images/TH86.png";
-    } else if (model.contains("TL340H")) {
-      return "assets/images/TL340H.png";
-    } else {
-      return "assets/images/EX210.png";
+    //Excavator
+    if (model == "EX200LC SUPER PLUS" ||
+        model == "EX210LC SUPER PLUS" ||
+        model == "EX70 SUPER PLUS" ||
+        model == "EX130 SUPER PLUS" ||
+        model == "EX215 SUPER PLUS" ||
+        model == "TL340H PRIME" ||
+        model == "EX110" ||
+        model == "EX200" ||
+        model == "EX200LC" ||
+        model == "PZX50" ||
+        model == "EX70 PRIME") {
+      return "assets/images/excavator.png";
     }
+    //backhoe loader
+    else if (model == "SHINRAI - BX80" ||
+        model == "SHINRAI-BX80" ||
+        model == "SHINRAI-BX80-BSIV" ||
+        model == "SHINRAI PRIME" ||
+        model == "SHINRAI-PRO" ||
+        model == "TH76" ||
+        model == "TL340H") {
+      return "assets/images/backhoe_loader.png";
+    } else if (model == "TL340H Prime" ||
+        model == "TL340H" ||
+        model == "5T WL" ||
+        model == "ZW225-6") {
+      return "assets/images/wheel_loader.png";
+    } else {
+      return "assets/images/0.png";
+    }
+
+    // if (model.contains("SHINRAI")) {
+    //   return "assets/images/shinrai.png";
+    // } else if (model.contains("EX130")) {
+    //   return "assets/images/EX130.png";
+    // } else if (model.contains("EX210")) {
+    //   return "assets/images/EX210.png";
+    // } else if (model.contains("EX210LC")) {
+    //   return "assets/images/EX210LC.png";
+    // } else if (model.contains("TH86")) {
+    //   return "assets/images/TH86.png";
+    // } else if (model.contains("TL340H")) {
+    //   return "assets/images/TL340H.png";
+    // } else {
+    //   return "assets/images/EX210.png";
+    // }
   }
 
   static showInfo(BuildContext context, title, message) async {
@@ -1497,8 +1529,9 @@ class Utils {
     var data = (runtime / idle) * 100;
     return data;
   }
-    static getEstimatedTargetRuntimePercentValue(idle, runtime) {
-    var data = (idle / 100)*runtime as double;
+
+  static getEstimatedTargetRuntimePercentValue(idle, runtime) {
+    var data = (idle / 100) * runtime as double;
     return data.roundToDouble();
   }
 }

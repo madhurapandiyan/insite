@@ -201,10 +201,10 @@ class DashboardViewModel extends InsiteViewModel {
     _refreshing = true;
     notifyListeners();
     await getAssetCount();
-    await getAssetStatusData();
-    await getFuelLevelData();
-    await getUtilizationSummary();
-    await getFaultCountData();
+    getAssetStatusData();
+    getFuelLevelData();
+    getUtilizationSummary();
+    getFaultCountData();
     await getIdlingLevelData(false, null);
     _refreshing = false;
     notifyListeners();
@@ -260,7 +260,8 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount? result = await _assetService!.getFuellevel(
         FilterType.FUEL_LEVEL,
         graphqlSchemaService!
-            .getAssetCount(grouping: "fuellevel", threshold: "25-50-75-100"));
+            .getAssetCount(grouping: "fuellevel", threshold: "25-50-75-100"),
+        true);
     if (result != null) {
       fuelChartData.clear();
       for (int index = 0; index < result.countData!.length; index++) {
@@ -311,7 +312,8 @@ class DashboardViewModel extends InsiteViewModel {
           graphqlSchemaService!.getAssetCount(
               idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
               endDate: Utils.getIdlingDateFormat(DateTime.now()),
-              startDate: getStartRange()));
+              startDate: getStartRange()),
+          true);
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;

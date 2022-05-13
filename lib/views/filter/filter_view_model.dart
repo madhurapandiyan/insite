@@ -14,7 +14,7 @@ class FilterViewModel extends InsiteViewModel {
 
   bool _loading = false;
   bool get loading => _loading;
-    bool _refineLoading = true;
+  bool _refineLoading = true;
   bool get refineLoading => _refineLoading;
   List<FilterData> filterDataDeviceType = [];
   List<FilterData> filterDataMake = [];
@@ -102,7 +102,7 @@ class FilterViewModel extends InsiteViewModel {
       addData(filterDataAllAssets, resultAllAssets, FilterType.ALL_ASSETS);
 
       AssetCount? resultFuelLevel = await _assetService!.getFuellevel(
-          FilterType.FUEL_LEVEL, graphqlSchemaService!.fuelLevelCount);
+          FilterType.FUEL_LEVEL, graphqlSchemaService!.fuelLevelCount, false);
       filterDataFuelLevel.removeWhere((element) => element.title == "");
       addFuelData(filterDataFuelLevel, resultFuelLevel, FilterType.FUEL_LEVEL);
 
@@ -113,17 +113,19 @@ class FilterViewModel extends InsiteViewModel {
       //     false);
       // addData(filterDataSubscription, resultSubscriptiontype,
       //     FilterType.SUBSCRIPTION_DATE);
-    } if (screenType == ScreenType.HEALTH) {
+    }
+    if (screenType == ScreenType.HEALTH) {
       AssetCount? resultSeverity = await _assetService!.getFaultCount(
-          Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(startDate),
-          Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+          Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(startDate),
+          Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate),
           graphqlSchemaService!.getFaultCountData(
-            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(
+            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(
                 startDate),
-            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate),
           ));
       addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
-    } if (screenType == ScreenType.USER_MANAGEMENT) {
+    }
+    if (screenType == ScreenType.USER_MANAGEMENT) {
       AssetCount? resultJobType = await _assetService!.getAssetCount(
           "JobType",
           FilterType.JOBTYPE,
@@ -137,7 +139,8 @@ class FilterViewModel extends InsiteViewModel {
           graphqlSchemaService!.getUserManagementRefine("UserType"),
           null);
       addUserData(filterDataUserType, resultUserType, FilterType.USERTYPE);
-    } if (screenType == ScreenType.MANAGE_REPORT) {
+    }
+    if (screenType == ScreenType.MANAGE_REPORT) {
       ReportCount? resultReportFrequencyType = await _assetService!
           .getCountReportData(graphqlSchemaService!.reportFilterCountData);
       addReportData(
@@ -158,7 +161,8 @@ class FilterViewModel extends InsiteViewModel {
         graphqlSchemaService!.getAssetCount(
             idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
             endDate: DateTime.now().toString(),
-            startDate: DateTime.now().subtract(Duration(days: 1)).toString()));
+            startDate: DateTime.now().subtract(Duration(days: 1)).toString()),
+        false);
     addIdlingData(
         filterDataIdlingLevel, resultIdlingLevel, FilterType.IDLING_LEVEL);
     isShowing = false;
@@ -177,7 +181,7 @@ class FilterViewModel extends InsiteViewModel {
         if (countData.countOf != "Excluded") {
           FilterData data = FilterData(
               count: type == FilterType.SEVERITY
-                  ? countData.assetCount.toString()
+                  ? countData.faultCount.toString()
                   : countData.count.toString(),
               title: countData.countOf,
               isSelected: isAlreadSelected(countData.countOf, type),

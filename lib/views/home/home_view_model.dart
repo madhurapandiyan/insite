@@ -1,5 +1,7 @@
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
@@ -26,9 +28,24 @@ class HomeViewModel extends InsiteViewModel {
   LoginService? _loginService = locator<LoginService>();
   LocalService? _localService = locator<LocalService>();
   bool? isLoggedIn;
+  Customer? customer;
+  bool? isTataHitachiAccount = false;
+  bool isLoading = true;
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    Future.delayed(Duration.zero, () async {
+      customer = await _localService!.getAccountInfo();
+      Logger().w(
+          "Tata Hitachi Account Selected ${customer!.isTataHitachiSelected}");
+      if (customer != null) if (customer!.CustomerUID ==
+          "1857723c-ada1-11eb-8529-0242ac130003") {
+        isTataHitachiAccount = true;
+      }
+      showsCategoryBasedOnAccountSelection(isTataHitachiAccount!);
+      isLoading = false;
+      notifyListeners();
+    });
     // Future.delayed(Duration.zero, () async {
     //   var data = await _localService!.getTokenInfo();
     // });

@@ -22,13 +22,14 @@ class CustomerAdapter extends TypeAdapter<Customer> {
       CustomerType: fields[2] as String?,
       Children: (fields[4] as List?)?.cast<Customer>(),
       DisplayName: fields[3] as String?,
+      isTataHitachiSelected: fields[5] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Customer obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.CustomerUID)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class CustomerAdapter extends TypeAdapter<Customer> {
       ..writeByte(3)
       ..write(obj.DisplayName)
       ..writeByte(4)
-      ..write(obj.Children);
+      ..write(obj.Children)
+      ..writeByte(5)
+      ..write(obj.isTataHitachiSelected);
   }
 
   @override

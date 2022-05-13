@@ -12,5 +12,9 @@ class AccountData {
   final Customer? value;
   @HiveField(2)
   bool? isSelected;
-  AccountData({this.selectionType, this.value, this.isSelected});
+  AccountData({
+    this.selectionType,
+    this.value,
+    this.isSelected,
+  });
 }

@@ -20,12 +20,16 @@ class Customer {
   @JsonKey(name: "children")
   @HiveField(4)
   final List<Customer>? Children;
+  @JsonKey(ignore: true)
+  @HiveField(5)
+  bool? isTataHitachiSelected;
   Customer(
       {this.CustomerUID,
       this.Name,
       this.CustomerType,
       this.Children,
-      this.DisplayName});
+      this.DisplayName,
+      this.isTataHitachiSelected = false});
 
   factory Customer.fromJson(Map<String, dynamic> json) =>
       _$CustomerFromJson(json);

@@ -47,7 +47,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
         builder: (BuildContext context, UtilizationListViewModel viewModel,
             Widget? _) {
           return Padding(
-            padding: const EdgeInsets.only(top: 35),
+            padding: const EdgeInsets.only(top: 0),
             child: Stack(
               children: [
                 Column(
@@ -71,11 +71,11 @@ class UtilizationListViewState extends State<UtilizationListView> {
                           //   width: 4,
                           // ),
                           InsiteButton(
-                            title:  Utils.getDateInFormatddMMyyyy(
-                                      viewModel.startDate) +
-                                  " - " +
-                                  Utils.getDateInFormatddMMyyyy(
-                                      viewModel.endDate),
+                            title: Utils.getDateInFormatddMMyyyy(
+                                    viewModel.startDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.endDate),
                             //width: 90,
                             //bgColor: Theme.of(context).backgroundColor,
                             textColor:

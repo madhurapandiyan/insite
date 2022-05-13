@@ -3,10 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
+import '../../core/models/dashboard.dart';
 import 'home_view_model.dart';
 
 class HomeView extends StatefulWidget {
@@ -28,7 +30,13 @@ class _HomeViewState extends State<HomeView> {
             onFilterApplied: () {},
             onRefineApplied: () {},
             viewModel: viewModel,
-            body: Container(
+            body:
+                 viewModel.isLoading
+                    ? Center(
+                        child: InsiteProgressBar(),
+                      )
+                    :
+                Container(
               color: Theme.of(context).backgroundColor,
               child: GridView.builder(
                 padding: EdgeInsets.all(16),
@@ -41,11 +49,11 @@ class _HomeViewState extends State<HomeView> {
                     crossAxisSpacing: 5.0,
                     mainAxisSpacing: 5.0),
                 itemBuilder: (context, index) {
-                  Category category = categories[index];
+                  Category category = categories![index];
                   return _buildCategoryItem(
                       context, index, category, viewModel);
                 },
-                itemCount: categories.length,
+                itemCount: categories!.length,
               ),
             ),
           ),
