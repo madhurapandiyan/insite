@@ -395,7 +395,7 @@ class SelectionAssetCountWidget extends StatelessWidget {
                       ),
                       trailing: InsiteButton(
                         title: list[i].count.toString(),
-                        bgColor: theme.backgroundColor,
+                        //bgColor: theme.backgroundColor,
                         fontSize: 14,
                         onTap: () {
                           onClickingNestedType!(i, list[i].countOf!);

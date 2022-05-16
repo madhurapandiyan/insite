@@ -1053,49 +1053,43 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                       title: "Search Contact",
                                       controller: viewModel.emailController,
                                       onChanged: (searchText) {
-                                        if (searchText.isNotEmpty) {
-                                          viewModel.searchContacts(searchText);
-                                        } else {
-                                          viewModel.searchContacts(searchText);
-                                        }
+                                        viewModel.searchContacts(searchText);
                                       }),
                                   viewModel.isHideSearchList
                                       ? Container(
-                                          margin: EdgeInsets.all(8),
-                                          // height: 120,
-
+                                          height: 200,
                                           decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .color,
+                                              color:
+                                                  Theme.of(context).cardColor,
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: black,
-                                                  blurRadius: 2,
-                                                ),
+                                                    color: Colors.black,
+                                                    blurStyle: BlurStyle.outer,
+                                                    blurRadius: 0.5,
+                                                    spreadRadius: 0.2)
                                               ]),
-                                          child: Column(
-                                            children: List.generate(
-                                                viewModel.searchContactListName!
-                                                    .length,
-                                                (i) => SingleChildScrollView(
-                                                      child: DeviceIdListWidget(
-                                                          onSelected: () {
-                                                            viewModel.onSelectingEmailList(
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: List.generate(
+                                                  viewModel
+                                                      .searchContactListName!
+                                                      .length,
+                                                  (i) => DeviceIdListWidget(
+                                                      onSelected: () {
+                                                        viewModel
+                                                            .onSelectingEmailList(
                                                                 viewModel
                                                                     .searchContactListName![
                                                                         i]
                                                                     .email!);
-                                                            FocusScope.of(
-                                                                    context)
-                                                                .unfocus();
-                                                          },
-                                                          deviceId: viewModel
-                                                              .searchContactListName![
-                                                                  i]
-                                                              .email),
-                                                    )),
+                                                        FocusScope.of(context)
+                                                            .unfocus();
+                                                      },
+                                                      deviceId: viewModel
+                                                          .searchContactListName![
+                                                              i]
+                                                          .email)),
+                                            ),
                                           ))
                                       : SizedBox(),
                                   SizedBox(

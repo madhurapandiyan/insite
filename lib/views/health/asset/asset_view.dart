@@ -45,7 +45,6 @@ class AssetViewState extends State<AssetView> {
             children: [
               Column(
                 children: [
-                  
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
@@ -64,13 +63,12 @@ class AssetViewState extends State<AssetView> {
                         // ),
                         InsiteButton(
                           //width: 90,
-                          title:  Utils.getDateInFormatddMMyyyy(
+                          title: Utils.getDateInFormatddMMyyyy(
                                   viewModel.startDate) +
                               " - " +
                               Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                         // bgColor: Theme.of(context).backgroundColor,
-                          textColor:
-                              Theme.of(context).textTheme.bodyText1!.color,
+                          // bgColor: Theme.of(context).backgroundColor,
+                          textColor: white,
                           onTap: () async {
                             dateRange = [];
                             dateRange = await showDialog(

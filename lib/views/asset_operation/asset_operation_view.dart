@@ -142,10 +142,9 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                                   viewModel.refresh();
                                 }
                               },
-                              textColor:
-                                  Theme.of(context).textTheme.bodyText1!.color,
+                              textColor: white,
                               //width: 100,
-                             // bgColor: Theme.of(context).backgroundColor,
+                              // bgColor: Theme.of(context).backgroundColor,
                             ),
                           ],
                         ),

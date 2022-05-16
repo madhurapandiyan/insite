@@ -1429,12 +1429,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
-  searchContacts(String searchValue) {
-    if (searchValue.length >= 4) {
+  searchContacts(String searchValue) async {
+    if (emailController.text.length >= 4) {
       _searchKeyword = searchValue;
+      await getContactSearchReportData();
       isHideSearchList = true;
       notifyListeners();
-      getContactSearchReportData();
+    } else {
+      isHideSearchList = false;
+      searchContactListName!.clear();
+      notifyListeners();
     }
   }
 
@@ -1442,7 +1446,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     try {
       SearchContactReportListResponse? result = await _manageUserService!
           .getSearchContactResposeData(_searchKeyword,
-              graphqlSchemaService!.getContactSearchData(_searchKeyword));
+              graphqlSchemaService!.getContactSearchData(emailController.text));
       if (result != null) {
         searchContactListName!.clear();
         // Logger().i("result:${result.pageInfo!.totalPages}");
@@ -1451,7 +1455,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           searchContactListName!.add(name);
         }
       }
-      notifyListeners();
     } catch (e) {
       Logger().e(e.toString());
     }
