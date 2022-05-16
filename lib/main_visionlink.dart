@@ -22,7 +22,6 @@ void main() async {
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
-
     await Hive.initFlutter();
     await FlutterDownloader.initialize(debug: true);
     Hive.registerAdapter<FilterData>(FilterDataAdapter());

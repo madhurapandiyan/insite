@@ -47,33 +47,37 @@ class UtilizationListViewState extends State<UtilizationListView> {
         builder: (BuildContext context, UtilizationListViewModel viewModel,
             Widget? _) {
           return Padding(
-            padding: const EdgeInsets.only(top: 35),
+            padding: const EdgeInsets.only(top: 0),
             child: Stack(
               children: [
                 Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 24),
+                          vertical: 10.0, horizontal: 24),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          InsiteText(
-                              text: Utils.getDateInFormatddMMyyyy(
-                                      viewModel.startDate) +
-                                  " - " +
-                                  Utils.getDateInFormatddMMyyyy(
-                                      viewModel.endDate),
-                              fontWeight: FontWeight.bold,
-                              size: 11),
-                          SizedBox(
-                            width: 4,
-                          ),
+                          // InsiteText(
+                          //     text: Utils.getDateInFormatddMMyyyy(
+                          //             viewModel.startDate) +
+                          //         " - " +
+                          //         Utils.getDateInFormatddMMyyyy(
+                          //             viewModel.endDate),
+                          //     fontWeight: FontWeight.bold,
+                          //     size: 11),
+                          // SizedBox(
+                          //   width: 4,
+                          // ),
                           InsiteButton(
-                            title: "Date Range",
-                            width: 90,
-                            bgColor: Theme.of(context).backgroundColor,
+                            title: Utils.getDateInFormatddMMyyyy(
+                                    viewModel.startDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.endDate),
+                            //width: 90,
+                            //bgColor: Theme.of(context).backgroundColor,
                             textColor:
                                 Theme.of(context).textTheme.bodyText1!.color,
                             onTap: () async {

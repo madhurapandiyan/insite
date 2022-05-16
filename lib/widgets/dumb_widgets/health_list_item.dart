@@ -52,21 +52,23 @@ class HealthListItem extends StatelessWidget {
                 TableRow(children: [
                   InsiteTableRowItem(
                     title: 'Description :',
-                    content: faultElement!.description,
+                    content: faultElement!.description ?? "-",
                   ),
                   InsiteTableRowItem(
                     title: 'Location :',
-                    content: faultElement!.lastReportedLocation,
+                    content: faultElement!.lastReportedLocation ?? "-",
                   ),
                   InsiteTableRowItem(
                     title: 'Hour Meter :',
-                    content: faultElement!.hours.toString(),
+                    content: faultElement!.hours == null
+                        ? "-"
+                        : faultElement!.hours.toString(),
                   ),
                 ]),
                 TableRow(children: [
                   InsiteTableRowItem(
                     title: 'Source :',
-                    content: faultElement!.source,
+                    content: faultElement!.source ?? "-",
                   ),
                   InsiteTableRowItem(
                     title: 'Reported Date :',

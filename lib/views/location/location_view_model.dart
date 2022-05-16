@@ -355,6 +355,9 @@ class LocationViewModel extends InsiteViewModel {
             endDate!,
             await graphqlSchemaService!.getFleetLocationData(
                 filtlerList: appliedFilters,
+                lati: smallLatLng.latitude,
+                longi: largeLatLng.longitude,
+                radius: radiusKm,
                 pageNo: pageNumber,
                 pageSize: pageSize,
                 startDate: Utils.fleetLocationDateFormate(startDate),

@@ -67,7 +67,7 @@ class ManageNotificationsView extends StatelessWidget {
                               controller: viewModel.searchController,
                               title: "SEARCH",
                               onChanged: (searchText) {
-                                viewModel.getSearchListData(searchText);
+                                viewModel.onChange();
                               },
                             ),
                           ),

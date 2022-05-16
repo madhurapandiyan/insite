@@ -142,8 +142,8 @@ class _DashboardViewState extends State<DashboardView> {
                                         onValueSelected: (value) async {
                                           Logger().i(
                                               "product family dropdown change $value");
-                                          viewModel
-                                              .getProductFamilyAssetCount();
+                                          // viewModel
+                                          //     .getProductFamilyAssetCount();
                                           viewModel.getFilterDataApplied(
                                               value!, true);
                                           filterLocationKey.currentState!

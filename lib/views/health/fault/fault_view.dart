@@ -46,29 +46,32 @@ class FaultViewState extends State<FaultView> {
             children: [
               Column(
                 children: [
-                  SizedBox(
-                    height: 40,
-                  ),
+                  // SizedBox(
+                  //   height: 40,
+                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        InsiteText(
-                            text: Utils.getDateInFormatddMMyyyy(
-                                    viewModel.startDate) +
-                                " - " +
-                                Utils.getDateInFormatddMMyyyy(
-                                    viewModel.endDate),
-                            fontWeight: FontWeight.bold,
-                            size: 12),
-                        SizedBox(
-                          width: 4,
-                        ),
+                        // InsiteText(
+                        //     text: Utils.getDateInFormatddMMyyyy(
+                        //             viewModel.startDate) +
+                        //         " - " +
+                        //         Utils.getDateInFormatddMMyyyy(
+                        //             viewModel.endDate),
+                        //     fontWeight: FontWeight.bold,
+                        //     size: 12),
+                        // SizedBox(
+                        //   width: 4,
+                        // ),
                         InsiteButton(
-                          width: 90,
-                          title: "Date Range",
-                          bgColor: Theme.of(context).backgroundColor,
+                          //width: 90,
+                          title: Utils.getDateInFormatddMMyyyy(
+                                  viewModel.startDate) +
+                              " - " +
+                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                         // bgColor: Theme.of(context).backgroundColor,
                           textColor:
                               Theme.of(context).textTheme.bodyText1!.color,
                           onTap: () async {
