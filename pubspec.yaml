@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.0.7+7
+version: 2.0.8+8
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
@@ -72,7 +72,7 @@ dependencies:
   open_file: ^3.2.1
   firebase_crashlytics: ^2.5.3
   firebase_core: ^1.13.1
-  
+  new_version: ^0.3.0
   
   
   
@@ -167,6 +167,9 @@ flutter:
     - assets/images/10001.png
     - assets/images/10002.png
     - assets/images/0.png
+    - assets/images/excavator.png
+    - assets/images/wheel_loader.png
+    - assets/images/backhoe_loader.png
     
   fonts:
     - family: Roboto

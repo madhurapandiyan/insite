@@ -108,19 +108,23 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                             //     },
                             //   ),
                             // ),
-                            InsiteText(
-                                text: Utils.getDateInFormatddMMyyyy(
-                                        viewModel.startDate) +
-                                    " - " +
-                                    Utils.getDateInFormatddMMyyyy(
-                                        viewModel.endDate),
-                                fontWeight: FontWeight.bold,
-                                size: 12),
-                            SizedBox(
-                              width: 10,
-                            ),
+                            // InsiteText(
+                            //     text: Utils.getDateInFormatddMMyyyy(
+                            //             viewModel.startDate) +
+                            //         " - " +
+                            //         Utils.getDateInFormatddMMyyyy(
+                            //             viewModel.endDate),
+                            //     fontWeight: FontWeight.bold,
+                            //     size: 12),
+                            // SizedBox(
+                            //   width: 10,
+                            // ),
                             InsiteButton(
-                              title: "Date Range",
+                              title: Utils.getDateInFormatddMMyyyy(
+                                      viewModel.startDate) +
+                                  " - " +
+                                  Utils.getDateInFormatddMMyyyy(
+                                      viewModel.endDate),
                               height: 36,
                               onTap: () async {
                                 dateRange = [];
@@ -140,8 +144,8 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                               },
                               textColor:
                                   Theme.of(context).textTheme.bodyText1!.color,
-                              width: 100,
-                              bgColor: Theme.of(context).backgroundColor,
+                              //width: 100,
+                             // bgColor: Theme.of(context).backgroundColor,
                             ),
                           ],
                         ),

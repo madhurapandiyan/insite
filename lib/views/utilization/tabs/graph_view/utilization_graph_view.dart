@@ -68,29 +68,32 @@ class UtilizationGraphViewState extends State<UtilizationGraphView> {
           Widget? _) {
         var startDate2 = startDate;
         return Padding(
-           padding: const EdgeInsets.only(top: 40),
+          padding: const EdgeInsets.only(top: 40),
           child: Column(
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    InsiteText(
-                        text: Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                            " - " +
-                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                        fontWeight: FontWeight.bold,
-                        size: 11),
-                    SizedBox(
-                      width: 4,
-                    ),
+                    // InsiteText(
+                    //     text: Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
+                    //         " - " +
+                    //         Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                    //     fontWeight: FontWeight.bold,
+                    //     size: 11),
+                    // SizedBox(
+                    //   width: 4,
+                    // ),
                     InsiteButton(
-                      title: "Date Range",
-                      width: 90,
-                      bgColor: Theme.of(context).backgroundColor,
+                      title:
+                          Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
+                              " - " +
+                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                      //width: 90,
+                      // bgColor: Theme.of(context).backgroundColor,
                       textColor: Theme.of(context).textTheme.bodyText1!.color,
                       onTap: () async {
                         dateRange = [];

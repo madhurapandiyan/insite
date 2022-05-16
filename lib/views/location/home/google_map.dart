@@ -308,98 +308,42 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                               0.36,
                                       offset: 1,
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 28.0,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              print("button is tapped");
-                                              viewModel
-                                                  .customInfoWindowController
-                                                  .hideInfoWindow!();
-                                              zoomVal++;
-                                              _plus(
-                                                  zoomVal,
-                                                  LatLng(
-                                                      viewModel
-                                                          .assetLocation!
-                                                          .mapRecords!
-                                                          .first!
-                                                          .lastReportedLocationLatitude!,
-                                                      viewModel
-                                                          .assetLocation!
-                                                          .mapRecords!
-                                                          .first!
-                                                          .lastReportedLocationLongitude!),
-                                                  viewModel);
-                                            },
-                                            child: Container(
-                                              width: 27.47,
-                                              height: 26.97,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .backgroundColor,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0)),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    blurRadius: 1.0,
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1!
-                                                        .color!,
-                                                  ),
-                                                ],
-                                                border: Border.all(
-                                                    width: 1.0,
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyText1!
-                                                        .color!),
-                                                shape: BoxShape.rectangle,
-                                              ),
-                                              child: SvgPicture.asset(
-                                                "assets/images/plus.svg",
-                                                color: Theme.of(context)
-                                                    .iconTheme
-                                                    .color,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          GestureDetector(
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            GestureDetector(
                                               onTap: () {
                                                 print("button is tapped");
                                                 viewModel
                                                     .customInfoWindowController
                                                     .hideInfoWindow!();
-                                                zoomVal--;
-                                                _minus(
+                                                zoomVal++;
+                                                _plus(
                                                     zoomVal,
                                                     LatLng(
-                                                      viewModel
-                                                          .assetLocation!
-                                                          .mapRecords!
-                                                          .first!
-                                                          .lastReportedLocationLatitude!,
-                                                      viewModel
-                                                          .assetLocation!
-                                                          .mapRecords!
-                                                          .first!
-                                                          .lastReportedLocationLongitude!,
-                                                    ),
+                                                        viewModel
+                                                            .assetLocation!
+                                                            .mapRecords!
+                                                            .first!
+                                                            .lastReportedLocationLatitude!,
+                                                        viewModel
+                                                            .assetLocation!
+                                                            .mapRecords!
+                                                            .first!
+                                                            .lastReportedLocationLongitude!),
                                                     viewModel);
                                               },
                                               child: Container(
                                                 width: 27.47,
                                                 height: 26.97,
                                                 decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .backgroundColor,
                                                   borderRadius:
                                                       BorderRadius.all(
                                                           Radius.circular(5.0)),
@@ -412,8 +356,6 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                                           .color!,
                                                     ),
                                                   ],
-                                                  color: Theme.of(context)
-                                                      .backgroundColor,
                                                   border: Border.all(
                                                       width: 1.0,
                                                       color: Theme.of(context)
@@ -423,13 +365,75 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                                   shape: BoxShape.rectangle,
                                                 ),
                                                 child: SvgPicture.asset(
-                                                  "assets/images/minus.svg",
+                                                  "assets/images/plus.svg",
                                                   color: Theme.of(context)
                                                       .iconTheme
                                                       .color,
                                                 ),
-                                              )),
-                                        ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            GestureDetector(
+                                                onTap: () {
+                                                  print("button is tapped");
+                                                  viewModel
+                                                      .customInfoWindowController
+                                                      .hideInfoWindow!();
+                                                  zoomVal--;
+                                                  _minus(
+                                                      zoomVal,
+                                                      LatLng(
+                                                        viewModel
+                                                            .assetLocation!
+                                                            .mapRecords!
+                                                            .first!
+                                                            .lastReportedLocationLatitude!,
+                                                        viewModel
+                                                            .assetLocation!
+                                                            .mapRecords!
+                                                            .first!
+                                                            .lastReportedLocationLongitude!,
+                                                      ),
+                                                      viewModel);
+                                                },
+                                                child: Container(
+                                                  width: 27.47,
+                                                  height: 26.97,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                5.0)),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        blurRadius: 1.0,
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1!
+                                                            .color!,
+                                                      ),
+                                                    ],
+                                                    color: Theme.of(context)
+                                                        .backgroundColor,
+                                                    border: Border.all(
+                                                        width: 1.0,
+                                                        color: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyText1!
+                                                            .color!),
+                                                    shape: BoxShape.rectangle,
+                                                  ),
+                                                  child: SvgPicture.asset(
+                                                    "assets/images/minus.svg",
+                                                    color: Theme.of(context)
+                                                        .iconTheme
+                                                        .color,
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     viewModel.refreshing

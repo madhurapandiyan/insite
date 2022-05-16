@@ -51,8 +51,8 @@ android {
         applicationId "com.trimble.insite"
         minSdkVersion 20
         targetSdkVersion 30
-        versionCode 7
-        versionName '2.0.7'
+        versionCode 8
+        versionName '2.0.8'
     }
 
    signingConfigs {
@@ -70,6 +70,10 @@ android {
    buildTypes {
        release {
            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
        }
        debug {
             signingConfig signingConfigs.debug

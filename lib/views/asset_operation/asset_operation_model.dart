@@ -137,7 +137,7 @@ class AssetOperationViewModel extends InsiteViewModel {
   getAssetSummaryList() async {
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-    // await getAssetOperationCount();
+     await getAssetOperationCount();
     updateDateRangeList();
     AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
       startDate,
@@ -155,9 +155,9 @@ class AssetOperationViewModel extends InsiteViewModel {
           pageSize: pageSize),
     );
     if (result != null) {
-      if (result.pagination!.totalAssets != null) {
-        _totalCount = result.pagination!.totalAssets!.toInt();
-      }
+      // if (result.pagination!.totalAssets != null) {
+      //   _totalCount = result.pagination!.totalAssets!.toInt();
+      // }
       if (result.assets!.isNotEmpty) {
         Logger().i("list of assets " + result.assets!.length.toString());
         _assets.addAll(result.assets!);

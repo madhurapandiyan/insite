@@ -1116,7 +1116,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   updateModelValue(String value) {
     _dropDownInitialValue = value;
     _showZone = true;
-
     getNotificationSubTypes();
   }
 
@@ -1290,7 +1289,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       geoenceData.clear();
       var data = await _geofenceservice!.getGeofenceData();
       if (data != null) {
-        data.Geofences!.forEach((element) {
+        data.geofences!.forEach((element) {
           geoenceData.add(CheckBoxDropDown(items: element.GeofenceName));
         });
       }

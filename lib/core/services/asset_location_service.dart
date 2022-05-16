@@ -69,8 +69,9 @@ class AssetLocationService extends BaseService {
       //   queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
       //   Logger().wtf(customerSelected!.CustomerUID);
       // }
-      var data=FilterUtils.constructQueryFromMap(queryMap).replaceAll("?","");
-      if (enableGraphQl) {
+      var data =
+          FilterUtils.constructQueryFromMap(queryMap).replaceAll("?", "");
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
@@ -108,8 +109,9 @@ class AssetLocationService extends BaseService {
                           customerSelected?.CustomerUID,
                           sort,
                           filters!,
-                          ScreenType.LOCATION)+
-                      "&" +data,
+                          ScreenType.LOCATION) +
+                      "&" +
+                      data,
                   // latitude,
                   // longitude,
                   // pageNumber,
@@ -132,8 +134,7 @@ class AssetLocationService extends BaseService {
       int pageNumber, int pageSize, String sort, appliedFilters, query) async {
     Logger().i("getAssetLocation");
     try {
-     
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
@@ -267,7 +268,7 @@ class AssetLocationService extends BaseService {
       queryMap["sort"] = "-lastlocationupdateutc";
     }
     try {
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
@@ -369,7 +370,7 @@ class AssetLocationService extends BaseService {
     }
     queryMap["sort"] = "-lastlocationupdateutc";
     try {
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: await _graphqlSchemaService
               ?.getFleetLocationDataProductFamilyFilterData(
