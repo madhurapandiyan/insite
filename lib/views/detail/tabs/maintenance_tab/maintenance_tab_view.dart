@@ -27,19 +27,10 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
     return ViewModelBuilder<MaintenanceTabViewModel>.reactive(
       builder:
           (BuildContext context, MaintenanceTabViewModel viewModel, Widget? _) {
-        Logger()
-            .wtf("services sssssssssssssssssssssssss: ${viewModel.services}");
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor,
-              border: Border.all(
-                  color: Theme.of(context).textTheme.bodyText1!.color!,
-                  width: 0.0),
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-            ),
+          return Card(
             child: Column(
               children: [
                 viewModel.services.isNotEmpty

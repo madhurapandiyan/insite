@@ -112,6 +112,9 @@ class MainViewState extends State<MainView> {
                                   onCallback: () {
                                     viewModel
                                         .onDetailPageSelected(summaryData!);
+
+                                    Logger().wtf(
+                                        "assetUId: ${summaryData!.assetUID}");
                                   },
                                   serviceCalBack:
                                       (value, assetDataValue, services) {

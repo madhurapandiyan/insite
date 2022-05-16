@@ -210,7 +210,9 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
     }
   }
 
-  onDetailPageSelected(AssetCentricData assetCentricData) {
+  onDetailPageSelected(AssetCentricData assetCentricData) async {
+    ServiceItem? serviceItem = await _maintenanceService!
+        .getServiceItemCheckList(assetCentricData.serviceId);
     _navigationService!.navigateTo(
       assetDetailViewRoute,
       arguments: DetailArguments(

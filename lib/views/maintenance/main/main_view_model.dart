@@ -204,23 +204,15 @@ class MainViewModel extends InsiteViewModel {
     _navigationService!.navigateToView(
       AssetDetailView(
           fleet: Fleet(
-            assetSerialNumber: summaryData!.assetSerialNumber,
-            assetId: summaryData.assetID,
+            assetSerialNumber: summaryData!.assetUID,
+            assetId: summaryData.assetUID,
             assetIdentifier: summaryData.assetUID,
           ),
           type: screen.ScreenType.MAINTENANCE,
           summaryData: summaryData,
           tabIndex: 2),
-      arguments: DetailArguments(
-          fleet: Fleet(
-            assetSerialNumber: summaryData.assetSerialNumber,
-            assetId: summaryData.assetID,
-            assetIdentifier: summaryData.assetUID,
-          ),
-          type: screen.ScreenType.MAINTENANCE,
-          summaryData: summaryData,
-          index: 2),
     );
+    notifyListeners();
   }
 
   onServiceSelected(num? serviceId, AssetData? assetDataValue,

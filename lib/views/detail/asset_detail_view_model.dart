@@ -31,10 +31,11 @@ class AssetDetailViewModel extends InsiteViewModel {
   List<Services?>? get servicesData => _servicesData;
 
   AssetDetailViewModel(
-    this.fleet,
+    selectedFleet,
   ) {
     this.log = getLogger(this.runtimeType.toString());
     setUp();
+    fleet = selectedFleet;
 
     _assetService!.setUp();
     try {
