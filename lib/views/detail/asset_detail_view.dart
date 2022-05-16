@@ -2,26 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
 import 'package:insite/views/detail/tabs/health/health_dashboard/health_dashboard_view.dart';
 import 'package:insite/views/detail/tabs/health/health_list/health_list_view.dart';
 import 'package:insite/views/detail/tabs/location/asset_location.dart';
+import 'package:insite/views/detail/tabs/maintenance_tab/maintenance_tab_view.dart';
 import 'package:insite/views/detail/tabs/single_asset_operation/single_asset_operation_view.dart';
 import 'package:insite/views/detail/tabs/utilization/single_asset_utilization_view.dart';
+
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
+import '../../core/models/maintenance_list_services.dart';
 import 'asset_detail_view_model.dart';
 
 class AssetDetailView extends StatefulWidget {
   final Fleet? fleet;
   final int? tabIndex;
   final ScreenType? type;
-  AssetDetailView({this.fleet, this.tabIndex, this.type = ScreenType.FLEET});
+  final SummaryData? summaryData;
+
+  AssetDetailView(
+      {this.fleet,
+      this.tabIndex,
+      this.type = ScreenType.FLEET,
+      this.summaryData});
 
   @override
   _TabPageState createState() => _TabPageState();
@@ -31,7 +42,10 @@ class DetailArguments {
   final Fleet? fleet;
   final int? index;
   final ScreenType? type;
-  DetailArguments({this.fleet, this.index, this.type = ScreenType.FLEET});
+  final SummaryData? summaryData;
+
+  DetailArguments(
+      {this.fleet, this.index, this.type = ScreenType.FLEET, this.summaryData});
 }
 
 class _TabPageState extends State<AssetDetailView> {
@@ -96,6 +110,33 @@ class _TabPageState extends State<AssetDetailView> {
     ),
   ];
 
+  List<Category> typeThree = [
+    Category(
+      1,
+      "DASHBOARD",
+      "assets/images/clock.svg",
+      ScreenType.DASHBOARD,
+    ),
+    Category(
+      2,
+      "FAULTCODES",
+      "assets/images/health.svg",
+      ScreenType.HEALTH,
+    ),
+    Category(
+      3,
+      "MAINTENANCE",
+      "assets/images/maint.svg",
+      ScreenType.HEALTH,
+    ),
+    Category(
+      4,
+      "LOCATION",
+      "assets/images/location.svg",
+      ScreenType.LOCATION,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetDetailViewModel>.reactive(
@@ -127,7 +168,8 @@ class _TabPageState extends State<AssetDetailView> {
                         color: Theme.of(context).backgroundColor,
                         border: Border.all(
                             width: 1,
-                            color: Theme.of(context).textTheme.bodyText1!.color!),
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color!),
                         shape: BoxShape.rectangle,
                       ),
                       child: Table(children: [
@@ -219,8 +261,10 @@ class _TabPageState extends State<AssetDetailView> {
                           color: Theme.of(context).backgroundColor,
                           border: Border.all(
                               width: 1,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color!),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!),
                           shape: BoxShape.rectangle,
                         ),
                         child: Padding(
@@ -237,8 +281,8 @@ class _TabPageState extends State<AssetDetailView> {
                                       ? viewModel.assetDetail!
                                                   .universalCustomerName !=
                                               null
-                                          ? viewModel
-                                              .assetDetail!.universalCustomerName
+                                          ? viewModel.assetDetail!
+                                              .universalCustomerName
                                           : "-"
                                       : "-",
                                   fontWeight: FontWeight.w700,
@@ -261,17 +305,29 @@ class _TabPageState extends State<AssetDetailView> {
                               },
                             ),
                           )
-                        : Container(
-                            height: 80,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: typeOne.length,
-                              itemBuilder: (context, index) {
-                                Category category = typeOne[index];
-                                return _tabcontainer(index, category);
-                              },
-                            ),
-                          ),
+                        : widget.type == ScreenType.MAINTENANCE
+                            ? Container(
+                                height: 80,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: typeThree.length,
+                                  itemBuilder: (context, index) {
+                                    Category category = typeThree[index];
+                                    return _tabcontainer(index, category);
+                                  },
+                                ),
+                              )
+                            : Container(
+                                height: 80,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: typeOne.length,
+                                  itemBuilder: (context, index) {
+                                    Category category = typeOne[index];
+                                    return _tabcontainer(index, category);
+                                  },
+                                ),
+                              ),
                     Flexible(
                       child: selectedTabIndex == 0
                           ? widget.type == ScreenType.HEALTH
@@ -305,9 +361,21 @@ class _TabPageState extends State<AssetDetailView> {
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,
                                           screenType: widget.type)
-                                      : SingleAssetOperationView(
-                                          detail: viewModel.assetDetail,
-                                        )
+                                      : widget.type == ScreenType.MAINTENANCE
+                                          ? MaintenanceTabView(
+                                              summaryData: widget.summaryData,
+                                              serviceCalBack: (value,
+                                                  assetDataValue, services) {
+                                                viewModel.onServiceSelected(
+                                                    value,
+                                                    assetDataValue,
+                                                    widget.summaryData,
+                                                    services);
+                                              },
+                                            )
+                                          : SingleAssetOperationView(
+                                              detail: viewModel.assetDetail,
+                                            )
                                   : selectedTabIndex == 3
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,
