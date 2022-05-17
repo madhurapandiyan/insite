@@ -73,8 +73,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                               path: widget.fault!.asset["details"] != null &&
                                       widget.fault!.asset["details"]["model"] !=
                                           null
-                                  ? Utils().imageData(
-                                      widget.fault!.asset["details"]["model"])
+                                  ? Utils().getImageWithAssetIconKey(widget
+                                      .fault!.asset["details"]["assetIcon"])
                                   : "assets/images/EX210.png",
                             ),
                             InsiteTableRowItem(
@@ -226,7 +226,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                               size: 12,
                                             ),
                                             InsiteButton(
-                                              title: fault.severityLabel??"",
+                                              title: fault.severityLabel ?? "",
                                               padding: EdgeInsets.all(8),
                                               margin: EdgeInsets.all(8),
                                               bgColor: Utils.getFaultColor(
@@ -236,12 +236,12 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                             ),
                                             InsiteTextWithPadding(
                                               padding: EdgeInsets.all(8),
-                                              text: fault.source??"-",
+                                              text: fault.source ?? "-",
                                               size: 12,
                                             ),
                                             InsiteTextWithPadding(
                                               padding: EdgeInsets.all(8),
-                                              text: fault.description??"-",
+                                              text: fault.description ?? "-",
                                               size: 12,
                                             ),
                                           ]);

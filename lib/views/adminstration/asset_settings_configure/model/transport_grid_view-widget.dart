@@ -8,20 +8,20 @@ class TransportGridViewWidget extends StatelessWidget {
   final int? selectedIndex;
   final int? index;
   final ConfigureGridViewModel? items;
-  const TransportGridViewWidget({ this.voidCallback,this.selectedIndex,this.index ,this.items}); 
+  const TransportGridViewWidget(
+      {this.voidCallback, this.selectedIndex, this.index, this.items});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-       voidCallback!();
+        voidCallback!();
       },
       child: Card(
         semanticContainer: true,
-        color:
-            selectedIndex != null && selectedIndex == index
-                ? Theme.of(context).buttonColor
-                : Theme.of(context).cardColor,
+        color: selectedIndex != null && selectedIndex == index
+            ? Theme.of(context).buttonColor
+            : Theme.of(context).cardColor,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -30,16 +30,15 @@ class TransportGridViewWidget extends StatelessWidget {
             children: <Widget>[
               Image.asset(
                 items!.image!,
-                color: selectedIndex != null &&
-                        selectedIndex == index
-                    ? Colors.white
-                    : Theme.of(context).iconTheme.color,
+                // color: selectedIndex != null &&
+                //         selectedIndex == index
+                //     ? Colors.white
+                //     : Theme.of(context).iconTheme.color,
               ),
               SizedBox(height: 8.0),
               InsiteTextAlign(
                   textAlign: TextAlign.center,
-                  color: selectedIndex != null &&
-                         selectedIndex == index
+                  color: selectedIndex != null && selectedIndex == index
                       ? Colors.white
                       : Theme.of(context).iconTheme.color,
                   fontWeight: FontWeight.bold,

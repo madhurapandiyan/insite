@@ -41,7 +41,8 @@ class UtilizationListItem extends StatelessWidget {
                           TableRow(
                             children: [
                               InsiteTableRowItemWithIcon(
-                                iconPath: "-",
+                                iconPath: Utils().getImageWithAssetIconKey(
+                                    utilizationData!.assetIcon),
                                 title: utilizationData!.lastReportedTime != null
                                     ? Utils.getLastReportedDateTwo(
                                         utilizationData!.lastReportedTime)
@@ -526,8 +527,8 @@ class UtilizationListItem extends StatelessWidget {
                                                       null
                                                   ? (utilizationData!
                                                                   .targetRuntimePerformance! *
-                                                              100).toStringAsFixed(2)
-                                                           +
+                                                              100)
+                                                          .toStringAsFixed(2) +
                                                       " %"
                                                   : "",
                                             ),
@@ -591,7 +592,7 @@ class UtilizationListItem extends StatelessWidget {
                                                   ? (utilizationData!
                                                                   .targetIdlePerformance! *
                                                               100)
-                                                          .toStringAsFixed(2)+
+                                                          .toStringAsFixed(2) +
                                                       " %"
                                                   : "",
                                             ),

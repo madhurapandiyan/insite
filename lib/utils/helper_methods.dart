@@ -734,55 +734,143 @@ class Utils {
     return maxDate;
   }
 
-  imageData(String model) {
-    //Excavator
-    if (model == "EX200LC SUPER PLUS" ||
-        model == "EX210LC SUPER PLUS" ||
-        model == "EX70 SUPER PLUS" ||
-        model == "EX130 SUPER PLUS" ||
-        model == "EX215 SUPER PLUS" ||
-        model == "TL340H PRIME" ||
-        model == "EX110" ||
-        model == "EX200" ||
-        model == "EX200LC" ||
-        model == "PZX50" ||
-        model == "EX70 PRIME") {
-      return "assets/images/excavator.png";
-    }
-    //backhoe loader
-    else if (model == "SHINRAI - BX80" ||
-        model == "SHINRAI-BX80" ||
-        model == "SHINRAI-BX80-BSIV" ||
-        model == "SHINRAI PRIME" ||
-        model == "SHINRAI-PRO" ||
-        model == "TH76" ||
-        model == "TL340H") {
-      return "assets/images/backhoe_loader.png";
-    } else if (model == "TL340H Prime" ||
-        model == "TL340H" ||
-        model == "5T WL" ||
-        model == "ZW225-6") {
-      return "assets/images/wheel_loader.png";
+  getImageWithAssetIconKey(value) {
+    // if value string
+    int? iconKey;
+    if (value.runtimeType == String) {
+      iconKey = int.parse(value);
     } else {
-      return "assets/images/0.png";
+      iconKey = value;
     }
-
-    // if (model.contains("SHINRAI")) {
-    //   return "assets/images/shinrai.png";
-    // } else if (model.contains("EX130")) {
-    //   return "assets/images/EX130.png";
-    // } else if (model.contains("EX210")) {
-    //   return "assets/images/EX210.png";
-    // } else if (model.contains("EX210LC")) {
-    //   return "assets/images/EX210LC.png";
-    // } else if (model.contains("TH86")) {
-    //   return "assets/images/TH86.png";
-    // } else if (model.contains("TL340H")) {
-    //   return "assets/images/TL340H.png";
-    // } else {
-    //   return "assets/images/EX210.png";
-    // }
+    if (iconKey == null) {
+      iconKey = 0;
+    }
+    switch (iconKey) {
+      case 108:
+        return "assets/images/model/EX110.png";
+      case 109:
+        return "assets/images/model/EX70.png";
+      case 1001:
+        return "assets/images/model/EX130.png";
+      case 107:
+        return "assets/images/model/EX200.png";
+      case 1003:
+        return "assets/images/model/EX210.png";
+      case 1004:
+        return "assets/images/model/EX210LC.png";
+      case 185:
+        return "assets/images/model/SHINRAI.png";
+      case 105:
+        return "assets/images/model/TH76.png";
+      case 106:
+        return "assets/images/model/TH86.png";
+      case 1005:
+        return "assets/images/model/TL340H.png";
+      case 1006:
+        return "assets/images/model/TL360Z.png";
+      case 181:
+        return "assets/images/model/TMX20.png";
+      default:
+        return "assets/images/0.png";
+    }
   }
+
+  imageData(String model) {
+    switch (model) {
+      case "EX200LC SUPER PLUS":
+        return "assets/images/model/EX200.png";
+      case "EX210LC SUPER PLUS":
+        return "assets/images/model/EX210LC.png";
+      case "EX70 SUPER PLUS":
+        return "assets/images/model/EX70.png";
+      case "EX130 SUPER PLUS":
+        return "assets/images/model/EX130.png";
+      case "EX215 SUPER PLUS":
+        return "assets/images/model/EX200.png";
+      case "EX70 PRIME":
+        return "assets/images/model/EX70.png";
+      case "TL340H PRIME":
+        return "assets/images/model/TL340H.png";
+      case "EX110":
+        return "assets/images/model/EX110.png";
+      case "EX200":
+        return "assets/images/model/EX200.png";
+      case "EX200LC":
+        return "assets/images/model/EX200.png";
+      case "EX70 PRIME":
+        return "assets/images/model/EX70.png";
+      case "SHINRAI-BX80":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI-BX80-BSIV":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI - BX80":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI PRIME":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI-PRO":
+        return "assets/images/model/SHINRAI.png";
+      case "TL340H":
+        return "assets/images/model/TL340H.png";
+      case "TH76":
+        return "assets/images/model/TH76.png";
+      case "5T WL":
+        return "assets/images/wheel_loader.png";
+      case "ZW225-6":
+        return "assets/images/wheel_loader.png";
+      default:
+        return "assets/images/0.png";
+    }
+  }
+
+  // imageData(String model) {
+  //   //Excavator
+  //   ifmodel == "EX70 SUPER PLUS" ||
+  //        (model == "EX200LC SUPER PLUS" ||
+  //       model == "EX210LC SUPER PLUS" ||
+  //       model == "EX130 SUPER PLUS" ||
+  //       model == "EX215 SUPER PLUS" ||
+  //       model == "TL340H PRIME" ||
+  //       model == "EX110" ||
+  //       model == "EX200" ||
+  //       model == "EX200LC" ||
+  //       model == "PZX50" ||
+  //       model == "EX70 PRIME") {
+  //     return "assets/images/excavator.png";
+  //   }
+  //   //backhoe loader
+  //   else if (model == "SHINRAI - BX80" ||
+  //       model == "SHINRAI-BX80" ||
+  //       model == "SHINRAI-BX80-BSIV" ||
+  //       model == "SHINRAI PRIME" ||
+  //       model == "SHINRAI-PRO" ||
+  //       model == "TH76" ||
+  //       model == "TL340H") {
+  //     return "assets/images/backhoe_loader.png";
+  //   } else if (model == "TL340H Prime" ||
+  //       model == "TL340H" ||
+  //       model == "5T WL" ||
+  //       model == "ZW225-6") {
+  //     return "assets/images/wheel_loader.png";
+  //   } else {
+  //     return "assets/images/0.png";
+  //   }
+
+  //   // if (model.contains("SHINRAI")) {
+  //   //   return "assets/images/shinrai.png";
+  //   // } else if (model.contains("EX130")) {
+  //   //   return "assets/images/EX130.png";
+  //   // } else if (model.contains("EX210")) {
+  //   //   return "assets/images/EX210.png";
+  //   // } else if (model.contains("EX210LC")) {
+  //   //   return "assets/images/EX210LC.png";
+  //   // } else if (model.contains("TH86")) {
+  //   //   return "assets/images/TH86.png";
+  //   // } else if (model.contains("TL340H")) {
+  //   //   return "assets/images/TL340H.png";
+  //   // } else {
+  //   //   return "assets/images/EX210.png";
+  //   // }
+  // }
 
   static showInfo(BuildContext context, title, message) async {
     await showDialog(

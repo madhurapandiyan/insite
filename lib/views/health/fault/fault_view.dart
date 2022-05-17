@@ -107,7 +107,6 @@ class FaultViewState extends State<FaultView> {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   Fault? fault = viewModel.faults[index];
-
                                   return FaultListItem(
                                     fault: fault,
                                     onCallback: () {

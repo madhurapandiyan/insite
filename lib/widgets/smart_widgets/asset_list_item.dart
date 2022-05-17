@@ -68,13 +68,15 @@ class AssetOperationListItem extends StatelessWidget {
                                 : "",
                             path: asset == null
                                 ? "assets/images/EX210.png"
-                                : Utils().imageData(asset!.model!),
+                                : Utils().getImageWithAssetIconKey(
+                                    asset!.assetIcon!.key),
                           ),
                           InsiteTableRowItem(
                             title: "Total Duration",
                             content: asset!.dateRangeRuntimeDuration != null
                                 ? Utils.formatHHmm(Duration(
-                                        seconds: asset!.dateRangeRuntimeDuration!
+                                        seconds: asset!
+                                            .dateRangeRuntimeDuration!
                                             .toInt())
                                     .inSeconds)
                                 : "-",

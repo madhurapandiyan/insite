@@ -4,6 +4,7 @@ import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
 import 'package:insite/views/detail/tabs/health/health_dashboard/health_dashboard_view.dart';
 import 'package:insite/views/detail/tabs/health/health_list/health_list_view.dart';
@@ -127,7 +128,8 @@ class _TabPageState extends State<AssetDetailView> {
                         color: Theme.of(context).backgroundColor,
                         border: Border.all(
                             width: 1,
-                            color: Theme.of(context).textTheme.bodyText1!.color!),
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color!),
                         shape: BoxShape.rectangle,
                       ),
                       child: Table(children: [
@@ -153,8 +155,9 @@ class _TabPageState extends State<AssetDetailView> {
                                           width: 1, color: containercolor),
                                       shape: BoxShape.rectangle,
                                     ),
-                                    child:
-                                        Image.asset("assets/images/truck.png"),
+                                    child: Image.asset(Utils()
+                                        .getImageWithAssetIconKey(
+                                            viewModel.assetDetail!.assetIcon)),
                                   ),
                                 ),
                                 SizedBox(width: 15.0),
@@ -219,8 +222,10 @@ class _TabPageState extends State<AssetDetailView> {
                           color: Theme.of(context).backgroundColor,
                           border: Border.all(
                               width: 1,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color!),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!),
                           shape: BoxShape.rectangle,
                         ),
                         child: Padding(
@@ -237,8 +242,8 @@ class _TabPageState extends State<AssetDetailView> {
                                       ? viewModel.assetDetail!
                                                   .universalCustomerName !=
                                               null
-                                          ? viewModel
-                                              .assetDetail!.universalCustomerName
+                                          ? viewModel.assetDetail!
+                                              .universalCustomerName
                                           : "-"
                                       : "-",
                                   fontWeight: FontWeight.w700,
@@ -296,8 +301,7 @@ class _TabPageState extends State<AssetDetailView> {
                                   ? HealthListView(
                                       detail: viewModel.assetDetail,
                                     )
-                                  : 
-                                  SingleAssetUtilizationView(
+                                  : SingleAssetUtilizationView(
                                       detail: viewModel.assetDetail,
                                     )
                               : selectedTabIndex == 2

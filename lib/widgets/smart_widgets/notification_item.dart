@@ -76,7 +76,8 @@ class NotificationItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItemWithImage(
                           title: "Asset ID",
-                          path: "assets/images/EX210.png",
+                          path: Utils()
+                              .getImageWithAssetIconKey(notifications?.iconKey),
                         ),
                         InsiteTableRowItem(
                           title: "Name",

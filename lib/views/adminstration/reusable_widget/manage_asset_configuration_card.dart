@@ -74,7 +74,8 @@ class ManageAssetConfigurationCard extends StatelessWidget {
                                     width: 2.5, color: containercolor),
                                 borderRadius: BorderRadius.circular(5),
                                 shape: BoxShape.rectangle),
-                            child: Image.asset(Utils.getImage(assetSetting?.assetSettings?.assetIconKey))),
+                            child: Image.asset(Utils().getImageWithAssetIconKey(
+                                assetSetting?.assetSettings?.assetIconKey))),
                         SizedBox(
                           width: 10,
                         ),
