@@ -271,11 +271,15 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   searchContacts(String searchValue) {
-    if (searchValue.length >= 4) {
+    if (emailController.text.length >= 4) {
       _searchKeyword = searchValue;
       isHideSearchList = true;
       notifyListeners();
       getContactSearchReportData();
+    } else {
+      isHideSearchList = false;
+      searchContactListName!.clear();
+      notifyListeners();
     }
   }
 

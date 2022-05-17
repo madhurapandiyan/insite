@@ -97,10 +97,7 @@ class _NotificationViewState extends State<NotificationView> {
                                         Utils.getDateInFormatddMMyyyy(
                                             viewModel.endDate),
                                     //  bgColor: Theme.of(context).backgroundColor,
-                                    textColor: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1!
-                                        .color,
+                                    textColor: white,
                                     onTap: () async {
                                       dateRange = [];
                                       dateRange = await showDialog(

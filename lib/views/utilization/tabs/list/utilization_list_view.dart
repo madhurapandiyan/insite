@@ -78,8 +78,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
                                     viewModel.endDate),
                             //width: 90,
                             //bgColor: Theme.of(context).backgroundColor,
-                            textColor:
-                                Theme.of(context).textTheme.bodyText1!.color,
+                            textColor: white,
                             onTap: () async {
                               dateRange = [];
                               dateRange = await showDialog(
