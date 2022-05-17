@@ -48,9 +48,9 @@ class _CustomAutoCompleteWidgetState extends State<CustomAutoCompleteWidget> {
       children: [
         InsiteText(
           text: widget.textBoxTitle,
-          color:widget.isShowingBorderColor
-                      ? Theme.of(context).backgroundColor
-                      : Theme.of(context).textTheme.bodyText1!.color!,
+          color: widget.isShowingBorderColor
+              ? Theme.of(context).backgroundColor
+              : Theme.of(context).textTheme.bodyText1!.color!,
         ),
         SizedBox(
           height: 10,
@@ -79,7 +79,15 @@ class _CustomAutoCompleteWidgetState extends State<CustomAutoCompleteWidget> {
             : Container(
                 height: 150,
                 margin: EdgeInsets.symmetric(horizontal: 8),
-                color: Theme.of(context).canvasColor,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black,
+                          blurStyle: BlurStyle.outer,
+                          blurRadius: 0.5,
+                          spreadRadius: 0.2)
+                    ]),
                 child: ListView(
                   children: List.generate(
                       widget.items!.length,

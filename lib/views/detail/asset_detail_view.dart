@@ -5,6 +5,7 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
 import 'package:insite/views/detail/tabs/health/health_dashboard/health_dashboard_view.dart';
 import 'package:insite/views/detail/tabs/health/health_list/health_list_view.dart';
@@ -195,8 +196,11 @@ class _TabPageState extends State<AssetDetailView> {
                                           width: 1, color: containercolor),
                                       shape: BoxShape.rectangle,
                                     ),
-                                    child:
-                                        Image.asset("assets/images/truck.png"),
+                                    child: Image.asset(Utils()
+                                        .getImageWithAssetIconKey(
+                                            model: viewModel.assetDetail!.model,
+                                            assetIconKey: viewModel
+                                                .assetDetail!.assetIcon)),
                                   ),
                                 ),
                                 SizedBox(width: 15.0),
@@ -352,8 +356,7 @@ class _TabPageState extends State<AssetDetailView> {
                                   ? HealthListView(
                                       detail: viewModel.assetDetail,
                                     )
-                                  : 
-                                  SingleAssetUtilizationView(
+                                  : SingleAssetUtilizationView(
                                       detail: viewModel.assetDetail,
                                     )
                               : selectedTabIndex == 2

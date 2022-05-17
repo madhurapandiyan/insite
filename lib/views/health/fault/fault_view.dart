@@ -71,9 +71,8 @@ class FaultViewState extends State<FaultView> {
                                   viewModel.startDate) +
                               " - " +
                               Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                         // bgColor: Theme.of(context).backgroundColor,
-                          textColor:
-                              Theme.of(context).textTheme.bodyText1!.color,
+                          // bgColor: Theme.of(context).backgroundColor,
+                          textColor: white,
                           onTap: () async {
                             dateRange = [];
                             dateRange = await showDialog(
@@ -108,7 +107,6 @@ class FaultViewState extends State<FaultView> {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   Fault? fault = viewModel.faults[index];
-
                                   return FaultListItem(
                                     fault: fault,
                                     onCallback: () {

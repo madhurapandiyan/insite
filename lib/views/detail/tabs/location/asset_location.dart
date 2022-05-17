@@ -154,6 +154,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               compassEnabled: true,
                               zoomControlsEnabled: false,
                               markers: viewModel.markers,
+                              polylines: viewModel.polyline,
                               initialCameraPosition:
                                   viewModel.assetLocationHistory != null &&
                                           viewModel.assetLocationHistory!

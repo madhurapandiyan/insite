@@ -15,6 +15,9 @@ Asset _$AssetFromJson(Map<String, dynamic> json) => Asset(
           ?.map((e) => AssetLocalDate.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['serialNumber'] as String?,
+      json['assetIcon'] == null
+          ? null
+          : AssetIconKey.fromJson(json['assetIcon'] as Map<String, dynamic>),
       json['productFamily'] as String?,
       json['assetLastReceivedEvent'] == null
           ? null
@@ -31,12 +34,22 @@ Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
       'makeCode': instance.makeCode,
       'model': instance.model,
       'serialNumber': instance.serialNumber,
+      'assetIcon': instance.assetIcon,
       'productFamily': instance.productFamily,
       'distanceTravelledKilometers': instance.distanceTravelledKilometers,
       'customStateDescription': instance.customStateDescription,
       'dateRangeRuntimeDuration': instance.dateRangeRuntimeDuration,
       'assetLastReceivedEvent': instance.assetLastReceivedEvent,
       'assetLocalDates': instance.assetLocalDates,
+    };
+
+AssetIconKey _$AssetIconKeyFromJson(Map<String, dynamic> json) => AssetIconKey(
+      key: json['key'] as int?,
+    );
+
+Map<String, dynamic> _$AssetIconKeyToJson(AssetIconKey instance) =>
+    <String, dynamic>{
+      'key': instance.key,
     };
 
 AssetLastReceivedEvent _$AssetLastReceivedEventFromJson(

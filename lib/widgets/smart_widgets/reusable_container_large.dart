@@ -41,7 +41,7 @@ class _DashBoardContainerState extends State<DashBoardContainer> {
             Container(
               height: 100,
               decoration: BoxDecoration(
-                  color: Theme.of(context).indicatorColor,
+                 // color: Theme.of(context).indicatorColor,
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(10),
                       topLeft: Radius.circular(10))),
