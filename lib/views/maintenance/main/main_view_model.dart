@@ -57,10 +57,7 @@ class MainViewModel extends InsiteViewModel {
 
   late ScrollController scrollController;
 
-  MainViewModel(
-    SummaryData? summaryData,
-  ) {
-    _summaryData = summaryData;
+  MainViewModel() {
     setUp();
 
     _maintenanceService!.setUp();
@@ -74,7 +71,7 @@ class MainViewModel extends InsiteViewModel {
 
     Future.delayed(Duration(seconds: 1), () {
       getMaintenanceViewList();
-      getMaintenanceListItemData();
+      //getMaintenanceListItemData();
     });
   }
 
@@ -111,45 +108,6 @@ class MainViewModel extends InsiteViewModel {
       _loadingMore = false;
       notifyListeners();
     }
-  }
-
-  getMaintenanceListItemData() async {
-    await getSelectedFilterData();
-    await getDateRangeFilterData();
-
-    notifyListeners();
-    Logger().d("start date " + startDate!);
-    Logger().d("end date " + endDate!);
-
-    MaintenanceListService? result =
-        await _maintenanceService?.getMaintenanceServiceList(
-            _summaryData!.assetUID,
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-            pageSize,
-            pageNumber,
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
-
-    if (result != null && result.services != null) {
-      if (result.services!.isNotEmpty) {
-        _assetDataValue = result.assetData;
-        _services.clear();
-        _services.addAll(result.services!);
-        _refreshing = false;
-        _loadingMore = false;
-        notifyListeners();
-      } else {
-        // _services.addAll(result.services!);
-        _refreshing = false;
-        _loadingMore = false;
-        _shouldLoadmore = false;
-        notifyListeners();
-      }
-    } else {
-      _refreshing = false;
-      notifyListeners();
-    }
-
-    notifyListeners();
   }
 
   refresh() async {
