@@ -42,7 +42,8 @@ class UtilizationListItem extends StatelessWidget {
                             children: [
                               InsiteTableRowItemWithIcon(
                                 iconPath: Utils().getImageWithAssetIconKey(
-                                    utilizationData!.assetIcon),
+                                  assetIconKey: utilizationData!.assetIcon,
+                                ),
                                 title: utilizationData!.lastReportedTime != null
                                     ? Utils.getLastReportedDateTwo(
                                         utilizationData!.lastReportedTime)
@@ -384,9 +385,12 @@ class UtilizationListItem extends StatelessWidget {
                                           ? utilizationData!.model
                                           : "",
                                   path: utilizationData == null
-                                      ? "assets/images/EX210.png"
-                                      : Utils()
-                                          .imageData(utilizationData!.model!),
+                                      ? "assets/images/0.png"
+                                      : Utils().getImageWithAssetIconKey(
+                                          model: utilizationData!.model,
+                                          assetIconKey:
+                                              utilizationData!.assetIcon,
+                                        ),
                                 ),
                                 InsiteTableRowItem(
                                   title: "Runtime Hours",

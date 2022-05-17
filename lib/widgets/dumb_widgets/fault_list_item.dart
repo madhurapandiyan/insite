@@ -59,7 +59,9 @@ class FaultListItem extends StatelessWidget {
                           path: fault?.asset["details"] != null &&
                                   fault?.asset["details"]["model"] != null
                               ? Utils().getImageWithAssetIconKey(
-                                  fault!.asset["details"]["assetIcon"])
+                                  model: fault!.asset["details"]["model"],
+                                  assetIconKey: fault!.asset["details"]
+                                      ["assetIcon"])
                               : "assets/images/0.png",
                         ),
                         InsiteTableRowItem(

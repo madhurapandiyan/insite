@@ -69,7 +69,8 @@ class AssetOperationListItem extends StatelessWidget {
                             path: asset == null
                                 ? "assets/images/EX210.png"
                                 : Utils().getImageWithAssetIconKey(
-                                    asset!.assetIcon!.key),
+                                    model: asset!.model,
+                                    assetIconKey: asset!.assetIcon!.key),
                           ),
                           InsiteTableRowItem(
                             title: "Total Duration",

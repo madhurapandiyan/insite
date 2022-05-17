@@ -157,7 +157,9 @@ class _TabPageState extends State<AssetDetailView> {
                                     ),
                                     child: Image.asset(Utils()
                                         .getImageWithAssetIconKey(
-                                            viewModel.assetDetail!.assetIcon)),
+                                            model: viewModel.assetDetail!.model,
+                                            assetIconKey: viewModel
+                                                .assetDetail!.assetIcon)),
                                   ),
                                 ),
                                 SizedBox(width: 15.0),

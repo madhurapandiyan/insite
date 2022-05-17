@@ -73,8 +73,11 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                               path: widget.fault!.asset["details"] != null &&
                                       widget.fault!.asset["details"]["model"] !=
                                           null
-                                  ? Utils().getImageWithAssetIconKey(widget
-                                      .fault!.asset["details"]["assetIcon"])
+                                  ? Utils().getImageWithAssetIconKey(
+                                      model: widget.fault!.asset["details"]
+                                          ["model"],
+                                      assetIconKey: widget
+                                          .fault!.asset["details"]["assetIcon"])
                                   : "assets/images/EX210.png",
                             ),
                             InsiteTableRowItem(

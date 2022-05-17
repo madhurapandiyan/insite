@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
@@ -577,7 +578,8 @@ class _SelectedAssetState extends State<SelectedAsset> {
                                   leading: InsiteImage(
                                     width: 38,
                                     height: 38,
-                                    path: "assets/images/crane_small_login.png",
+                                    path: Utils().getImageAssetConfiguration(
+                                        detailsRecords.assetIcon),
                                   ),
                                   title: Container(
                                     child: InsiteText(

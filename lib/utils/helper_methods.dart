@@ -7,6 +7,7 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/adminstration/asset_settings_configure/model/configure_grid_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -18,6 +19,121 @@ import '../core/models/manage_notifications.dart';
 import 'date.dart';
 
 class Utils {
+  var tatahitachi = [
+    ConfigureGridViewModel(
+        assetIconKey: 1038,
+        modelName: 'EX130 SUPER PLUS',
+        image: "assets/images/model/EX130.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1026,
+        modelName: 'EX200LC',
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1034,
+        modelName: 'EX200LC SUPER PLUS',
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1043,
+        modelName: 'EX200 Super Plus',
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1033,
+        modelName: 'EX210 Super',
+        image: "assets/images/model/EX210.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1037,
+        modelName: 'EX210LC SUPER PLUS',
+        image: "assets/images/model/EX210LC.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1030,
+        modelName: 'EX70 PRIME',
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1032,
+        modelName: 'EX70 SUPER PLUS',
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1042,
+        modelName: 'EX70 SUPER BSIV',
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1041,
+        modelName: 'SHINRAI-PRO',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1028,
+        modelName: 'SHINRAI PRIME',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1031,
+        modelName: 'SHINRAI - BX80',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1029,
+        modelName: 'SHINRAI-BX80',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1039,
+        modelName: 'SHINRAI-BX80-BSIV',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1035,
+        modelName: 'TL340H Prime',
+        image: "assets/images/model/TL340H.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1006,
+        modelName: "TL360Z",
+        image: "assets/images/model/TL360Z.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 108,
+        modelName: "EX110",
+        image: "assets/images/model/EX110.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1001,
+        modelName: "EX130",
+        image: "assets/images/model/EX130.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 107,
+        modelName: "EX200",
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1003,
+        modelName: "EX210",
+        image: "assets/images/model/EX210.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1004,
+        modelName: "EX210LC",
+        image: "assets/images/model/EX210LC.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 109,
+        modelName: "EX70",
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 185,
+        modelName: "SHINRAI",
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 105,
+        modelName: "TH76",
+        image: "assets/images/model/TH76.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 106,
+        modelName: "TH86",
+        image: "assets/images/model/TH86.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1005,
+        modelName: "TL340H",
+        image: "assets/images/model/TL340H.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1006,
+        modelName: "TL360Z",
+        image: "assets/images/model/TL360Z.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 181,
+        modelName: "TMX20",
+        image: "assets/images/model/TMX20.png")
+  ];
+
   static String getLastReportedDate(date) {
     try {
       DateTime parseDate =
@@ -734,16 +850,42 @@ class Utils {
     return maxDate;
   }
 
-  getImageWithAssetIconKey(value) {
+  getImageWithAssetIconKey({dynamic assetIconKey, String? model}) {
     // if value string
     int? iconKey;
-    if (value.runtimeType == String) {
-      iconKey = int.parse(value);
+    if (assetIconKey.runtimeType == String) {
+      iconKey = int.parse(assetIconKey);
+    } else if (assetIconKey.runtimeType == double) {
+      iconKey = (assetIconKey as double).toInt();
     } else {
-      iconKey = value;
+      iconKey = assetIconKey;
     }
-    if (iconKey == null) {
-      iconKey = 0;
+    if (tatahitachi.any((element) => element.modelName == model)) {
+      if (tatahitachi.any((element) => element.assetIconKey == iconKey)) {
+        Logger().i("icon key found");
+        var data = tatahitachi
+            .singleWhere((element) => element.assetIconKey == iconKey);
+        if (data != null) {
+          return data.image;
+        } else {
+          return "assets/images/0.png";
+        }
+      } else {
+        return "assets/images/0.png";
+      }
+    } else {
+      return "assets/images/0.png";
+    }
+  }
+
+  getImageAssetConfiguration(
+    dynamic assetIconKey,
+  ) {
+    int? iconKey;
+    if (assetIconKey.runtimeType == String) {
+      iconKey = int.parse(assetIconKey);
+    } else {
+      iconKey = assetIconKey;
     }
     switch (iconKey) {
       case 108:

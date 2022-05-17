@@ -62,6 +62,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
   AssetSettingsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     scrollController = new ScrollController();
+    _manageUserService.setUp();
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {

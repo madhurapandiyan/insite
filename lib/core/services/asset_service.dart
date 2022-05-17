@@ -127,7 +127,7 @@ class AssetService extends BaseService {
 
   Future<AssetDetail?> getAssetDetail(assetUID) async {
     try {
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: _graphqlSchemaService?.getSingleAssetDetail(assetUID),
           customerId: accountSelected?.CustomerUID,
