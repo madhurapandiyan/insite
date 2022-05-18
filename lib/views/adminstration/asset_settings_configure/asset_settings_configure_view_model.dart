@@ -52,13 +52,55 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
   getDisplayList() {
     List<ConfigureGridViewModel> staticTranspotData = [
       ConfigureGridViewModel(
-          image: "assets/images/10001.png",
-          modelName: "01-all-1",
-          assetIconKey: 10001),
+          image: "assets/images/model/EX70.png",
+          modelName: "EX70",
+          assetIconKey: 109),
       ConfigureGridViewModel(
-          image: "assets/images/10002.png",
-          modelName: "01-all-1",
-          assetIconKey: 10002),
+          image: "assets/images/model/EX110.png",
+          modelName: "EX110",
+          assetIconKey: 108),
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX130.png",
+          modelName: "EX130",
+          assetIconKey: 1001),
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX200.png",
+          modelName: "EX200",
+          assetIconKey: 107),
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX210.png",
+          modelName: "EX210",
+          assetIconKey: 1003),
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX210LC.png",
+          modelName: "EX210LC",
+          assetIconKey: 1004),
+      ConfigureGridViewModel(
+          image: "assets/images/model/SHINRAI.png",
+          modelName: "SHINRAI",
+          assetIconKey: 185),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TH76.png",
+          modelName: "TH76",
+          assetIconKey: 105),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TH86.png",
+          modelName: "TH86",
+          assetIconKey: 106),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TL340H.png",
+          modelName: "TL340H",
+          assetIconKey: 1005),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TL360Z.png",
+          modelName: "TL360Z",
+          assetIconKey: 1006),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TMX20.png",
+          modelName: "TMX20",
+          assetIconKey: 181),
+      ConfigureGridViewModel(
+          image: "assets/images/0.png", modelName: "Default", assetIconKey: 0),
     ];
     displayList = staticTranspotData;
     notifyListeners();

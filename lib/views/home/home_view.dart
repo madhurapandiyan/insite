@@ -30,32 +30,31 @@ class _HomeViewState extends State<HomeView> {
             onFilterApplied: () {},
             onRefineApplied: () {},
             viewModel: viewModel,
-            body:
-                 viewModel.isLoading
-                    ? Center(
-                        child: InsiteProgressBar(),
-                      )
-                    :
-                Container(
-              color: Theme.of(context).backgroundColor,
-              child: GridView.builder(
-                padding: EdgeInsets.all(16),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: MediaQuery.of(context).size.width > 1000
-                        ? 7
-                        : MediaQuery.of(context).size.width > 600
-                            ? 5
-                            : 3,
-                    crossAxisSpacing: 5.0,
-                    mainAxisSpacing: 5.0),
-                itemBuilder: (context, index) {
-                  Category category = categories![index];
-                  return _buildCategoryItem(
-                      context, index, category, viewModel);
-                },
-                itemCount: categories!.length,
-              ),
-            ),
+            body: viewModel.isLoading
+                ? Center(
+                    child: InsiteProgressBar(),
+                  )
+                : Container(
+                    color: Theme.of(context).backgroundColor,
+                    child: GridView.builder(
+                      padding: EdgeInsets.all(16),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount:
+                              MediaQuery.of(context).size.width > 1000
+                                  ? 5
+                                  : MediaQuery.of(context).size.width > 600
+                                      ? 3
+                                      : 2,
+                          crossAxisSpacing: 5.0,
+                          mainAxisSpacing: 5.0),
+                      itemBuilder: (context, index) {
+                        Category category = categories![index];
+                        return _buildCategoryItem(
+                            context, index, category, viewModel);
+                      },
+                      itemCount: categories!.length,
+                    ),
+                  ),
           ),
         );
       },

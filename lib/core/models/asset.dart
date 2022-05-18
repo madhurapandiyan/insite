@@ -11,6 +11,7 @@ class Asset {
   final String? makeCode;
   final String? model;
   final String? serialNumber;
+  final AssetIconKey? assetIcon;
   final String? productFamily;
   final double? distanceTravelledKilometers;
   final String? customStateDescription;
@@ -24,6 +25,7 @@ class Asset {
       this.model,
       this.assetLocalDates,
       this.serialNumber,
+      this.assetIcon,
       this.productFamily,
       this.assetLastReceivedEvent,
       this.customStateDescription,
@@ -33,6 +35,17 @@ class Asset {
   factory Asset.fromJson(dynamic json) => _$AssetFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetToJson(this);
+}
+
+@JsonSerializable()
+class AssetIconKey {
+  final int? key;
+  AssetIconKey({this.key});
+
+  factory AssetIconKey.fromJson(Map<String, dynamic> json) =>
+      _$AssetIconKeyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssetIconKeyToJson(this);
 }
 
 @JsonSerializable()

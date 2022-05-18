@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.0.9+9
+version: 2.0.10+10
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
@@ -170,6 +170,18 @@ flutter:
     - assets/images/excavator.png
     - assets/images/wheel_loader.png
     - assets/images/backhoe_loader.png
+    - assets/images/model/EX70.png
+    - assets/images/model/EX110.png
+    - assets/images/model/EX130.png
+    - assets/images/model/EX200.png
+    - assets/images/model/EX210.png
+    - assets/images/model/EX210LC.png
+    - assets/images/model/SHINRAI.png
+    - assets/images/model/TH76.png
+    - assets/images/model/TH86.png
+    - assets/images/model/TL340H.png
+    - assets/images/model/TL360Z.png
+    - assets/images/model/TMX20.png
     
   fonts:
     - family: Roboto

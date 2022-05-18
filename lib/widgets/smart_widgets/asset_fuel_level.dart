@@ -123,10 +123,13 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                             series: _getSemiDoughnutSeries(),
                             tooltipBehavior: TooltipBehavior(enable: true),
                           )),
-                    ),SizedBox(width: 40,),
+                    ),
+                    SizedBox(
+                      width: 40,
+                    ),
                     Flexible(
                       child: Container(
-                          margin: EdgeInsets.only(right: 20),
+                        margin: EdgeInsets.only(right: 20),
                         child: ListView.separated(
                             separatorBuilder: (context, index) {
                               return Container(
@@ -178,9 +181,9 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
           dataLabelSettings: DataLabelSettings(
               connectorLineSettings:
                   ConnectorLineSettings(width: 1.5, length: "10%"),
-              color: cardcolor,
+              //  color: cardcolor,
               textStyle: new TextStyle(
-                  color: textcolor,
+                  color: black,
                   fontSize: 10.0,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Roboto',

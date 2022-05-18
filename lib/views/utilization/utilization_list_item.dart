@@ -41,7 +41,9 @@ class UtilizationListItem extends StatelessWidget {
                           TableRow(
                             children: [
                               InsiteTableRowItemWithIcon(
-                                iconPath: "-",
+                                iconPath: Utils().getImageWithAssetIconKey(
+                                  assetIconKey: utilizationData!.assetIcon,
+                                ),
                                 title: utilizationData!.lastReportedTime != null
                                     ? Utils.getLastReportedDateTwo(
                                         utilizationData!.lastReportedTime)
@@ -383,9 +385,12 @@ class UtilizationListItem extends StatelessWidget {
                                           ? utilizationData!.model
                                           : "",
                                   path: utilizationData == null
-                                      ? "assets/images/EX210.png"
-                                      : Utils()
-                                          .imageData(utilizationData!.model!),
+                                      ? "assets/images/0.png"
+                                      : Utils().getImageWithAssetIconKey(
+                                          model: utilizationData!.model,
+                                          assetIconKey:
+                                              utilizationData!.assetIcon,
+                                        ),
                                 ),
                                 InsiteTableRowItem(
                                   title: "Runtime Hours",
@@ -526,8 +531,8 @@ class UtilizationListItem extends StatelessWidget {
                                                       null
                                                   ? (utilizationData!
                                                                   .targetRuntimePerformance! *
-                                                              100).toStringAsFixed(2)
-                                                           +
+                                                              100)
+                                                          .toStringAsFixed(2) +
                                                       " %"
                                                   : "",
                                             ),
@@ -591,7 +596,7 @@ class UtilizationListItem extends StatelessWidget {
                                                   ? (utilizationData!
                                                                   .targetIdlePerformance! *
                                                               100)
-                                                          .toStringAsFixed(2)+
+                                                          .toStringAsFixed(2) +
                                                       " %"
                                                   : "",
                                             ),

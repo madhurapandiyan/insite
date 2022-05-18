@@ -57,8 +57,10 @@ class FleetListItem extends StatelessWidget {
                           InsiteTableRowItemWithImage(
                             title: fleet!.manufacturer! + "\n" + fleet!.model!,
                             path: fleet == null
-                                ? "assets/images/EX210.png"
-                                : Utils().imageData(fleet!.model!),
+                                ? "assets/images/0.png"
+                                : Utils().getImageWithAssetIconKey(
+                                    model: fleet!.model,
+                                    assetIconKey: fleet!.assetIcon!),
                           ),
                           InsiteTableRowItem(
                             title: "Last Known Status",
