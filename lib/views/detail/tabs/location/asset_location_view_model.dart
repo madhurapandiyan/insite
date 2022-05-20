@@ -22,7 +22,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class AssetLocationViewModel extends InsiteViewModel {
   Logger? log;
 
-  AssetLocationHistoryService? _assetLocationHistoryService = locator<AssetLocationHistoryService>();
+  AssetLocationHistoryService? _assetLocationHistoryService =
+      locator<AssetLocationHistoryService>();
   FaultService? _faultService = locator<FaultService>();
 
   AssetLocationHistory? _assetLocationHistory;
@@ -36,12 +37,13 @@ class AssetLocationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  bool dataNotFound=false;
+  bool dataNotFound = false;
 
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
   Set<Marker> markers = Set();
+  Set<Polyline> polyline = Set();
   List<LatLng> latlngs = [];
   int index = 1;
 
@@ -78,8 +80,8 @@ class AssetLocationViewModel extends InsiteViewModel {
     if (result != null) {
       _assetLocationHistory = result;
       updateMarkers();
-    }else{
-      dataNotFound=true;
+    } else {
+      dataNotFound = true;
     }
     _loading = false;
     notifyListeners();
@@ -92,7 +94,10 @@ class AssetLocationViewModel extends InsiteViewModel {
     _refreshing = true;
     notifyListeners();
     AssetLocationHistory? result = await _assetLocationHistoryService!
-        .getAssetLocationHistory(Utils.fleetLocationSingleAssetStartDateFormate(startDate), Utils.fleetLocationSingleAssetEndDateFormate(endDate), assetDetail!.assetUid);
+        .getAssetLocationHistory(
+            Utils.fleetLocationSingleAssetStartDateFormate(startDate),
+            Utils.fleetLocationSingleAssetEndDateFormate(endDate),
+            assetDetail!.assetUid);
     if (result != null) {
       _assetLocationHistory = result;
       updateMarkers();
@@ -118,6 +123,15 @@ class AssetLocationViewModel extends InsiteViewModel {
               LatLng(assetLocation.latitude!, assetLocation.longitude!),
             );
           }));
+
+      polyline.add(Polyline(
+          polylineId: PolylineId("${index++}"),
+          points: latlngs,
+          endCap: Cap.roundCap,
+          startCap: Cap.buttCap,
+          jointType: JointType.mitered,
+          width: 5,
+          color: Colors.blue));
     }
     print("markers length ${markers.length}");
   }
@@ -125,13 +139,14 @@ class AssetLocationViewModel extends InsiteViewModel {
   getFaultAssetLocationHistoryResult() async {
     await getDateRangeFilterData();
     await getSelectedFilterData();
-    HealthListResponse? result = await _faultService!.getAssetViewLocationSummary(
-        assetDetail!.assetUid,
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        null,
-        5000,
-        appliedFilters);
+    HealthListResponse? result = await _faultService!
+        .getAssetViewLocationSummary(
+            assetDetail!.assetUid,
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+            null,
+            5000,
+            appliedFilters);
     if (result != null) {
       _healthListResponse = result;
       updateMarkersForFault();
@@ -147,13 +162,14 @@ class AssetLocationViewModel extends InsiteViewModel {
     latlngs.cast();
     _refreshing = true;
     notifyListeners();
-    HealthListResponse? result = await _faultService!.getAssetViewLocationSummary(
-        assetDetail!.assetUid,
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
-        Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
-        null,
-        2500,
-        appliedFilters);
+    HealthListResponse? result = await _faultService!
+        .getAssetViewLocationSummary(
+            assetDetail!.assetUid,
+            Utils.getDateInFormatyyyyMMddTHHmmssZ(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
+            null,
+            2500,
+            appliedFilters);
     if (result != null) {
       _healthListResponse = result;
       updateMarkersForFault();
@@ -442,6 +458,7 @@ class AssetLocationViewModel extends InsiteViewModel {
         if (latLng.longitude < y0!) y0 = latLng.longitude;
       }
     }
-    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
+    return LatLngBounds(
+        northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
   }
 }

@@ -41,7 +41,9 @@ class UtilizationListItem extends StatelessWidget {
                           TableRow(
                             children: [
                               InsiteTableRowItemWithIcon(
-                                iconPath: "-",
+                                iconPath: Utils().getImageWithAssetIconKey(
+                                  assetIconKey: utilizationData!.assetIcon,
+                                ),
                                 title: utilizationData!.lastReportedTime != null
                                     ? Utils.getLastReportedDateTwo(
                                         utilizationData!.lastReportedTime)
@@ -156,11 +158,11 @@ class UtilizationListItem extends StatelessWidget {
                                     TableRow(
                                       children: [
                                         InsiteTableRowItem(
-                                          title: "Lifetime Fuel (gal)",
+                                          title: "Lifetime Fuel (Litres)",
                                           content: "-",
                                         ),
                                         InsiteTableRowItem(
-                                          title: "Fuel Burned (gal)",
+                                          title: "Fuel Burned (Litres)",
                                           content: utilizationData!
                                                       .runtimeFuelConsumedLiters !=
                                                   null
@@ -173,7 +175,7 @@ class UtilizationListItem extends StatelessWidget {
                                     ),
                                     TableRow(children: [
                                       InsiteTableRowItem(
-                                        title: "Burn Rate (gal/hr)",
+                                        title: "Burn Rate (Litres/hr)",
                                         content: utilizationData!
                                                     .runtimeFuelConsumptionRate !=
                                                 null
@@ -245,13 +247,13 @@ class UtilizationListItem extends StatelessWidget {
                                   TableRow(
                                     children: [
                                       InsiteTableRowItem(
-                                        title: "Lifetime Fuel (gal)",
+                                        title: "Lifetime Fuel (Litres)",
                                         content: utilizationData
                                                 ?.lastIdleFuelConsumptionLitersMeter ??
                                             "-",
                                       ),
                                       InsiteTableRowItem(
-                                        title: "Fuel Burned (gal)",
+                                        title: "Fuel Burned (Litres)",
                                         content: utilizationData!
                                                     .idleFuelConsumedLiters !=
                                                 null
@@ -264,7 +266,7 @@ class UtilizationListItem extends StatelessWidget {
                                   ),
                                   TableRow(children: [
                                     InsiteTableRowItem(
-                                      title: "Burn Rate (gal/hr)",
+                                      title: "Burn Rate (Litres/hr)",
                                       content: utilizationData!
                                                   .idleFuelConsumptionRate !=
                                               null
@@ -383,9 +385,12 @@ class UtilizationListItem extends StatelessWidget {
                                           ? utilizationData!.model
                                           : "",
                                   path: utilizationData == null
-                                      ? "assets/images/EX210.png"
-                                      : Utils()
-                                          .imageData(utilizationData!.model!),
+                                      ? "assets/images/0.png"
+                                      : Utils().getImageWithAssetIconKey(
+                                          model: utilizationData!.model,
+                                          assetIconKey:
+                                              utilizationData!.assetIcon,
+                                        ),
                                 ),
                                 InsiteTableRowItem(
                                   title: "Runtime Hours",
@@ -527,12 +532,12 @@ class UtilizationListItem extends StatelessWidget {
                                                   ? (utilizationData!
                                                                   .targetRuntimePerformance! *
                                                               100)
-                                                          .toString() +
+                                                          .toStringAsFixed(2) +
                                                       " %"
                                                   : "",
                                             ),
                                             InsiteTableRowItem(
-                                              title: "Fuel Burned (gal)",
+                                              title: "Fuel Burned (Litres)",
                                               content: utilizationData!
                                                           .runtimeFuelConsumedLiters !=
                                                       null
@@ -591,7 +596,7 @@ class UtilizationListItem extends StatelessWidget {
                                                   ? (utilizationData!
                                                                   .targetIdlePerformance! *
                                                               100)
-                                                          .toString() +
+                                                          .toStringAsFixed(2) +
                                                       " %"
                                                   : "",
                                             ),

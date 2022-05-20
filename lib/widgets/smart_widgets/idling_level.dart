@@ -31,7 +31,7 @@ class IdlingLevel extends StatefulWidget {
 }
 
 class _IdlingLevelState extends State<IdlingLevel> {
-  IdlingLevelRange idlingLevelRange = IdlingLevelRange.DAY;
+  IdlingLevelRange idlingLevelRange = IdlingLevelRange.WEEK;
 
   FilterData getDateFilterDataForIdlingLevel(IdlingLevelRange value) {
     FilterData dateFilter;
@@ -126,23 +126,28 @@ class _IdlingLevelState extends State<IdlingLevel> {
                             Container(
                               height: maxheight,
                               child: SfCartesianChart(
-                                legend: Legend(
-                                  isVisible: true,
-                                  textStyle: TextStyle(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .color),
-                                  alignment: ChartAlignment.center,
-                                  overflowMode: LegendItemOverflowMode.wrap,
-                                  width: '100%',
-                                  position: LegendPosition.bottom,
-                                  isResponsive: true,
-                                  toggleSeriesVisibility: false,
-                                ),
+                                // legend: Legend(
+                                //   isVisible: true,
+                                //   textStyle: TextStyle(
+                                //       color: Theme.of(context)
+                                //           .textTheme
+                                //           .bodyText1!
+                                //           .color),
+                                //   alignment: ChartAlignment.center,
+                                //   overflowMode: LegendItemOverflowMode.wrap,
+                                //   width: '100%',
+                                //   position: LegendPosition.bottom,
+                                //   isResponsive: true,
+                                //   toggleSeriesVisibility: false,
+                                // ),
                                 isTransposed: true,
                                 plotAreaBorderWidth: 0,
                                 primaryXAxis: CategoryAxis(
+                                  title: AxisTitle(
+                                      text: "Idle %",
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1),
                                   labelStyle: TextStyle(
                                       color: Theme.of(context)
                                           .textTheme
@@ -200,6 +205,11 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                           idlingLevelRange));
                                 },
                                 primaryYAxis: NumericAxis(
+                                    title: AxisTitle(
+                                        text: "Assets",
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1),
                                     majorGridLines: MajorGridLines(
                                         width: 0,
                                         color:

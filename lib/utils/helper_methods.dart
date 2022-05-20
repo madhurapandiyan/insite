@@ -7,6 +7,7 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/adminstration/asset_settings_configure/model/configure_grid_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -18,6 +19,121 @@ import '../core/models/manage_notifications.dart';
 import 'date.dart';
 
 class Utils {
+  var tatahitachi = [
+    ConfigureGridViewModel(
+        assetIconKey: 1038,
+        modelName: 'EX130 SUPER PLUS',
+        image: "assets/images/model/EX130.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1026,
+        modelName: 'EX200LC',
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1034,
+        modelName: 'EX200LC SUPER PLUS',
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1043,
+        modelName: 'EX200 Super Plus',
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1033,
+        modelName: 'EX210 Super',
+        image: "assets/images/model/EX210.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1037,
+        modelName: 'EX210LC SUPER PLUS',
+        image: "assets/images/model/EX210LC.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1030,
+        modelName: 'EX70 PRIME',
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1032,
+        modelName: 'EX70 SUPER PLUS',
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1042,
+        modelName: 'EX70 SUPER BSIV',
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1041,
+        modelName: 'SHINRAI-PRO',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1028,
+        modelName: 'SHINRAI PRIME',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1031,
+        modelName: 'SHINRAI - BX80',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1029,
+        modelName: 'SHINRAI-BX80',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1039,
+        modelName: 'SHINRAI-BX80-BSIV',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1035,
+        modelName: 'TL340H Prime',
+        image: "assets/images/model/TL340H.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1006,
+        modelName: "TL360Z",
+        image: "assets/images/model/TL360Z.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 108,
+        modelName: "EX110",
+        image: "assets/images/model/EX110.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1001,
+        modelName: "EX130",
+        image: "assets/images/model/EX130.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 107,
+        modelName: "EX200",
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1003,
+        modelName: "EX210",
+        image: "assets/images/model/EX210.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1004,
+        modelName: "EX210LC",
+        image: "assets/images/model/EX210LC.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 109,
+        modelName: "EX70",
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 185,
+        modelName: "SHINRAI",
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 105,
+        modelName: "TH76",
+        image: "assets/images/model/TH76.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 106,
+        modelName: "TH86",
+        image: "assets/images/model/TH86.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1005,
+        modelName: "TL340H",
+        image: "assets/images/model/TL340H.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1006,
+        modelName: "TL360Z",
+        image: "assets/images/model/TL360Z.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 181,
+        modelName: "TMX20",
+        image: "assets/images/model/TMX20.png")
+  ];
+
   static String getLastReportedDate(date) {
     try {
       DateTime parseDate =
@@ -221,8 +337,8 @@ class Utils {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
-      .subtract(Duration(days: 1))
-      .add(Duration(hours: 18, minutes: 30,seconds: 0));
+          .subtract(Duration(days: 1))
+          .add(Duration(hours: 18, minutes: 30, seconds: 0));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -734,23 +850,169 @@ class Utils {
     return maxDate;
   }
 
-  imageData(String model) {
-    if (model.contains("SHINRAI")) {
-      return "assets/images/shinrai.png";
-    } else if (model.contains("EX130")) {
-      return "assets/images/EX130.png";
-    } else if (model.contains("EX210")) {
-      return "assets/images/EX210.png";
-    } else if (model.contains("EX210LC")) {
-      return "assets/images/EX210LC.png";
-    } else if (model.contains("TH86")) {
-      return "assets/images/TH86.png";
-    } else if (model.contains("TL340H")) {
-      return "assets/images/TL340H.png";
+  getImageWithAssetIconKey({dynamic assetIconKey, String? model}) {
+    // if value string
+    int? iconKey;
+    if (assetIconKey.runtimeType == String) {
+      iconKey = int.parse(assetIconKey);
+    } else if (assetIconKey.runtimeType == double) {
+      iconKey = (assetIconKey as double).toInt();
     } else {
-      return "assets/images/EX210.png";
+      iconKey = assetIconKey;
+    }
+    if (tatahitachi.any((element) => element.modelName == model)) {
+      if (tatahitachi.any((element) => element.assetIconKey == iconKey)) {
+        Logger().i("icon key found");
+        var data = tatahitachi
+            .singleWhere((element) => element.assetIconKey == iconKey);
+        if (data != null) {
+          return data.image;
+        } else {
+          return "assets/images/0.png";
+        }
+      } else {
+        return "assets/images/0.png";
+      }
+    } else {
+      return "assets/images/0.png";
     }
   }
+
+  getImageAssetConfiguration(
+    dynamic assetIconKey,
+  ) {
+    int? iconKey;
+    if (assetIconKey.runtimeType == String) {
+      iconKey = int.parse(assetIconKey);
+    } else {
+      iconKey = assetIconKey;
+    }
+    switch (iconKey) {
+      case 108:
+        return "assets/images/model/EX110.png";
+      case 109:
+        return "assets/images/model/EX70.png";
+      case 1001:
+        return "assets/images/model/EX130.png";
+      case 107:
+        return "assets/images/model/EX200.png";
+      case 1003:
+        return "assets/images/model/EX210.png";
+      case 1004:
+        return "assets/images/model/EX210LC.png";
+      case 185:
+        return "assets/images/model/SHINRAI.png";
+      case 105:
+        return "assets/images/model/TH76.png";
+      case 106:
+        return "assets/images/model/TH86.png";
+      case 1005:
+        return "assets/images/model/TL340H.png";
+      case 1006:
+        return "assets/images/model/TL360Z.png";
+      case 181:
+        return "assets/images/model/TMX20.png";
+      default:
+        return "assets/images/0.png";
+    }
+  }
+
+  imageData(String model) {
+    switch (model) {
+      case "EX200LC SUPER PLUS":
+        return "assets/images/model/EX200.png";
+      case "EX210LC SUPER PLUS":
+        return "assets/images/model/EX210LC.png";
+      case "EX70 SUPER PLUS":
+        return "assets/images/model/EX70.png";
+      case "EX130 SUPER PLUS":
+        return "assets/images/model/EX130.png";
+      case "EX215 SUPER PLUS":
+        return "assets/images/model/EX200.png";
+      case "EX70 PRIME":
+        return "assets/images/model/EX70.png";
+      case "TL340H PRIME":
+        return "assets/images/model/TL340H.png";
+      case "EX110":
+        return "assets/images/model/EX110.png";
+      case "EX200":
+        return "assets/images/model/EX200.png";
+      case "EX200LC":
+        return "assets/images/model/EX200.png";
+      case "EX70 PRIME":
+        return "assets/images/model/EX70.png";
+      case "SHINRAI-BX80":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI-BX80-BSIV":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI - BX80":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI PRIME":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI-PRO":
+        return "assets/images/model/SHINRAI.png";
+      case "TL340H":
+        return "assets/images/model/TL340H.png";
+      case "TH76":
+        return "assets/images/model/TH76.png";
+      case "5T WL":
+        return "assets/images/wheel_loader.png";
+      case "ZW225-6":
+        return "assets/images/wheel_loader.png";
+      default:
+        return "assets/images/0.png";
+    }
+  }
+
+  // imageData(String model) {
+  //   //Excavator
+  //   ifmodel == "EX70 SUPER PLUS" ||
+  //        (model == "EX200LC SUPER PLUS" ||
+  //       model == "EX210LC SUPER PLUS" ||
+  //       model == "EX130 SUPER PLUS" ||
+  //       model == "EX215 SUPER PLUS" ||
+  //       model == "TL340H PRIME" ||
+  //       model == "EX110" ||
+  //       model == "EX200" ||
+  //       model == "EX200LC" ||
+  //       model == "PZX50" ||
+  //       model == "EX70 PRIME") {
+  //     return "assets/images/excavator.png";
+  //   }
+  //   //backhoe loader
+  //   else if (model == "SHINRAI - BX80" ||
+  //       model == "SHINRAI-BX80" ||
+  //       model == "SHINRAI-BX80-BSIV" ||
+  //       model == "SHINRAI PRIME" ||
+  //       model == "SHINRAI-PRO" ||
+  //       model == "TH76" ||
+  //       model == "TL340H") {
+  //     return "assets/images/backhoe_loader.png";
+  //   } else if (model == "TL340H Prime" ||
+  //       model == "TL340H" ||
+  //       model == "5T WL" ||
+  //       model == "ZW225-6") {
+  //     return "assets/images/wheel_loader.png";
+  //   } else {
+  //     return "assets/images/0.png";
+  //   }
+
+  //   // if (model.contains("SHINRAI")) {
+  //   //   return "assets/images/shinrai.png";
+  //   // } else if (model.contains("EX130")) {
+  //   //   return "assets/images/EX130.png";
+  //   // } else if (model.contains("EX210")) {
+  //   //   return "assets/images/EX210.png";
+  //   // } else if (model.contains("EX210LC")) {
+  //   //   return "assets/images/EX210LC.png";
+  //   // } else if (model.contains("TH86")) {
+  //   //   return "assets/images/TH86.png";
+  //   // } else if (model.contains("TL340H")) {
+  //   //   return "assets/images/TL340H.png";
+  //   // } else {
+  //   //   return "assets/images/EX210.png";
+  //   // }
+  // }
 
   static showInfo(BuildContext context, title, message) async {
     await showDialog(
@@ -1497,8 +1759,9 @@ class Utils {
     var data = (runtime / idle) * 100;
     return data;
   }
-    static getEstimatedTargetRuntimePercentValue(idle, runtime) {
-    var data = (idle / 100)*runtime as double;
+
+  static getEstimatedTargetRuntimePercentValue(idle, runtime) {
+    var data = (idle / 100) * runtime as double;
     return data.roundToDouble();
   }
 }

@@ -4,8 +4,8 @@ part 'geofencemodel.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Geofence {
   
-  final List<Geofencemodeldata>? Geofences;
-  Geofence({this.Geofences});
+  final List<Geofencemodeldata>? geofences;
+  Geofence({this.geofences});
   factory Geofence.fromJson(Map<String, dynamic> json) =>
       _$GeofenceFromJson(json);
   Map<String, dynamic> toJson() => _$GeofenceToJson(this);

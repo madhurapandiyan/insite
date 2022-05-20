@@ -57,8 +57,10 @@ class FleetListItem extends StatelessWidget {
                           InsiteTableRowItemWithImage(
                             title: fleet!.manufacturer! + "\n" + fleet!.model!,
                             path: fleet == null
-                                ? "assets/images/EX210.png"
-                                : Utils().imageData(fleet!.model!),
+                                ? "assets/images/0.png"
+                                : Utils().getImageWithAssetIconKey(
+                                    model: fleet!.model,
+                                    assetIconKey: fleet!.assetIcon!),
                           ),
                           InsiteTableRowItem(
                             title: "Last Known Status",
@@ -141,10 +143,11 @@ class FleetListItem extends StatelessWidget {
                               ),
                               InsiteTableRowItem(
                                 title: "Fuel - Last Reported     ",
-                                content: fleet!.lastPercentFuelRemainingUTC != null
-                                    ? Utils.getLastReportedDateOneUTC(
-                                        fleet!.lastPercentFuelRemainingUTC)
-                                    : "-",
+                                content:
+                                    fleet!.lastPercentFuelRemainingUTC != null
+                                        ? Utils.getLastReportedDateOneUTC(
+                                            fleet!.lastPercentFuelRemainingUTC)
+                                        : "-",
                               ),
                             ]),
                             TableRow(children: [
@@ -207,7 +210,9 @@ class FleetListItem extends StatelessWidget {
                             // ])
                           ],
                         ),
-                        SizedBox(height: 10,)
+                        SizedBox(
+                          height: 10,
+                        )
                       ],
                     )
                   ],

@@ -51,7 +51,7 @@ class DashboardViewModel extends InsiteViewModel {
   bool _assetLocationloading = true;
   bool get assetLocationloading => _assetLocationloading;
 
-  IdlingLevelRange _idlingLevelRange = IdlingLevelRange.DAY;
+  IdlingLevelRange _idlingLevelRange = IdlingLevelRange.WEEK;
   IdlingLevelRange get idlingLevelRange => _idlingLevelRange;
   set idlingLevelRange(IdlingLevelRange catchedRange) {
     this._idlingLevelRange = catchedRange;
@@ -201,10 +201,10 @@ class DashboardViewModel extends InsiteViewModel {
     _refreshing = true;
     notifyListeners();
     await getAssetCount();
-    await getAssetStatusData();
-    await getFuelLevelData();
-    await getUtilizationSummary();
-    await getFaultCountData();
+    getAssetStatusData();
+    getFuelLevelData();
+    getUtilizationSummary();
+    getFaultCountData();
     await getIdlingLevelData(false, null);
     _refreshing = false;
     notifyListeners();
@@ -221,18 +221,18 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getFilterAssetCount() async {
-    AssetCount? result = await _assetService!.getAssetCount(
-        null,
-        FilterType.ASSET_STATUS,
-        graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
-        true);
-    if (result != null) {
-      if (result.countData!.isNotEmpty && result.countData![0].count != null) {
-        _totalCount = result.countData![0].count!.toInt();
-      }
-    }
-  }
+  // getFilterAssetCount() async {
+  //   AssetCount? result = await _assetService!.getAssetCount(
+  //       null,
+  //       FilterType.ASSET_STATUS,
+  //       graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
+  //       true);
+  //   if (result != null) {
+  //     if (result.countData!.isNotEmpty && result.countData![0].count != null) {
+  //       _totalCount = result.countData![0].count!.toInt();
+  //     }
+  //   }
+  // }
 
   getProductFamilyAssetCount() async {
     if (_currentFilterSelected != null) {
@@ -260,7 +260,8 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount? result = await _assetService!.getFuellevel(
         FilterType.FUEL_LEVEL,
         graphqlSchemaService!
-            .getAssetCount(grouping: "fuellevel", threshold: "25-50-75-100"));
+            .getAssetCount(grouping: "fuellevel", threshold: "25-50-75-100"),
+        true);
     if (result != null) {
       fuelChartData.clear();
       for (int index = 0; index < result.countData!.length; index++) {
@@ -311,7 +312,8 @@ class DashboardViewModel extends InsiteViewModel {
           graphqlSchemaService!.getAssetCount(
               idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
               endDate: Utils.getIdlingDateFormat(DateTime.now()),
-              startDate: getStartRange()));
+              startDate: getStartRange()),
+          true);
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -481,11 +483,11 @@ class DashboardViewModel extends InsiteViewModel {
       // await addFilter(filterData);
       _refreshing = true;
       notifyListeners();
-      if (isFromProdFamily) {
-        await getProductFamilyAssetCount();
-      } else {
-        await getAssetCount();
-      }
+      // if (isFromProdFamily) {
+      //   await getProductFamilyAssetCount();
+      // } else {
+      //   await getAssetCount();
+      // }
 
       await getAssetStatusFilterApplied(filterData.title);
       await getFuelLevelFilterApplied(filterData.title);

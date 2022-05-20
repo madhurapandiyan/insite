@@ -217,9 +217,12 @@ class AccountSelectionViewModel extends InsiteViewModel {
     }
   }
 
-  setAccountSelected(value) async {
+  setAccountSelected(Customer? value) async {
     Logger().d("setAccountSelected $value");
-
+    // if (value!.CustomerUID == "1857723c-ada1-11eb-8529-0242ac130003") {
+    //   value.isTataHitachiSelected = true;
+    // }
+    // Logger().i("Tata Hitachi Account Selected ${value.toJson()}");
     // if (isVisionLink) {
     //   // value = Customer(
     //   //     CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",

@@ -48,7 +48,7 @@ class _NotificationViewState extends State<NotificationView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                           padding: const EdgeInsets.only(left: 16, top: 16),
+                          padding: const EdgeInsets.only(left: 16, top: 16),
                           child: InsiteTextOverFlow(
                             text: "NOTIFICATIONS",
                             color: Theme.of(context).textTheme.bodyText1!.color,
@@ -79,24 +79,25 @@ class _NotificationViewState extends State<NotificationView> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  InsiteText(
-                                      text: Utils.getDateInFormatddMMyyyy(
-                                              viewModel.startDate) +
-                                          " - " +
-                                          Utils.getDateInFormatddMMyyyy(
-                                              viewModel.endDate),
-                                      fontWeight: FontWeight.bold,
-                                      size: 11),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
+                                  // InsiteText(
+                                  //     text: Utils.getDateInFormatddMMyyyy(
+                                  //             viewModel.startDate) +
+                                  //         " - " +
+                                  //         Utils.getDateInFormatddMMyyyy(
+                                  //             viewModel.endDate),
+                                  //     fontWeight: FontWeight.bold,
+                                  //     size: 11),
+                                  // SizedBox(
+                                  //   width: 4,
+                                  // ),
                                   InsiteButton(
-                                    title: "Date Range",
-                                    bgColor: Theme.of(context).backgroundColor,
-                                    textColor: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1!
-                                        .color,
+                                    title: Utils.getDateInFormatddMMyyyy(
+                                            viewModel.startDate) +
+                                        " - " +
+                                        Utils.getDateInFormatddMMyyyy(
+                                            viewModel.endDate),
+                                    //  bgColor: Theme.of(context).backgroundColor,
+                                    textColor: white,
                                     onTap: () async {
                                       dateRange = [];
                                       dateRange = await showDialog(

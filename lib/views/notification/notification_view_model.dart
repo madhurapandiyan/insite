@@ -10,6 +10,7 @@ import 'package:insite/core/services/fleet_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/notification_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:load/load.dart';
@@ -84,7 +85,9 @@ class NotificationViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        _loadMore();
+        if (assets.length != totalCount) {
+          _loadMore();
+        }
       }
     });
     Future.delayed(Duration(seconds: 1), () async {
@@ -124,7 +127,10 @@ class NotificationViewModel extends InsiteViewModel {
               startDate!,
               endDate!,
               _graphqlSchemaService!.seeAllNotification(
-                  endDate: endDate, startDate: startDate, pageNo: 1));
+                  endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                  startDate:
+                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                  pageNo: pageNumber));
       if (response != null) {
         _assets.clear();
         if (response.total!.items != null) {
@@ -226,7 +232,10 @@ class NotificationViewModel extends InsiteViewModel {
             startDate,
             endDate,
             _graphqlSchemaService!.seeAllNotification(
-                endDate: endDate, startDate: startDate, pageNo: 1));
+                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                startDate:
+                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                pageNo: pageNumber));
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;
@@ -308,7 +317,6 @@ class NotificationViewModel extends InsiteViewModel {
       pageNumber++;
       _loadingMore = true;
       notifyListeners();
-      getNotificationData();
       getNotificationData();
     }
   }

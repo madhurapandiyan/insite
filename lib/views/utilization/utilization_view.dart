@@ -70,7 +70,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 16),
+                        vertical: 10.0, horizontal: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -80,20 +80,23 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                           overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.bold,
                           size: 16,
-                        ),SizedBox(height: 20,),
-                        Row(
-                          children: [
-                            ToggleButton(
-                                label1: '  list  ',
-                                label2: '  graph  ',
-                                optionSelected: (bool value) {
-                                  setState(() {
-                                    isListSelected = value;
-                                  });
-                                }),
-                            Spacer(),
-                          ],
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        // Row(
+                        //   children: [
+                        //     ToggleButton(
+                        //         label1: '  list  ',
+                        //         label2: '  graph  ',
+                        //         optionSelected: (bool value) {
+                        //           setState(() {
+                        //             isListSelected = value;
+                        //           });
+                        //         }),
+                        //     Spacer(),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
