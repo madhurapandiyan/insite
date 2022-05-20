@@ -150,22 +150,22 @@ class Utils {
   static String suceessRegistration =
       "Registration successful.Asset status may take a few minutes to check status, click Asset Status after 10 minutes";
 
-  static double getHrsValueeData(
-      double? percentageValue, double? runTimeValue) {
+  static dynamic getHrsValueeData(
+      dynamic percentageValue, dynamic runTimeValue) {
     if (percentageValue == 0 && runTimeValue == 0) {
       return 0.0;
     }
-    double hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
+    int hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
     return hrsData;
   }
 
   static String getPercentageValueData(
-      double? runTimevalue, double? idleValue) {
+       runTimevalue,  idleValue) {
     if (runTimevalue == 0 && idleValue == 0) {
       return "0";
     }
     double perData = ((idleValue! / runTimevalue!) * 100);
-    int data = perData.toInt();
+    var data = perData;
 
     return data.toString();
   }

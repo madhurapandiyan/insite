@@ -1,4 +1,5 @@
 import 'package:insite/core/base/base_service.dart';
+import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -29,9 +30,9 @@ class GraphqlSchemaService extends BaseService {
   String? manufacturer;
   String? severity;
   String? faultTypeList;
-  double? latitude;
-  double? longitude;
-  double? radiusKms;
+  int? latitude;
+  int? longitude;
+  int? radiusKms;
 
   List<String> modelList = [];
   List<String> manufacturerList = [];
@@ -80,13 +81,13 @@ class GraphqlSchemaService extends BaseService {
       {List<FilterData?>? filtlerList,
       FilterType? type,
       List<String>? individualList}) {
-    String doubleQuote = "\"";
+    String intQuote = "\"";
     var data = filtlerList!.where((element) => element?.type == type).toList();
     data.forEach((element) {
       Logger().w(element?.toJson());
       if (assetstatusList.contains(element)) {
       } else {
-        individualList!.add(doubleQuote + element!.title! + doubleQuote);
+        individualList!.add(intQuote + element!.title! + intQuote);
       }
     });
   }
@@ -128,7 +129,7 @@ class GraphqlSchemaService extends BaseService {
 
   Future gettingLocationFilter(List<FilterData?>? filtlerList) async {
     try {
-      String doubleQuote = "\"";
+      String intQuote = "\"";
 
       getIndividualList(
           filtlerList: filtlerList,
@@ -242,9 +243,9 @@ class GraphqlSchemaService extends BaseService {
           var data = filtlerList
               .where((element) => element?.type == FilterType.CLUSTOR)
               .toList();
-          latitude = double.parse(data.last!.extras![0]!);
-          longitude = double.parse(data.last!.extras![1]!);
-          radiusKms = double.parse(data.last!.extras![2]!);
+          latitude = int.parse(data.last!.extras![0]!);
+          longitude = int.parse(data.last!.extras![1]!);
+          radiusKms = int.parse(data.last!.extras![2]!);
         }
       });
       Logger().i("asset filter running");
@@ -910,7 +911,7 @@ userEmail(EmailID:"$emailId"){
       String? customerUid,
       int? jobType,
       Details? details}) {
-    String doubleQuote = "\"";
+    String intQuote = "\"";
     List<Map<String, dynamic>> roleData = [];
     role!.forEach((element) {
       roleData.add({
@@ -919,7 +920,7 @@ userEmail(EmailID:"$emailId"){
       });
     });
     final String addUserData = """mutation {
-  userManagementCreateUser(requestBody: {fname: ${doubleQuote + firstName! + doubleQuote}, lname: ${doubleQuote + lastName! + doubleQuote}, email: ${doubleQuote + emailId! + doubleQuote}, 
+  userManagementCreateUser(requestBody: {fname: ${intQuote + firstName! + intQuote}, lname: ${intQuote + lastName! + intQuote}, email: ${intQuote + emailId! + intQuote}, 
       JobType:$jobType,
     address: ${addressData!.toJson()}, 
       details:{
@@ -2810,6 +2811,92 @@ mutation{
   }
 }
 """;
+    return data;
+  }
+
+  String getAssetTargetSettingsData(
+      String? startDate, String? endDate, List<String>? assetID) {
+    Logger().w(startDate);
+    var data = """mutation{
+     assetTargetSettings(startDate:"$startDate",endDate:"$endDate",assetID:${Utils.getStringListData(assetID!)}){
+    assetTargetSettings{
+      startDate,
+      endDate,
+      runtime{
+        sunday,
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday
+      },
+      idle{
+          sunday,
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday
+      },
+      assetUid
+      
+      
+       
+    }
+  }
+    }""";
+    return data;
+  }
+
+  String getAddEStimatedRuntimeData(String? assetId, String? startDate,
+      String? endDate, Idle? idle, Runtime? runtime) {
+    int runtimeMon = int.parse(runtime!.monday!.toString());
+    int runtimeTue = int.parse(runtime.tuesday!.toString());
+    int runtimeWed = int.parse(runtime.wednesday!.toString());
+    int runtimeThu = int.parse(runtime.thursday!.toString());
+    int runtimeFri = int.parse(runtime.friday!.toString());
+    int runtimeSat = int.parse(runtime.saturday!.toString());
+    int runtimeSun = int.parse(runtime.sunday!.toString());
+    int idleMon = int.parse(idle!.monday.toString());
+    int idleTue = int.parse(idle.tuesday.toString());
+    int idleWed = int.parse(idle.wednesday.toString());
+    int idleThu = int.parse(idle.thursday.toString());
+    int idleFri = int.parse(idle.friday.toString());
+    int idleSat = int.parse(idle.saturday.toString());
+    int idleSun = int.parse(idle.sunday.toString());
+    var data = """mutation{
+      updateAssetTargetSettings(assetTargetSettings:{
+       assetUid:"$assetId"
+       startDate:"$startDate",
+       endDate:"$endDate",
+       runtime:{
+         sunday:$runtimeSun,
+        
+    monday:$runtimeMon,
+    tuesday:$runtimeTue,
+    wednesday:$runtimeWed,
+    thursday:$runtimeThu,
+    friday:$runtimeFri,
+    saturday:$runtimeSat
+        
+       },
+       idle:{
+        sunday:$idleSun
+        
+    monday:$idleMon,
+    tuesday:$idleTue
+    wednesday:$idleWed,
+    thursday:$idleThu,
+    friday:$idleFri,
+    saturday:$idleSat
+       }
+      }){
+    assetUIDs
+  }
+    }""";
+
     return data;
   }
 }

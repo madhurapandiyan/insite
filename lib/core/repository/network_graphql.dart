@@ -72,7 +72,8 @@ class Network {
       // Logger().w(customerId);
       // Logger().w(userId);
       // Logger().w(subId);
-
+      Logger().wtf(query);
+         
       final Link link = DioLink(
         graphqlEndpoint,
         client: client,
@@ -139,8 +140,8 @@ class Network {
         client: client,
         defaultHeaders: {
           "content-type": "application/json",
-          "X-VisionLink-CustomerUid": customerId!,
-          "service": "in-vfleet-uf-webapi",
+          "x-visionlink-customeruid": customerId!,
+          //"service": "in-vfleet-uf-webapi",
           "Accept": "application/json",
           "X-VisionLink-UserUid": userId!,
           "Authorization": "bearer " + await _localService!.getStaggedToken(),
@@ -160,7 +161,7 @@ class Network {
         var error = e;
         if (error.response.statusCode == 401) {
           await staggedRefreshToken();
-          var data = await getGraphqlData(
+          var data = await getStaggedGraphqlData(
               query: query,
               customerId: customerId,
               userId: userId,

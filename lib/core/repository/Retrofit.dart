@@ -1,4 +1,5 @@
 import 'package:insite/core/models/complete.dart';
+import 'package:insite/core/models/estimated_response.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
@@ -797,13 +798,13 @@ abstract class RestClient {
       @Header("service") serviceHeader);
 
   @PUT('{url}')
-  Future<EstimatedAssetSetting> getAssetTargetSettingsDataVL(
+  Future<EstimatedResponse> getAssetTargetSettingsDataVL(
       @Path() String url,
       @Body() EstimatedAssetSetting estimatedAssetSetting,
       @Header("x-visionlink-customeruid") customerId);
 
   @PUT('{url}')
-  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+  Future<EstimatedResponse> getAssetTargetSettingsData(
       @Path() String url,
       @Body() EstimatedAssetSetting estimatedAssetSetting,
       @Header("x-visionlink-customeruid") customerId,

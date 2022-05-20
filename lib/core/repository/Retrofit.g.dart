@@ -2418,7 +2418,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<EstimatedAssetSetting> getAssetTargetSettingsDataVL(
+  Future<EstimatedResponse> getAssetTargetSettingsDataVL(
       url, estimatedAssetSetting, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -2427,17 +2427,17 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(estimatedAssetSetting.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EstimatedAssetSetting>(
+        _setStreamType<EstimatedResponse>(
             Options(method: 'PUT', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = EstimatedAssetSetting.fromJson(_result.data!);
+    final value = EstimatedResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+  Future<EstimatedResponse> getAssetTargetSettingsData(
       url, estimatedAssetSetting, customerId, serviceHeader) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -2449,12 +2449,12 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(estimatedAssetSetting.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EstimatedAssetSetting>(
+        _setStreamType<EstimatedResponse>(
             Options(method: 'PUT', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = EstimatedAssetSetting.fromJson(_result.data!);
+    final value = EstimatedResponse.fromJson(_result.data!);
     return value;
   }
 

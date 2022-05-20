@@ -44,13 +44,13 @@ Map<String, dynamic> _$AssetTargetSettingsToJson(
     };
 
 Runtime _$RuntimeFromJson(Map<String, dynamic> json) => Runtime(
-      sunday: (json['sunday'] as num?)?.toDouble(),
-      monday: (json['monday'] as num?)?.toDouble(),
-      tuesday: (json['tuesday'] as num?)?.toDouble(),
-      wednesday: (json['wednesday'] as num?)?.toDouble(),
-      thursday: (json['thursday'] as num?)?.toDouble(),
-      friday: (json['friday'] as num?)?.toDouble(),
-      saturday: (json['saturday'] as num?)?.toDouble(),
+      sunday: json['sunday'],
+      monday: json['monday'],
+      tuesday: json['tuesday'],
+      wednesday: json['wednesday'],
+      thursday: json['thursday'],
+      friday: json['friday'],
+      saturday: json['saturday'],
     );
 
 Map<String, dynamic> _$RuntimeToJson(Runtime instance) => <String, dynamic>{
@@ -64,13 +64,13 @@ Map<String, dynamic> _$RuntimeToJson(Runtime instance) => <String, dynamic>{
     };
 
 Idle _$IdleFromJson(Map<String, dynamic> json) => Idle(
-      sunday: (json['sunday'] as num?)?.toDouble(),
-      monday: (json['monday'] as num?)?.toDouble(),
-      tuesday: (json['tuesday'] as num?)?.toDouble(),
-      wednesday: (json['wednesday'] as num?)?.toDouble(),
-      thursday: (json['thursday'] as num?)?.toDouble(),
-      friday: (json['friday'] as num?)?.toDouble(),
-      saturday: (json['saturday'] as num?)?.toDouble(),
+      sunday: json['sunday'],
+      monday: json['monday'],
+      tuesday: json['tuesday'],
+      wednesday: json['wednesday'],
+      thursday: json['thursday'],
+      friday: json['friday'],
+      saturday: json['saturday'],
     );
 
 Map<String, dynamic> _$IdleToJson(Idle instance) => <String, dynamic>{
