@@ -39,7 +39,6 @@ class MainViewState extends State<MainView> {
 
   //   super.initState();
   // }
-  SummaryData? summaryData;
 
   @override
   Widget build(BuildContext context) {
@@ -105,16 +104,16 @@ class MainViewState extends State<MainView> {
                                   EdgeInsets.only(left: 12, right: 12, top: 4),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                summaryData = viewModel.maintenanceList[index];
+                                SummaryData? summaryData =
+                                    viewModel.maintenanceList[index];
 
                                 return MaintenanceListItem(
                                   summaryData: summaryData,
                                   onCallback: () {
-                                    viewModel
-                                        .onDetailPageSelected(summaryData!);
+                                    viewModel.onDetailPageSelected(summaryData);
 
                                     Logger().wtf(
-                                        "assetUId: ${summaryData!.assetUID}");
+                                        "assetUId: ${summaryData.assetUID}");
                                   },
                                   serviceCalBack:
                                       (value, assetDataValue, services) {
@@ -144,7 +143,7 @@ class MainViewState extends State<MainView> {
           ],
         );
       },
-      viewModelBuilder: () => MainViewModel(summaryData),
+      viewModelBuilder: () => MainViewModel(),
     );
   }
 }

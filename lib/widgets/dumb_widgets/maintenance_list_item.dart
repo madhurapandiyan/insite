@@ -214,7 +214,7 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
           ),
         );
       },
-      viewModelBuilder: () => MainViewModel(widget.summaryData),
+      viewModelBuilder: () => MainViewModel(),
     );
   }
 }
