@@ -1,4 +1,5 @@
 import 'package:insite/core/models/complete.dart';
+import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
@@ -1391,10 +1392,16 @@ abstract class RestClient {
       @Header("X-VisionLink-UserUid") userId);
 
   @POST('{url}')
-  Future<MaintenanceViewData> getMaintenanceViewServices(
+  Future<MaintenanceViewData> getMaintenanceViewServicesVL(
       @Path() String url,
       @Body() Map<String, dynamic> maintenanceViewQuery,
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<MaintenanceListData> getMaintenanceListData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") serviceHeader);
 
   @GET("{url}")
   Future<MaintenanceAsset> getMaintenanceAssetData(

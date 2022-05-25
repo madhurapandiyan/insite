@@ -4448,7 +4448,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<MaintenanceViewData> getMaintenanceViewServices(
+  Future<MaintenanceViewData> getMaintenanceViewServicesVL(
       url, maintenanceViewQuery, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4463,6 +4463,27 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MaintenanceViewData.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MaintenanceListData> getMaintenanceListData(
+      url, customerId, serviceHeader) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-visionlink-customeruid': customerId,
+      r'service': serviceHeader
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MaintenanceListData>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MaintenanceListData.fromJson(_result.data!);
     return value;
   }
 

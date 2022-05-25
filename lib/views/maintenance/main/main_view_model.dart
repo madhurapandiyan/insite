@@ -3,6 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
+import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
@@ -47,6 +48,9 @@ class MainViewModel extends InsiteViewModel {
   List<SummaryData> _maintenanceList = [];
   List<SummaryData> get maintenanceList => _maintenanceList;
 
+  List<MaintenanceList> _maintenanceListData = [];
+  List<MaintenanceList> get maintenanceListData => _maintenanceListData;
+
   List<Services?> _services = [];
   List<Services?> get services => _services;
 
@@ -71,7 +75,6 @@ class MainViewModel extends InsiteViewModel {
 
     Future.delayed(Duration(seconds: 1), () {
       getMaintenanceViewList();
-      //getMaintenanceListItemData();
     });
   }
 
@@ -79,34 +82,66 @@ class MainViewModel extends InsiteViewModel {
     await getSelectedFilterData();
     await getDateRangeFilterData();
 
-    // Logger().d("start date " + startDate!);
-    // Logger().d("end date " + endDate!);
-    MaintenanceViewData? result = await _maintenanceService!.getMaintenanceData(
-      startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-      endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-      limit: pageSize,
-      page: pageNumber,
-    );
+    Logger().d("start date " + startDate!);
+    Logger().d("end date " + endDate!);
+    if (isVisionLink) {
+      MaintenanceViewData? result =
+          await _maintenanceService!.getMaintenanceData(
+        startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        limit: pageSize,
+        page: pageNumber,
+      );
 
-    if (result != null) {
-      _totalCount = result.total;
-      if (result.summaryData!.isNotEmpty) {
-        _maintenanceList.addAll(result.summaryData!);
+      if (result != null) {
+        _totalCount = result.total;
+        if (result.summaryData!.isNotEmpty) {
+          _maintenanceList.addAll(result.summaryData!);
 
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _maintenanceList.addAll(result.summaryData!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
       } else {
-        _maintenanceList.addAll(result.summaryData!);
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
     } else {
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
+      MaintenanceListData? maintenanceListData =
+          await _maintenanceService!.getMaintenanceListData(
+        startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        limit: pageSize,
+        page: pageNumber,
+      );
+
+      if (maintenanceListData != null) {
+        _totalCount = maintenanceListData.count;
+        if (maintenanceListData.maintenanceList!.isNotEmpty) {
+          _maintenanceListData.addAll(maintenanceListData.maintenanceList!);
+
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _maintenanceListData.addAll(maintenanceListData.maintenanceList!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
+      } else {
+        _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      }
     }
   }
 

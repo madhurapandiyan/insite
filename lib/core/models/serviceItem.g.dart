@@ -88,6 +88,7 @@ Checklists _$ChecklistsFromJson(Map<String, dynamic> json) => Checklists(
       datasource: json['datasource'] as String?,
       actionType: json['actionType'] as String?,
       insertedUtc: json['insertedUtc'] as String?,
+      isSelected: json['isSelected'] as bool? ?? false,
       updatedUtc: json['updatedUtc'] as String?,
     );
 
@@ -104,6 +105,7 @@ Map<String, dynamic> _$ChecklistsToJson(Checklists instance) =>
       'actionType': instance.actionType,
       'insertedUtc': instance.insertedUtc,
       'updatedUtc': instance.updatedUtc,
+      'isSelected': instance.isSelected,
     };
 
 Parts _$PartsFromJson(Map<String, dynamic> json) => Parts(
