@@ -134,6 +134,9 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   bool _isCheckList = false;
   bool get isCheckList => _isCheckList;
 
+  bool _isinitialCheckList = true;
+  bool get isinitialCheckList => _isinitialCheckList;
+
   TextEditingController hourMeterDateController = TextEditingController(
       text: Utils.getDateInFormatddMMyyyy(
           DateTime.now().subtract(Duration(days: 1)).toString()));
@@ -146,6 +149,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
 
   updateModelValue(String? onchangedValue, List<Services?>? service) async {
     _serviceName = onchangedValue!;
+    _isinitialCheckList = false;
 
     service!.forEach((element) async {
       if (_serviceName == element!.serviceName) {

@@ -54,7 +54,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
 
   MaintenanceTabViewModel(SummaryData? summaryData) {
     _summaryData = summaryData;
-    Logger().i("eeeeeeeeeeee $summaryData");
+    Logger().i(" $summaryData");
     setUp();
 
     _maintenanceService!.setUp();
