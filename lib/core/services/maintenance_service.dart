@@ -4,11 +4,13 @@ import 'package:insite/core/models/complete.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
+import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 
@@ -30,6 +32,7 @@ class MaintenanceService extends BaseService {
     }
   }
 
+
   Future<MaintenanceViewData?> getMaintenanceData(
       {String? startTime, String? endTime, int? limit, int? page}) async {
     try {
@@ -49,12 +52,45 @@ class MaintenanceService extends BaseService {
 
         MaintenanceViewData updateResponse = await MyApi()
             .getClientThree()!
-            .getMaintenanceViewServices(Urls.getMaintenanceViewData,
+            .getMaintenanceViewServicesVL(Urls.getMaintenanceViewDataVL,
                 queryContent, accountSelected!.CustomerUID);
 
         Logger().wtf(updateResponse.toJson());
         return updateResponse;
+      } 
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future< MaintenanceListData?> getMaintenanceListData(
+      {String? startTime, String? endTime, int? limit, int? page}) async {
+    try {
+       if (!isVisionLink) {
+         Map<String, String> queryMap = Map();
+
+      if (startTime != null) {
+        queryMap["fromDate"] =Utils.getDateInFormatyyyyMMddTHHmmss(startTime.toString()) ;
       }
+      if (endTime != null) {
+        queryMap["toDate"] =Utils.getDateInFormatyyyyMMddTHHmmss(endTime.toString()) ;
+      }
+      if (limit != null) {
+        queryMap["limit"] = limit.toString();
+      }
+      if (page != null) {
+        queryMap["pageNumber"] = page.toString();
+      }
+
+      queryMap["history"] = "true";
+
+
+        MaintenanceListData? maintenanceListData = await MyApi().getClientSix()!.getMaintenanceListData(Urls.getMaintenanceList + FilterUtils.constructQueryFromMap(queryMap),accountSelected!.CustomerUID,"in-maintenance-ew-api");
+
+ Logger().wtf("maitenanceListData : ${maintenanceListData.toJson()}");
+     return maintenanceListData;
+       } 
     } catch (e) {
       Logger().e(e.toString());
       return null;

@@ -5,22 +5,22 @@ part 'customer.g.dart';
 @JsonSerializable()
 @HiveType(typeId: 5)
 class Customer {
-  @JsonKey(name: "customerUid")
+  //@JsonKey(name: "customerUid")
   @HiveField(0)
   final String? CustomerUID;
-  @JsonKey(name: "name")
+  //@JsonKey(name: "name")
   @HiveField(1)
   final String? Name;
-  @JsonKey(name: "customerType")
+  //@JsonKey(name: "customerType")
   @HiveField(2)
   final String? CustomerType;
-  @JsonKey(name: "displayName")
+  //@JsonKey(name: "displayName")
   @HiveField(3)
   final String? DisplayName;
-  @JsonKey(name: "children")
+  //@JsonKey(name: "children")
   @HiveField(4)
   final List<Customer>? Children;
-  @JsonKey(ignore: true)
+  //@JsonKey(ignore: true)
   @HiveField(5)
   bool? isTataHitachiSelected;
   Customer(
