@@ -679,8 +679,9 @@ class Utils {
 
   static String generateCodeChallenge(String codeVerifier, bool isToSave) {
     final LocalService? _localService = locator<LocalService>();
-    Logger().w(codeVerifier);
+
     if (isToSave) {
+      Logger().w(codeVerifier);
       _localService!.saveCodeVerfier(codeVerifier);
     }
 
@@ -1763,5 +1764,12 @@ class Utils {
   static getEstimatedTargetRuntimePercentValue(idle, runtime) {
     var data = (idle / 100) * runtime as double;
     return data.roundToDouble();
+  }
+
+  static String tokenExpiresTime(int expireSec) {
+    DateTime currentTime = DateTime.now();
+    var tokenExpireTime = currentTime.add(Duration(seconds: expireSec));
+    Logger().i("Token Valid Upto $tokenExpireTime");
+    return tokenExpireTime.toString();
   }
 }
