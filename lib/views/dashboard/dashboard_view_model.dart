@@ -128,7 +128,7 @@ class DashboardViewModel extends InsiteViewModel {
       }
       getAssetCount();
       getFilterData();
-     // getData(false);
+      getData(false);
     });
     _filterService!.clearFilterDatabase();
   }
