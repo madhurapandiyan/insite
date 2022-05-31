@@ -3,6 +3,8 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
+import 'package:insite/core/models/maintenance_asset_india_stack.dart';
+import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/core/router_constants.dart';
@@ -48,6 +50,9 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
   List<dynamic> _maintenanceCount = [];
   List<dynamic> get maintenanceCount => _maintenanceCount;
 
+  List<AssetMaintenanceList> _maintenanceListData = [];
+  List<AssetMaintenanceList> get maintenanceListData => _maintenanceListData;
+
   List<Services?> _services = [];
   List<Services?> get services => _services;
 
@@ -78,35 +83,68 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
     Logger().d("getAssetViewList");
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    MaintenanceAsset? result =
-        await _maintenanceService?.getMaintenanceAssetData(
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-            limit,
-            page,
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
-    if (result != null && result.assetCentricData != null) {
-      _totalCount = result.total!.toInt();
+    if (isVisionLink) {
+      MaintenanceAsset? result =
+          await _maintenanceService?.getMaintenanceAssetData(
+              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              limit,
+              page,
+              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+      if (result != null && result.assetCentricData != null) {
+        _totalCount = result.total!.toInt();
 
-      if (result.assetCentricData!.isNotEmpty) {
-        _assetData.addAll(result.assetCentricData!);
-        for (var item in result.assetCentricData!) {
-          _maintenanceCount.add(item.overDueCount);
+        if (result.assetCentricData!.isNotEmpty) {
+          _assetData.addAll(result.assetCentricData!);
+          for (var item in result.assetCentricData!) {
+            _maintenanceCount.add(item.overDueCount);
+          }
+
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _assetData.addAll(result.assetCentricData!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
         }
-
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
       } else {
-        _assetData.addAll(result.assetCentricData!);
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
     } else {
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
+      MaintenanceAssetList? maintenanceListData =
+          await _maintenanceService!.getMaintenanceAssetList(
+        startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        limit: limit,
+        page: page,
+      );
+
+      if (maintenanceListData != null) {
+        _totalCount = maintenanceListData.count;
+        if (maintenanceListData.assetMaintenanceList!.isNotEmpty) {
+          _maintenanceListData
+              .addAll(maintenanceListData.assetMaintenanceList!);
+
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _maintenanceListData
+              .addAll(maintenanceListData.assetMaintenanceList!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
+      } else {
+        _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      }
     }
   }
 
