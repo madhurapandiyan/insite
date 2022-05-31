@@ -4488,6 +4488,27 @@ class _RestClient implements RestClient {
   }
 
   @override
+  Future<MaintenanceAssetList> getMaintenanceAssetListData(
+      url, customerId, serviceHeader) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-visionlink-customeruid': customerId,
+      r'service': serviceHeader
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MaintenanceAssetList>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MaintenanceAssetList.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<MaintenanceAsset> getMaintenanceAssetData(endDateTime, langDesc, limit,
       page, startDateTime, customerId, url) async {
     const _extra = <String, dynamic>{};
