@@ -196,10 +196,10 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString(), false);
     }
-    // LoginResponse? stagedResult = await _loginService.stagedToken();
-    // if (stagedResult != null) {
-    //   _localService.saveStaggedToken(stagedResult.access_token);
-    // }
+    LoginResponse? stagedResult = await _loginService.stagedToken();
+    if (stagedResult != null) {
+      _localService.saveStaggedToken(stagedResult.access_token);
+    }
   }
 
   saveToken(token, String expiryTime) {

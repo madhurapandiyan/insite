@@ -4,6 +4,7 @@ import 'package:insite/core/models/complete.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
+import 'package:insite/core/models/maintenance_asset_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/serviceItem.dart';
@@ -90,6 +91,39 @@ class MaintenanceService extends BaseService {
 
  Logger().wtf("maitenanceListData : ${maintenanceListData.toJson()}");
      return maintenanceListData;
+       } 
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+   Future< MaintenanceAssetList?> getMaintenanceAssetList(
+      {String? startTime, String? endTime, int? limit, int? page}) async {
+    try {
+       if (!isVisionLink) {
+         Map<String, String> queryMap = Map();
+
+      if (startTime != null) {
+        queryMap["fromDate"] =Utils.getDateInFormatyyyyMMddTHHmmss(startTime.toString()) ;
+      }
+      if (endTime != null) {
+        queryMap["toDate"] =Utils.getDateInFormatyyyyMMddTHHmmss(endTime.toString()) ;
+      }
+      if (limit != null) {
+        queryMap["limit"] = limit.toString();
+      }
+      if (page != null) {
+        queryMap["pageNumber"] = page.toString();
+      }
+
+     
+
+
+    MaintenanceAssetList? maintenanceAssetList = await MyApi().getClientSix()!.getMaintenanceAssetListData(Urls.getMaintenanceAssetList+ FilterUtils.constructQueryFromMap(queryMap),accountSelected!.CustomerUID,"in-maintenance-ew-api");
+
+ Logger().wtf("maitenanceAssetListData : ${maintenanceAssetList.toJson()}");
+     return maintenanceAssetList;
        } 
     } catch (e) {
       Logger().e(e.toString());

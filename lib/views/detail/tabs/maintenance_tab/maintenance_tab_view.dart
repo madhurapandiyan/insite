@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -34,56 +35,60 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
-          return Card(
-            child: Expanded(
-              child: HorizontalDataTable(
-                leftHandSideColumnWidth: 100,
-                rightHandSideColumnWidth: 800,
+          return Container(
+            color: cardcolor,
+            child: Card(
+              child: Expanded(
+                child: HorizontalDataTable(
+                  leftHandSideColumnWidth: 100,
+                  rightHandSideColumnWidth: 700,
+                  isFixedHeader: true,
+                  headerWidgets: _getTitleWidget(),
+                  leftSideItemBuilder: _generateFirstColumnRow,
+                  rightSideItemBuilder: _generateRightHandSideColumnRow,
+                  leftSideChildren: [],
+                  rightSideChildren: [],
+                  itemCount: viewModel.services.length,
+                  rowSeparatorWidget: const Divider(
+                    color: Colors.white,
+                    height: 1.0,
+                    thickness: 0.0,
+                  ),
+                  leftHandSideColBackgroundColor: cardcolor,
+                  rightHandSideColBackgroundColor: cardcolor,
+                  verticalScrollbarStyle: const ScrollbarStyle(
+                    thumbColor: Colors.white,
+                    isAlwaysShown: true,
+                    thickness: 4.0,
+                    radius: Radius.circular(5.0),
+                  ),
+                  horizontalScrollbarStyle: const ScrollbarStyle(
+                    thumbColor: Colors.white,
+                    isAlwaysShown: true,
+                    thickness: 4.0,
+                    radius: Radius.circular(5.0),
+                  ),
+                  enablePullToRefresh: true,
+                  refreshIndicator: const WaterDropHeader(),
+                  refreshIndicatorHeight: 60,
+                  onRefresh: () async {
+                    //Do sth
+                    await Future.delayed(const Duration(milliseconds: 500));
+                    _htdRefreshController?.refreshCompleted();
+                  },
 
-                isFixedHeader: true,
-                headerWidgets: _getTitleWidget(),
-                leftSideItemBuilder: _generateFirstColumnRow,
-                rightSideItemBuilder: _generateRightHandSideColumnRow,
-                itemCount: viewModel.services.length,
-                rowSeparatorWidget: const Divider(
-                  color: Color.fromARGB(255, 250, 216, 216),
-                  height: 1.0,
-                  thickness: 0.0,
+                  // enablePullToLoadNewData: true,
+                  // loadIndicator: const ClassicFooter(),
+                  // onLoad: () async {
+                  //   //Do sth
+                  //   await Future.delayed(const Duration(milliseconds: 500));
+                  //   _htdRefreshController!.loadComplete();
+                  // },
+                  htdRefreshController: _htdRefreshController,
                 ),
-
-                // leftHandSideColBackgroundColor: cardcolor,
-                //rightHandSideColBackgroundColor: cardcolor,
-                verticalScrollbarStyle: const ScrollbarStyle(
-                  thumbColor: Color.fromARGB(255, 33, 33, 33),
-                  isAlwaysShown: true,
-                  thickness: 4.0,
-                  radius: Radius.circular(5.0),
-                ),
-                horizontalScrollbarStyle: const ScrollbarStyle(
-                  thumbColor: Color.fromARGB(255, 21, 21, 21),
-                  isAlwaysShown: true,
-                  thickness: 4.0,
-                  radius: Radius.circular(5.0),
-                ),
-                //enablePullToRefresh: true,
-                refreshIndicator: const WaterDropHeader(),
-                //refreshIndicatorHeight: 60,
-                onRefresh: () async {
-                  //Do sth
-                  await Future.delayed(const Duration(milliseconds: 500));
-                  _htdRefreshController?.refreshCompleted();
-                },
-
-                // enablePullToLoadNewData: true,
-                // loadIndicator: const ClassicFooter(),
-                // onLoad: () async {
-                //   //Do sth
-                //   await Future.delayed(const Duration(milliseconds: 500));
-                //   _htdRefreshController!.loadComplete();
-                // },
-                htdRefreshController: _htdRefreshController,
               ),
             ),
+            height: MediaQuery.of(context).size.height,
           );
         }
       },
@@ -96,48 +101,37 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
       InsiteTextWithPadding(
         padding: EdgeInsets.all(8),
         text: "Service",
+        size: 12,
       ),
-      Container(
-        width: 120,
-        child: InsiteTextWithPadding(
-          padding: EdgeInsets.all(8),
-          text: "Service Status",
-        ),
+      InsiteTextWithPadding(
+        padding: EdgeInsets.all(8),
+        text: "Service Status",
+        size: 12,
       ),
-      Container(
-        width: 120,
-        child: InsiteTextWithPadding(
-          padding: EdgeInsets.all(8),
-          text: "Service Interval",
-        ),
+      InsiteTextWithPadding(
+        padding: EdgeInsets.all(8),
+        text: "Service Interval",
+        size: 12,
       ),
-      Container(
-        width: 100,
-        child: InsiteTextWithPadding(
-          padding: EdgeInsets.all(8),
-          text: "Due At",
-        ),
+      InsiteTextWithPadding(
+        padding: EdgeInsets.all(8),
+        text: "Due At",
+        size: 12,
       ),
-      Container(
-        width: 100,
-        child: InsiteTextWithPadding(
-          padding: EdgeInsets.all(8),
-          text: "Due In/ Overdue By",
-        ),
+      InsiteTextWithPadding(
+        padding: EdgeInsets.all(8),
+        text: "Due In/ Overdue By",
+        size: 12,
       ),
-      Container(
-        width: 200,
-        child: InsiteTextWithPadding(
-          padding: EdgeInsets.all(8),
-          text: "Due Date",
-        ),
+      InsiteTextWithPadding(
+        padding: EdgeInsets.all(8),
+        text: "Due Date",
+        size: 12,
       ),
-      Container(
-        width: 120,
-        child: InsiteTextWithPadding(
-          padding: EdgeInsets.all(8),
-          text: "Service Type",
-        ),
+      InsiteTextWithPadding(
+        padding: EdgeInsets.all(8),
+        text: "Service Type",
+        size: 12,
       ),
     ];
   }
@@ -168,44 +162,33 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
           padding: EdgeInsets.all(8),
           margin: EdgeInsets.all(8),
           bgColor: Utils.getFaultColor("fault.severityLabel"),
-          //height: 30,
-          width: 120,
+          height: 30,
+          width: 60,
         ),
-        Container(
-          //width: 120,
-          child: InsiteTextWithPadding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
-            text: services.nextOccurrence!.toStringAsFixed(0),
-            //size: 12,
-          ),
+        InsiteTextWithPadding(
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+          text: services.nextOccurrence!.toStringAsFixed(0),
+          size: 12,
         ),
-        Container(
-          // width: 120,
-          child: InsiteTextWithPadding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
-            text: services.dueInfo!.dueAt!.toStringAsFixed(0),
-            //size: 12,
-          ),
+        InsiteTextWithPadding(
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+          text: services.dueInfo!.dueAt!.toStringAsFixed(0),
+          size: 12,
         ),
-        Container(
-          //width: 120,
-          child: InsiteTextWithPadding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
-            text: services.dueInfo!.dueBy!.abs().toStringAsFixed(0),
-            //size: 12,
-          ),
+        InsiteTextWithPadding(
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+          text: services.dueInfo!.dueBy!.abs().toStringAsFixed(0),
+          size: 12,
         ),
         InsiteTextWithPadding(
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
           text: Utils.getLastReportedDateOneUTC(services.dueInfo!.dueDate),
-          //size: 12,
+          size: 12,
         ),
-        Container(
-          child: InsiteTextWithPadding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
-            text: services.serviceType,
-            //  size: 12,
-          ),
+        InsiteTextWithPadding(
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+          text: services.serviceType,
+          size: 12,
         ),
       ],
     );

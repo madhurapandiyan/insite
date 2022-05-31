@@ -473,6 +473,9 @@ class Urls {
   static String getMaintenanceList =
       "/osg-in/maintenance-equipmentworks/1.0/maintenance/list";
 
+  static String getMaintenanceAssetList =
+      "/osg-in/maintenance-equipmentworks/1.0/maintenance/assetlist";
+
   static String getMaintenanceAssetData =
       "/t/trimble.com/vss-plannedmaintenance/1.0/assetcentric";
   static String getMaintenaceServiceData =
