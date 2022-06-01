@@ -424,7 +424,7 @@ class LoginService extends BaseService {
   saveToken(token, String expiryTime, shouldRemovePrevRoutes) async {
     Logger().i("saveToken from webview");
     await getUser(token, shouldRemovePrevRoutes);
-    await saveExpiryTime(expiryTime);
+    // await saveExpiryTime(expiryTime);
   }
 
   Future<LoginResponse> stagedToken() async {

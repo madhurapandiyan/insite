@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.0.10+10
+version: 2.0.11+11
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
@@ -38,6 +38,8 @@ dependencies:
   point_in_polygon: ^1.0.0
   maps_toolkit: ^2.0.0
   geobase: ^0.1.1
+  in_app_update: ^3.0.0
+  jwt_decoder: ^2.0.1
 
 
   hive: ^2.0.4

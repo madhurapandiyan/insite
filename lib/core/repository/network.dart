@@ -340,6 +340,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioRetryInterceptor(error.requestOptions));
             }
@@ -392,6 +395,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioOneRetryInterceptor(error.requestOptions));
             }
@@ -425,6 +431,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioTwoRetryInterceptor(error.requestOptions));
             }
@@ -457,6 +466,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler.resolve(
                   await dioThreeRetryInterceptor(error.requestOptions));
             }
@@ -490,6 +502,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioFourRetryInterceptor(error.requestOptions));
             }
@@ -516,19 +531,12 @@ class HttpWrapper {
       ..add(InterceptorsWrapper(
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
-          if (error.response?.statusCode == 401) {
-            var refreshLoginResponce = await refreshToken();
-            if (refreshLoginResponce != null) {
-              await _localService!.saveTokenInfo(refreshLoginResponce);
-              await _localService!.saveToken(refreshLoginResponce.access_token);
-              await _localService!
-                  .saveRefreshToken(refreshLoginResponce.refresh_token);
-              return errorInterceptorHandler
-                  .resolve(await dioSixRetryInterceptor(error.requestOptions));
-            }
-          } else {
+          //if (error.response?.statusCode == 401) {
+          //  _localService!.setIsloggedIn(false);
+            Logger().e(error.response!.data.toString());
+         // } else {
             return errorInterceptorHandler.next(error);
-          }
+          //}
         },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
@@ -552,6 +560,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioSixRetryInterceptor(error.requestOptions));
             }
@@ -585,6 +596,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler.resolve(
                   await dioSevenRetryInterceptor(error.requestOptions));
             }
@@ -618,6 +632,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler.resolve(
                   await dioEightRetryInterceptor(error.requestOptions));
             }
@@ -653,6 +670,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioNineRetryInterceptor(error.requestOptions));
             }
@@ -687,6 +707,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioTenRetryInterceptor(error.requestOptions));
             }

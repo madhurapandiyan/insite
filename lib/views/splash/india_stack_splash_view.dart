@@ -193,6 +193,8 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
     if (result != null) {
       await _localService.saveTokenInfo(result);
       await _localService.saveRefreshToken(result.refresh_token);
+      var tokenTime = Utils.tokenExpiresTime(result.expires_in!);
+      await _localService.saveExpiryTime(tokenTime);
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString(), false);
     }
