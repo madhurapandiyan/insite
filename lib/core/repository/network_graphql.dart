@@ -73,7 +73,7 @@ class Network {
       // Logger().w(userId);
       // Logger().w(subId);
       Logger().wtf(query);
-         
+
       final Link link = DioLink(
         graphqlEndpoint,
         client: client,
@@ -194,6 +194,31 @@ class Network {
     LoginResponse? stagedResult = await _loginService!.stagedToken();
     if (stagedResult != null) {
       _localService!.saveStaggedToken(stagedResult.access_token);
+    }
+  }
+
+  getGraphqlPlantData({String? query, String? customerId}) async {
+    try {
+      final Link link = DioLink(
+        graphqlEndpoint,
+        client: client,
+        defaultHeaders: {
+          "content-type": "application/json",
+          "CustomerId": customerId!,
+          "Accept": "application/json",
+          "Auth": "bearer " + await _localService!.getToken(),
+          "Authorization": "bearer " + await _localService!.getToken(),
+        },
+      );
+      final res = await link
+          .request(Request(
+            operation: Operation(document: gql.parseString(query!)),
+          ))
+          .first;
+
+      return res;
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 

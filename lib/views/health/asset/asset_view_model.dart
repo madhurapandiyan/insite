@@ -126,6 +126,7 @@ class AssetViewModel extends InsiteViewModel {
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();
+      Logger().w("inside fault view");
       if (result.assetFaults != null) {
         _faults.addAll(result.assetFaults!);
       }

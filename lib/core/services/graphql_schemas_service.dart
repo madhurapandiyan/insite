@@ -2899,4 +2899,188 @@ mutation{
 
     return data;
   }
+
+  static String globalSearch(String? snContains, String? assetIdContains) {
+    var data = """query{
+getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"){
+    topMatches{
+      assetUid,
+      serialNumber
+    }
+    totalCount
+  }
+   }""";
+    return data;
+  }
+
+  String getSingleAssetData(
+      {String? startDateTime,
+      String? endDateTime,
+      int? page,
+      int? limit,
+      String? assetUid}) {
+    var data = """query{
+  singleAsset(
+  startDateTime:"$startDateTime",
+    endDateTime:"$endDateTime",
+    page:$page,
+    limit:$limit,
+    
+ assetUid:"$assetUid"
+    
+    
+  ){
+    limit
+    page,
+    total,
+    page
+    assetData{
+      assetUID
+    faults{
+      source,
+      description,
+      severityLabel,
+      faultClosureUTC,
+      severity,
+      hours,
+      faultCode,
+      lastReportedLocationLatitude,
+      lastReportedLocationLongitude
+    }
+    }
+    
+  }
+}""";
+    return data;
+  }
+
+  String getFaultSingleData(
+      {String? startDate,
+      String? endDate,
+      int? pageSize,
+      int? limit,
+      String? faultsId,
+      String? langeDesc}) {
+    var data = """query{
+   faultsinglesData(
+       startDateTime:"$startDate"
+       endDateTime:"$endDate",
+       pageSize:$pageSize,
+       limit:$limit,
+       langDesc:"$langeDesc",
+       faultsId:"$faultsId"
+
+   ){
+      status,
+      msg,
+      faults{
+          description,
+          source,
+          faultOccuredUTC,
+          severityLabel
+
+      } 
+   }
+
+}""";
+    return data;
+  }
+
+  String getPlantDashboardandCalendarData() {
+    var data = """query{
+    frameSubscription{
+        plantDispatchSummary{
+         plantAssetCount,
+         subscriptionEnded,
+         yetToBeActivated,
+          totalDevicesSupplied,
+          activeSubscription,
+          assetActivationByDay,
+          assetActivationByMonth,
+          assetActivationByWeek
+
+        }
+    }
+}""";
+    return data;
+  }
+
+  String getHierarchyData() {
+    var data = """query{
+    frameSubscription{
+       plantHierarchyDetails{
+           totalAssetCount,
+           totalCustomerCount,
+           totalDealerCount,
+           totalPlantCount
+       }
+    }
+}""";
+    return data;
+  }
+
+  String getPlantDashboardAndHierarchyListData(
+      int? limit, int? start, String? status) {
+    var data = """query{
+    frameSubscription{
+        subscriptionFleetList(
+            limit:$limit,
+            start:$start,
+            status:"$status"
+        ){
+            count,
+            provisioningInfo{
+              gpsDeviceID,
+
+              model,
+              vin
+              productFamily,
+              customerCode,
+              dealerName,
+              dealerCode,
+              customerName,
+              status,
+              description,
+              networkProvider
+
+
+
+
+            }
+        }
+    }
+}""";
+    return data;
+  }
+
+  String getHierarchyListData(int? start, int? limit, dynamic type) {
+    var data = """query{
+   assetOrHierarchyByTypeAndId(
+       start:$start,
+       limit:$limit,
+       type:$type
+      
+   ){
+   name,
+   userName,
+   code,
+   email
+   
+   }
+}""";
+    return data;
+  }
+
+  String getAssetcreationModelName(String? value) {
+    var data = """query{
+    assetModelByMachineSerialNumber(machineSerialNumber:"$value"){
+        endRange,
+        modelName,
+        groupClusterId,
+        startRange,
+        startsWith
+    }
+}""";
+    return data;
+  }
 }
