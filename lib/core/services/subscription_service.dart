@@ -118,8 +118,8 @@ class SubScriptionService extends BaseService {
              
           var data = await Network()
               .getGraphqlPlantData(query: query, customerId: "THC");
-              
-          //return SubscriptionDashboardDetailResult.fromJson(data.data["assetOrHierarchyByTypeAndId"][""]) ;
+              Logger().i(data.data);
+          return SubscriptionDashboardDetailResult.fromJson(data.data) ;
         } else {
           var data = await Network()
               .getGraphqlPlantData(query: query, customerId: "THC");

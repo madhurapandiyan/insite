@@ -63,7 +63,18 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
           filter == "PLANT" ||
           filter == "DEALER" ||
           filter == "asset") {
-            Logger().w("wtf");
+      
+        result = await _subscriptionService!.getSubscriptionDeviceListData(
+            filter: filter,
+            start: start == 0 ? start : start + 1,
+            limit: limit,
+            filterType: filterType,
+            query: graphqlSchemaService!
+                .getHierarchyListData(start, limit, filter));
+                Logger().i(result!.assetOrHierarchyByTypeAndId!.first.toJson());
+                 _loading = false;
+          _loadingMore = false;
+          notifyListeners();
       } else {
         result = await _subscriptionService!.getSubscriptionDeviceListData(
             filter: filter,
