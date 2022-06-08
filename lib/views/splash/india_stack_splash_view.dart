@@ -180,6 +180,23 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
             Logger().e(e);
           }
         }
+        //else if (url
+        //     .startsWith(Urls.tataHitachiRedirectUriStaging + "?code=")) {
+        //   if (url.contains("=")) {
+        //     List<String> list = url.split("=");
+        //     print("IndiaStackSplashView URL url split list $list");
+        //     if (list.isNotEmpty) {
+        //       String codeString = list[1];
+        //       List<String> codeStringList = codeString.split("&");
+        //       if (codeStringList.isNotEmpty) {
+        //         getLoginDataV4(
+        //           codeStringList[0],
+        //         );
+        //       }
+        //     }
+        //   }
+        //   flutterWebviewPlugin.close();
+        // }
       }
     });
   }

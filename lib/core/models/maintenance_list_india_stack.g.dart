@@ -35,7 +35,7 @@ MaintenanceList _$MaintenanceListFromJson(Map<String, dynamic> json) =>
       model: json['model'] as String?,
       modelYear: json['modelYear'] as String?,
       productFamily: json['productFamily'] as String?,
-      currentHourMeter: json['currentHourMeter'] as int?,
+      currentHourMeter: (json['currentHourMeter'] as num?)?.toDouble(),
       lastLocationReportedDate: json['lastLocationReportedDate'] as String?,
       longitude: (json['longitude'] as num?)?.toDouble(),
       latitude: (json['latitude'] as num?)?.toDouble(),
@@ -45,7 +45,7 @@ MaintenanceList _$MaintenanceListFromJson(Map<String, dynamic> json) =>
       county: json['county'] as String?,
       country: json['country'] as String?,
       zip: json['zip'] as String?,
-      odometer: json['odometer'] as String?,
+      odometer: (json['odometer'] as num?)?.toDouble(),
       lastReportedDate: json['lastReportedDate'] as String?,
       percentFuelRemaining: json['percentFuelRemaining'] as int?,
       fuelLastReportedTime: json['fuelLastReportedTime'] as String?,
@@ -64,9 +64,10 @@ MaintenanceList _$MaintenanceListFromJson(Map<String, dynamic> json) =>
       serviceMeter: json['serviceMeter'] as int?,
       performedBy: json['performedBy'] as String?,
       serviceNotes: json['serviceNotes'] as String?,
-      dueInOverdueBy: json['dueInOverdueBy'] as int?,
+      dueInOverdueBy: (json['dueInOverdueBy'] as num?)?.toDouble(),
       completedService: json['completedService'] as String?,
       address: json['address'] as String?,
+      workOrder: json['workOrder'] as String?,
     );
 
 Map<String, dynamic> _$MaintenanceListToJson(MaintenanceList instance) =>
@@ -113,4 +114,5 @@ Map<String, dynamic> _$MaintenanceListToJson(MaintenanceList instance) =>
       'dueInOverdueBy': instance.dueInOverdueBy,
       'completedService': instance.completedService,
       'address': instance.address,
+      'workOrder': instance.workOrder,
     };

@@ -366,14 +366,23 @@ class _TabPageState extends State<AssetDetailView> {
                                           screenType: widget.type)
                                       : widget.type == ScreenType.MAINTENANCE
                                           ? MaintenanceTabView(
-                                              summaryData: widget.summaryData,
+                                              summaryData: SummaryData(
+                                                  assetID:
+                                                      widget.fleet!.assetId,
+                                                  assetSerialNumber: widget
+                                                      .fleet!
+                                                      .assetSerialNumber),
                                               serviceCalBack: (value,
-                                                  assetDataValue, services) {
+                                                  assetDataValue,
+                                                  services,
+                                                  selectedService) {
                                                 viewModel.onServiceSelected(
+                                                    context,
                                                     value,
                                                     assetDataValue,
-                                                    widget.summaryData,
-                                                    services);
+                                                    widget.fleet,
+                                                    services,
+                                                    selectedService);
                                               },
                                             )
                                           : SingleAssetOperationView(
@@ -397,7 +406,7 @@ class _TabPageState extends State<AssetDetailView> {
                 ),
         );
       },
-      viewModelBuilder: () => AssetDetailViewModel(widget.fleet),
+      viewModelBuilder: () => AssetDetailViewModel(widget.fleet, widget.type!),
     );
   }
 

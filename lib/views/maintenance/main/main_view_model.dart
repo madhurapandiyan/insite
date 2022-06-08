@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/complete.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/maintenance.dart';
-import 'package:insite/core/models/maintenance_asset.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -23,6 +24,7 @@ import 'package:insite/utils/enums.dart' as screen;
 class MainViewModel extends InsiteViewModel {
   MaintenanceService? _maintenanceService = locator<MaintenanceService>();
   NavigationService? _navigationService = locator<NavigationService>();
+  GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int pageNumber = 1;
   int pageSize = 20;
@@ -72,7 +74,7 @@ class MainViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-
+    _maintenanceService!.setUp();
     Future.delayed(Duration(seconds: 1), () {
       getMaintenanceViewList();
     });
@@ -114,30 +116,72 @@ class MainViewModel extends InsiteViewModel {
         notifyListeners();
       }
     } else {
-      MaintenanceListData? maintenanceListData =
-          await _maintenanceService!.getMaintenanceListData(
-        startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-        endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        limit: pageSize,
-        page: pageNumber,
-      );
+      MaintenanceListData? maintenanceListData = await _maintenanceService!
+          .getMaintenanceListData(
+              startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+              endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              limit: pageSize,
+              page: pageNumber,
+              query: await graphqlSchemaService!.getMaintenanceListData(
+                  appliedFilter: appliedFilters,
+                  startDate:
+                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                  endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                  limit: pageSize,
+                  pageNo: pageNumber));
 
       if (maintenanceListData != null) {
         _totalCount = maintenanceListData.count;
+        SummaryData singleSummaryData;
         if (maintenanceListData.maintenanceList!.isNotEmpty) {
-          _maintenanceListData.addAll(maintenanceListData.maintenanceList!);
+          // _maintenanceListData.addAll(maintenanceListData.maintenanceList!);
+          for (var item in maintenanceListData.maintenanceList!) {
+            singleSummaryData = SummaryData(
+                assetID: item.assetId,
+                assetSerialNumber: item.serialNumber,
+                assetStatus: item.status,
+                completedService: item.completedService,
+                serviceCompletedDate: item.serviceDate,
+                telematicDeviceId: item.telematicsDeviceId,
+                fuelReportedTime: item.fuelLastReportedTime,
+                currentHourMeter: item.currentHourMeter,
+                currentOdometer: item.odometer,
+                customerName: item.customerName,
+                productFamily: item.productFamily,
+                dueInfo: DueInfo(
+                    dueAt: item.dueAt,
+                    dueDate: item.dueDate,
+                    dueBy: item.dueInOverdueBy,
+                    serviceStatus: item.serviceStatus),
+                fuelPercentage: item.percentFuelRemaining,
+                lastReportedDate: item.lastReportedDate,
+                makeCode: item.make,
+                model: item.model,
+                service: item.serviceName,
+                serviceId: item.serviceNumber,
+                deviceType: item.deviceType,
+                location: Location(
+                    city: item.city,
+                    country: item.country,
+                    state: item.state,
+                    streetAddress: item.address,
+                    zip: item.zip),
+                serviceType: item.serviceType);
+            _maintenanceList.add(singleSummaryData);
+          }
 
           _loading = false;
           _loadingMore = false;
           notifyListeners();
         } else {
-          _maintenanceListData.addAll(maintenanceListData.maintenanceList!);
+          _maintenanceList.clear();
           _loading = false;
           _loadingMore = false;
           _shouldLoadmore = false;
           notifyListeners();
         }
       } else {
+        _maintenanceList.clear();
         _loading = false;
         _loadingMore = false;
         notifyListeners();
@@ -146,37 +190,40 @@ class MainViewModel extends InsiteViewModel {
   }
 
   refresh() async {
-    await getSelectedFilterData();
-    await getDateRangeFilterData();
-    pageNumber = 1;
-    pageSize = 20;
-    if (_maintenanceList.isEmpty) {
-      _loading = true;
-    } else {
-      _refreshing = true;
-    }
-    _shouldLoadmore = true;
+    _loading = true;
     notifyListeners();
-    Logger().d("start date " + startDate!);
-    Logger().d("end date " + endDate!);
-    MaintenanceViewData? result = await _maintenanceService!.getMaintenanceData(
-      startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-      endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-      limit: pageSize,
-      page: pageNumber,
-    );
-    if (result != null) {
-      _totalCount = result.total;
-      _maintenanceList.clear();
-      _maintenanceList.addAll(result.summaryData!);
-      _refreshing = false;
-      _loading = false;
-      notifyListeners();
-    } else {
-      _loading = false;
-      _refreshing = false;
-      notifyListeners();
-    }
+    await getMaintenanceViewList();
+    // await getSelectedFilterData();
+    // await getDateRangeFilterData();
+    // pageNumber = 1;
+    // pageSize = 20;
+    // if (_maintenanceList.isEmpty) {
+    //   _loading = true;
+    // } else {
+    //   _refreshing = true;
+    // }
+    // _shouldLoadmore = true;
+    // notifyListeners();
+    // Logger().d("start date " + startDate!);
+    // Logger().d("end date " + endDate!);
+    // MaintenanceViewData? result = await _maintenanceService!.getMaintenanceData(
+    //   startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+    //   endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+    //   limit: pageSize,
+    //   page: pageNumber,
+    // );
+    // if (result != null) {
+    //   _totalCount = result.total;
+    //   _maintenanceList.clear();
+    //   _maintenanceList.addAll(result.summaryData!);
+    //   _refreshing = false;
+    //   _loading = false;
+    //   notifyListeners();
+    // } else {
+    //   _loading = false;
+    //   _refreshing = false;
+    //   notifyListeners();
+    // }
   }
 
   _loadMore() {
@@ -194,31 +241,42 @@ class MainViewModel extends InsiteViewModel {
   }
 
   onDetailPageSelected(SummaryData? summaryData) {
-    _navigationService!.navigateToView(
-      AssetDetailView(
+    _navigationService!.navigateTo(
+      assetDetailViewRoute,
+      arguments: DetailArguments(
           fleet: Fleet(
-            assetSerialNumber: summaryData!.assetUID,
-            assetId: summaryData.assetUID,
-            assetIdentifier: summaryData.assetUID,
+            assetSerialNumber: summaryData!.assetSerialNumber,
+            assetId: summaryData.assetID,
+            assetIdentifier: summaryData.assetID,
           ),
           type: screen.ScreenType.MAINTENANCE,
-          summaryData: summaryData,
-          tabIndex: 2),
+          index: 2),
     );
+    // _navigationService!.navigateToView(
+    //   AssetDetailView(
+    //       fleet: Fleet(
+    //         assetSerialNumber: summaryData!.assetUID,
+    //         assetId: summaryData.assetUID,
+    //         assetIdentifier: summaryData.assetUID,
+    //       ),
+    //       type: screen.ScreenType.MAINTENANCE,
+    //       summaryData: summaryData,
+    //       tabIndex: 2),
+    // );
     notifyListeners();
   }
 
   onServiceSelected(num? serviceId, AssetData? assetDataValue,
       SummaryData? assetData, List<Services?>? services) async {
-    ServiceItem? serviceItem =
-        await _maintenanceService!.getServiceItemCheckList(serviceId!);
+    // ServiceItem? serviceItem =
+    //     await _maintenanceService!.getServiceItemCheckList(serviceId!);
 
-    _navigationService!.navigateToView(
-      MainDetailPopupView(
-          serviceItem: serviceItem!,
-          summaryData: assetData!,
-          assetDataValue: assetDataValue,
-          services: services!),
-    );
+    // _navigationService!.navigateToView(
+    //   MainDetailPopupView(
+    //       serviceItem: serviceItem!,
+    //       summaryData: assetData!,
+    //       assetDataValue: assetDataValue,
+    //       services: services!),
+    // );
   }
 }

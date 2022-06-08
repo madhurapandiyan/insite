@@ -18,6 +18,7 @@ import 'package:stacked/stacked.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/utils/enums.dart' as screen;
+import 'package:insite/core/models/maintenance_asset.dart' as due;
 
 class AssetMaintenanceViewModel extends InsiteViewModel {
   MaintenanceService? _maintenanceService = locator<MaintenanceService>();
@@ -73,10 +74,11 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 1), () {
       getAssetViewList();
       //getMaintenanceListItemData();
     });
+    ;
   }
 
   getAssetViewList() async {
@@ -103,29 +105,55 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
           _loadingMore = false;
           notifyListeners();
         } else {
-          _assetData.addAll(result.assetCentricData!);
+          _assetData.clear();
           _loading = false;
           _loadingMore = false;
           _shouldLoadmore = false;
           notifyListeners();
         }
       } else {
+        _assetData.clear();
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       }
     } else {
-      MaintenanceAssetList? maintenanceListData =
-          await _maintenanceService!.getMaintenanceAssetList(
-        startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-        endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        limit: limit,
-        page: page,
-      );
+      MaintenanceAssetList? maintenanceListData = await _maintenanceService!
+          .getMaintenanceAssetList(
+              startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+              endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              limit: limit,
+              page: page,
+              query: await graphqlSchemaService!.getMaintennaceAssetListData(
+                  appliedFilter: appliedFilters,
+                  fromDate:
+                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                  toDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                  limit: limit,
+                  pageNo: page));
 
       if (maintenanceListData != null) {
         _totalCount = maintenanceListData.count;
+        _assetData.clear();
         if (maintenanceListData.assetMaintenanceList!.isNotEmpty) {
+          AssetCentricData singleAssetData;
+          for (var item in maintenanceListData.assetMaintenanceList!) {
+            singleAssetData = AssetCentricData(
+              assetID: item.assetId,
+              assetSerialNumber: item.serialNumber,
+              assetUID: item.customerAssetID.toString(),
+              makeCode: item.make,
+              model: item.model,
+              currentHourMeter: item.currentHourMeter,
+              serviceType: item.serviceName,
+              maintenanceTotals: item.maintenanceTotals,
+              dueInfo: due.DueInfo(
+                serviceStatus: item.serviceStatusName,
+              ),
+            );
+
+            _assetData.add(singleAssetData);
+          }
           _maintenanceListData
               .addAll(maintenanceListData.assetMaintenanceList!);
 
@@ -149,43 +177,45 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
   }
 
   refresh() async {
-    await getSelectedFilterData();
-    await getDateRangeFilterData();
-    page = 1;
+    _loading = true;
+    await getAssetViewList();
+    // await getSelectedFilterData();
+    // await getDateRangeFilterData();
+    // page = 1;
 
-    if (_assetData.isEmpty) {
-      _loading = true;
-    } else {
-      _refreshing = true;
-    }
-    _shouldLoadmore = true;
-    notifyListeners();
-    Logger().d("start date " + startDate!);
-    Logger().d("end date " + endDate!);
+    // if (_assetData.isEmpty) {
+    //   _loading = true;
+    // } else {
+    //   _refreshing = true;
+    // }
+    // _shouldLoadmore = true;
+    // notifyListeners();
+    // Logger().d("start date " + startDate!);
+    // Logger().d("end date " + endDate!);
 
-    MaintenanceAsset? result =
-        await _maintenanceService?.getMaintenanceAssetData(
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-            limit,
-            page,
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
-    if (result != null) {
-      _totalCount = result.total!.toInt();
-      _assetData.clear();
-      if (result.assetCentricData != null) {
-        _assetData.addAll(result.assetCentricData!);
-      }
-      for (var item in _assetData) {
-        _assetCentricData?.assetID = item.assetID;
-      }
-      _refreshing = false;
-      _loading = false;
-      notifyListeners();
-    } else {
-      _loading = false;
-      _refreshing = false;
-      notifyListeners();
-    }
+    // MaintenanceAsset? result =
+    //     await _maintenanceService?.getMaintenanceAssetData(
+    //         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+    //         limit,
+    //         page,
+    //         Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+    // if (result != null) {
+    //   _totalCount = result.total!.toInt();
+    //   _assetData.clear();
+    //   if (result.assetCentricData != null) {
+    //     _assetData.addAll(result.assetCentricData!);
+    //   }
+    //   for (var item in _assetData) {
+    //     _assetCentricData?.assetID = item.assetID;
+    //   }
+    //   _refreshing = false;
+    //   _loading = false;
+    //   notifyListeners();
+    // } else {
+    //   _loading = false;
+    //   _refreshing = false;
+    //   notifyListeners();
+    // }
   }
 
   // getMaintenanceListItemData() async {
@@ -257,10 +287,10 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
           fleet: Fleet(
             assetSerialNumber: assetCentricData.assetSerialNumber,
             assetId: assetCentricData.assetID,
-            assetIdentifier: assetCentricData.assetUID,
+            assetIdentifier: assetCentricData.assetID,
           ),
           type: screen.ScreenType.MAINTENANCE,
-          index: 1),
+          index: 2),
     );
   }
 

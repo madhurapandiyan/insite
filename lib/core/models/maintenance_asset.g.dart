@@ -78,6 +78,9 @@ AssetCentricData _$AssetCentricDataFromJson(Map<String, dynamic> json) =>
       geofence: (json['geofence'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      maintenanceTotals: (json['maintenanceTotals'] as List<dynamic>?)
+          ?.map((e) => MaintenanceTotals.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$AssetCentricDataToJson(AssetCentricData instance) =>
@@ -118,6 +121,7 @@ Map<String, dynamic> _$AssetCentricDataToJson(AssetCentricData instance) =>
       'devices': instance.devices,
       'deviceType': instance.deviceType,
       'geofence': instance.geofence,
+      'maintenanceTotals': instance.maintenanceTotals,
     };
 
 Location _$LocationFromJson(Map<String, dynamic> json) => Location(

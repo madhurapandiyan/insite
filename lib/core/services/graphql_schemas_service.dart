@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
@@ -45,6 +47,7 @@ class GraphqlSchemaService extends BaseService {
   List<int> reportFormat = [];
   List<int> reportType = [];
   List<String> severityList = [];
+  List<String> serviceTypeList = [];
 
   getReportFilterindividualList(
       {List<FilterData?>? filtlerList,
@@ -84,9 +87,9 @@ class GraphqlSchemaService extends BaseService {
     var data = filtlerList!.where((element) => element?.type == type).toList();
     data.forEach((element) {
       Logger().w(element?.toJson());
-      if (assetstatusList.contains(element)) {
+      if (individualList!.contains(element)) {
       } else {
-        individualList!.add(doubleQuote + element!.title! + doubleQuote);
+        individualList.add(doubleQuote + element!.title! + doubleQuote);
       }
     });
   }
@@ -104,6 +107,7 @@ class GraphqlSchemaService extends BaseService {
     reportFormat.clear();
     reportType.clear();
     severityList.clear();
+    serviceTypeList.clear();
   }
 
   cleaValue() {
@@ -129,47 +133,52 @@ class GraphqlSchemaService extends BaseService {
   Future gettingLocationFilter(List<FilterData?>? filtlerList) async {
     try {
       String doubleQuote = "\"";
-
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: assetstatusList,
-          type: FilterType.ASSET_STATUS);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: assetstatusList,
-          type: FilterType.ALL_ASSETS);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: productfamilyList,
-          type: FilterType.PRODUCT_FAMILY);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: modelList,
-          type: FilterType.MODEL);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: manufacturerList,
-          type: FilterType.MANUFACTURER);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: deviceTypeList,
-          type: FilterType.DEVICE_TYPE);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: fuelLevelList,
-          type: FilterType.FUEL_LEVEL);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: locationList,
-          type: FilterType.LOCATION_SEARCH);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: idleEfficiencyList,
-          type: FilterType.IDLING_LEVEL);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: severityList,
-          type: FilterType.SEVERITY);
+      if (filtlerList != null && filtlerList.isNotEmpty) {
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: assetstatusList,
+            type: FilterType.ASSET_STATUS);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: assetstatusList,
+            type: FilterType.ALL_ASSETS);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: productfamilyList,
+            type: FilterType.PRODUCT_FAMILY);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: modelList,
+            type: FilterType.MODEL);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: manufacturerList,
+            type: FilterType.MANUFACTURER);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: deviceTypeList,
+            type: FilterType.DEVICE_TYPE);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: fuelLevelList,
+            type: FilterType.FUEL_LEVEL);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: locationList,
+            type: FilterType.LOCATION_SEARCH);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: idleEfficiencyList,
+            type: FilterType.IDLING_LEVEL);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: severityList,
+            type: FilterType.SEVERITY);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: serviceTypeList,
+            type: FilterType.SERVICE_TYPE);
+      }
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -177,77 +186,78 @@ class GraphqlSchemaService extends BaseService {
 
   Future gettingFiltersValue(List<FilterData?>? filtlerList) async {
     try {
-      filtlerList!.forEach((filterData) {
-        if (filterData?.type == FilterType.ALL_ASSETS) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.ALL_ASSETS)
-              .toList();
-          assetStatus = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("assetStatus $assetStatus");
-        } else if (filterData?.type == FilterType.PRODUCT_FAMILY) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.PRODUCT_FAMILY)
-              .toList();
-          productFamily = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("productFamily $productFamily");
-        } else if (filterData?.type == FilterType.MODEL) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.MODEL)
-              .toList();
-          model = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("model $model");
-        } else if (filterData?.type == FilterType.FUEL_LEVEL) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.FUEL_LEVEL)
-              .toList();
-          fuelLevelPercentLt = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("fuelLevelPercentLt $fuelLevelPercentLt");
-        } else if (filterData?.type == FilterType.MAKE) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.MAKE)
-              .toList();
-          make = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("make $make");
-        } else if (filterData?.type == FilterType.DEVICE_TYPE) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.DEVICE_TYPE)
-              .toList();
-          deviceType = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("deviceType $deviceType");
-        } else if (filterData?.type == FilterType.IDLING_LEVEL) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.IDLING_LEVEL)
-              .toList();
-          idleEficiencyGT = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("idleEficiencyGT $idleEficiencyGT");
-        } else if (filterData?.type == FilterType.LOCATION_SEARCH) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.LOCATION_SEARCH)
-              .toList();
-          location = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("locations $location");
-        } else if (filterData?.type == FilterType.MANUFACTURER) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.MANUFACTURER)
-              .toList();
-          manufacturer = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("manucaturer $manufacturer");
-        } else if (filterData?.type == FilterType.SEVERITY) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.SEVERITY)
-              .toList();
-          severity = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("severity $severity");
-        } else if (filterData?.type == FilterType.CLUSTOR) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.CLUSTOR)
-              .toList();
-          latitude = double.parse(data.last!.extras![0]!);
-          longitude = double.parse(data.last!.extras![1]!);
-          radiusKms = double.parse(data.last!.extras![2]!);
-        }
-      });
-      Logger().i("asset filter running");
+      if (filtlerList != null && filtlerList.isNotEmpty) {
+        filtlerList.forEach((filterData) {
+          if (filterData?.type == FilterType.ALL_ASSETS) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.ALL_ASSETS)
+                .toList();
+            assetStatus = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("assetStatus $assetStatus");
+          } else if (filterData?.type == FilterType.PRODUCT_FAMILY) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.PRODUCT_FAMILY)
+                .toList();
+            productFamily = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("productFamily $productFamily");
+          } else if (filterData?.type == FilterType.MODEL) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.MODEL)
+                .toList();
+            model = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("model $model");
+          } else if (filterData?.type == FilterType.FUEL_LEVEL) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.FUEL_LEVEL)
+                .toList();
+            fuelLevelPercentLt = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("fuelLevelPercentLt $fuelLevelPercentLt");
+          } else if (filterData?.type == FilterType.MAKE) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.MAKE)
+                .toList();
+            make = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("make $make");
+          } else if (filterData?.type == FilterType.DEVICE_TYPE) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.DEVICE_TYPE)
+                .toList();
+            deviceType = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("deviceType $deviceType");
+          } else if (filterData?.type == FilterType.IDLING_LEVEL) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.IDLING_LEVEL)
+                .toList();
+            idleEficiencyGT = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("idleEficiencyGT $idleEficiencyGT");
+          } else if (filterData?.type == FilterType.LOCATION_SEARCH) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.LOCATION_SEARCH)
+                .toList();
+            location = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("locations $location");
+          } else if (filterData?.type == FilterType.MANUFACTURER) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.MANUFACTURER)
+                .toList();
+            manufacturer = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("manucaturer $manufacturer");
+          } else if (filterData?.type == FilterType.SEVERITY) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.SEVERITY)
+                .toList();
+            severity = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("severity $severity");
+          } else if (filterData?.type == FilterType.CLUSTOR) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.CLUSTOR)
+                .toList();
+            latitude = double.parse(data.last!.extras![0]!);
+            longitude = double.parse(data.last!.extras![1]!);
+            radiusKms = double.parse(data.last!.extras![2]!);
+          }
+        });
+      }
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -2705,7 +2715,6 @@ pendingDeviceConfigInfo{
     errors
   }
 }""";
-
     return data;
   }
 
@@ -2810,6 +2819,224 @@ mutation{
   }
 }
 """;
+    return data;
+  }
+
+  getMaintenanceListData(
+      {String? startDate,
+      String? endDate,
+      List<FilterData?>? appliedFilter,
+      int? limit,
+      int? pageNo,
+      bool? histroy,
+      String? assetId}) async {
+    await clearAllList();
+    await cleaValue();
+    await gettingFiltersValue(appliedFilter);
+    await gettingLocationFilter(appliedFilter);
+
+    var data = """
+{
+  maintenanceList(
+    fromDate: ${startDate == null ? "\"\"" : "${"\"" + startDate + "\""}"}, 
+    limit: ${limit ?? null}, 
+    pageNumber: ${pageNo ?? null},
+    toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"}, 
+    serviceStatus: "", 
+    serviceType: ${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
+    assetType: "", 
+    assetId: ${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"},
+    make:  ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
+    manufacturer:  ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
+    productFamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}, 
+    assetStatus:  ${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
+    fuelLevel:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"},
+    deviceType:  ${deviceType == null ? "\"\"" : "${"\"" + deviceType! + "\""}"}, 
+    history: ${histroy ?? null}) {
+    maintenanceList {
+      serviceNumber
+      assetId
+      assetName
+      assetIcon
+      serialNumber
+      make
+      model
+      modelYear
+      productFamily
+      currentHourMeter
+      lastLocationReportedDate
+      longitude
+      latitude
+      streetAddress
+      city
+      state
+      county
+      country
+      zip
+      odometer
+      lastReportedDate
+      percentFuelRemaining
+      fuelLastReportedTime
+      serviceName
+      serviceInterval
+      status
+      dueAt
+      dueDate
+      serviceType
+      serviceStatus
+      assetType
+      telematicsDeviceId
+      deviceType
+      source
+      serviceDate
+      serviceMeter
+      performedBy
+      serviceNotes
+      dueInOverdueBy
+      completedService
+      customerName
+      address
+    }
+    status
+  }
+}
+""";
+    return data;
+  }
+
+  getMaintennaceAssetListData(
+      {String? fromDate,
+      String? toDate,
+      int? limit,
+      int? pageNo,
+      List<FilterData?>? appliedFilter}) async {
+    await clearAllList();
+    await cleaValue();
+    await gettingFiltersValue(appliedFilter);
+    await gettingLocationFilter(appliedFilter);
+    var data = """
+query{
+  maintenanceAssetList(
+fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"}
+limit: ${limit ?? null}
+pageNumber: ${pageNo ?? null}
+toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
+serviceStatus:${serviceTypeList.isEmpty ? [] : serviceTypeList}
+serviceType:${severityList.isEmpty ? [] : severityList}
+assetType:[]
+assetId:""
+make:[]
+manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}
+productFamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}
+assetStatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}
+fuelLevel:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
+deviceType: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
+  ){
+    status,
+    assetMaintenanceList{
+      count,
+CustomerAssetID,
+assetId,
+serialNumber,
+make,
+model,
+currentHourMeter,
+servicedescription,
+serviceStatusName,
+serviceName,
+maintenanceTotals{
+  count,
+  name,
+  alias
+}
+    }
+  }
+}""";
+    return data;
+  }
+
+  getMaitenanceCheckList({String? assetId, int? serviceNo}) {
+    var data = """
+query{
+  maintenanceCheckList(
+    serviceNumber:$serviceNo,
+    assetId:$assetId
+  ){
+    status,
+    maintenanceCheckList{
+      checkListName,
+      checkListId,
+      isChecked,
+      partList{
+        name,
+        partNo,
+        quantity,
+        partId,
+        description,
+        units
+      }
+    },
+    maintenanceServiceList{
+      serviceName,
+      serviceId
+    }
+  }
+}""";
+    return data;
+  }
+
+  onCompletion(
+      {String? assetId,
+      String? performedBy,
+      String? serviceDate,
+      String? serviceMeter,
+      String? serviceNotes,
+      int? serviceNo,
+      String? workOrder}) {
+    var data = """
+mutation {
+  maintenancepostData(
+    assetId:  ${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"}, 
+    isComplete: true, 
+    maintenanceCheckList: [], 
+    performedBy:  ${performedBy == null ? "\"\"" : "${"\"" + performedBy + "\""}"}, 
+    serviceDate:  ${serviceDate == null ? "\"\"" : "${"\"" + serviceDate + "\""}"}, 
+    serviceMeter:  ${serviceMeter == null ? "\"\"" : "${"\"" + serviceMeter + "\""}"}, 
+    serviceNotes:  ${serviceNotes == null ? "\"\"" : "${"\"" + serviceNotes + "\""}"}, 
+    serviceNumber: ${serviceNo ?? null}, 
+    workOrder:  ${workOrder == null ? "\"\"" : "${"\"" + workOrder + "\""}"})
+    {
+    status
+    message
+  }
+}
+""";
+    return data;
+  }
+
+  getMaintenanceRefineData(
+      {String? fromDate, String? toDate, int? limit, int? pageNo}) {
+    var data = """
+query{
+  maintenanceRefine(
+    fromDate: ${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"}
+limit: ${limit ?? null}
+pageNumber: ${pageNo ?? null}
+toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
+  ){
+    status,
+    maintenanceRefine{
+      status,
+      typeName,
+      typeAlias,
+      typeValues{
+        name,
+        alias,
+        count
+      }
+    }
+  }
+}""";
     return data;
   }
 }

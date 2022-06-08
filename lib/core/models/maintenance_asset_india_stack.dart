@@ -25,7 +25,7 @@ class AssetMaintenanceList {
   String? serialNumber;
   String? make;
   String? model;
-  int? currentHourMeter;
+  num? currentHourMeter;
   String? servicedescription;
   String? serviceStatusName;
   String? serviceName;

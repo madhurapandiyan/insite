@@ -40,6 +40,7 @@ class Network {
         responseBody: true,
         requestBody: true,
       ));
+    client.clear();
   }
 
   getGraphqlAccountData(
@@ -142,7 +143,7 @@ class Network {
       // Logger().w(subId);
 
       final Link link = DioLink(
-        graphqlStaggedEndpoint,
+        graphqlEndpoint,
         client: client,
         defaultHeaders: {
           "content-type": "application/json",
@@ -150,7 +151,7 @@ class Network {
           "service": "in-vfleet-uf-webapi",
           "Accept": "application/json",
           "X-VisionLink-UserUid": userId!,
-          "Authorization": "bearer " + await _localService!.getStaggedToken(),
+          "Authorization": "bearer " + await _localService!.getToken(),
           "sub-customeruid": subId!
         },
       );

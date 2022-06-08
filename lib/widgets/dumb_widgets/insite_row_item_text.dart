@@ -182,11 +182,9 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
   final String? title;
   final String? content;
   final Color? buttonColor;
-  const InsiteTableRowItemWithButton({
-    this.title,
-    this.buttonColor,
-    this.content,
-  });
+  final Function? onTap;
+  const InsiteTableRowItemWithButton(
+      {this.title, this.buttonColor, this.content, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -206,8 +204,11 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
                   title: content,
                   padding: EdgeInsets.all(0),
                   height: 25,
-                  width: 60,
+                  width: 70,
                   fontSize: 12,
+                  onTap: () {
+                    onTap!();
+                  },
                 )
               : InsiteText(
                   text: "-",

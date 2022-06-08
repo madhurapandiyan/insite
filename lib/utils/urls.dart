@@ -14,7 +14,6 @@ class Urls {
       "Basic MTMwNTEwYmQtOGE5MC00Mjc4LWI5N2EtZDgxMWRmNDRlZjEwOmJmM2UzYmI4MGE3ODQ2Yjg5ZTFhMWU1Mzc5NDUxMmEw";
   static String idTokenKeyStaging =
       "Basic N2JlNzU5YjEtYWZjNS00YTRhLThhODYtYmRhNWUwNDVhNTA4OjY3NjdkYTcxZDliMzQ1YzM4ODZhZWExMmE4ZjNmNmZl";
-      
 
   static String unifiedFleetloginUrlTataHitachi =
       "https://identity.trimble.com/i/oauth2/authorize?scope=openid&response_type=token&redirect_uri=" +
@@ -75,7 +74,7 @@ class Urls {
           "&nonce=-vZVJb_tePeeslxPnRdOLLaEwP2JSHcocLtD9TKJijx_y&navigationRedirectUri=/";
 
   static getV4LoginUrl(state, codeChallenge) {
-   // Logger().e(state);
+    // Logger().e(state);
     //Logger().v(codeChallenge);
     Logger().i("indiaStack");
     String url = "https://id.trimble.com/oauth/authorize?response_type=code" +
@@ -253,7 +252,6 @@ class Urls {
   static String contactSearchListData =
       "/t/trimble.com/vss-contact/1.0/Contact";
 
-
   // india stack api urls
   static String fleetSummary = "$fleet/1.0/UnifiedFleet/FleetSummary/v5";
   static String authenticateUrl = "$subscriptionPrefix/authenticate";
@@ -342,7 +340,8 @@ class Urls {
   static String contactSearchData = "/frame-contact/1.0/Contact";
   static String groupListData = "/frame-fleet-map/1.0/api/v1/assetlist";
   static String countReportData = "/frame-reports/1.0/ScheduledReports/Count";
-  static String loginTokenStaged="/oauth/token?grant_type=client_credentials&scope=OSG-IN-EQUIPMENT-WORKS-APP-DEV";
+  static String loginTokenStaged =
+      "/oauth/token?grant_type=client_credentials&scope=OSG-IN-EQUIPMENT-WORKS-APP-DEV";
 
   //application url constants
   static String accountSelection = "/frame-masterdata";
@@ -485,4 +484,25 @@ class Urls {
 
   static String getServiceCheckListData =
       "/t/trimble.com/vss-plannedmaintenance/1.0/checklists";
+
+  // Staging Environment
+
+  static String indiaStackClientIdStaging =
+      "cecd72f9-e512-4875-9a71-fc602d525cf5";
+  static String tataHitachiRedirectUriStaging =
+      "https://osg-in-qa-pulse.frame-oesolutions.com/auth";
+  static String tataHitachiApplicationNameStaging = "OSG-IN-PULSE-APP-QA";
+
+  static getV4LoginUrlStaging(state, codeChallenge) {
+    // Logger().e(state);
+    //Logger().v(codeChallenge);
+    Logger().i("indiaStack");
+    String url = "$idTokenBaseUrlStaging/oauth/authorize?response_type=code" +
+        "&client_id=$indiaStackClientIdStaging&state=$state" +
+        "&redirect_uri=$tataHitachiRedirectUriStaging&scope=openid $tataHitachiApplicationNameStaging" +
+        "&code_challenge=$codeChallenge&code_challenge_method=S256" +
+        "&nonce=$state&navigationRedirectUri=https://osg-in-qa-pulse.frame-oesolutions.com/";
+    print(url);
+    return url;
+  }
 }

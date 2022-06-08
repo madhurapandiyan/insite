@@ -39,6 +39,7 @@ class _FilterViewState extends State<FilterView> {
   final GlobalKey<FilterItemState> filterFrequencyTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterFormatTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterReportTypeKey = new GlobalKey();
+  final GlobalKey<FilterItemState> filterServiceStatusTypeKey = new GlobalKey();
 
   deSelect(FilterData data) {
     if (data.type == FilterType.ALL_ASSETS) {
@@ -535,6 +536,24 @@ class _FilterViewState extends State<FilterView> {
                                     onClear: () {
                                       viewModel.onFilterCleared(
                                           FilterType.REPORT_TYPE);
+                                    },
+                                  )
+                                : SizedBox(),
+
+                            widget.screenType == ScreenType.MAINTENANCE
+                                ? FilterItem(
+                                    isExpand: viewModel.isShowing,
+                                    filterType: FilterType.SERVICE_TYPE,
+                                    key: filterServiceStatusTypeKey,
+                                    data: viewModel.serviceTypeReportType,
+                                    isSingleSelection: true,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.SERVICE_TYPE);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.SERVICE_TYPE);
                                     },
                                   )
                                 : SizedBox(),

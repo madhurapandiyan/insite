@@ -384,7 +384,7 @@ class LoginService extends BaseService {
         return loginResponse;
       }
     } catch (e) {
-      Logger().e(e);
+      throw e;
     }
   }
 

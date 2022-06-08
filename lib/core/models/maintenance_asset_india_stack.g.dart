@@ -34,7 +34,7 @@ AssetMaintenanceList _$AssetMaintenanceListFromJson(
       serialNumber: json['serialNumber'] as String?,
       make: json['make'] as String?,
       model: json['model'] as String?,
-      currentHourMeter: json['currentHourMeter'] as int?,
+      currentHourMeter: json['currentHourMeter'] as num?,
       servicedescription: json['servicedescription'] as String?,
       serviceStatusName: json['serviceStatusName'] as String?,
       serviceName: json['serviceName'] as String?,

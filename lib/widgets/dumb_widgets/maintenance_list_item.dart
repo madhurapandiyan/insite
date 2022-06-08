@@ -111,7 +111,7 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                           TableRow(children: [
                             InsiteTableRowItemWithButton(
                               title: "Severity : ",
-                              buttonColor: Utils.getFaultColor(
+                              buttonColor: Utils.getMaintenanceColor(
                                   widget.summaryData!.dueInfo!.serviceStatus),
                               content: widget.summaryData!.dueInfo != null
                                   ? Utils.getFaultLabel(widget
@@ -170,12 +170,12 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                     children: [
                       TableRow(children: [
                         InsiteTableRowItem(
-                          title: "Universal Customer :",
-                          content: widget.summaryData!.customerName,
+                          title: "Product Family :",
+                          content: widget.summaryData!.productFamily??"-",
                         ),
                         InsiteTableRowItem(
-                          title: "DCN Name :",
-                          content: widget.summaryData!.dcnName,
+                          title: "Service Completed Date :",
+                          content: widget.summaryData!.serviceCompletedDate??"-",
                         ),
                       ]),
                     ],
@@ -185,12 +185,43 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                     children: [
                       TableRow(children: [
                         InsiteTableRowItem(
-                          title: "Registered Dealer :",
-                          content: widget.summaryData!.dealerName,
+                          title: "Fuel Level :",
+                          content: widget.summaryData!.fuelPercentage??"-",
                         ),
                         InsiteTableRowItem(
-                          title: "DCN Number :",
-                          content: widget.summaryData!.dcnNumber.toString(),
+                          title: "Last Reported Fuel Time :",
+                          content:
+                              widget.summaryData!.fuelReportedTime??"-",
+                        ),
+                      ]),
+                    ],
+                  ),
+                  Table(
+                    border: TableBorder.all(),
+                    children: [
+                      TableRow(children: [
+                        InsiteTableRowItem(
+                          title: "Telematic Devie Id :",
+                          content: widget.summaryData!.telematicDeviceId??"-",
+                        ),
+                        InsiteTableRowItem(
+                          title: "Device Type :",
+                          content: widget.summaryData!.deviceType??"-",
+                        ),
+                      ]),
+                    ],
+                  ),
+                  Table(
+                    border: TableBorder.all(),
+                    children: [
+                      TableRow(children: [
+                        InsiteTableRowItem(
+                          title: "Dealer Name :",
+                          content: widget.summaryData!.dealerName??"-",
+                        ),
+                        InsiteTableRowItem(
+                          title: "Customer Name :",
+                          content: widget.summaryData!.customerName??"-",
                         ),
                       ]),
                     ],

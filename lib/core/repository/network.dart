@@ -7,8 +7,10 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/login/india_stack_login_view.dart';
 import 'package:insite/views/splash/india_stack_splash_view.dart';
 import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
@@ -101,6 +103,9 @@ class HttpWrapper {
   final bool SHOW_LOGS = true;
   final LocalService? _localService = locator<LocalService>();
   final LoginService? _loginService = locator<LoginService>();
+  var _localStorageService = locator<LocalStorageService>();
+  final service.DialogService? _dialogService =
+      locator<service.DialogService>();
   //final NavigationService? _navigationService = locator<NavigationService>();
 
   Dio dio = new Dio();
@@ -129,7 +134,15 @@ class HttpWrapper {
   var clientTen;
   var clientEleven;
 
-   Future<Response<dynamic>> dioElevenRetryInterceptor(
+  onTokenExpired() async {
+    LoginResponse? response = await _localService!.getTokenInfo();
+    _localService!.clearAll();
+    _localStorageService.clearAll();
+    await navigationService!.clearTillFirstAndShowView(IndiaStackLoginView(),
+        arguments: LoginArguments(response: response));
+  }
+
+  Future<Response<dynamic>> dioElevenRetryInterceptor(
       RequestOptions requestOption) async {
     Logger().i(requestOption.baseUrl);
     Logger().i(requestOption.path);
@@ -531,12 +544,18 @@ class HttpWrapper {
       ..add(InterceptorsWrapper(
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
-          //if (error.response?.statusCode == 401) {
-          //  _localService!.setIsloggedIn(false);
+          if (error.response?.statusCode == 401) {
             Logger().e(error.response!.data.toString());
-         // } else {
+            var data = await _dialogService!.showDialog(
+                title: "Session Expired Please Login Again",
+                cancelTitle: "Cancel",
+                buttonTitle: "Login");
+            if (data!.confirmed) {
+              onTokenExpired();
+            }
+          } else {
             return errorInterceptorHandler.next(error);
-          //}
+          }
         },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
@@ -736,11 +755,11 @@ class HttpWrapper {
     dioEleven.interceptors
       ..add(InterceptorsWrapper(
         onError: (DioError error,
-            ErrorInterceptorHandler errorInterceptorHandler) async{
-              if(error.response!.statusCode==401) {
-                await dioElevenRetryInterceptor(error.requestOptions);
-              }
-            },
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response!.statusCode == 401) {
+            await dioElevenRetryInterceptor(error.requestOptions);
+          }
+        },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
           options.headers.addAll({

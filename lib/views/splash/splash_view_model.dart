@@ -128,7 +128,13 @@ class SplashViewModel extends InsiteViewModel {
 
       Logger().d("checkLoggedIn " + val.toString());
     } catch (e) {
-      Logger().e(e);
+      Logger().i("error throw while taking refreshToken so showing webview");
+      //below three lines decides to show web view or not for login
+      shouldLoadWebview = true;
+      _localService!.clearAll();
+      Future.delayed(Duration(seconds: 2), () {
+        notifyListeners();
+      });
     }
   }
 

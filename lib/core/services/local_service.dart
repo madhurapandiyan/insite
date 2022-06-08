@@ -21,7 +21,7 @@ class LocalService extends BaseService {
   static const String USERID = "userId";
   static const String REFRESH_TOKEN = "refresh_token";
   static const String CODE_VERIFIER = "code_verifier";
-  static const String STAGGED_TOKEN = "token";
+  static const String STAGGED_TOKEN = "staged_token";
 
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences!.setBool(IS_LOGGEDIN, isLoggedIn);

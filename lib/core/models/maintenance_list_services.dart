@@ -72,7 +72,7 @@ class AssetData {
 @JsonSerializable()
 class Services {
   String? serviceName;
-  num? serviceId;
+  int? serviceId;
   String? serviceDescription;
   String? serviceUID;
   String? intervalCode;
@@ -84,7 +84,7 @@ class Services {
   String? smuType;
   num? firstOccurrence;
   num? nextOccurrence;
-  DueInfo? dueInfo;
+  DueInfomation? dueInfo;
   String? checklists;
   String? checklist;
   String? insertedUtc;
@@ -121,7 +121,7 @@ class Services {
 }
 
 @JsonSerializable()
-class DueInfo {
+class DueInfomation {
   num? occurrenceId;
   String? serviceStatus;
   num? dueAt;
@@ -129,7 +129,7 @@ class DueInfo {
   String? dueDate;
   num? occrank;
 
-  DueInfo(
+  DueInfomation(
       {this.occurrenceId,
       this.serviceStatus,
       this.dueAt,
@@ -137,10 +137,10 @@ class DueInfo {
       this.dueDate,
       this.occrank});
 
-  factory DueInfo.fromJson(Map<String, dynamic> json) =>
-      _$DueInfoFromJson(json);
+  factory DueInfomation.fromJson(Map<String, dynamic> json) =>
+      _$DueInfomationFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DueInfoToJson(this);
+  Map<String, dynamic> toJson() => _$DueInfomationToJson(this);
 }
 
 @JsonSerializable()
