@@ -180,6 +180,23 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
             Logger().e(e);
           }
         }
+        //else if (url
+        //     .startsWith(Urls.tataHitachiRedirectUriStaging + "?code=")) {
+        //   if (url.contains("=")) {
+        //     List<String> list = url.split("=");
+        //     print("IndiaStackSplashView URL url split list $list");
+        //     if (list.isNotEmpty) {
+        //       String codeString = list[1];
+        //       List<String> codeStringList = codeString.split("&");
+        //       if (codeStringList.isNotEmpty) {
+        //         getLoginDataV4(
+        //           codeStringList[0],
+        //         );
+        //       }
+        //     }
+        //   }
+        //   flutterWebviewPlugin.close();
+        // }
       }
     });
   }
@@ -187,6 +204,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   getLoginDataV4(code) async {
     Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier, true);
+
     LoginResponse? result =
         await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
@@ -196,6 +214,10 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       await _localService.saveExpiryTime(tokenTime);
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString(), false);
+    }
+    LoginResponse? stagedResult = await _loginService.stagedToken();
+    if (stagedResult != null) {
+      _localService.saveStaggedToken(stagedResult.access_token);
     }
   }
 

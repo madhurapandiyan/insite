@@ -78,7 +78,7 @@ Map<String, dynamic> _$AssetDataToJson(AssetData instance) => <String, dynamic>{
 
 Services _$ServicesFromJson(Map<String, dynamic> json) => Services(
       serviceName: json['serviceName'] as String?,
-      serviceId: json['serviceId'] as num?,
+      serviceId: json['serviceId'] as int?,
       serviceDescription: json['serviceDescription'] as String?,
       serviceUID: json['serviceUID'] as String?,
       intervalCode: json['intervalCode'] as String?,
@@ -92,7 +92,7 @@ Services _$ServicesFromJson(Map<String, dynamic> json) => Services(
       nextOccurrence: json['nextOccurrence'] as num?,
       dueInfo: json['dueInfo'] == null
           ? null
-          : DueInfo.fromJson(json['dueInfo'] as Map<String, dynamic>),
+          : DueInfomation.fromJson(json['dueInfo'] as Map<String, dynamic>),
       checklists: json['checklists'] as String?,
       checklist: json['checklist'] as String?,
       insertedUtc: json['insertedUtc'] as String?,
@@ -124,7 +124,8 @@ Map<String, dynamic> _$ServicesToJson(Services instance) => <String, dynamic>{
       'intervalCreationDate': instance.intervalCreationDate,
     };
 
-DueInfo _$DueInfoFromJson(Map<String, dynamic> json) => DueInfo(
+DueInfomation _$DueInfomationFromJson(Map<String, dynamic> json) =>
+    DueInfomation(
       occurrenceId: json['occurrenceId'] as num?,
       serviceStatus: json['serviceStatus'] as String?,
       dueAt: json['dueAt'] as num?,
@@ -133,7 +134,8 @@ DueInfo _$DueInfoFromJson(Map<String, dynamic> json) => DueInfo(
       occrank: json['occrank'] as num?,
     );
 
-Map<String, dynamic> _$DueInfoToJson(DueInfo instance) => <String, dynamic>{
+Map<String, dynamic> _$DueInfomationToJson(DueInfomation instance) =>
+    <String, dynamic>{
       'occurrenceId': instance.occurrenceId,
       'serviceStatus': instance.serviceStatus,
       'dueAt': instance.dueAt,

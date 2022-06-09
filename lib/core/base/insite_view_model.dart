@@ -44,7 +44,6 @@ abstract class InsiteViewModel extends BaseViewModel {
       Logger().e(e);
     }
   }
-  
 
   NavigationService? navigationService = locator<NavigationService>();
   FilterService? _filterService = locator<FilterService>();
@@ -215,7 +214,9 @@ abstract class InsiteViewModel extends BaseViewModel {
         await _localService!.saveExpiryTime(tokenTime);
       }
       return result;
-    } catch (e) {}
+    } catch (e) {
+      throw e;
+    }
   }
 
   List<FilterData?>? appliedFilters = [];

@@ -15,7 +15,9 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import '../core/models/add_notification_payload.dart' as add;
 import '../core/models/add_notification_payload.dart';
+import '../core/models/maintenance_asset_india_stack.dart';
 import '../core/models/manage_notifications.dart';
+import '../widgets/dumb_widgets/maintenance_asset_list_item.dart';
 import 'date.dart';
 
 class Utils {
@@ -765,6 +767,9 @@ class Utils {
       case FilterType.MANUFACTURER:
         title = "MANUFACTURER";
         break;
+      case FilterType.SERVICE_TYPE:
+        title = "SERVICE TYPE";
+        break;
 
       default:
     }
@@ -1053,6 +1058,19 @@ class Utils {
             : text.toLowerCase() == "orange" || text.toLowerCase() == "medium"
                 ? Colors.orange
                 : text.toLowerCase() == "yellow" || text.toLowerCase() == "low"
+                    ? Colors.yellow
+                    : buttonColorFive
+        : buttonColorFive;
+  }
+
+  static Color getMaintenanceColor(text) {
+    return text != null && text != null
+        ? text.toLowerCase() == "Overdue" || text.toLowerCase() == "Overdue"
+            ? buttonColorFive
+            : text.toLowerCase() == "orange" || text.toLowerCase() == "medium"
+                ? Colors.orange
+                : text.toLowerCase() == "upcoming" ||
+                        text.toLowerCase() == "low"
                     ? Colors.yellow
                     : buttonColorFive
         : buttonColorFive;
@@ -1771,5 +1789,26 @@ class Utils {
     var tokenExpireTime = currentTime.add(Duration(seconds: expireSec));
     Logger().i("Token Valid Upto $tokenExpireTime");
     return tokenExpireTime.toString();
+  }
+
+  static List<MaitenanceTotal> getMaintenanceCount(
+      List<MaintenanceTotals>? value) {
+    List<MaitenanceTotal> maintenanceTotal = [
+      MaitenanceTotal(count: 0, total: MAINTENANCETOTAL.UPCOMING),
+      MaitenanceTotal(count: 0, total: MAINTENANCETOTAL.OVERDUE)
+    ];
+
+    for (var item in value!) {
+      if (item.name == "Upcoming" && item.count != 0) {
+        maintenanceTotal.first.count = item.count!;
+      } else if (item.name == "Overdue" && item.count != 0) {
+        maintenanceTotal.last.count = item.count!;
+      }
+    }
+    //Logger().d(maintenanceTotal.length);
+    // Logger().d(maintenanceTotal.first);
+    // Logger().d(maintenanceTotal.last);
+    // return "";
+    return maintenanceTotal;
   }
 }

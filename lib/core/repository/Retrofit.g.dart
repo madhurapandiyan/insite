@@ -4441,7 +4441,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<MaintenanceViewData> getMaintenanceViewServices(
+  Future<MaintenanceViewData> getMaintenanceViewServicesVL(
       url, maintenanceViewQuery, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -4456,6 +4456,48 @@ class _RestClient implements RestClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MaintenanceViewData.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MaintenanceListData> getMaintenanceListData(
+      url, customerId, serviceHeader) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-visionlink-customeruid': customerId,
+      r'service': serviceHeader
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MaintenanceListData>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MaintenanceListData.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<MaintenanceAssetList> getMaintenanceAssetListData(
+      url, customerId, serviceHeader) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'x-visionlink-customeruid': customerId,
+      r'service': serviceHeader
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<MaintenanceAssetList>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = MaintenanceAssetList.fromJson(_result.data!);
     return value;
   }
 
@@ -4575,6 +4617,22 @@ class _RestClient implements RestClient {
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<LoginResponse> getStagedToken(url) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<LoginResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '${url}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = LoginResponse.fromJson(_result.data!);
     return value;
   }
 

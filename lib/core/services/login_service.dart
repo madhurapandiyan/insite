@@ -384,7 +384,7 @@ class LoginService extends BaseService {
         return loginResponse;
       }
     } catch (e) {
-      Logger().e(e);
+      throw e;
     }
   }
 
@@ -425,5 +425,13 @@ class LoginService extends BaseService {
     Logger().i("saveToken from webview");
     await getUser(token, shouldRemovePrevRoutes);
     // await saveExpiryTime(expiryTime);
+  }
+
+  Future<LoginResponse> stagedToken() async {
+    LoginResponse loginResponse =
+        await MyApi().getClientEleven()!.getStagedToken(
+              Urls.loginTokenStaged,
+            );
+    return loginResponse;
   }
 }

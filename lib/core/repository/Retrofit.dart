@@ -1,4 +1,6 @@
 import 'package:insite/core/models/complete.dart';
+import 'package:insite/core/models/maintenance_asset_india_stack.dart';
+import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
@@ -1385,10 +1387,23 @@ abstract class RestClient {
       @Header("X-VisionLink-UserUid") userId);
 
   @POST('{url}')
-  Future<MaintenanceViewData> getMaintenanceViewServices(
+  Future<MaintenanceViewData> getMaintenanceViewServicesVL(
       @Path() String url,
       @Body() Map<String, dynamic> maintenanceViewQuery,
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET('{url}')
+  Future<MaintenanceListData> getMaintenanceListData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") serviceHeader);
+
+  @GET('{url}')
+  Future<MaintenanceAssetList> getMaintenanceAssetListData(
+      @Path() String url,
+      @Header("x-visionlink-customeruid") customerId,
+      @Header("service") serviceHeader);
+
 
   @GET("{url}")
   Future<MaintenanceAsset> getMaintenanceAssetData(
@@ -1431,6 +1446,11 @@ abstract class RestClient {
   Future<dynamic> logout(
     @Query("id_token_hint") String id_Token,
     @Query("post_logout_redirect_uri") String redirectUrl,
+  );
+  @POST('{url}')
+  Future<LoginResponse> getStagedToken(
+    @Path() String url,
+  
   );
 }
 

@@ -27,19 +27,23 @@ class MainView extends StatefulWidget {
 
 class MainViewState extends State<MainView> {
   onFilterApplied() {
-    //viewModel.refresh();
+    viewModel.refresh();
   }
 
   List<DateTime>? dateRange = [];
-  //late var viewModel;
+  late var viewModel;
 
-  // @override
-  // void initState() {
-  //   viewModel = ;
+  @override
+  void initState() {
+    super.initState();
+    viewModel = MainViewModel();
+  }
 
-  //   super.initState();
-  // }
-  SummaryData? summaryData;
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +53,6 @@ class MainViewState extends State<MainView> {
           children: [
             Column(
               children: [
-                SizedBox(
-                  height: 40,
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
@@ -78,7 +79,9 @@ class MainViewState extends State<MainView> {
                             context: context,
                             builder: (BuildContext context) => Dialog(
                                 backgroundColor: transparent,
-                                child: DateRangeView()),
+                                child: DateRangeView(
+                                  screenType: ScreenType.MAINTENANCE,
+                                )),
                           );
                           if (dateRange != null && dateRange!.isNotEmpty) {
                             viewModel.refresh();
@@ -90,7 +93,7 @@ class MainViewState extends State<MainView> {
                 ),
                 PageHeader(
                   isDashboard: false,
-                  total: viewModel.totalCount!.toInt(),
+                  total: viewModel.maintenanceList.length,
                   screenType: ScreenType.MAINTENANCE,
                   count: viewModel.maintenanceList.length,
                 ),
@@ -105,13 +108,12 @@ class MainViewState extends State<MainView> {
                                   EdgeInsets.only(left: 12, right: 12, top: 4),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                summaryData = viewModel.maintenanceList[index];
-
+                                SummaryData? summaryData =
+                                    viewModel.maintenanceList[index];
                                 return MaintenanceListItem(
                                   summaryData: summaryData,
                                   onCallback: () {
-                                    viewModel
-                                        .onDetailPageSelected(summaryData!);
+                                    viewModel.onDetailPageSelected(summaryData);
                                   },
                                   serviceCalBack:
                                       (value, assetDataValue, services) {
@@ -122,7 +124,7 @@ class MainViewState extends State<MainView> {
                               },
                             )
                           : EmptyView(
-                              title: "No services to display",
+                              title: "No Asset Found",
                             ),
                 ),
                 viewModel.loadingMore
@@ -141,7 +143,7 @@ class MainViewState extends State<MainView> {
           ],
         );
       },
-      viewModelBuilder: () => MainViewModel(summaryData),
+      viewModelBuilder: () => MainViewModel(),
     );
   }
 }

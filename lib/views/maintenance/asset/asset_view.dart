@@ -34,8 +34,13 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
   @override
   void initState() {
     viewModel = AssetMaintenanceViewModel();
-
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
   }
 
   @override
@@ -47,9 +52,7 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
           children: [
             Column(
               children: [
-                SizedBox(
-                  height: 40,
-                ),
+                
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
@@ -88,7 +91,7 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
                 ),
                 PageHeader(
                   isDashboard: false,
-                  total: viewModel.totalCount,
+                  total: viewModel.assetData.length,
                   screenType: ScreenType.ASSET_OPERATION,
                   count: viewModel.assetData.length,
                 ),
@@ -105,7 +108,6 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
                               itemBuilder: (context, index) {
                                 AssetCentricData? assetCentricData =
                                     viewModel.assetData[index];
-
                                 return MaintenanceAssetListItem(
                                   key: UniqueKey(),
                                   assetData: assetCentricData,
@@ -125,7 +127,7 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
                               },
                             )
                           : EmptyView(
-                              title: "No Assets with fault codes to display",
+                              title: "No Assets Found",
                             ),
                 ),
                 viewModel.loadingMore
