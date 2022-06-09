@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
@@ -5,6 +7,7 @@ import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/core/models/permission.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/adminstration/adminstration_view.dart';
 import 'package:insite/views/asset_operation/asset_operation_view.dart';
@@ -17,6 +20,8 @@ import 'package:insite/views/notification/notification_view.dart';
 import 'package:insite/views/plant/plant_view.dart';
 import 'package:insite/views/subscription/subscription_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart' as service;
@@ -27,14 +32,18 @@ class HomeViewModel extends InsiteViewModel {
       locator<service.NavigationService>();
   LoginService? _loginService = locator<LoginService>();
   LocalService? _localService = locator<LocalService>();
+  service.SnackbarService? showSnackBar = locator<service.SnackbarService>();
   bool? isLoggedIn;
   Customer? customer;
   bool? isTataHitachiAccount = false;
   bool isLoading = true;
+  AppUpdateInfo? updateInfo;
+  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     Future.delayed(Duration.zero, () async {
+      await checkForUpdate();
       customer = await _localService!.getAccountInfo();
       Logger().w(
           "Tata Hitachi Account Selected ${customer!.isTataHitachiSelected}");
@@ -100,6 +109,67 @@ class HomeViewModel extends InsiteViewModel {
       }
     } catch (e) {
       Logger().e(e);
+    }
+  }
+
+  checkForUpdate() async {
+    try {
+      Logger().w("checking for update ....");
+      var info = await InAppUpdate.checkForUpdate();
+      Logger().w(info.availableVersionCode);
+      updateInfo = info;
+      if (updateInfo?.updateAvailability ==
+          UpdateAvailability.updateAvailable) {
+        snackbarService?.showSnackbar(
+            duration: Duration(seconds: 10),
+            mainButtonTitle: "Update",
+            onMainButtonTapped: updateInfo?.updateAvailability ==
+                    UpdateAvailability.updateAvailable
+                ? () {
+                    InAppUpdate.startFlexibleUpdate()
+                        .then((_) {})
+                        .catchError((e) {
+                      snackbarService?.showSnackbar(message: e.toString());
+                    });
+                  }
+                : null,
+            message:
+                "Update Available Vesion:-${updateInfo?.availableVersionCode.toString()}");
+      }
+
+      // scaffoldKey.currentState!.showSnackBar(SnackBar(
+      //     content: Row(
+      //   children: [
+      //     InsiteText(
+      //       text:
+      //           "Update Available Vesion:-${updateInfo?.availableVersionCode.toString()}",
+      //     ),
+      //     Row(
+      //       children: [
+      //         InsiteButton(
+      //           title: "Cancel",
+      //           bgColor: white.withOpacity(.5),
+      //         ),
+      //         InsiteButton(
+      //           title: "Update",
+      //           bgColor: white.withOpacity(.5),
+      //           onTap: updateInfo?.updateAvailability ==
+      //                   UpdateAvailability.updateAvailable
+      //               ? () {
+      //                   InAppUpdate.startFlexibleUpdate()
+      //                       .then((_) {})
+      //                       .catchError((e) {
+      //                     snackbarService!.showSnackbar(message: e.toString());
+      //                   });
+      //                 }
+      //               : null,
+      //         ),
+      //       ],
+      //     )
+      //   ],
+      // )));
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 }

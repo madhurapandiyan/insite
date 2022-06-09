@@ -21,6 +21,7 @@ import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/core/services/date_range_service.dart';
@@ -120,6 +121,11 @@ class DashboardViewModel extends InsiteViewModel {
     _dateRangeService!.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () async {
+      String? token = await _localService!.getToken();
+      if (JwtDecoder.isExpired(token)) {
+        Logger().w("refresh token from dashboard");
+        await refreshToken();
+      }
       getAssetCount();
       getFilterData();
       getData(false);
@@ -180,7 +186,7 @@ class DashboardViewModel extends InsiteViewModel {
       getAssetCount();
     }
     clearDashboardFiltersDb();
-    getAssetStatusData();
+    await getAssetStatusData();
     getFuelLevelData();
     getIdlingLevelData(false, null);
     getUtilizationSummary();

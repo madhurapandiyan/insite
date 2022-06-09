@@ -52,7 +52,6 @@ class Network {
           operation: Operation(document: gql.parseString(query!)),
         ))
         .first;
-
     return res;
   }
 
@@ -62,6 +61,11 @@ class Network {
       String? userId,
       String? subId}) async {
     try {
+      // String? tokenTime = await _localService!.getExpiry();
+      // Logger().i(tokenTime);
+      // if (DateTime.now().isAfter(DateTime.parse(tokenTime!))) {
+      //   Logger().e("token expired");
+      // }
       // queryUrl = query;
       // customerUserId = userId;
       // customerUid = customerId;
@@ -101,6 +105,9 @@ class Network {
             await _localService!.saveToken(refreshLoginResponce.access_token);
             await _localService!
                 .saveRefreshToken(refreshLoginResponce.refresh_token);
+            var tokenTime =
+                Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+            await _localService!.saveExpiryTime(tokenTime);
             var data = await getGraphqlData(
                 query: query,
                 customerId: customerId,

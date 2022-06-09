@@ -10,6 +10,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/native_service.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -28,8 +29,8 @@ class SplashViewModel extends InsiteViewModel {
   SplashViewModel() {
     checkingFavour = isVisionLink;
     this.log = getLogger(this.runtimeType.toString());
-    _nativeService!.nativeToFlutterplatform
-        .setMethodCallHandler(nativeMethodCallHandler);
+    // _nativeService!.nativeToFlutterplatform
+    //     .setMethodCallHandler(nativeMethodCallHandler);
     Future.delayed(Duration(seconds: 2), () {
       checkLoggedIn();
     });
@@ -53,18 +54,65 @@ class SplashViewModel extends InsiteViewModel {
     }
   }
 
+  // void checkLoggedIn() async {
+  //   try {
+  //     bool? val = await _localService!.getIsloggedIn();
+  //     Customer? account = await _localService!.getAccountInfo();
+  //     Logger().d("checkLoggedIn " + val.toString());
+  //     if (val == null || !val) {
+  //       //use this user name and password
+  //       // nitin_r@gmail.com
+  //       // Welcome@1234
+  //       // or below one
+  //       //nithyamahalakshmi_p@trimble.com
+  //       //OsgTe@m20!9
+  //       if (AppConfig.instance!.enalbeNativeLogin) {
+  //         await _nativeService!.login();
+  //       } else {
+  //         Logger().i("show webview");
+  //         //below three lines decides to show web view or not for login
+  //         shouldLoadWebview = true;
+  //         Future.delayed(Duration(seconds: 2), () {
+  //           notifyListeners();
+  //         });
+  //         // _nagivationService.replaceWith(loginPageRoute);
+  //       }
+  //       // Logger().i("login result %s" + result);
+  //     } else {
+  //       if (!isProcessing) {
+  //         Logger().i("checking for permission");
+  //         checkPermission(account);
+  //       }
+  //     }
+  //   } catch (e) {
+  //     Logger().e(e);
+  //   }
+  // }
+
   void checkLoggedIn() async {
     try {
       bool? val = await _localService!.getIsloggedIn();
+
       Customer? account = await _localService!.getAccountInfo();
-      Logger().d("checkLoggedIn " + val.toString());
-      if (val == null || !val) {
-        //use this user name and password
-        // nitin_r@gmail.com
-        // Welcome@1234
-        // or below one
-        //nithyamahalakshmi_p@trimble.com
-        //OsgTe@m20!9
+      if (val == true && val != null) {
+        // for token expired
+        String? token = await _localService!.getToken();
+        if (JwtDecoder.isExpired(token)) {
+          Logger().i("get refresh token initially");
+          await refreshToken();
+          if (!isProcessing) {
+            Logger().i("checking for permission with refresh token");
+            checkPermission(account);
+          }
+        }
+        // for token valid
+        else {
+          if (!isProcessing) {
+            Logger().i("checking for permission with valid token");
+            checkPermission(account);
+          }
+        }
+      } else {
         if (AppConfig.instance!.enalbeNativeLogin) {
           await _nativeService!.login();
         } else {
@@ -76,13 +124,9 @@ class SplashViewModel extends InsiteViewModel {
           });
           // _nagivationService.replaceWith(loginPageRoute);
         }
-        // Logger().i("login result %s" + result);
-      } else {
-        if (!isProcessing) {
-          Logger().i("checking for permission");
-          checkPermission(account);
-        }
       }
+
+      Logger().d("checkLoggedIn " + val.toString());
     } catch (e) {
       Logger().e(e);
     }

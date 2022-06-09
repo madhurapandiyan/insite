@@ -3,15 +3,21 @@ import 'dart:async';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/login_response.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
+import 'package:insite/core/services/local_service.dart';
+import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/notification_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:intl/intl.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:logger/logger.dart';
+import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -29,7 +35,7 @@ abstract class InsiteViewModel extends BaseViewModel {
       if (AppConfig.instance!.apiFlavor == "visionlink") {
         isVisionLink = true;
       }
-      // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
+// PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
       //       if ("com.trimble.insite.visionlink" == packageInfo.packageName ||
       //           "com.trimble.insite.trimble" == packageInfo.packageName)
       //         {isVisionLink = true}
@@ -38,12 +44,15 @@ abstract class InsiteViewModel extends BaseViewModel {
       Logger().e(e);
     }
   }
+  
 
   NavigationService? navigationService = locator<NavigationService>();
   FilterService? _filterService = locator<FilterService>();
   DateRangeService? _dateRangeService = locator<DateRangeService>();
   SnackbarService? snackbarService = locator<SnackbarService>();
   GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
+  final LocalService? _localService = locator<LocalService>();
+  final LoginService? _loginService = locator<LoginService>();
   NotificationService? _mainNotificationService =
       locator<NotificationService>();
   AssetStatusService? _assetStatusService = locator<AssetStatusService>();
@@ -59,6 +68,11 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
+
+  String? codeChallenge;
+  static String _createCodeVerifier() {
+    return randomAlphaNumeric(43);
+  }
 
   String? _startDate = DateFormat('yyyy-MM-dd').format(
       DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)));
@@ -179,6 +193,29 @@ abstract class InsiteViewModel extends BaseViewModel {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<LoginResponse?> refreshToken() async {
+    try {
+      var currentCodeVerifier = await _localService!.getCodeVerifier();
+      var refreshToken = await _localService!.getRefreshToken();
+      codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier(), true);
+      Logger().e("code verifier $currentCodeVerifier");
+      Logger().i("refresh token $refreshToken");
+      Logger().w("code challenge $codeChallenge");
+      LoginResponse? result = await _loginService!.getRefreshLoginDataV4(
+          code_challenge: codeChallenge,
+          code_verifier: currentCodeVerifier,
+          token: refreshToken);
+      if (result != null) {
+        await _localService!.saveTokenInfo(result);
+        await _localService!.saveToken(result.access_token);
+        await _localService!.saveRefreshToken(result.refresh_token);
+        var tokenTime = Utils.tokenExpiresTime(result.expires_in!);
+        await _localService!.saveExpiryTime(tokenTime);
+      }
+      return result;
+    } catch (e) {}
   }
 
   List<FilterData?>? appliedFilters = [];

@@ -15,7 +15,9 @@ class SnackbarStyling {
     service.registerSnackbarConfig(snack_bar_service.SnackbarConfig(
         //messageColor: tango,
         messageColor: white,
-        backgroundColor: AppConfig.instance!.productFlavor == "tatahitachi"||AppConfig.instance!.productFlavor=="unifiedFleet"
+        mainButtonTextColor: white,
+        backgroundColor: AppConfig.instance!.productFlavor == "tatahitachi" ||
+                AppConfig.instance!.productFlavor == "unifiedFleet"
             ? tango
             : buttonColor1,
         textColor: tango));
