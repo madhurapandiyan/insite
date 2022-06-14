@@ -96,7 +96,7 @@ class DetailResult {
   @JsonKey(name: "fk_AssetId")
   int? fk_AssetId;
 
-  @JsonKey(name:"fk_State")
+  @JsonKey(name: "fk_State")
   int? fk_State;
 
   @JsonKey(name: "SourceName1")
@@ -120,7 +120,7 @@ class DetailResult {
   @JsonKey(name: "Status")
   String? Status;
 
-    @JsonKey(name: "Description")
+  @JsonKey(name: "Description")
   String? Description;
 
   @JsonKey(name: "InsertUTC")
@@ -163,9 +163,37 @@ class DetailResult {
       this.Status,
       this.count,
       this.Description,
-      this.vin,this.fk_State});
+      this.vin,
+      this.fk_State});
 
   factory DetailResult.fromJson(Map<String, dynamic> json) =>
       _$DetailResultFromJson(json);
   Map<String, dynamic> toJson() => _$DetailResultToJson(this);
+}
+
+@JsonSerializable()
+class SubscriptionFleetList {
+  int? count;
+  List<ProvisioningInfo?>? provisioningInfo;
+
+  SubscriptionFleetList({this.count, this.provisioningInfo});
+
+  factory SubscriptionFleetList.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionFleetListFromJson(json);
+  Map<String, dynamic> toJson() => _$SubscriptionFleetListToJson(this);
+}
+
+@JsonSerializable()
+class ProvisioningInfo {
+  String? vin;
+  String? gpsDeviceID;
+  String? model;
+  String? subscriptionStartDate;
+
+  ProvisioningInfo(
+      {this.vin, this.gpsDeviceID, this.model, this.subscriptionStartDate});
+
+  factory ProvisioningInfo.fromJson(Map<String, dynamic> json) =>
+      _$ProvisioningInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$ProvisioningInfoToJson(this);
 }

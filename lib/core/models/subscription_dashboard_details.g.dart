@@ -98,3 +98,37 @@ Map<String, dynamic> _$DetailResultToJson(DetailResult instance) =>
       'InsertUTC': instance.InsertUTC,
       'count': instance.count,
     };
+
+SubscriptionFleetList _$SubscriptionFleetListFromJson(
+        Map<String, dynamic> json) =>
+    SubscriptionFleetList(
+      count: json['count'] as int?,
+      provisioningInfo: (json['provisioningInfo'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : ProvisioningInfo.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$SubscriptionFleetListToJson(
+        SubscriptionFleetList instance) =>
+    <String, dynamic>{
+      'count': instance.count,
+      'provisioningInfo': instance.provisioningInfo,
+    };
+
+ProvisioningInfo _$ProvisioningInfoFromJson(Map<String, dynamic> json) =>
+    ProvisioningInfo(
+      vin: json['vin'] as String?,
+      gpsDeviceID: json['gpsDeviceID'] as String?,
+      model: json['model'] as String?,
+      subscriptionStartDate: json['subscriptionStartDate'] as String?,
+    );
+
+Map<String, dynamic> _$ProvisioningInfoToJson(ProvisioningInfo instance) =>
+    <String, dynamic>{
+      'vin': instance.vin,
+      'gpsDeviceID': instance.gpsDeviceID,
+      'model': instance.model,
+      'subscriptionStartDate': instance.subscriptionStartDate,
+    };

@@ -65,13 +65,13 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
               searchList.isEmpty
                   ? SizedBox()
                   : Container(
-                     // height: 200,
+                      // height: 200,
                       decoration: BoxDecoration(
                           color: Theme.of(context).cardColor,
                           boxShadow: [
                             BoxShadow(
                                 color: Colors.black,
-                                blurStyle: BlurStyle.outer,
+                                // blurStyle: BlurStyle.outer,
                                 blurRadius: 0.5,
                                 spreadRadius: 0.2)
                           ]),

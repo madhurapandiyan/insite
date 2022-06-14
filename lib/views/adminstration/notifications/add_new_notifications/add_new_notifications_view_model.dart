@@ -981,21 +981,21 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  addContact() {
-    if (emailController.text.isEmail) {
-      isShowingSelectedContact = true;
-      isShowingSelectedContact = true;
-      selectedUser.add(User(
-        email: emailController.text,
-      ));
-      emailIds!.add(emailController.text);
-    } else {
-      snackbarService!
-          .showSnackbar(message: "Please Enter the valid device id");
-    }
+  // addContact() {
+  //   if (emailController.text.isE) {
+  //     isShowingSelectedContact = true;
+  //     isShowingSelectedContact = true;
+  //     selectedUser.add(User(
+  //       email: emailController.text,
+  //     ));
+  //     emailIds!.add(emailController.text);
+  //   } else {
+  //     snackbarService!
+  //         .showSnackbar(message: "Please Enter the valid device id");
+  //   }
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
   onGettingFaultCodeData() async {
     try {

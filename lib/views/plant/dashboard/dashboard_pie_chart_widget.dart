@@ -116,18 +116,18 @@ class _DashboardPieChartWidgetState extends State<DashboardPieChartWidget> {
                               Logger().d(
                                   "onLegendTapped " + legendTapArgs.toString());
                             },
-                            onPointTapped: (pointTapArgs) {
-                              try {
-                                Logger().d("onPointTapped " +
-                                    pointTapArgs.pointIndex.toString() +
-                                    " " +
-                                    pointTapArgs.seriesIndex.toString() +
-                                    " " +
-                                    pointTapArgs.viewportPointIndex.toString());
-                                widget.onFilterSelected!(
-                                    widget.data![pointTapArgs.pointIndex!].z);
-                              } catch (e) {}
-                            },
+                            // onPointTapped: (pointTapArgs) {
+                            //   try {
+                            //     Logger().d("onPointTapped " +
+                            //         pointTapArgs.pointIndex.toString() +
+                            //         " " +
+                            //         pointTapArgs.seriesIndex.toString() +
+                            //         " " +
+                            //         pointTapArgs.viewportPointIndex.toString());
+                            //     widget.onFilterSelected!(
+                            //         widget.data![pointTapArgs.pointIndex!].z);
+                            //   } catch (e) {}
+                            // },
                             primaryYAxis: NumericAxis(
                                 majorGridLines: MajorGridLines(
                                     width: 0,

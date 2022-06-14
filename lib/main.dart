@@ -21,33 +21,27 @@ import 'core/router_india_stack.dart' as router;
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
-  Logger().d("main");
-  runZonedGuarded<Future<void>>(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-    await FlutterDownloader.initialize(debug: true);
-    await Hive.initFlutter();
-    Hive.registerAdapter<FilterData>(FilterDataAdapter());
-    Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
-    Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
-    Hive.registerAdapter<CountData>(CountDataAdapter());
-    Hive.registerAdapter<FilterSubType?>(FilterSubTypeAdapter());
-    AppConfig(
-        baseUrl: "https://cloud.api.trimble.com" + Urls.nameSpace,
-        iconPath: "assets/images/hitachi.png",
-        productFlavor: "tatahitachi",
-        enableLogin: false,
-        enalbeNativeLogin: false,
-        isProd: false,
-        enableGraphql: true,
-        apiFlavor: "indiastack");
-    await LocatorInjector.setUpLocator();
-    SnackbarStyling.setupSnackbarUi();
-    runApp(MyApp());
-  },
-      (error, stack) =>
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true));
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await FlutterDownloader.initialize(debug: true);
+  Hive.registerAdapter<FilterData>(FilterDataAdapter());
+  Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
+  Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
+  Hive.registerAdapter<CountData>(CountDataAdapter());
+  Hive.registerAdapter<FilterSubType>(FilterSubTypeAdapter());
+  AppConfig(
+    baseUrl: "https://cloud.api.trimble.com" + Urls.nameSpace,
+    iconPath: "assets/images/ic_trimble_logo.png",
+    productFlavor: "trimble",
+    enableLogin: true,
+    enalbeNativeLogin: false,
+    isProd: false,
+    enableGraphql: true,
+  );
+
+  await LocatorInjector.setUpLocator();
+  SnackbarStyling.setupSnackbarUi();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

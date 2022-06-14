@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
@@ -378,19 +379,16 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   getSubcriptionDeviceListData(
       {required String name, int? code, String? type}) async {
     try {
-      _detailResult.clear();
-      _gpsDeviceId.clear();
-      if (name.length >= 3) {
-        deviceIdChange = await _subscriptionService!
-            .getSubscriptionDeviceListData(
-                filterType: filterType,
-                filter: filter,
-                name: name,
-                start: pageNumber,
-                limit: pageSize);
+      if (BaseService().enableGraphQl) {
+        _detailResult.clear();
+        _gpsDeviceId.clear();
+        if (name.length >= 3) {
+          SubscriptionFleetList? subscriptionFleetList =
+              await _subscriptionService!.getDeviceDetailsFromGraphql(
+                  graphqlSchemaService!.getDetailResultData(
+                      "inactive", pageNumber, pageSize, name));
 
-        if (deviceIdChange != null) {
-          if (deviceIdChange!.result![1].isNotEmpty) {
+          if (subscriptionFleetList != null) {
             _detailResult.addAll(deviceIdChange!.result![1]);
             _loading = false;
             _loadingMore = false;
@@ -417,6 +415,48 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
           }
           _loading = false;
           _loadingMore = false;
+        }
+      } else {
+        _detailResult.clear();
+        _gpsDeviceId.clear();
+        if (name.length >= 3) {
+          deviceIdChange = await _subscriptionService!
+              .getSubscriptionDeviceListData(
+                  filterType: filterType,
+                  filter: filter,
+                  name: name,
+                  start: pageNumber,
+                  limit: pageSize);
+
+          if (deviceIdChange != null) {
+            if (deviceIdChange!.result![1].isNotEmpty) {
+              _detailResult.addAll(deviceIdChange!.result![1]);
+              _loading = false;
+              _loadingMore = false;
+              gpsDeviceId.clear();
+              deviceIdChange!.result![1].forEach((element) {
+                if (gpsDeviceId.any((id) => id == element.GPSDeviceID)) {
+                } else {
+                  gpsDeviceId.add(element.GPSDeviceID);
+                }
+              });
+              notifyListeners();
+              // _detailResult.forEach((element) {
+              //   gpsDeviceId.add(element.GPSDeviceID);
+              // });
+            } else {
+              //Fluttertoast.showToast(msg: "No Data Found");
+              _devices.clear();
+              detailResult.clear();
+              gpsDeviceId.clear();
+              notifyListeners();
+              _loading = false;
+              _loadingMore = false;
+              _shouldLoadmore = false;
+            }
+            _loading = false;
+            _loadingMore = false;
+          }
         }
       }
     } on DioError catch (e) {

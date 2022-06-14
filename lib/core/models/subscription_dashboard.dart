@@ -3,7 +3,7 @@ part 'subscription_dashboard.g.dart';
 
 @JsonSerializable()
 class SubscriptionDashboardResult {
-  List<List<Result>>? result;
+  List<List<ResultSubscription>>? result;
   SubscriptionDashboardResult({this.result});
   factory SubscriptionDashboardResult.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionDashboardResultFromJson(json);
@@ -11,7 +11,7 @@ class SubscriptionDashboardResult {
 }
 
 @JsonSerializable()
-class Result {
+class ResultSubscription {
   // to diplay key name as displayed on endpoint.
   @JsonKey(name: "activelist")
   double? activeList;
@@ -46,7 +46,7 @@ class Result {
   @JsonKey(name: "subscriptionEndingAsset_Month")
   double? subscriptionEndingAsset;
 
-  Result(
+  ResultSubscription(
       {this.activeList,
       this.inActiveList,
       this.modelCount,
@@ -59,6 +59,7 @@ class Result {
       this.monthCount,
       this.subscriptionEndingAsset});
 
-  factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
-  Map<String, dynamic> toJson() => _$ResultToJson(this);
+  factory ResultSubscription.fromJson(Map<String, dynamic> json) =>
+      _$ResultSubscriptionFromJson(json);
+  Map<String, dynamic> toJson() => _$ResultSubscriptionToJson(this);
 }

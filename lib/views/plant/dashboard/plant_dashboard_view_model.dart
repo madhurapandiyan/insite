@@ -146,8 +146,8 @@ class PlantDashboardViewModel extends InsiteViewModel {
         ]);
         notifyListeners();
 
-        statusChartData.add(
-            ChartSampleData(x: names[1], y: (results[1]!.toInt()), z: "active"));
+        statusChartData.add(ChartSampleData(
+            x: names[1], y: (results[1]!.toInt()), z: "active"));
         statusChartData.add(ChartSampleData(
             x: names[2], y: (results[2]!.toInt()), z: "inactive"));
         statusChartData.add(ChartSampleData(
@@ -156,7 +156,9 @@ class PlantDashboardViewModel extends InsiteViewModel {
         activatedChartData.add(ChartSampleData(
             x: "Today", y: (result.result![6][0].dayCount!.toInt()), z: "day"));
         activatedChartData.add(ChartSampleData(
-            x: "Week", y: (result.result![7][0].weekCount!.toInt()), z: "week"));
+            x: "Week",
+            y: (result.result![7][0].weekCount!.toInt()),
+            z: "week"));
         activatedChartData.add(ChartSampleData(
             x: "Month",
             y: (result.result![8][0].monthCount!.toInt()),

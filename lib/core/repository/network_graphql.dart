@@ -27,6 +27,8 @@ class Network {
 
   // static final graphqlEndpoint =
   //     "https://cloud.api.trimble.com/osg-in/frame-gateway-gql/1.0/graphql";
+  //     "https://cloud.api.trimble.com/osg-in/gateway-gql-pre-prod/1.0/graphql"
+
   static final graphqlEndpoint =
       "https://cloud.api.trimble.com/osg-in/gateway-gql-pre-prod/1.0/graphql";
 
@@ -41,6 +43,30 @@ class Network {
         requestBody: true,
       ));
     client.clear();
+  }
+  getGraphqlPlantData({String? query, String? customerId}) async {
+    try {
+      final Link link = DioLink(
+        graphqlEndpoint,
+        client: client,
+        defaultHeaders: {
+          "content-type": "application/json",
+          "CustomerId": customerId!,
+          "Accept": "application/json",
+          "Auth": "bearer " + await _localService!.getToken(),
+          "Authorization": "bearer " + await _localService!.getToken(),
+        },
+      );
+      final res = await link
+          .request(Request(
+            operation: Operation(document: gql.parseString(query!)),
+          ))
+          .first;
+
+      return res;
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   getGraphqlAccountData(

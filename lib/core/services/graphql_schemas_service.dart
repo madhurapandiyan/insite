@@ -274,6 +274,32 @@ query faultDataSummary{
  }
 """;
 
+  getSubscriptionDashboardResult() {
+    var data = """query{
+  frameSubscription{
+    plantDispatchSummary {
+      activeSubscription
+      yetToBeActivated
+      totalDevicesSupplied
+      plantAssetCount
+      subscriptionEnded
+      assetActivationByDay
+      assetActivationByWeek
+      assetActivationByMonth
+      modelFleetList {
+        ModelCount
+        ModelName
+      }
+    }
+  }
+}
+
+
+
+""";
+    return data;
+  }
+
   getUserManagementRefine(String filter) {
     var data = """
 query{
@@ -285,6 +311,29 @@ query{
     }
   }
 }""";
+    return data;
+  }
+
+  getDetailResultData(String? status, int? start, int? limit, String? name) {
+    var data = """ 
+    query {
+        frameSubscription {
+        subscriptionFleetList(status: "$status", model: "", start: $start, limit: $limit, search: {gpsDeviceID: "$name"}) {
+      
+      provisioningInfo {
+        vin
+        gpsDeviceID
+        model
+       
+        subscriptionStartDate
+      
+      }
+     }
+    }
+    }
+
+""";
+
     return data;
   }
 

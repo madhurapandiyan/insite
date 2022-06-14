@@ -3082,7 +3082,7 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
         _setStreamType<AddAssetRegistrationData>(
             Options(method: 'POST', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
@@ -4346,7 +4346,7 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
         _setStreamType<FaultCodeTypeSearch>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
@@ -4369,7 +4369,7 @@ class _RestClient implements RestClient {
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
         _setStreamType<FaultCodeTypeSearch>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
@@ -4565,7 +4565,7 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
         _setStreamType<ServiceItem>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',

@@ -650,7 +650,7 @@ class _AddReportViewState extends State<AddReportView> {
                                     boxShadow: [
                                       BoxShadow(
                                           color: Colors.black,
-                                          blurStyle: BlurStyle.outer,
+                                          //blurStyle: BlurStyle.outer,
                                           blurRadius: 0.5,
                                           spreadRadius: 0.2)
                                     ]),

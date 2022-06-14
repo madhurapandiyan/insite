@@ -108,8 +108,11 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                                     itemBuilder: (context, index) {
                                       return InsiteTitleCountRow(
                                         name: viewModel.modelNames[index],
-                                        count: viewModel.modelCount[index]!
-                                            .toStringAsFixed(0),
+                                        count:
+                                            viewModel.modelCount[index] == " "
+                                                ? " "
+                                                : viewModel.modelCount[index]!
+                                                    .toStringAsFixed(0),
                                         filter: viewModel.modelNames[index] ==
                                                 "Not Mapped"
                                             ? ""

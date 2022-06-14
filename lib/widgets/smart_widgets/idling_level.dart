@@ -173,37 +173,38 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                   Logger().d("onLegendTapped " +
                                       legendTapArgs.toString());
                                 },
-                                onPointTapped: (pointTapArgs) {
-                                  Logger().d("onPointTapped " +
-                                      pointTapArgs.pointIndex.toString() +
-                                      " " +
-                                      pointTapArgs.seriesIndex.toString() +
-                                      " " +
-                                      pointTapArgs.viewportPointIndex
-                                          .toString());
-                                  Count countDatum = getCountDataFiltered()[
-                                      pointTapArgs.pointIndex!];
-                                  var x = countDatum.countOf!
-                                      .split(",")
-                                      .first
-                                      .replaceAll("[", "")
-                                      .replaceAll("]", "");
-                                  var y = countDatum.countOf!
-                                      .split(",")
-                                      .last
-                                      .replaceAll("[", "")
-                                      .replaceAll("]", "");
-                                  FilterData data = FilterData(
-                                      isSelected: true,
-                                      count: countDatum.count.toString(),
-                                      title: countDatum.countOf,
-                                      extras: [x, y],
-                                      type: FilterType.IDLING_LEVEL);
-                                  widget.onFilterSelected!(
-                                      data,
-                                      getDateFilterDataForIdlingLevel(
-                                          idlingLevelRange));
-                                },
+
+                                // onPointTapped: (pointTapArgs) {
+                                //   Logger().d("onPointTapped " +
+                                //       pointTapArgs.pointIndex.toString() +
+                                //       " " +
+                                //       pointTapArgs.seriesIndex.toString() +
+                                //       " " +
+                                //       pointTapArgs.viewportPointIndex
+                                //           .toString());
+                                //   Count countDatum = getCountDataFiltered()[
+                                //       pointTapArgs.pointIndex!];
+                                //   var x = countDatum.countOf!
+                                //       .split(",")
+                                //       .first
+                                //       .replaceAll("[", "")
+                                //       .replaceAll("]", "");
+                                //   var y = countDatum.countOf!
+                                //       .split(",")
+                                //       .last
+                                //       .replaceAll("[", "")
+                                //       .replaceAll("]", "");
+                                //   FilterData data = FilterData(
+                                //       isSelected: true,
+                                //       count: countDatum.count.toString(),
+                                //       title: countDatum.countOf,
+                                //       extras: [x, y],
+                                //       type: FilterType.IDLING_LEVEL);
+                                //   widget.onFilterSelected!(
+                                //       data,
+                                //       getDateFilterDataForIdlingLevel(
+                                //           idlingLevelRange));
+                                // },
                                 primaryYAxis: NumericAxis(
                                     title: AxisTitle(
                                         text: "Assets",

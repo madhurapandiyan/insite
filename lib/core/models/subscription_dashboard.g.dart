@@ -11,7 +11,8 @@ SubscriptionDashboardResult _$SubscriptionDashboardResultFromJson(
     SubscriptionDashboardResult(
       result: (json['result'] as List<dynamic>?)
           ?.map((e) => (e as List<dynamic>)
-              .map((e) => Result.fromJson(e as Map<String, dynamic>))
+              .map(
+                  (e) => ResultSubscription.fromJson(e as Map<String, dynamic>))
               .toList())
           .toList(),
     );
@@ -22,7 +23,8 @@ Map<String, dynamic> _$SubscriptionDashboardResultToJson(
       'result': instance.result,
     };
 
-Result _$ResultFromJson(Map<String, dynamic> json) => Result(
+ResultSubscription _$ResultSubscriptionFromJson(Map<String, dynamic> json) =>
+    ResultSubscription(
       activeList: (json['activelist'] as num?)?.toDouble(),
       inActiveList: (json['inActiveList'] as num?)?.toDouble(),
       modelCount: (json['ModelCount'] as num?)?.toDouble(),
@@ -37,7 +39,8 @@ Result _$ResultFromJson(Map<String, dynamic> json) => Result(
           (json['subscriptionEndingAsset_Month'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
+Map<String, dynamic> _$ResultSubscriptionToJson(ResultSubscription instance) =>
+    <String, dynamic>{
       'activelist': instance.activeList,
       'inActiveList': instance.inActiveList,
       'ModelCount': instance.modelCount,

@@ -1064,7 +1064,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                               boxShadow: [
                                                 BoxShadow(
                                                     color: Colors.black,
-                                                    blurStyle: BlurStyle.outer,
+                                                    // blurStyle: BlurStyle.outer,
                                                     blurRadius: 0.5,
                                                     spreadRadius: 0.2)
                                               ]),
@@ -1096,7 +1096,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     height: 20,
                                   ),
                                   InsiteButton(
-                                    onTap: viewModel.addContact,
+                                    // onTap: viewModel.addContact,
                                     fontSize: 16,
                                     height: 50,
                                     width: 200,

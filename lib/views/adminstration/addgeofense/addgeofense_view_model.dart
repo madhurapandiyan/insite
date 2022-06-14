@@ -753,14 +753,14 @@ class AddgeofenseViewModel extends InsiteViewModel {
                   : geofenceInputsData.Result!.Target!.TargetVolumeInCuMeter
                       .toString();
         }
-        
+
         titleController.text = data.GeofenceName.toString();
         descriptionController.text = data.Description.toString();
-        if (data.EndDate!=null) {
-           endingDate = DateTime.parse(data.EndDate!);
-          isNoendDate=false;
+        if (data.EndDate != null) {
+          endingDate = DateTime.parse(data.EndDate!);
+          isNoendDate = false;
         }
-       
+
         initialValue = data.GeofenceType == "Unknown"
             ? dropDownlist[4]
             : data.GeofenceType;
