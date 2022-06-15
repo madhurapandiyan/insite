@@ -41,6 +41,26 @@ class _FilterViewState extends State<FilterView> {
   final GlobalKey<FilterItemState> filterReportTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterServiceStatusTypeKey = new GlobalKey();
 
+  // disposingAllState() {
+  //   filterAssetStatusKey.currentState?.dispose();
+  //   filterProductFamilyKey.currentState?.dispose();
+  //   filterMakeKey.currentState?.dispose();
+  //   filterModelKey.currentState?.dispose();
+  //   filterManufacturerKey.currentState?.dispose();
+  //   filterModelYearKey.currentState?.dispose();
+  //   filterSubscriptionTypesKey.currentState?.dispose();
+  //   filterDeviceTypeKey.currentState?.dispose();
+  //   filterFuelLevelKey.currentState?.dispose();
+  //   filterIdlingLevelKey.currentState?.dispose();
+  //   filterSeverityKey.currentState?.dispose();
+  //   filterJobTypeKey.currentState?.dispose();
+  //   filterUserTypeKey.currentState?.dispose();
+  //   filterFrequencyTypeKey.currentState?.dispose();
+  //   filterFormatTypeKey.currentState?.dispose();
+  //   filterReportTypeKey.currentState?.dispose();
+  //   filterServiceStatusTypeKey.currentState?.dispose();
+  // }
+
   deSelect(FilterData data) {
     if (data.type == FilterType.ALL_ASSETS) {
       filterAssetStatusKey.currentState!.deSelectFromOutSide(data);
@@ -126,11 +146,9 @@ class _FilterViewState extends State<FilterView> {
                               children: [
                                 InsiteButton(
                                   textColor: Colors.white,
-                                  onTap: () {
-                                    viewModel.onFilterApplied();
-                                    Future.delayed(Duration(seconds: 2), () {
-                                      widget.onFilterApplied!(true);
-                                    });
+                                  onTap: () async {
+                                    await viewModel.onFilterApplied();
+                                    widget.onFilterApplied!(true);
                                   },
                                   width: 100,
                                   height: 40,

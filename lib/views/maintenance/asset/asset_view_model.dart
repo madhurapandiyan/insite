@@ -126,9 +126,8 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
               page: page,
               query: await graphqlSchemaService!.getMaintennaceAssetListData(
                   appliedFilter: appliedFilters,
-                  fromDate:
-                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                  toDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                  fromDate: Utils.maintenanceFromDateFormate(startDate!),
+                  toDate: Utils.maintenanceToDateFormate(endDate!),
                   limit: limit,
                   pageNo: page));
 
@@ -178,6 +177,8 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
 
   refresh() async {
     _loading = true;
+    notifyListeners();
+    _assetData.clear();
     await getAssetViewList();
     // await getSelectedFilterData();
     // await getDateRangeFilterData();

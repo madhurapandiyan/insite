@@ -47,7 +47,7 @@ MaintenanceList _$MaintenanceListFromJson(Map<String, dynamic> json) =>
       zip: json['zip'] as String?,
       odometer: (json['odometer'] as num?)?.toDouble(),
       lastReportedDate: json['lastReportedDate'] as String?,
-      percentFuelRemaining: json['percentFuelRemaining'] as int?,
+      percentFuelRemaining: json['percentFuelRemaining'] as num?,
       fuelLastReportedTime: json['fuelLastReportedTime'] as String?,
       serviceInterval: json['serviceInterval'] as String?,
       status: json['status'] as String?,

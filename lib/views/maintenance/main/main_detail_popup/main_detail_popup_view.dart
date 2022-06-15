@@ -353,7 +353,7 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                               title: ListTile(
                                 title: InsiteText(
                                   text:
-                                      viewModel.checkLists!.first.checkListName,
+                                      viewModel.checkLists!.first.checkListName??"",
                                 ),
                               ),
 

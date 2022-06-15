@@ -302,11 +302,11 @@ class FilterViewModel extends InsiteViewModel {
     }
   }
 
-  void onFilterApplied() {
+  Future<void> onFilterApplied() async {
     _isRefreshing = true;
     notifyListeners();
-    updateFilterInDb(selectedFilterData!);
-    getSelectedFilterData();
+    await updateFilterInDb(selectedFilterData!);
+    await getSelectedFilterData();
     _isRefreshing = false;
     notifyListeners();
   }

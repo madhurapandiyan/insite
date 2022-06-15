@@ -27,7 +27,7 @@ class MainViewModel extends InsiteViewModel {
   GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int pageNumber = 1;
-  int pageSize = 20;
+  int pageSize = 50;
 
   num? _totalCount = 0;
   num? get totalCount => _totalCount;
@@ -71,7 +71,9 @@ class MainViewModel extends InsiteViewModel {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        _loadMore();
+        if (_maintenanceList.length != _totalCount) {
+          _loadMore();
+        }
       }
     });
     _maintenanceService!.setUp();
@@ -124,9 +126,8 @@ class MainViewModel extends InsiteViewModel {
               page: pageNumber,
               query: await graphqlSchemaService!.getMaintenanceListData(
                   appliedFilter: appliedFilters,
-                  startDate:
-                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                  endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                  startDate: Utils.maintenanceFromDateFormate(startDate!),
+                  endDate: Utils.maintenanceToDateFormate(endDate!),
                   limit: pageSize,
                   pageNo: pageNumber));
 

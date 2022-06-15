@@ -39,7 +39,7 @@ class MaintenanceList {
   String? zip;
   double? odometer;
   String? lastReportedDate;
-  int? percentFuelRemaining;
+  num? percentFuelRemaining;
   String? fuelLastReportedTime;
   String? serviceInterval;
   String? status;

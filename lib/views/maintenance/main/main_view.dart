@@ -93,7 +93,7 @@ class MainViewState extends State<MainView> {
                 ),
                 PageHeader(
                   isDashboard: false,
-                  total: viewModel.maintenanceList.length,
+                  total: viewModel.totalCount!.toInt(),
                   screenType: ScreenType.MAINTENANCE,
                   count: viewModel.maintenanceList.length,
                 ),

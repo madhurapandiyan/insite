@@ -86,7 +86,7 @@ class GraphqlSchemaService extends BaseService {
     String doubleQuote = "\"";
     var data = filtlerList!.where((element) => element?.type == type).toList();
     data.forEach((element) {
-      Logger().w(element?.toJson());
+     // Logger().w(element?.toJson());
       if (individualList!.contains(element)) {
       } else {
         individualList.add(doubleQuote + element!.title! + doubleQuote);
@@ -2898,6 +2898,7 @@ mutation{
       address
     }
     status
+    count
   }
 }
 """;

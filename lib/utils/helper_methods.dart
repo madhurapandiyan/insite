@@ -379,6 +379,28 @@ class Utils {
     }
   }
 
+  static String? maintenanceToDateFormate(String date) {
+    try {
+      DateTime parseDate = DateFormat("yyyy-MM-dd").parse(date, true);
+      var data = parseDate.add(Duration(hours: 18, minutes: 29, seconds: 59));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static String? maintenanceFromDateFormate(String date) {
+    try {
+      DateTime parseDate = DateFormat("yyyy-MM-dd").parse(date, true);
+      var data = parseDate.add(Duration(hours: 18, minutes: 30, seconds: 00));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      return null;
+    }
+  }
+
   static String getDateInFormatyyyyMMddTHHmmssZEnd(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
