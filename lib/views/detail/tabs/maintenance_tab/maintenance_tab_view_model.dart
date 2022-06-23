@@ -112,10 +112,9 @@ class MaintenanceTabViewModel extends InsiteViewModel {
             query: await graphqlSchemaService!.getMaintenanceListData(
                 assetId: summaryData!.assetID,
                 histroy: true,
-                appliedFilter: appliedFilters,
                 startDate:
-                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                    Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+                endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
                 limit: pageSize,
                 pageNo: pageNumber));
     if (maintenanceListData != null &&
@@ -171,23 +170,23 @@ class MaintenanceTabViewModel extends InsiteViewModel {
     } else {
       MaintenanceListData? maintenanceListData = await _maintenanceService!
           .getMaintenanceListData(
-              startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-              endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              startTime:
+                  Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+              endTime: Utils.maintenanceToDateFormate(maintenanceEndDate!),
               limit: pageSize,
               page: pageNumber,
               query: await graphqlSchemaService!.getMaintenanceListData(
                   assetId: summaryData!.assetID,
                   startDate:
-                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                  endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                      Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+                  endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
                   limit: pageSize,
-                  appliedFilter: appliedFilters,
                   pageNo: pageNumber));
       if (maintenanceListData != null &&
           maintenanceListData.maintenanceList!.isNotEmpty) {
         Services? singleService;
+        _services.clear();
         for (var item in maintenanceListData.maintenanceList!) {
-          _services.clear();
           _assetDataValue = AssetData(
             assetID: item.assetId,
             assetName: item.assetName,

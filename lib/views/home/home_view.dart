@@ -87,6 +87,8 @@ class _HomeViewState extends State<HomeView> {
             children: <Widget>[
               SvgPicture.asset(
                 category.image,
+                height: 25,
+                width: 25,
                 color: selectedIndex != null && selectedIndex == index
                     ? Colors.white
                     : Theme.of(context).iconTheme.color,

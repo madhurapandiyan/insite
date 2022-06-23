@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:insite/core/models/maintenance.dart';
+import 'package:insite/core/models/maintenance_list_services.dart';
 //import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -26,24 +27,7 @@ class MainView extends StatefulWidget {
 }
 
 class MainViewState extends State<MainView> {
-  onFilterApplied() {
-    viewModel.refresh();
-  }
-
-  List<DateTime>? dateRange = [];
-  late var viewModel;
-
-  @override
-  void initState() {
-    super.initState();
-    viewModel = MainViewModel();
-  }
-
-  @override
-  void dispose() {
-    viewModel.dispose();
-    super.dispose();
-  }
+  List<String?>? dateRange = [];
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +44,10 @@ class MainViewState extends State<MainView> {
                     children: [
                       InsiteText(
                           text: Utils.getDateInFormatddMMyyyy(
-                                  viewModel.startDate) +
+                                  viewModel.maintenanceStartDate) +
                               " - " +
-                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                              Utils.getDateInFormatddMMyyyy(
+                                  viewModel.maintenanceEndDate),
                           fontWeight: FontWeight.bold,
                           size: 12),
                       SizedBox(
@@ -79,10 +64,9 @@ class MainViewState extends State<MainView> {
                             context: context,
                             builder: (BuildContext context) => Dialog(
                                 backgroundColor: transparent,
-                                child: DateRangeView(
-                                  screenType: ScreenType.MAINTENANCE,
-                                )),
+                                child: DateRangeMaintenanceView()),
                           );
+                          Logger().wtf(dateRange);
                           if (dateRange != null && dateRange!.isNotEmpty) {
                             viewModel.refresh();
                           }
@@ -115,10 +99,23 @@ class MainViewState extends State<MainView> {
                                   onCallback: () {
                                     viewModel.onDetailPageSelected(summaryData);
                                   },
-                                  serviceCalBack:
-                                      (value, assetDataValue, services) {
-                                    viewModel.onServiceSelected(value,
-                                        assetDataValue, summaryData, services);
+                                  serviceCalBack: () {
+                                    viewModel.onServiceSelected(
+                                        ctx: context,
+                                        serviceId:
+                                            summaryData.serviceId!.toInt(),
+                                        assetDataValue: AssetData(
+                                          assetID: summaryData.assetID,
+                                          assetIcon: summaryData.assetIcon,
+                                          assetSerialNumber:
+                                              summaryData.assetSerialNumber,
+                                          currentHourmeter:
+                                              summaryData.currentHourMeter,
+                                          currentOdometer:
+                                              summaryData.currentOdometer,
+                                          makeCode: summaryData.makeCode,
+                                          model: summaryData.model,
+                                        ));
                                   },
                                 );
                               },

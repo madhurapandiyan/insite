@@ -39,8 +39,9 @@ class _FilterViewState extends State<FilterView> {
   final GlobalKey<FilterItemState> filterFrequencyTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterFormatTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterReportTypeKey = new GlobalKey();
+  final GlobalKey<FilterItemState> filterServiceTypeTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterServiceStatusTypeKey = new GlobalKey();
-
+  final GlobalKey<FilterItemState> filterAssetTypeKey = new GlobalKey();
   // disposingAllState() {
   //   filterAssetStatusKey.currentState?.dispose();
   //   filterProductFamilyKey.currentState?.dispose();
@@ -562,7 +563,7 @@ class _FilterViewState extends State<FilterView> {
                                 ? FilterItem(
                                     isExpand: viewModel.isShowing,
                                     filterType: FilterType.SERVICE_TYPE,
-                                    key: filterServiceStatusTypeKey,
+                                    key: filterServiceTypeTypeKey,
                                     data: viewModel.serviceTypeReportType,
                                     isSingleSelection: true,
                                     onApply: (List<FilterData> list) {
@@ -572,6 +573,40 @@ class _FilterViewState extends State<FilterView> {
                                     onClear: () {
                                       viewModel.onFilterCleared(
                                           FilterType.SERVICE_TYPE);
+                                    },
+                                  )
+                                : SizedBox(),
+                            widget.screenType == ScreenType.MAINTENANCE
+                                ? FilterItem(
+                                    isExpand: viewModel.isShowing,
+                                    filterType: FilterType.SERVICE_STATUS,
+                                    key: filterServiceStatusTypeKey,
+                                    data: viewModel.serviceStatusReportType,
+                                    isSingleSelection: true,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.SERVICE_STATUS);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.SERVICE_STATUS);
+                                    },
+                                  )
+                                : SizedBox(),
+                            widget.screenType == ScreenType.MAINTENANCE
+                                ? FilterItem(
+                                    isExpand: viewModel.isShowing,
+                                    filterType: FilterType.ASSET_TYPE,
+                                    key: filterAssetTypeKey,
+                                    data: viewModel.assetType,
+                                    isSingleSelection: true,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.ASSET_TYPE);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.ASSET_TYPE);
                                     },
                                   )
                                 : SizedBox(),

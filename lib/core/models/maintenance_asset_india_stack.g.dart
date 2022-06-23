@@ -38,6 +38,7 @@ AssetMaintenanceList _$AssetMaintenanceListFromJson(
       servicedescription: json['servicedescription'] as String?,
       serviceStatusName: json['serviceStatusName'] as String?,
       serviceName: json['serviceName'] as String?,
+      assetIcon: json['assetIcon'] as int?,
       maintenanceTotals: (json['maintenanceTotals'] as List<dynamic>?)
           ?.map((e) => MaintenanceTotals.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -58,6 +59,7 @@ Map<String, dynamic> _$AssetMaintenanceListToJson(
       'serviceStatusName': instance.serviceStatusName,
       'serviceName': instance.serviceName,
       'maintenanceTotals': instance.maintenanceTotals,
+      'assetIcon': instance.assetIcon,
     };
 
 MaintenanceTotals _$MaintenanceTotalsFromJson(Map<String, dynamic> json) =>

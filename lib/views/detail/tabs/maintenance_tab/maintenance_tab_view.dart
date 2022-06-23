@@ -31,7 +31,7 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
   HDTRefreshController? _htdRefreshController = HDTRefreshController();
 
   MaintenanceTabViewModel? model;
-  List<DateTime>? dateRange = [];
+  List<String?>? dateRange = [];
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MaintenanceTabViewModel>.reactive(
@@ -75,10 +75,11 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                     ),
                     InsiteButton(
                       width: 200,
-                      title:
-                          Utils.getDateInFormatddMMyyyy(viewModel.startDate) +
-                              " - " +
-                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                      title: Utils.getDateInFormatddMMyyyy(
+                              viewModel.maintenanceStartDate) +
+                          " - " +
+                          Utils.getDateInFormatddMMyyyy(
+                              viewModel.maintenanceEndDate),
                       //width: 90,
                       //bgColor: Theme.of(context).backgroundColor,
                       textColor: white,
@@ -88,9 +89,7 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                           context: context,
                           builder: (BuildContext context) => Dialog(
                               backgroundColor: transparent,
-                              child: DateRangeView(
-                                screenType: ScreenType.MAINTENANCE,
-                              )),
+                              child: DateRangeMaintenanceView()),
                         );
                         if (dateRange != null && dateRange!.isNotEmpty) {
                           viewModel.refresh();
@@ -386,7 +385,7 @@ class HistoryListData extends StatelessWidget {
     return listData!.isEmpty || listData == null
         ? Expanded(
             child: EmptyView(
-              title: "No Asset Found",
+              title: "No History Found",
             ),
           )
         : Expanded(

@@ -28,7 +28,7 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
     viewModel.refresh();
   }
 
-  List<DateTime>? dateRange = [];
+  List<String?>? dateRange = [];
   late var viewModel;
 
   @override
@@ -52,7 +52,6 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
           children: [
             Column(
               children: [
-                
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
@@ -60,9 +59,10 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
                     children: [
                       InsiteText(
                           text: Utils.getDateInFormatddMMyyyy(
-                                  viewModel.startDate) +
+                                  viewModel.maintenanceStartDate) +
                               " - " +
-                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                              Utils.getDateInFormatddMMyyyy(
+                                  viewModel.maintenanceEndDate),
                           fontWeight: FontWeight.bold,
                           size: 12),
                       SizedBox(
@@ -79,7 +79,7 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
                             context: context,
                             builder: (BuildContext context) => Dialog(
                                 backgroundColor: transparent,
-                                child: DateRangeView()),
+                                child: DateRangeMaintenanceView()),
                           );
                           if (dateRange != null && dateRange!.isNotEmpty) {
                             viewModel.refresh();
@@ -91,7 +91,7 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
                 ),
                 PageHeader(
                   isDashboard: false,
-                  total: viewModel.assetData.length,
+                  total: viewModel.totalCount,
                   screenType: ScreenType.ASSET_OPERATION,
                   count: viewModel.assetData.length,
                 ),

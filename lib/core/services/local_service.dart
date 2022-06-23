@@ -22,6 +22,8 @@ class LocalService extends BaseService {
   static const String REFRESH_TOKEN = "refresh_token";
   static const String CODE_VERIFIER = "code_verifier";
   static const String STAGGED_TOKEN = "staged_token";
+  static const String MAINTENANCE_STARTDATE = "maintenance_startdate";
+  static const String MAINTENANCE_ENDDATE = "maintenance_enddate";
 
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences!.setBool(IS_LOGGEDIN, isLoggedIn);
@@ -165,6 +167,22 @@ class LocalService extends BaseService {
 
   Future<bool?> getHasPermission() async {
     return preferences!.getBool(HAS_PERMISSION);
+  }
+
+  Future saveMaintenanceFromDate(String? value) async {
+    await preferences!.setString(MAINTENANCE_STARTDATE, value!);
+  }
+
+  Future saveMaintenanceEndDate(String? value) async {
+    await preferences!.setString(MAINTENANCE_ENDDATE, value!);
+  }
+
+  String? getMaintenanceEndDate() {
+    return preferences!.getString(MAINTENANCE_ENDDATE);
+  }
+
+  String? getMaintenanceFromDate() {
+    return preferences!.getString(MAINTENANCE_STARTDATE);
   }
 
   void clearAll() async {

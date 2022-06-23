@@ -18,11 +18,16 @@ class MaintenanceCheckListModel {
 @JsonSerializable()
 class MaitenanceCheckListData {
   final String? checkListName;
-  final int? checkListId;
+  final int? checkListID;
   final bool? isChecked;
   final List<PartListData>? partList;
+  final String? checkListDescription;
   MaitenanceCheckListData(
-      {this.checkListId, this.checkListName, this.isChecked, this.partList});
+      {this.checkListID,
+      this.checkListName,
+      this.isChecked,
+      this.partList,
+      this.checkListDescription});
 
   factory MaitenanceCheckListData.fromJson(Map<String, dynamic> json) =>
       _$MaitenanceCheckListDataFromJson(json);
@@ -44,7 +49,7 @@ class MaintenanceServiceList {
 
 @JsonSerializable()
 class PartListData {
-  final String? name;
+  final String? partName;
   final String? partNo;
   final int? quantity;
   final int? partId;
@@ -52,7 +57,7 @@ class PartListData {
   final String? units;
   PartListData(
       {this.description,
-      this.name,
+      this.partName,
       this.partId,
       this.partNo,
       this.quantity,
@@ -62,4 +67,39 @@ class PartListData {
       _$PartListDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$PartListDataToJson(this);
+}
+
+@JsonSerializable()
+class MaintenanceIntervals {
+  final String? status;
+  final int? totalCount;
+  final List<IntervalList>? intervalList;
+  MaintenanceIntervals({this.intervalList, this.status, this.totalCount});
+
+  factory MaintenanceIntervals.fromJson(Map<String, dynamic> json) =>
+      _$MaintenanceIntervalsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MaintenanceIntervalsToJson(this);
+}
+
+@JsonSerializable()
+class IntervalList {
+  final int? intervalID;
+  final String? intervalName;
+  final int? firstOccurrences;
+  final String? intervalDescription;
+  final bool? editable;
+  final List<MaitenanceCheckListData>? checkList;
+  IntervalList(
+      {this.checkList,
+      this.editable,
+      this.firstOccurrences,
+      this.intervalDescription,
+      this.intervalID,
+      this.intervalName});
+
+  factory IntervalList.fromJson(Map<String, dynamic> json) =>
+      _$IntervalListFromJson(json);
+
+  Map<String, dynamic> toJson() => _$IntervalListToJson(this);
 }

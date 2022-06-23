@@ -17,9 +17,7 @@ class MaintenanceListItem extends StatefulWidget {
   final VoidCallback? onCallback;
   const MaintenanceListItem(
       {this.summaryData, this.onCallback, this.serviceCalBack});
-  final Function(
-          num? value, AssetData? assetDataValue, List<Services?>? serviceNames)?
-      serviceCalBack;
+  final Function? serviceCalBack;
 
   @override
   State<MaintenanceListItem> createState() => _MaintenanceListItemState();
@@ -69,7 +67,9 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                         InsiteTableRowItemWithImage(
                           title: Utils.getMakeTitle("Asset ID:") + "\n" + "-",
                           path: widget.summaryData!.model != null
-                              ? Utils().imageData(widget.summaryData!.model!)
+                              ? Utils().getImageWithAssetIconKey(
+                                  model: widget.summaryData!.model,
+                                  assetIconKey: widget.summaryData!.assetIcon)
                               : "assets/images/EX210.png",
                         ),
                         // InsiteTableRowItem(
@@ -121,9 +121,13 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                           ])
                         ],
                       ),
-                      InsiteTableRowItem(
+                      InsiteTableRowItemWithButton(
                         title: "Service :",
                         content: widget.summaryData!.service,
+                        onTap: () {
+                          widget.serviceCalBack!();
+                        },
+                        buttonColor: Theme.of(context).buttonColor,
                       ),
                     ]),
                   ],
@@ -171,11 +175,12 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Product Family :",
-                          content: widget.summaryData!.productFamily??"-",
+                          content: widget.summaryData!.productFamily ?? "-",
                         ),
                         InsiteTableRowItem(
                           title: "Service Completed Date :",
-                          content: widget.summaryData!.serviceCompletedDate??"-",
+                          content:
+                              widget.summaryData!.serviceCompletedDate ?? "-",
                         ),
                       ]),
                     ],
@@ -186,12 +191,11 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Fuel Level :",
-                          content: widget.summaryData!.fuelPercentage??"-",
+                          content: widget.summaryData!.fuelPercentage ?? "-",
                         ),
                         InsiteTableRowItem(
                           title: "Last Reported Fuel Time :",
-                          content:
-                              widget.summaryData!.fuelReportedTime??"-",
+                          content: widget.summaryData!.fuelReportedTime ?? "-",
                         ),
                       ]),
                     ],
@@ -201,12 +205,12 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                     children: [
                       TableRow(children: [
                         InsiteTableRowItem(
-                          title: "Telematic Devie Id :",
-                          content: widget.summaryData!.telematicDeviceId??"-",
+                          title: "Devie Id :",
+                          content: widget.summaryData!.telematicDeviceId ?? "-",
                         ),
                         InsiteTableRowItem(
                           title: "Device Type :",
-                          content: widget.summaryData!.deviceType??"-",
+                          content: widget.summaryData!.deviceType ?? "-",
                         ),
                       ]),
                     ],
@@ -217,11 +221,11 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Dealer Name :",
-                          content: widget.summaryData!.dealerName??"-",
+                          content: widget.summaryData!.dealerName ?? "-",
                         ),
                         InsiteTableRowItem(
                           title: "Customer Name :",
-                          content: widget.summaryData!.customerName??"-",
+                          content: widget.summaryData!.customerName ?? "-",
                         ),
                       ]),
                     ],

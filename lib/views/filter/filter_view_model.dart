@@ -36,7 +36,8 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterFormatType = [];
   List<FilterData> filterReportType = [];
   List<FilterData> serviceTypeReportType = [];
-
+  List<FilterData> serviceStatusReportType = [];
+  List<FilterData> assetType = [];
   bool isShowing = true;
 
   List<FilterData?>? selectedFilterData = [];
@@ -160,14 +161,21 @@ class FilterViewModel extends InsiteViewModel {
     if (screenType == ScreenType.MAINTENANCE) {
       var data = await _maintenanceService!.getRefineData(
           query: graphqlSchemaService!.getMaintenanceRefineData(
-              fromDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(
-                  startDate),
-              toDate:
-                  Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate),
+              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+              toDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
               limit: 50,
               pageNo: 1));
-      var assetCount = getAssetCountFromMaintenanceRefine(data);
-      addData(serviceTypeReportType, assetCount, FilterType.SERVICE_TYPE);
+      var serviceTypeAssetCount = getAssetCountFromMaintenanceRefine(
+          data!.maintenanceRefine!.maintenanceRefine![0]);
+      var serviceStatusAssetCount = getAssetCountFromMaintenanceRefine(
+          data.maintenanceRefine!.maintenanceRefine![1]);
+      var assetTypeCount = getAssetCountFromMaintenanceRefine(
+          data.maintenanceRefine!.maintenanceRefine![2]);
+      addData(serviceTypeReportType, serviceTypeAssetCount,
+          FilterType.SERVICE_TYPE);
+      addData(serviceStatusReportType, serviceStatusAssetCount,
+          FilterType.SERVICE_STATUS);
+      addData(assetType, assetTypeCount, FilterType.ASSET_TYPE);
     }
 
     AssetCount? resultIdlingLevel = await _assetService!.getIdlingLevelData(
@@ -189,16 +197,14 @@ class FilterViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  AssetCount? getAssetCountFromMaintenanceRefine(MaintenanceRefineData? data) {
+  AssetCount? getAssetCountFromMaintenanceRefine(MaintenanceRefineList data) {
     AssetCount assetCountData;
     List<Count>? counData = [];
     Count? singleCountData;
     if (data != null) {
-      data.maintenanceRefine?.maintenanceRefine?.forEach((refineList) {
-        refineList.typeValues!.forEach((element) {
-          singleCountData = Count(count: element.count, countOf: element.name);
-          counData.add(singleCountData!);
-        });
+      data.typeValues!.forEach((element) {
+        singleCountData = Count(count: element.count, countOf: element.name);
+        counData.add(singleCountData!);
       });
       assetCountData = AssetCount(countData: counData);
       return assetCountData;

@@ -6,6 +6,7 @@ import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
 import 'package:insite/core/models/maintenance_asset_india_stack.dart';
 import 'package:insite/core/models/maintenance_checkList.dart';
+import 'package:insite/core/models/maintenance_dashboard_count.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/maintenance_refine.dart';
@@ -348,9 +349,107 @@ class MaintenanceService extends BaseService {
             ? ""
             : customerSelected?.CustomerUID,
       );
-      MaintenanceRefineData data = MaintenanceRefineData.fromJson(
-          maintenancepostData.data);
+      MaintenanceRefineData data =
+          MaintenanceRefineData.fromJson(maintenancepostData.data);
       return data;
+    }
+  }
+
+  Future<MaintenanceDashboardCount?> getMaintenanceDashboardCount(
+      {String? query}) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        MaintenanceDashboardCount countData =
+            MaintenanceDashboardCount.fromJson(data.data);
+        Logger().w(countData.maintenanceDashboard?.toJson());
+        return countData;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future<MaintenanceIntervals?> getMaintenanceIntervals(String query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        MaintenanceIntervals countData =
+            MaintenanceIntervals.fromJson(data.data["maintenanceIntervals"]);
+        return countData;
+      }
+    } catch (e) {
+      Logger().w(e.toString());
+    }
+  }
+
+  Future<dynamic> addMaintenanceIntervals(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return data.data["createMaintenanceIntervals"];
+      }
+    } catch (e) {
+      Logger().w(e.toString());
+    }
+  }
+
+  Future<dynamic> updateMaintenanceIntervals(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return data.data["updateMaintenanceIntervals"];
+      }
+    } catch (e) {
+      Logger().w(e.toString());
+    }
+  }
+
+  Future<dynamic> deletMaintenanceIntervals(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return data.data["maintenanceIntervalsDelete"];
+      }
+    } catch (e) {
+      Logger().w(e.toString());
     }
   }
 }

@@ -25,13 +25,13 @@ class _MaintenanceViewState extends State<MaintenanceView> {
   final GlobalKey<AssetMaintenanceViewState> assetMaintenaceViewKey =
       new GlobalKey();
 
-  void refreshWithFilter() {
-    if (isListSelected) {
-      mainViewKey.currentState!.onFilterApplied();
-    } else {
-      assetMaintenaceViewKey.currentState!.onFilterApplied();
-    }
-  }
+  // void refreshWithFilter() {
+  //   if (isListSelected) {
+  //     mainViewKey.currentState!.onFilterApplied();
+  //   } else {
+  //     assetMaintenaceViewKey.currentState!.onFilterApplied();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +43,12 @@ class _MaintenanceViewState extends State<MaintenanceView> {
           child: InsiteScaffold(
             viewModel: viewModel,
             onFilterApplied: () {
-              viewModel.refresh();
-              refreshWithFilter();
+              // viewModel.refresh();
+              // refreshWithFilter();
             },
             onRefineApplied: () {
-              viewModel.refresh();
-              refreshWithFilter();
+              // viewModel.refresh();
+              // refreshWithFilter();
             },
             screenType: ScreenType.MAINTENANCE,
             body: Container(

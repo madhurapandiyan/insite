@@ -7,6 +7,7 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
 import 'package:insite/views/adminstration/asset_settings_configure/model/configure_grid_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:intl/intl.dart';
@@ -381,7 +382,7 @@ class Utils {
 
   static String? maintenanceToDateFormate(String date) {
     try {
-      DateTime parseDate = DateFormat("yyyy-MM-dd").parse(date, true);
+      DateTime parseDate = DateTime.parse(date);
       var data = parseDate.add(Duration(hours: 18, minutes: 29, seconds: 59));
       var formatedStringData = data.toString();
       return formatedStringData.replaceRange(19, formatedStringData.length, "");
@@ -392,11 +393,12 @@ class Utils {
 
   static String? maintenanceFromDateFormate(String date) {
     try {
-      DateTime parseDate = DateFormat("yyyy-MM-dd").parse(date, true);
+      DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
       var data = parseDate.add(Duration(hours: 18, minutes: 30, seconds: 00));
       var formatedStringData = data.toString();
       return formatedStringData.replaceRange(19, formatedStringData.length, "");
     } catch (e) {
+      Logger().e(e.toString());
       return null;
     }
   }
@@ -405,7 +407,8 @@ class Utils {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
-          .add(Duration(hours: 18, minutes: 29, seconds: 59));
+          .add(Duration(hours: 18, minutes: 29, seconds: 59))
+          .subtract(Duration(days: 1));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -791,6 +794,12 @@ class Utils {
         break;
       case FilterType.SERVICE_TYPE:
         title = "SERVICE TYPE";
+        break;
+      case FilterType.SERVICE_STATUS:
+        title = "SERVICE STATUS";
+        break;
+      case FilterType.ASSET_TYPE:
+        title = "ASSET TYPE";
         break;
 
       default:
@@ -1832,5 +1841,79 @@ class Utils {
     // Logger().d(maintenanceTotal.last);
     // return "";
     return maintenanceTotal;
+  }
+
+  static List<Map<String, dynamic>>? addMaintenanceIntervals(
+      List<MaintenanceCheckList> data) {
+    try {
+      List<Map<String, dynamic>> checkList = [];
+
+      for (var check in data) {
+        Map<String, dynamic> checkData = {
+          "checkListName": check.checkName,
+          "partList": []
+        };
+        for (var part in check.partList!) {
+          Map<String, dynamic> partsData = {
+            "partName": part.partName,
+            "partNo": part.partNo,
+            "quantity": part.quantiy
+          };
+          var partList = checkData["partList"] as List<dynamic>;
+          partList.add(partsData);
+        }
+        checkList.add(checkData);
+      }
+      Logger().w(checkList);
+      return checkList;
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  static List<Map<String, dynamic>>? updateMaintenanceIntervals(
+      MaintenanceIntervalData? mainInterval) {
+    List<Map<String, dynamic>> intervalList = [];
+    Map<String, dynamic> data = {
+      "intervalID": mainInterval!.intervalId,
+      "intervalDescription": mainInterval.intervalDescription,
+      "firstOccurrences": mainInterval.initialOccurence,
+      "intervalName": mainInterval.intervalName
+    };
+    intervalList.add(data);
+    return intervalList;
+  }
+
+  static List<Map<String, dynamic>>? updateMaintenanceCheckList(
+      List<MaintenanceCheckList>? data, int intervalId) {
+    try {
+      List<Map<String, dynamic>> checkList = [];
+      if (data != null && data.isNotEmpty) {
+        for (var check in data) {
+          Map<String, dynamic> checkData = {
+            "ChecklistName": check.checkName,
+            "checkListId": check.checkListId,
+            "partList": []
+          };
+          for (var part in check.partList!) {
+            Map<String, dynamic> partsData = {
+              "partName": part.partName,
+              "partNo": part.partNo,
+              "quantity": part.quantiy,
+              "partId": part.partId,
+            };
+            var partList = checkData["partList"] as List<dynamic>;
+            partList.add(partsData);
+          }
+          checkList.add(checkData);
+        }
+        Logger().w(checkList);
+        return checkList;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 }

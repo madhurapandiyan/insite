@@ -92,8 +92,10 @@ class _MaintenanceAssetListItemState extends State<MaintenanceAssetListItem> {
                                       "-",
                                   // "${widget.assetData!.assetUID == null ? "-" : widget.assetData!.assetUID}",
                                   path: widget.assetData!.model != null
-                                      ? Utils()
-                                          .imageData(widget.assetData!.model!)
+                                      ? Utils().getImageWithAssetIconKey(
+                                          model: widget.assetData!.model,
+                                          assetIconKey:
+                                              widget.assetData!.assetIcon)
                                       : "assets/images/EX210.png",
                                 ),
                                 InsiteTableRowItem(
@@ -139,11 +141,11 @@ class _MaintenanceAssetListItemState extends State<MaintenanceAssetListItem> {
                           border: TableBorder.all(),
                           children: [
                             TableRow(children: [
-                              InsiteTableRowItem(
-                                title: "Current Hour Meter : ",
-                                content: widget.assetData!.currentHourMeter!
-                                    .toStringAsFixed(0),
-                              ),
+                              // InsiteTableRowItem(
+                              //   title: "Current Hour Meter : ",
+                              //   content: widget.assetData!.currentHourMeter!
+                              //       .toStringAsFixed(0),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
@@ -186,7 +188,7 @@ class _MaintenanceAssetListItemState extends State<MaintenanceAssetListItem> {
                                                   .count
                                                   .toString(),
 
-                                          bgColor: Colors.red.shade400,
+                                          bgColor: Colors.yellow.shade400,
                                           width: 50,
                                           //height: 20,
                                           //textColor: Colors.white,
@@ -205,7 +207,7 @@ class _MaintenanceAssetListItemState extends State<MaintenanceAssetListItem> {
                                                   .last
                                                   .count
                                                   .toString(),
-                                          bgColor: Colors.yellow.shade400,
+                                          bgColor: Colors.red.shade400,
                                           width: 50,
                                           // height: 20,
                                           //textColor: Colors.white,

@@ -83,12 +83,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 20;
 
-  MainDetailPopupViewModel(
-      {MaintenanceCheckListModel? serviceItem,
-      AssetData? assetDataValue,
-      List<Services?>? services,
-      String? selectedService,
-      Fleet? summaryData}) {
+  MainDetailPopupViewModel({AssetData? assetDataValue, int? serviceNo}) {
     this.log = getLogger(this.runtimeType.toString());
     scrollController = ScrollController();
     _maintenanceService!.setUp();
@@ -98,8 +93,10 @@ class MainDetailPopupViewModel extends InsiteViewModel {
     //     serviceList!.add(element.serviceName);
     //   }
     // });
-
-    mainPopview(assetData: assetDataValue, serviceItem: serviceItem);
+    Future.delayed(Duration.zero, () async {
+      await getMaintenanceCheckList(serviceNo);
+      await mainPopview(assetData: assetDataValue);
+    });
 
     // _occurenceId = serviceItem.dueInfo!.occurrenceId;
 
@@ -138,7 +135,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   TextEditingController serviceMeterController =
       TextEditingController(text: "");
   TextEditingController serviceNoteController = TextEditingController(text: "");
-
+  MaintenanceCheckListModel? serviceCheckList;
   getSelectedDate(String newDate) {
     hourMeterDateController.text = newDate;
     notifyListeners();
@@ -152,8 +149,14 @@ class MainDetailPopupViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  mainPopview(
-      {AssetData? assetData, MaintenanceCheckListModel? serviceItem}) async {
+  getMaintenanceCheckList(int? serviceId) async {
+    serviceCheckList = await _maintenanceService!
+        .getMaintenanceServiceItemCheckList(
+            query: graphqlSchemaService!
+                .getMaitenanceCheckList(serviceNo: serviceId));
+  }
+
+  mainPopview({AssetData? assetData}) async {
     await getSelectedFilterData();
     await getDateRangeFilterData();
     MaintenanceListData? maintenanceListData = await _maintenanceService!
@@ -164,18 +167,19 @@ class MainDetailPopupViewModel extends InsiteViewModel {
             page: pageNumber,
             query: await graphqlSchemaService!.getMaintenanceListData(
                 assetId: assetData!.assetID,
-                appliedFilter: appliedFilters,
                 startDate:
-                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                    Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+                endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
                 limit: pageSize,
                 pageNo: pageNumber));
     dropDown!.clear();
     _serviceName = maintenanceListData!.maintenanceList!.first.serviceName!;
     initialValue = MainPopViewDropDown(
         initialValue: maintenanceListData.maintenanceList!.first.serviceName!,
-        partList: serviceItem?.maintenanceCheckList);
+        partList: serviceCheckList?.maintenanceCheckList);
     dropDown!.add(initialValue!);
+    serviceMeterController.text =
+        maintenanceListData.maintenanceList!.first.currentHourMeter.toString();
     mainPopViewData = MainPopViewData(
         dueAt: maintenanceListData.maintenanceList!.first.dueAt,
         dueDate: maintenanceListData.maintenanceList!.first.dueDate,
@@ -189,7 +193,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
         make: maintenanceListData.maintenanceList!.first.make,
         model: maintenanceListData.maintenanceList!.first.model,
         serialNo: maintenanceListData.maintenanceList!.first.serialNumber);
-    serviceItem?.maintenanceServiceList?.forEach((serviceList) {
+    serviceCheckList?.maintenanceServiceList?.forEach((serviceList) {
       if (dropDown!
           .any((element) => element.initialValue == serviceList.serviceName)) {
       } else {
