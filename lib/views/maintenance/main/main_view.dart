@@ -28,11 +28,17 @@ class MainView extends StatefulWidget {
 
 class MainViewState extends State<MainView> {
   List<String?>? dateRange = [];
+  MainViewModel? model;
+
+  onFilterApplied() {
+    model!.refresh();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
       builder: (BuildContext context, MainViewModel viewModel, Widget? _) {
+        model = viewModel;
         return Stack(
           children: [
             Column(
@@ -42,22 +48,16 @@ class MainViewState extends State<MainView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      InsiteText(
-                          text: Utils.getDateInFormatddMMyyyy(
-                                  viewModel.maintenanceStartDate) +
-                              " - " +
-                              Utils.getDateInFormatddMMyyyy(
-                                  viewModel.maintenanceEndDate),
-                          fontWeight: FontWeight.bold,
-                          size: 12),
-                      SizedBox(
-                        width: 4,
-                      ),
                       InsiteButton(
-                        width: 90,
-                        title: "Date Range",
-                        bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        width: 200,
+                        title: Utils.getDateInFormatddMMyyyy(
+                                viewModel.maintenanceStartDate) +
+                            " - " +
+                            Utils.getDateInFormatddMMyyyy(
+                                viewModel.maintenanceEndDate),
+                        //width: 90,
+                        //bgColor: Theme.of(context).backgroundColor,
+                        textColor: white,
                         onTap: () async {
                           dateRange = [];
                           dateRange = await showDialog(
@@ -66,7 +66,6 @@ class MainViewState extends State<MainView> {
                                 backgroundColor: transparent,
                                 child: DateRangeMaintenanceView()),
                           );
-                          Logger().wtf(dateRange);
                           if (dateRange != null && dateRange!.isNotEmpty) {
                             viewModel.refresh();
                           }

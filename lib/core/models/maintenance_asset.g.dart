@@ -81,6 +81,7 @@ AssetCentricData _$AssetCentricDataFromJson(Map<String, dynamic> json) =>
       maintenanceTotals: (json['maintenanceTotals'] as List<dynamic>?)
           ?.map((e) => MaintenanceTotals.fromJson(e as Map<String, dynamic>))
           .toList(),
+      deviceSerialNumber: json['deviceSerialNumber'] as String?,
     );
 
 Map<String, dynamic> _$AssetCentricDataToJson(AssetCentricData instance) =>
@@ -121,6 +122,7 @@ Map<String, dynamic> _$AssetCentricDataToJson(AssetCentricData instance) =>
       'devices': instance.devices,
       'deviceType': instance.deviceType,
       'geofence': instance.geofence,
+      'deviceSerialNumber': instance.deviceSerialNumber,
       'maintenanceTotals': instance.maintenanceTotals,
     };
 

@@ -62,6 +62,7 @@ class AssetCentricData {
   List<Devices>? devices;
   String? deviceType;
   List<String>? geofence;
+  String? deviceSerialNumber;
   List<MaintenanceTotals>? maintenanceTotals;
 
   AssetCentricData(
@@ -101,7 +102,7 @@ class AssetCentricData {
       this.devices,
       this.deviceType,
       this.geofence,
-      this.maintenanceTotals});
+      this.maintenanceTotals,this.deviceSerialNumber});
   factory AssetCentricData.fromJson(Map<String, dynamic> json) =>
       _$AssetCentricDataFromJson(json);
 

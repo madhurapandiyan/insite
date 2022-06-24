@@ -196,5 +196,7 @@ class LocalService extends BaseService {
     await preferences!.remove(IS_LOGGEDIN);
     await preferences!.clear();
     await preferences!.remove(CODE_VERIFIER);
+    await preferences!.remove(MAINTENANCE_STARTDATE);
+    await preferences!.remove(MAINTENANCE_ENDDATE);
   }
 }

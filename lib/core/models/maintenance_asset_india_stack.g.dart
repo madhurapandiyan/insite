@@ -42,6 +42,7 @@ AssetMaintenanceList _$AssetMaintenanceListFromJson(
       maintenanceTotals: (json['maintenanceTotals'] as List<dynamic>?)
           ?.map((e) => MaintenanceTotals.fromJson(e as Map<String, dynamic>))
           .toList(),
+      deviceSerialNumber: json['deviceSerialNumber'] as String?,
     );
 
 Map<String, dynamic> _$AssetMaintenanceListToJson(
@@ -60,6 +61,7 @@ Map<String, dynamic> _$AssetMaintenanceListToJson(
       'serviceName': instance.serviceName,
       'maintenanceTotals': instance.maintenanceTotals,
       'assetIcon': instance.assetIcon,
+      'deviceSerialNumber': instance.deviceSerialNumber,
     };
 
 MaintenanceTotals _$MaintenanceTotalsFromJson(Map<String, dynamic> json) =>

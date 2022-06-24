@@ -307,66 +307,83 @@ class MaintenanceTabListData extends StatelessWidget {
                 return Card(
                   child: Container(
                     padding: EdgeInsets.all(2),
-                    child: Table(
-                      border: TableBorder.all(),
-                      columnWidths: {
-                        0: FlexColumnWidth(1.5),
-                        1: FlexColumnWidth(1.5),
-                      },
+                    child: Column(
                       children: [
-                        TableRow(
+                        Table(
+                          border: TableBorder.all(),
+                          columnWidths: {
+                            0: FlexColumnWidth(1.5),
+                            1: FlexColumnWidth(1.5),
+                          },
                           children: [
-                            InsiteRichText(
-                              title: "Service :",
-                              content: services!.serviceName,
-                              onTap: () {
-                                // serviceName!.clear();
+                            TableRow(
+                              children: [
+                                InsiteRichText(
+                                  title: "Service :",
+                                  content: services!.serviceName,
+                                  onTap: () {
+                                    // serviceName!.clear();
 
-                                serviceCalBack!(services.serviceId, assetData,
-                                    servicesData, services.serviceName);
-                              },
+                                    serviceCalBack!(
+                                        services.serviceId,
+                                        assetData,
+                                        servicesData,
+                                        services.serviceName);
+                                  },
+                                ),
+                                InsiteTableRowItemWithButton(
+                                  title: "Service Status : ",
+                                  buttonColor: Utils.getMaintenanceColor(
+                                      services.dueInfo!.serviceStatus),
+                                  content:
+                                      services.dueInfo!.serviceStatus != null
+                                          ? Utils.getFaultLabel(
+                                              services.dueInfo!.serviceStatus!)
+                                          : "",
+                                  onTap: () {
+                                    serviceCalBack!(
+                                        services.serviceId,
+                                        assetData,
+                                        servicesData,
+                                        services.serviceName);
+                                  },
+                                ),
+                              ],
                             ),
-                            InsiteTableRowItemWithButton(
-                              title: "Service Status : ",
-                              buttonColor: Utils.getMaintenanceColor(
-                                  services.dueInfo!.serviceStatus),
-                              content: services.dueInfo!.serviceStatus != null
-                                  ? Utils.getFaultLabel(
-                                      services.dueInfo!.serviceStatus!)
-                                  : "",
-                              onTap: () {
-                                serviceCalBack!(services.serviceId, assetData,
-                                    servicesData, services.serviceName);
-                              },
-                            ),
+                            TableRow(children: [
+                              InsiteTableRowItem(
+                                title: "Due At : ",
+                                content: services.dueInfo!.dueAt!
+                                        .toStringAsFixed(0) +
+                                    " hrs",
+                              ),
+                              InsiteTableRowItem(
+                                title: "Due In/Overdue By : ",
+                                content: services.dueInfo!.dueBy!
+                                        .abs()
+                                        .toStringAsFixed(0) +
+                                    " hrs",
+                              ),
+                            ]),
                           ],
                         ),
-                        TableRow(children: [
-                          InsiteTableRowItem(
-                            title: "Due At : ",
-                            content:
-                                services.dueInfo!.dueAt!.toStringAsFixed(0) +
-                                    " hrs",
-                          ),
-                          InsiteTableRowItem(
-                            title: "Due In/Overdue By : ",
-                            content: services.dueInfo!.dueBy!
-                                    .abs()
-                                    .toStringAsFixed(0) +
-                                " hrs",
-                          ),
-                        ]),
-                        TableRow(children: [
-                          InsiteTableRowItem(
-                            title: "Due Date : ",
-                            content: Utils.getLastReportedDateOneUTC(
-                                services.dueInfo!.dueDate),
-                          ),
-                          InsiteTableRowItem(
-                            title: "Service Type : ",
-                            content: services.serviceType,
-                          ),
-                        ])
+                        Table(
+                            border: TableBorder.all(),
+                          children: [
+                            TableRow(children: [
+                              InsiteTableRowItem(
+                                title: "Due Date : ",
+                                content: Utils.getDateInFormatddMMyyyy(
+                                    services.dueInfo!.dueDate),
+                              ),
+
+                              // InsiteTableRowItem(
+                              //   title: "Service Name : ",
+                              //   content: services.se,
+                              // ),
+                            ])
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -415,10 +432,6 @@ class HistoryListData extends StatelessWidget {
                           content: data.make,
                           title: "Make",
                         ),
-                        InsiteTableRowItem(
-                          content: data.make,
-                          title: "Make",
-                        ),
                       ]),
                       TableRow(children: [
                         InsiteTableRowItem(
@@ -429,16 +442,16 @@ class HistoryListData extends StatelessWidget {
                           content: data.serviceMeter,
                           title: "Service Meter",
                         ),
-                        InsiteTableRowItem(
-                          content: data.serviceName,
-                          title: "Service",
-                        ),
+                        // InsiteTableRowItem(
+                        //   content: data.serviceName,
+                        //   title: "Service",
+                        // ),
                       ]),
                     ],
                   ),
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Table(
                         columnWidths: {
                           0: FlexColumnWidth(1),
@@ -466,7 +479,7 @@ class HistoryListData extends StatelessWidget {
                           ]),
                           TableRow(children: [
                             InsiteTableRowItem(
-                              content: data.workOrder,
+                              content: data.workOrder ?? "-",
                               title: "Work Order",
                             ),
                             InsiteTableRowItem(

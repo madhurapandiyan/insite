@@ -1876,7 +1876,9 @@ class Utils {
     List<Map<String, dynamic>> intervalList = [];
     Map<String, dynamic> data = {
       "intervalID": mainInterval!.intervalId,
-      "intervalDescription": mainInterval.intervalDescription,
+      "intervalDescription": mainInterval.intervalDescription!.isEmpty
+          ? "\"" + "\""
+          : mainInterval.intervalDescription,
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };
@@ -1892,7 +1894,6 @@ class Utils {
         for (var check in data) {
           Map<String, dynamic> checkData = {
             "ChecklistName": check.checkName,
-            "checkListId": check.checkListId,
             "partList": []
           };
           for (var part in check.partList!) {
@@ -1900,7 +1901,6 @@ class Utils {
               "partName": part.partName,
               "partNo": part.partNo,
               "quantity": part.quantiy,
-              "partId": part.partId,
             };
             var partList = checkData["partList"] as List<dynamic>;
             partList.add(partsData);

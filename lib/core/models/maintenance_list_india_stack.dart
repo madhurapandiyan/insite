@@ -60,6 +60,7 @@ class MaintenanceList {
   String? completedService;
   String? address;
   String? workOrder;
+  String? dealerName;
 
   MaintenanceList(
       {this.serviceNumber,
@@ -104,7 +105,8 @@ class MaintenanceList {
       this.dueInOverdueBy,
       this.completedService,
       this.address,
-      this.workOrder});
+      this.workOrder,
+      this.dealerName});
 
   factory MaintenanceList.fromJson(Map<String, dynamic> json) =>
       _$MaintenanceListFromJson(json);

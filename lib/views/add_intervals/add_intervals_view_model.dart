@@ -53,10 +53,16 @@ class AddIntervalsViewModel extends InsiteViewModel {
 
   onSwitchTaped(int i) {
     switchState[i].state = !switchState[i].state!;
-    var intervalName = switchState[i].text;
-    Logger().w(intervalName);
-    selectedIntervals = maintenanceIntervalsData!.intervalList!
-        .singleWhere((element) => element.intervalName == intervalName);
+    var intervalName = switchState[i].suffixTitle;
+    if (switchState[i].state!) {
+      selectedIntervals =
+          maintenanceIntervalsData!.intervalList!.singleWhere((element) {
+        Logger().v(element.intervalID.toString() == intervalName);
+        return element.intervalID.toString() == intervalName;
+      });
+    } else {
+      selectedIntervals = null;
+    }
 
     notifyListeners();
   }
@@ -77,15 +83,17 @@ class AddIntervalsViewModel extends InsiteViewModel {
     switchState.forEach((element) {
       element.state = true;
     });
+    selectedIntervals = null;
     notifyListeners();
   }
 
   onSearching() async {
     try {
-      if (deBounce!.isActive) {
+      if (deBounce?.isActive ?? false) {
         deBounce!.cancel();
       } else {
-        deBounce = Timer(Duration(seconds: 2), () async {
+        deBounce = Timer(Duration(seconds: 1), () async {
+          switchState.clear();
           await getMaintenanceIntervals();
         });
       }
@@ -103,7 +111,10 @@ class AddIntervalsViewModel extends InsiteViewModel {
       if (maintenanceIntervalsData != null &&
           maintenanceIntervalsData!.intervalList!.isNotEmpty) {
         for (var item in maintenanceIntervalsData!.intervalList!) {
-          SwitchState data = SwitchState(text: item.intervalName, state: false);
+          SwitchState data = SwitchState(
+              text: item.intervalName,
+              state: false,
+              suffixTitle: item.intervalID.toString());
           switchState.add(data);
         }
       }
@@ -157,6 +168,9 @@ class AddIntervalsViewModel extends InsiteViewModel {
   }
 
   getDecrementFrequencyValue() {
+    if (frequencyController.text == "0") {
+      return;
+    }
     value = int.parse(
         frequencyController.text.isEmpty ? "0" : frequencyController.text);
     value = value! - 1;
@@ -167,47 +181,50 @@ class AddIntervalsViewModel extends InsiteViewModel {
     try {
       if (checkListData.isNotEmpty) {
         maintenanceCheckList.clear();
-        List<MaintenancePartList> maintenancePartList = [];
         for (var checkList in checkListData) {
           MaintenanceCheckList mainCheckList = MaintenanceCheckList(
               checkName:
                   doubleQuote + checkList.checkListName!.text + doubleQuote,
               checkListId: checkList.checkListId,
               partList: []);
+          print("checkList created");
+          if (checkList.partListData != null &&
+              checkList.partListData!.isNotEmpty) {
+            for (var partList in checkList.partListData!) {
+              MaintenancePartList mainPartList = MaintenancePartList(
+                  partId: partList.partId,
+                  partNo: doubleQuote + partList.part!.text + doubleQuote,
+                  partName: doubleQuote + partList.partName!.text + doubleQuote,
+                  quantiy: int.parse(partList.quantity!.text.isEmpty
+                      ? "0"
+                      : partList.quantity!.text));
 
-          for (var partList in checkList.partListData!) {
-            MaintenancePartList mainPartList = MaintenancePartList(
-                partId: partList.partId,
-                partNo: doubleQuote + partList.part!.text + doubleQuote,
-                partName: doubleQuote + partList.partName!.text + doubleQuote,
-                quantiy: int.parse(partList.quantity!.text.isEmpty
-                    ? "0"
-                    : partList.quantity!.text));
-
-            mainCheckList.partList?.add(mainPartList);
+              mainCheckList.partList?.add(mainPartList);
+            }
           }
+          print("partList created");
+
           maintenanceCheckList.add(mainCheckList);
         }
-        print("mappi");
-        maintenanceInterval = MaintenanceIntervalData(
-            intervalDescription: selectedIntervals?.intervalDescription != null
-                ? (doubleQuote +
-                    selectedIntervals!.intervalDescription! +
-                    doubleQuote)
-                : "",
-            intervalId: selectedIntervals?.intervalID ?? null,
-            assetId: doubleQuote + singleAssetDetail!.assetUid! + doubleQuote,
-            description: doubleQuote + descriptionController.text + doubleQuote,
-            initialOccurence: int.parse(frequencyController.text),
-            intervalName: doubleQuote + namecontroller.text + doubleQuote,
-            make: doubleQuote + singleAssetDetail!.makeCode! + doubleQuote,
-            model: doubleQuote + singleAssetDetail!.model! + doubleQuote,
-            serialno: doubleQuote +
-                singleAssetDetail!.assetSerialNumber! +
-                doubleQuote,
-            currentHrmeter: null,
-            checkList: maintenanceCheckList);
+        print("maintenance interval created");
       }
+      maintenanceInterval = MaintenanceIntervalData(
+          intervalDescription: selectedIntervals?.intervalDescription != null
+              ? (doubleQuote +
+                  selectedIntervals!.intervalDescription! +
+                  doubleQuote)
+              : "",
+          intervalId: selectedIntervals?.intervalID ?? null,
+          assetId: doubleQuote + singleAssetDetail!.assetUid! + doubleQuote,
+          description: doubleQuote + descriptionController.text + doubleQuote,
+          initialOccurence: int.parse(frequencyController.text),
+          intervalName: doubleQuote + namecontroller.text + doubleQuote,
+          make: doubleQuote + singleAssetDetail!.makeCode! + doubleQuote,
+          model: doubleQuote + singleAssetDetail!.model! + doubleQuote,
+          serialno:
+              doubleQuote + singleAssetDetail!.assetSerialNumber! + doubleQuote,
+          currentHrmeter: null,
+          checkList: maintenanceCheckList);
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -229,28 +246,40 @@ class AddIntervalsViewModel extends InsiteViewModel {
         snackbarService!.showSnackbar(message: "Please Enter Interval Name");
         return;
       }
+      print("validation 1");
       if (frequencyController.text.isEmpty) {
         snackbarService!
             .showSnackbar(message: "Please Enter Checklist Frequency");
         return;
       }
+      print("validation 2");
       if (checkListData.isNotEmpty &&
           checkListData.any((element) => element.checkListName!.text.isEmpty)) {
         snackbarService!.showSnackbar(message: "Please Enter Checklist Name");
         return;
       }
-      if (checkListData.any((element) => element.partListData!.any((element) =>
-          element.part!.text.isEmpty ||
-          element.partName!.text.isEmpty ||
-          element.quantity!.text.isEmpty))) {
-        snackbarService!.showSnackbar(message: "Please Fill The Parts Details");
-        return;
+      print("validation 3");
+      if (checkListData.any((element) =>
+          element.partListData != null && element.partListData!.isNotEmpty)) {
+        if (checkListData.any((element) => element.partListData!.any(
+            (element) =>
+                element.part!.text.isEmpty ||
+                element.partName!.text.isEmpty ||
+                element.quantity!.text.isEmpty))) {
+          snackbarService!
+              .showSnackbar(message: "Please Fill The Parts Details");
+          return;
+        }
       }
+      print("validation 4");
+
       showLoadingDialog();
       await gettingUserData();
       var data;
       Logger().w(maintenanceInterval!.intervalId);
       if (isEditing) {
+        print(_graphqlSchemaService!
+            .updateMaintenanceIntervals(maintenanceInterval));
         data = await _maintenanceService!.updateMaintenanceIntervals(
             _graphqlSchemaService!
                 .updateMaintenanceIntervals(maintenanceInterval));
@@ -264,6 +293,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
       if (data["status"] == "failure") {
         hideLoadingDialog();
       } else {
+        hideLoadingDialog();
         goToManage();
         clearAllValue();
       }
@@ -274,10 +304,11 @@ class AddIntervalsViewModel extends InsiteViewModel {
   }
 
   goToManage() async {
+    isLoading = true;
     switchState.clear();
-    await getMaintenanceIntervals();
+    notifyListeners();
     onClickingBackInAddInterval();
-    hideLoadingDialog();
+    await getMaintenanceIntervals();
   }
 
   onEditIntervalsinManage() async {
@@ -318,6 +349,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
     intervalId.clear();
     partListId.clear();
     checkListId.clear();
+    selectedIntervals=null;
     var selectedIntervalList =
         switchState.where((element) => element.state == true).toList();
     var data = maintenanceIntervalsData!.intervalList!

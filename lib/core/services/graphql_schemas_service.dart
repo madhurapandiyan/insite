@@ -49,6 +49,8 @@ class GraphqlSchemaService extends BaseService {
   List<int> reportType = [];
   List<String> severityList = [];
   List<String> serviceStatusList = [];
+  List<String> serviceTypeList = [];
+  List<String> assetTypeList = [];
 
   getReportFilterindividualList(
       {List<FilterData?>? filtlerList,
@@ -109,6 +111,9 @@ class GraphqlSchemaService extends BaseService {
     reportType.clear();
     severityList.clear();
     serviceStatusList.clear();
+    serviceStatusList.clear();
+    serviceTypeList.clear();
+    assetTypeList.clear();
   }
 
   cleaValue() {
@@ -178,7 +183,15 @@ class GraphqlSchemaService extends BaseService {
         getIndividualList(
             filtlerList: filtlerList,
             individualList: serviceStatusList,
+            type: FilterType.SERVICE_STATUS);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: serviceTypeList,
             type: FilterType.SERVICE_TYPE);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: assetTypeList,
+            type: FilterType.ASSET_TYPE);
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -2844,8 +2857,8 @@ mutation{
     pageNumber: ${pageNo ?? null},
     toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"}, 
     serviceStatus:  ${serviceStatusList.isEmpty ? [] : serviceStatusList}, 
-    serviceType:${null}, 
-    assetType: "", 
+    serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
+    assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
     assetId: ${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"},
     make:  ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
     manufacturer:  ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
@@ -2897,6 +2910,7 @@ mutation{
       completedService
       customerName
       address
+      dealerName
     }
     status
     count
@@ -2924,8 +2938,8 @@ limit: ${limit ?? null}
 pageNumber: ${pageNo ?? null}
 toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
 serviceStatus:${serviceStatusList.isEmpty ? [] : serviceStatusList}
-serviceType:${severityList.isEmpty ? [] : severityList}
-assetType:[]
+serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
+assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
 assetId:""
 make:[]
 manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}
@@ -2948,6 +2962,7 @@ currentHourMeter,
 servicedescription,
 serviceStatusName,
 serviceName,
+deviceSerialNumber,
 maintenanceTotals{
   count,
   name,
@@ -2967,6 +2982,8 @@ query{
     assetId:$assetId
   ){
     status,
+    serviceStatus,
+    dueInOverdueBy,
     maintenanceCheckList{
       checkListName,
       checkListId,
@@ -3126,7 +3143,7 @@ mutation{
 mutation{
   updateMaintenanceIntervals(
     intervalList:${Utils.updateMaintenanceIntervals(mainInterval)},
-    checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!)??[]}){
+    checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
     status,
      message
   }

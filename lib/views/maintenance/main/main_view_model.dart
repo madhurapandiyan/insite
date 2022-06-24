@@ -164,6 +164,7 @@ class MainViewModel extends InsiteViewModel {
                 model: item.model,
                 service: item.serviceName,
                 serviceId: item.serviceNumber,
+                dealerName: item.dealerName,
                 deviceType: item.deviceType,
                 location: Location(
                     city: item.city,
@@ -253,9 +254,9 @@ class MainViewModel extends InsiteViewModel {
   }) async {
     MaintenanceCheckListModel? serviceCheckList;
 
-    showGeneralDialog(
+    showDialog(
         context: ctx!,
-        pageBuilder: (context, animation, secondaryAnimation) {
+        builder: (context) {
           return MainDetailPopupView(
             parentContext: context,
             assetDataValue: assetDataValue,

@@ -230,7 +230,7 @@ class MaintenanceService extends BaseService {
     }
   }
 
-  Future<MaintenanceCheckListModel?> getMaintenanceServiceItemCheckList(
+  Future<MaintenanceCheckListModelPop?> getMaintenanceServiceItemCheckList(
       {String? query}) async {
     if (enableGraphQl) {
       var data = await Network().getStaggedGraphqlData(
@@ -241,8 +241,8 @@ class MaintenanceService extends BaseService {
             ? ""
             : customerSelected?.CustomerUID,
       );
-      MaintenanceCheckListModel mainListData =
-          MaintenanceCheckListModel.fromJson(data.data["maintenanceCheckList"]);
+      MaintenanceCheckListModelPop mainListData =
+          MaintenanceCheckListModelPop.fromJson(data.data["maintenanceCheckList"]);
       Logger().w(mainListData.toJson());
       return mainListData;
     }

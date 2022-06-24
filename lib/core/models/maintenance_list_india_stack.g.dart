@@ -68,6 +68,7 @@ MaintenanceList _$MaintenanceListFromJson(Map<String, dynamic> json) =>
       completedService: json['completedService'] as String?,
       address: json['address'] as String?,
       workOrder: json['workOrder'] as String?,
+      dealerName: json['dealerName'] as String?,
     );
 
 Map<String, dynamic> _$MaintenanceListToJson(MaintenanceList instance) =>
@@ -115,4 +116,5 @@ Map<String, dynamic> _$MaintenanceListToJson(MaintenanceList instance) =>
       'completedService': instance.completedService,
       'address': instance.address,
       'workOrder': instance.workOrder,
+      'dealerName': instance.dealerName,
     };

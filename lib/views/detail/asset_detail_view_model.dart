@@ -83,9 +83,9 @@ class AssetDetailViewModel extends InsiteViewModel {
     int? serviceId,
     AssetData? assetDataValue,
   }) async {
-    showGeneralDialog(
+    showDialog(
         context: ctx!,
-        pageBuilder: (context, animation, secondaryAnimation) {
+        builder: (context) {
           return MainDetailPopupView(
             parentContext: context,
             serviceNo: serviceId,

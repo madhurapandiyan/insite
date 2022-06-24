@@ -421,7 +421,7 @@ class DashboardViewModel extends InsiteViewModel {
         count: count.toString(),
         title: filterType,
         isSelected: true,
-        type: FilterType.SERVICE_TYPE));
+        type: FilterType.SERVICE_STATUS));
     Logger().w("filterTyoe $filterType");
     Logger().i("from date $maintenanceStartDate");
     Logger().i("To date $maintenanceEndDate");

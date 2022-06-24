@@ -54,8 +54,8 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   // List<Checklists>? _checkLists = [];
   // List<Checklists>? get checkLists => _checkLists;
 
-  List<MaitenanceCheckListData>? _checkLists = [];
-  List<MaitenanceCheckListData>? get checkLists => _checkLists;
+  List<MaitenanceCheckListDataPop>? _checkLists = [];
+  List<MaitenanceCheckListDataPop>? get checkLists => _checkLists;
 
   updatePerformedValue(String? value) {
     _performedBy = value;
@@ -82,6 +82,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   MainPopViewData? mainPopViewData;
   int pageNumber = 1;
   int pageSize = 20;
+  int selectedIndex = 0;
 
   MainDetailPopupViewModel({AssetData? assetDataValue, int? serviceNo}) {
     this.log = getLogger(this.runtimeType.toString());
@@ -135,9 +136,14 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   TextEditingController serviceMeterController =
       TextEditingController(text: "");
   TextEditingController serviceNoteController = TextEditingController(text: "");
-  MaintenanceCheckListModel? serviceCheckList;
+  MaintenanceCheckListModelPop? serviceCheckList;
   getSelectedDate(String newDate) {
     hourMeterDateController.text = newDate;
+    notifyListeners();
+  }
+
+  onTabChange(int i) {
+    selectedIndex = i;
     notifyListeners();
   }
 
@@ -177,7 +183,9 @@ class MainDetailPopupViewModel extends InsiteViewModel {
     initialValue = MainPopViewDropDown(
         initialValue: maintenanceListData.maintenanceList!.first.serviceName!,
         partList: serviceCheckList?.maintenanceCheckList);
+    _checkLists = initialValue?.partList;
     dropDown!.add(initialValue!);
+
     serviceMeterController.text =
         maintenanceListData.maintenanceList!.first.currentHourMeter.toString();
     mainPopViewData = MainPopViewData(
@@ -203,7 +211,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
       }
     });
 
-    _assetId = assetData.assetUID;
+    _assetId = assetData.assetID;
     // Logger().w(initialValue!.initialValue);
     // Logger().i(initialValue!.partList!.length);
     // dropDown!.forEach((element) {
@@ -212,6 +220,19 @@ class MainDetailPopupViewModel extends InsiteViewModel {
     // });
 
     _loading = false;
+    notifyListeners();
+  }
+
+  onReset() {
+    workOrderDateController.text = "";
+
+    hourMeterDateController.text = "";
+
+    workHourController.text = "";
+    performedByController.text = "";
+    serviceMeterController.text = "";
+
+    serviceNoteController.text = "";
     notifyListeners();
   }
 
@@ -320,7 +341,7 @@ class MainPopViewData {
 
 class MainPopViewDropDown {
   final String? initialValue;
-  final List<MaitenanceCheckListData>? partList;
+  final List<MaitenanceCheckListDataPop>? partList;
   MainPopViewDropDown({this.initialValue, this.partList});
 }
 

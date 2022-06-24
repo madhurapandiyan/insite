@@ -59,7 +59,7 @@ Widget onSelectedIntervalsDetails(
           height: 10,
         ),
         InsiteText(text: "Description", size: 16, fontWeight: FontWeight.bold),
-        InsiteText(text: data.intervalDescription, size: 16),
+        InsiteText(text: data.intervalDescription ?? "-", size: 16),
         SizedBox(
           height: 10,
         ),
@@ -162,7 +162,7 @@ Widget onSelectedIntervalsDetails(
                       onEditIntervals!();
                     },
                     textColor: backgroundColor1,
-                    title: "Edit Intervals",
+                    title: "Edit",
                   ),
                 )
               : SizedBox(),
@@ -272,10 +272,10 @@ class ManageIntervals extends StatelessWidget {
                           SizedBox(
                             height: 15,
                           ),
-                          SearchBox(
-                            hint: "Search",
+                          CustomTextBox(
+                            value: "Search",
                             controller: viewModel!.controller,
-                            onTextChanged: (value) {
+                            onChanged: (value) {
                               viewModel!.onSearching();
                             },
                           ),
@@ -289,8 +289,7 @@ class ManageIntervals extends StatelessWidget {
                                     onTap: () {
                                       viewModel!.onSwitchTaped(index);
                                     },
-                                    leading: Icon(
-                                        Icons.check_box_outline_blank_rounded,
+                                    leading: Icon(Icons.check_box_outlined,
                                         color: data.state!
                                             ? Theme.of(context).buttonColor
                                             : Theme.of(context)
@@ -322,7 +321,7 @@ class ManageIntervals extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          viewModel!.switchState.any((element) => element.state == true)
+          viewModel!.selectedIntervals != null
               ? Container(
                   height: MediaQuery.of(context).size.height * 0.6,
                   width: MediaQuery.of(context).size.width * 0.95,
@@ -356,6 +355,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
       {BuildContext? ctx,
       Function(int?)? onPartListDeleted,
       Function? onPartListAdded,
+      Function? onPartListDelete,
       CheckAndPartList? checkListData}) {
     return Card(
       child: Column(
@@ -368,6 +368,15 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
               controller: checkListData!.checkListName,
               title: "Enter Checklist Name",
             )),
+          ),
+          InsiteButton(
+            title: "Delete CheckList",
+            width: 200,
+            onTap: () {
+              onPartListDelete!();
+            },
+            height: 40,
+            textColor: Theme.of(ctx!).backgroundColor,
           ),
           Divider(),
           Padding(
@@ -394,7 +403,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                     onPartListAdded!();
                   },
                   height: 40,
-                  textColor: Theme.of(ctx!).backgroundColor,
+                  textColor: Theme.of(ctx).backgroundColor,
                 ),
               ],
             ),
@@ -485,17 +494,37 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextButton.icon(
-                onPressed: () {
-                  widget.viewModel!.onClickingBackInAddInterval();
-                },
-                icon: Icon(
-                  Icons.arrow_back_rounded,
-                  color: Theme.of(context).buttonColor,
+            InkWell(
+              onTap: (){
+                widget.viewModel!.onClickingBackInAddInterval();
+              },
+              child: Container(
+                height: 40,
+                width: 90,
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: tango,
                 ),
-                label: InsiteText(
-                  text: "Back",
-                )),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.arrow_back_rounded,
+                        color: Theme.of(context).backgroundColor,
+                      ),
+                      InsiteText(
+                        text: "Back",
+                        color: Theme.of(context).backgroundColor,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10,),
 
             InsiteText(
               text: "Add Interval",
@@ -614,33 +643,37 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                       var data = widget.viewModel!.checkListData[i];
                       return Column(
                         children: [
-                          ListTile(
-                            title: InsiteText(
-                                text: data.checkListName!.text.isEmpty
-                                    ? "New CheckList"
-                                    : data.checkListName!.text,
-                                fontWeight: FontWeight.bold),
-                            onTap: () {
-                              widget.viewModel!.onTileExpanded(i);
-                            },
-                            trailing: IconButton(
-                                onPressed: () {
-                                  widget.viewModel!.onCheckListDelete(i);
-                                },
-                                icon: Icon(Icons.delete)),
-                          ),
-                          data.expansionState!
-                              ? checkListAndPartList(
-                                  onPartListAdded: () {
-                                    widget.viewModel!.onPartListAdded(i);
-                                  },
-                                  onPartListDeleted: (partListIndex) {
-                                    widget.viewModel!
-                                        .onPartListDeleted(i, partListIndex!);
-                                  },
-                                  ctx: context,
-                                  checkListData: data)
-                              : SizedBox(),
+                          // ListTile(
+                          //   title: InsiteText(
+                          //       text: data.checkListName!.text.isEmpty
+                          //           ? "New CheckList"
+                          //           : data.checkListName!.text,
+                          //       fontWeight: FontWeight.bold),
+                          //   onTap: () {
+                          //     widget.viewModel!.onTileExpanded(i);
+                          //   },
+                          //   trailing: IconButton(
+                          //       onPressed: () {
+                          //         widget.viewModel!.onCheckListDelete(i);
+                          //       },
+                          //       icon: Icon(Icons.delete)),
+                          // ),
+                          // data.expansionState!
+                          //     ?
+                          checkListAndPartList(
+                              onPartListDelete: () {
+                                widget.viewModel!.onCheckListDelete(i);
+                              },
+                              onPartListAdded: () {
+                                widget.viewModel!.onPartListAdded(i);
+                              },
+                              onPartListDeleted: (partListIndex) {
+                                widget.viewModel!
+                                    .onPartListDeleted(i, partListIndex!);
+                              },
+                              ctx: context,
+                              checkListData: data)
+                          // : SizedBox(),
                         ],
                       );
                     }),
@@ -665,7 +698,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
               children: [
                 InsiteButton(
                   onTap: () {
-                    // viewModel.onCancelButtonClicked();
+                    widget.viewModel!.clearAllValue();
                   },
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width * 0.4,

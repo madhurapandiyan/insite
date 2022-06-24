@@ -298,7 +298,7 @@ class _TabPageState extends State<AssetDetailView> {
                                 Expanded(
                                   child: Wrap(
                                     direction: Axis.horizontal,
-                                    spacing: 7,
+                                    spacing: 15,
                                     children:
                                         List.generate(typeOne.length, (index) {
                                       Category category = typeOne[index];
@@ -306,31 +306,6 @@ class _TabPageState extends State<AssetDetailView> {
                                     }),
                                   ),
                                 ),
-                                selectedTabIndex == 5 || selectedTabIndex == 7
-                                    ? Container(
-                                        height: 25,
-                                        width: 30,
-                                        child: PopupMenuButton(
-                                          itemBuilder: (ctx) {
-                                            return List.generate(
-                                                viewModel.popupList.length,
-                                                (index) => PopupMenuItem(
-                                                      value: viewModel
-                                                          .popupList[index],
-                                                      child: InsiteText(
-                                                        text: viewModel
-                                                            .popupList[index],
-                                                      ),
-                                                    ));
-                                          },
-                                          onSelected: (value) {
-                                            selectedTabIndex = 7;
-                                            viewModel.onPopupSelected(
-                                                value as String);
-                                          },
-                                        ),
-                                      )
-                                    : SizedBox()
                               ],
                             ),
                           ),
@@ -377,41 +352,90 @@ class _TabPageState extends State<AssetDetailView> {
                                           ? HealthListView(
                                               detail: viewModel.assetDetail,
                                             )
-                                          : selectedTabIndex == 5
-                                              ? MaintenanceTabView(
-                                                  summaryData: SummaryData(
-                                                      assetID:
-                                                          widget.fleet!.assetId,
-                                                      assetSerialNumber: widget
-                                                          .fleet!
-                                                          .assetSerialNumber),
-                                                  serviceCalBack: (value,
-                                                      assetDataValue,
-                                                      services,
-                                                      selectedService) {
-                                                    viewModel.onServiceSelected(
-                                                      ctx: context,
-                                                      serviceId: value,
-                                                      assetDataValue:
-                                                          assetDataValue,
-                                                    );
-                                                  },
-                                                )
-                                              : viewModel.initialValue ==
-                                                      viewModel.popupList[0]
-                                                  ? Align(
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: AddIntervalsView(
-                                                        assetId: viewModel
-                                                            .assetDetail!,
-                                                      ),
-                                                    )
-                                                  : Container(
-                                                      child: EmptyView(
-                                                        title: "Coming soon",
+                                          : selectedTabIndex == 5 ||
+                                                  selectedTabIndex == 6
+                                              ? Stack(
+                                                  alignment: Alignment.topRight,
+                                                  children: [
+                                                    selectedTabIndex == 5
+                                                        ? MaintenanceTabView(
+                                                            summaryData: SummaryData(
+                                                                assetID: widget
+                                                                    .fleet!
+                                                                    .assetId,
+                                                                assetSerialNumber:
+                                                                    widget
+                                                                        .fleet!
+                                                                        .assetSerialNumber),
+                                                            serviceCalBack: (value,
+                                                                assetDataValue,
+                                                                services,
+                                                                selectedService) {
+                                                              viewModel
+                                                                  .onServiceSelected(
+                                                                ctx: context,
+                                                                serviceId:
+                                                                    value,
+                                                                assetDataValue:
+                                                                    assetDataValue,
+                                                              );
+                                                            },
+                                                          )
+                                                        : viewModel.initialValue ==
+                                                                viewModel
+                                                                    .popupList[0]
+                                                            ? Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        top:
+                                                                            40.0),
+                                                                child:
+                                                                    AddIntervalsView(
+                                                                  assetId: viewModel
+                                                                      .assetDetail!,
+                                                                ),
+                                                              )
+                                                            : SizedBox(),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 1),
+                                                      child: PopupMenuButton(
+                                                        iconSize: 35,
+                                                        itemBuilder: (ctx) {
+                                                          return List.generate(
+                                                              viewModel
+                                                                  .popupList
+                                                                  .length,
+                                                              (index) =>
+                                                                  PopupMenuItem(
+                                                                    value: viewModel
+                                                                            .popupList[
+                                                                        index],
+                                                                    child:
+                                                                        InsiteText(
+                                                                      text: viewModel
+                                                                              .popupList[
+                                                                          index],
+                                                                    ),
+                                                                  ));
+                                                        },
+                                                        onSelected: (value) {
+                                                          selectedTabIndex = 6;
+                                                          viewModel
+                                                              .onPopupSelected(
+                                                                  value
+                                                                      as String);
+                                                        },
                                                       ),
                                                     ),
+                                                  ],
+                                                )
+                                              : Container(
+                                                  child: EmptyView(
+                                                    title: "Coming soon",
+                                                  ),
+                                                ),
                     ),
                   ],
                 ),

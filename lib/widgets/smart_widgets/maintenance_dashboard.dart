@@ -122,7 +122,7 @@ class MaintenanceDashBoard extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: InsiteTextAlign(
-                          text: "VIEWING DATA FOR 30 DAYS",
+                          text: "Viewing upcoming data for next 30 days".toUpperCase(),
                           textAlign: TextAlign.center,
                           fontWeight: FontWeight.w900,
                           size: 10.0)),

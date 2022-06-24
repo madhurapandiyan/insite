@@ -143,6 +143,7 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
             singleAssetData = AssetCentricData(
               assetID: item.assetId,
               assetIcon: item.assetIcon,
+              deviceSerialNumber: item.deviceSerialNumber,
               assetSerialNumber: item.serialNumber,
               assetUID: item.customerAssetID.toString(),
               makeCode: item.make,

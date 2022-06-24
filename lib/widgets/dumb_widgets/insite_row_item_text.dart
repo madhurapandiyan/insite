@@ -222,6 +222,51 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
   }
 }
 
+class InsiteTableRowItemWithRowButton extends StatelessWidget {
+  final String? title;
+  final String? content;
+  final Color? buttonColor;
+  final Function? onTap;
+  const InsiteTableRowItemWithRowButton(
+      {this.title, this.buttonColor, this.content, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          InsiteText(
+            text: title,
+            size: 14,
+            fontWeight: FontWeight.bold,
+          ),
+          content!.isNotEmpty
+              ? InsiteButton(
+                  bgColor: buttonColor != null ? buttonColor : buttonColorFive,
+                  title: content,
+                  padding: EdgeInsets.all(0),
+                  height: 25,
+                  width: 70,
+                  fontSize: 11,
+                  onTap: () {
+                    onTap!();
+                  },
+                )
+              : InsiteText(
+                  text: "-",
+                  color: athenGrey,
+                  size: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+        ],
+      ),
+    );
+  }
+}
+
 class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
   final String? title;
   final List<dynamic>? texts;

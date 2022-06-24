@@ -9,6 +9,7 @@ import 'package:insite/views/maintenance/main/main_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'maintenance_view_model.dart';
 
@@ -25,13 +26,13 @@ class _MaintenanceViewState extends State<MaintenanceView> {
   final GlobalKey<AssetMaintenanceViewState> assetMaintenaceViewKey =
       new GlobalKey();
 
-  // void refreshWithFilter() {
-  //   if (isListSelected) {
-  //     mainViewKey.currentState!.onFilterApplied();
-  //   } else {
-  //     assetMaintenaceViewKey.currentState!.onFilterApplied();
-  //   }
-  // }
+  void refreshWithFilter() {
+    if (isListSelected) {
+      mainViewKey.currentState!.onFilterApplied();
+    } else {
+      assetMaintenaceViewKey.currentState!.onFilterApplied();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +44,13 @@ class _MaintenanceViewState extends State<MaintenanceView> {
           child: InsiteScaffold(
             viewModel: viewModel,
             onFilterApplied: () {
-              // viewModel.refresh();
-              // refreshWithFilter();
+              viewModel.refresh();
+              refreshWithFilter();
+            
             },
             onRefineApplied: () {
-              // viewModel.refresh();
-              // refreshWithFilter();
+              viewModel.refresh();
+              refreshWithFilter();
             },
             screenType: ScreenType.MAINTENANCE,
             body: Container(

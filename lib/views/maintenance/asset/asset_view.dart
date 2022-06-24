@@ -25,29 +25,18 @@ class AssetMaintenanceView extends StatefulWidget {
 
 class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
   onFilterApplied() {
-    viewModel.refresh();
+    model.refresh();
   }
 
   List<String?>? dateRange = [];
-  late var viewModel;
-
-  @override
-  void initState() {
-    viewModel = AssetMaintenanceViewModel();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    viewModel.dispose();
-    super.dispose();
-  }
+  var model;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetMaintenanceViewModel>.reactive(
       builder: (BuildContext context, AssetMaintenanceViewModel viewModel,
           Widget? _) {
+        model = viewModel;
         return Stack(
           children: [
             Column(
@@ -57,22 +46,16 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      InsiteText(
-                          text: Utils.getDateInFormatddMMyyyy(
-                                  viewModel.maintenanceStartDate) +
-                              " - " +
-                              Utils.getDateInFormatddMMyyyy(
-                                  viewModel.maintenanceEndDate),
-                          fontWeight: FontWeight.bold,
-                          size: 12),
-                      SizedBox(
-                        width: 4,
-                      ),
                       InsiteButton(
-                        width: 90,
-                        title: "Date Range",
-                        bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        width: 200,
+                        title: Utils.getDateInFormatddMMyyyy(
+                                viewModel.maintenanceStartDate) +
+                            " - " +
+                            Utils.getDateInFormatddMMyyyy(
+                                viewModel.maintenanceEndDate),
+                        //width: 90,
+                        //bgColor: Theme.of(context).backgroundColor,
+                        textColor: white,
                         onTap: () async {
                           dateRange = [];
                           dateRange = await showDialog(
