@@ -120,7 +120,7 @@ class MainViewState extends State<MainView> {
                               },
                             )
                           : EmptyView(
-                              title: "No Asset Found",
+                              title: "No Service Found",
                             ),
                 ),
                 viewModel.loadingMore

@@ -289,13 +289,19 @@ class ManageIntervals extends StatelessWidget {
                                     onTap: () {
                                       viewModel!.onSwitchTaped(index);
                                     },
-                                    leading: Icon(Icons.check_box_outlined,
-                                        color: data.state!
-                                            ? Theme.of(context).buttonColor
-                                            : Theme.of(context)
+                                    leading: data.state!
+                                        ? Icon(
+                                            Icons.check_box_rounded,
+                                            color:
+                                                Theme.of(context).buttonColor,
+                                          )
+                                        : Icon(
+                                            Icons.check_box_outline_blank,
+                                            color: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1!
-                                                .color),
+                                                .color,
+                                          ),
                                     title: InsiteText(
                                       text: data.text!,
                                     ),
@@ -495,7 +501,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InkWell(
-              onTap: (){
+              onTap: () {
                 widget.viewModel!.onClickingBackInAddInterval();
               },
               child: Container(
@@ -524,7 +530,9 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
 
             InsiteText(
               text: "Add Interval",

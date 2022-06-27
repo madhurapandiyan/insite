@@ -1876,9 +1876,7 @@ class Utils {
     List<Map<String, dynamic>> intervalList = [];
     Map<String, dynamic> data = {
       "intervalID": mainInterval!.intervalId,
-      "intervalDescription": mainInterval.intervalDescription!.isEmpty
-          ? "\"" + "\""
-          : mainInterval.intervalDescription,
+      "intervalDescription": mainInterval.intervalDescription!.isEmpty?"\""+ "\"": mainInterval.intervalDescription,
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };

@@ -94,6 +94,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
     //     serviceList!.add(element.serviceName);
     //   }
     // });
+    serviceNumber = serviceNo;
     Future.delayed(Duration.zero, () async {
       await getMaintenanceCheckList(serviceNo);
       await mainPopview(assetData: assetDataValue);
@@ -127,6 +128,8 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   bool _isinitialCheckList = true;
   bool get isinitialCheckList => _isinitialCheckList;
 
+  int? serviceNumber;
+
   TextEditingController workOrderDateController =
       TextEditingController(text: "");
   TextEditingController hourMeterDateController =
@@ -137,8 +140,11 @@ class MainDetailPopupViewModel extends InsiteViewModel {
       TextEditingController(text: "");
   TextEditingController serviceNoteController = TextEditingController(text: "");
   MaintenanceCheckListModelPop? serviceCheckList;
-  getSelectedDate(String newDate) {
-    hourMeterDateController.text = newDate;
+  String? hourMeterDate;
+  getSelectedDate(DateTime? newDate) {
+    hourMeterDateController.text =
+        Utils.getDateInFormatddMMyyyy(newDate.toString());
+    hourMeterDate = newDate!.toLocal().toIso8601String();
     notifyListeners();
   }
 
@@ -147,12 +153,21 @@ class MainDetailPopupViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  updateModelValue(MainPopViewDropDown? onchangedValue) {
-    initialValue = onchangedValue!;
-    _isinitialCheckList = false;
-    _checkLists = onchangedValue.partList;
+  updateModelValue(MainPopViewDropDown? onchangedValue) async {
+    try {
+      showLoadingDialog();
+      await getMaintenanceCheckList(onchangedValue!.serviceNo);
+      initialValue = onchangedValue;
+      // if (serviceCheckList!.maintenanceCheckList!
+      //     .any((element) => element.checkListID == null)) {
+      //   _checkLists!.clear();
+      // } else {
+      _checkLists = serviceCheckList?.maintenanceCheckList;
+      // }
 
-    notifyListeners();
+      hideLoadingDialog();
+      notifyListeners();
+    } catch (e) {}
   }
 
   getMaintenanceCheckList(int? serviceId) async {
@@ -179,9 +194,11 @@ class MainDetailPopupViewModel extends InsiteViewModel {
                 limit: pageSize,
                 pageNo: pageNumber));
     dropDown!.clear();
-    _serviceName = maintenanceListData!.maintenanceList!.first.serviceName!;
+    var singleMaintenanceList = maintenanceListData!.maintenanceList!
+        .singleWhere((element) => element.serviceNumber == serviceNumber);
     initialValue = MainPopViewDropDown(
-        initialValue: maintenanceListData.maintenanceList!.first.serviceName!,
+        serviceNo: singleMaintenanceList.serviceNumber,
+        initialValue: singleMaintenanceList.serviceName,
         partList: serviceCheckList?.maintenanceCheckList);
     _checkLists = initialValue?.partList;
     dropDown!.add(initialValue!);
@@ -202,11 +219,12 @@ class MainDetailPopupViewModel extends InsiteViewModel {
         model: maintenanceListData.maintenanceList!.first.model,
         serialNo: maintenanceListData.maintenanceList!.first.serialNumber);
     serviceCheckList?.maintenanceServiceList?.forEach((serviceList) {
-      if (dropDown!
-          .any((element) => element.initialValue == serviceList.serviceName)) {
+      if (serviceList.serviceId == serviceNumber) {
       } else {
         dropDown!.add(MainPopViewDropDown(
-            initialValue: serviceList.serviceName, partList: []));
+            initialValue: serviceList.serviceName,
+            partList: [],
+            serviceNo: serviceList.serviceId));
         _isinitialCheckList = false;
       }
     });
@@ -287,7 +305,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
             .onCompletion(
                 assetId: _assetId,
                 performedBy: performedByController.text,
-                serviceDate: hourMeterDateController.text,
+                serviceDate: hourMeterDate,
                 serviceMeter: serviceMeterController.text,
                 serviceNo: 12,
                 serviceNotes: serviceNoteController.text,
@@ -297,6 +315,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
             snackbarService!.showSnackbar(
                 message: data.data["maintenancepostData"]["message"]);
             dispose();
+            hideLoadingDialog();
             return data.data["maintenancepostData"]["message"];
           }
         }
@@ -341,8 +360,9 @@ class MainPopViewData {
 
 class MainPopViewDropDown {
   final String? initialValue;
+  final int? serviceNo;
   final List<MaitenanceCheckListDataPop>? partList;
-  MainPopViewDropDown({this.initialValue, this.partList});
+  MainPopViewDropDown({this.initialValue, this.partList, this.serviceNo});
 }
 
 class Dummy {

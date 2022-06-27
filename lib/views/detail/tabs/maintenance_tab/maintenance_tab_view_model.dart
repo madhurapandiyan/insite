@@ -24,7 +24,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
   AssetService? _assetService = locator<AssetService>();
 
   int pageNumber = 1;
-  int pageSize = 20;
+  int pageSize = 50;
 
   num? _totalCount = 0;
   num? get totalCount => _totalCount;

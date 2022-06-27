@@ -171,6 +171,9 @@ class AddIntervalsViewModel extends InsiteViewModel {
     if (frequencyController.text == "0") {
       return;
     }
+    if(frequencyController.text==""){
+      return;
+    }
     value = int.parse(
         frequencyController.text.isEmpty ? "0" : frequencyController.text);
     value = value! - 1;
@@ -223,7 +226,8 @@ class AddIntervalsViewModel extends InsiteViewModel {
           model: doubleQuote + singleAssetDetail!.model! + doubleQuote,
           serialno:
               doubleQuote + singleAssetDetail!.assetSerialNumber! + doubleQuote,
-          currentHrmeter: null,
+          currentHrmeter:
+              singleAssetDetail?.hourMeter?.toDouble() ?? null,
           checkList: maintenanceCheckList);
     } catch (e) {
       Logger().e(e.toString());
@@ -349,7 +353,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
     intervalId.clear();
     partListId.clear();
     checkListId.clear();
-    selectedIntervals=null;
+    selectedIntervals = null;
     var selectedIntervalList =
         switchState.where((element) => element.state == true).toList();
     var data = maintenanceIntervalsData!.intervalList!
