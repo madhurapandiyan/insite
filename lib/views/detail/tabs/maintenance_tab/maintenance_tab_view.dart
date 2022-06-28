@@ -368,7 +368,7 @@ class MaintenanceTabListData extends StatelessWidget {
                           ],
                         ),
                         Table(
-                            border: TableBorder.all(),
+                          border: TableBorder.all(),
                           children: [
                             TableRow(children: [
                               InsiteTableRowItem(
@@ -415,7 +415,7 @@ class HistoryListData extends StatelessWidget {
                   title: Table(
                     columnWidths: {
                       0: FlexColumnWidth(3),
-                      1: FlexColumnWidth(1.5),
+                      1: FlexColumnWidth(2),
                       2: FlexColumnWidth(1.5),
                     },
                     border: TableBorder.all(
@@ -429,8 +429,8 @@ class HistoryListData extends StatelessWidget {
                               assetIconKey: data.assetIcon, model: data.model),
                         ),
                         InsiteTableRowItem(
-                          content: data.make,
-                          title: "Make",
+                          content: data.model,
+                          title: "Model",
                         ),
                       ]),
                       TableRow(children: [
@@ -469,7 +469,8 @@ class HistoryListData extends StatelessWidget {
                               title: "Hour Meter",
                             ),
                             InsiteTableRowItem(
-                              content: data.serviceDate,
+                              content: Utils.getDateInFormatddMMyyyy(
+                                  data.serviceDate),
                               title: "Service Completion Date",
                             ),
                             InsiteTableRowItem(

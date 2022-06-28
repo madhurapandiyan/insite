@@ -99,6 +99,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
   getHistoryMaintenanceListItem({bool? isRefreshing}) async {
     if (isRefreshing == true) {
       isHistoryDataOptained = true;
+      historyData?.clear();
       notifyListeners();
     }
     await getSelectedFilterData();

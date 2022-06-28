@@ -306,8 +306,9 @@ class MainDetailPopupViewModel extends InsiteViewModel {
                 assetId: _assetId,
                 performedBy: performedByController.text,
                 serviceDate: hourMeterDate,
-                serviceMeter: serviceMeterController.text,
-                serviceNo: 12,
+                serviceMeter:
+                    num.parse(serviceMeterController.text).toInt().toString(),
+                serviceNo: serviceNumber,
                 serviceNotes: serviceNoteController.text,
                 workOrder: workOrderDateController.text));
         if (data != null) {

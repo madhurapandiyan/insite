@@ -274,7 +274,7 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                         height: 30,
                       ),
                       Container(
-                        color: tango,
+                        color: Theme.of(context).backgroundColor,
                         width: MediaQuery.of(context).size.width * 1,
                         child: TabBar(
                             controller: _tabController,
@@ -283,15 +283,13 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                             onTap: (i) {
                               viewModel.onTabChange(i);
                             },
-                            labelColor: Theme.of(context).buttonColor,
-                            unselectedLabelColor: Colors.white,
-                            //isScrollable: true,
+                            labelColor: Theme.of(context).backgroundColor,
+                            unselectedLabelColor: Theme.of(context).buttonColor,
                             indicatorSize: TabBarIndicatorSize.tab,
+                           
                             indicator: BoxDecoration(
                                 //borderRadius: BorderRadius.circular(10),
-                                color: Theme.of(context)
-                                    .backgroundColor
-                                    .withOpacity(0.9),
+                                color: Theme.of(context).buttonColor,
                                 border: Border.all(color: Colors.white)),
                             tabs: [
                               Container(
