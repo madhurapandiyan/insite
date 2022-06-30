@@ -3,6 +3,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/complete.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/maintenance.dart';
+import 'package:insite/core/models/maintenance_checkList.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/serviceItem.dart';
@@ -27,7 +28,7 @@ class MainViewModel extends InsiteViewModel {
   GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
 
   int pageNumber = 1;
-  int pageSize = 20;
+  int pageSize = 50;
 
   num? _totalCount = 0;
   num? get totalCount => _totalCount;
@@ -71,7 +72,9 @@ class MainViewModel extends InsiteViewModel {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        _loadMore();
+        if (_maintenanceList.length != _totalCount) {
+          _loadMore();
+        }
       }
     });
     _maintenanceService!.setUp();
@@ -89,8 +92,9 @@ class MainViewModel extends InsiteViewModel {
     if (isVisionLink) {
       MaintenanceViewData? result =
           await _maintenanceService!.getMaintenanceData(
-        startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-        endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        startTime:
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(maintenanceStartDate),
+        endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(maintenanceEndDate),
         limit: pageSize,
         page: pageNumber,
       );
@@ -125,8 +129,8 @@ class MainViewModel extends InsiteViewModel {
               query: await graphqlSchemaService!.getMaintenanceListData(
                   appliedFilter: appliedFilters,
                   startDate:
-                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                  endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                      Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+                  endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
                   limit: pageSize,
                   pageNo: pageNumber));
 
@@ -140,6 +144,7 @@ class MainViewModel extends InsiteViewModel {
                 assetID: item.assetId,
                 assetSerialNumber: item.serialNumber,
                 assetStatus: item.status,
+                assetIcon: item.assetIcon,
                 completedService: item.completedService,
                 serviceCompletedDate: item.serviceDate,
                 telematicDeviceId: item.telematicsDeviceId,
@@ -159,6 +164,7 @@ class MainViewModel extends InsiteViewModel {
                 model: item.model,
                 service: item.serviceName,
                 serviceId: item.serviceNumber,
+                dealerName: item.dealerName,
                 deviceType: item.deviceType,
                 location: Location(
                     city: item.city,
@@ -192,6 +198,7 @@ class MainViewModel extends InsiteViewModel {
   refresh() async {
     _loading = true;
     notifyListeners();
+    _maintenanceList.clear();
     await getMaintenanceViewList();
     // await getSelectedFilterData();
     // await getDateRangeFilterData();
@@ -240,6 +247,24 @@ class MainViewModel extends InsiteViewModel {
     }
   }
 
+  onServiceSelected({
+    BuildContext? ctx,
+    int? serviceId,
+    AssetData? assetDataValue,
+  }) async {
+    MaintenanceCheckListModel? serviceCheckList;
+
+    showDialog(
+        context: ctx!,
+        builder: (context) {
+          return MainDetailPopupView(
+            parentContext: context,
+            assetDataValue: assetDataValue,
+            serviceNo: serviceId,
+          );
+        });
+  }
+
   onDetailPageSelected(SummaryData? summaryData) {
     _navigationService!.navigateTo(
       assetDetailViewRoute,
@@ -250,7 +275,7 @@ class MainViewModel extends InsiteViewModel {
             assetIdentifier: summaryData.assetID,
           ),
           type: screen.ScreenType.MAINTENANCE,
-          index: 2),
+          index: 5),
     );
     // _navigationService!.navigateToView(
     //   AssetDetailView(
@@ -266,17 +291,17 @@ class MainViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onServiceSelected(num? serviceId, AssetData? assetDataValue,
-      SummaryData? assetData, List<Services?>? services) async {
-    // ServiceItem? serviceItem =
-    //     await _maintenanceService!.getServiceItemCheckList(serviceId!);
+  // onServiceSelected(num? serviceId, AssetData? assetDataValue,
+  //     SummaryData? assetData, List<Services?>? services) async {
+  //   // ServiceItem? serviceItem =
+  //   //     await _maintenanceService!.getServiceItemCheckList(serviceId!);
 
-    // _navigationService!.navigateToView(
-    //   MainDetailPopupView(
-    //       serviceItem: serviceItem!,
-    //       summaryData: assetData!,
-    //       assetDataValue: assetDataValue,
-    //       services: services!),
-    // );
-  }
+  //   // _navigationService!.navigateToView(
+  //   //   MainDetailPopupView(
+  //   //       serviceItem: serviceItem!,
+  //   //       summaryData: assetData!,
+  //   //       assetDataValue: assetDataValue,
+  //   //       services: services!),
+  //   // );
+  // }
 }

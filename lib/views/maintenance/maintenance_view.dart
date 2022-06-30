@@ -9,6 +9,7 @@ import 'package:insite/views/maintenance/main/main_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'maintenance_view_model.dart';
 
@@ -45,6 +46,7 @@ class _MaintenanceViewState extends State<MaintenanceView> {
             onFilterApplied: () {
               viewModel.refresh();
               refreshWithFilter();
+            
             },
             onRefineApplied: () {
               viewModel.refresh();

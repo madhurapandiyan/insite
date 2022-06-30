@@ -111,6 +111,10 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.MANUFACTURER;
       case 22:
         return FilterType.SERVICE_TYPE;
+      case 23:
+        return FilterType.SERVICE_STATUS;
+      case 24:
+        return FilterType.ASSET_TYPE;
       default:
         return FilterType.ALL_ASSETS;
     }
@@ -187,6 +191,12 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.SERVICE_TYPE:
         writer.writeByte(22);
+        break;
+      case FilterType.SERVICE_STATUS:
+        writer.writeByte(23);
+        break;
+      case FilterType.ASSET_TYPE:
+        writer.writeByte(24);
         break;
     }
   }
@@ -333,6 +343,8 @@ const _$FilterTypeEnumMap = {
   FilterType.REPORT_TYPE: 'REPORT_TYPE',
   FilterType.MANUFACTURER: 'MANUFACTURER',
   FilterType.SERVICE_TYPE: 'SERVICE_TYPE',
+  FilterType.SERVICE_STATUS: 'SERVICE_STATUS',
+  FilterType.ASSET_TYPE: 'ASSET_TYPE',
 };
 
 const _$FilterSubTypeEnumMap = {

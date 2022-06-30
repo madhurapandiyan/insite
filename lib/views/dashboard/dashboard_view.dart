@@ -18,6 +18,7 @@ import 'package:insite/widgets/smart_widgets/fault_dropdown_widget.dart';
 import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:insite/widgets/smart_widgets/maintenance_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/reusable_dropdown_widget.dart';
 import 'package:logger/logger.dart';
@@ -279,6 +280,17 @@ class _DashboardViewState extends State<DashboardView> {
                     ),
                     SizedBox(
                       height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: MaintenanceDashBoard(
+                        countData: viewModel.maintenanceDashboardCount,
+                        isLoading: viewModel.maintenanceLoading,
+                        onFilterSelected: (val, filterType, count) {
+                          viewModel.onMaintenanceFilterClicked(
+                              val, filterType, count);
+                        },
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),

@@ -6,6 +6,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/login_response.dart';
+import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';
@@ -135,11 +136,16 @@ class HttpWrapper {
   var clientEleven;
 
   onTokenExpired() async {
-    LoginResponse? response = await _localService!.getTokenInfo();
-    _localService!.clearAll();
-    _localStorageService.clearAll();
-    await navigationService!.clearTillFirstAndShowView(IndiaStackLoginView(),
-        arguments: LoginArguments(response: response));
+    try {
+      LoginResponse? response = await _localService!.getTokenInfo();
+      Logger().wtf(response?.toJson());
+      _localService!.clearAll();
+      _localStorageService.clearAll();
+      navigationService!.replaceWith(indiaStackLoginViewRoute,
+          arguments: LoginArguments(response: response));
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   Future<Response<dynamic>> dioElevenRetryInterceptor(

@@ -88,6 +88,20 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   String? get endDate => _endDate;
 
+  String? _maintenanceStartDate =
+      DateFormat("yyyy-MM-dd").format(DateTime.now());
+  String? get maintenanceStartDate => _maintenanceStartDate;
+  set maintenanceStartDate(String? maintenanceStartDate) {
+    this._maintenanceStartDate = maintenanceStartDate;
+  }
+
+  String? _maintenanceEndDate =
+      DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 30)));
+  String? get maintenanceEndDate => _maintenanceEndDate;
+  set maintenanceEndDate(String? maintenanceEndDate) {
+    this._maintenanceEndDate = maintenanceEndDate;
+  }
+
   DateRangeType _dateType = DateRangeType.currentWeek;
   set dateType(DateRangeType dateType) {
     this._dateType = dateType;
@@ -168,6 +182,7 @@ abstract class InsiteViewModel extends BaseViewModel {
       Logger().w("start date $startDate");
       Logger().w("end date $endDate");
     }
+    getMaintenanceDateFilter();
   }
 
   onClearFilterValue() async {
@@ -217,6 +232,13 @@ abstract class InsiteViewModel extends BaseViewModel {
     } catch (e) {
       throw e;
     }
+  }
+
+  getMaintenanceDateFilter() {
+    _maintenanceStartDate = _localService?.getMaintenanceFromDate() ??
+        DateFormat("yyyy-MM-dd").format(DateTime.now());
+    _maintenanceEndDate = _localService?.getMaintenanceEndDate() ??
+        DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 30)));
   }
 
   List<FilterData?>? appliedFilters = [];

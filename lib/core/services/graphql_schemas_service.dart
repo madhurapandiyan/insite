@@ -4,6 +4,7 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
 import 'package:logger/logger.dart';
 
 import '../logger.dart';
@@ -47,7 +48,9 @@ class GraphqlSchemaService extends BaseService {
   List<int> reportFormat = [];
   List<int> reportType = [];
   List<String> severityList = [];
+  List<String> serviceStatusList = [];
   List<String> serviceTypeList = [];
+  List<String> assetTypeList = [];
 
   getReportFilterindividualList(
       {List<FilterData?>? filtlerList,
@@ -86,7 +89,7 @@ class GraphqlSchemaService extends BaseService {
     String doubleQuote = "\"";
     var data = filtlerList!.where((element) => element?.type == type).toList();
     data.forEach((element) {
-      Logger().w(element?.toJson());
+      // Logger().w(element?.toJson());
       if (individualList!.contains(element)) {
       } else {
         individualList.add(doubleQuote + element!.title! + doubleQuote);
@@ -107,7 +110,10 @@ class GraphqlSchemaService extends BaseService {
     reportFormat.clear();
     reportType.clear();
     severityList.clear();
+    serviceStatusList.clear();
+    serviceStatusList.clear();
     serviceTypeList.clear();
+    assetTypeList.clear();
   }
 
   cleaValue() {
@@ -176,8 +182,16 @@ class GraphqlSchemaService extends BaseService {
             type: FilterType.SEVERITY);
         getIndividualList(
             filtlerList: filtlerList,
+            individualList: serviceStatusList,
+            type: FilterType.SERVICE_STATUS);
+        getIndividualList(
+            filtlerList: filtlerList,
             individualList: serviceTypeList,
             type: FilterType.SERVICE_TYPE);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: assetTypeList,
+            type: FilterType.ASSET_TYPE);
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -2842,9 +2856,9 @@ mutation{
     limit: ${limit ?? null}, 
     pageNumber: ${pageNo ?? null},
     toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"}, 
-    serviceStatus: "", 
-    serviceType: ${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
-    assetType: "", 
+    serviceStatus:  ${serviceStatusList.isEmpty ? [] : serviceStatusList}, 
+    serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
+    assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
     assetId: ${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"},
     make:  ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
     manufacturer:  ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
@@ -2896,8 +2910,11 @@ mutation{
       completedService
       customerName
       address
+      dealerName
+      workOrder
     }
     status
+    count
   }
 }
 """;
@@ -2921,9 +2938,9 @@ fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"}
 limit: ${limit ?? null}
 pageNumber: ${pageNo ?? null}
 toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
-serviceStatus:${serviceTypeList.isEmpty ? [] : serviceTypeList}
-serviceType:${severityList.isEmpty ? [] : severityList}
-assetType:[]
+serviceStatus:${serviceStatusList.isEmpty ? [] : serviceStatusList}
+serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
+assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
 assetId:""
 make:[]
 manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}
@@ -2933,17 +2950,20 @@ fuelLevel:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! 
 deviceType: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
   ){
     status,
+    count,
     assetMaintenanceList{
       count,
 CustomerAssetID,
 assetId,
 serialNumber,
+assetIcon,
 make,
 model,
 currentHourMeter,
 servicedescription,
 serviceStatusName,
 serviceName,
+deviceSerialNumber,
 maintenanceTotals{
   count,
   name,
@@ -2963,6 +2983,8 @@ query{
     assetId:$assetId
   ){
     status,
+    serviceStatus,
+    dueInOverdueBy,
     maintenanceCheckList{
       checkListName,
       checkListId,
@@ -3036,6 +3058,116 @@ toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
       }
     }
   }
+}""";
+    return data;
+  }
+
+  maintenanceDashboardCount(
+      {String? fromDate, String? endDate, String? prodFamily}) {
+    var data = """query{
+maintenanceDashboard(fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"},toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"},productFamily:${prodFamily == null ? "\"" + "\"" : "\"" + prodFamily + "\""}){
+  status,
+  dashboardData{
+    count,
+    alias,
+    displayName,
+    subCount{
+      displayName,
+      alias,
+      count
+    }
+  }
+}
+}""";
+    return data;
+  }
+
+  maintenanceInterval({int? pageNo, String? searchWord, String? assetId}) {
+    var data = """
+query{
+maintenanceIntervals(
+  pageNumber:$pageNo,
+  search:${searchWord == null ? "\"\"" : "${"\"" + searchWord + "\""}"},
+  assetId:${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"}
+){
+  status,
+  totalCount,
+  intervalList{
+    intervalName,
+    intervalID,
+    editable,
+    firstOccurrences,
+    editable,
+    intervalDescription,
+    checkList{
+      checkListName,
+      checkListDescription,
+      checkListID,
+      partList{
+        description,
+        units,
+        partId,
+        partName,
+        quantity,
+        partNo
+      }
+    }
+  }
+}
+}""";
+    return data;
+  }
+
+  addMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
+    var data = """
+mutation{
+  createMaintenanceIntervals(
+    intervalName:${mainInterval!.intervalName ?? ""},
+    initialOccurence:${mainInterval.initialOccurence ?? 0},
+     description:${mainInterval.description ?? ""},
+    assetId:${mainInterval.assetId ?? ""},
+    serialNumber:${mainInterval.serialno ?? ""},
+    make:${mainInterval.make ?? ""},
+    model:${mainInterval.model ?? ""},
+    currentHourMeter:${mainInterval.currentHrmeter ?? null},
+    checklist:${Utils.addMaintenanceIntervals(mainInterval.checkList!)}
+  ){
+    status,
+     message
+  }
+}""";
+    return data;
+  }
+
+  updateMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
+    var data = """
+mutation{
+  updateMaintenanceIntervals(
+    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)},
+    checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
+    status,
+     message
+  }
+}""";
+    return data;
+  }
+
+  deletingMaintenanceIntervals(
+      {List<int>? interval,
+      List<int>? check,
+      List<int>? parts,
+      String? assetId}) {
+    var data = """
+mutation{
+ maintenanceIntervalsDelete(
+  IntervaListIds:$interval,
+  checkListIds:$check,
+  partIds:$parts,
+  assetId:${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"}
+){
+  status,
+  message
+}
 }""";
     return data;
   }

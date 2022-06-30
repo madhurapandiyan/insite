@@ -6,6 +6,7 @@ import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/add_intervals/add_intervals_view.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard.dart';
 import 'package:insite/views/detail/tabs/health/health_dashboard/health_dashboard_view.dart';
 import 'package:insite/views/detail/tabs/health/health_list/health_list_view.dart';
@@ -88,6 +89,12 @@ class _TabPageState extends State<AssetDetailView> {
       "assets/images/health.svg",
       ScreenType.HEALTH,
     ),
+    Category(
+      6,
+      "MAINTENANCE",
+      "assets/images/maintenance.svg",
+      ScreenType.HEALTH,
+    ),
   ];
 
   List<Category> typeTwo = [
@@ -105,33 +112,6 @@ class _TabPageState extends State<AssetDetailView> {
     ),
     Category(
       3,
-      "LOCATION",
-      "assets/images/location.svg",
-      ScreenType.LOCATION,
-    ),
-  ];
-
-  List<Category> typeThree = [
-    Category(
-      1,
-      "DASHBOARD",
-      "assets/images/clock.svg",
-      ScreenType.DASHBOARD,
-    ),
-    Category(
-      2,
-      "FAULTCODES",
-      "assets/images/health.svg",
-      ScreenType.HEALTH,
-    ),
-    Category(
-      3,
-      "MAINTENANCE",
-      "assets/images/maint.svg",
-      ScreenType.HEALTH,
-    ),
-    Category(
-      4,
       "LOCATION",
       "assets/images/location.svg",
       ScreenType.LOCATION,
@@ -298,40 +278,47 @@ class _TabPageState extends State<AssetDetailView> {
                     ),
                     SizedBox(height: 13.0),
                     widget.type == ScreenType.HEALTH
-                        ? Container(
-                            height: 80,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: typeTwo.length,
-                              itemBuilder: (context, index) {
-                                Category category = typeTwo[index];
-                                return _tabcontainer(index, category);
-                              },
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Wrap(
+                                  direction: Axis.horizontal,
+                                  spacing: 15,
+                                  children:
+                                      List.generate(typeTwo.length, (index) {
+                                    Category category = typeTwo[index];
+                                    return _tabcontainer(index, category);
+                                  }),
+                                ),
+                              ],
                             ),
                           )
-                        : widget.type == ScreenType.MAINTENANCE
-                            ? Container(
-                                height: 80,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: typeThree.length,
-                                  itemBuilder: (context, index) {
-                                    Category category = typeThree[index];
-                                    return _tabcontainer(index, category);
-                                  },
+                        : Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Wrap(
+                                    direction: Axis.horizontal,
+                                    spacing: 15,
+                                    children:
+                                        List.generate(typeOne.length, (index) {
+                                      Category category = typeOne[index];
+                                      return _tabcontainer(index, category);
+                                    }),
+                                  ),
                                 ),
-                              )
-                            : Container(
-                                height: 80,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: typeOne.length,
-                                  itemBuilder: (context, index) {
-                                    Category category = typeOne[index];
-                                    return _tabcontainer(index, category);
-                                  },
-                                ),
-                              ),
+                              ],
+                            ),
+                          ),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Flexible(
                       child: selectedTabIndex == 0
                           ? widget.type == ScreenType.HEALTH
@@ -364,30 +351,9 @@ class _TabPageState extends State<AssetDetailView> {
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,
                                           screenType: widget.type)
-                                      : widget.type == ScreenType.MAINTENANCE
-                                          ? MaintenanceTabView(
-                                              summaryData: SummaryData(
-                                                  assetID:
-                                                      widget.fleet!.assetId,
-                                                  assetSerialNumber: widget
-                                                      .fleet!
-                                                      .assetSerialNumber),
-                                              serviceCalBack: (value,
-                                                  assetDataValue,
-                                                  services,
-                                                  selectedService) {
-                                                viewModel.onServiceSelected(
-                                                    context,
-                                                    value,
-                                                    assetDataValue,
-                                                    widget.fleet,
-                                                    services,
-                                                    selectedService);
-                                              },
-                                            )
-                                          : SingleAssetOperationView(
-                                              detail: viewModel.assetDetail,
-                                            )
+                                      : SingleAssetOperationView(
+                                          detail: viewModel.assetDetail,
+                                        )
                                   : selectedTabIndex == 3
                                       ? AssetLocationView(
                                           detail: viewModel.assetDetail,
@@ -396,11 +362,75 @@ class _TabPageState extends State<AssetDetailView> {
                                           ? HealthListView(
                                               detail: viewModel.assetDetail,
                                             )
-                                          : Container(
-                                              child: EmptyView(
-                                                title: "Coming soon",
-                                              ),
-                                            ),
+                                          : selectedTabIndex == 5
+                                              ? Stack(
+                                                  alignment: Alignment.topRight,
+                                                  children: [
+                                                    MaintenanceTabView(
+                                                      summaryData: SummaryData(
+                                                          assetID: widget
+                                                              .fleet!.assetId,
+                                                          assetSerialNumber: widget
+                                                              .fleet!
+                                                              .assetSerialNumber),
+                                                      serviceCalBack: (value,
+                                                          assetDataValue,
+                                                          services,
+                                                          selectedService) {
+                                                        viewModel
+                                                            .onServiceSelected(
+                                                          ctx: context,
+                                                          serviceId: value,
+                                                          assetDataValue:
+                                                              assetDataValue,
+                                                        );
+                                                      },
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 5),
+                                                      child: PopupMenuButton(
+                                                        iconSize: 35,
+                                                        itemBuilder: (ctx) {
+                                                          return List.generate(
+                                                              viewModel
+                                                                  .popupList
+                                                                  .length,
+                                                              (index) =>
+                                                                  PopupMenuItem(
+                                                                    value: viewModel
+                                                                            .popupList[
+                                                                        index],
+                                                                    child:
+                                                                        InsiteText(
+                                                                      text: viewModel
+                                                                              .popupList[
+                                                                          index],
+                                                                    ),
+                                                                  ));
+                                                        },
+                                                        onSelected: (value) {
+                                                          selectedTabIndex = 6;
+                                                          viewModel
+                                                              .onPopupSelected(
+                                                                  value
+                                                                      as String);
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              : viewModel.initialValue ==
+                                                      viewModel.popupList[0]
+                                                  ? AddIntervalsView(
+                                                      assetId: viewModel
+                                                          .assetDetail!,
+                                                    )
+                                                  : Container(
+                                                      child: EmptyView(
+                                                        title: "Coming soon",
+                                                      ),
+                                                    ),
                     ),
                   ],
                 ),
@@ -418,26 +448,26 @@ class _TabPageState extends State<AssetDetailView> {
       child: Stack(
         alignment: Alignment.center,
         children: [
+          // Container(
+          //   width: 80,
+          //   height: 80,
+          //   child: Card(
+          //     color: selectedTabIndex == index
+          //         ? Theme.of(context).buttonColor
+          //         : Theme.of(context).backgroundColor,
+          //     semanticContainer: true,
+          //     shape: RoundedRectangleBorder(
+          //       side: BorderSide(
+          //           color: Theme.of(context).textTheme.bodyText1!.color!),
+          //       borderRadius: BorderRadius.only(
+          //           topLeft: Radius.circular(10),
+          //           topRight: Radius.circular(10)),
+          //     ),
+          //   ),
+          // ),
           Container(
-            width: 80,
-            height: 80,
-            child: Card(
-              color: selectedTabIndex == index
-                  ? Theme.of(context).buttonColor
-                  : Theme.of(context).backgroundColor,
-              semanticContainer: true,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1!.color!),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
-              ),
-            ),
-          ),
-          Container(
-              width: 60,
-              height: 60,
+              width: 50,
+              height: 50,
               child: Card(
                 semanticContainer: true,
                 color: selectedTabIndex == index
@@ -455,6 +485,8 @@ class _TabPageState extends State<AssetDetailView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SvgPicture.asset(category.image,
+                        height: 25,
+                        width: 25,
                         color: selectedTabIndex == index
                             ? Theme.of(context).backgroundColor
                             : Theme.of(context).iconTheme.color)
@@ -465,6 +497,12 @@ class _TabPageState extends State<AssetDetailView> {
       ),
     );
   }
+  //  PopupMenuButton(
+  //                                                     itemBuilder: (ctx){
+  //                                                       return List.generate(1, (index) => PopupMenuItem(
+  //                                                         child: InsiteText(text: "Add Intervals"),
+  //                                                       ));
+  //                                                     })
 
   void onTap(int index) {
     setState(() {

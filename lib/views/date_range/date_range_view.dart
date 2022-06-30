@@ -6,6 +6,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -13,11 +14,10 @@ import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class DateRangeView extends StatefulWidget {
-  final ScreenType? screenType;
   @override
   _DateRangeViewState createState() => _DateRangeViewState();
 
-  const DateRangeView({Key? key, this.screenType}) : super(key: key);
+  const DateRangeView({Key? key}) : super(key: key);
 }
 
 class _DateRangeViewState extends State<DateRangeView> {
@@ -28,14 +28,6 @@ class _DateRangeViewState extends State<DateRangeView> {
   bool isCalenderVisible = false;
   bool customCalenderIndex = false;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.screenType == ScreenType.MAINTENANCE) {
-      customFromDate = DateTime.now();
-    }
-  }
 
   showFromToDatePicker(
       {CustomDatePick? currentCustomDatePick,
@@ -52,9 +44,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                 : customFromDate == null
                     ? endDate!
                     : customFromDate!,
-            lastDate: widget.screenType != ScreenType.MAINTENANCE
-                ? DateTime.now()
-                : DateTime(9999))
+            lastDate: DateTime(9999))
         .then((selectedDay) {
       setState(() {
         _selectedDay = selectedDay;
@@ -65,9 +55,7 @@ class _DateRangeViewState extends State<DateRangeView> {
         if (currentCustomDatePick == CustomDatePick.customToDate) {
           customToDate = _selectedDay;
           toDate = _selectedDay;
-          if (widget.screenType == ScreenType.MAINTENANCE) {
-            fromDate = customFromDate;
-          }
+
           if (fromDate == null) {
             Utils.showToast("Please select start date ");
           } else {
@@ -86,9 +74,7 @@ class _DateRangeViewState extends State<DateRangeView> {
       builder: (BuildContext context, DateRangeViewModel viewModel, Widget? _) {
         return Container(
           width: MediaQuery.of(context).size.width * 0.9,
-          height: widget.screenType == ScreenType.MAINTENANCE
-              ? MediaQuery.of(context).size.height * 0.25
-              : MediaQuery.of(context).size.height * 0.95,
+          height: MediaQuery.of(context).size.height * 0.95,
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             border: Border.all(
@@ -100,176 +86,164 @@ class _DateRangeViewState extends State<DateRangeView> {
             padding: EdgeInsets.all(16.0),
             child: Column(
               children: [
-                widget.screenType == ScreenType.MAINTENANCE
-                    ? SizedBox()
-                    : Column(
-                        children: [
-                          Row(
-                            children: [
-                              InsiteText(
-                                  text: 'Date Range'.toUpperCase(),
-                                  fontWeight: FontWeight.bold,
-                                  size: 14),
-                              Expanded(
-                                child: Container(),
-                              ),
-                              InsiteText(
-                                  text: (fromDate == null || toDate == null)
-                                      ? ''
-                                      : '${Utils.parseDate(fromDate!)} - ${Utils.parseDate(toDate!)}',
-                                  fontWeight: FontWeight.bold,
-                                  size: 14),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Divider(
-                              color: Theme.of(context).dividerColor,
-                              thickness: 3,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              RangeLabel(
-                                  defaultDateRange: DateRangeType.today,
-                                  width: 0.25,
-                                  onTapCallback: () {
-                                    onLabelClicked(
-                                        viewModel, DateRangeType.today);
-                                  },
-                                  selectedDateRange:
-                                      viewModel.selectedDateRange,
-                                  label: "Today"),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              RangeLabel(
-                                  defaultDateRange: DateRangeType.yesterday,
-                                  width: 0.3,
-                                  onTapCallback: () {
-                                    onLabelClicked(
-                                        viewModel, DateRangeType.yesterday);
-                                  },
-                                  selectedDateRange:
-                                      viewModel.selectedDateRange,
-                                  label: "Yesterday"),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              RangeLabel(
-                                  defaultDateRange: DateRangeType.currentWeek,
-                                  width: 0.35,
-                                  onTapCallback: () {
-                                    onLabelClicked(
-                                        viewModel, DateRangeType.currentWeek);
-                                  },
-                                  selectedDateRange:
-                                      viewModel.selectedDateRange,
-                                  label: "Current Week"),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              RangeLabel(
-                                  defaultDateRange: DateRangeType.previousWeek,
-                                  width: 0.35,
-                                  onTapCallback: () {
-                                    onLabelClicked(
-                                        viewModel, DateRangeType.previousWeek);
-                                  },
-                                  selectedDateRange:
-                                      viewModel.selectedDateRange,
-                                  label: "Previous Week"),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              RangeLabel(
-                                  defaultDateRange: DateRangeType.lastSevenDays,
-                                  width: 0.3,
-                                  onTapCallback: () {
-                                    onLabelClicked(
-                                        viewModel, DateRangeType.lastSevenDays);
-                                  },
-                                  selectedDateRange:
-                                      viewModel.selectedDateRange,
-                                  label: "Last 7 days"),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              RangeLabel(
-                                  defaultDateRange:
-                                      DateRangeType.lastThirtyDays,
-                                  width: 0.35,
-                                  onTapCallback: () {
-                                    onLabelClicked(viewModel,
-                                        DateRangeType.lastThirtyDays);
-                                  },
-                                  selectedDateRange:
-                                      viewModel.selectedDateRange,
-                                  label: "Last 30 days"),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              RangeLabel(
-                                  defaultDateRange: DateRangeType.currentMonth,
-                                  width: 0.38,
-                                  onTapCallback: () {
-                                    onLabelClicked(
-                                        viewModel, DateRangeType.currentMonth);
-                                  },
-                                  selectedDateRange:
-                                      viewModel.selectedDateRange,
-                                  label: "Current Month"),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              RangeLabel(
-                                  defaultDateRange: DateRangeType.previousMonth,
-                                  width: 0.38,
-                                  onTapCallback: () {
-                                    onLabelClicked(
-                                        viewModel, DateRangeType.previousMonth);
-                                  },
-                                  selectedDateRange:
-                                      viewModel.selectedDateRange,
-                                  label: "Previous Month"),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Custom'.toUpperCase(),
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        InsiteText(
+                            text: 'Date Range'.toUpperCase(),
+                            fontWeight: FontWeight.bold,
+                            size: 14),
+                        Expanded(
+                          child: Container(),
+                        ),
+                        InsiteText(
+                            text: (fromDate == null || toDate == null)
+                                ? ''
+                                : '${Utils.parseDate(fromDate!)} - ${Utils.parseDate(toDate!)}',
+                            fontWeight: FontWeight.bold,
+                            size: 14),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Divider(
+                        color: Theme.of(context).dividerColor,
+                        thickness: 3,
                       ),
+                    ),
+                    Row(
+                      children: [
+                        RangeLabel(
+                            defaultDateRange: DateRangeType.today,
+                            width: 0.25,
+                            onTapCallback: () {
+                              onLabelClicked(viewModel, DateRangeType.today);
+                            },
+                            selectedDateRange: viewModel.selectedDateRange,
+                            label: "Today"),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        RangeLabel(
+                            defaultDateRange: DateRangeType.yesterday,
+                            width: 0.3,
+                            onTapCallback: () {
+                              onLabelClicked(
+                                  viewModel, DateRangeType.yesterday);
+                            },
+                            selectedDateRange: viewModel.selectedDateRange,
+                            label: "Yesterday"),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        RangeLabel(
+                            defaultDateRange: DateRangeType.currentWeek,
+                            width: 0.35,
+                            onTapCallback: () {
+                              onLabelClicked(
+                                  viewModel, DateRangeType.currentWeek);
+                            },
+                            selectedDateRange: viewModel.selectedDateRange,
+                            label: "Current Week"),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        RangeLabel(
+                            defaultDateRange: DateRangeType.previousWeek,
+                            width: 0.35,
+                            onTapCallback: () {
+                              onLabelClicked(
+                                  viewModel, DateRangeType.previousWeek);
+                            },
+                            selectedDateRange: viewModel.selectedDateRange,
+                            label: "Previous Week"),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        RangeLabel(
+                            defaultDateRange: DateRangeType.lastSevenDays,
+                            width: 0.3,
+                            onTapCallback: () {
+                              onLabelClicked(
+                                  viewModel, DateRangeType.lastSevenDays);
+                            },
+                            selectedDateRange: viewModel.selectedDateRange,
+                            label: "Last 7 days"),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        RangeLabel(
+                            defaultDateRange: DateRangeType.lastThirtyDays,
+                            width: 0.35,
+                            onTapCallback: () {
+                              onLabelClicked(
+                                  viewModel, DateRangeType.lastThirtyDays);
+                            },
+                            selectedDateRange: viewModel.selectedDateRange,
+                            label: "Last 30 days"),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        RangeLabel(
+                            defaultDateRange: DateRangeType.currentMonth,
+                            width: 0.38,
+                            onTapCallback: () {
+                              onLabelClicked(
+                                  viewModel, DateRangeType.currentMonth);
+                            },
+                            selectedDateRange: viewModel.selectedDateRange,
+                            label: "Current Month"),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        RangeLabel(
+                            defaultDateRange: DateRangeType.previousMonth,
+                            width: 0.38,
+                            onTapCallback: () {
+                              onLabelClicked(
+                                  viewModel, DateRangeType.previousMonth);
+                            },
+                            selectedDateRange: viewModel.selectedDateRange,
+                            label: "Previous Month"),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Custom'.toUpperCase(),
+                        style: TextStyle(
+                          color: white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Row(
                   children: [
                     Expanded(
@@ -299,18 +273,14 @@ class _DateRangeViewState extends State<DateRangeView> {
                               //             .withOpacity(0.5)
                               //         : null,
                               onTap: () {
-                                if (widget.screenType !=
-                                    ScreenType.MAINTENANCE) {
-                                  Logger().wtf(viewModel.startDate!);
-                                  showFromToDatePicker(
-                                      ctx: context,
-                                      currentCustomDatePick:
-                                          CustomDatePick.customFromDate,
-                                      endDate:
-                                          DateTime.parse(viewModel.endDate!),
-                                      startDate:
-                                          DateTime.parse(viewModel.endDate!));
-                                }
+                                Logger().wtf(viewModel.startDate!);
+                                showFromToDatePicker(
+                                    ctx: context,
+                                    currentCustomDatePick:
+                                        CustomDatePick.customFromDate,
+                                    endDate: DateTime.parse(viewModel.endDate!),
+                                    startDate:
+                                        DateTime.parse(viewModel.startDate!));
 
                                 // setState(() {
                                 //   fromDate = null;
@@ -361,7 +331,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                         CustomDatePick.customToDate,
                                     endDate: DateTime.parse(viewModel.endDate!),
                                     startDate:
-                                        DateTime.parse(viewModel.endDate!));
+                                        DateTime.parse(viewModel.startDate!));
                               },
                               title: customToDate == null
                                   ? 'dd-mm-yyyy'.toUpperCase()
@@ -586,6 +556,165 @@ class RangeLabel extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DateRangeMaintenanceView extends StatefulWidget {
+  const DateRangeMaintenanceView({Key? key}) : super(key: key);
+
+  @override
+  State<DateRangeMaintenanceView> createState() =>
+      _DateRangeMaintenanceViewState();
+}
+
+class _DateRangeMaintenanceViewState extends State<DateRangeMaintenanceView> {
+  showFromToDatePicker(BuildContext? ctx, bool isFromDate,
+      {DateRangeMaintenanceViewModel? model}) async {
+    try {
+      var data = await showDatePicker(
+          context: ctx!,
+          initialDate:
+              isFromDate ? DateTime.now() : DateTime.parse(model!.endDate!),
+          firstDate: DateTime.now(),
+          lastDate: DateTime(9999));
+      model!.onEndDateSelected(DateFormat("dd-MM-yyyy").format(data!), data);
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewModelBuilder.reactive(
+      builder: (BuildContext context, DateRangeMaintenanceViewModel viewModel,
+          Widget? _) {
+        return viewModel.isLoading
+            ? Center(
+                child: InsiteProgressBar(),
+              )
+            : Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.25,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  border: Border.all(
+                      color: Theme.of(context).textTheme.bodyText1!.color!,
+                      width: 0.0),
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Column(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: InsiteText(
+                                      text: 'From:'.toUpperCase(),
+                                      size: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  InsiteButton(
+                                    width: double.infinity,
+                                    height: 40,
+                                    textColor: white,
+                                    // bgColor:
+                                    //     widget.screenType == ScreenType.MAINTENANCE
+                                    //         ? Theme.of(context)
+                                    //             .buttonColor
+                                    //             .withOpacity(0.5)
+                                    //         : null,
+                                    onTap: () {
+                                      //showFromToDatePicker(context, true, model: viewModel);
+                                    },
+                                    title: DateFormat("dd-MM-yyyy")
+                                        .format(DateTime.now()),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Column(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: InsiteText(
+                                      text: 'To:'.toUpperCase(),
+                                      size: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  InsiteButton(
+                                    width: double.infinity,
+                                    height: 40,
+                                    textColor: white,
+                                    onTap: () {
+                                      showFromToDatePicker(context, true,
+                                          model: viewModel);
+                                    },
+                                    title: viewModel.pickedDate == null
+                                        ? 'dd-mm-yyyy'.toUpperCase()
+                                        : viewModel.pickedDate,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          InsiteButton(
+                            width: 75,
+                            height: 40,
+                            onTap: () async {
+                              await viewModel.onApply();
+                              Navigator.pop(context, [viewModel.endDate]);
+                            },
+                            textColor: white,
+                            title: 'Apply',
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          InsiteButton(
+                            width: 75,
+                            height: 40,
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            bgColor: Theme.of(context).backgroundColor,
+                            title: 'Cancel',
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+      },
+      viewModelBuilder: () => DateRangeMaintenanceViewModel(),
     );
   }
 }
