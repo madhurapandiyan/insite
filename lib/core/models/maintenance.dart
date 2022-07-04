@@ -60,9 +60,20 @@ class SummaryData {
   List<Devices>? devices;
   String? deviceType;
   List<GeofenceMaintenance>? geofence;
+  @JsonKey(ignore: true)
+  String? productFamily;
+  @JsonKey(ignore: true)
+  String? serviceCompletedDate;
+  @JsonKey(ignore: true)
+  String? fuelReportedTime;
+  @JsonKey(ignore: true)
+  String? telematicDeviceId;
 
   SummaryData(
       {this.rowId,
+      this.serviceCompletedDate,
+      this.fuelReportedTime,
+      this.telematicDeviceId,
       this.assetUID,
       this.assetIcon,
       this.assetID,
@@ -95,7 +106,8 @@ class SummaryData {
       this.dealerCode,
       this.devices,
       this.deviceType,
-      this.geofence});
+      this.geofence,
+      this.productFamily});
 
   factory SummaryData.fromJson(Map<String, dynamic> json) =>
       _$SummaryDataFromJson(json);

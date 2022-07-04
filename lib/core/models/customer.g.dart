@@ -22,13 +22,14 @@ class CustomerAdapter extends TypeAdapter<Customer> {
       CustomerType: fields[2] as String?,
       Children: (fields[4] as List?)?.cast<Customer>(),
       DisplayName: fields[3] as String?,
+      isTataHitachiSelected: fields[5] as bool?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Customer obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.CustomerUID)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class CustomerAdapter extends TypeAdapter<Customer> {
       ..writeByte(3)
       ..write(obj.DisplayName)
       ..writeByte(4)
-      ..write(obj.Children);
+      ..write(obj.Children)
+      ..writeByte(5)
+      ..write(obj.isTataHitachiSelected);
   }
 
   @override
@@ -64,6 +67,7 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
           ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
       DisplayName: json['DisplayName'] as String?,
+      isTataHitachiSelected: json['isTataHitachiSelected'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
@@ -72,11 +76,12 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'CustomerType': instance.CustomerType,
       'DisplayName': instance.DisplayName,
       'Children': instance.Children,
+      'isTataHitachiSelected': instance.isTataHitachiSelected,
     };
 
 CustomersResponse _$CustomersResponseFromJson(Map<String, dynamic> json) =>
     CustomersResponse(
-      UserUID: json['UserUID'] as String?,
+      UserUID: json['UserUid'] as String?,
       Customers: (json['Customers'] as List<dynamic>?)
           ?.map((e) => Customer.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -84,6 +89,6 @@ CustomersResponse _$CustomersResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$CustomersResponseToJson(CustomersResponse instance) =>
     <String, dynamic>{
-      'UserUID': instance.UserUID,
+      'UserUid': instance.UserUID,
       'Customers': instance.Customers,
     };

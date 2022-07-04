@@ -57,8 +57,10 @@ class FleetListItem extends StatelessWidget {
                           InsiteTableRowItemWithImage(
                             title: fleet!.manufacturer! + "\n" + fleet!.model!,
                             path: fleet == null
-                                ? "assets/images/EX210.png"
-                                : Utils().imageData(fleet!.model!),
+                                ? "assets/images/0.png"
+                                : Utils().getImageWithAssetIconKey(
+                                    model: fleet!.model,
+                                    assetIconKey: fleet!.assetIcon!),
                           ),
                           InsiteTableRowItem(
                             title: "Last Known Status",
@@ -141,15 +143,16 @@ class FleetListItem extends StatelessWidget {
                               ),
                               InsiteTableRowItem(
                                 title: "Fuel - Last Reported     ",
-                                content: fleet!.lastPercentFuelRemainingUTC != null
-                                    ? Utils.getLastReportedDateOneUTC(
-                                        fleet!.lastPercentFuelRemainingUTC)
-                                    : "-",
+                                content:
+                                    fleet!.lastPercentFuelRemainingUTC != null
+                                        ? Utils.getLastReportedDateOneUTC(
+                                            fleet!.lastPercentFuelRemainingUTC)
+                                        : "-",
                               ),
                             ]),
                             TableRow(children: [
                               InsiteTableRowItem(
-                                title: "Hr Meter",
+                                title: "Hour Meter",
                                 content: fleet!.hourMeter != null
                                     ? fleet!.hourMeter!.toString() + " hrs"
                                     : "-",
@@ -193,6 +196,55 @@ class FleetListItem extends StatelessWidget {
                               //       : "-",
                               // ),
                             ]),
+                            TableRow(children: [
+                              // InsiteTableRowItem(
+                              //   title: "Asset Commissioning Date  ",
+                              //   content: "-",
+                              // ),
+                              InsiteTableRowItem(
+                                title: "Dealer Code",
+                                content: fleet!.dealerCode != null
+                                    ? fleet!.dealerCode
+                                    : "-",
+                              ),
+                              InsiteTableRowItem(
+                                title: "Notifications",
+                                content: fleet!.notifications != null && fleet!.notifications != 0.0
+                                    ? fleet!.notifications!.toInt()
+                                    : "-",
+                              )
+                              // InsiteTableRowItem(
+                              //   title: "Hr Meter",
+                              //   content: fleet.hourMeter != null
+                              //       ? fleet.hourMeter.round().toString() + " hrs"
+                              //       : "-",
+                              // ),
+                            ]),
+                            TableRow(children: [
+                              // InsiteTableRowItem(
+                              //   title: "Asset Commissioning Date  ",
+                              //   content: "-",
+                              // ),
+                              InsiteTableRowItem(
+                                title: "Device Type",
+                                content: fleet!.devices!.isNotEmpty
+                                    ? fleet!.devices?.first.deviceType
+                                    : "-",
+                              ),
+                              InsiteTableRowItem(
+                                  title: "Geofence",
+                                  content: fleet!.geofences!.isEmpty
+                                      ? "-"
+                                      : fleet!.geofences?.first.name
+                                  // : "-",
+                                  )
+                              // InsiteTableRowItem(
+                              //   title: "Hr Meter",
+                              //   content: fleet.hourMeter != null
+                              //       ? fleet.hourMeter.round().toString() + " hrs"
+                              //       : "-",
+                              // ),
+                            ]),
                             // TableRow(children: [
                             //   InsiteTableRowItem(
                             //     title: "Hr Meter",
@@ -207,7 +259,9 @@ class FleetListItem extends StatelessWidget {
                             // ])
                           ],
                         ),
-                        SizedBox(height: 10,)
+                        SizedBox(
+                          height: 10,
+                        )
                       ],
                     )
                   ],

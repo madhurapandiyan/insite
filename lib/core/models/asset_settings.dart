@@ -44,7 +44,7 @@ class AssetSetting {
   String? assetSerialNumber;
   String? assetModel;
   String? assetMakeCode;
-  int? assetIconKey;
+  dynamic assetIconKey;
   String? deviceSerialNumber;
   String? devicetype;
   bool? targetStatus;

@@ -116,47 +116,49 @@ class LocationViewModel extends InsiteViewModel {
         cluster,
       ) async {
         return Marker(
-          markerId: MarkerId(cluster.getId()),
-          position: cluster.location,
-          onTap: () {
-            _customInfoWindowController.addInfoWindow!(
-                LocationInfoWindowWidget(
-                  assetCount: cluster.count,
-                  type: pageType,
-                  infoText:
-                      cluster.items.toList()[0].mapData!.assetSerialNumber,
-                  onCustomWindowClose: () {
-                    _customInfoWindowController.hideInfoWindow!();
-                  },
-                  onFleetPageSelectedTap: () {
-                    _customInfoWindowController.hideInfoWindow!();
-                    if (cluster.count > 1) {
-                      onFleetPageSelected(cluster.items.toList(), false);
-                    } else {
-                      onDetailPageSelected(
-                          cluster.items.toList()[0].mapData!, 0);
-                    }
-                  },
-                  onTapWithZoom: () {
-                    _customInfoWindowController.hideInfoWindow!();
-                    if (cluster.count > 1) {
-                      if (pageType == ScreenType.DASHBOARD) {
-                        onFleetPageSelected(cluster.items.toList(), true);
+            markerId: MarkerId(cluster.getId()),
+            position: cluster.location,
+            onTap: () {
+              _customInfoWindowController.addInfoWindow!(
+                  LocationInfoWindowWidget(
+                    assetCount: cluster.count,
+                    type: pageType,
+                    infoText:
+                        cluster.items.toList()[0].mapData!.assetSerialNumber,
+                    onCustomWindowClose: () {
+                      _customInfoWindowController.hideInfoWindow!();
+                    },
+                    onFleetPageSelectedTap: () {
+                      _customInfoWindowController.hideInfoWindow!();
+                      if (cluster.count > 1) {
+                        onFleetPageSelected(cluster.items.toList(), false);
                       } else {
-                        refreshCluster(cluster.items.toList());
+                        onDetailPageSelected(
+                            cluster.items.toList()[0].mapData!, 0);
                       }
-                    } else {
-                      onDetailPageSelected(
-                          cluster.items.toList()[0].mapData!, 3);
-                    }
-                  },
-                ),
-                LatLng(cluster.location.latitude, cluster.location.longitude));
-          },
-          icon: cluster.isMultiple
-              ? await _getMarkerBitmap(125, text: cluster.count.toString())
-              : await _getNormalMarkerBitmap(),
-        );
+                    },
+                    onTapWithZoom: () {
+                      _customInfoWindowController.hideInfoWindow!();
+                      if (cluster.count > 1) {
+                        if (pageType == ScreenType.DASHBOARD) {
+                          onFleetPageSelected(cluster.items.toList(), true);
+                        } else {
+                          refreshCluster(cluster.items.toList());
+                        }
+                      } else {
+                        onDetailPageSelected(
+                            cluster.items.toList()[0].mapData!, 3);
+                      }
+                    },
+                  ),
+                  LatLng(
+                      cluster.location.latitude, cluster.location.longitude));
+            },
+            icon: await _getMarkerBitmap(125, text: cluster.count.toString())
+            // icon: cluster.isMultiple
+            //     ? await _getMarkerBitmap(125, text: cluster.count.toString())
+            //     : await _getNormalMarkerBitmap(),
+            );
       };
 
   Future<BitmapDescriptor> _getNormalMarkerBitmap() async {
@@ -222,6 +224,7 @@ class LocationViewModel extends InsiteViewModel {
           largeLatLng.longitude.toString(),
           radiusKm.toString()
         ]);
+    await clearFilterDb();
     await addFilter(filterData);
     if (shouldGoToLocationPage) {
       goToLocationPageSelected();
@@ -258,6 +261,8 @@ class LocationViewModel extends InsiteViewModel {
     manager = initClusterManager();
     if (pageType == ScreenType.LOCATION) {
       Future.delayed(Duration(seconds: 1), () async {
+        await getSelectedFilterData();
+        await getDateRangeFilterData();
         await getAssetLocation();
       });
     } else if (pageType == ScreenType.DASHBOARD) {
@@ -270,7 +275,7 @@ class LocationViewModel extends InsiteViewModel {
   refresh() async {
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    Logger().w(appliedFilters!.first);
+    //Logger().w(appliedFilters!.first);
     Logger().d("refresh getAssetLocation");
     _refreshing = true;
     clusterMarkers.clear();
@@ -293,9 +298,26 @@ class LocationViewModel extends InsiteViewModel {
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;
+      _assetLocation?.countData?.forEach((count) {
+        if (count.countOf != null) {
+          if (count.countOf == "Invalid Location") {
+            assetInvalidLocationCount = count.count!;
+          } else if (count.countOf == "Valid Location") {
+            assetLocationCount = count.count!;
+          } else {
+            showingCard = false;
+          }
+        }
+      });
       clusterMarker();
       manager!.updateMap();
-    } else {}
+    }
+    // if (result != null) {
+    //   _assetLocation = result;
+    //   _totalCount = result.pagination!.totalCount;
+    //   clusterMarker();
+    //   manager!.updateMap();
+    // } else {}
     _loading = false;
     _refreshing = false;
     notifyListeners();
@@ -327,7 +349,19 @@ class LocationViewModel extends InsiteViewModel {
             '-lastlocationupdateutc',
             smallLatLng.latitude,
             largeLatLng.longitude,
-            radiusKm);
+            radiusKm,
+            appliedFilters,
+            startDate!,
+            endDate!,
+            await graphqlSchemaService!.getFleetLocationData(
+                filtlerList: appliedFilters,
+                lati: smallLatLng.latitude,
+                longi: largeLatLng.longitude,
+                radius: radiusKm,
+                pageNo: pageNumber,
+                pageSize: pageSize,
+                startDate: Utils.fleetLocationDateFormate(startDate),
+                endDate: Utils.fleetLocationDateFormate(endDate)));
     if (result != null) {
       _assetLocation = result;
       _totalCount = result.pagination!.totalCount;
@@ -365,11 +399,11 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   getAssetLocation() async {
-    await getSelectedFilterData();
     Logger().d("getAssetLocation");
+
     AssetLocationData? result = await _assetLocationService.getAssetLocation(
-        startDate,
-        endDate,
+        Utils.fleetLocationDateFormate(startDate),
+        Utils.fleetLocationDateFormate(endDate),
         pageNumber,
         pageSize,
         '-lastlocationupdateutc',

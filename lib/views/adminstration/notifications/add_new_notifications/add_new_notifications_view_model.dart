@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
+import '../../add_group/asset_selection_widget/asset_selection_widget_view.dart';
 import '../../add_group/model/add_group_model.dart';
 import './model/zone.dart';
 
@@ -52,14 +54,18 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     controller!.dispose();
   }
 
+  final GlobalKey<AssetSelectionWidgetViewState> assetSelectionState =
+      new GlobalKey();
+
   AddNewNotificationsViewModel(AlertConfigEdit? data) {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
+    _geofenceservice?.setUp();
     setUp();
 
     Future.delayed(Duration(seconds: 1), () async {
       await getNotificationTypesData();
-      // onGettingFaultCodeData();
+      onGettingFaultCodeData();
       if (data != null) {
         Future.delayed(Duration.zero, () async {
           editingNotification(data);
@@ -267,9 +273,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   ];
 
   List<SwitchState> severityState = [
-    SwitchState(state: false, text: "High"),
-    SwitchState(state: false, text: "Medium"),
-    SwitchState(state: false, text: "Low")
+    SwitchState(state: true, text: "High"),
+    SwitchState(state: true, text: "Medium"),
+    SwitchState(state: true, text: "Low")
   ];
 
   List<SwitchState> faultCodeType = [
@@ -278,7 +284,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   ];
 
   List<SwitchState> customizableState = [
-    SwitchState(state: false, text: "Include"),
+    SwitchState(state: true, text: "Include"),
     SwitchState(state: false, text: "Exclude")
   ];
   List<SwitchState> customizable = [
@@ -490,6 +496,31 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  onRemoving() {
+    selectedAsset!.clear();
+    notifyListeners();
+  }
+
+  onAddingAllAsset(List<Asset>? allAsset) {
+    // if (selectedAsset!.isEmpty) {
+    //   selectedAsset!.addAll(allAsset!);
+    // } else {
+    Logger().w(allAsset!.length);
+    for (var singleAsset in allAsset) {
+      if (selectedAsset!.isEmpty) {
+        selectedAsset!.add(singleAsset);
+      } else if (selectedAsset!.any((element) =>
+          element.assetSerialNumber == singleAsset.assetSerialNumber)) {
+        snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+        return;
+      } else {
+        selectedAsset!.add(singleAsset);
+      }
+    }
+    //}
+    notifyListeners();
+  }
+
   onAddingAsset(int i, Asset? selectedData) {
     if (selectedData != null) {
       if (selectedAsset!.any((element) =>
@@ -509,11 +540,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onDeletingAsset(int i) {
     try {
       if (selectedAsset != null) {
-        Logger().e(selectedAsset?.length);
+        //   Logger().e(selectedAsset?.length);
         var data = selectedAsset?.elementAt(i);
-        assetIdresult?.assetDetailsRecords?.add(data!);
+        //  // assetIdresult?.assetDetailsRecords?.add(data!);
         selectedAsset?.removeAt(i);
-        Logger().e(selectedAsset?.length);
+        //assetSelectionState.currentState!.onAddingDeletedAsset(data!);
+        assetSelectionState.currentState!
+            .build(assetSelectionState.currentContext!);
         notifyListeners();
       }
     } catch (e) {
@@ -773,6 +806,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   onCustomiozablestateChange(int i) {
     customizable[i].state = !customizable[i].state!;
+    severityState.forEach((element) {
+      element.state = false;
+    });
+    faultCodeType.forEach((element) {
+      element.state = true;
+    });
     // customizableState.forEach((element) {
     //   element.state = !element.state!;
     // });
@@ -800,6 +839,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   checkingCustomizeableState(int i) {
+    customizableState.forEach((element) {
+      if (element.state == true) {
+        element.state = false;
+      }
+    });
     customizableState[i].state = !customizableState[i].state!;
     notifyListeners();
   }
@@ -834,8 +878,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onChangingFaultCode(String value) async {
     try {
       if (value.length >= 3) {
-        var faultCodeType =
-            await _notificationService!.getFaultCodeTypeSearch(value, page, "");
+        var faultCodeType = await _notificationService!.getFaultCodeTypeSearch(
+            value,
+            page,
+            "",
+            graphqlSchemaService?.getFaultCodeTypesData(
+                faultDescription: value,
+                pageNo: page,
+                lang: "en-US",
+                codeType: ""));
 
         faultCodeTypeSearch = faultCodeType!.descriptions;
         notifyListeners();
@@ -932,7 +983,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   addContact() {
-    if (emailController.text.contains("@")) {
+    if (emailController.text.isEmpty) {
       isShowingSelectedContact = true;
       isShowingSelectedContact = true;
       selectedUser.add(User(
@@ -950,8 +1001,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onGettingFaultCodeData() async {
     try {
       showLoadingDialog();
-      var faultCodeType =
-          await _notificationService!.getFaultCodeTypeSearch("", page, "");
+      var faultCodeType = await _notificationService!.getFaultCodeTypeSearch(
+          "",
+          page,
+          "",
+          graphqlSchemaService?.getFaultCodeTypesData(
+              faultDescription: "", pageNo: page, lang: "en-US", codeType: ""));
       if (_loadingMore) {
         faultCodeType!.descriptions!.forEach((element) {
           faultCodeTypeSearch!.add(FaultCodeDetails(
@@ -998,8 +1053,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onDiagnosticFrontPressed() async {
     showLoadingDialog();
     expansionTitle = "Fault Code Type";
-    var faultCodeType = await _notificationService!
-        .getFaultCodeTypeSearch("", page, "DIAGNOSTIC");
+    page = 1;
+    var faultCodeType = await _notificationService!.getFaultCodeTypeSearch(
+        "",
+        page,
+        "DIAGNOSTIC",
+        graphqlSchemaService?.getFaultCodeTypesData(
+            faultDescription: "",
+            pageNo: page,
+            lang: "en-US",
+            codeType: "DIAGNOSTIC"));
     faultCodeTypeSearch = faultCodeType!.descriptions;
     Future.delayed(Duration(seconds: 1), () {
       pageController.animateToPage(2,
@@ -1012,8 +1075,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onEventFrontPressed() async {
     showLoadingDialog();
     expansionTitle = "Fault Code Type";
-    var faultCodeType =
-        await _notificationService!.getFaultCodeTypeSearch("", page, "EVENT");
+    page = 1;
+    var faultCodeType = await _notificationService!.getFaultCodeTypeSearch(
+        "",
+        page,
+        "EVENT",
+        graphqlSchemaService?.getFaultCodeTypesData(
+            faultDescription: "",
+            pageNo: page,
+            lang: "en-US",
+            codeType: "EVENT"));
     faultCodeTypeSearch = faultCodeType!.descriptions;
     Future.delayed(Duration(seconds: 1), () {
       pageController.animateToPage(2,
@@ -1046,7 +1117,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   updateModelValue(String value) {
     _dropDownInitialValue = value;
     _showZone = true;
-
     getNotificationSubTypes();
   }
 
@@ -1140,12 +1210,22 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         if (notificationTypeGroup.notificationTypeGroupName!
             .contains("Geofence")) {
           notificationTypeGroup.notificationTypes!.forEach((notification) {
-            notification.siteOperands!.forEach((element) {
-              _notificationSubTypes.add(element.operandName);
-            });
+            // if (notification.siteOperands != null &&
+            //     notification.siteOperands!.isNotEmpty) {
+
+            // }
+            _notificationSubTypes.add(notification.notificationTypeName);
+            // notification.siteOperands?.forEach((element) {
+            //   _notificationSubTypes.add(element.operandName);
+            // });
           });
-          _notificationSubTypes
-              .add("${_notificationSubTypes[1]} & ${_notificationSubTypes[2]}");
+          Logger().w(_notificationSubTypes[0]);
+          if (_notificationSubTypes.isNotEmpty &&
+              _noticationTypes.length != 1) {
+            _notificationSubTypes.add(
+                "${_notificationSubTypes[1]} & ${_notificationSubTypes[2]}");
+          }
+
           Logger().e(notificationTypeGroup.toJson());
           getGeofenceData();
         }
@@ -1220,7 +1300,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       geoenceData.clear();
       var data = await _geofenceservice!.getGeofenceData();
       if (data != null) {
-        data.Geofences!.forEach((element) {
+        data.geofences!.forEach((element) {
           geoenceData.add(CheckBoxDropDown(items: element.GeofenceName));
         });
       }
@@ -1360,12 +1440,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
-  searchContacts(String searchValue) {
-    if (searchValue.length >= 4) {
+  searchContacts(String searchValue) async {
+    if (emailController.text.length >= 4) {
       _searchKeyword = searchValue;
+      await getContactSearchReportData();
       isHideSearchList = true;
       notifyListeners();
-      getContactSearchReportData();
+    } else {
+      isHideSearchList = false;
+      searchContactListName!.clear();
+      notifyListeners();
     }
   }
 
@@ -1373,16 +1457,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     try {
       SearchContactReportListResponse? result = await _manageUserService!
           .getSearchContactResposeData(_searchKeyword,
-              graphqlSchemaService!.getContactSearchData(_searchKeyword));
+              graphqlSchemaService!.getContactSearchData(emailController.text));
       if (result != null) {
         searchContactListName!.clear();
         // Logger().i("result:${result.pageInfo!.totalPages}");
 
-        for (var name in result.Users!) {
+        for (var name in result.users!) {
           searchContactListName!.add(name);
         }
       }
-      notifyListeners();
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -1773,9 +1856,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   saveAddNotificationData() async {
     assetUidData.clear();
+    Logger().w(selectedAsset!.length);
     selectedAsset!.forEach((element) {
       assetUidData.add(element.assetIdentifier!);
     });
+    Logger().w(Utils.getStringListData(assetUidData));
+
     if (notificationController.text.isEmpty) {
       _snackBarservice!.showSnackbar(message: "Notification Name is required");
       return;

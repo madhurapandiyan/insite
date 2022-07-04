@@ -22,7 +22,7 @@ ServiceItem _$ServiceItemFromJson(Map<String, dynamic> json) => ServiceItem(
       nextOccurrence: json['nextOccurrence'] as num?,
       dueInfo: json['dueInfo'] == null
           ? null
-          : DueInfo.fromJson(json['dueInfo'] as Map<String, dynamic>),
+          : ServiceDueInfo.fromJson(json['dueInfo'] as Map<String, dynamic>),
       checklists: (json['checklists'] as List<dynamic>?)
           ?.map((e) => Checklists.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -57,7 +57,8 @@ Map<String, dynamic> _$ServiceItemToJson(ServiceItem instance) =>
       'intervalCreationDate': instance.intervalCreationDate,
     };
 
-DueInfo _$DueInfoFromJson(Map<String, dynamic> json) => DueInfo(
+ServiceDueInfo _$ServiceDueInfoFromJson(Map<String, dynamic> json) =>
+    ServiceDueInfo(
       occurrenceId: json['occurrenceId'] as num?,
       serviceStatus: json['serviceStatus'] as String?,
       dueAt: json['dueAt'] as num?,
@@ -66,7 +67,8 @@ DueInfo _$DueInfoFromJson(Map<String, dynamic> json) => DueInfo(
       occrank: json['occrank'] as num?,
     );
 
-Map<String, dynamic> _$DueInfoToJson(DueInfo instance) => <String, dynamic>{
+Map<String, dynamic> _$ServiceDueInfoToJson(ServiceDueInfo instance) =>
+    <String, dynamic>{
       'occurrenceId': instance.occurrenceId,
       'serviceStatus': instance.serviceStatus,
       'dueAt': instance.dueAt,

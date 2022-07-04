@@ -75,8 +75,8 @@ class _AssetSettingsConfigureViewState
                                   value: dropDownValue,
                                   onChanged: (String? value) {
                                     dropDownValue = value!;
-                                    viewModel.displayList =
-                                        viewModel.staticTranspotData;
+                                    // viewModel.displayList =
+                                    //     viewModel.staticTranspotDataVl;
                                     setState(() {});
                                     print("dropDownValue:$dropDownValue");
                                   }),
@@ -115,6 +115,9 @@ class _AssetSettingsConfigureViewState
                 child: SearchBox(
                   hint: "Search Icon",
                   controller: viewModel.textEditingController,
+                  onTextChanged: (value) {
+                    viewModel.onSearchTextChanged(value);
+                  },
                 ),
               ),
             ),

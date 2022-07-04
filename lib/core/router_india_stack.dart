@@ -80,6 +80,7 @@ import 'package:insite/views/subscription/transferhistory/transfer_history_view.
     as view36;
 
 import 'router_constants.dart' as visonLink;
+import 'package:insite/views/add_intervals/add_intervals_view.dart' as view45;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -206,6 +207,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view42.AddReportView());
       case maintenanceViewRoute:
         return MaterialPageRoute(builder: (_) => view44.MaintenanceView());
+      case addIntervalsViewRoute:
+        return MaterialPageRoute(builder: (_) => view45.AddIntervalsView());
 
       default:
         return MaterialPageRoute(

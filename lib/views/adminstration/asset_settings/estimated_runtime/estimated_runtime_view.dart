@@ -125,7 +125,7 @@ class _EstimatedRunTimeWidgetViewState
                           controller: viewModel.endDateController,
                           voidCallback: () async {
                             await getEndDatePicker(viewModel);
-                            viewModel.getDateFilter(startDate!, endDate!);
+                           // viewModel.getDateFilter(startDate!, endDate!);
                           },
                         )),
                   ),
@@ -231,7 +231,7 @@ class _EstimatedRunTimeWidgetViewState
                         value: dropDownValue,
                         onChanged: (String? value) {
                           dropDownValue = value!;
-                          viewModel.onChangeStateValue();
+                         // viewModel.onChangeStateValue();
                           setState(() {});
                         },
                       ),
@@ -485,7 +485,6 @@ class _EstimatedRunTimeWidgetViewState
     if (pickedStartDate != null) {
       print(pickedStartDate);
       String formattedDate = DateFormat('dd-MM-yyyy').format(pickedStartDate);
-
       print(formattedDate);
       viewModel.getStartDateData(formattedDate);
     } else {

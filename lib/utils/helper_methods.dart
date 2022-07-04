@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
+import 'package:insite/views/adminstration/asset_settings_configure/model/configure_grid_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -13,10 +16,127 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import '../core/models/add_notification_payload.dart' as add;
 import '../core/models/add_notification_payload.dart';
+import '../core/models/maintenance_asset_india_stack.dart';
 import '../core/models/manage_notifications.dart';
+import '../widgets/dumb_widgets/maintenance_asset_list_item.dart';
 import 'date.dart';
 
 class Utils {
+  var tatahitachi = [
+    ConfigureGridViewModel(
+        assetIconKey: 1038,
+        modelName: 'EX130 SUPER PLUS',
+        image: "assets/images/model/EX130.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1026,
+        modelName: 'EX200LC',
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1034,
+        modelName: 'EX200LC SUPER PLUS',
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1043,
+        modelName: 'EX200 Super Plus',
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1033,
+        modelName: 'EX210 Super',
+        image: "assets/images/model/EX210.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1037,
+        modelName: 'EX210LC SUPER PLUS',
+        image: "assets/images/model/EX210LC.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1030,
+        modelName: 'EX70 PRIME',
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1032,
+        modelName: 'EX70 SUPER PLUS',
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1042,
+        modelName: 'EX70 SUPER BSIV',
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1041,
+        modelName: 'SHINRAI-PRO',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1028,
+        modelName: 'SHINRAI PRIME',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1031,
+        modelName: 'SHINRAI - BX80',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1029,
+        modelName: 'SHINRAI-BX80',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1039,
+        modelName: 'SHINRAI-BX80-BSIV',
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1035,
+        modelName: 'TL340H Prime',
+        image: "assets/images/model/TL340H.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1006,
+        modelName: "TL360Z",
+        image: "assets/images/model/TL360Z.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 108,
+        modelName: "EX110",
+        image: "assets/images/model/EX110.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1001,
+        modelName: "EX130",
+        image: "assets/images/model/EX130.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 107,
+        modelName: "EX200",
+        image: "assets/images/model/EX200.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1003,
+        modelName: "EX210",
+        image: "assets/images/model/EX210.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1004,
+        modelName: "EX210LC",
+        image: "assets/images/model/EX210LC.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 109,
+        modelName: "EX70",
+        image: "assets/images/model/EX70.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 185,
+        modelName: "SHINRAI",
+        image: "assets/images/model/SHINRAI.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 105,
+        modelName: "TH76",
+        image: "assets/images/model/TH76.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 106,
+        modelName: "TH86",
+        image: "assets/images/model/TH86.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1005,
+        modelName: "TL340H",
+        image: "assets/images/model/TL340H.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 1006,
+        modelName: "TL360Z",
+        image: "assets/images/model/TL360Z.png"),
+    ConfigureGridViewModel(
+        assetIconKey: 181,
+        modelName: "TMX20",
+        image: "assets/images/model/TMX20.png")
+  ];
+
   static String getLastReportedDate(date) {
     try {
       DateTime parseDate =
@@ -219,9 +339,9 @@ class Utils {
   static String getDateInFormatyyyyMMddTHHmmssZStartFaultDate(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
-      var inputDate = DateTime.parse(parseDate.toString());
-      //.subtract(Duration(days: 1))
-      //.add(Duration(hours: 18, minutes: 30));
+      var inputDate = DateTime.parse(parseDate.toString())
+          .subtract(Duration(days: 1))
+          .add(Duration(hours: 18, minutes: 30, seconds: 0));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -260,11 +380,35 @@ class Utils {
     }
   }
 
+  static String? maintenanceToDateFormate(String date) {
+    try {
+      DateTime parseDate = DateTime.parse(date);
+      var data = parseDate.add(Duration(hours: 18, minutes: 29, seconds: 59));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static String? maintenanceFromDateFormate(String date) {
+    try {
+      DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
+      var data = parseDate.add(Duration(hours: 18, minutes: 30, seconds: 00));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
   static String getDateInFormatyyyyMMddTHHmmssZEnd(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
-          .add(Duration(hours: 18, minutes: 29, seconds: 59));
+          .add(Duration(hours: 18, minutes: 29, seconds: 59))
+          .subtract(Duration(days: 1));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -277,8 +421,8 @@ class Utils {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
-          .subtract(Duration(days: 1))
-          .add(Duration(hours: 23, minutes: 59, seconds: 59));
+          // .subtract(Duration(days: 1))
+          .add(Duration(hours: 18, minutes: 29, seconds: 59));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -387,11 +531,11 @@ class Utils {
     if (title == "25") {
       return "0-25%";
     } else if (title == "50") {
-      return "25-50%";
+      return "26-50%";
     } else if (title == "75") {
-      return "50-75%";
+      return "51-75%";
     } else if (title == "100") {
-      return "75-100%";
+      return "76-100%";
     } else {
       return title;
     }
@@ -411,7 +555,7 @@ class Utils {
         title = "UTILIZATION";
         break;
       case ScreenType.ASSET_OPERATION:
-        title = "OPERATION";
+        title = "ASSET OPERATION";
         break;
       case ScreenType.LOCATION:
         title = "LOCATION";
@@ -562,8 +706,9 @@ class Utils {
 
   static String generateCodeChallenge(String codeVerifier, bool isToSave) {
     final LocalService? _localService = locator<LocalService>();
-    Logger().w(codeVerifier);
+
     if (isToSave) {
+      Logger().w(codeVerifier);
       _localService!.saveCodeVerfier(codeVerifier);
     }
 
@@ -646,6 +791,15 @@ class Utils {
         break;
       case FilterType.MANUFACTURER:
         title = "MANUFACTURER";
+        break;
+      case FilterType.SERVICE_TYPE:
+        title = "SERVICE TYPE";
+        break;
+      case FilterType.SERVICE_STATUS:
+        title = "SERVICE STATUS";
+        break;
+      case FilterType.ASSET_TYPE:
+        title = "ASSET TYPE";
         break;
 
       default:
@@ -733,23 +887,169 @@ class Utils {
     return maxDate;
   }
 
-  imageData(String model) {
-    if (model.contains("SHINRAI")) {
-      return "assets/images/shinrai.png";
-    } else if (model.contains("EX130")) {
-      return "assets/images/EX130.png";
-    } else if (model.contains("EX210")) {
-      return "assets/images/EX210.png";
-    } else if (model.contains("EX210LC")) {
-      return "assets/images/EX210LC.png";
-    } else if (model.contains("TH86")) {
-      return "assets/images/TH86.png";
-    } else if (model.contains("TL340H")) {
-      return "assets/images/TL340H.png";
+  getImageWithAssetIconKey({dynamic assetIconKey, String? model}) {
+    // if value string
+    int? iconKey;
+    if (assetIconKey.runtimeType == String) {
+      iconKey = int.parse(assetIconKey);
+    } else if (assetIconKey.runtimeType == double) {
+      iconKey = (assetIconKey as double).toInt();
     } else {
-      return "assets/images/EX210.png";
+      iconKey = assetIconKey;
+    }
+    if (tatahitachi.any((element) => element.modelName == model)) {
+      if (tatahitachi.any((element) => element.assetIconKey == iconKey)) {
+        Logger().i("icon key found");
+        var data = tatahitachi
+            .singleWhere((element) => element.assetIconKey == iconKey);
+        if (data != null) {
+          return data.image;
+        } else {
+          return "assets/images/0.png";
+        }
+      } else {
+        return "assets/images/0.png";
+      }
+    } else {
+      return "assets/images/0.png";
     }
   }
+
+  getImageAssetConfiguration(
+    dynamic assetIconKey,
+  ) {
+    int? iconKey;
+    if (assetIconKey.runtimeType == String) {
+      iconKey = int.parse(assetIconKey);
+    } else {
+      iconKey = assetIconKey;
+    }
+    switch (iconKey) {
+      case 108:
+        return "assets/images/model/EX110.png";
+      case 109:
+        return "assets/images/model/EX70.png";
+      case 1001:
+        return "assets/images/model/EX130.png";
+      case 107:
+        return "assets/images/model/EX200.png";
+      case 1003:
+        return "assets/images/model/EX210.png";
+      case 1004:
+        return "assets/images/model/EX210LC.png";
+      case 185:
+        return "assets/images/model/SHINRAI.png";
+      case 105:
+        return "assets/images/model/TH76.png";
+      case 106:
+        return "assets/images/model/TH86.png";
+      case 1005:
+        return "assets/images/model/TL340H.png";
+      case 1006:
+        return "assets/images/model/TL360Z.png";
+      case 181:
+        return "assets/images/model/TMX20.png";
+      default:
+        return "assets/images/0.png";
+    }
+  }
+
+  imageData(String model) {
+    switch (model) {
+      case "EX200LC SUPER PLUS":
+        return "assets/images/model/EX200.png";
+      case "EX210LC SUPER PLUS":
+        return "assets/images/model/EX210LC.png";
+      case "EX70 SUPER PLUS":
+        return "assets/images/model/EX70.png";
+      case "EX130 SUPER PLUS":
+        return "assets/images/model/EX130.png";
+      case "EX215 SUPER PLUS":
+        return "assets/images/model/EX200.png";
+      case "EX70 PRIME":
+        return "assets/images/model/EX70.png";
+      case "TL340H PRIME":
+        return "assets/images/model/TL340H.png";
+      case "EX110":
+        return "assets/images/model/EX110.png";
+      case "EX200":
+        return "assets/images/model/EX200.png";
+      case "EX200LC":
+        return "assets/images/model/EX200.png";
+      case "EX70 PRIME":
+        return "assets/images/model/EX70.png";
+      case "SHINRAI-BX80":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI-BX80-BSIV":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI - BX80":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI PRIME":
+        return "assets/images/model/SHINRAI.png";
+      case "SHINRAI-PRO":
+        return "assets/images/model/SHINRAI.png";
+      case "TL340H":
+        return "assets/images/model/TL340H.png";
+      case "TH76":
+        return "assets/images/model/TH76.png";
+      case "5T WL":
+        return "assets/images/wheel_loader.png";
+      case "ZW225-6":
+        return "assets/images/wheel_loader.png";
+      default:
+        return "assets/images/0.png";
+    }
+  }
+
+  // imageData(String model) {
+  //   //Excavator
+  //   ifmodel == "EX70 SUPER PLUS" ||
+  //        (model == "EX200LC SUPER PLUS" ||
+  //       model == "EX210LC SUPER PLUS" ||
+  //       model == "EX130 SUPER PLUS" ||
+  //       model == "EX215 SUPER PLUS" ||
+  //       model == "TL340H PRIME" ||
+  //       model == "EX110" ||
+  //       model == "EX200" ||
+  //       model == "EX200LC" ||
+  //       model == "PZX50" ||
+  //       model == "EX70 PRIME") {
+  //     return "assets/images/excavator.png";
+  //   }
+  //   //backhoe loader
+  //   else if (model == "SHINRAI - BX80" ||
+  //       model == "SHINRAI-BX80" ||
+  //       model == "SHINRAI-BX80-BSIV" ||
+  //       model == "SHINRAI PRIME" ||
+  //       model == "SHINRAI-PRO" ||
+  //       model == "TH76" ||
+  //       model == "TL340H") {
+  //     return "assets/images/backhoe_loader.png";
+  //   } else if (model == "TL340H Prime" ||
+  //       model == "TL340H" ||
+  //       model == "5T WL" ||
+  //       model == "ZW225-6") {
+  //     return "assets/images/wheel_loader.png";
+  //   } else {
+  //     return "assets/images/0.png";
+  //   }
+
+  //   // if (model.contains("SHINRAI")) {
+  //   //   return "assets/images/shinrai.png";
+  //   // } else if (model.contains("EX130")) {
+  //   //   return "assets/images/EX130.png";
+  //   // } else if (model.contains("EX210")) {
+  //   //   return "assets/images/EX210.png";
+  //   // } else if (model.contains("EX210LC")) {
+  //   //   return "assets/images/EX210LC.png";
+  //   // } else if (model.contains("TH86")) {
+  //   //   return "assets/images/TH86.png";
+  //   // } else if (model.contains("TL340H")) {
+  //   //   return "assets/images/TL340H.png";
+  //   // } else {
+  //   //   return "assets/images/EX210.png";
+  //   // }
+  // }
 
   static showInfo(BuildContext context, title, message) async {
     await showDialog(
@@ -789,6 +1089,19 @@ class Utils {
             : text.toLowerCase() == "orange" || text.toLowerCase() == "medium"
                 ? Colors.orange
                 : text.toLowerCase() == "yellow" || text.toLowerCase() == "low"
+                    ? Colors.yellow
+                    : buttonColorFive
+        : buttonColorFive;
+  }
+
+  static Color getMaintenanceColor(text) {
+    return text != null && text != null
+        ? text.toLowerCase() == "Overdue" || text.toLowerCase() == "Overdue"
+            ? buttonColorFive
+            : text.toLowerCase() == "orange" || text.toLowerCase() == "medium"
+                ? Colors.orange
+                : text.toLowerCase() == "upcoming" ||
+                        text.toLowerCase() == "low"
                     ? Colors.yellow
                     : buttonColorFive
         : buttonColorFive;
@@ -876,7 +1189,7 @@ class Utils {
     }
   }
 
-  static getStringListData(List? listData) {
+  static getStringListData(List<String> listData) {
     if (listData == null) {
       return null;
     } else {
@@ -884,7 +1197,7 @@ class Utils {
       List<dynamic> value = [];
       value.clear();
       listData.forEach((element) {
-        if (value.any((data) => (data as String).contains(data))) {
+        if (value.any((data) => (data).contains(element))) {
         } else {
           value.add(doublequotes + element + doublequotes);
         }
@@ -1081,7 +1394,7 @@ class Utils {
         return querUrl;
       case "Utilization Details":
         querUrl =
-            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/Utilization?assetUid=${associatedIdentifier!.first}&startDate=&endDate=&sort=-RuntimeHours";
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v1/Utilization/Details?assetUid=${associatedIdentifier!.first}&startDate=&endDate=&sort=-RuntimeHours";
 
         return querUrl;
       case "Asset Operation":
@@ -1234,7 +1547,7 @@ class Utils {
   }
 
   static hoursToPercentCalculate(dynamic value) {
-    var data = (value ?? 0.0 / 100) / 100;
+    var data = (value ?? 0.0 / 100);
     if (data > 1.0) {
       data = data / 100;
     }
@@ -1242,11 +1555,11 @@ class Utils {
   }
 
   static efficiencyToPercent(dynamic value) {
-    var data = value / 100;
-    return data;
+    //var data = value / 100;
+    return value;
   }
 
-  static List<String>? getIdlingFilterData(String? value) {
+  static List<String?>? getIdlingFilterData(String? value) {
     if (value != null) {
       List<String> data = [];
       switch (value) {
@@ -1281,28 +1594,65 @@ class Utils {
     return parsedDate;
   }
 
+  static String getIdlingFleetDateParse(dynamic value) {
+    var data = DateFormat('yyyy-MM-dd').parse(value);
+    //.add(Duration(days: 1));
+    var parsedDate = DateFormat('MM/dd/yyyy').format(data);
+    return parsedDate;
+  }
+
   static fleetLocationDateFormate(dynamic startDate) {
     var data = DateFormat("yyyy-MM-dd").parse(startDate);
     var formatDate = DateFormat("yyyy-MM-dd").format(data);
     return formatDate;
   }
 
-  static getFaultDateFormat(dynamic value) {
-    var data = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(value);
-    Logger().wtf(data);
-    return data;
+  static fleetLocationSingleAssetStartDateFormate(dynamic startDate) {
+    var data = DateFormat("yyyy-MM-dd")
+        .parse(startDate)
+        .add(Duration(hours: 0, minutes: 0, seconds: 0));
+    var formatDate = DateFormat("yyyy-MM-dd HH:mm:ss").format(data);
+    return formatDate;
   }
 
-  static getFaultStartDateParsing(dynamic value) {
-    var data = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(value);
-    return data;
-  }
-
-  static getFaultEndDateParsing(dynamic value) {
-    var data = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        .parse(value)
+  static fleetLocationSingleAssetEndDateFormate(dynamic startDate) {
+    var data = DateFormat("yyyy-MM-dd")
+        .parse(startDate)
         .add(Duration(hours: 23, minutes: 59, seconds: 59));
-    return data;
+    var formatDate = DateFormat("yyyy-MM-dd HH:mm:ss").format(data);
+    return formatDate;
+  }
+
+  static getFaultDateFormatStartDate(DateTime? value) {
+    try {
+      var parseDate = DateFormat("yyyy-MM-dd").format(value!);
+
+      var inputDate = DateTime.parse(parseDate)
+          .add(Duration(hours: 18, seconds: 00, minutes: 30));
+      //.subtract(Duration(days: 1))
+
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static getFaultDateFormatEndDate(DateTime? value) {
+    try {
+      var parseDate = DateFormat("yyyy-MM-dd").format(value!);
+
+      var inputDate = DateTime.parse(parseDate)
+          .add(Duration(hours: 18, seconds: 59, minutes: 29));
+      //.subtract(Duration(days: 1))
+
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
   }
 
   static List<String>? getAssetIdentifier(String? value) {
@@ -1413,6 +1763,38 @@ class Utils {
     }
   }
 
+  static getImage(String value) {
+    switch (value) {
+      case "10001":
+        return "assets/images/10001.png";
+      case "10002":
+        return "assets/images/10002.png";
+      default:
+        return "assets/images/0.png";
+    }
+  }
+
+  static double parseStringToDouble(String value) {
+    return double.parse(value);
+  }
+
+  static String dateFormat(String value) {
+    var inputDate = DateFormat("yyyy-MM-dd").parse(value);
+    return DateFormat("yyyy-MM-dd").format(inputDate);
+  }
+
+  static findMaxAndMinvalues(List<AssetResult> data) {
+    List<double> minMax = [];
+    if (data.any((element) => element.idleEfficiency != null)) {
+      data.sort((a, b) {
+        return a.idleEfficiency!.compareTo(b.idleEfficiency ?? 0.0);
+      });
+    }
+    Logger().w(data.first.idleEfficiency!);
+    Logger().wtf(data.last.idleEfficiency!);
+    minMax.addAll([data.first.idleEfficiency!, data.last.idleEfficiency!]);
+    return minMax;
+  }
   // static getSvcBody(List<String> value) {
   //   List<String> data = [];
   //   value.forEach((element) {
@@ -1422,4 +1804,114 @@ class Utils {
   //     element.replaceAll("", replace);
   //   });
   // }
+
+  static getEstimatedPercentValue(idle, runtime) {
+    var data = (runtime / idle) * 100;
+    return data;
+  }
+
+  static getEstimatedTargetRuntimePercentValue(idle, runtime) {
+    var data = (idle / 100) * runtime as double;
+    return data.roundToDouble();
+  }
+
+  static String tokenExpiresTime(int expireSec) {
+    DateTime currentTime = DateTime.now();
+    var tokenExpireTime = currentTime.add(Duration(seconds: expireSec));
+    Logger().i("Token Valid Upto $tokenExpireTime");
+    return tokenExpireTime.toString();
+  }
+
+  static List<MaitenanceTotal> getMaintenanceCount(
+      List<MaintenanceTotals>? value) {
+    List<MaitenanceTotal> maintenanceTotal = [
+      MaitenanceTotal(count: 0, total: MAINTENANCETOTAL.UPCOMING),
+      MaitenanceTotal(count: 0, total: MAINTENANCETOTAL.OVERDUE)
+    ];
+
+    for (var item in value!) {
+      if (item.name == "Upcoming" && item.count != 0) {
+        maintenanceTotal.first.count = item.count!;
+      } else if (item.name == "Overdue" && item.count != 0) {
+        maintenanceTotal.last.count = item.count!;
+      }
+    }
+    //Logger().d(maintenanceTotal.length);
+    // Logger().d(maintenanceTotal.first);
+    // Logger().d(maintenanceTotal.last);
+    // return "";
+    return maintenanceTotal;
+  }
+
+  static List<Map<String, dynamic>>? addMaintenanceIntervals(
+      List<MaintenanceCheckList> data) {
+    try {
+      List<Map<String, dynamic>> checkList = [];
+
+      for (var check in data) {
+        Map<String, dynamic> checkData = {
+          "checkListName": check.checkName,
+          "partList": []
+        };
+        for (var part in check.partList!) {
+          Map<String, dynamic> partsData = {
+            "partName": part.partName,
+            "partNo": part.partNo,
+            "quantity": part.quantiy
+          };
+          var partList = checkData["partList"] as List<dynamic>;
+          partList.add(partsData);
+        }
+        checkList.add(checkData);
+      }
+      Logger().w(checkList);
+      return checkList;
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  static List<Map<String, dynamic>>? updateMaintenanceIntervals(
+      MaintenanceIntervalData? mainInterval) {
+    List<Map<String, dynamic>> intervalList = [];
+    Map<String, dynamic> data = {
+      "intervalID": mainInterval!.intervalId,
+      "intervalDescription": mainInterval.intervalDescription!.isEmpty?"\""+ "\"": mainInterval.intervalDescription,
+      "firstOccurrences": mainInterval.initialOccurence,
+      "intervalName": mainInterval.intervalName
+    };
+    intervalList.add(data);
+    return intervalList;
+  }
+
+  static List<Map<String, dynamic>>? updateMaintenanceCheckList(
+      List<MaintenanceCheckList>? data, int intervalId) {
+    try {
+      List<Map<String, dynamic>> checkList = [];
+      if (data != null && data.isNotEmpty) {
+        for (var check in data) {
+          Map<String, dynamic> checkData = {
+            "ChecklistName": check.checkName,
+            "partList": []
+          };
+          for (var part in check.partList!) {
+            Map<String, dynamic> partsData = {
+              "partName": part.partName,
+              "partNo": part.partNo,
+              "quantity": part.quantiy,
+            };
+            var partList = checkData["partList"] as List<dynamic>;
+            partList.add(partsData);
+          }
+          checkList.add(checkData);
+        }
+        Logger().w(checkList);
+        return checkList;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
 }

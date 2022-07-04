@@ -16,7 +16,7 @@ class ServiceItem {
   String? smuType;
   num? firstOccurrence;
   num? nextOccurrence;
-  DueInfo? dueInfo;
+  ServiceDueInfo? dueInfo;
   List<Checklists>? checklists;
   String? checklist;
   String? insertedUtc;
@@ -53,7 +53,7 @@ class ServiceItem {
 }
 
 @JsonSerializable()
-class DueInfo {
+class ServiceDueInfo {
   num? occurrenceId;
   String? serviceStatus;
   num? dueAt;
@@ -61,7 +61,7 @@ class DueInfo {
   String? dueDate;
   num? occrank;
 
-  DueInfo(
+  ServiceDueInfo(
       {this.occurrenceId,
       this.serviceStatus,
       this.dueAt,
@@ -69,10 +69,10 @@ class DueInfo {
       this.dueDate,
       this.occrank});
 
-  factory DueInfo.fromJson(Map<String, dynamic> json) =>
-      _$DueInfoFromJson(json);
+  factory ServiceDueInfo.fromJson(Map<String, dynamic> json) =>
+      _$ServiceDueInfoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DueInfoToJson(this);
+  Map<String, dynamic> toJson() => _$ServiceDueInfoToJson(this);
 }
 
 @JsonSerializable()

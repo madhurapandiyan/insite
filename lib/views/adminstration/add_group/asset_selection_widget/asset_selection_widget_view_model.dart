@@ -90,6 +90,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   List<Asset>? _subDeviceList = [];
   List<Asset>? get subDeviceList => _subModelData;
 
+  AssetCategoryType? selectedType;
+
   List<AssetSelectionCategory> assetSelectionCategoryVL = [
     AssetSelectionCategory(
         name: "Asset Id", assetCategoryType: AssetCategoryType.ASSETID),
@@ -300,7 +302,14 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
       Logger().i(assetIdresult);
       _subModelData?.clear();
       for (var item in assetIdresult!.assetDetailsRecords!) {
-        _subModelData?.add(item);
+        _subModelData?.add(Asset(
+            assetIcon: item.assetIcon,
+            assetId: item.assetId,
+            assetIdentifier: item.assetIdentifier,
+            assetSerialNumber: item.assetSerialNumber,
+            makeCode: item.makeCode,
+            model: item.model,
+            type: AssetCategoryType.MODEL));
       }
       pageController!.animateToPage(8,
           duration: Duration(microseconds: 200), curve: Curves.easeInOut);
@@ -446,6 +455,112 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
       pageController!.animateToPage(9,
           duration: Duration(microseconds: 200), curve: Curves.easeInOut);
     }
+  }
+
+  List<Asset>? onAddingAllAsset() {
+    switch (selectedType) {
+      case AssetCategoryType.ASSETID:
+        if (_assetId!.isNotEmpty) {
+          return _assetId;
+        } else {
+          return null;
+        }
+
+      case AssetCategoryType.SERIALNO:
+        if (_assetSerialNumber!.isNotEmpty) {
+          return _assetSerialNumber;
+        } else {
+          return null;
+        }
+      case AssetCategoryType.PRODUCTFAMILY:
+        if (_productFamilyCountData!.isNotEmpty) {
+          return _productFamilyCountData;
+        } else {
+          return null;
+        }
+      case AssetCategoryType.MANUFACTURER:
+        if (_subManufacturerList!.isNotEmpty) {
+          return _subManufacturerList;
+        } else {
+          return null;
+        }
+      case AssetCategoryType.MODEL:
+        if (_subModelData!.isNotEmpty) {
+          return _subModelData;
+        } else {
+          return null;
+        }
+      case AssetCategoryType.DEVICETYPE:
+        if (_subDeviceList!.isNotEmpty) {
+          return _subDeviceList;
+        } else {
+          return null;
+        }
+      default:
+    }
+  }
+
+  onDeletingSelectedAsset(int i, AssetCategoryType type) {
+    switch (type) {
+      case AssetCategoryType.ASSETID:
+        assetId?.removeAt(i);
+        break;
+      case AssetCategoryType.SERIALNO:
+        assetSerialNumber?.removeAt(i);
+        break;
+      case AssetCategoryType.PRODUCTFAMILY:
+        productFamilyCountData?.removeAt(i);
+        break;
+      case AssetCategoryType.MANUFACTURER:
+        subManufacturerList?.removeAt(i);
+        break;
+      case AssetCategoryType.DEVICETYPE:
+        subDeviceList?.removeAt(i);
+        break;
+      case AssetCategoryType.MODEL:
+        subModelData?.removeAt(i);
+        break;
+      default:
+    }
+    notifyListeners();
+  }
+
+  onAddingDeletedAsset(Asset? data) {
+    Logger().w(data?.toJson());
+    if (data == null) {
+      return;
+    }
+    switch (data.type) {
+      case AssetCategoryType.ASSETID:
+        assetId?.add(data);
+        break;
+      case AssetCategoryType.SERIALNO:
+        assetSerialNumber?.add(data);
+        break;
+      case AssetCategoryType.PRODUCTFAMILY:
+        productFamilyCountData?.add(data);
+        break;
+      case AssetCategoryType.MANUFACTURER:
+        subManufacturerList?.add(data);
+        break;
+      case AssetCategoryType.DEVICETYPE:
+        subDeviceList?.add(data);
+        break;
+      case AssetCategoryType.MODEL:
+        subModelData?.add(data);
+
+        break;
+      default:
+    }
+    
+    notifyListeners();
+  }
+
+  clearAllValues() {
+    _productFamilyCountData!.clear();
+    _subManufacturerList!.clear();
+    _subDeviceList!.clear();
+    _subModelData!.clear();
   }
 }
 

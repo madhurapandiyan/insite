@@ -40,6 +40,8 @@ class AssetDetailWidgt extends StatelessWidget {
             padding: EdgeInsets.all(8),
             child: Table(
               border: TableBorder.all(),
+              
+              defaultColumnWidth:FlexColumnWidth(5) ,
               children: [
                 TableRow(children: [
                   // hiding for now
@@ -85,9 +87,9 @@ class AssetDetailWidgt extends StatelessWidget {
                 TableRow(children: [
                   InsiteTableRowItem(
                     title: "Last Reported time",
-                    content: detail!.lastReportedTimeUTC != null
+                    content: detail!.lastReportedTimeUtc != null
                         ? Utils.getLastReportedDateOneUTC(
-                            detail!.lastReportedTimeUTC)
+                            detail!.lastReportedTimeUtc)
                         : "-",
                   ),
                   InsiteTableRowItem(
@@ -98,9 +100,11 @@ class AssetDetailWidgt extends StatelessWidget {
                   ),
                 ]),
                 TableRow(children: [
-                  InsiteTableRowItem(
-                    title: "Service Plans",
-                    content: getServiceNames(),
+                  Container(
+                    child: InsiteTableRowItem(
+                      title: "Service Plans",
+                      content: getServiceNames(),
+                    ),
                   ),
                   InsiteTableRowItem(
                     title: "Location",
@@ -129,13 +133,16 @@ class AssetDetailWidgt extends StatelessWidget {
     });
 
     StringBuffer value = StringBuffer();
+    String? servicePlans;
     if (detail!.devices!.isNotEmpty &&
         detail!.devices![0].activeServicePlans != null &&
         detail!.devices![0].activeServicePlans!.isNotEmpty) {
       for (ServicePlan plan in detail!.devices![0].activeServicePlans!) {
         value.write(plan.type! + "\n");
+        servicePlans =
+            "${servicePlans == null ? plan.type : servicePlans + ",${plan.type}"}";
       }
-      return value.toString();
+      return servicePlans!;
     } else {
       return "-";
     }

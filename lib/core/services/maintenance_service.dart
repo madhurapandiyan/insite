@@ -5,10 +5,14 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
 import 'package:insite/core/models/maintenance_asset_india_stack.dart';
+import 'package:insite/core/models/maintenance_checkList.dart';
+import 'package:insite/core/models/maintenance_dashboard_count.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
+import 'package:insite/core/models/maintenance_refine.dart';
 import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -32,7 +36,6 @@ class MaintenanceService extends BaseService {
       Logger().e(e);
     }
   }
-
 
   Future<MaintenanceViewData?> getMaintenanceData(
       {String? startTime, String? endTime, int? limit, int? page}) async {
@@ -58,73 +61,122 @@ class MaintenanceService extends BaseService {
 
         Logger().wtf(updateResponse.toJson());
         return updateResponse;
-      } 
+      }
     } catch (e) {
       Logger().e(e.toString());
       return null;
     }
   }
 
-  Future< MaintenanceListData?> getMaintenanceListData(
-      {String? startTime, String? endTime, int? limit, int? page}) async {
+  Future<MaintenanceListData?> getMaintenanceListData(
+      {String? startTime,
+      String? endTime,
+      int? limit,
+      int? page,
+      String? query}) async {
     try {
-       if (!isVisionLink) {
-         Map<String, String> queryMap = Map();
-
-      if (startTime != null) {
-        queryMap["fromDate"] =Utils.getDateInFormatyyyyMMddTHHmmss(startTime.toString()) ;
+      if (enableGraphQl) {
+        // print(await _localService!.getToken());
+        // Logger().i(await _localService!.getStaggedToken());
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        MaintenanceListData mainListData =
+            MaintenanceListData.fromJson(data.data["maintenanceList"]);
+        return mainListData;
       }
-      if (endTime != null) {
-        queryMap["toDate"] =Utils.getDateInFormatyyyyMMddTHHmmss(endTime.toString()) ;
+      if (!isVisionLink) {
+        Map<String, String> queryMap = Map();
+
+        if (startTime != null) {
+          queryMap["fromDate"] =
+              Utils.getDateInFormatyyyyMMddTHHmmss(startTime.toString());
+        }
+        if (endTime != null) {
+          queryMap["toDate"] =
+              Utils.getDateInFormatyyyyMMddTHHmmss(endTime.toString());
+        }
+        if (limit != null) {
+          queryMap["limit"] = limit.toString();
+        }
+        if (page != null) {
+          queryMap["pageNumber"] = page.toString();
+        }
+
+        queryMap["history"] = "true";
+
+        MaintenanceListData? maintenanceListData = await MyApi()
+            .getClientSix()!
+            .getMaintenanceListData(
+                Urls.getMaintenanceList +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID,
+                "in-maintenance-ew-api");
+
+        Logger().wtf("maitenanceListData : ${maintenanceListData.toJson()}");
+        return maintenanceListData;
       }
-      if (limit != null) {
-        queryMap["limit"] = limit.toString();
-      }
-      if (page != null) {
-        queryMap["pageNumber"] = page.toString();
-      }
-
-      queryMap["history"] = "true";
-
-
-        MaintenanceListData? maintenanceListData = await MyApi().getClientSix()!.getMaintenanceListData(Urls.getMaintenanceList + FilterUtils.constructQueryFromMap(queryMap),accountSelected!.CustomerUID,"in-maintenance-ew-api");
-
- Logger().wtf("maitenanceListData : ${maintenanceListData.toJson()}");
-     return maintenanceListData;
-       } 
     } catch (e) {
       Logger().e(e.toString());
       return null;
     }
   }
 
-   Future< MaintenanceAssetList?> getMaintenanceAssetList(
-      {String? startTime, String? endTime, int? limit, int? page}) async {
+  Future<MaintenanceAssetList?> getMaintenanceAssetList(
+      {String? startTime,
+      String? endTime,
+      int? limit,
+      int? page,
+      String? query}) async {
     try {
-       if (!isVisionLink) {
-         Map<String, String> queryMap = Map();
-
-      if (startTime != null) {
-        queryMap["fromDate"] =Utils.getDateInFormatyyyyMMddTHHmmss(startTime.toString()) ;
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        MaintenanceAssetList mainListData =
+            MaintenanceAssetList.fromJson(data.data["maintenanceAssetList"]);
+        return mainListData;
       }
-      if (endTime != null) {
-        queryMap["toDate"] =Utils.getDateInFormatyyyyMMddTHHmmss(endTime.toString()) ;
+      if (!isVisionLink) {
+        Map<String, String> queryMap = Map();
+
+        if (startTime != null) {
+          queryMap["fromDate"] =
+              Utils.getDateInFormatyyyyMMddTHHmmss(startTime.toString());
+        }
+        if (endTime != null) {
+          queryMap["toDate"] =
+              Utils.getDateInFormatyyyyMMddTHHmmss(endTime.toString());
+        }
+        if (limit != null) {
+          queryMap["limit"] = limit.toString();
+        }
+        if (page != null) {
+          queryMap["pageNumber"] = page.toString();
+        }
+
+        MaintenanceAssetList? maintenanceAssetList = await MyApi()
+            .getClientSix()!
+            .getMaintenanceAssetListData(
+                Urls.getMaintenanceAssetList +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID,
+                "in-maintenance-ew-api");
+
+        Logger()
+            .wtf("maitenanceAssetListData : ${maintenanceAssetList.toJson()}");
+        return maintenanceAssetList;
       }
-      if (limit != null) {
-        queryMap["limit"] = limit.toString();
-      }
-      if (page != null) {
-        queryMap["pageNumber"] = page.toString();
-      }
-
-     
-
-
-    MaintenanceAssetList? maintenanceAssetList = await MyApi().getClientSix()!.getMaintenanceAssetListData(Urls.getMaintenanceAssetList+ FilterUtils.constructQueryFromMap(queryMap),accountSelected!.CustomerUID,"in-maintenance-ew-api");
-
- Logger().wtf("maitenanceAssetListData : ${maintenanceAssetList.toJson()}");
-     return maintenanceAssetList;
-       } 
     } catch (e) {
       Logger().e(e.toString());
       return null;
@@ -178,15 +230,37 @@ class MaintenanceService extends BaseService {
     }
   }
 
-  Future<ServiceItem?> getServiceItemCheckList(num? serviceId) async {
-    try {
-      ServiceItem? updateResponse = await MyApi()
-          .getClientThree()!
-          .getServiceCheckListData(serviceId!, accountSelected!.CustomerUID,
-              Urls.getServiceCheckListData);
+  Future<MaintenanceCheckListModelPop?> getMaintenanceServiceItemCheckList(
+      {String? query}) async {
+    if (enableGraphQl) {
+      var data = await Network().getStaggedGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      MaintenanceCheckListModelPop mainListData =
+          MaintenanceCheckListModelPop.fromJson(data.data["maintenanceCheckList"]);
+      Logger().w(mainListData.toJson());
+      return mainListData;
+    }
+  }
 
-      Logger().wtf(updateResponse!.toJson());
-      return updateResponse;
+  Future<ServiceItem?> getServiceItemCheckList(
+    num? serviceId,
+  ) async {
+    try {
+      if (isVisionLink) {
+        ServiceItem? updateResponse = await MyApi()
+            .getClientThree()!
+            .getServiceCheckListData(serviceId!, accountSelected!.CustomerUID,
+                Urls.getServiceCheckListData);
+
+        Logger().wtf(updateResponse!.toJson());
+        return updateResponse;
+      }
     } catch (e) {
       Logger().e(e.toString());
       return null;
@@ -222,10 +296,10 @@ class MaintenanceService extends BaseService {
             "serviceId": serviceId,
             "occurrenceId": occurenceId,
             "checklist": {
-        "checklistName": checkListName,
-        "checklistId": checkListId,
-        "isChecked": true
-      }
+              "checklistName": checkListName,
+              "checklistId": checkListId,
+              "isChecked": true
+            },
           },
           "timezone": "Central America Standard Time",
           "assetUID": assetUid,
@@ -238,8 +312,8 @@ class MaintenanceService extends BaseService {
         Logger().i(queryContent);
         Complete? updateResponse = await MyApi()
             .getClientThree()!
-            .completeResponse(Urls.getCompleteData, queryContent,"application/json;charset=UTF-8"
-                accountSelected!.CustomerUID);
+            .completeResponse(Urls.getCompleteData, queryContent,
+                "application/json;charset=UTF-8", accountSelected!.CustomerUID);
 
         Logger().wtf(updateResponse.toJson());
         return updateResponse;
@@ -247,6 +321,135 @@ class MaintenanceService extends BaseService {
     } catch (e) {
       Logger().e(e.toString());
       return null;
+    }
+  }
+
+  Future onCompletion(String? query) async {
+    if (enableGraphQl) {
+      var maintenancepostData = await Network().getStaggedGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+
+      return maintenancepostData;
+    }
+  }
+
+  Future<MaintenanceRefineData?> getRefineData({String? query}) async {
+    if (enableGraphQl) {
+      var maintenancepostData = await Network().getStaggedGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      MaintenanceRefineData data =
+          MaintenanceRefineData.fromJson(maintenancepostData.data);
+      return data;
+    }
+  }
+
+  Future<MaintenanceDashboardCount?> getMaintenanceDashboardCount(
+      {String? query}) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        MaintenanceDashboardCount countData =
+            MaintenanceDashboardCount.fromJson(data.data);
+        Logger().w(countData.maintenanceDashboard?.toJson());
+        return countData;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future<MaintenanceIntervals?> getMaintenanceIntervals(String query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        MaintenanceIntervals countData =
+            MaintenanceIntervals.fromJson(data.data["maintenanceIntervals"]);
+        return countData;
+      }
+    } catch (e) {
+      Logger().w(e.toString());
+    }
+  }
+
+  Future<dynamic> addMaintenanceIntervals(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return data.data["createMaintenanceIntervals"];
+      }
+    } catch (e) {
+      Logger().w(e.toString());
+    }
+  }
+
+  Future<dynamic> updateMaintenanceIntervals(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return data.data["updateMaintenanceIntervals"];
+      }
+    } catch (e) {
+      Logger().w(e.toString());
+    }
+  }
+
+  Future<dynamic> deletMaintenanceIntervals(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getStaggedGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return data.data["maintenanceIntervalsDelete"];
+      }
+    } catch (e) {
+      Logger().w(e.toString());
     }
   }
 }

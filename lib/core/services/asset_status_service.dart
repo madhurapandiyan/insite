@@ -43,8 +43,11 @@ class AssetStatusService extends DataBaseService {
       key, FilterType type, query, bool? isFromDashboard) async {
     Logger().d("getAssetCount $type");
     try {
-      AssetCount? assetCountFromLocal =
-          await getAssetCountFromLocal(type, null);
+      AssetCount? assetCountFromLocal;
+      if (isFromDashboard == false || isFromDashboard == null) {
+        assetCountFromLocal = await getAssetCountFromLocal(type, null);
+      }
+
       if (assetCountFromLocal != null) {
         Logger().d("from local");
         return assetCountFromLocal;
@@ -62,17 +65,52 @@ class AssetStatusService extends DataBaseService {
           if (isFromDashboard == true) {
             AssetCount assetCountFromGraphql =
                 AssetCount.fromJson(data.data['getDashboardAsset']);
-            return assetCountFromGraphql;
+            if (assetCountFromGraphql != null) {
+              bool updated =
+                  await updateAssetCount(assetCountFromGraphql, type);
+              Logger().d("updated $updated");
+              if (updated) {
+                return assetCountFromGraphql;
+              } else {
+                return null;
+              }
+            } else {
+              return null;
+            }
           }
           if (isFromDashboard == false) {
             AssetCount assetCountFromGraphql =
                 AssetCount.fromJson(data.data['fleetFiltersGrouping']);
-            return assetCountFromGraphql;
+            if (assetCountFromGraphql != null) {
+              bool updated =
+                  await updateAssetCount(assetCountFromGraphql, type);
+              Logger().d("updated $updated");
+              if (updated) {
+                return assetCountFromGraphql;
+              } else {
+                return null;
+              }
+            } else {
+              return null;
+            }
+            //return assetCountFromGraphql;
           }
           if (isFromDashboard == null) {
             AssetCount assetCountFromGraphql =
                 AssetCount.fromJson(data.data['userManagementRefine']);
-            return assetCountFromGraphql;
+            if (assetCountFromGraphql != null) {
+              bool updated =
+                  await updateAssetCount(assetCountFromGraphql, type);
+              Logger().d("updated $updated");
+              if (updated) {
+                return assetCountFromGraphql;
+              } else {
+                return null;
+              }
+            } else {
+              return null;
+            }
+            //return assetCountFromGraphql;
           }
         } else {
           if (isVisionLink) {
@@ -318,11 +356,14 @@ class AssetStatusService extends DataBaseService {
     }
   }
 
-  Future<AssetCount?> getFuellevel(FilterType type, String query) async {
+  Future<AssetCount?> getFuellevel(
+      FilterType type, String query, bool? isFromDashBoard) async {
     Logger().d("getFuellevel");
     try {
-      AssetCount? assetCountFromLocal =
-          await getAssetCountFromLocal(type, null);
+      AssetCount? assetCountFromLocal;
+      if (isFromDashBoard == null || !isFromDashBoard) {
+        assetCountFromLocal = await getAssetCountFromLocal(type, null);
+      }
       if (assetCountFromLocal != null) {
         Logger().d("from local");
         return assetCountFromLocal;
@@ -339,7 +380,17 @@ class AssetStatusService extends DataBaseService {
           );
           AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data['getDashboardAsset']);
-          return assetCountFromGraphql;
+          if (assetCountFromGraphql != null) {
+            bool updated = await updateAssetCount(assetCountFromGraphql, type);
+            if (updated) {
+              return assetCountFromGraphql;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
+          //return assetCountFromGraphql;
           // else {
           //     // AssetCount assetCountFromGraphql =
           //     //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
@@ -410,11 +461,13 @@ class AssetStatusService extends DataBaseService {
   }
 
   Future<AssetCount?> getIdlingLevelData(startDate, endDate, FilterType type,
-      FilterSubType? subType, String query) async {
+      FilterSubType? subType, String query, bool isFromDashboard) async {
     Logger().d("getIdlingLevelData");
     try {
-      AssetCount? assetCountFromLocal =
-          await getAssetCountFromLocal(type, subType);
+      AssetCount? assetCountFromLocal;
+      if (!isFromDashboard) {
+        assetCountFromLocal = await getAssetCountFromLocal(type, subType);
+      }
       if (assetCountFromLocal != null) {
         Logger().d(" from local");
         return assetCountFromLocal;
@@ -440,7 +493,18 @@ class AssetStatusService extends DataBaseService {
           // if (isFromDashboard) {
           AssetCount assetCountFromGraphql =
               AssetCount.fromJson(data.data['getDashboardAsset']);
-          return assetCountFromGraphql;
+          if (assetCountFromGraphql != null) {
+            bool updated = await updateAssetCount(assetCountFromGraphql, type);
+            Logger().d("updated $updated");
+            if (updated) {
+              return assetCountFromGraphql;
+            } else {
+              return null;
+            }
+          } else {
+            return null;
+          }
+          // return assetCountFromGraphql;
           // } else {
           //   // AssetCount assetCountFromGraphql =
           //   //     AssetCount.fromJson(data.data['fleetFiltersGrouping']);
@@ -827,6 +891,12 @@ class AssetStatusService extends DataBaseService {
     } catch (e) {
       Logger().e(e);
       return null;
+    }
+  }
+
+  onClearLocalFilter() {
+    if (assetCountBox != null) {
+      assetCountBox.clear();
     }
   }
 

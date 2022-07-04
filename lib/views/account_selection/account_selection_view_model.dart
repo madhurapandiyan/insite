@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/account.dart';
@@ -18,7 +19,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
   LoginService? _loginService = locator<LoginService>();
   NavigationService? _navigationService = locator<NavigationService>();
   LocalStorageService? _localStorageService = locator<LocalStorageService>();
-  
+
   Logger? log;
 
   String? _loggedInUserMail = "";
@@ -47,6 +48,11 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   List<Permission> _permissions = [];
   List<Permission> get permissions => _permissions;
+
+  int start = 0;
+  int limit = 99;
+  ScrollController customerScrollControl = new ScrollController();
+  ScrollController subCustomerScrollControl = new ScrollController();
 
   AccountSelectionViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -92,7 +98,8 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   getCustomerList() async {
     Logger().d("getCustomerList");
-    List<Customer>? result = await _loginService!.getCustomers();
+    List<Customer>? result =
+        await _loginService!.getCustomers(limit: limit, start: start);
     addCustomers(result!);
     Logger().d("getCustomerList " + _customers.length.toString());
     _loading = false;
@@ -141,8 +148,11 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
   Future<List<Customer>> getSubCustomerList() async {
     Logger().d("getSubCustomerList");
-    List<Customer>? result =
-        await _loginService!.getSubCustomers(_accountSelected!.CustomerUID);
+    List<Customer>? result = await _loginService!.getSubCustomers(
+        customerId: _accountSelected!.CustomerUID,
+        limit: limit,
+        start: start,
+        isFromPagination: false);
 
     if (result!.isNotEmpty) {
       _subCustomers.clear();
@@ -192,9 +202,27 @@ class AccountSelectionViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  setAccountSelected(value) async {
-    Logger().d("setAccountSelected $value");
+  onSearchingCustomerAccount(String value) async {
+    try {
+      Logger().d("getCustomerList");
+      List<Customer>? result = await _loginService!
+          .getCustomers(limit: limit, start: start, searchKey: value);
+      _customers.clear();
+      addCustomers(result!);
+      Logger().d("getCustomerList " + _customers.length.toString());
+      _loading = false;
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
 
+  setAccountSelected(Customer? value) async {
+    Logger().d("setAccountSelected $value");
+    // if (value!.CustomerUID == "1857723c-ada1-11eb-8529-0242ac130003") {
+    //   value.isTataHitachiSelected = true;
+    // }
+    // Logger().i("Tata Hitachi Account Selected ${value.toJson()}");
     // if (isVisionLink) {
     //   // value = Customer(
     //   //     CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
@@ -215,8 +243,8 @@ class AccountSelectionViewModel extends InsiteViewModel {
     _subAccountSelected = null;
     _subCustomers.clear();
     _secondaryLoading = true;
-   notifyListeners();
-  await _localService!.saveAccountInfo(accountSelected!);
+    notifyListeners();
+    await _localService!.saveAccountInfo(accountSelected!);
     if (_accountSelected != null) {
       List<Customer> subCustomerlist = await getSubCustomerList();
       if (subCustomerlist.isEmpty) {
@@ -227,9 +255,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
         _secondaryLoading = false;
         notifyListeners();
       }
-    }else{
-      Logger().e("mappiy");
-    }
+    } else {}
   }
 
   setSubAccountSelected(Customer value) {
@@ -260,7 +286,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
   onHomeSelected() async {
     Logger().d("onHomeSelected");
     await _localStorageService!.clearAll();
-  await  _loginService!.loginAudit();
+    await _loginService!.loginAudit();
     _navigationService!.replaceWith(homeViewRoute);
   }
 
@@ -291,5 +317,31 @@ class AccountSelectionViewModel extends InsiteViewModel {
   hideLoader() {
     _loading = false;
     notifyListeners();
+  }
+
+  onSearchTextChanged(String text) async {
+    try {
+      if (text.length >= 4) {
+        Logger().d("getCustomerList");
+        List<AccountData> searchList = [];
+        List<Customer>? result = await _loginService!.getSubCustomers(
+            limit: limit,
+            start: start,
+            searchKey: text,
+            isFromPagination: false,
+            customerId: accountSelected!.CustomerUID);
+        result!.forEach((element) {
+          searchList.add(AccountData(
+              isSelected: false,
+              selectionType: AccountType.CUSTOMER,
+              value: element));
+        });
+        _subCustomers = searchList;
+//Logger().d("getCustomerList " + displayList!.length.toString());
+        notifyListeners();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 }

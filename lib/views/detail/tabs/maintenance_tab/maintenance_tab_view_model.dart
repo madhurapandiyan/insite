@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/maintenance.dart';
+import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
+import 'package:insite/core/services/asset_service.dart';
 
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
@@ -17,9 +21,10 @@ class MaintenanceTabViewModel extends InsiteViewModel {
 
   MaintenanceService? _maintenanceService = locator<MaintenanceService>();
   NavigationService? _navigationService = locator<NavigationService>();
+  AssetService? _assetService = locator<AssetService>();
 
   int pageNumber = 1;
-  int pageSize = 20;
+  int pageSize = 50;
 
   num? _totalCount = 0;
   num? get totalCount => _totalCount;
@@ -45,10 +50,16 @@ class MaintenanceTabViewModel extends InsiteViewModel {
   List<Services?> _services = [];
   List<Services?> get services => _services;
 
+  List<MaintenanceList>? historyData = [];
+
   SummaryData? _summaryData;
   SummaryData? get summaryData => _summaryData;
 
   bool dataNotFound = false;
+
+  bool isToggled = true;
+  bool isMaintenanceDataOptained = true;
+  bool isHistoryDataOptained = true;
 
   late ScrollController scrollController;
 
@@ -72,42 +83,148 @@ class MaintenanceTabViewModel extends InsiteViewModel {
     });
   }
 
-  getMaintenanceListItemData() async {
+  toggled(bool value) {
+    isToggled = value;
+    notifyListeners();
+  }
+
+  refresh() async {
+    if (isToggled) {
+      await getMaintenanceListItemData(isRefreshing: true);
+    } else {
+      await getHistoryMaintenanceListItem(isRefreshing: true);
+    }
+  }
+
+  getHistoryMaintenanceListItem({bool? isRefreshing}) async {
+    if (isRefreshing == true) {
+      isHistoryDataOptained = true;
+      historyData?.clear();
+      notifyListeners();
+    }
+    await getSelectedFilterData();
+    await getDateRangeFilterData();
+    MaintenanceListData? maintenanceListData = await _maintenanceService!
+        .getMaintenanceListData(
+            startTime: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+            limit: pageSize,
+            page: pageNumber,
+            query: await graphqlSchemaService!.getMaintenanceListData(
+                assetId: summaryData!.assetID,
+                histroy: true,
+                startDate:
+                    Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+                endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+                limit: pageSize,
+                pageNo: pageNumber));
+    if (maintenanceListData != null &&
+        maintenanceListData.maintenanceList!.isNotEmpty) {
+      historyData!.addAll(maintenanceListData.maintenanceList!);
+    } else {
+      historyData!.clear();
+    }
+    isHistoryDataOptained = false;
+    notifyListeners();
+  }
+
+  getMaintenanceListItemData({bool? isRefreshing}) async {
+    if (isRefreshing == true) {
+      isMaintenanceDataOptained = true;
+      notifyListeners();
+    }
     await getSelectedFilterData();
     await getDateRangeFilterData();
 
-    notifyListeners();
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
+    if (isVisionLink) {
+      MaintenanceListService? result =
+          await _maintenanceService?.getMaintenanceServiceList(
+              _summaryData!.assetUID,
+              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              pageSize,
+              pageNumber,
+              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
 
-    MaintenanceListService? result =
-        await _maintenanceService?.getMaintenanceServiceList(
-            _summaryData!.assetUID,
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-            pageSize,
-            pageNumber,
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+      _loading = false;
 
-    _loading = false;
-
-    if (result != null && result.services != null) {
-      if (result.services!.isNotEmpty) {
-        _assetDataValue = result.assetData;
-        _services.clear();
-        _services.addAll(result.services!);
-        _refreshing = false;
-        _loadingMore = false;
-        notifyListeners();
+      if (result != null && result.services != null) {
+        if (result.services!.isNotEmpty) {
+          _assetDataValue = result.assetData;
+          _services.clear();
+          _services.addAll(result.services!);
+          _refreshing = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          // _services.addAll(result.services!);
+          _refreshing = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
       } else {
-        // _services.addAll(result.services!);
         _refreshing = false;
-        _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
     } else {
-      _refreshing = false;
-      notifyListeners();
+      MaintenanceListData? maintenanceListData = await _maintenanceService!
+          .getMaintenanceListData(
+              startTime:
+                  Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+              endTime: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+              limit: pageSize,
+              page: pageNumber,
+              query: await graphqlSchemaService!.getMaintenanceListData(
+                  assetId: summaryData!.assetID,
+                  startDate:
+                      Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+                  endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+                  limit: pageSize,
+                  pageNo: pageNumber));
+      if (maintenanceListData != null &&
+          maintenanceListData.maintenanceList!.isNotEmpty) {
+        Services? singleService;
+        _services.clear();
+        for (var item in maintenanceListData.maintenanceList!) {
+          _assetDataValue = AssetData(
+            assetID: item.assetId,
+            assetName: item.assetName,
+            // assetIdVal: item.assetId,
+            assetIcon: item.assetIcon,
+            assetSerialNumber: item.serialNumber,
+            assetType: item.assetType,
+            currentHourmeter: item.currentHourMeter,
+            currentOdometer: item.odometer,
+            makeCode: item.make,
+            model: item.model,
+          );
+          singleService = Services(
+            serviceName: item.serviceName,
+            serviceType: item.serviceType,
+            serviceId: item.serviceNumber,
+            dueInfo: DueInfomation(
+              dueAt: item.dueAt,
+              dueBy: item.dueInOverdueBy,
+              dueDate: item.dueDate.toString(),
+              serviceStatus: item.serviceStatus,
+            ),
+            intervalCode: item.serviceInterval,
+          );
+          _services.add(singleService);
+          _refreshing = false;
+          _loadingMore = false;
+          isMaintenanceDataOptained = false;
+          notifyListeners();
+        }
+      } else {
+        _services.clear();
+        isMaintenanceDataOptained = false;
+        _refreshing = false;
+        _loadingMore = false;
+        notifyListeners();
+      }
     }
 
     notifyListeners();

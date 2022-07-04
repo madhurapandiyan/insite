@@ -71,7 +71,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               title: "Refresh",
                               width: 90,
                               height: 30,
-                              bgColor: Theme.of(context).backgroundColor,
+                              //bgColor: Theme.of(context).backgroundColor,
                               textColor:
                                   Theme.of(context).textTheme.bodyText1!.color,
                               onTap: () async {
@@ -87,18 +87,22 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             SizedBox(
                               width: 20,
                             ),
-                            InsiteText(
-                                text: Utils.getDateInFormatddMMyyyy(
+                            // InsiteText(
+                            //     text: Utils.getDateInFormatddMMyyyy(
+                            //             viewModel.startDate) +
+                            //         " - " +
+                            //         Utils.getDateInFormatddMMyyyy(
+                            //             viewModel.endDate),
+                            //     fontWeight: FontWeight.bold,
+                            //     size: 12),
+                            InsiteButton(
+                              title:  Utils.getDateInFormatddMMyyyy(
                                         viewModel.startDate) +
                                     " - " +
                                     Utils.getDateInFormatddMMyyyy(
                                         viewModel.endDate),
-                                fontWeight: FontWeight.bold,
-                                size: 12),
-                            InsiteButton(
-                              title: "Date Range",
-                              width: 90,
-                              bgColor: Theme.of(context).backgroundColor,
+                             // width: 90,
+                              //bgColor: Theme.of(context).backgroundColor,
                               textColor:
                                   Theme.of(context).textTheme.bodyText1!.color,
                               onTap: () async {
@@ -124,6 +128,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                       ),
                       Expanded(
                         child: Stack(
+                          alignment: Alignment.bottomRight,
                           children: [
                             GoogleMap(
                               onTap: (position) {
@@ -149,6 +154,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               compassEnabled: true,
                               zoomControlsEnabled: false,
                               markers: viewModel.markers,
+                              polylines: viewModel.polyline,
                               initialCameraPosition:
                                   viewModel.assetLocationHistory != null &&
                                           viewModel.assetLocationHistory!
@@ -174,137 +180,156 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               width: 200,
                               offset: 50,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 100,
-                                  height: 30,
-                                  margin: EdgeInsets.only(left: 20, top: 10),
-                                  decoration: BoxDecoration(
-                                      // border: Border.all(
-                                      //     width: 1,
-                                      //     color: Theme.of(context).buttonColor),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Theme.of(context).backgroundColor),
-                                  child: CustomDropDownWidget(
-                                    items: [
-                                      "MAP",
-                                      "TERRAIN",
-                                      "SATELLITE",
-                                      "HYBRID"
-                                    ],
-                                    value: _currentSelectedItem,
-                                    onChanged: (value) {
-                                      _currentSelectedItem = value!;
-                                      _changemap();
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 30.0,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    if (viewModel.assetLocationHistory !=
-                                        null) {
-                                      zoomVal++;
-                                      _plus(
-                                        zoomVal,
-                                        LatLng(
-                                            viewModel.assetLocationHistory!
-                                                .assetLocation![0].latitude!,
-                                            viewModel.assetLocationHistory!
-                                                .assetLocation![0].longitude!),
-                                      );
-                                    }
-                                  },
-                                  child: Container(
-                                    width: 27.47,
-                                    height: 26.97,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    height: 30,
+                                    margin: EdgeInsets.only(left: 20, top: 10),
                                     decoration: BoxDecoration(
-                                      color: Theme.of(context).backgroundColor,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          blurRadius: 1.0,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .color!,
-                                        ),
+                                        // border: Border.all(
+                                        //     width: 1,
+                                        //     color: Theme.of(context).buttonColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color:
+                                            Theme.of(context).backgroundColor),
+                                    child: CustomDropDownWidget(
+                                      items: [
+                                        "MAP",
+                                        "TERRAIN",
+                                        "SATELLITE",
+                                        "HYBRID"
                                       ],
-                                      border: Border.all(
-                                        width: 1.0,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1!
-                                            .color!,
-                                      ),
-                                      shape: BoxShape.rectangle,
-                                    ),
-                                    child: SvgPicture.asset(
-                                      "assets/images/plus.svg",
-                                      color: Theme.of(context).iconTheme.color,
+                                      value: _currentSelectedItem,
+                                      onChanged: (value) {
+                                        _currentSelectedItem = value!;
+                                        _changemap();
+                                        setState(() {});
+                                      },
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 5.0,
-                                ),
-                                GestureDetector(
-                                    onTap: () {
-                                      if (viewModel.assetLocationHistory !=
-                                          null) {
-                                        zoomVal--;
-                                        _minus(
-                                          zoomVal,
-                                          LatLng(
-                                              viewModel.assetLocationHistory!
-                                                  .assetLocation![0].latitude!,
-                                              viewModel
-                                                  .assetLocationHistory!
-                                                  .assetLocation![0]
-                                                  .longitude!),
-                                        );
-                                      }
-                                    },
-                                    child: Container(
-                                      width: 27.47,
-                                      height: 26.97,
-                                      decoration: BoxDecoration(
-                                        color:
-                                            Theme.of(context).backgroundColor,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5.0)),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            blurRadius: 1.0,
+                                  Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          if (viewModel.assetLocationHistory !=
+                                              null) {
+                                            zoomVal++;
+                                            _plus(
+                                              zoomVal,
+                                              LatLng(
+                                                  viewModel
+                                                      .assetLocationHistory!
+                                                      .assetLocation![0]
+                                                      .latitude!,
+                                                  viewModel
+                                                      .assetLocationHistory!
+                                                      .assetLocation![0]
+                                                      .longitude!),
+                                            );
+                                          }
+                                        },
+                                        child: Container(
+                                          width: 27.47,
+                                          height: 26.97,
+                                          decoration: BoxDecoration(
                                             color: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1!
-                                                .color!,
+                                                .backgroundColor,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5.0)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                blurRadius: 1.0,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1!
+                                                    .color!,
+                                              ),
+                                            ],
+                                            border: Border.all(
+                                              width: 1.0,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color!,
+                                            ),
+                                            shape: BoxShape.rectangle,
                                           ),
-                                        ],
-                                        border: Border.all(
-                                          width: 1.0,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .color!,
+                                          child: SvgPicture.asset(
+                                            "assets/images/plus.svg",
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color,
+                                          ),
                                         ),
-                                        shape: BoxShape.rectangle,
                                       ),
-                                      child: SvgPicture.asset(
-                                        "assets/images/minus.svg",
-                                        color:
-                                            Theme.of(context).iconTheme.color,
+                                      SizedBox(
+                                        height: 5.0,
                                       ),
-                                    )),
-                              ],
+                                      GestureDetector(
+                                          onTap: () {
+                                            if (viewModel
+                                                    .assetLocationHistory !=
+                                                null) {
+                                              zoomVal--;
+                                              _minus(
+                                                zoomVal,
+                                                LatLng(
+                                                    viewModel
+                                                        .assetLocationHistory!
+                                                        .assetLocation![0]
+                                                        .latitude!,
+                                                    viewModel
+                                                        .assetLocationHistory!
+                                                        .assetLocation![0]
+                                                        .longitude!),
+                                              );
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 27.47,
+                                            height: 26.97,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .backgroundColor,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  blurRadius: 1.0,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .color!,
+                                                ),
+                                              ],
+                                              border: Border.all(
+                                                width: 1.0,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1!
+                                                    .color!,
+                                              ),
+                                              shape: BoxShape.rectangle,
+                                            ),
+                                            child: SvgPicture.asset(
+                                              "assets/images/minus.svg",
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
+                                            ),
+                                          )),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
+
                             // Padding(
                             //   padding: const EdgeInsets.only(left: 16.0),
                             //   child: DropdownButton(

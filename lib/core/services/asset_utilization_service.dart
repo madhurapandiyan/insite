@@ -292,7 +292,10 @@ class AssetUtilizationService extends BaseService {
         );
         SingleAssetUtilization response = SingleAssetUtilization.fromJson(
             data.data["getAssetDetailsAggregate"]);
-        Logger().w(response.daily?.first.data?.toJson());
+        response.daily?.forEach((element) {
+          Logger().w(element.data!.idleHours.runtimeType);
+        });
+
         return response;
       }
       if (isVisionLink) {

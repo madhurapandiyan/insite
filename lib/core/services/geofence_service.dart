@@ -31,30 +31,34 @@ class Geofenceservice extends BaseService {
   }
 
   Future<Geofence?> getGeofenceData() async {
-    Customer? customer = await _localService!.getAccountInfo();
+    try {
+      Customer? customer = await _localService!.getAccountInfo();
 
-    if (enableGraphQl) {
-      var data = await Network().getGraphqlData(
-        query: graphqlSchemaService!.getGeofenceData(null, null),
-        customerId: accountSelected?.CustomerUID,
-        userId: (await _localService?.getLoggedInUser())?.sub,
-        subId: customerSelected?.CustomerUID == null
-            ? ""
-            : customerSelected?.CustomerUID,
-      );
-      Geofence geofenceData = Geofence.fromJson(data.data["geofencesTypeId"]);
-      Logger().w(geofenceData.toJson());
-      return geofenceData;
-    }
-    if (isVisionLink) {
-      Geofence Data = await MyApi()
-          .getClientSeven()!
-          .getGeofenceDataVL(Urls.postPayLoad, customer!.CustomerUID);
-      return Data;
-    } else {
-      Geofence Data = await MyApi().getClient()!.getGeofenceData(
-          Urls.getGeofenceData, customer!.CustomerUID, "in-geofence-gfapi");
-      return Data;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: graphqlSchemaService!.getGeofenceData(null, null),
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService?.getLoggedInUser())?.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        Geofence geofenceData = Geofence.fromJson(data.data["geofencesTypeId"]);
+        Logger().w(geofenceData.toJson());
+        return geofenceData;
+      }
+      if (isVisionLink) {
+        Geofence Data = await MyApi()
+            .getClientSeven()!
+            .getGeofenceDataVL(Urls.postPayLoad, customer!.CustomerUID);
+        return Data;
+      } else {
+        Geofence Data = await MyApi().getClient()!.getGeofenceData(
+            Urls.getGeofenceData, customer!.CustomerUID, "in-geofence-gfapi");
+        return Data;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 

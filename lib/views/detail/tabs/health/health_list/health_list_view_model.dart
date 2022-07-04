@@ -59,14 +59,12 @@ class HealthListViewModel extends InsiteViewModel {
           limit,
           page,
           Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-          ""
-          // graphqlSchemaService?.getfaultQueryString(
-          //     applyFilter: appliedFilters,
-          //     endDate: endDate,
-          //     startDate: startDate,
-          //     limit: limit,
-          //     pageNo: page)
-          );
+          await graphqlSchemaService?.getfaultQueryString(
+              applyFilter: appliedFilters,
+              endDate: endDate,
+              startDate: startDate,
+              limit: limit,
+              pageNo: page));
       if (result != null && result.assetData != null) {
         if (result.assetData!.faults!.isNotEmpty) {
           _faults.addAll(result.assetData!.faults!);

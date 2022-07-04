@@ -27,7 +27,7 @@ class MaintenanceList {
   String? model;
   String? modelYear;
   String? productFamily;
-  int? currentHourMeter;
+  double? currentHourMeter;
   String? lastLocationReportedDate;
   double? longitude;
   double? latitude;
@@ -37,9 +37,9 @@ class MaintenanceList {
   String? county;
   String? country;
   String? zip;
-  String? odometer;
+  double? odometer;
   String? lastReportedDate;
-  int? percentFuelRemaining;
+  num? percentFuelRemaining;
   String? fuelLastReportedTime;
   String? serviceInterval;
   String? status;
@@ -56,9 +56,11 @@ class MaintenanceList {
   int? serviceMeter;
   String? performedBy;
   String? serviceNotes;
-  int? dueInOverdueBy;
+  double? dueInOverdueBy;
   String? completedService;
   String? address;
+  String? workOrder;
+  String? dealerName;
 
   MaintenanceList(
       {this.serviceNumber,
@@ -102,7 +104,9 @@ class MaintenanceList {
       this.serviceNotes,
       this.dueInOverdueBy,
       this.completedService,
-      this.address});
+      this.address,
+      this.workOrder,
+      this.dealerName});
 
   factory MaintenanceList.fromJson(Map<String, dynamic> json) =>
       _$MaintenanceListFromJson(json);

@@ -5,6 +5,7 @@ import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:load/load.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'core/flavor/flavor.dart';
 import 'core/locator.dart';
@@ -15,6 +16,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'core/setup_snackbar_ui.dart';
 
 void main() async {
+  Logger().d("main trimble");
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await FlutterDownloader.initialize(debug: true);
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: router.Router.generateRoute,
       initialRoute: indiaStackSplashViewRoute,
-      theme: indiaStackBlueWhite,
+      theme: indiaStackOrangeBlack,
     );
   }
 }

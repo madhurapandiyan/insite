@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.0.0+1
+version: 2.0.11+11
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
@@ -38,6 +38,8 @@ dependencies:
   point_in_polygon: ^1.0.0
   maps_toolkit: ^2.0.0
   geobase: ^0.1.1
+  in_app_update: ^3.0.0
+  jwt_decoder: ^2.0.1
 
 
   hive: ^2.0.4
@@ -46,7 +48,7 @@ dependencies:
 
   syncfusion_flutter_calendar: ^19.1.69
   badges: ^2.0.2
-  flutter_map: ^0.14.0
+  
   flutter_map_marker_cluster: ^0.4.4 # or the latest version on Pub
   fluttertoast: ^8.0.8
   graphql_flutter: any
@@ -164,6 +166,26 @@ flutter:
     - assets/images/assessment.svg
     - assets/images/descending_filter_group.png
     - assets/images/ascending_filter_group.png
+    - assets/images/10001.png
+    - assets/images/10002.png
+    - assets/images/0.png
+    - assets/images/excavator.png
+    - assets/images/wheel_loader.png
+    - assets/images/backhoe_loader.png
+    - assets/images/model/EX70.png
+    - assets/images/model/EX110.png
+    - assets/images/model/EX130.png
+    - assets/images/model/EX200.png
+    - assets/images/model/EX210.png
+    - assets/images/model/EX210LC.png
+    - assets/images/model/SHINRAI.png
+    - assets/images/model/TH76.png
+    - assets/images/model/TH86.png
+    - assets/images/model/TL340H.png
+    - assets/images/model/TL360Z.png
+    - assets/images/model/TMX20.png
+    - assets/images/maintenance.svg
+    - assets/images/invert.svg
     
   fonts:
     - family: Roboto

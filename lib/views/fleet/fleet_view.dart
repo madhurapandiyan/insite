@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/fleet_item.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -43,7 +45,18 @@ class _FleetViewState extends State<FleetView> {
                 child: Stack(
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16, top: 16),
+                          child: InsiteTextOverFlow(
+                            text: Utils.getPageTitle(ScreenType.FLEET),
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.bold,
+                            size: 16,
+                          ),
+                        ),
                         PageHeader(
                           count: viewModel.assets.length,
                           total: viewModel.totalCount,

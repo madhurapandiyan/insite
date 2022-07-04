@@ -5,10 +5,12 @@ import 'package:insite/core/models/fleet.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/dialog.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/location/home/google_map.dart';
 import 'package:insite/widgets/dumb_widgets/filter_dropdown_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/asset_fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/asset_status.dart';
 import 'package:insite/widgets/smart_widgets/asset_utilization.dart';
@@ -16,6 +18,7 @@ import 'package:insite/widgets/smart_widgets/fault_dropdown_widget.dart';
 import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/idling_level.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:insite/widgets/smart_widgets/maintenance_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:insite/widgets/smart_widgets/reusable_dropdown_widget.dart';
 import 'package:logger/logger.dart';
@@ -52,8 +55,18 @@ class _DashboardViewState extends State<DashboardView> {
             body: SingleChildScrollView(
               child: Container(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, top: 16),
+                      child: InsiteTextOverFlow(
+                        text: Utils.getPageTitle(ScreenType.DASHBOARD),
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        overflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.bold,
+                        size: 16,
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -130,8 +143,8 @@ class _DashboardViewState extends State<DashboardView> {
                                         onValueSelected: (value) async {
                                           Logger().i(
                                               "product family dropdown change $value");
-                                          viewModel
-                                              .getProductFamilyAssetCount();
+                                          // viewModel
+                                          //     .getProductFamilyAssetCount();
                                           viewModel.getFilterDataApplied(
                                               value!, true);
                                           filterLocationKey.currentState!
@@ -267,6 +280,17 @@ class _DashboardViewState extends State<DashboardView> {
                     ),
                     SizedBox(
                       height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: MaintenanceDashBoard(
+                        countData: viewModel.maintenanceDashboardCount,
+                        isLoading: viewModel.maintenanceLoading,
+                        onFilterSelected: (val, filterType, count) {
+                          viewModel.onMaintenanceFilterClicked(
+                              val, filterType, count);
+                        },
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),

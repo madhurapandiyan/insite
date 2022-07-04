@@ -19,6 +19,8 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../add_group/asset_selection_widget/asset_selection_widget_view.dart';
+
 class AddReportViewModel extends InsiteViewModel {
   Logger? log;
   AssetAdminManagerUserService? _manageUserService =
@@ -90,6 +92,8 @@ class AddReportViewModel extends InsiteViewModel {
     ".XLSX",
     //".PDF"
   ];
+  final GlobalKey<AssetSelectionWidgetViewState> assetSelectionState =
+      new GlobalKey();
 
   AddReportViewModel(ScheduledReports? scheduledReports, bool? isEdit,
       String? dropdownValue, String? templateTitleValue) {
@@ -267,11 +271,15 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   searchContacts(String searchValue) {
-    if (searchValue.length >= 4) {
+    if (emailController.text.length >= 4) {
       _searchKeyword = searchValue;
       isHideSearchList = true;
       notifyListeners();
       getContactSearchReportData();
+    } else {
+      isHideSearchList = false;
+      searchContactListName!.clear();
+      notifyListeners();
     }
   }
 
@@ -280,11 +288,11 @@ class AddReportViewModel extends InsiteViewModel {
       SearchContactReportListResponse? result = await _manageUserService!
           .getSearchContactResposeData(_searchKeyword,
               graphqlSchemaService!.getContactSearchData(_searchKeyword));
-      if (result != null) {
-        searchContactListName!.clear();
-        // Logger().i("result:${result.pageInfo!.totalPages}");
 
-        for (var name in result.Users!) {
+      if (result != null) {
+        searchContactListName?.clear();
+        // Logger().i("result:${result.pageInfo!.totalPages}");
+        for (var name in result.users!) {
           searchContactListName!.add(name);
         }
       }
@@ -741,7 +749,9 @@ class AddReportViewModel extends InsiteViewModel {
                           : null,
                   svcbody: assetsDropDownValue == "Fault Summary Faults List"
                       ? null
-                      : Utils.getStringListData(data) ?? null,
+                      : data != null
+                          ? Utils.getStringListData(data)
+                          : null,
                   reportColumns: Utils.getReportColumn(assetsDropDownValue!),
                   reportType: reportType!,
                   //     assetsDropDownValue=="Fault Summary Faults List"?{"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:
@@ -916,6 +926,31 @@ class AddReportViewModel extends InsiteViewModel {
         Logger().e(e.toString());
       }
     } catch (e) {}
+  }
+
+  onAddingAllAsset(List<Asset>? allAsset) {
+    // if (selectedAsset!.isEmpty) {
+    //   selectedAsset!.addAll(allAsset!);
+    // } else {
+    Logger().w(allAsset!.length);
+    for (var singleAsset in allAsset) {
+      if (selectedAsset!.isEmpty) {
+        selectedAsset!.add(singleAsset);
+      } else if (selectedAsset!.any((element) =>
+          element.assetSerialNumber == singleAsset.assetSerialNumber)) {
+        snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+        return;
+      } else {
+        selectedAsset!.add(singleAsset);
+      }
+    }
+    //}
+    notifyListeners();
+  }
+
+  onRemoving() {
+    selectedAsset!.clear();
+    notifyListeners();
   }
 
   gotoScheduleReportPage() {

@@ -20,7 +20,11 @@ class LocalService extends BaseService {
   static const String HAS_PERMISSION = "hasPermission";
   static const String USERID = "userId";
   static const String REFRESH_TOKEN = "refresh_token";
-  static const String CODE_VERIFIER="code_verifier";
+  static const String CODE_VERIFIER = "code_verifier";
+  static const String STAGGED_TOKEN = "staged_token";
+  static const String MAINTENANCE_STARTDATE = "maintenance_startdate";
+  static const String MAINTENANCE_ENDDATE = "maintenance_enddate";
+
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences!.setBool(IS_LOGGEDIN, isLoggedIn);
   }
@@ -29,11 +33,15 @@ class LocalService extends BaseService {
     return await preferences!.setString(TOKEN, token);
   }
 
-  Future saveCodeVerfier(code_verifier) async{
+  Future saveStaggedToken(token) async {
+    return await preferences!.setString(STAGGED_TOKEN, token);
+  }
+
+  Future saveCodeVerfier(code_verifier) async {
     return await preferences!.setString(CODE_VERIFIER, code_verifier);
   }
 
-  Future getCodeVerifier()async{
+  Future getCodeVerifier() async {
     return await preferences!.getString(CODE_VERIFIER);
   }
 
@@ -53,6 +61,10 @@ class LocalService extends BaseService {
 
   Future<String> getToken() async {
     return preferences!.getString(TOKEN)!;
+  }
+
+  Future<String> getStaggedToken() async {
+    return preferences!.getString(STAGGED_TOKEN)!;
   }
 
   Future saveUserId(String userId) async {
@@ -157,6 +169,22 @@ class LocalService extends BaseService {
     return preferences!.getBool(HAS_PERMISSION);
   }
 
+  Future saveMaintenanceFromDate(String? value) async {
+    await preferences!.setString(MAINTENANCE_STARTDATE, value!);
+  }
+
+  Future saveMaintenanceEndDate(String? value) async {
+    await preferences!.setString(MAINTENANCE_ENDDATE, value!);
+  }
+
+  String? getMaintenanceEndDate() {
+    return preferences!.getString(MAINTENANCE_ENDDATE);
+  }
+
+  String? getMaintenanceFromDate() {
+    return preferences!.getString(MAINTENANCE_STARTDATE);
+  }
+
   void clearAll() async {
     await preferences!.remove("codeVerifierInfo");
     await preferences!.remove(CUSTOMER_INFO);
@@ -168,5 +196,7 @@ class LocalService extends BaseService {
     await preferences!.remove(IS_LOGGEDIN);
     await preferences!.clear();
     await preferences!.remove(CODE_VERIFIER);
+    await preferences!.remove(MAINTENANCE_STARTDATE);
+    await preferences!.remove(MAINTENANCE_ENDDATE);
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/fleet_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -47,8 +49,9 @@ class FleetViewModel extends InsiteViewModel {
         }
       }
     });
-    Future.delayed(Duration(seconds: 1), () {
-      getSelectedFilterData();
+    Future.delayed(Duration(seconds: 1), () async {
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
     });
     Future.delayed(Duration(seconds: 2), () {
       getFleetSummaryList();
@@ -57,8 +60,20 @@ class FleetViewModel extends InsiteViewModel {
 
   getFleetSummaryList() async {
     try {
-      FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-          startDate, endDate, pageSize, pageNumber, appliedFilters);
+      FleetSummaryResponse? result;
+      if (appliedFilters!
+          .any((element) => element!.type == FilterType.IDLING_LEVEL)) {
+        result = await _fleetService!.getFleetSummaryList(
+            Utils.getIdlingFleetDateParse(startDate),
+            Utils.getIdlingDateParse(endDate),
+            pageSize,
+            pageNumber,
+            appliedFilters);
+      } else {
+        result = await _fleetService!
+            .getFleetSummaryList("", "", pageSize, pageNumber, appliedFilters);
+      }
+
       if (result != null) {
         if (result.pagination?.totalCount != null) {
           _totalCount = result.pagination!.totalCount!.toInt();
@@ -120,14 +135,26 @@ class FleetViewModel extends InsiteViewModel {
   void refresh() async {
     try {
       Logger().e("fleet filter applied");
+      FleetSummaryResponse? result;
       await getSelectedFilterData();
       pageNumber = 1;
       pageSize = 50;
       _isRefreshing = true;
       _shouldLoadmore = true;
       notifyListeners();
-      FleetSummaryResponse? result = await _fleetService!.getFleetSummaryList(
-          startDate, endDate, pageSize, pageNumber, appliedFilters);
+      if (appliedFilters!
+          .any((element) => element!.type == FilterType.IDLING_LEVEL)) {
+        result = await _fleetService!.getFleetSummaryList(
+            Utils.getIdlingFleetDateParse(startDate),
+            Utils.getIdlingDateParse(endDate),
+            pageSize,
+            pageNumber,
+            appliedFilters);
+      } else {
+        result = await _fleetService!
+            .getFleetSummaryList("", "", pageSize, pageNumber, appliedFilters);
+      }
+
       if (result != null &&
           result.fleetRecords != null &&
           result.fleetRecords!.isNotEmpty) {

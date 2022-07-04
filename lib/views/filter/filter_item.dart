@@ -45,7 +45,7 @@ class FilterItemState extends State<FilterItem> {
       setState(() {});
     } else {
       _displayList = list;
-      setState(() {});
+      //setState(() {});
     }
   }
 
@@ -114,7 +114,14 @@ class FilterItemState extends State<FilterItem> {
                         child: SearchBox(
                           controller: _textEditingController,
                           hint: "Search",
-                          onTextChanged: onSearchTextChanged,
+                          onTextChanged: (value) {
+                            if (value != null && value.trim().isNotEmpty) {
+                              onSearchTextChanged(value);
+                            } else {
+                              _displayList = list;
+                              //setState(() {});
+                            }
+                          },
                         ),
                       )
                     : Padding(

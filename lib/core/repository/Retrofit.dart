@@ -219,12 +219,6 @@ abstract class RestClient {
   @GET('{url}')
   Future<AssetLocationData> assetLocationWithCluster(
       @Path() String url,
-      @Query("latitude") double latitude,
-      @Query("longitude") double longitude,
-      @Query("pageNumber") int pageNumber,
-      @Query("pageSize") int pageSize,
-      @Query("radiuskm") double radiusKm,
-      @Query("sort") String sort,
       @Header("x-visionlink-customeruid") customerId,
       @Header("service") serviceHeader);
 
@@ -1447,6 +1441,17 @@ abstract class RestClient {
       @Body() Map<String, dynamic> completeDataQuery,
       @Header("content-type") String? contentType,
       @Header("x-visionlink-customeruid") customerId);
+
+  @GET("/oauth/logout")
+  Future<dynamic> logout(
+    @Query("id_token_hint") String id_Token,
+    @Query("post_logout_redirect_uri") String redirectUrl,
+  );
+  @POST('{url}')
+  Future<LoginResponse> getStagedToken(
+    @Path() String url,
+  
+  );
 }
 
 @JsonSerializable()

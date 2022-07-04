@@ -71,21 +71,25 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                           ),
                           Row(
                             children: [
-                              InsiteText(
-                                  text: Utils.getDateInFormatddMMyyyy(
+                              // InsiteText(
+                              //     text: Utils.getDateInFormatddMMyyyy(
+                              //             viewModel.startDate) +
+                              //         " - " +
+                              //         Utils.getDateInFormatddMMyyyy(
+                              //             viewModel.endDate),
+                              //     fontWeight: FontWeight.bold,
+                              //     size: 12),
+                              // SizedBox(
+                              //   width: 10,
+                              // ),
+                              InsiteButton(
+                                title: Utils.getDateInFormatddMMyyyy(
                                           viewModel.startDate) +
                                       " - " +
                                       Utils.getDateInFormatddMMyyyy(
                                           viewModel.endDate),
-                                  fontWeight: FontWeight.bold,
-                                  size: 12),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              InsiteButton(
-                                title: "Date Range",
-                                width: 90,
-                                bgColor: Theme.of(context).backgroundColor,
+                                //width: 90,
+                               // bgColor: Theme.of(context).backgroundColor,
                                 textColor: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -372,7 +376,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
             calendarController.view != CalendarView.month)) {
       return;
     }
-    SchedulerBinding.instance?.addPostFrameCallback((Duration timeStamp) {
+    SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
       setState(() {
         _view = calendarController.view;
       });

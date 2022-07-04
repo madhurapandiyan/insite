@@ -47,7 +47,7 @@ class IdlePercentWorkingPercentViewState
       builder: (BuildContext context,
           IdlePercentWorkingPercentViewModel viewModel, Widget? _) {
         if (viewModel.update) {
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             widget.updateCount!(viewModel.utilLizationListData.length);
             viewModel.updateCountToFalse();
           });
@@ -83,7 +83,14 @@ class IdlePercentWorkingPercentViewState
                                 scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return PercentageWidget(
+                                  return CustomPercentageWidget(
+                                      trailText: rangeChoice == 1
+                                          ? (viewModel.utilLizationListData[index].idleEfficiency! * 100)
+                                                  .toStringAsFixed(2) +
+                                              " %"
+                                          : (viewModel.utilLizationListData[index].workingEfficiency! * 100)
+                                                  .toStringAsFixed(2) +
+                                              " %",
                                       value: rangeChoice == 1
                                           ? ('${viewModel.utilLizationListData[index].idleEfficiency?.toStringAsFixed(2)}')
                                           : ('${viewModel.utilLizationListData[index].workingEfficiency?.toStringAsFixed(2)}'),
@@ -91,31 +98,19 @@ class IdlePercentWorkingPercentViewState
                                           .utilLizationListData[index]
                                           .assetSerialNumber,
                                       percentage: rangeChoice == 1
-                                          ? viewModel
-                                                      .utilLizationListData[
-                                                          index]
-                                                      .idleEfficiency ==
+                                          ? viewModel.utilLizationListData[index].idleEfficiency ==
                                                   null
                                               ? 0.0
-                                              : Utils.efficiencyToPercent(
-                                                  viewModel
-                                                      .utilLizationListData[
-                                                          index]
-                                                      .idleEfficiency)
-                                          : viewModel
-                                                      .utilLizationListData[
-                                                          index]
-                                                      .workingEfficiency ==
+                                              : Utils.efficiencyToPercent(viewModel
+                                                  .utilLizationListData[index]
+                                                  .idleEfficiency)
+                                          : viewModel.utilLizationListData[index].workingEfficiency ==
                                                   null
                                               ? null
-                                              : Utils.efficiencyToPercent(
-                                                  viewModel
-                                                      .utilLizationListData[
-                                                          index]
-                                                      .workingEfficiency),
-                                      color: rangeChoice == 1
-                                          ? Theme.of(context).buttonColor
-                                          : olivine);
+                                              : Utils.efficiencyToPercent(viewModel
+                                                  .utilLizationListData[index]
+                                                  .workingEfficiency),
+                                      color: rangeChoice == 1 ? Theme.of(context).buttonColor : olivine);
                                 })
                             : EmptyView(
                                 title: "No Assets Found",

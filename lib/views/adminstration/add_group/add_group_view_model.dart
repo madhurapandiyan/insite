@@ -12,6 +12,7 @@ import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:insite/views/adminstration/manage_group/manage_group_view.dart';
@@ -21,12 +22,15 @@ import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../../../core/services/graphql_schemas_service.dart';
+
 class AddGroupViewModel extends InsiteViewModel {
   Logger? log;
   NavigationService? _navigationService = locator<NavigationService>();
   final AssetAdminManagerUserService? _manageUserService =
       locator<AssetAdminManagerUserService>();
   final SnackbarService? _snackBarservice = locator<SnackbarService>();
+  GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -69,13 +73,10 @@ class AddGroupViewModel extends InsiteViewModel {
       getData();
       getGroupListData();
     });
-    Future.delayed(Duration(seconds: 1), () {
-      getGroupListData();
-    });
   }
   List<String> assetUidData = [];
 
- // AssetGroupSummaryResponse? assetIdresult;
+  // AssetGroupSummaryResponse? assetIdresult;
 
   getAddGroupSaveData() async {
     try {
@@ -84,15 +85,23 @@ class AddGroupViewModel extends InsiteViewModel {
         return;
       }
 
-      showLoadingDialog();
-      AddGroupDataResponse? result =
-          await _manageUserService!.getAddGroupSaveData(
-        AddGroupPayLoad(
-          AssetUID: assetUidData,
-          Description: descriptionController.text,
-          GroupName: nameController.text,
-        ),
-      );
+      selectedAsset?.forEach((element) {
+        Logger().wtf(element.assetIdentifier);
+        assetUidData.add(element.assetIdentifier!);
+      });
+
+      showLoadingDialog(tapDismiss: true);
+      AddGroupDataResponse? result = await _manageUserService!
+          .getAddGroupSaveData(
+              AddGroupPayLoad(
+                AssetUID: assetUidData,
+                Description: descriptionController.text,
+                GroupName: nameController.text,
+              ),
+              graphqlSchemaService?.createGroup(
+                  Utils.getStringListData(assetUidData),
+                  nameController.text,
+                  descriptionController.text));
       if (result != null) {
         gotoManageGroupPage();
         _snackBarservice!.showSnackbar(message: "You have added a new group");
@@ -133,10 +142,8 @@ class AddGroupViewModel extends InsiteViewModel {
     try {
       assetIdresult = await _manageUserService!.getGroupListData(false);
       notifyListeners();
-      Future.delayed(Duration(seconds: 1), () {
-        isLoading = false;
-        notifyListeners();
-      });
+      isLoading = false;
+      notifyListeners();
     } catch (e) {
       isLoading = false;
       hideLoadingDialog();
@@ -205,6 +212,4 @@ class AddGroupViewModel extends InsiteViewModel {
   gotoManageGroupPage() {
     _navigationService!.clearTillFirstAndShowView(ManageGroupView());
   }
-
-  
 }

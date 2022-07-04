@@ -60,29 +60,29 @@ class _SingleAssetUtilizationListViewState
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    productFamilyType != ProductFamilyType.ALL
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InsiteText(
-                                text: Utils.getDateInFormatddMMyyyy(
-                                        viewModel.startDate) +
-                                    " - " +
-                                    Utils.getDateInFormatddMMyyyy(
-                                        viewModel.endDate),
-                                fontWeight: FontWeight.bold,
-                                size: 11),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: InsiteText(
-                                text: Utils.getDateInFormatddMMyyyy(
-                                        viewModel.startDate) +
-                                    " - " +
-                                    Utils.getDateInFormatddMMyyyy(
-                                        viewModel.endDate),
-                                fontWeight: FontWeight.bold,
-                                size: 11),
-                          ),
+                    // productFamilyType != ProductFamilyType.ALL
+                    //     ? Padding(
+                    //         padding: const EdgeInsets.all(8.0),
+                    //         child: InsiteText(
+                    //             text: Utils.getDateInFormatddMMyyyy(
+                    //                     viewModel.startDate) +
+                    //                 " - " +
+                    //                 Utils.getDateInFormatddMMyyyy(
+                    //                     viewModel.endDate),
+                    //             fontWeight: FontWeight.bold,
+                    //             size: 11),
+                    //       )
+                    //     : Padding(
+                    //         padding: const EdgeInsets.all(24.0),
+                    //         child: InsiteText(
+                    //             text: Utils.getDateInFormatddMMyyyy(
+                    //                     viewModel.startDate) +
+                    //                 " - " +
+                    //                 Utils.getDateInFormatddMMyyyy(
+                    //                     viewModel.endDate),
+                    //             fontWeight: FontWeight.bold,
+                    //             size: 11),
+                    //       ),
                     SizedBox(
                       width: 4,
                     ),
@@ -142,9 +142,13 @@ class _SingleAssetUtilizationListViewState
                       //   width: 10,
                       // ),
                       InsiteButton(
-                        title: "Date Range",
-                        width: 90,
-                        bgColor: Theme.of(context).backgroundColor,
+                        title:Utils.getDateInFormatddMMyyyy(
+                                        viewModel.startDate) +
+                                    " - " +
+                                    Utils.getDateInFormatddMMyyyy(
+                                        viewModel.endDate),
+                       // width: 90,
+                       // bgColor: Theme.of(context).backgroundColor,
                         textColor: Theme.of(context).textTheme.bodyText1!.color,
                         onTap: () async {
                           dateRange = [];

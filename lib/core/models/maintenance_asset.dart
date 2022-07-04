@@ -1,3 +1,4 @@
+import 'package:insite/core/models/maintenance_asset_india_stack.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'maintenance_asset.g.dart';
 
@@ -61,6 +62,8 @@ class AssetCentricData {
   List<Devices>? devices;
   String? deviceType;
   List<String>? geofence;
+  String? deviceSerialNumber;
+  List<MaintenanceTotals>? maintenanceTotals;
 
   AssetCentricData(
       {this.overDueCount,
@@ -98,7 +101,8 @@ class AssetCentricData {
       this.dealerCode,
       this.devices,
       this.deviceType,
-      this.geofence});
+      this.geofence,
+      this.maintenanceTotals,this.deviceSerialNumber});
   factory AssetCentricData.fromJson(Map<String, dynamic> json) =>
       _$AssetCentricDataFromJson(json);
 

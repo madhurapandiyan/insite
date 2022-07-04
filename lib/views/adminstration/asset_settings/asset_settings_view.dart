@@ -214,17 +214,17 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
               fontWeight: FontWeight.w700,
               size: 14,
             )),
-        viewModel.showEdit
-            ? PopupMenuItem(
-                value: "Show/Edit Target",
-                child: InsiteText(
-                  text: "Show/Edit Target",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ))
-            : PopupMenuItem(
-                child: SizedBox(),
-              ),
+        // viewModel.showEdit
+        //     ? PopupMenuItem(
+        //         value: "Show/Edit Target",
+        //         child: InsiteText(
+        //           text: "Show/Edit Target",
+        //           fontWeight: FontWeight.w700,
+        //           size: 14,
+        //         ))
+        //     : PopupMenuItem(
+        //         child: SizedBox(),
+        //       ),
         viewModel.showEdit
             ? PopupMenuItem(
                 value: "Configure",

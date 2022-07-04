@@ -65,20 +65,27 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
               searchList.isEmpty
                   ? SizedBox()
                   : Container(
-                      margin: EdgeInsets.all(8),
-                     //height: MediaQuery.of(context).size.height*0.2,
-                      color: Theme.of(context).textTheme.bodyText1!.color,
-                      child: Column(
-                        children: List.generate(
-                            searchList.length,
-                            (i) => SingleChildScrollView(
-                                  child: DeviceIdListWidget(
-                                      onSelected: () {
-                                        onSelectedDeviceId!(i);
-                                        FocusScope.of(context).unfocus();
-                                      },
-                                      deviceId: searchList[i].containsList),
-                                )),
+                     // height: 200,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black,
+                                blurStyle: BlurStyle.outer,
+                                blurRadius: 0.5,
+                                spreadRadius: 0.2)
+                          ]),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: List.generate(
+                              searchList.length,
+                              (i) => DeviceIdListWidget(
+                                  onSelected: () {
+                                    onSelectedDeviceId!(i);
+                                    FocusScope.of(context).unfocus();
+                                  },
+                                  deviceId: searchList[i].containsList)),
+                        ),
                       )),
               SizedBox(
                 height: 10,

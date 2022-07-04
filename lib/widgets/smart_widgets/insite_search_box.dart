@@ -12,7 +12,7 @@ class SearchBox extends StatelessWidget {
     return TextField(
       controller: controller,
       onChanged: (vale) {
-         onTextChanged!(vale);
+        onTextChanged!(vale);
       },
       style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),
       cursorColor: Theme.of(context).textTheme.bodyText1!.color,

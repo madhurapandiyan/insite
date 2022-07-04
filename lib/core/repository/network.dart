@@ -6,9 +6,12 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/login_response.dart';
+import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/core/services/local_service.dart';
+import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/login/india_stack_login_view.dart';
 import 'package:insite/views/splash/india_stack_splash_view.dart';
 import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
@@ -71,6 +74,10 @@ class MyApi {
   RestClient? getClientTen() {
     return httpWrapper.clientTen;
   }
+
+  RestClient? getClientEleven() {
+    return httpWrapper.clientEleven;
+  }
 }
 
 class HttpWrapper {
@@ -93,10 +100,13 @@ class HttpWrapper {
   final String _baseUrlSix = "https://cloud.api.trimble.com";
   final String _baseUrlSeven = "https://administrator.myvisionlink.com";
   final String _baseUrlEight = "https://cloud.stage.api.trimblecloud.com/";
-
+  final String _baseUrlNine = "https://stage.id.trimblecloud.com";
   final bool SHOW_LOGS = true;
   final LocalService? _localService = locator<LocalService>();
   final LoginService? _loginService = locator<LoginService>();
+  var _localStorageService = locator<LocalStorageService>();
+  final service.DialogService? _dialogService =
+      locator<service.DialogService>();
   //final NavigationService? _navigationService = locator<NavigationService>();
 
   Dio dio = new Dio();
@@ -110,6 +120,7 @@ class HttpWrapper {
   Dio dioEight = new Dio();
   Dio dioNine = new Dio();
   Dio dioTen = new Dio();
+  Dio dioEleven = new Dio();
 
   var client;
   var clientOne;
@@ -122,6 +133,34 @@ class HttpWrapper {
   var clientEight;
   var clientNine;
   var clientTen;
+  var clientEleven;
+
+  onTokenExpired() async {
+    try {
+      LoginResponse? response = await _localService!.getTokenInfo();
+      Logger().wtf(response?.toJson());
+      _localService!.clearAll();
+      _localStorageService.clearAll();
+      navigationService!.replaceWith(indiaStackLoginViewRoute,
+          arguments: LoginArguments(response: response));
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  Future<Response<dynamic>> dioElevenRetryInterceptor(
+      RequestOptions requestOption) async {
+    Logger().i(requestOption.baseUrl);
+    Logger().i(requestOption.path);
+    final options = Options(
+        method: requestOption.method,
+        headers: requestOption.headers,
+        extra: requestOption.extra);
+    return dioEleven.request(requestOption.baseUrl + requestOption.path,
+        data: requestOption.data,
+        queryParameters: requestOption.queryParameters,
+        options: options);
+  }
 
   Future<Response<dynamic>> dioRetryInterceptor(
       RequestOptions requestOption) async {
@@ -320,6 +359,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioRetryInterceptor(error.requestOptions));
             }
@@ -372,6 +414,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioOneRetryInterceptor(error.requestOptions));
             }
@@ -405,6 +450,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioTwoRetryInterceptor(error.requestOptions));
             }
@@ -437,6 +485,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler.resolve(
                   await dioThreeRetryInterceptor(error.requestOptions));
             }
@@ -470,6 +521,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioFourRetryInterceptor(error.requestOptions));
             }
@@ -497,14 +551,13 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
-            var refreshLoginResponce = await refreshToken();
-            if (refreshLoginResponce != null) {
-              await _localService!.saveTokenInfo(refreshLoginResponce);
-              await _localService!.saveToken(refreshLoginResponce.access_token);
-              await _localService!
-                  .saveRefreshToken(refreshLoginResponce.refresh_token);
-              return errorInterceptorHandler
-                  .resolve(await dioSixRetryInterceptor(error.requestOptions));
+            Logger().e(error.response!.data.toString());
+            var data = await _dialogService!.showDialog(
+                title: "Session Expired Please Login Again",
+                cancelTitle: "Cancel",
+                buttonTitle: "Login");
+            if (data!.confirmed) {
+              onTokenExpired();
             }
           } else {
             return errorInterceptorHandler.next(error);
@@ -512,8 +565,7 @@ class HttpWrapper {
         },
         onRequest:
             (RequestOptions options, RequestInterceptorHandler handler) async {
-          options.headers
-              .addAll({"Accept": "application/json", "timezoneoffset": -330});
+          options.headers.addAll({"Accept": "*/*", "timezoneoffset": -330});
           return handler.next(options);
         },
       ))
@@ -533,6 +585,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioSixRetryInterceptor(error.requestOptions));
             }
@@ -566,6 +621,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler.resolve(
                   await dioSevenRetryInterceptor(error.requestOptions));
             }
@@ -599,6 +657,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler.resolve(
                   await dioEightRetryInterceptor(error.requestOptions));
             }
@@ -634,6 +695,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioNineRetryInterceptor(error.requestOptions));
             }
@@ -668,6 +732,9 @@ class HttpWrapper {
               await _localService!.saveToken(refreshLoginResponce.access_token);
               await _localService!
                   .saveRefreshToken(refreshLoginResponce.refresh_token);
+              var tokenTime =
+                  Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+              await _localService!.saveExpiryTime(tokenTime);
               return errorInterceptorHandler
                   .resolve(await dioTenRetryInterceptor(error.requestOptions));
             }
@@ -691,6 +758,29 @@ class HttpWrapper {
         requestBody: SHOW_LOGS,
       ));
 
+    dioEleven.interceptors
+      ..add(InterceptorsWrapper(
+        onError: (DioError error,
+            ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response!.statusCode == 401) {
+            await dioElevenRetryInterceptor(error.requestOptions);
+          }
+        },
+        onRequest:
+            (RequestOptions options, RequestInterceptorHandler handler) async {
+          options.headers.addAll({
+            "content-type": "application/x-www-form-urlencoded",
+            "Authorization":
+                "Basic OGM3NTQzYjYtMmE4Ny00NGI4LWE0Y2YtNTA5ZTdmNzc5ODAyOjY3M2Y3MWVmZDQzMTQyMzNhZDFjZDZkODhkZDcxZGFm",
+          });
+          return handler.next(options);
+        },
+      ))
+      ..add(LogInterceptor(
+        responseBody: SHOW_LOGS,
+        requestBody: SHOW_LOGS,
+      ));
+
     client = RestClient(dio, baseUrl: AppConfig.instance!.baseUrl);
     clientOne = RestClient(dioOne, baseUrl: _baseUrlOne);
     clientTwo = RestClient(dioTwo, baseUrl: _baseUrlTwo);
@@ -702,6 +792,7 @@ class HttpWrapper {
     clientEight = RestClient(dioEight, baseUrl: _baseUrlEight);
     clientNine = RestClient(dioNine, baseUrl: _baseUrlSix);
     clientTen = RestClient(dioTen, baseUrl: _baseUrlFive);
+    clientEleven = RestClient(dioEleven, baseUrl: _baseUrlNine);
   }
 
   static final HttpWrapper _singleton = HttpWrapper._internal();

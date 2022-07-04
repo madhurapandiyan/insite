@@ -12,6 +12,7 @@ import 'package:insite/utils/urls.dart';
 import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
+
 import 'splash_view_model.dart';
 
 class IndiaStackSplashView extends StatefulWidget {
@@ -179,21 +180,44 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
             Logger().e(e);
           }
         }
+        //else if (url
+        //     .startsWith(Urls.tataHitachiRedirectUriStaging + "?code=")) {
+        //   if (url.contains("=")) {
+        //     List<String> list = url.split("=");
+        //     print("IndiaStackSplashView URL url split list $list");
+        //     if (list.isNotEmpty) {
+        //       String codeString = list[1];
+        //       List<String> codeStringList = codeString.split("&");
+        //       if (codeStringList.isNotEmpty) {
+        //         getLoginDataV4(
+        //           codeStringList[0],
+        //         );
+        //       }
+        //     }
+        //   }
+        //   flutterWebviewPlugin.close();
+        // }
       }
     });
-
   }
 
   getLoginDataV4(code) async {
     Logger().i("IndiaStackSplashView getLoginDataV4 for code $code");
     codeChallenge = Utils.generateCodeChallenge(_createCodeVerifier, true);
+
     LoginResponse? result =
         await _loginService.getLoginDataV4(code, codeChallenge, codeVerifier);
     if (result != null) {
       await _localService.saveTokenInfo(result);
       await _localService.saveRefreshToken(result.refresh_token);
+      var tokenTime = Utils.tokenExpiresTime(result.expires_in!);
+      await _localService.saveExpiryTime(tokenTime);
       await _loginService.saveToken(
           result.access_token, result.expires_in.toString(), false);
+    }
+    LoginResponse? stagedResult = await _loginService.stagedToken();
+    if (stagedResult != null) {
+      _localService.saveStaggedToken(stagedResult.access_token);
     }
   }
 
@@ -222,8 +246,8 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
                   viewModel.shouldLoadWebview &&
                           !AppConfig.instance!.enalbeNativeLogin
                       ? WebviewScaffold(
-                        clearCache: true,
-                        clearCookies: true,
+                          clearCache: true,
+                          clearCookies: true,
                           url: AppConfig.instance!.apiFlavor == "visionlink"
                               ? Uri.encodeFull(
                                   Urls.getV4LoginUrlVL(state, codeChallenge))

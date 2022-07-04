@@ -31,7 +31,7 @@ class IdlingLevel extends StatefulWidget {
 }
 
 class _IdlingLevelState extends State<IdlingLevel> {
-  IdlingLevelRange idlingLevelRange = IdlingLevelRange.DAY;
+  IdlingLevelRange idlingLevelRange = IdlingLevelRange.WEEK;
 
   FilterData getDateFilterDataForIdlingLevel(IdlingLevelRange value) {
     FilterData dateFilter;
@@ -67,7 +67,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height * 0.47;
+    double height = MediaQuery.of(context).size.height * 0.5;
     double maxheight = MediaQuery.of(context).size.height * 0.30;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -120,31 +120,70 @@ class _IdlingLevelState extends State<IdlingLevel> {
                     ? Expanded(child: InsiteProgressBar())
                     : Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Row(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Expanded(
-                              //flex: 1,
-                              child: Container(
-                                height: maxheight,
-                                child: SfCartesianChart(
-                                  legend: Legend(
-                                    isVisible: true,
-                                    textStyle: TextStyle(
-                                        color: Theme.of(context)
+                            Container(
+                              height: maxheight,
+                              child: SfCartesianChart(
+                                // legend: Legend(
+                                //   isVisible: true,
+                                //   textStyle: TextStyle(
+                                //       color: Theme.of(context)
+                                //           .textTheme
+                                //           .bodyText1!
+                                //           .color),
+                                //   alignment: ChartAlignment.center,
+                                //   overflowMode: LegendItemOverflowMode.wrap,
+                                //   width: '100%',
+                                //   position: LegendPosition.bottom,
+                                //   isResponsive: true,
+                                //   toggleSeriesVisibility: false,
+                                // ),
+                                isTransposed: true,
+                                plotAreaBorderWidth: 0,
+                                primaryXAxis: CategoryAxis(
+                                  title: AxisTitle(
+                                      text: "Idle %",
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1),
+                                  labelStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .color,
+                                      fontSize: 10.0,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Roboto',
+                                      fontStyle: FontStyle.normal),
+                                  majorGridLines: MajorGridLines(
+                                      width: 0,
+                                      color: Theme.of(context).backgroundColor),
+                                ),
+                                onAxisLabelTapped: (axisLabelTapArgs) {
+                                  Logger().d("onAxisLabelTapped " +
+                                      axisLabelTapArgs.toString());
+                                },
+                                onDataLabelTapped: (onTapArgs) {
+                                  Logger().d("onDataLabelTapped " +
+                                      onTapArgs.toString());
+                                },
+                                onLegendTapped: (legendTapArgs) {
+                                  Logger().d("onLegendTapped " +
+                                      legendTapArgs.toString());
+                                },
+
+                                primaryYAxis: NumericAxis(
+                                    title: AxisTitle(
+                                        text: "Assets",
+                                        textStyle: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
-                                            .color),
-                                    alignment: ChartAlignment.center,
-                                    overflowMode: LegendItemOverflowMode.wrap,
-                                    width: '100%',
-                                    position: LegendPosition.bottom,
-                                    isResponsive: true,
-                                    toggleSeriesVisibility: false,
-                                  ),
-                                  isTransposed: true,
-                                  plotAreaBorderWidth: 0,
-                                  primaryXAxis: CategoryAxis(
+                                            .bodyText1),
+                                    majorGridLines: MajorGridLines(
+                                        width: 0,
+                                        color:
+                                            Theme.of(context).backgroundColor),
                                     labelStyle: TextStyle(
                                         color: Theme.of(context)
                                             .textTheme
@@ -153,71 +192,8 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                         fontSize: 10.0,
                                         fontWeight: FontWeight.w700,
                                         fontFamily: 'Roboto',
-                                        fontStyle: FontStyle.normal),
-                                    majorGridLines: MajorGridLines(
-                                        width: 0,
-                                        color:
-                                            Theme.of(context).backgroundColor),
-                                  ),
-                                  onAxisLabelTapped: (axisLabelTapArgs) {
-                                    Logger().d("onAxisLabelTapped " +
-                                        axisLabelTapArgs.toString());
-                                  },
-                                  onDataLabelTapped: (onTapArgs) {
-                                    Logger().d("onDataLabelTapped " +
-                                        onTapArgs.toString());
-                                  },
-                                  onLegendTapped: (legendTapArgs) {
-                                    Logger().d("onLegendTapped " +
-                                        legendTapArgs.toString());
-                                  },
-                                  onPointTapped: (pointTapArgs) {
-                                    Logger().d("onPointTapped " +
-                                        pointTapArgs.pointIndex.toString() +
-                                        " " +
-                                        pointTapArgs.seriesIndex.toString() +
-                                        " " +
-                                        pointTapArgs.viewportPointIndex
-                                            .toString());
-                                    Count countDatum = getCountDataFiltered()[
-                                        pointTapArgs.pointIndex!];
-                                    var x = countDatum.countOf!
-                                        .split(",")
-                                        .first
-                                        .replaceAll("[", "")
-                                        .replaceAll("]", "");
-                                    var y = countDatum.countOf!
-                                        .split(",")
-                                        .last
-                                        .replaceAll("[", "")
-                                        .replaceAll("]", "");
-                                    FilterData data = FilterData(
-                                        isSelected: true,
-                                        count: countDatum.count.toString(),
-                                        title: countDatum.countOf,
-                                        extras: [x, y],
-                                        type: FilterType.IDLING_LEVEL);
-                                    widget.onFilterSelected!(
-                                        data,
-                                        getDateFilterDataForIdlingLevel(
-                                            idlingLevelRange));
-                                  },
-                                  primaryYAxis: NumericAxis(
-                                      majorGridLines: MajorGridLines(
-                                          width: 0,
-                                          color: Theme.of(context)
-                                              .backgroundColor),
-                                      labelStyle: TextStyle(
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .bodyText1!
-                                              .color,
-                                          fontSize: 10.0,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: 'Roboto',
-                                          fontStyle: FontStyle.normal)),
-                                  series: _getDefaultBarSeries(),
-                                ),
+                                        fontStyle: FontStyle.normal)),
+                                series: _getDefaultBarSeries(),
                               ),
                             ),
                             Column(
@@ -230,11 +206,11 @@ class _IdlingLevelState extends State<IdlingLevel> {
                                 widget.data!.isNotEmpty
                                     ? new InsiteText(
                                         text: widget.data![0].count.toString() +
-                                            "\n" +
-                                            "assets" +
-                                            "\n" +
-                                            "excluded",
-                                        size: 9.0,
+                                            // "\n" +
+                                            " assets" +
+                                            // "\n" +
+                                            " excluded",
+                                        //size: 15.0,
                                         fontWeight: FontWeight.w700,
                                       )
                                     : SizedBox(),
@@ -254,7 +230,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
 
   Widget toggelButton() {
     return Container(
-      width: 55,
+      width: 305,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.0),
         border:
@@ -265,7 +241,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
         ],
         shape: BoxShape.rectangle,
       ),
-      child: Column(
+      child: Row(
         children: [
           GestureDetector(
             onTap: () {
@@ -275,7 +251,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
               });
             },
             child: Container(
-                width: 55,
+                width: 100,
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -295,8 +271,8 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   fontWeight: FontWeight.w700,
                 )),
           ),
-          Container(
-              width: 55, child: Divider(thickness: 1.0, color: athenGrey)),
+          // Container(
+          //     width: 55, child: Divider(thickness: 1.0, color: athenGrey)),
           GestureDetector(
             onTap: () {
               setState(() {
@@ -305,7 +281,7 @@ class _IdlingLevelState extends State<IdlingLevel> {
               });
             },
             child: Container(
-                width: 55,
+                width: 100,
                 padding: EdgeInsets.all(8),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -325,8 +301,8 @@ class _IdlingLevelState extends State<IdlingLevel> {
                   fontWeight: FontWeight.w700,
                 )),
           ),
-          Container(
-              width: 55, child: Divider(thickness: 1.0, color: athenGrey)),
+          // Container(
+          //     width: 55, child: Divider(thickness: 1.0, color: athenGrey)),
           GestureDetector(
             onTap: () {
               setState(() {
@@ -335,8 +311,8 @@ class _IdlingLevelState extends State<IdlingLevel> {
               });
             },
             child: Container(
-                width: 55,
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                width: 100,
+                padding: EdgeInsets.all(8),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5.0),
@@ -401,6 +377,33 @@ class _IdlingLevelState extends State<IdlingLevel> {
               labelPosition: ChartDataLabelPosition.outside),
           pointColorMapper: (IdlingLevelSampleData charts, _) =>
               getColorData(charts.x),
+          onPointTap: (pointTapArgs) {
+            Logger().d("onPointTapped " +
+                pointTapArgs.pointIndex.toString() +
+                " " +
+                pointTapArgs.seriesIndex.toString() +
+                " " +
+                pointTapArgs.viewportPointIndex.toString());
+            Count countDatum = getCountDataFiltered()[pointTapArgs.pointIndex!];
+            var x = countDatum.countOf!
+                .split(",")
+                .first
+                .replaceAll("[", "")
+                .replaceAll("]", "");
+            var y = countDatum.countOf!
+                .split(",")
+                .last
+                .replaceAll("[", "")
+                .replaceAll("]", "");
+            FilterData data = FilterData(
+                isSelected: true,
+                count: countDatum.count.toString(),
+                title: countDatum.countOf,
+                extras: [x, y],
+                type: FilterType.IDLING_LEVEL);
+            widget.onFilterSelected!(
+                data, getDateFilterDataForIdlingLevel(idlingLevelRange));
+          },
           xValueMapper: (IdlingLevelSampleData charts, _) => charts.x,
           yValueMapper: (IdlingLevelSampleData charts, _) => charts.y),
     ];

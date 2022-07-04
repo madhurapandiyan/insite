@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_settings.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
@@ -73,7 +74,10 @@ class ManageAssetConfigurationCard extends StatelessWidget {
                                     width: 2.5, color: containercolor),
                                 borderRadius: BorderRadius.circular(5),
                                 shape: BoxShape.rectangle),
-                            child: Image.asset("assets/images/TL340H.png")),
+                            child: Image.asset(Utils().getImageAssetConfiguration(
+                                
+                                 assetSetting
+                                    ?.assetSettings?.assetIconKey))),
                         SizedBox(
                           width: 10,
                         ),

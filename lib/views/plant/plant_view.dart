@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/reusable_widget/asset_cards_small.dart';
 import 'package:insite/views/adminstration/reusable_widget/asset_setting_widget.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:stacked/stacked.dart';
 import 'plant_view_model.dart';
@@ -25,7 +27,18 @@ class PlantView extends StatelessWidget {
               },
               body: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, top: 16),
+                      child: InsiteTextOverFlow(
+                        text: Utils.getPageTitle(ScreenType.PLANT),
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        overflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.bold,
+                        size: 16,
+                      ),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -62,14 +75,16 @@ class PlantView extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    AssetSettingWidget(
-                      icon: "assets/images/assessment.svg",
-                      showExapansionMenu: false,
-                      headerText: "ASSET CREATION",
-                      buttonText: "asset creation",
-                      onButtonClicked: () {
-                        viewModel.goToPlantAssetCreationPage();
-                      },
+                    Center(
+                      child: AssetSettingWidget(
+                        icon: "assets/images/assessment.svg",
+                        showExapansionMenu: false,
+                        headerText: "ASSET CREATION",
+                        buttonText: "asset creation",
+                        onButtonClicked: () {
+                          viewModel.goToPlantAssetCreationPage();
+                        },
+                      ),
                     ),
                   ],
                 ),

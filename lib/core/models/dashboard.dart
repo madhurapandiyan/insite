@@ -13,21 +13,71 @@ class Category {
   );
 }
 
-final List<Category> categories = [
-  Category(1, "DASHBOARD", "assets/images/clock.svg", ScreenType.DASHBOARD),
-  Category(2, "FLEET", "assets/images/truck.svg", ScreenType.FLEET),
-  Category(3, "UTILIZATION", "assets/images/supportmanager.svg",
-      ScreenType.UTILIZATION),
-  Category(4, "ASSET OPERATION", "assets/images/assetmanager.svg",
-      ScreenType.ASSET_OPERATION),
-  Category(5, "LOCATION", "assets/images/location.svg", ScreenType.LOCATION),
-  Category(6, "HEALTH", "assets/images/van.svg", ScreenType.HEALTH),
-  Category(7, "MAINTENANCE", "assets/images/maint.svg", ScreenType.MAINTENANCE),
-  Category(8, "ADMINISTRATION", "assets/images/admin.svg",
-      ScreenType.ADMINISTRATION),
-  Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
-  Category(
-      10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
-  Category(
-      11, "NOTIFICATIONS", "assets/images/noti.svg", ScreenType.NOTIFICATIONS)
-];
+List<Category>? showsCategoryBasedOnAccountSelection(bool isTataHitachi) {
+  if (isTataHitachi) {
+    categories = [
+      Category(1, "DASHBOARD", "assets/images/clock.svg", ScreenType.DASHBOARD),
+      Category(2, "FLEET", "assets/images/truck.svg", ScreenType.FLEET),
+      Category(3, "UTILIZATION", "assets/images/supportmanager.svg",
+          ScreenType.UTILIZATION),
+      Category(4, "ASSET OPERATION", "assets/images/assetmanager.svg",
+          ScreenType.ASSET_OPERATION),
+      Category(
+          5, "LOCATION", "assets/images/location.svg", ScreenType.LOCATION),
+      Category(6, "HEALTH", "assets/images/van.svg", ScreenType.HEALTH),
+      Category(7, "MAINTENANCE", "assets/images/maintenance.svg",
+          ScreenType.MAINTENANCE),
+      Category(8, "ADMINISTRATION", "assets/images/admin.svg",
+          ScreenType.ADMINISTRATION),
+      Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
+      Category(
+          10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
+      Category(11, "NOTIFICATIONS", "assets/images/noti.svg",
+          ScreenType.NOTIFICATIONS)
+    ];
+    return categories;
+  } else {
+    categories = [
+      Category(1, "DASHBOARD", "assets/images/clock.svg", ScreenType.DASHBOARD),
+      Category(2, "FLEET", "assets/images/truck.svg", ScreenType.FLEET),
+      Category(3, "UTILIZATION", "assets/images/supportmanager.svg",
+          ScreenType.UTILIZATION),
+      Category(4, "ASSET OPERATION", "assets/images/assetmanager.svg",
+          ScreenType.ASSET_OPERATION),
+      Category(
+          5, "LOCATION", "assets/images/location.svg", ScreenType.LOCATION),
+      Category(6, "HEALTH", "assets/images/van.svg", ScreenType.HEALTH),
+      Category(7, "MAINTENANCE", "assets/images/maintenance.svg",
+          ScreenType.MAINTENANCE),
+      Category(8, "ADMINISTRATION", "assets/images/admin.svg",
+          ScreenType.ADMINISTRATION),
+      // Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
+      // Category(
+      //     10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
+      Category(11, "NOTIFICATIONS", "assets/images/noti.svg",
+          ScreenType.NOTIFICATIONS)
+    ];
+    return categories;
+  }
+}
+
+List<Category>? categories;
+
+// List<Category> categories = [
+//   Category(1, "DASHBOARD", "assets/images/clock.svg", ScreenType.DASHBOARD),
+//   Category(2, "FLEET", "assets/images/truck.svg", ScreenType.FLEET),
+//   Category(3, "UTILIZATION", "assets/images/supportmanager.svg",
+//       ScreenType.UTILIZATION),
+//   Category(4, "ASSET OPERATION", "assets/images/assetmanager.svg",
+//       ScreenType.ASSET_OPERATION),
+//   Category(5, "LOCATION", "assets/images/location.svg", ScreenType.LOCATION),
+//   Category(6, "HEALTH", "assets/images/van.svg", ScreenType.HEALTH),
+//   //Category(7, "MAINTENANCE", "assets/images/maint.svg", ScreenType.MAINTENANCE),
+//   Category(8, "ADMINISTRATION", "assets/images/admin.svg",
+//       ScreenType.ADMINISTRATION),
+//   Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
+//   Category(
+//       10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
+//   Category(
+//       11, "NOTIFICATIONS", "assets/images/noti.svg", ScreenType.NOTIFICATIONS)
+// ];

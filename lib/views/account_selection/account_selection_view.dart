@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/account.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+
 import 'package:insite/views/appbar/appbar_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/customer_selection_dropdown.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'account_search_view.dart';
 import 'account_selection_view_model.dart';
@@ -42,6 +45,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
           body: SingleChildScrollView(
             child: Column(
               children: [
+                
                 SizedBox(
                   height: 10,
                 ),
@@ -104,6 +108,10 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 8),
                                       child: AccountSelectionDropDownWidget(
+                                        onChange: (value) {
+                                          viewModel.onSearchingCustomerAccount(
+                                              value);
+                                        },
                                         selectionType: AccountType.ACCOUNT,
                                         onSelected: (AccountData? value) {
                                           viewModel
@@ -126,6 +134,8 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 8),
                                       child: AccountSearchView(
+                                        isAccountSelected:
+                                            viewModel.accountSelected == null,
                                         selectionType: AccountType.ACCOUNT,
                                         onSelected: (AccountData? value) {
                                           viewModel
@@ -145,8 +155,7 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                           viewModel.subAccountSelected !=
                                               null &&
                                           viewModel.subCustomers.isNotEmpty
-                                  ? 
-                                  Container(
+                                  ? Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 8),
                                       child: AccountSearchView(

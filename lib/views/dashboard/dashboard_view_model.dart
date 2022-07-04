@@ -5,6 +5,7 @@ import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/maintenance_dashboard_count.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -14,13 +15,17 @@ import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
+import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/date.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/health/health_view.dart';
+import 'package:insite/views/maintenance/main/main_view.dart';
+import 'package:insite/views/maintenance/maintenance_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/core/services/date_range_service.dart';
@@ -29,7 +34,7 @@ class DashboardViewModel extends InsiteViewModel {
   LocalService? _localService = locator<LocalService>();
   NavigationService? _navigationService = locator<NavigationService>();
   FilterService? _filterService = locator<FilterService>();
-
+  MaintenanceService? _maintenanceService = locator<MaintenanceService>();
   AssetStatusService? _assetService = locator<AssetStatusService>();
   AssetLocationService? _assetLocationService = locator<AssetLocationService>();
   LocalStorageService? _localStorageService = locator<LocalStorageService>();
@@ -51,7 +56,7 @@ class DashboardViewModel extends InsiteViewModel {
   bool _assetLocationloading = true;
   bool get assetLocationloading => _assetLocationloading;
 
-  IdlingLevelRange _idlingLevelRange = IdlingLevelRange.DAY;
+  IdlingLevelRange _idlingLevelRange = IdlingLevelRange.WEEK;
   IdlingLevelRange get idlingLevelRange => _idlingLevelRange;
   set idlingLevelRange(IdlingLevelRange catchedRange) {
     this._idlingLevelRange = catchedRange;
@@ -82,6 +87,8 @@ class DashboardViewModel extends InsiteViewModel {
   AssetCount? _idlingLevelData;
   AssetCount? get idlingLevelData => _idlingLevelData;
 
+  MaintenanceDashboardCount? maintenanceDashboardCount;
+
   AssetCount? _faultCountData;
   AssetCount? get faultCountData => _faultCountData;
   bool _refreshing = false;
@@ -89,6 +96,9 @@ class DashboardViewModel extends InsiteViewModel {
 
   bool _faultCountloading = true;
   bool get faultCountloading => _faultCountloading;
+
+  bool _maintenanceLoading = true;
+  bool get maintenanceLoading => _maintenanceLoading;
 
   String _endDayRange = DateFormat('yyyy-MM-dd').format(DateTime.now());
   set endDayRange(String endDay) {
@@ -120,9 +130,14 @@ class DashboardViewModel extends InsiteViewModel {
     _dateRangeService!.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () async {
-      await getAssetCount();
-      await getFilterData();
-      await getData(false);
+      String? token = await _localService!.getToken();
+      if (JwtDecoder.isExpired(token)) {
+        Logger().w("refresh token from dashboard");
+        await refreshToken();
+      }
+      getAssetCount();
+      getFilterData();
+      getData(false);
     });
     _filterService!.clearFilterDatabase();
   }
@@ -157,6 +172,7 @@ class DashboardViewModel extends InsiteViewModel {
         FilterType.ALL_ASSETS,
         graphqlSchemaService!.getAssetCount(grouping: "assetstatus"),
         true);
+    Logger().w(result?.toJson());
     if (result != null) {
       _assetStatusData = result;
       statusChartData.clear();
@@ -168,7 +184,7 @@ class DashboardViewModel extends InsiteViewModel {
       }
     }
     _assetStatusloading = false;
-    //notifyListeners();
+    notifyListeners();
   }
 
   getData(bool isIntial) async {
@@ -176,21 +192,22 @@ class DashboardViewModel extends InsiteViewModel {
     this._currentFilterSelected = null;
     _refreshing = true;
     if (isIntial) {
-      await getAssetCount();
+      getAssetCount();
     }
-    await clearDashboardFiltersDb();
+    clearDashboardFiltersDb();
     await getAssetStatusData();
-    await getFuelLevelData();
-    await getIdlingLevelData(false, null);
-    await getUtilizationSummary();
-    await getFaultCountData();
+    getFuelLevelData();
+    getIdlingLevelData(false, null);
+    getUtilizationSummary();
+    getFaultCountData();
+    getMaintenanceCountData();
     _refreshing = false;
-    notifyListeners();
+    // notifyListeners();
   }
 
   onRefereshClicked() {
     if (currentFilterSelected != null) {
-      getFilterDataApplied(currentFilterSelected!, false);
+      getFilterDataApplied(currentFilterSelected!, true);
     } else {
       refresh();
     }
@@ -200,10 +217,11 @@ class DashboardViewModel extends InsiteViewModel {
     _refreshing = true;
     notifyListeners();
     await getAssetCount();
-    await getAssetStatusData();
-    await getFuelLevelData();
-    await getUtilizationSummary();
-    await getFaultCountData();
+    getAssetStatusData();
+    getFuelLevelData();
+    getUtilizationSummary();
+    getFaultCountData();
+    getMaintenanceCountData();
     await getIdlingLevelData(false, null);
     _refreshing = false;
     notifyListeners();
@@ -212,7 +230,6 @@ class DashboardViewModel extends InsiteViewModel {
   getAssetCount() async {
     AssetCount? result = await _assetService!.getAssetCount(null,
         FilterType.ASSET_STATUS, graphqlSchemaService!.getAssetCount(), true);
-
     if (result != null) {
       if (result.countData!.isNotEmpty && result.countData![0].count != null) {
         _totalCount = result.countData![0].count!.toInt();
@@ -221,18 +238,18 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getFilterAssetCount() async {
-    AssetCount? result = await _assetService!.getAssetCount(
-        null,
-        FilterType.ASSET_STATUS,
-        graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
-        true);
-    if (result != null) {
-      if (result.countData!.isNotEmpty && result.countData![0].count != null) {
-        _totalCount = result.countData![0].count!.toInt();
-      }
-    }
-  }
+  // getFilterAssetCount() async {
+  //   AssetCount? result = await _assetService!.getAssetCount(
+  //       null,
+  //       FilterType.ASSET_STATUS,
+  //       graphqlSchemaService!.getAssetCount(grouping: "productfamily"),
+  //       true);
+  //   if (result != null) {
+  //     if (result.countData!.isNotEmpty && result.countData![0].count != null) {
+  //       _totalCount = result.countData![0].count!.toInt();
+  //     }
+  //   }
+  // }
 
   getProductFamilyAssetCount() async {
     if (_currentFilterSelected != null) {
@@ -260,7 +277,8 @@ class DashboardViewModel extends InsiteViewModel {
     AssetCount? result = await _assetService!.getFuellevel(
         FilterType.FUEL_LEVEL,
         graphqlSchemaService!
-            .getAssetCount(grouping: "fuellevel", threshold: "25-50-75-100"));
+            .getAssetCount(grouping: "fuellevel", threshold: "25-50-75-100"),
+        true);
     if (result != null) {
       fuelChartData.clear();
       for (int index = 0; index < result.countData!.length; index++) {
@@ -310,8 +328,9 @@ class DashboardViewModel extends InsiteViewModel {
           getFilterRange(),
           graphqlSchemaService!.getAssetCount(
               idleEfficiencyRanges: "[0,10][10,15][15,25][25,]",
-              endDate: DateTime.now().toString(),
-              startDate:DateTime.now().subtract(Duration(days: 1)).toString()));
+              endDate: Utils.getIdlingDateFormat(DateTime.now()),
+              startDate: getStartRange()),
+          true);
       if (result != null) {
         _idlingLevelData = result;
         _isSwitching = false;
@@ -329,21 +348,99 @@ class DashboardViewModel extends InsiteViewModel {
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCount(
-        Utils.getFaultDateFormat(
+        Utils.getFaultDateFormatStartDate(
             DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
-        Utils.getFaultDateFormat(DateTime.now().subtract(Duration(days: 1))),
+        Utils.getFaultDateFormatEndDate(
+            DateTime.now().subtract(Duration(days: 1))),
         graphqlSchemaService!.getFaultCountData(
-            startDate: Utils.getFaultDateFormat(
-                DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
+          startDate: Utils.getFaultDateFormatStartDate(
+              DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
+                  .subtract(Duration(days: 1))),
 
-            //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
-            //     startDate),
-            endDate: Utils.getFaultDateFormat(
-                DateTime.now().subtract(Duration(days: 1)))));
+          //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
+          //     startDate),
+          endDate: Utils.getFaultDateFormatEndDate(DateTime.now()),
+        ));
     if (count != null) {
       _faultCountData = count;
     }
     _faultCountloading = false;
+    notifyListeners();
+  }
+
+  getMaintenanceCountData() async {
+    try {
+      var data = await _maintenanceService?.getMaintenanceDashboardCount(
+          query: await graphqlSchemaService!.maintenanceDashboardCount(
+        fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+        endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+      ));
+      data?.maintenanceDashboard?.dashboardData!.forEach((element) {
+        if (element.displayName == "Overdue") {
+          element.maintenanceTotal = MAINTENANCETOTAL.OVERDUE;
+        }
+        if (element.displayName == "Upcoming") {
+          element.maintenanceTotal = MAINTENANCETOTAL.UPCOMING;
+        }
+        if (element.subCount != null) {
+          element.subCount!.forEach((dashboardData) {
+            if (dashboardData.displayName == "Next Week") {
+              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTWEEK;
+            }
+            if (dashboardData.displayName == "Next Month") {
+              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
+            }
+          });
+        }
+      });
+      maintenanceDashboardCount = data;
+      _maintenanceLoading = false;
+      notifyListeners();
+    } catch (e) {}
+  }
+
+  onMaintenanceFilterClicked(
+      MAINTENANCETOTAL type, String filterType, int count) async {
+    if (type == MAINTENANCETOTAL.OVERDUE ||
+        type == MAINTENANCETOTAL.UPCOMING ||
+        type == MAINTENANCETOTAL.NEXTMONTH) {
+      maintenanceStartDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+      maintenanceEndDate = DateFormat("yyyy-MM-dd")
+          .format(DateTime.now().add(Duration(days: 30)));
+      _localService?.saveMaintenanceFromDate(maintenanceStartDate);
+      _localService?.saveMaintenanceEndDate(maintenanceEndDate);
+    } else if (type == MAINTENANCETOTAL.NEXTWEEK) {
+      maintenanceStartDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+      maintenanceEndDate = DateFormat("yyyy-MM-dd")
+          .format(DateTime.now().add(Duration(days: 6)));
+      _localService?.saveMaintenanceFromDate(maintenanceStartDate);
+      _localService?.saveMaintenanceEndDate(maintenanceEndDate);
+    }
+    await clearFilterDb();
+    await addFilter(FilterData(
+        count: count.toString(),
+        title: filterType,
+        isSelected: true,
+        type: FilterType.SERVICE_STATUS));
+    Logger().w("filterTyoe $filterType");
+    Logger().i("from date $maintenanceStartDate");
+    Logger().i("To date $maintenanceEndDate");
+    _navigationService!.navigateToView(MaintenanceView());
+  }
+
+  getMaintenanceCountDataWithFilter(FilterData filterData) async {
+    try {
+      maintenanceDashboardCount = null;
+      notifyListeners();
+      var data = await _maintenanceService?.getMaintenanceDashboardCount(
+          query: await graphqlSchemaService!.maintenanceDashboardCount(
+              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+              endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+              prodFamily: filterData.title));
+      maintenanceDashboardCount = data;
+      _maintenanceLoading = false;
+      notifyListeners();
+    } catch (e) {}
   }
 
   onFilterSelected(FilterData data) async {
@@ -477,18 +574,20 @@ class DashboardViewModel extends InsiteViewModel {
       // await clearFilterOfTypeInDb(FilterType.PRODUCT_FAMILY);
       // await addFilter(filterData);
       _refreshing = true;
+      _maintenanceLoading = true;
       notifyListeners();
-      if (isFromProdFamily) {
-        await getProductFamilyAssetCount();
-      } else {
-        await getAssetCount();
-      }
+      // if (isFromProdFamily) {
+      //   await getProductFamilyAssetCount();
+      // } else {
+      //   await getAssetCount();
+      // }
 
       await getAssetStatusFilterApplied(filterData.title);
       await getFuelLevelFilterApplied(filterData.title);
       await getUtilizationSummaryFilterData(filterData.title);
       await getIdlingLevelFilterData(filterData.title);
       await getFaultCountDataFilterData(filterData.title);
+      await getMaintenanceCountDataWithFilter(filterData);
       _refreshing = false;
       notifyListeners();
     } catch (e) {
@@ -559,9 +658,9 @@ class DashboardViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         graphqlSchemaService!.getFaultCountData(
             prodFamily: dropDownValue,
-            startDate: Utils.getFaultDateFormat(
+            startDate: Utils.getFaultDateFormatStartDate(
                 DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
-            endDate: Utils.getFaultDateFormat(
+            endDate: Utils.getFaultDateFormatEndDate(
                 DateTime.now().subtract(Duration(days: 1)))));
     if (count != null) {
       _faultCountData = count;
@@ -585,6 +684,4 @@ class DashboardViewModel extends InsiteViewModel {
     }
     _assetUtilizationLoading = false;
   }
-
- 
 }

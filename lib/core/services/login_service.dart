@@ -123,11 +123,13 @@ class LoginService extends BaseService {
     _localService!.saveExpiryTime(expiryTime);
   }
 
-  Future<List<Customer>?> getCustomers() async {
+  Future<List<Customer>?> getCustomers(
+      {int? limit, int? start, String? searchKey}) async {
     if (enableGraphQl) {
       try {
-        var data = await Network().getGraphqlAccountData(
-            _graphqlSchemaService!.getAccountHierarchy());
+        var data = await Network().getGraphqlAccountData(_graphqlSchemaService!
+            .getAccountHierarchy(
+                limit: limit, start: start, searchKey: searchKey ?? ""));
         CustomersResponse response = CustomersResponse(
             UserUID: data.data["accountHierarchy"]["userUid"],
             Customers:
@@ -177,11 +179,20 @@ class LoginService extends BaseService {
     }
   }
 
-  Future<List<Customer>?> getSubCustomers(customerId) async {
+  Future<List<Customer>?> getSubCustomers(
+      {String? customerId,
+      int? limit,
+      int? start,
+      String? searchKey,
+      bool? isFromPagination}) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlAccountData(
-            _graphqlSchemaService!.getSubAccountHeirachryData(customerId));
+        var data = await Network().getGraphqlAccountData(_graphqlSchemaService!
+            .getSubAccountHeirachryData(
+                data: customerId,
+                limit: limit,
+                searchKey: searchKey ?? "",
+                start: start));
         print(data);
         CustomersResponse response = CustomersResponse(
             UserUID: data.data["accountHierarchy"]["userUid"],
@@ -216,11 +227,15 @@ class LoginService extends BaseService {
                         .toList()))
                 .toList());
         Logger().w(response.Customers?.first.toJson());
-        return response.Customers?[0].Children;
+        if (isFromPagination!) {
+          return response.Customers;
+        } else {
+          return response.Customers!.first.Children;
+        }
       }
       if (isVisionLink) {
         CustomersResponse response =
-            await MyApi().getClient()!.accountHierarchyChildrenVL(customerId);
+            await MyApi().getClient()!.accountHierarchyChildrenVL(customerId!);
         List<Customer>? list = [];
         if (response.Customers!.isNotEmpty) {
           list = response.Customers![0].Children;
@@ -229,7 +244,7 @@ class LoginService extends BaseService {
       } else {
         CustomersResponse response = await MyApi()
             .getClient()!
-            .accountHierarchyChildren(Urls.accounthierarchy, customerId,
+            .accountHierarchyChildren(Urls.accounthierarchy, customerId!,
                 "in-vlmasterdata-api-vlmd-customer");
         List<Customer>? list = [];
         if (response.Customers!.isNotEmpty) {
@@ -369,7 +384,7 @@ class LoginService extends BaseService {
         return loginResponse;
       }
     } catch (e) {
-      Logger().e(e);
+      throw e;
     }
   }
 
@@ -389,6 +404,16 @@ class LoginService extends BaseService {
     return null;
   }
 
+  logout(String id_token) async {
+    try {
+      var data = await MyApi()
+          .getClientFive()!
+          .logout(id_token, Urls.tataHitachiRedirectUri);
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
   void onTokenReceivedWithoutLogin(LoginResponse response) {
     Logger().i("onTokenReceivedWithoutLogin");
     _localService!.setIsloggedIn(true);
@@ -399,6 +424,14 @@ class LoginService extends BaseService {
   saveToken(token, String expiryTime, shouldRemovePrevRoutes) async {
     Logger().i("saveToken from webview");
     await getUser(token, shouldRemovePrevRoutes);
-    await saveExpiryTime(expiryTime);
+    // await saveExpiryTime(expiryTime);
+  }
+
+  Future<LoginResponse> stagedToken() async {
+    LoginResponse loginResponse =
+        await MyApi().getClientEleven()!.getStagedToken(
+              Urls.loginTokenStaged,
+            );
+    return loginResponse;
   }
 }

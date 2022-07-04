@@ -39,90 +39,94 @@ class AssetViewState extends State<AssetView> {
     return ViewModelBuilder<AssetViewModel>.reactive(
       viewModelBuilder: () => viewModel,
       builder: (BuildContext context, AssetViewModel model, Widget? _) {
-        return Stack(
-          children: [
-            Column(
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InsiteText(
-                          text: Utils.getDateInFormatddMMyyyy(
+        return Padding(
+          padding: const EdgeInsets.only(top: 35),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // InsiteText(
+                        //     text: Utils.getDateInFormatddMMyyyy(
+                        //             viewModel.startDate) +
+                        //         " - " +
+                        //         Utils.getDateInFormatddMMyyyy(
+                        //             viewModel.endDate),
+                        //     fontWeight: FontWeight.bold,
+                        //     size: 12),
+                        // SizedBox(
+                        //   width: 4,
+                        // ),
+                        InsiteButton(
+                          //width: 90,
+                          title: Utils.getDateInFormatddMMyyyy(
                                   viewModel.startDate) +
                               " - " +
                               Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                          fontWeight: FontWeight.bold,
-                          size: 12),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      InsiteButton(
-                        width: 90,
-                        title: "Date Range",
-                        bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1!.color,
-                        onTap: () async {
-                          dateRange = [];
-                          dateRange = await showDialog(
-                            context: context,
-                            builder: (BuildContext context) => Dialog(
-                                backgroundColor: transparent,
-                                child: DateRangeView()),
-                          );
-                          if (dateRange != null && dateRange!.isNotEmpty) {
-                            viewModel.refresh();
-                          }
-                        },
-                      ),
-                    ],
+                          // bgColor: Theme.of(context).backgroundColor,
+                          textColor: white,
+                          onTap: () async {
+                            dateRange = [];
+                            dateRange = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) => Dialog(
+                                  backgroundColor: transparent,
+                                  child: DateRangeView()),
+                            );
+                            if (dateRange != null && dateRange!.isNotEmpty) {
+                              viewModel.refresh();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                PageHeader(
-                  isDashboard: false,
-                  total: viewModel.totalCount,
-                  screenType: ScreenType.ASSET_OPERATION,
-                  count: viewModel.faults.length,
-                ),
-                Expanded(
-                  child: viewModel.loading
-                      ? Container(child: InsiteProgressBar())
-                      : viewModel.faults.isNotEmpty
-                          ? ListView.builder(
-                              controller: viewModel.scrollController,
-                              itemCount: viewModel.faults.length,
-                              padding:
-                                  EdgeInsets.only(left: 16, right: 16, top: 4),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                Fault? fault = viewModel.faults[index];
-                                return HealthAssetListItem(
-                                  key: UniqueKey(),
-                                  fault: fault,
-                                  onCallback: () {
-                                    viewModel.onDetailPageSelected(fault);
-                                  },
-                                );
-                              },
-                            )
-                          : EmptyView(
-                              title: "No Assets with fault codes to display",
-                            ),
-                ),
-                viewModel.loadingMore
-                    ? Padding(
-                        padding: EdgeInsets.all(8),
-                        child: InsiteProgressBar(),
-                      )
-                    : SizedBox(),
-              ],
-            ),
-            viewModel.refreshing ? InsiteProgressBar() : SizedBox()
-          ],
+                  PageHeader(
+                    isDashboard: false,
+                    total: viewModel.totalCount,
+                    screenType: ScreenType.ASSET_OPERATION,
+                    count: viewModel.faults.length,
+                  ),
+                  Expanded(
+                    child: viewModel.loading
+                        ? Container(child: InsiteProgressBar())
+                        : viewModel.faults.isNotEmpty
+                            ? ListView.builder(
+                                controller: viewModel.scrollController,
+                                itemCount: viewModel.faults.length,
+                                padding: EdgeInsets.only(
+                                    left: 16, right: 16, top: 4),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  Fault? fault = viewModel.faults[index];
+                                  return HealthAssetListItem(
+                                    key: UniqueKey(),
+                                    fault: fault,
+                                    onCallback: () {
+                                      viewModel.onDetailPageSelected(fault);
+                                    },
+                                  );
+                                },
+                              )
+                            : EmptyView(
+                                title: "No Assets with fault codes to display",
+                              ),
+                  ),
+                  viewModel.loadingMore
+                      ? Padding(
+                          padding: EdgeInsets.all(8),
+                          child: InsiteProgressBar(),
+                        )
+                      : SizedBox(),
+                ],
+              ),
+              viewModel.refreshing ? InsiteProgressBar() : SizedBox()
+            ],
+          ),
         );
       },
     );

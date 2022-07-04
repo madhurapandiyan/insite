@@ -103,7 +103,7 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
               : Row(
                   children: [
                     Expanded(
-                      flex: 2,
+                      flex: 1,
                       child: Container(
                           alignment: Alignment.center,
                           width: MediaQuery.of(context).size.width * 0.20,
@@ -124,8 +124,12 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
                             tooltipBehavior: TooltipBehavior(enable: true),
                           )),
                     ),
+                    SizedBox(
+                      width: 40,
+                    ),
                     Flexible(
                       child: Container(
+                        margin: EdgeInsets.only(right: 20),
                         child: ListView.separated(
                             separatorBuilder: (context, index) {
                               return Container(
@@ -177,9 +181,9 @@ class _AssetFuelLevelState extends State<AssetFuelLevel> {
           dataLabelSettings: DataLabelSettings(
               connectorLineSettings:
                   ConnectorLineSettings(width: 1.5, length: "10%"),
-              color: cardcolor,
+              //  color: cardcolor,
               textStyle: new TextStyle(
-                  color: textcolor,
+                  color: black,
                   fontSize: 10.0,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Roboto',

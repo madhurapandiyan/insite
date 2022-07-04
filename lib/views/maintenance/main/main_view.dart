@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:insite/core/models/maintenance.dart';
+import 'package:insite/core/models/maintenance_list_services.dart';
 //import 'package:insite/core/models/single_asset_fault_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -26,58 +27,44 @@ class MainView extends StatefulWidget {
 }
 
 class MainViewState extends State<MainView> {
+  List<String?>? dateRange = [];
+  MainViewModel? model;
+
   onFilterApplied() {
-    //viewModel.refresh();
+    model!.refresh();
   }
-
-  List<DateTime>? dateRange = [];
-  //late var viewModel;
-
-  // @override
-  // void initState() {
-  //   viewModel = ;
-
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
       builder: (BuildContext context, MainViewModel viewModel, Widget? _) {
+        model = viewModel;
         return Stack(
           children: [
             Column(
               children: [
-                SizedBox(
-                  height: 40,
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      InsiteText(
-                          text: Utils.getDateInFormatddMMyyyy(
-                                  viewModel.startDate) +
-                              " - " +
-                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
-                          fontWeight: FontWeight.bold,
-                          size: 12),
-                      SizedBox(
-                        width: 4,
-                      ),
                       InsiteButton(
-                        width: 90,
-                        title: "Date Range",
-                        bgColor: Theme.of(context).backgroundColor,
-                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        width: 200,
+                        title: Utils.getDateInFormatddMMyyyy(
+                                viewModel.maintenanceStartDate) +
+                            " - " +
+                            Utils.getDateInFormatddMMyyyy(
+                                viewModel.maintenanceEndDate),
+                        //width: 90,
+                        //bgColor: Theme.of(context).backgroundColor,
+                        textColor: white,
                         onTap: () async {
                           dateRange = [];
                           dateRange = await showDialog(
                             context: context,
                             builder: (BuildContext context) => Dialog(
                                 backgroundColor: transparent,
-                                child: DateRangeView()),
+                                child: DateRangeMaintenanceView()),
                           );
                           if (dateRange != null && dateRange!.isNotEmpty) {
                             viewModel.refresh();
@@ -106,23 +93,34 @@ class MainViewState extends State<MainView> {
                               itemBuilder: (context, index) {
                                 SummaryData? summaryData =
                                     viewModel.maintenanceList[index];
-
                                 return MaintenanceListItem(
                                   summaryData: summaryData,
                                   onCallback: () {
                                     viewModel.onDetailPageSelected(summaryData);
-
                                   },
-                                  serviceCalBack:
-                                      (value, assetDataValue, services) {
-                                    viewModel.onServiceSelected(value,
-                                        assetDataValue, summaryData, services);
+                                  serviceCalBack: () {
+                                    viewModel.onServiceSelected(
+                                        ctx: context,
+                                        serviceId:
+                                            summaryData.serviceId!.toInt(),
+                                        assetDataValue: AssetData(
+                                          assetID: summaryData.assetID,
+                                          assetIcon: summaryData.assetIcon,
+                                          assetSerialNumber:
+                                              summaryData.assetSerialNumber,
+                                          currentHourmeter:
+                                              summaryData.currentHourMeter,
+                                          currentOdometer:
+                                              summaryData.currentOdometer,
+                                          makeCode: summaryData.makeCode,
+                                          model: summaryData.model,
+                                        ));
                                   },
                                 );
                               },
                             )
                           : EmptyView(
-                              title: "No services to display",
+                              title: "No Service Found",
                             ),
                 ),
                 viewModel.loadingMore

@@ -478,13 +478,25 @@ class _AddReportViewState extends State<AddReportView> {
                                           ),
                                         )
                                       : AssetSelectionWidgetView(
+                                          isAddingAllAsset: viewModel
+                                                          .assetsDropDownValue ==
+                                                      "Utilization Details" ||
+                                                  viewModel
+                                                          .assetsDropDownValue ==
+                                                      "Fault Code Asset Details"
+                                              ? false
+                                              : true,
+                                          onRemoving: () {
+                                            viewModel.onRemoving();
+                                          },
+                                          key: viewModel.assetSelectionState,
+                                          addingAllAsset: (data) {
+                                            viewModel.onAddingAllAsset(data);
+                                          },
                                           onAddingAsset: (i, value) {
                                             viewModel.onAddingAsset(i, value);
                                           },
-                                          assetData: (value) {
-                                            Logger().e(
-                                                value.pagination!.totalCount);
-                                          },
+                                          assetData: (value) {},
                                           assetResult: viewModel.assetIdresult,
                                         ),
                                   SizedBox(
@@ -624,41 +636,40 @@ class _AddReportViewState extends State<AddReportView> {
                             title: "Search Contact",
                             controller: viewModel.emailController,
                             onChanged: (searchText) {
-                              if (searchText.isNotEmpty) {
-                                viewModel.searchContacts(searchText);
-                              } else {
-                                viewModel.searchContacts(searchText);
-                              }
+                              viewModel.searchContacts(searchText);
                             }),
                         SizedBox(
                           height: 5,
                         ),
                         viewModel.isHideSearchList
                             ? Container(
-                                margin: EdgeInsets.all(8),
-                                // height: 120,
-                                // color: Theme.of(context)
-                                //     .textTheme
-                                //     .bodyText1!
-                                //     .color,
-                                child: Column(
-                                  children: List.generate(
-                                      viewModel.searchContactListName!.length,
-                                      (i) => SingleChildScrollView(
-                                            child: DeviceIdListWidget(
-                                                onSelected: () {
-                                                  viewModel.onSelectingEmailList(
-                                                      viewModel
-                                                          .searchContactListName![
-                                                              i]
-                                                          .email!);
-                                                  FocusScope.of(context)
-                                                      .unfocus();
-                                                },
-                                                deviceId: viewModel
-                                                    .searchContactListName![i]
-                                                    .email),
-                                          )),
+                                height: 200,
+                                margin: EdgeInsets.symmetric(horizontal: 8),
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).cardColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black,
+                                          blurStyle: BlurStyle.outer,
+                                          blurRadius: 0.5,
+                                          spreadRadius: 0.2)
+                                    ]),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: List.generate(
+                                        viewModel.searchContactListName!.length,
+                                        (i) => DeviceIdListWidget(
+                                            onSelected: () {
+                                              viewModel.onSelectingEmailList(
+                                                  viewModel
+                                                      .searchContactListName![i]
+                                                      .email!);
+                                              FocusScope.of(context).unfocus();
+                                            },
+                                            deviceId: viewModel
+                                                .searchContactListName![i]
+                                                .email)),
+                                  ),
                                 ))
                             : SizedBox(),
 
@@ -719,7 +730,11 @@ class _AddReportViewState extends State<AddReportView> {
                                                         .onRemovedSelectedContact(
                                                             i);
                                                   },
-                                                  icon: Icon(Icons.delete))
+                                                  icon: Icon(
+                                                    Icons.delete,
+                                                    color: Theme.of(context)
+                                                        .buttonColor,
+                                                  ))
                                             ],
                                           ),
                                         ),

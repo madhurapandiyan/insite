@@ -26,16 +26,22 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
 
   int? selectedIndex;
 
-  AssetAdminManagerUserService? _manageUserService = locator<AssetAdminManagerUserService>();
+  AssetAdminManagerUserService? _manageUserService =
+      locator<AssetAdminManagerUserService>();
 
   List<ConfigureGridViewModel> displayList = [];
 
   AssetSettingsConfigureViewModel(String? assetUid) {
     _assetConfigureAssetUId = assetUid;
+    if (isVisionLink) {
+      displayList = staticTranspotDataVl;
+    } else {
+      getDisplayList();
+    }
     this.log = getLogger(this.runtimeType.toString());
-    textEditingController.addListener(() {
-      onSearchTextChanged(textEditingController.text);
-    });
+    // textEditingController.addListener(() {
+    //   onSearchTextChanged(textEditingController.text);
+    // });
   }
   // var items = ["Select", "Asset Icon", "Asset ID", "CO2 Emissions", "Meters"];
   var items = [
@@ -43,7 +49,64 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
     "Asset Icon",
   ];
 
-  List<ConfigureGridViewModel> staticTranspotData = [
+  getDisplayList() {
+    List<ConfigureGridViewModel> staticTranspotData = [
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX70.png",
+          modelName: "EX70",
+          assetIconKey: 109),
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX110.png",
+          modelName: "EX110",
+          assetIconKey: 108),
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX130.png",
+          modelName: "EX130",
+          assetIconKey: 1001),
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX200.png",
+          modelName: "EX200",
+          assetIconKey: 107),
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX210.png",
+          modelName: "EX210",
+          assetIconKey: 1003),
+      ConfigureGridViewModel(
+          image: "assets/images/model/EX210LC.png",
+          modelName: "EX210LC",
+          assetIconKey: 1004),
+      ConfigureGridViewModel(
+          image: "assets/images/model/SHINRAI.png",
+          modelName: "SHINRAI",
+          assetIconKey: 185),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TH76.png",
+          modelName: "TH76",
+          assetIconKey: 105),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TH86.png",
+          modelName: "TH86",
+          assetIconKey: 106),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TL340H.png",
+          modelName: "TL340H",
+          assetIconKey: 1005),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TL360Z.png",
+          modelName: "TL360Z",
+          assetIconKey: 1006),
+      ConfigureGridViewModel(
+          image: "assets/images/model/TMX20.png",
+          modelName: "TMX20",
+          assetIconKey: 181),
+      ConfigureGridViewModel(
+          image: "assets/images/0.png", modelName: "Default", assetIconKey: 0),
+    ];
+    displayList = staticTranspotData;
+    notifyListeners();
+  }
+
+  List<ConfigureGridViewModel> staticTranspotDataVl = [
     ConfigureGridViewModel(
         image: "assets/images/EX70.png", modelName: "01-all-1"),
     ConfigureGridViewModel(
@@ -103,24 +166,26 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
   }
 
   void onSearchTextChanged(String text) {
-    Logger().i("query typeed " + text);
-    if (text.trim().isNotEmpty) {
-      List<ConfigureGridViewModel> tempList = [];
+    if (isVisionLink) {
+      Logger().i("query typeed " + text);
+      if (text.trim().isNotEmpty) {
+        List<ConfigureGridViewModel> tempList = [];
 
-      staticTranspotData.forEach((item) {
-        if (item.modelName!.toLowerCase().contains(text.toLowerCase()))
-          tempList.add(item);
-      });
-      displayList = tempList;
-      Logger().i("total list size " + staticTranspotData.length.toString());
+        staticTranspotDataVl.forEach((item) {
+          if (item.modelName!.toLowerCase().contains(text.toLowerCase()))
+            tempList.add(item);
+        });
+        displayList = tempList;
+        Logger().i("total list size " + staticTranspotDataVl.length.toString());
 
-      notifyListeners();
-    } else {
-      displayList = staticTranspotData;
-      Logger().i("else");
+        notifyListeners();
+      } else {
+        displayList = staticTranspotDataVl;
+        Logger().i("else");
 
-      notifyListeners();
-    }
+        notifyListeners();
+      }
+    } else {}
   }
 
   void buttontap(int index) {
@@ -130,13 +195,17 @@ class AssetSettingsConfigureViewModel extends InsiteViewModel {
 
   getAssetIconData() async {
     _isLoading = true;
+    var iconKey = displayList[selectedIndex!].assetIconKey;
     notifyListeners();
+    var data =
+        await _manageUserService!.getAssetListData(assetConfigureAssetUid!);
     var result = await _manageUserService!.getAssetIconData(
         DateTime.now().toIso8601String(),
         assetConfigureAssetUid,
-        10003,
-        3866626429606973,
-        0);
+        iconKey,
+        data!.assetListSettings!.first.legacyAssetID!,
+        data.assetListSettings!.first.modelYear,
+        data.assetListSettings!.first);
     Logger().i(result.toString());
     _isLoading = false;
     notifyListeners();

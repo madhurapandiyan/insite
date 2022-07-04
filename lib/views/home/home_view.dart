@@ -3,10 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/dashboard.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
+import '../../core/models/dashboard.dart';
 import 'home_view_model.dart';
 
 class HomeView extends StatefulWidget {
@@ -28,26 +30,31 @@ class _HomeViewState extends State<HomeView> {
             onFilterApplied: () {},
             onRefineApplied: () {},
             viewModel: viewModel,
-            body: Container(
-              color: Theme.of(context).backgroundColor,
-              child: GridView.builder(
-                padding: EdgeInsets.all(16),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: MediaQuery.of(context).size.width > 1000
-                        ? 7
-                        : MediaQuery.of(context).size.width > 600
-                            ? 5
-                            : 3,
-                    crossAxisSpacing: 5.0,
-                    mainAxisSpacing: 5.0),
-                itemBuilder: (context, index) {
-                  Category category = categories[index];
-                  return _buildCategoryItem(
-                      context, index, category, viewModel);
-                },
-                itemCount: categories.length,
-              ),
-            ),
+            body: viewModel.isLoading
+                ? Center(
+                    child: InsiteProgressBar(),
+                  )
+                : Container(
+                    color: Theme.of(context).backgroundColor,
+                    child: GridView.builder(
+                      padding: EdgeInsets.all(16),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount:
+                              MediaQuery.of(context).size.width > 1000
+                                  ? 5
+                                  : MediaQuery.of(context).size.width > 600
+                                      ? 3
+                                      : 2,
+                          crossAxisSpacing: 5.0,
+                          mainAxisSpacing: 5.0),
+                      itemBuilder: (context, index) {
+                        Category category = categories![index];
+                        return _buildCategoryItem(
+                            context, index, category, viewModel);
+                      },
+                      itemCount: categories!.length,
+                    ),
+                  ),
           ),
         );
       },
@@ -80,19 +87,23 @@ class _HomeViewState extends State<HomeView> {
             children: <Widget>[
               SvgPicture.asset(
                 category.image,
+                height: 25,
+                width: 25,
                 color: selectedIndex != null && selectedIndex == index
                     ? Colors.white
                     : Theme.of(context).iconTheme.color,
               ),
               SizedBox(height: 8.0),
-              InsiteTextAlign(
-                textAlign: TextAlign.center,
-                color: selectedIndex != null && selectedIndex == index
-                    ? Colors.white
-                    : null,
-                fontWeight: FontWeight.bold,
-                size: 12,
-                text: category.name,
+              FittedBox(
+                child: InsiteTextAlign(
+                  textAlign: TextAlign.center,
+                  color: selectedIndex != null && selectedIndex == index
+                      ? Colors.white
+                      : null,
+                  fontWeight: FontWeight.bold,
+                  size: 12,
+                  text: category.name,
+                ),
               ),
             ],
           ),
