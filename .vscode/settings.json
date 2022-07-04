@@ -4,5 +4,6 @@
     ],
     "dart.flutterSdkPath": "C:\\Users\\sivap\\flutter",
     "debug.terminal.clearBeforeReusing": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

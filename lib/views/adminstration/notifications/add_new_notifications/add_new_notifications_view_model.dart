@@ -983,7 +983,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   addContact() {
-    if (emailController.text.isEmail) {
+    if (emailController.text.isEmpty) {
       isShowingSelectedContact = true;
       isShowingSelectedContact = true;
       selectedUser.add(User(

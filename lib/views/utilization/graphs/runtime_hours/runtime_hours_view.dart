@@ -45,7 +45,7 @@ class RuntimeHoursViewState extends State<RuntimeHoursView> {
       builder:
           (BuildContext context, RuntimeHoursViewModel viewModel, Widget? _) {
         if (viewModel.update) {
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             widget.updateCount!(viewModel.utilLizationListData.length);
             viewModel.updateCountToFalse();
           });
