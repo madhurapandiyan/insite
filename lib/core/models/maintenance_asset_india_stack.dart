@@ -30,6 +30,8 @@ class AssetMaintenanceList {
   String? serviceStatusName;
   String? serviceName;
   List<MaintenanceTotals>? maintenanceTotals;
+  int? assetIcon;
+  String? deviceSerialNumber;
 
   AssetMaintenanceList(
       {this.count,
@@ -43,7 +45,9 @@ class AssetMaintenanceList {
       this.servicedescription,
       this.serviceStatusName,
       this.serviceName,
-      this.maintenanceTotals});
+      this.assetIcon,
+      this.maintenanceTotals,
+      this.deviceSerialNumber});
 
   factory AssetMaintenanceList.fromJson(Map<String, dynamic> json) {
     return _$AssetMaintenanceListFromJson(json);

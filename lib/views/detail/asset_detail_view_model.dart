@@ -32,6 +32,9 @@ class AssetDetailViewModel extends InsiteViewModel {
   List<Services?>? _servicesData = [];
   List<Services?>? get servicesData => _servicesData;
 
+  List<String> popupList = ["Add/Manage Intervals"];
+  String? initialValue;
+
   AssetDetailViewModel(
     selectedFleet,
     enu.ScreenType type,
@@ -61,6 +64,11 @@ class AssetDetailViewModel extends InsiteViewModel {
     });
   }
 
+  onPopupSelected(String value) {
+    initialValue = value;
+    notifyListeners();
+  }
+
   getAssetDetail() async {
     AssetDetail? assetDetail =
         await _assetService!.getAssetDetail(fleet!.assetIdentifier);
@@ -70,106 +78,19 @@ class AssetDetailViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onServiceSelected(BuildContext ctx, int? serviceId, AssetData? assetDataValue,
-      Fleet? assetData, List<Services?>? services, selectedService) async {
-    _servicesData = services;
-    ServiceItem? serviceItem;
-    MaintenanceCheckListModel? serviceCheckList;
-    if (isVisionLink) {
-      serviceItem = await _maintenanceService!.getServiceItemCheckList(
-        serviceId!,
-      );
-    } else {
-      serviceCheckList = await _maintenanceService!
-          .getMaintenanceServiceItemCheckList(
-              query: graphqlSchemaService!
-                  .getMaitenanceCheckList(serviceNo: serviceId));
-    }
-    showGeneralDialog(
-        context: ctx,
-        pageBuilder: (context, animation, secondaryAnimation) {
+  onServiceSelected({
+    BuildContext? ctx,
+    int? serviceId,
+    AssetData? assetDataValue,
+  }) async {
+    showDialog(
+        context: ctx!,
+        builder: (context) {
           return MainDetailPopupView(
-              serviceItem: serviceCheckList!,
-              summaryData: assetData!,
-              parentContext: context,
-              assetDataValue: assetDataValue,
-              selectedService: selectedService,
-              services: services!);
+            parentContext: context,
+            serviceNo: serviceId,
+            assetDataValue: assetDataValue,
+          );
         });
   }
 }
-
-dynamic dummyData = {
-  "data": {
-    "getSingleAssetDetails": {
-      "assetUid": "b70a2504-ddaa-11ec-82e6-06e3aab2a3b0",
-      "assetSerialNumber": "TE000028",
-      "assetId": "TE000028",
-      "makeCode": "THC",
-      "manufacturer": "TATA HITACHI",
-      "model": "1650A",
-      "assetIcon": 0,
-      "productFamily": "Unassigned",
-      "status": "Asset Off",
-      "hourMeter": 403,
-      "odometer": 12518.1,
-      "lastReportedLocationLatitude": 16.7657183,
-      "lastReportedLocationLongitude": 74.1400583,
-      "lastReportedLocation": "Panhala, IN 416229, India",
-      "lifetimeFuel": null,
-      "lifetimeDEFLiters": null,
-      "lastReportedTimeUtc": "2022-06-02T00:12:40",
-      "lastLocationUpdateUtc": "2022-06-02T00:12:40",
-      "fuelLevelLastReported": 90,
-      "lastPercentFuelRemainingUtc": "2022-06-02T00:12:40",
-      "lastLifetimeFuelLitersUTC": null,
-      "fuelReportedTimeUtc": "2022-06-02T00:12:40",
-      "customStateDescription": "IN_USE",
-      "dealerName": "Tata Hitachi Corporate Office",
-      "percentDEFRemaining": null,
-      "lastPercentDEFRemainingUTC": null,
-      "dealerCustomerNumber": null,
-      "accountName": null,
-      "universalCustomerIdentifier": null,
-      "universalCustomerName": null,
-      "devices": [
-        {
-          "deviceUid": "b70a2503-ddaa-11ec-82e6-06e3aab2a3b0",
-          "deviceType": "SNM476",
-          "deviceSerialNumber": "TE000028",
-          "deviceState": "Subscribed",
-          "isGpsRollOverAffected": false,
-          "activeServicePlans": [
-            {
-              "serviceUid": "33a28916-5bdd-4f60-baba-09b408181ee8",
-              "type": "Health"
-            },
-            {
-              "serviceUid": "885287f5-359b-42a4-a66a-1410e8373881",
-              "type": "Basic"
-            },
-            {
-              "serviceUid": "e34e8059-a926-4300-af8e-3bfca21b5dbd",
-              "type": "Utilization"
-            },
-            {
-              "serviceUid": "f8c1d67d-f773-44f1-8db6-faa4cfb0dddf",
-              "type": "Maintenance"
-            }
-          ]
-        }
-      ],
-      "geofences": [],
-      "groups": []
-    }
-  },
-  "extensions": {
-    "tracing": {
-      "version": 1,
-      "startTime": "2022-06-02T08:08:40.249Z",
-      "endTime": "2022-06-02T08:08:41.841Z",
-      "duration": 1592266440,
-      "execution": {"resolvers": []}
-    }
-  }
-};

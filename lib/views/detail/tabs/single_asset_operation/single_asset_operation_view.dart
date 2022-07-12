@@ -84,12 +84,12 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                               // ),
                               InsiteButton(
                                 title: Utils.getDateInFormatddMMyyyy(
-                                          viewModel.startDate) +
-                                      " - " +
-                                      Utils.getDateInFormatddMMyyyy(
-                                          viewModel.endDate),
+                                        viewModel.startDate) +
+                                    " - " +
+                                    Utils.getDateInFormatddMMyyyy(
+                                        viewModel.endDate),
                                 //width: 90,
-                               // bgColor: Theme.of(context).backgroundColor,
+                                // bgColor: Theme.of(context).backgroundColor,
                                 textColor: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -376,7 +376,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
             calendarController.view != CalendarView.month)) {
       return;
     }
-    SchedulerBinding.instance?.addPostFrameCallback((Duration timeStamp) {
+    SchedulerBinding.instance!.addPostFrameCallback((Duration timeStamp) {
       setState(() {
         _view = calendarController.view;
       });

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/add_intervals/add_intervals_view.dart' as view49;
 
 import 'package:insite/views/adminstration/add_group/add_group_view.dart'
     as view37;
@@ -123,7 +124,7 @@ class Router {
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
-        var fleetArgs = settings.arguments as view9.DetailArguments;
+        var fleetArgs =(settings.arguments as Map)["arguments"] as view9.DetailArguments;
         return MaterialPageRoute(
             builder: (_) => view9.AssetDetailView(
                   fleet: fleetArgs.fleet,
@@ -239,6 +240,8 @@ class Router {
 
       case maintenanceTabViewRoute:
         return MaterialPageRoute(builder: (_) => view48.MaintenanceTabView());
+      case addIntervalsViewRoute:
+        return MaterialPageRoute(builder: (_) => view49.AddIntervalsView());
 
       default:
         return MaterialPageRoute(

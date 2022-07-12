@@ -71,7 +71,9 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        _loadMore();
+        if (_assetData.length != _totalCount) {
+          _loadMore();
+        }
       }
     });
     Future.delayed(Duration(seconds: 1), () {
@@ -127,8 +129,8 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
               query: await graphqlSchemaService!.getMaintennaceAssetListData(
                   appliedFilter: appliedFilters,
                   fromDate:
-                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                  toDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                      Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+                  toDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
                   limit: limit,
                   pageNo: page));
 
@@ -140,6 +142,8 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
           for (var item in maintenanceListData.assetMaintenanceList!) {
             singleAssetData = AssetCentricData(
               assetID: item.assetId,
+              assetIcon: item.assetIcon,
+              deviceSerialNumber: item.deviceSerialNumber,
               assetSerialNumber: item.serialNumber,
               assetUID: item.customerAssetID.toString(),
               makeCode: item.make,
@@ -178,6 +182,8 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
 
   refresh() async {
     _loading = true;
+    notifyListeners();
+    _assetData.clear();
     await getAssetViewList();
     // await getSelectedFilterData();
     // await getDateRangeFilterData();
@@ -290,7 +296,7 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
             assetIdentifier: assetCentricData.assetID,
           ),
           type: screen.ScreenType.MAINTENANCE,
-          index: 2),
+          index: 5),
     );
   }
 

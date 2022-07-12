@@ -184,41 +184,43 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onChangePolygonColor() {
-    Logger().w(color.red);
-    _polygon!.clear();
-    _polyline!.clear();
-    _circle!.clear();
-    Polyline userPolyline;
-    Polygon userPolygon;
-    LatLng lastLatLng = _listOfLatLong.first;
-    _listOfLatLong.add(lastLatLng);
-    Logger().wtf(_listOfLatLong);
-    for (var i = 0; i < _listOfLatLong.length; i++) {
-      userPolyline = Polyline(
-        jointType: JointType.round,
-        endCap: Cap.roundCap,
-        startCap: Cap.buttCap,
-        width: 3,
-        points: _listOfLatLong,
-        polylineId: PolylineId(DateTime.now().toString()),
-        consumeTapEvents: true,
-        color: color,
-        visible: true,
-      );
-
-      userPolygon = Polygon(
-          strokeColor: color.withOpacity(0.2),
-          geodesic: true,
-          strokeWidth: 3,
-          polygonId: PolygonId(DateTime.now().toString()),
-          fillColor: color.withOpacity(0.2),
+    if (_listOfLatLong.isNotEmpty) {
+      Logger().w(color.red);
+      _polygon!.clear();
+      _polyline!.clear();
+      _circle!.clear();
+      Polyline userPolyline;
+      Polygon userPolygon;
+      LatLng lastLatLng = _listOfLatLong.first;
+      _listOfLatLong.add(lastLatLng);
+      Logger().wtf(_listOfLatLong);
+      for (var i = 0; i < _listOfLatLong.length; i++) {
+        userPolyline = Polyline(
+          jointType: JointType.round,
+          endCap: Cap.roundCap,
+          startCap: Cap.buttCap,
+          width: 3,
+          points: _listOfLatLong,
+          polylineId: PolylineId(DateTime.now().toString()),
+          consumeTapEvents: true,
+          color: color,
           visible: true,
-          points: _listOfLatLong);
-      _polygon!.add(userPolygon);
-      _polyline!.add(userPolyline);
-    }
+        );
 
-    notifyListeners();
+        userPolygon = Polygon(
+            strokeColor: color.withOpacity(0.2),
+            geodesic: true,
+            strokeWidth: 3,
+            polygonId: PolygonId(DateTime.now().toString()),
+            fillColor: color.withOpacity(0.2),
+            visible: true,
+            points: _listOfLatLong);
+        _polygon!.add(userPolygon);
+        _polyline!.add(userPolyline);
+      }
+
+      notifyListeners();
+    }
   }
 
   onChoosingColor() {

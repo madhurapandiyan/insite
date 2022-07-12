@@ -6,9 +6,12 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/dropdown_widget_with_google_map.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/expansion_card.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/multi_custom_dropDown_widget.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/text_box_with_switch.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/textbox_with_suffix_prefix.dart';
+import 'package:insite/views/adminstration/notifications/add_new_notifications/reusable_widget/zone_creating_widget.dart';
 import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_widget.dart/deviceId_widget_list.dart';
 
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -427,355 +430,353 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                     ],
                                                   ),
                                                 )
-                                              // : viewModel.dropDownInitialValue ==
-                                              //         "Fluid Analysis"
-                                              //     ? Padding(
-                                              //         padding:
-                                              //             const EdgeInsets
-                                              //                     .all(
-                                              //                 8.0),
-                                              //         child: showingSwitchableWidgetWithTitle(
-                                              //             "Severity :",
-                                              //             showingSwitchableWidget(
-                                              //                 viewModel
-                                              //                     .fluidAnalysisState,
-                                              //                 viewModel
-                                              //                     .checkingFluidAnalysisState)),
-                                              //       )
-                                              //     : viewModel.dropDownInitialValue ==
-                                              //             "Inspection"
-                                              //         ? Padding(
-                                              //             padding:
-                                              //                 const EdgeInsets.all(
-                                              //                     8.0),
-                                              //             child: showingSwitchableWidgetWithTitle(
-                                              //                 "Severity :",
-                                              //                 showingSwitchableWidget(
-                                              //                     viewModel.inspectionState,
-                                              //                     viewModel.checkingInspectionState)),
-                                              //           )
-                                              //         : viewModel.dropDownInitialValue ==
-                                              //                 "Asset Security"
-                                              //             ? Padding(
-                                              //                 padding:
-                                              //                     const EdgeInsets.all(8.0),
-                                              //                 child: showingSwitchableWidgetWithTitle(
-                                              //                     "Status :",
-                                              //                     showingSwitchableWidget(viewModel.assetSecurityState,
-                                              //                         viewModel.checkingAssetSecurityState)),
-                                              //               )
-                                              // : viewModel.dropDownInitialValue ==
-                                              //         "Zone Inclusion/Exclusion"
-                                              //     ? Stack(
-                                              //         children: [
-                                              //           Column(
-                                              //             children: [
-                                              //               DropDownWidgetWithGoogleMap(
-                                              //                 onSelecting: (i) {
-                                              //                   viewModel.onSelectingInclusion(i);
-                                              //                 },
-                                              //                 onAddingZone: () {
-                                              //                   viewModel.onAddingInclusion();
-                                              //                 },
-                                              //                 initialValue: viewModel.inclusionInitialValue,
-                                              //                 items: viewModel.zoneNamesInclusion,
-                                              //                 onConform: (value) {
-                                              //                   viewModel.onChangingInclusion(value);
-                                              //                 },
-                                              //               ),
-                                              //               SizedBox(height: 10),
-                                              //               DropDownWidgetWithGoogleMap(
-                                              //                 onAddingZone: () {
-                                              //                   viewModel.onAddingExclusion();
-                                              //                 },
-                                              //                 onSelecting: (i) {
-                                              //                   viewModel.onSelectingExclusion(i);
-                                              //                 },
-                                              //                 initialValue: viewModel.exclusionInitialValue,
-                                              //                 items: viewModel.zoneNamesExclusion,
-                                              //                 onConform: (value) {
-                                              //                   Logger().w(value);
-                                              //                   viewModel.onChangingExclusion(value);
-                                              //                 },
-                                              //               )
-                                              //             ],
-                                              //           ),
-                                              //           viewModel.isAddingInclusionZone
-                                              //               ? ZoneCreatingWidget(
-                                              //                   onCreate: () {
-                                              //                     viewModel.onCreatingInclusionZone();
-                                              //                   },
-                                              //                   controller: viewModel.inclusionZoneName,
-                                              //                   onCancel: () {
-                                              //                     viewModel.onCreateInclusionZone();
-                                              //                   },
-                                              //                   isDrawing: viewModel.isDrawing,
-                                              //                   centerPosition: viewModel.centerPosition,
-                                              //                   circle: viewModel.circle,
-                                              //                   onDeleting: () {
-                                              //                     viewModel.onDeleting();
-                                              //                   },
-                                              //                   onEditing: () {
-                                              //                     viewModel.onEditing();
-                                              //                   },
-                                              //                   googleMapController: viewModel.googleMapController,
-                                              //                   onInclusionZoneCreating: (value) {
-                                              //                     viewModel.onInclusionZoneCreating(value);
-                                              //                   },
-                                              //                   onSliderChange: (range) {
-                                              //                     viewModel.onSliderChange(range);
-                                              //                   },
-                                              //                   radius: viewModel.radius,
-                                              //                 )
-                                              //               : SizedBox(),
-                                              //           viewModel.isAddingExclusionZone
-                                              //               ? ZoneCreatingWidget(
-                                              //                   onCreate: () {
-                                              //                     viewModel.onCreatingExclusionZone();
-                                              //                   },
-                                              //                   controller: viewModel.exclusionZoneName,
-                                              //                   onCancel: () {
-                                              //                     viewModel.onCreateExclusionZone();
-                                              //                   },
-                                              //                   isDrawing: viewModel.isDrawing,
-                                              //                   centerPosition: viewModel.centerPosition,
-                                              //                   circle: viewModel.circle,
-                                              //                   onDeleting: () {
-                                              //                     viewModel.onDeleting();
-                                              //                   },
-                                              //                   onEditing: () {
-                                              //                     viewModel.onEditing();
-                                              //                   },
-                                              //                   googleMapController: viewModel.googleMapController,
-                                              //                   onInclusionZoneCreating: (value) {
-                                              //                     viewModel.onInclusionZoneCreating(value);
-                                              //                   },
-                                              //                   onSliderChange: (range) {
-                                              //                     viewModel.onSliderChange(range);
-                                              //                   },
-                                              //                   radius: viewModel.radius,
-                                              //                 )
-                                              //               : SizedBox(),
-                                              //         ],
-                                              //       )
-                                              //     : viewModel.dropDownInitialValue ==
-                                              //             "Geofence"
-                                              //         ? Column(
-                                              //             children: [
-                                              //               MultiSelectionDropDownWidget(
-                                              //                 initialValue: "${viewModel.selectedList.length} Geofence Selected",
-                                              //                 items: viewModel.geoenceData,
-                                              //                 onConform: (value) {
-                                              //                   viewModel.onConformingDropDown(value);
-                                              //                 },
-                                              //                 onSelected: (i) {
-                                              //                   viewModel.onSelectingDropDown(i);
-                                              //                 },
-                                              //               ),
-                                              //               SizedBox(
-                                              //                 height: 20,
-                                              //               ),
-                                              //               Container(
-                                              //                 decoration: BoxDecoration(
-                                              //                     border: Border.all(
-                                              //                       color: Theme.of(context).textTheme.bodyText1!.color!,
-                                              //                     ),
-                                              //                     borderRadius: BorderRadius.circular(10)),
-                                              //                 child: CustomDropDownWidget(
-                                              //                   istappable: !viewModel.isEditing,
-                                              //                   onChanged: (value) {
-                                              //                     Logger().e(value);
-                                              //                     viewModel.onChangingSubType(value);
-                                              //                   },
-                                              //                   items: viewModel.notificationSubTypes,
-                                              //                   value: viewModel.dropDownSubInitialValue,
-                                              //                 ),
-                                              //               ),
-                                              //               SizedBox(
-                                              //                 height: 20,
-                                              //               ),
-                                              //               TextBoxWithSuffixAndPrefix(
-                                              //                 prefixTitle: "After",
-                                              //                 suffixTitle: "Occurences",
-                                              //                 controller: viewModel.assetStatusOccurenceController,
-                                              //                 onChange: (value) {
-                                              //                   //  viewModel.onChagingAssetOccurenceBox(value);
-                                              //                 },
-                                              //               )
-                                              //             ],
-                                              //           )
-                                              : Column(
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .bodyText1!
-                                                                .color!,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10)),
-                                                      child:
-                                                          CustomDropDownWidget(
-                                                        // istappable:
-                                                        //     !viewModel
-                                                        //         .isEditing,
-                                                        onChanged: (value) {
-                                                          Logger().e(value);
-                                                          viewModel
-                                                              .onChangingSubType(
-                                                                  value);
-                                                        },
-                                                        items: viewModel
-                                                            .notificationSubTypes,
-                                                        value: viewModel
-                                                            .dropDownSubInitialValue,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
-                                                    viewModel.dropDownSubInitialValue ==
-                                                            "Overdue"
-                                                        ? Column(
-                                                            children: List.generate(
-                                                                viewModel
-                                                                    .overDueState
-                                                                    .length,
-                                                                (i) {
-                                                            return Column(
-                                                              children: [
-                                                                TextBoxWithSwitch(
-                                                                  onTap: () {
-                                                                    viewModel
-                                                                        .checkingOverduestate(
-                                                                            i);
-                                                                  },
-                                                                  controller: viewModel
-                                                                      .overDueState[
-                                                                          i]
-                                                                      .controller,
-                                                                  isEnable: viewModel
-                                                                      .overDueState[
-                                                                          i]
-                                                                      .state,
-                                                                  title: viewModel
-                                                                      .overDueState[
-                                                                          i]
-                                                                      .text,
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 20,
-                                                                ),
-                                                              ],
-                                                            );
-                                                          }))
-                                                        : viewModel.dropDownSubInitialValue ==
-                                                                "Upcoming"
-                                                            ? Column(
-                                                                children: List.generate(
-                                                                    viewModel
-                                                                        .upcomingState
-                                                                        .length,
-                                                                    (i) {
-                                                                return Column(
-                                                                  children: [
-                                                                    TextBoxWithSwitch(
-                                                                      onTap:
-                                                                          () {
-                                                                        viewModel
-                                                                            .checkingUpcomingState(i);
-                                                                      },
-                                                                      controller: viewModel
-                                                                          .upcomingState[
-                                                                              i]
-                                                                          .controller,
-                                                                      isEnable: viewModel
-                                                                          .upcomingState[
-                                                                              i]
-                                                                          .state,
-                                                                      title: viewModel
-                                                                          .upcomingState[
-                                                                              i]
-                                                                          .text,
-                                                                      suffixTitle: viewModel
-                                                                          .upcomingState[
-                                                                              i]
-                                                                          .suffixTitle,
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          20,
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              }))
-                                                            : viewModel.dropDownInitialValue ==
-                                                                    "Asset Status"
-                                                                ? TextBoxWithSuffixAndPrefix(
-                                                                    prefixTitle:
-                                                                        "After",
-                                                                    suffixTitle:
-                                                                        "Occurences",
-                                                                    controller:
-                                                                        viewModel
-                                                                            .assetStatusOccurenceController,
-                                                                    onChange:
-                                                                        (value) {
+                                              : viewModel.dropDownInitialValue ==
+                                                      "Fluid Analysis"
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: showingSwitchableWidgetWithTitle(
+                                                          "Severity :",
+                                                          showingSwitchableWidget(
+                                                              viewModel
+                                                                  .fluidAnalysisState,
+                                                              viewModel
+                                                                  .checkingFluidAnalysisState)),
+                                                    )
+                                                  : viewModel.dropDownInitialValue ==
+                                                          "Inspection"
+                                                      ? Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: showingSwitchableWidgetWithTitle(
+                                                              "Severity :",
+                                                              showingSwitchableWidget(
+                                                                  viewModel
+                                                                      .inspectionState,
+                                                                  viewModel
+                                                                      .checkingInspectionState)),
+                                                        )
+                                                      : viewModel.dropDownInitialValue ==
+                                                              "Asset Security"
+                                                          ? Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: showingSwitchableWidgetWithTitle(
+                                                                  "Status :",
+                                                                  showingSwitchableWidget(
                                                                       viewModel
-                                                                          .onChangingOccurence(
-                                                                              value);
-                                                                    },
-                                                                  )
-                                                                : viewModel.dropDownInitialValue ==
-                                                                        "Engine Hours"
-                                                                    ? TextBoxWithSuffixAndPrefix(
-                                                                        suffixTitle:
-                                                                            "Hours",
-                                                                        controller:
-                                                                            viewModel.assetStatusOccurenceController,
-                                                                        onChange:
-                                                                            (value) {
-                                                                          viewModel
-                                                                              .onChangingOccurence(value);
-                                                                        },
-                                                                      )
-                                                                    : viewModel.dropDownInitialValue ==
-                                                                            "Fuel"
-                                                                        ? TextBoxWithSuffixAndPrefix(
-                                                                            suffixTitle:
-                                                                                "%",
-                                                                            controller:
-                                                                                viewModel.assetStatusOccurenceController,
-                                                                            onChange:
-                                                                                (value) {
-                                                                              viewModel.onChangingOccurence(value);
+                                                                          .assetSecurityState,
+                                                                      viewModel
+                                                                          .checkingAssetSecurityState)),
+                                                            )
+                                                          : viewModel.dropDownInitialValue ==
+                                                                  "Zone Inclusion/Exclusion"
+                                                              ? Stack(
+                                                                  children: [
+                                                                    Column(
+                                                                      children: [
+                                                                        DropDownWidgetWithGoogleMap(
+                                                                          onSelecting:
+                                                                              (i) {
+                                                                            viewModel.onSelectingInclusion(i);
+                                                                          },
+                                                                          onAddingZone:
+                                                                              () {
+                                                                            viewModel.onAddingInclusion();
+                                                                          },
+                                                                          initialValue:
+                                                                              viewModel.inclusionInitialValue,
+                                                                          items:
+                                                                              viewModel.zoneNamesInclusion,
+                                                                          onConform:
+                                                                              (value) {
+                                                                            viewModel.onChangingInclusion(value);
+                                                                          },
+                                                                        ),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                10),
+                                                                        DropDownWidgetWithGoogleMap(
+                                                                          onAddingZone:
+                                                                              () {
+                                                                            viewModel.onAddingExclusion();
+                                                                          },
+                                                                          onSelecting:
+                                                                              (i) {
+                                                                            viewModel.onSelectingExclusion(i);
+                                                                          },
+                                                                          initialValue:
+                                                                              viewModel.exclusionInitialValue,
+                                                                          items:
+                                                                              viewModel.zoneNamesExclusion,
+                                                                          onConform:
+                                                                              (value) {
+                                                                            Logger().w(value);
+                                                                            viewModel.onChangingExclusion(value);
+                                                                          },
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                    viewModel
+                                                                            .isAddingInclusionZone
+                                                                        ? ZoneCreatingWidget(
+                                                                            onCreate:
+                                                                                () {
+                                                                              viewModel.onCreatingInclusionZone();
                                                                             },
+                                                                            controller:
+                                                                                viewModel.inclusionZoneName,
+                                                                            onCancel:
+                                                                                () {
+                                                                              viewModel.onCreateInclusionZone();
+                                                                            },
+                                                                            isDrawing:
+                                                                                viewModel.isDrawing,
+                                                                            centerPosition:
+                                                                                viewModel.centerPosition,
+                                                                            circle:
+                                                                                viewModel.circle,
+                                                                            onDeleting:
+                                                                                () {
+                                                                              viewModel.onDeleting();
+                                                                            },
+                                                                            onEditing:
+                                                                                () {
+                                                                              viewModel.onEditing();
+                                                                            },
+                                                                            googleMapController:
+                                                                                viewModel.googleMapController,
+                                                                            onInclusionZoneCreating:
+                                                                                (value) {
+                                                                              viewModel.onInclusionZoneCreating(value);
+                                                                            },
+                                                                            onSliderChange:
+                                                                                (range) {
+                                                                              viewModel.onSliderChange(range);
+                                                                            },
+                                                                            radius:
+                                                                                viewModel.radius,
                                                                           )
-                                                                        // : viewModel.dropDownInitialValue == "Odometer"
-                                                                        //     ? TextBoxWithSuffixAndPrefix(
-                                                                        //         suffixTitle: "Miles",
-                                                                        //         controller: viewModel.odometerOccurenceController,
-                                                                        //         onChange: (value) {
-                                                                        //           //viewModel.onChagingeOdometerOccurenceBox(value);
-                                                                        //         },
-                                                                        //       )
-                                                                        : viewModel.dropDownInitialValue ==
-                                                                                "Excessive Daily Idle"
-                                                                            ? TextBoxWithSuffixAndPrefix(
-                                                                                suffixTitle: "Hours",
-                                                                                controller: viewModel.assetStatusOccurenceController,
-                                                                                onChange: (value) {
-                                                                                  viewModel.onChangingOccurence(value);
-                                                                                },
-                                                                              )
-                                                                            : SizedBox()
-                                                  ],
-                                                )),
+                                                                        : SizedBox(),
+                                                                    viewModel
+                                                                            .isAddingExclusionZone
+                                                                        ? ZoneCreatingWidget(
+                                                                            onCreate:
+                                                                                () {
+                                                                              viewModel.onCreatingExclusionZone();
+                                                                            },
+                                                                            controller:
+                                                                                viewModel.exclusionZoneName,
+                                                                            onCancel:
+                                                                                () {
+                                                                              viewModel.onCreateExclusionZone();
+                                                                            },
+                                                                            isDrawing:
+                                                                                viewModel.isDrawing,
+                                                                            centerPosition:
+                                                                                viewModel.centerPosition,
+                                                                            circle:
+                                                                                viewModel.circle,
+                                                                            onDeleting:
+                                                                                () {
+                                                                              viewModel.onDeleting();
+                                                                            },
+                                                                            onEditing:
+                                                                                () {
+                                                                              viewModel.onEditing();
+                                                                            },
+                                                                            googleMapController:
+                                                                                viewModel.googleMapController,
+                                                                            onInclusionZoneCreating:
+                                                                                (value) {
+                                                                              viewModel.onInclusionZoneCreating(value);
+                                                                            },
+                                                                            onSliderChange:
+                                                                                (range) {
+                                                                              viewModel.onSliderChange(range);
+                                                                            },
+                                                                            radius:
+                                                                                viewModel.radius,
+                                                                          )
+                                                                        : SizedBox(),
+                                                                  ],
+                                                                )
+                                                              : viewModel.dropDownInitialValue ==
+                                                                      "Geofence"
+                                                                  ? Column(
+                                                                      children: [
+                                                                        MultiSelectionDropDownWidget(
+                                                                          initialValue:
+                                                                              "${viewModel.selectedList.length} Geofence Selected",
+                                                                          items:
+                                                                              viewModel.geoenceData,
+                                                                          onConform:
+                                                                              (value) {
+                                                                            viewModel.onConformingDropDown(value);
+                                                                          },
+                                                                          onSelected:
+                                                                              (i) {
+                                                                            viewModel.onSelectingDropDown(i);
+                                                                          },
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              20,
+                                                                        ),
+                                                                        Container(
+                                                                          decoration: BoxDecoration(
+                                                                              border: Border.all(
+                                                                                color: Theme.of(context).textTheme.bodyText1!.color!,
+                                                                              ),
+                                                                              borderRadius: BorderRadius.circular(10)),
+                                                                          child:
+                                                                              CustomDropDownWidget(
+                                                                            istappable:
+                                                                                !viewModel.isEditing,
+                                                                            onChanged:
+                                                                                (value) {
+                                                                              Logger().e(value);
+                                                                              viewModel.onChangingSubType(value);
+                                                                            },
+                                                                            items:
+                                                                                viewModel.notificationSubTypes,
+                                                                            value:
+                                                                                viewModel.dropDownSubInitialValue,
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              20,
+                                                                        ),
+                                                                        TextBoxWithSuffixAndPrefix(
+                                                                          prefixTitle:
+                                                                              "After",
+                                                                          suffixTitle:
+                                                                              "Occurences",
+                                                                          controller:
+                                                                              viewModel.assetStatusOccurenceController,
+                                                                          onChange:
+                                                                              (value) {
+                                                                            //  viewModel.onChagingAssetOccurenceBox(value);
+                                                                          },
+                                                                        )
+                                                                      ],
+                                                                    )
+                                                                  : Column(
+                                                                      children: [
+                                                                        Container(
+                                                                          decoration: BoxDecoration(
+                                                                              border: Border.all(
+                                                                                color: Theme.of(context).textTheme.bodyText1!.color!,
+                                                                              ),
+                                                                              borderRadius: BorderRadius.circular(10)),
+                                                                          child:
+                                                                              CustomDropDownWidget(
+                                                                            // istappable:
+                                                                            //     !viewModel
+                                                                            //         .isEditing,
+                                                                            onChanged:
+                                                                                (value) {
+                                                                              Logger().e(value);
+                                                                              viewModel.onChangingSubType(value);
+                                                                            },
+                                                                            items:
+                                                                                viewModel.notificationSubTypes,
+                                                                            value:
+                                                                                viewModel.dropDownSubInitialValue,
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              20,
+                                                                        ),
+                                                                        viewModel.dropDownSubInitialValue ==
+                                                                                "Overdue"
+                                                                            ? Column(
+                                                                                children: List.generate(viewModel.overDueState.length, (i) {
+                                                                                return Column(
+                                                                                  children: [
+                                                                                    TextBoxWithSwitch(
+                                                                                      onTap: () {
+                                                                                        viewModel.checkingOverduestate(i);
+                                                                                      },
+                                                                                      controller: viewModel.overDueState[i].controller,
+                                                                                      isEnable: viewModel.overDueState[i].state,
+                                                                                      title: viewModel.overDueState[i].text,
+                                                                                    ),
+                                                                                    SizedBox(
+                                                                                      height: 20,
+                                                                                    ),
+                                                                                  ],
+                                                                                );
+                                                                              }))
+                                                                            : viewModel.dropDownSubInitialValue == "Upcoming"
+                                                                                ? Column(
+                                                                                    children: List.generate(viewModel.upcomingState.length, (i) {
+                                                                                    return Column(
+                                                                                      children: [
+                                                                                        TextBoxWithSwitch(
+                                                                                          onTap: () {
+                                                                                            viewModel.checkingUpcomingState(i);
+                                                                                          },
+                                                                                          controller: viewModel.upcomingState[i].controller,
+                                                                                          isEnable: viewModel.upcomingState[i].state,
+                                                                                          title: viewModel.upcomingState[i].text,
+                                                                                          suffixTitle: viewModel.upcomingState[i].suffixTitle,
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 20,
+                                                                                        ),
+                                                                                      ],
+                                                                                    );
+                                                                                  }))
+                                                                                : viewModel.dropDownInitialValue == "Asset Status"
+                                                                                    ? TextBoxWithSuffixAndPrefix(
+                                                                                        prefixTitle: "After",
+                                                                                        suffixTitle: "Occurences",
+                                                                                        controller: viewModel.assetStatusOccurenceController,
+                                                                                        onChange: (value) {
+                                                                                          viewModel.onChangingOccurence(value);
+                                                                                        },
+                                                                                      )
+                                                                                    : viewModel.dropDownInitialValue == "Engine Hours"
+                                                                                        ? TextBoxWithSuffixAndPrefix(
+                                                                                            suffixTitle: "Hours",
+                                                                                            controller: viewModel.assetStatusOccurenceController,
+                                                                                            onChange: (value) {
+                                                                                              viewModel.onChangingOccurence(value);
+                                                                                            },
+                                                                                          )
+                                                                                        : viewModel.dropDownInitialValue == "Fuel"
+                                                                                            ? TextBoxWithSuffixAndPrefix(
+                                                                                                suffixTitle: "%",
+                                                                                                controller: viewModel.assetStatusOccurenceController,
+                                                                                                onChange: (value) {
+                                                                                                  viewModel.onChangingOccurence(value);
+                                                                                                },
+                                                                                              )
+                                                                                            // : viewModel.dropDownInitialValue == "Odometer"
+                                                                                            //     ? TextBoxWithSuffixAndPrefix(
+                                                                                            //         suffixTitle: "Miles",
+                                                                                            //         controller: viewModel.odometerOccurenceController,
+                                                                                            //         onChange: (value) {
+                                                                                            //           //viewModel.onChagingeOdometerOccurenceBox(value);
+                                                                                            //         },
+                                                                                            //       )
+                                                                                            : viewModel.dropDownInitialValue == "Excessive Daily Idle"
+                                                                                                ? TextBoxWithSuffixAndPrefix(
+                                                                                                    suffixTitle: "Hours",
+                                                                                                    controller: viewModel.assetStatusOccurenceController,
+                                                                                                    onChange: (value) {
+                                                                                                      viewModel.onChangingOccurence(value);
+                                                                                                    },
+                                                                                                  )
+                                                                                                : SizedBox()
+                                                                      ],
+                                                                    )),
                                 ],
                               )
                             : SizedBox(),

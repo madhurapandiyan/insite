@@ -47,7 +47,7 @@ MaintenanceList _$MaintenanceListFromJson(Map<String, dynamic> json) =>
       zip: json['zip'] as String?,
       odometer: (json['odometer'] as num?)?.toDouble(),
       lastReportedDate: json['lastReportedDate'] as String?,
-      percentFuelRemaining: json['percentFuelRemaining'] as int?,
+      percentFuelRemaining: json['percentFuelRemaining'] as num?,
       fuelLastReportedTime: json['fuelLastReportedTime'] as String?,
       serviceInterval: json['serviceInterval'] as String?,
       status: json['status'] as String?,
@@ -68,6 +68,7 @@ MaintenanceList _$MaintenanceListFromJson(Map<String, dynamic> json) =>
       completedService: json['completedService'] as String?,
       address: json['address'] as String?,
       workOrder: json['workOrder'] as String?,
+      dealerName: json['dealerName'] as String?,
     );
 
 Map<String, dynamic> _$MaintenanceListToJson(MaintenanceList instance) =>
@@ -115,4 +116,5 @@ Map<String, dynamic> _$MaintenanceListToJson(MaintenanceList instance) =>
       'completedService': instance.completedService,
       'address': instance.address,
       'workOrder': instance.workOrder,
+      'dealerName': instance.dealerName,
     };

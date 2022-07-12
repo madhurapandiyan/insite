@@ -45,6 +45,12 @@ Fleet _$FleetFromJson(Map<String, dynamic> json) => Fleet(
       universalCustomerIdentifier:
           json['universalCustomerIdentifier'] as String?,
       universalCustomerName: json['universalCustomerName'] as String?,
+      geofences: (json['geofences'] as List<dynamic>?)
+          ?.map((e) => FleetGeofence.fromJson(e as Map<String, dynamic>?))
+          .toList(),
+      devices: (json['devices'] as List<dynamic>?)
+          ?.map((e) => FleetDevices.fromJson(e as Map<String, dynamic>?))
+          .toList(),
     );
 
 Map<String, dynamic> _$FleetToJson(Fleet instance) => <String, dynamic>{
@@ -81,6 +87,8 @@ Map<String, dynamic> _$FleetToJson(Fleet instance) => <String, dynamic>{
       'lastOperatorName': instance.lastOperatorName,
       'lastOperatorID': instance.lastOperatorID,
       'modelYear': instance.modelYear,
+      'geofences': instance.geofences,
+      'devices': instance.devices,
     };
 
 FleetSummaryResponse _$FleetSummaryResponseFromJson(
@@ -103,4 +111,33 @@ Map<String, dynamic> _$FleetSummaryResponseToJson(
       'links': instance.links,
       'pagination': instance.pagination,
       'fleetRecords': instance.fleetRecords,
+    };
+
+FleetGeofence _$FleetGeofenceFromJson(Map<String, dynamic> json) =>
+    FleetGeofence(
+      areaSqM: json['areaSqM'] as String?,
+      fenceIdentifier: json['fenceIdentifier'] as String?,
+      name: json['name'] as String?,
+    );
+
+Map<String, dynamic> _$FleetGeofenceToJson(FleetGeofence instance) =>
+    <String, dynamic>{
+      'fenceIdentifier': instance.fenceIdentifier,
+      'name': instance.name,
+      'areaSqM': instance.areaSqM,
+    };
+
+FleetDevices _$FleetDevicesFromJson(Map<String, dynamic> json) => FleetDevices(
+      deviceSerialNumber: json['deviceSerialNumber'] as String?,
+      deviceType: json['deviceType'] as String?,
+      isGpsRollOverAffected: json['isGpsRollOverAffected'] as bool?,
+      mainboardSoftwareVersion: json['mainboardSoftwareVersion'] as String?,
+    );
+
+Map<String, dynamic> _$FleetDevicesToJson(FleetDevices instance) =>
+    <String, dynamic>{
+      'deviceType': instance.deviceType,
+      'isGpsRollOverAffected': instance.isGpsRollOverAffected,
+      'mainboardSoftwareVersion': instance.mainboardSoftwareVersion,
+      'deviceSerialNumber': instance.deviceSerialNumber,
     };

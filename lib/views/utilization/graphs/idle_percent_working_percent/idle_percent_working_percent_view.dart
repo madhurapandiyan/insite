@@ -47,7 +47,7 @@ class IdlePercentWorkingPercentViewState
       builder: (BuildContext context,
           IdlePercentWorkingPercentViewModel viewModel, Widget? _) {
         if (viewModel.update) {
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
             widget.updateCount!(viewModel.utilLizationListData.length);
             viewModel.updateCountToFalse();
           });

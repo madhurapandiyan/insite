@@ -169,6 +169,18 @@ class _DashboardPieChartWidgetState extends State<DashboardPieChartWidget> {
               labelPosition: ChartDataLabelPosition.outside),
           pointColorMapper: (ChartSampleData charts, _) =>
               getColorData(charts.x),
+          onPointTap: (pointTapArgs) {
+            try {
+              Logger().d("onPointTapped " +
+                  pointTapArgs.pointIndex.toString() +
+                  " " +
+                  pointTapArgs.seriesIndex.toString() +
+                  " " +
+                  pointTapArgs.viewportPointIndex.toString());
+              widget
+                  .onFilterSelected!(widget.data![pointTapArgs.pointIndex!].z);
+            } catch (e) {}
+          },
           xValueMapper: (ChartSampleData charts, _) => charts.x,
           yValueMapper: (ChartSampleData charts, _) => charts.y),
     ];
