@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/subscription/replacement/model/device_replacement_status_model.dart';
@@ -6,7 +7,7 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class ReplacementStatusTableWidget extends StatelessWidget {
-  DeviceReplacementStatusModel? modelData;
+  dynamic modelData;
   ReplacementStatusTableWidget({this.modelData});
   @override
   Widget build(BuildContext context) {
@@ -38,82 +39,165 @@ class ReplacementStatusTableWidget extends StatelessWidget {
                 //     ],
                 //   ),
                 // ),
-                Expanded(
-                  child: InsiteExpansionTile(
-                    childrenPadding: EdgeInsets.all(10),
-                    title: Table(
-                      border: TableBorder.all(width: 2, color: borderLineColor),
-                      columnWidths: {
-                        0: FlexColumnWidth(5),
-                        1: FlexColumnWidth(5)
-                      },
-                      children: [
-                        TableRow(children: [
-                          InsiteTableRowItem(
-                            title: "Old Device ID : ",
-                            content: modelData!.OldDeviceId ?? "-",
-                          ),
-                          InsiteTableRowItem(
-                            title: "New Device ID :",
-                            content: modelData!.NewDeviceId ?? "-",
-                          ),
-                        ]),
-                        TableRow(children: [
-                          InsiteTableRowItem(
-                            title: "Serial No",
-                            content: modelData!.VIN ?? "-",
-                          ),
-                          InsiteTableRowItem(
-                            title: "Reason  :",
-                            content: modelData!.Reason ?? "-",
-                          ),
-                        ]),
-                      ],
-                    ),
-                    children: [
-                      Table(
-                        border:
-                            TableBorder.all(width: 2, color: borderLineColor),
-                        children: [
-                          TableRow(
+                BaseService().enableGraphQl
+                    ? Expanded(
+                        child: InsiteExpansionTile(
+                          childrenPadding: EdgeInsets.all(10),
+                          title: Table(
+                            border: TableBorder.all(
+                                width: 2, color: borderLineColor),
+                            columnWidths: {
+                              0: FlexColumnWidth(5),
+                              1: FlexColumnWidth(5)
+                            },
                             children: [
-                              InsiteTableRowItem(
-                                title: "Replacement Status : ",
-                                content: modelData!.State ?? "-",
-                              ),
-                              InsiteTableRowItem(
-                                title: "Description : ",
-                                content: modelData!.Description ?? "-",
-                              ),
+                              TableRow(children: [
+                                InsiteTableRowItem(
+                                  title: "Old Device ID : ",
+                                  content: modelData?.oldDeviceId ?? "-",
+                                ),
+                                InsiteTableRowItem(
+                                  title: "New Device ID :",
+                                  content: modelData!.newDeviceId ?? "-",
+                                ),
+                              ]),
+                              TableRow(children: [
+                                InsiteTableRowItem(
+                                  title: "Serial No",
+                                  content: modelData!.vin ?? "-",
+                                ),
+                                InsiteTableRowItem(
+                                  title: "Reason  :",
+                                  content: modelData!.reason ?? "-",
+                                ),
+                              ]),
                             ],
                           ),
-                          TableRow(children: [
-                            InsiteTableRowItem(
-                              title: "First Name :",
-                              content: modelData!.FirstName ?? "-",
-                            ),
-                            InsiteTableRowItem(
-                              title: "Last Name : ",
-                              content: modelData!.LastName ?? "-",
-                            ),
-                          ]),
-                          TableRow(children: [
-                            InsiteTableRowItem(
-                              title: "User Email :",
-                              content: modelData!.EmailID ?? "-",
-                            ),
-                            InsiteTableRowItem(
-                              title: "Request Time : ",
-                              content: Utils.getLastReportedDateFilterData(
-                                      DateTime.parse(modelData!.InsertUTC!)) ??
-                                  "-",
-                            ),
-                          ]),
-                        ],
+                          children: [
+                            Table(
+                              border: TableBorder.all(
+                                  width: 2, color: borderLineColor),
+                              children: [
+                                TableRow(
+                                  children: [
+                                    InsiteTableRowItem(
+                                      title: "Replacement Status : ",
+                                      content: modelData!.state ?? "-",
+                                    ),
+                                    InsiteTableRowItem(
+                                      title: "Description : ",
+                                      content: modelData!.description ?? "-",
+                                    ),
+                                  ],
+                                ),
+                                TableRow(children: [
+                                  InsiteTableRowItem(
+                                    title: "First Name :",
+                                    content: modelData!.firstName ?? "-",
+                                  ),
+                                  InsiteTableRowItem(
+                                    title: "Last Name : ",
+                                    content: modelData!.lastName ?? "-",
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  InsiteTableRowItem(
+                                    title: "User Email :",
+                                    content: modelData!.emailID ?? "-",
+                                  ),
+                                  InsiteTableRowItem(
+                                    title: "Request Time : ",
+                                    content:
+                                        Utils.getLastReportedDateFilterData(
+                                                DateTime.parse(
+                                                    modelData!.insertUTC!)) ??
+                                            "-",
+                                  ),
+                                ]),
+                              ],
+                            )
+                          ],
+                        ),
                       )
-                    ],
-                  ),
-                ),
+                    : Expanded(
+                        child: InsiteExpansionTile(
+                          childrenPadding: EdgeInsets.all(10),
+                          title: Table(
+                            border: TableBorder.all(
+                                width: 2, color: borderLineColor),
+                            columnWidths: {
+                              0: FlexColumnWidth(5),
+                              1: FlexColumnWidth(5)
+                            },
+                            children: [
+                              TableRow(children: [
+                                InsiteTableRowItem(
+                                  title: "Old Device ID : ",
+                                  content: modelData!.OldDeviceId ?? "-",
+                                ),
+                                InsiteTableRowItem(
+                                  title: "New Device ID :",
+                                  content: modelData!.NewDeviceId ?? "-",
+                                ),
+                              ]),
+                              TableRow(children: [
+                                InsiteTableRowItem(
+                                  title: "Serial No",
+                                  content: modelData!.VIN ?? "-",
+                                ),
+                                InsiteTableRowItem(
+                                  title: "Reason  :",
+                                  content: modelData!.Reason ?? "-",
+                                ),
+                              ]),
+                            ],
+                          ),
+                          children: [
+                            Table(
+                              border: TableBorder.all(
+                                  width: 2, color: borderLineColor),
+                              children: [
+                                TableRow(
+                                  children: [
+                                    InsiteTableRowItem(
+                                      title: "Replacement Status : ",
+                                      content: modelData!.State ?? "-",
+                                    ),
+                                    InsiteTableRowItem(
+                                      title: "Description : ",
+                                      content: modelData!.Description ?? "-",
+                                    ),
+                                  ],
+                                ),
+                                TableRow(children: [
+                                  InsiteTableRowItem(
+                                    title: "First Name :",
+                                    content: modelData!.FirstName ?? "-",
+                                  ),
+                                  InsiteTableRowItem(
+                                    title: "Last Name : ",
+                                    content: modelData!.LastName ?? "-",
+                                  ),
+                                ]),
+                                TableRow(children: [
+                                  InsiteTableRowItem(
+                                    title: "User Email :",
+                                    content: modelData!.EmailID ?? "-",
+                                  ),
+                                  InsiteTableRowItem(
+                                    title: "Request Time : ",
+                                    content:
+                                        Utils.getLastReportedDateFilterData(
+                                                DateTime.parse(
+                                                    modelData!.InsertUTC!)) ??
+                                            "-",
+                                  ),
+                                ]),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
               ],
             ),
           ),

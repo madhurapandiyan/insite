@@ -10,7 +10,7 @@ SerialNumberResults _$SerialNumberResultsFromJson(Map<String, dynamic> json) =>
     SerialNumberResults(
       result: json['result'] == null
           ? null
-          : Result.fromJson(json['result'] as Map<String, dynamic>),
+          : ModelResult.fromJson(json['result'] as Map<String, dynamic>),
       status: json['status'] as String?,
       message: json['message'] as String?,
     );
@@ -23,7 +23,7 @@ Map<String, dynamic> _$SerialNumberResultsToJson(
       'message': instance.message,
     };
 
-Result _$ResultFromJson(Map<String, dynamic> json) => Result(
+ModelResult _$ModelResultFromJson(Map<String, dynamic> json) => ModelResult(
       startsWith: json['startsWith'] as String?,
       startRange: json['startRange'] as int?,
       endRange: json['endRange'] as int?,
@@ -31,7 +31,8 @@ Result _$ResultFromJson(Map<String, dynamic> json) => Result(
       modelName: json['modelName'] as String?,
     );
 
-Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
+Map<String, dynamic> _$ModelResultToJson(ModelResult instance) =>
+    <String, dynamic>{
       'startsWith': instance.startsWith,
       'startRange': instance.startRange,
       'endRange': instance.endRange,

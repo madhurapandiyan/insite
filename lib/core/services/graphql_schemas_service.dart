@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
@@ -328,6 +329,116 @@ query{
     return data;
   }
 
+  getReplacementDetails({int? start, int? limit}) {
+    var data = """query{
+  replacementHistory(start:$start,limit:$limit) {
+    oldDeviceId
+    newDeviceId
+    reason
+    vin
+    insertUTC
+    emailID
+    firstName
+    lastName
+    state
+    description
+    count
+  }
+  }
+""";
+    return data;
+  }
+
+  getModelNameBySerialNumber(String? serialNumber) {
+    var data = """  query {
+ assetModelByMachineSerialNumber(machineSerialNumber:"$serialNumber") {
+   startsWith
+   startRange
+   endRange
+   groupClusterId
+   modelName
+ }
+ 
+}""";
+    return data;
+  }
+
+  getDeviceIdReplacement(String? text, String? status) {
+    var data = """
+query  {
+  frameSubscription {
+    subscriptionFleetList(status:"$status", model: "", start: 0, limit: 20, search: {
+      gpsDeviceID: "$text"
+    })
+    {
+      count
+      provisioningInfo {
+        vin
+        gpsDeviceID
+        model
+        subscriptionStartDate
+        __typename
+      }
+      __typename
+    }   __typename
+    }
+  }
+
+""";
+    return data;
+  }
+
+  getSubscriptionFleetData(int? start, int? limit) {
+    var data = """
+query {
+ fleetProvisionStatus(start:$start,limit:$limit) {
+  count, 
+  fleetProvisionStatusInfo {  
+    gpsDeviceID,     
+    vin,    
+    model,     
+    oemName,     
+    subscriptionStartDate,      
+    actualStartDate,     
+    subscriptionEndDate,      
+    productFamily,      
+    customerName,      
+    customerCode,      
+    dealerName,     
+    dealerCode,     
+    commissioningDate,     
+    secondaryIndustry,      
+    primaryIndustry,      
+    networkProvider,     
+    status,      
+    description,     
+    __typename    
+  }
+  }
+ }
+""";
+    return data;
+  }
+
+  getDeviceCodeAndName(
+      {int? start, int? limit, String? type, String? name, String? code}) {
+    var data = """
+query {
+assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",code:"$code") {
+  
+  name
+  userName
+  email
+  code
+} 
+ 
+
+ 
+}
+""";
+    return data;
+  }
+
   getDetailResultData(String? status, int? start, int? limit, String? name) {
     var data = """ 
     query {
@@ -348,6 +459,61 @@ query{
 
 """;
 
+    return data;
+  }
+
+  getDeviceTransferDetails(String? value) {
+    var data = """
+query{
+singleFleetDetails(searchKey: "GPSDeviceID",
+    searchValue: "$value",
+    oem: "VEhD") {
+  vin
+  gpsDeviceID
+  model
+  oemName
+  subscriptionStartDate
+  actualStartDate
+  subscriptionEndDate
+  productFamily
+  customerName
+  customerCode
+  dealerName
+  dealerCode
+  commissioningDate
+  secondaryIndustry
+  primaryIndustry
+  networkProvider
+  status
+  description
+}
+}
+ 
+""";
+    return data;
+  }
+
+  getDeviceIdTransfer(
+      {int? limit,
+      String? oem,
+      String? searchkey,
+      String? searchValue,
+      int? start,
+      String? userId}) {
+    String data = """
+query{
+  hierarchyFleetSearch(limit: $limit,
+oem: "$oem",
+searchKey: "$searchkey",
+searchValue: "$searchValue",
+start: $start,
+userUID: "$userId") {
+    vin
+    gpsDeviceID
+  }
+}
+ 
+""";
     return data;
   }
 

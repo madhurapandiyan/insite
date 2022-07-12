@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 
@@ -9,7 +10,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'deviceId_widget_list.dart';
 
 class OldDeviceIdSearchWidget extends StatelessWidget {
-  final List<DeviceContainsList> searchList;
+  final List<dynamic> searchList;
   final TextEditingController? searchTextController;
   final Function(String)? onEnteringDeviceId;
   final Function(int)? onSelectedDeviceId;
@@ -76,16 +77,33 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
                                 spreadRadius: 0.2)
                           ]),
                       child: SingleChildScrollView(
-                        child: Column(
-                          children: List.generate(
-                              searchList.length,
-                              (i) => DeviceIdListWidget(
-                                  onSelected: () {
-                                    onSelectedDeviceId!(i);
-                                    FocusScope.of(context).unfocus();
-                                  },
-                                  deviceId: searchList[i].containsList)),
-                        ),
+                        child: BaseService().enableGraphQl
+                            ? Column(
+                                children: List.generate(
+                                    searchList.length,
+                                    (i) => DeviceIdListWidget(
+                                          onSelected: () {
+                                            onSelectedDeviceId!(i);
+                                            FocusScope.of(context).unfocus();
+                                          },
+                                          deviceId: searchList[i].gpsDeviceID,
+                                          // deviceId: searchList[i]?.containsList == null
+                                          //     ? searchList[i].gpsDeviceID
+                                          //     : searchList[i].containsList
+                                        )),
+                              )
+                            : Column(
+                                children: List.generate(
+                                    searchList.length,
+                                    (i) => DeviceIdListWidget(
+                                          onSelected: () {
+                                            onSelectedDeviceId!(i);
+                                            FocusScope.of(context).unfocus();
+                                          },
+
+                                          // deviceId: searchList[i].containsList
+                                        )),
+                              ),
                       )),
               SizedBox(
                 height: 10,

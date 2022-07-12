@@ -4,7 +4,7 @@ part 'subscription_serial_number_results.g.dart';
 
 @JsonSerializable()
 class SerialNumberResults {
-  Result? result;
+  ModelResult? result;
   String? status;
   String? message;
 
@@ -15,21 +15,22 @@ class SerialNumberResults {
 }
 
 @JsonSerializable()
-class Result {
+class ModelResult {
   String? startsWith;
   int? startRange;
   int? endRange;
   int? groupClusterId;
   String? modelName;
 
-  Result(
+  ModelResult(
       {this.startsWith,
       this.startRange,
       this.endRange,
       this.groupClusterId,
       this.modelName});
 
-  factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
+  factory ModelResult.fromJson(Map<String, dynamic> json) =>
+      _$ModelResultFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ResultToJson(this);
+  Map<String, dynamic> toJson() => _$ModelResultToJson(this);
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -30,11 +31,17 @@ class DeviceReplacementStatusView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InsiteText(
-                              fontWeight: FontWeight.bold,
-                              text:
-                                  "REPLACEMENT STATUS ( ${viewModel.deviceReplacementStatusModelList.length} of ${viewModel.totalDeviceReplacementStatusModel?.result?.first.first.count} )",
-                            ),
+                            BaseService().enableGraphQl
+                                ? InsiteText(
+                                    fontWeight: FontWeight.bold,
+                                    text:
+                                        "REPLACEMENT STATUS ( ${viewModel.deviceReplacementStatusModelList.length} of ${viewModel.totalDeviceReplacementStatusModel?.replacementHistory!.length} )",
+                                  )
+                                : InsiteText(
+                                    fontWeight: FontWeight.bold,
+                                    text:
+                                        "REPLACEMENT STATUS ( ${viewModel.deviceReplacementStatusModelList.length} of ${viewModel.totalDeviceReplacementStatusModel?.result?.first.first.count} )",
+                                  ),
                             // InsiteButton(
                             //     height: MediaQuery.of(context).size.height *
                             //         0.05,

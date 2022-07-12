@@ -47,8 +47,8 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                                 : "Fleet Status ".toUpperCase() +
                                     "(" +
                                     viewModel.devices.length.toString() +
-                                   
-                                    " of ${viewModel.subscriptionDashboardDetailResult!.result!.first.first.count}"+" )",
+                                    " of ${viewModel.subscriptionDashboardDetailResult?.result!.first.first.count == null ? viewModel.fleetProvisionStatus!.count : viewModel.subscriptionDashboardDetailResult!.result!.first.first.count}" +
+                                    " )",
                             size: 14,
                             fontWeight: FontWeight.w700,
                           ),
@@ -95,11 +95,10 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                                 itemCount: viewModel.devices.length,
                                 controller: viewModel.scrollController,
                                 itemBuilder: (context, index) {
-                                  DetailResult result =
-                                      viewModel.devices[index];
-                                  Logger().i(result.count);
+                                  var result = viewModel.devices[index];
+                                  // Logger().i(result!.count);
                                   return DeviceListItem(
-                                    detailResult: result,
+                                    detailResult: result!,
                                     onCallback: () {},
                                   );
                                 },

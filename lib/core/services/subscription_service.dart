@@ -3,15 +3,19 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/device_details_graphql.dart';
 import 'package:insite/core/models/device_details_per_id.dart';
 import 'package:insite/core/models/get_asset_details_by_serial_no.dart';
+import 'package:insite/core/models/get_single_transfer_deviceId_graphql.dart';
 import 'package:insite/core/models/get_single_transfer_device_id.dart';
+import 'package:insite/core/models/hierachy_graphql.dart';
 import 'package:insite/core/models/hierarchy_model.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
 
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_dashboard_graphql.dart';
+import 'package:insite/core/models/subscription_fleet_graphql.dart';
 import 'package:insite/core/models/subscription_serial_number_results.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
@@ -171,6 +175,31 @@ class SubScriptionService extends BaseService {
     }
   }
 
+  Future<DeviceDataValues?>? getSubscriptionDevicesFromGraphQl(
+      String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService?.getLoggedInUser())?.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        DeviceDataValues? deviceDetails = DeviceDataValues.fromJson(data.data);
+
+        Logger().wtf("dashboard:${deviceDetails.toJson()}");
+
+        return deviceDetails;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   Future<SingleAssetRegistrationSearchModel?> getSubscriptionDevicesListData(
       {String? fitler,
       int? start,
@@ -226,28 +255,45 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<SerialNumberResults?> getDeviceModelNameBySerialNumber(
-      {String? serialNumber}) async {
+  Future<dynamic> getDeviceModelNameBySerialNumber(
+      {String? serialNumber, String? query}) async {
     try {
-      Map<String, String> queryMap = Map();
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService?.getLoggedInUser())?.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        ModelResult? deviceDetails =
+            ModelResult.fromJson(data.data["assetModelByMachineSerialNumber"]);
 
-      if (accountSelected != null) {
-        queryMap["oemName"] = "THC";
-      }
-      if (serialNumber != null) {
-        queryMap["machineSerialNumber"] = serialNumber.toString();
-      }
+        Logger().wtf("dashboard:${deviceDetails.toJson()}");
 
-      SerialNumberResults serialNumberResults =
-          await MyApi().getClientNine()!.getModelNameFromMachineSerialNumber(
-                Urls.serialNumberSearch +
-                    FilterUtils.constructQueryFromMap(queryMap),
-              );
-      if (serialNumberResults == null) {
-        Logger().d('no data found');
-      }
+        return deviceDetails;
+      } else {
+        Map<String, String> queryMap = Map();
 
-      return serialNumberResults;
+        if (accountSelected != null) {
+          queryMap["oemName"] = "THC";
+        }
+        if (serialNumber != null) {
+          queryMap["machineSerialNumber"] = serialNumber.toString();
+        }
+
+        SerialNumberResults serialNumberResults =
+            await MyApi().getClientNine()!.getModelNameFromMachineSerialNumber(
+                  Urls.serialNumberSearch +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                );
+        if (serialNumberResults == null) {
+          Logger().d('no data found');
+        }
+
+        return serialNumberResults;
+      }
     } catch (e) {
       throw e;
     }
@@ -299,6 +345,31 @@ class SubScriptionService extends BaseService {
       return addAssetRegistrationData;
     } catch (e) {
       Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  Future<FleetProvisionStatus?> getFleetDataGraphql(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService?.getLoggedInUser())?.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        FleetProvisionStatus? deviceDetails =
+            FleetProvisionStatus.fromJson(data.data["fleetProvisionStatus"]);
+
+        Logger().wtf("dashboard:${deviceDetails.toJson()}");
+
+        return deviceDetails;
+      }
+    } catch (e) {
+      print(e.toString());
       return null;
     }
   }
@@ -365,6 +436,26 @@ class SubScriptionService extends BaseService {
     }
   }
 
+  Future<SelectedDevice?> getDeviceDetailsbyIdGraphql(String? query) async {
+    try {
+      var data = await Network().getGraphqlData(
+        query: query,
+        customerId: accountSelected?.CustomerUID,
+        userId: (await _localService?.getLoggedInUser())?.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      SelectedDevice? deviceDetails = SelectedDevice.fromJson(data.data);
+
+      Logger().wtf("dashboard:${deviceDetails.toJson()}");
+
+      return deviceDetails;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<DeviceDetailsPerId?> getDeviceDetailsPerDeviceId(
       String controllerValue) async {
     try {
@@ -388,6 +479,30 @@ class SubScriptionService extends BaseService {
     } catch (e) {
       Logger().e(e.toString());
 
+      return null;
+    }
+  }
+
+  Future<DeviceIdValues?> getAssetTransferDeviceIds(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService?.getLoggedInUser())?.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        DeviceIdValues? deviceDetails = DeviceIdValues.fromJson(data.data);
+
+        Logger().wtf("dashboard:${deviceDetails.toJson()}");
+
+        return deviceDetails;
+      }
+    } catch (e) {
+      print(e.toString());
       return null;
     }
   }

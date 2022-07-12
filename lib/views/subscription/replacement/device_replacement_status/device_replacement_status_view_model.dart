@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/replacement_service.dart';
@@ -35,28 +36,47 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
   bool isLoading = true;
   bool isLoadMore = false;
 
-  List<DeviceReplacementStatusModel> deviceReplacementStatusModelList = [];
+  List<dynamic> deviceReplacementStatusModelList = [];
 
-  TotalDeviceReplacementStatusModel? totalDeviceReplacementStatusModel;
+  dynamic totalDeviceReplacementStatusModel;
   int startCount = 0;
   final controller = new ScrollController();
 
   getTotalDeviceReplacementStatusModel() async {
     try {
-      totalDeviceReplacementStatusModel = await replacementService!
-          .getTotalDeviceReplacementStatusModel(startCount);
-      Logger().wtf(totalDeviceReplacementStatusModel);
-      Logger().d(deviceReplacementStatusModelList); 
-      totalDeviceReplacementStatusModel!.result![1].forEach((element) {
-        deviceReplacementStatusModelList.add(element);
-      });
-      // for (var i = 0; i < deviceReplacementStatusModelList.length; i++) {
-      //   deviceReplacementStatusModelList
-      //       .sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
-      // }
-      isLoading = false;
-      isLoadMore = false;
-      notifyListeners();
+      if (BaseService().enableGraphQl) {
+        totalDeviceReplacementStatusModel = await replacementService!
+            .getReplacementDataDetails(graphqlSchemaService!
+                .getReplacementDetails(start: 1, limit: 100));
+
+        // totalDeviceReplacementStatusModel!.replacementHistory
+        //     .forEach((element) {
+        //   deviceReplacementStatusModelList.add(element);
+        // });
+
+        for (var element
+            in totalDeviceReplacementStatusModel!.replacementHistory) {
+          deviceReplacementStatusModelList.add(element);
+        }
+        isLoading = false;
+        isLoadMore = false;
+        notifyListeners();
+      } else {
+        totalDeviceReplacementStatusModel = await replacementService!
+            .getTotalDeviceReplacementStatusModel(startCount);
+        Logger().wtf(totalDeviceReplacementStatusModel);
+        Logger().d(deviceReplacementStatusModelList);
+        totalDeviceReplacementStatusModel!.result![1].forEach((element) {
+          deviceReplacementStatusModelList.add(element);
+        });
+        // for (var i = 0; i < deviceReplacementStatusModelList.length; i++) {
+        //   deviceReplacementStatusModelList
+        //       .sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
+        // }
+        isLoading = false;
+        isLoadMore = false;
+        notifyListeners();
+      }
     } catch (e) {
       Logger().e(e.toString());
     }

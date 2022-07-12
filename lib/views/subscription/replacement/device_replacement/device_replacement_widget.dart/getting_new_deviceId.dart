@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
@@ -11,7 +12,7 @@ import 'deviceId_widget_list.dart';
 
 class GettingNewDeviceId extends StatefulWidget {
   final String? oldDeviceId;
-  final ReplaceDeviceModel? modelData;
+  final dynamic modelData;
   final String? modelName;
   final Function(String)? onChange;
   final TextEditingController? controller;
@@ -101,16 +102,27 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                   //margin: EdgeInsets.all(8),
                   // height: 50,
                   color: white,
-                  child: Column(
-                    children: List.generate(
-                        widget.modelData!.result!.last.length,
-                        (i) => DeviceIdListWidget(
-                            onSelected: () {
-                              widget.onSelectingNewDeviceId!(i);
-                            },
-                            deviceId:
-                                widget.modelData!.result!.last[i].GPSDeviceID)),
-                  ),
+                  child: BaseService().enableGraphQl
+                      ? Column(
+                          children: List.generate(
+                              widget.modelData!.provisioningInfo.length,
+                              (i) => DeviceIdListWidget(
+                                  onSelected: () {
+                                    widget.onSelectingNewDeviceId!(i);
+                                  },
+                                  deviceId: widget.modelData!
+                                      .provisioningInfo[i].gpsDeviceID)),
+                        )
+                      : Column(
+                          children: List.generate(
+                              widget.modelData!.result!.last.length,
+                              (i) => DeviceIdListWidget(
+                                  onSelected: () {
+                                    widget.onSelectingNewDeviceId!(i);
+                                  },
+                                  deviceId: widget
+                                      .modelData!.result!.last[i].GPSDeviceID)),
+                        ),
                 ),
           SizedBox(
             height: 20,
@@ -156,27 +168,49 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
               ),
-              InsiteButton(
-                textColor: Theme.of(context).textTheme.bodyText1!.color,
-                onTap:
-                    //widget.modelData!.result!.last.any((element) =>
-                    //     element.GPSDeviceID ==
-                    //   widget.controller!.text.toUpperCase().trim())
-                    // widget.controller!.text.isEmpty
-                    () {
-                  if (widget.modelData!.result!.last.any((element) =>
-                      element.GPSDeviceID == widget.controller!.text)) {
-                    widget.onNextPressed!();
-                  } else {
-                    Fluttertoast.showToast(
-                        msg: "Please check and fill the required field");
-                  }
-                },
-                // bgColor: white,
-                title: "Next",
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.3,
-              ),
+              BaseService().enableGraphQl
+                  ? InsiteButton(
+                      textColor: Theme.of(context).textTheme.bodyText1!.color,
+                      onTap:
+                          //widget.modelData!.result!.last.any((element) =>
+                          //     element.GPSDeviceID ==
+                          //   widget.controller!.text.toUpperCase().trim())
+                          // widget.controller!.text.isEmpty
+                          () {
+                        if (widget.modelData!.provisioningInfo.any((element) =>
+                            element.gpsDeviceID == widget.controller!.text)) {
+                          widget.onNextPressed!();
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Please check and fill the required field");
+                        }
+                      },
+                      // bgColor: white,
+                      title: "Next",
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                    )
+                  : InsiteButton(
+                      textColor: Theme.of(context).textTheme.bodyText1!.color,
+                      onTap:
+                          //widget.modelData!.result!.last.any((element) =>
+                          //     element.GPSDeviceID ==
+                          //   widget.controller!.text.toUpperCase().trim())
+                          // widget.controller!.text.isEmpty
+                          () {
+                        if (widget.modelData!.result!.last.any((element) =>
+                            element.GPSDeviceID == widget.controller!.text)) {
+                          widget.onNextPressed!();
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Please check and fill the required field");
+                        }
+                      },
+                      // bgColor: white,
+                      title: "Next",
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                    ),
             ],
           )
         ],
