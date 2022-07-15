@@ -45,6 +45,7 @@ part 'asset_detail.g.dart';
 @JsonSerializable()
 class AssetDetail {
   final String? assetUid;
+  final String? assetId;
   final String? assetSerialNumber;
   final String? makeCode;
   final String? manufacturer;
@@ -67,17 +68,18 @@ class AssetDetail {
   final String? lastPercentFuelRemainingUTC;
   final String? fuelReportedTimeUtc;
   final dynamic lifetimeFuel;
-  
+
   final String? lastReportedTimeUtc;
   final String? lastLocationUpdateUtc;
   final dynamic percentDEFRemaining;
-  final double? lifetimeDEFLiters;
+  final dynamic lifetimeDEFLiters;
   final String? lastLifetimeDEFLitersUTC;
   final String? lastPercentDEFRemainingUTC;
   final List<Device>? devices;
   final List<ServicePlan>? activeServicePlans;
   AssetDetail(
       this.assetUid,
+      this.assetId,
       this.assetSerialNumber,
       this.hourMeter,
       this.lifetimeFuel,
@@ -113,5 +115,3 @@ class AssetDetail {
 
   Map<String, dynamic> toJson() => _$AssetDetailToJson(this);
 }
-
-

@@ -6,7 +6,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 class MultiSelectionDropDownWidget extends StatefulWidget {
   final String? initialValue;
   final List<CheckBoxDropDown>? items;
-  final Function(List<String>)? onConform;
+  final Function(List<CheckBoxDropDown>?)? onConform;
   final Function(int)? onSelected;
   final bool? isEnable;
 
@@ -24,7 +24,7 @@ class MultiSelectionDropDownWidget extends StatefulWidget {
 
 class _MultiSelectionDropDownWidgetState
     extends State<MultiSelectionDropDownWidget> {
-  List<String> _selectedItems = [];
+  List<CheckBoxDropDown>? _selectedItems = [];
   bool _isShowingDropDown = false;
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,6 @@ class _MultiSelectionDropDownWidgetState
         ),
         _isShowingDropDown
             ? Container(
-                height: 300,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
@@ -70,14 +69,18 @@ class _MultiSelectionDropDownWidgetState
                           (i) => InkWell(
                                 splashColor: Theme.of(context).splashColor,
                                 onTap: () {
-                                  if (_selectedItems.any((element) => element
+                                  if (_selectedItems!.any((element) => element
+                                      .items!
                                       .contains(widget.items![i].items!))) {
-                                    _selectedItems.removeWhere((element) =>
-                                        element
+                                    _selectedItems!.removeWhere((element) =>
+                                        element.items!
                                             .contains(widget.items![i].items!));
                                     widget.onSelected!(i);
                                   } else {
-                                    _selectedItems.add(widget.items![i].items!);
+                                    _selectedItems!.add(CheckBoxDropDown(
+                                        extras: widget.items![i].extras,
+                                        isSelected: widget.items![i].isSelected,
+                                        items: widget.items![i].items!));
                                     widget.onSelected!(i);
                                   }
                                 },
@@ -103,25 +106,24 @@ class _MultiSelectionDropDownWidgetState
                                 ),
                               )),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         InsiteButton(
                           title: "Cancel",
+                          width: 100,
                           onTap: () {
                             setState(() {
                               _isShowingDropDown = !_isShowingDropDown;
                             });
                           },
-                        ),
-                        SizedBox(
-                          width: 20,
+                          textColor: white,
                         ),
                         InsiteButton(
                           title: "Done",
+                          width: 100,
+                          textColor: white,
                           onTap: () {
                             setState(() {
                               _isShowingDropDown = !_isShowingDropDown;
@@ -143,5 +145,6 @@ class _MultiSelectionDropDownWidgetState
 class CheckBoxDropDown {
   bool? isSelected;
   String? items;
-  CheckBoxDropDown({this.isSelected = false, this.items});
+  String? extras;
+  CheckBoxDropDown({this.isSelected = false, this.items, this.extras});
 }

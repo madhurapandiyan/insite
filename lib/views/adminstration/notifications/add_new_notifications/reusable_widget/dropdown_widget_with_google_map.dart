@@ -5,7 +5,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 class DropDownWidgetWithGoogleMap extends StatefulWidget {
   final String? initialValue;
   final List<CheckBoxDropDown>? items;
-  final Function(List<String>)? onConform;
+  final Function(List<CheckBoxDropDown>?)? onConform;
   final Function(int)? onSelecting;
   final Function? onAddingZone;
 

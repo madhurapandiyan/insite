@@ -241,7 +241,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                         title: "Add All".toUpperCase(),
                         onTap: () {
                           var data = viewModel.onAddingAllAsset();
-                          Logger().w(data!.length);
+                          //Logger().w(data!.length);
                           widget.addingAllAsset!(data);
                         },
                         textColor: Colors.white,
