@@ -5,6 +5,7 @@ import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/maintenance_dashboard_count.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -14,13 +15,17 @@ import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/filter_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
+import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/date.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/health/health_view.dart';
+import 'package:insite/views/maintenance/main/main_view.dart';
+import 'package:insite/views/maintenance/maintenance_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:insite/core/services/date_range_service.dart';
@@ -29,7 +34,7 @@ class DashboardViewModel extends InsiteViewModel {
   LocalService? _localService = locator<LocalService>();
   NavigationService? _navigationService = locator<NavigationService>();
   FilterService? _filterService = locator<FilterService>();
-
+  MaintenanceService? _maintenanceService = locator<MaintenanceService>();
   AssetStatusService? _assetService = locator<AssetStatusService>();
   AssetLocationService? _assetLocationService = locator<AssetLocationService>();
   LocalStorageService? _localStorageService = locator<LocalStorageService>();
@@ -82,6 +87,8 @@ class DashboardViewModel extends InsiteViewModel {
   AssetCount? _idlingLevelData;
   AssetCount? get idlingLevelData => _idlingLevelData;
 
+  MaintenanceDashboardCount? maintenanceDashboardCount;
+
   AssetCount? _faultCountData;
   AssetCount? get faultCountData => _faultCountData;
   bool _refreshing = false;
@@ -89,6 +96,9 @@ class DashboardViewModel extends InsiteViewModel {
 
   bool _faultCountloading = true;
   bool get faultCountloading => _faultCountloading;
+
+  bool _maintenanceLoading = true;
+  bool get maintenanceLoading => _maintenanceLoading;
 
   String _endDayRange = DateFormat('yyyy-MM-dd').format(DateTime.now());
   set endDayRange(String endDay) {
@@ -120,6 +130,11 @@ class DashboardViewModel extends InsiteViewModel {
     _dateRangeService!.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () async {
+      String? token = await _localService!.getToken();
+      if (JwtDecoder.isExpired(token)) {
+        Logger().w("refresh token from dashboard");
+        await refreshToken();
+      }
       getAssetCount();
       getFilterData();
       getData(false);
@@ -180,11 +195,12 @@ class DashboardViewModel extends InsiteViewModel {
       getAssetCount();
     }
     clearDashboardFiltersDb();
-    getAssetStatusData();
+    await getAssetStatusData();
     getFuelLevelData();
     getIdlingLevelData(false, null);
     getUtilizationSummary();
     getFaultCountData();
+    getMaintenanceCountData();
     _refreshing = false;
     // notifyListeners();
   }
@@ -205,6 +221,7 @@ class DashboardViewModel extends InsiteViewModel {
     getFuelLevelData();
     getUtilizationSummary();
     getFaultCountData();
+    getMaintenanceCountData();
     await getIdlingLevelData(false, null);
     _refreshing = false;
     notifyListeners();
@@ -351,6 +368,81 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  getMaintenanceCountData() async {
+    try {
+      var data = await _maintenanceService?.getMaintenanceDashboardCount(
+          query: await graphqlSchemaService!.maintenanceDashboardCount(
+        fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+        endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+      ));
+      data?.maintenanceDashboard?.dashboardData!.forEach((element) {
+        if (element.displayName == "Overdue") {
+          element.maintenanceTotal = MAINTENANCETOTAL.OVERDUE;
+        }
+        if (element.displayName == "Upcoming") {
+          element.maintenanceTotal = MAINTENANCETOTAL.UPCOMING;
+        }
+        if (element.subCount != null) {
+          element.subCount!.forEach((dashboardData) {
+            if (dashboardData.displayName == "Next Week") {
+              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTWEEK;
+            }
+            if (dashboardData.displayName == "Next Month") {
+              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
+            }
+          });
+        }
+      });
+      maintenanceDashboardCount = data;
+      _maintenanceLoading = false;
+      notifyListeners();
+    } catch (e) {}
+  }
+
+  onMaintenanceFilterClicked(
+      MAINTENANCETOTAL type, String filterType, int count) async {
+    if (type == MAINTENANCETOTAL.OVERDUE ||
+        type == MAINTENANCETOTAL.UPCOMING ||
+        type == MAINTENANCETOTAL.NEXTMONTH) {
+      maintenanceStartDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+      maintenanceEndDate = DateFormat("yyyy-MM-dd")
+          .format(DateTime.now().add(Duration(days: 30)));
+      _localService?.saveMaintenanceFromDate(maintenanceStartDate);
+      _localService?.saveMaintenanceEndDate(maintenanceEndDate);
+    } else if (type == MAINTENANCETOTAL.NEXTWEEK) {
+      maintenanceStartDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+      maintenanceEndDate = DateFormat("yyyy-MM-dd")
+          .format(DateTime.now().add(Duration(days: 6)));
+      _localService?.saveMaintenanceFromDate(maintenanceStartDate);
+      _localService?.saveMaintenanceEndDate(maintenanceEndDate);
+    }
+    await clearFilterDb();
+    await addFilter(FilterData(
+        count: count.toString(),
+        title: filterType,
+        isSelected: true,
+        type: FilterType.SERVICE_STATUS));
+    Logger().w("filterTyoe $filterType");
+    Logger().i("from date $maintenanceStartDate");
+    Logger().i("To date $maintenanceEndDate");
+    _navigationService!.navigateToView(MaintenanceView());
+  }
+
+  getMaintenanceCountDataWithFilter(FilterData filterData) async {
+    try {
+      maintenanceDashboardCount = null;
+      notifyListeners();
+      var data = await _maintenanceService?.getMaintenanceDashboardCount(
+          query: await graphqlSchemaService!.maintenanceDashboardCount(
+              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+              endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+              prodFamily: filterData.title));
+      maintenanceDashboardCount = data;
+      _maintenanceLoading = false;
+      notifyListeners();
+    } catch (e) {}
+  }
+
   onFilterSelected(FilterData data) async {
     Logger().d("onFilterSelected ${data.title}");
     await clearFilterDb();
@@ -482,6 +574,7 @@ class DashboardViewModel extends InsiteViewModel {
       // await clearFilterOfTypeInDb(FilterType.PRODUCT_FAMILY);
       // await addFilter(filterData);
       _refreshing = true;
+      _maintenanceLoading = true;
       notifyListeners();
       // if (isFromProdFamily) {
       //   await getProductFamilyAssetCount();
@@ -494,6 +587,7 @@ class DashboardViewModel extends InsiteViewModel {
       await getUtilizationSummaryFilterData(filterData.title);
       await getIdlingLevelFilterData(filterData.title);
       await getFaultCountDataFilterData(filterData.title);
+      await getMaintenanceCountDataWithFilter(filterData);
       _refreshing = false;
       notifyListeners();
     } catch (e) {

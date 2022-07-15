@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
+import 'package:insite/views/plant/plant_asset_creation/asset_creation_model.dart';
 import 'package:logger/logger.dart';
 
 import '../logger.dart';
 import '../models/add_notification_payload.dart';
+import '../models/asset_creation_payload.dart';
 
 class GraphqlSchemaService extends BaseService {
   GraphqlSchemaService._internal() {
@@ -30,9 +35,9 @@ class GraphqlSchemaService extends BaseService {
   String? manufacturer;
   String? severity;
   String? faultTypeList;
-  int? latitude;
-  int? longitude;
-  int? radiusKms;
+  double? latitude;
+  double? longitude;
+  double? radiusKms;
 
   List<String> modelList = [];
   List<String> manufacturerList = [];
@@ -46,6 +51,9 @@ class GraphqlSchemaService extends BaseService {
   List<int> reportFormat = [];
   List<int> reportType = [];
   List<String> severityList = [];
+  List<String> serviceStatusList = [];
+  List<String> serviceTypeList = [];
+  List<String> assetTypeList = [];
 
   getReportFilterindividualList(
       {List<FilterData?>? filtlerList,
@@ -81,13 +89,13 @@ class GraphqlSchemaService extends BaseService {
       {List<FilterData?>? filtlerList,
       FilterType? type,
       List<String>? individualList}) {
-    String intQuote = "\"";
+    String doubleQuote = "\"";
     var data = filtlerList!.where((element) => element?.type == type).toList();
     data.forEach((element) {
-      Logger().w(element?.toJson());
-      if (assetstatusList.contains(element)) {
+      // Logger().w(element?.toJson());
+      if (individualList!.contains(element)) {
       } else {
-        individualList!.add(intQuote + element!.title! + intQuote);
+        individualList.add(doubleQuote + element!.title! + doubleQuote);
       }
     });
   }
@@ -105,6 +113,10 @@ class GraphqlSchemaService extends BaseService {
     reportFormat.clear();
     reportType.clear();
     severityList.clear();
+    serviceStatusList.clear();
+    serviceStatusList.clear();
+    serviceTypeList.clear();
+    assetTypeList.clear();
   }
 
   cleaValue() {
@@ -129,48 +141,61 @@ class GraphqlSchemaService extends BaseService {
 
   Future gettingLocationFilter(List<FilterData?>? filtlerList) async {
     try {
-      String intQuote = "\"";
-
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: assetstatusList,
-          type: FilterType.ASSET_STATUS);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: assetstatusList,
-          type: FilterType.ALL_ASSETS);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: productfamilyList,
-          type: FilterType.PRODUCT_FAMILY);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: modelList,
-          type: FilterType.MODEL);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: manufacturerList,
-          type: FilterType.MANUFACTURER);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: deviceTypeList,
-          type: FilterType.DEVICE_TYPE);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: fuelLevelList,
-          type: FilterType.FUEL_LEVEL);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: locationList,
-          type: FilterType.LOCATION_SEARCH);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: idleEfficiencyList,
-          type: FilterType.IDLING_LEVEL);
-      getIndividualList(
-          filtlerList: filtlerList,
-          individualList: severityList,
-          type: FilterType.SEVERITY);
+      String doubleQuote = "\"";
+      if (filtlerList != null && filtlerList.isNotEmpty) {
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: assetstatusList,
+            type: FilterType.ASSET_STATUS);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: assetstatusList,
+            type: FilterType.ALL_ASSETS);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: productfamilyList,
+            type: FilterType.PRODUCT_FAMILY);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: modelList,
+            type: FilterType.MODEL);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: manufacturerList,
+            type: FilterType.MANUFACTURER);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: deviceTypeList,
+            type: FilterType.DEVICE_TYPE);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: fuelLevelList,
+            type: FilterType.FUEL_LEVEL);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: locationList,
+            type: FilterType.LOCATION_SEARCH);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: idleEfficiencyList,
+            type: FilterType.IDLING_LEVEL);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: severityList,
+            type: FilterType.SEVERITY);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: serviceStatusList,
+            type: FilterType.SERVICE_STATUS);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: serviceTypeList,
+            type: FilterType.SERVICE_TYPE);
+        getIndividualList(
+            filtlerList: filtlerList,
+            individualList: assetTypeList,
+            type: FilterType.ASSET_TYPE);
+      }
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -178,77 +203,78 @@ class GraphqlSchemaService extends BaseService {
 
   Future gettingFiltersValue(List<FilterData?>? filtlerList) async {
     try {
-      filtlerList!.forEach((filterData) {
-        if (filterData?.type == FilterType.ALL_ASSETS) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.ALL_ASSETS)
-              .toList();
-          assetStatus = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("assetStatus $assetStatus");
-        } else if (filterData?.type == FilterType.PRODUCT_FAMILY) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.PRODUCT_FAMILY)
-              .toList();
-          productFamily = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("productFamily $productFamily");
-        } else if (filterData?.type == FilterType.MODEL) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.MODEL)
-              .toList();
-          model = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("model $model");
-        } else if (filterData?.type == FilterType.FUEL_LEVEL) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.FUEL_LEVEL)
-              .toList();
-          fuelLevelPercentLt = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("fuelLevelPercentLt $fuelLevelPercentLt");
-        } else if (filterData?.type == FilterType.MAKE) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.MAKE)
-              .toList();
-          make = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("make $make");
-        } else if (filterData?.type == FilterType.DEVICE_TYPE) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.DEVICE_TYPE)
-              .toList();
-          deviceType = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("deviceType $deviceType");
-        } else if (filterData?.type == FilterType.IDLING_LEVEL) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.IDLING_LEVEL)
-              .toList();
-          idleEficiencyGT = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("idleEficiencyGT $idleEficiencyGT");
-        } else if (filterData?.type == FilterType.LOCATION_SEARCH) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.LOCATION_SEARCH)
-              .toList();
-          location = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("locations $location");
-        } else if (filterData?.type == FilterType.MANUFACTURER) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.MANUFACTURER)
-              .toList();
-          manufacturer = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("manucaturer $manufacturer");
-        } else if (filterData?.type == FilterType.SEVERITY) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.SEVERITY)
-              .toList();
-          severity = Utils.getFilterData(data, filterData!.type!);
-          Logger().wtf("severity $severity");
-        } else if (filterData?.type == FilterType.CLUSTOR) {
-          var data = filtlerList
-              .where((element) => element?.type == FilterType.CLUSTOR)
-              .toList();
-          latitude = int.parse(data.last!.extras![0]!);
-          longitude = int.parse(data.last!.extras![1]!);
-          radiusKms = int.parse(data.last!.extras![2]!);
-        }
-      });
-      Logger().i("asset filter running");
+      if (filtlerList != null && filtlerList.isNotEmpty) {
+        filtlerList.forEach((filterData) {
+          if (filterData?.type == FilterType.ALL_ASSETS) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.ALL_ASSETS)
+                .toList();
+            assetStatus = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("assetStatus $assetStatus");
+          } else if (filterData?.type == FilterType.PRODUCT_FAMILY) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.PRODUCT_FAMILY)
+                .toList();
+            productFamily = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("productFamily $productFamily");
+          } else if (filterData?.type == FilterType.MODEL) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.MODEL)
+                .toList();
+            model = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("model $model");
+          } else if (filterData?.type == FilterType.FUEL_LEVEL) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.FUEL_LEVEL)
+                .toList();
+            fuelLevelPercentLt = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("fuelLevelPercentLt $fuelLevelPercentLt");
+          } else if (filterData?.type == FilterType.MAKE) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.MAKE)
+                .toList();
+            make = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("make $make");
+          } else if (filterData?.type == FilterType.DEVICE_TYPE) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.DEVICE_TYPE)
+                .toList();
+            deviceType = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("deviceType $deviceType");
+          } else if (filterData?.type == FilterType.IDLING_LEVEL) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.IDLING_LEVEL)
+                .toList();
+            idleEficiencyGT = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("idleEficiencyGT $idleEficiencyGT");
+          } else if (filterData?.type == FilterType.LOCATION_SEARCH) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.LOCATION_SEARCH)
+                .toList();
+            location = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("locations $location");
+          } else if (filterData?.type == FilterType.MANUFACTURER) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.MANUFACTURER)
+                .toList();
+            manufacturer = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("manucaturer $manufacturer");
+          } else if (filterData?.type == FilterType.SEVERITY) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.SEVERITY)
+                .toList();
+            severity = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("severity $severity");
+          } else if (filterData?.type == FilterType.CLUSTOR) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.CLUSTOR)
+                .toList();
+            latitude = double.parse(data.last!.extras![0]!);
+            longitude = double.parse(data.last!.extras![1]!);
+            radiusKms = double.parse(data.last!.extras![2]!);
+          }
+        });
+      }
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -2706,7 +2732,6 @@ pendingDeviceConfigInfo{
     errors
   }
 }""";
-
     return data;
   }
 
@@ -2948,7 +2973,177 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
       lastReportedLocationLongitude
     }
     }
-    
+    }
+    }""";
+    return data;
+  }
+
+  getMaintenanceListData(
+      {String? startDate,
+      String? endDate,
+      List<FilterData?>? appliedFilter,
+      int? limit,
+      int? pageNo,
+      bool? histroy,
+      String? assetId}) async {
+    await clearAllList();
+    await cleaValue();
+    await gettingFiltersValue(appliedFilter);
+    await gettingLocationFilter(appliedFilter);
+
+    var data = """
+{
+  maintenanceList(
+    fromDate: ${startDate == null ? "\"\"" : "${"\"" + startDate + "\""}"}, 
+    limit: ${limit ?? null}, 
+    pageNumber: ${pageNo ?? null},
+    toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"}, 
+    serviceStatus:  ${serviceStatusList.isEmpty ? [] : serviceStatusList}, 
+    serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
+    assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
+    assetId: ${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"},
+    make:  ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
+    manufacturer:  ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
+    productFamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}, 
+    assetStatus:  ${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
+    fuelLevel:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"},
+    deviceType:  ${deviceType == null ? "\"\"" : "${"\"" + deviceType! + "\""}"}, 
+    history: ${histroy ?? null}) {
+    maintenanceList {
+      serviceNumber
+      assetId
+      assetName
+      assetIcon
+      serialNumber
+      make
+      model
+      modelYear
+      productFamily
+      currentHourMeter
+      lastLocationReportedDate
+      longitude
+      latitude
+      streetAddress
+      city
+      state
+      county
+      country
+      zip
+      odometer
+      lastReportedDate
+      percentFuelRemaining
+      fuelLastReportedTime
+      serviceName
+      serviceInterval
+      status
+      dueAt
+      dueDate
+      serviceType
+      serviceStatus
+      assetType
+      telematicsDeviceId
+      deviceType
+      source
+      serviceDate
+      serviceMeter
+      performedBy
+      serviceNotes
+      dueInOverdueBy
+      completedService
+      customerName
+      address
+      dealerName
+      workOrder
+    }
+    status
+    count
+  }
+}
+""";
+    return data;
+  }
+
+  getMaintennaceAssetListData(
+      {String? fromDate,
+      String? toDate,
+      int? limit,
+      int? pageNo,
+      List<FilterData?>? appliedFilter}) async {
+    await clearAllList();
+    await cleaValue();
+    await gettingFiltersValue(appliedFilter);
+    await gettingLocationFilter(appliedFilter);
+    var data = """
+query{
+  maintenanceAssetList(
+fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"}
+limit: ${limit ?? null}
+pageNumber: ${pageNo ?? null}
+toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
+serviceStatus:${serviceStatusList.isEmpty ? [] : serviceStatusList}
+serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
+assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
+assetId:""
+make:[]
+manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}
+productFamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}
+assetStatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}
+fuelLevel:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
+deviceType: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
+  ){
+    status,
+    count,
+    assetMaintenanceList{
+      count,
+CustomerAssetID,
+assetId,
+serialNumber,
+assetIcon,
+make,
+model,
+currentHourMeter,
+servicedescription,
+serviceStatusName,
+serviceName,
+deviceSerialNumber,
+maintenanceTotals{
+  count,
+  name,
+  alias
+}
+    }
+  }
+}""";
+    return data;
+  }
+
+  getMaitenanceCheckList({String? assetId, int? serviceNo}) {
+    var data = """
+query{
+  maintenanceCheckList(
+    serviceNumber:$serviceNo,
+    assetId:$assetId
+  ){
+    status,
+    serviceStatus,
+    dueInOverdueBy,
+    maintenanceCheckList{
+      checkListName,
+      checkListId,
+      isChecked,
+      partList{
+        name,
+        partNo,
+        quantity,
+        partId,
+        description,
+        units
+      }
+    },
+    maintenanceServiceList{
+      serviceName,
+      serviceId
+    }
   }
 }""";
     return data;
@@ -2979,9 +3174,61 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
           faultOccuredUTC,
           severityLabel
 
-      } 
-   }
+      } """;
+    return data;
+  }
 
+  onCompletion(
+      {String? assetId,
+      String? performedBy,
+      String? serviceDate,
+      String? serviceMeter,
+      String? serviceNotes,
+      int? serviceNo,
+      String? workOrder}) {
+    var data = """
+mutation {
+  maintenancepostData(
+    assetId:  ${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"}, 
+    isComplete: true, 
+    maintenanceCheckList: [], 
+    performedBy:  ${performedBy == null ? "\"\"" : "${"\"" + performedBy + "\""}"}, 
+    serviceDate:  ${serviceDate == null ? "\"\"" : "${"\"" + serviceDate + "\""}"}, 
+    serviceMeter:  ${serviceMeter == null ? "\"\"" : "${"\"" + serviceMeter + "\""}"}, 
+    serviceNotes:  ${serviceNotes == null ? "\"\"" : "${"\"" + serviceNotes + "\""}"}, 
+    serviceNumber: ${serviceNo ?? null}, 
+    workOrder:  ${workOrder == null ? "\"\"" : "${"\"" + workOrder + "\""}"})
+    {
+    status
+    message
+  }
+}
+""";
+    return data;
+  }
+
+  getMaintenanceRefineData(
+      {String? fromDate, String? toDate, int? limit, int? pageNo}) {
+    var data = """
+query{
+  maintenanceRefine(
+    fromDate: ${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"}
+limit: ${limit ?? null}
+pageNumber: ${pageNo ?? null}
+toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
+  ){
+    status,
+    maintenanceRefine{
+      status,
+      typeName,
+      typeAlias,
+      typeValues{
+        name,
+        alias,
+        count
+      }
+    }
+  }
 }""";
     return data;
   }
@@ -3000,7 +3247,27 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
           assetActivationByWeek
 
         }
+        }
+        }""";
+    return data;
+  }
+
+  maintenanceDashboardCount(
+      {String? fromDate, String? endDate, String? prodFamily}) {
+    var data = """query{
+maintenanceDashboard(fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"},toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"},productFamily:${prodFamily == null ? "\"" + "\"" : "\"" + prodFamily + "\""}){
+  status,
+  dashboardData{
+    count,
+    alias,
+    displayName,
+    subCount{
+      displayName,
+      alias,
+      count
     }
+  }
+}
 }""";
     return data;
   }
@@ -3014,7 +3281,43 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
            totalDealerCount,
            totalPlantCount
        }
+       }
+       }""";
+    return data;
+  }
+
+  maintenanceInterval({int? pageNo, String? searchWord, String? assetId}) {
+    var data = """
+query{
+maintenanceIntervals(
+  pageNumber:$pageNo,
+  search:${searchWord == null ? "\"\"" : "${"\"" + searchWord + "\""}"},
+  assetId:${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"}
+){
+  status,
+  totalCount,
+  intervalList{
+    intervalName,
+    intervalID,
+    editable,
+    firstOccurrences,
+    editable,
+    intervalDescription,
+    checkList{
+      checkListName,
+      checkListDescription,
+      checkListID,
+      partList{
+        description,
+        units,
+        partId,
+        partName,
+        quantity,
+        partNo
+      }
     }
+  }
+}
 }""";
     return data;
   }
@@ -3044,11 +3347,32 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
               networkProvider
 
 
+      }
 
 
             }
-        }
-    }
+            }
+        }""";
+    return data;
+  }
+
+  addMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
+    var data = """
+mutation{
+  createMaintenanceIntervals(
+    intervalName:${mainInterval!.intervalName ?? ""},
+    initialOccurence:${mainInterval.initialOccurence ?? 0},
+     description:${mainInterval.description ?? ""},
+    assetId:${mainInterval.assetId ?? ""},
+    serialNumber:${mainInterval.serialno ?? ""},
+    make:${mainInterval.make ?? ""},
+    model:${mainInterval.model ?? ""},
+    currentHourMeter:${mainInterval.currentHrmeter ?? null},
+    checklist:${Utils.addMaintenanceIntervals(mainInterval.checkList!)}
+  ){
+    status,
+     message
+  }
 }""";
     return data;
   }
@@ -3065,8 +3389,20 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
    userName,
    code,
    email
-   
    }
+   }""";
+    return data;
+  }
+
+  updateMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
+    var data = """
+mutation{
+  updateMaintenanceIntervals(
+    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)},
+    checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
+    status,
+     message
+  }
 }""";
     return data;
   }
@@ -3079,7 +3415,67 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
         groupClusterId,
         startRange,
         startsWith
+        }
+    }""";
+    return data;
+  }
+
+  deletingMaintenanceIntervals(
+      {List<int>? interval,
+      List<int>? check,
+      List<int>? parts,
+      String? assetId}) {
+    var data = """
+mutation{
+ maintenanceIntervalsDelete(
+  IntervaListIds:$interval,
+  checkListIds:$check,
+  partIds:$parts,
+  assetId:${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"}
+){
+  status,
+  message
+}
+}""";
+    return data;
+  }
+
+  creatingPlantasset(
+      List<AssetCreationModel> assetCreationListData, String userId) {
+    List<Map<String, String>> getAssetPayLoad = [];
+
+    for (var element in assetCreationListData) {
+      if (element.assetSerialNo == "" &&
+          element.deviceId == "" &&
+          element.model == "" &&
+          element.hourMeter == "") {
+           
+      } else {
+        Map<String, String> asset = {
+          "machineSerialNumber": "\"" + element.assetSerialNo! + "\"",
+          "model": "\"" + element.model! + "\"",
+          "deviceId": "\"" + element.deviceId! + "\"",
+          "hmrValue": "\"" + element.hourMeter! + "\""
+        };
+        getAssetPayLoad.add(asset);
+      }
     }
+
+    var data = """mutation{
+createAsset(
+      request: {
+      source: "THC",
+      userID: ${int.parse(userId)},
+      asset: $getAssetPayLoad
+    }
+
+){
+    code,
+    status,
+    message,
+    requestID,
+    vin
+}
 }""";
     return data;
   }

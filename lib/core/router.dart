@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/add_intervals/add_intervals_view.dart' as view49;
 
 import 'package:insite/views/adminstration/add_group/add_group_view.dart'
     as view37;
@@ -25,6 +26,8 @@ import 'package:insite/views/adminstration/notifications/add_new_notifications/a
     as view39;
 import 'package:insite/views/adminstration/notifications/manage_notifications/manage_notifications_view.dart'
     as view40;
+import 'package:insite/views/detail/tabs/maintenance_tab/maintenance_tab_view.dart'
+    as view48;
 import 'package:insite/views/maintenance/asset/asset/detail_popup/detail_popup_view.dart'
     as view47;
 import 'package:insite/views/maintenance/asset/asset_view.dart' as view45;
@@ -121,7 +124,7 @@ class Router {
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
-        var fleetArgs = settings.arguments as view9.DetailArguments;
+        var fleetArgs =(settings.arguments as Map)["arguments"] as view9.DetailArguments;
         return MaterialPageRoute(
             builder: (_) => view9.AssetDetailView(
                   fleet: fleetArgs.fleet,
@@ -234,6 +237,11 @@ class Router {
 
       case mainDetailPopupViewRoute:
         return MaterialPageRoute(builder: (_) => view46.MainDetailPopupView());
+
+      case maintenanceTabViewRoute:
+        return MaterialPageRoute(builder: (_) => view48.MaintenanceTabView());
+      case addIntervalsViewRoute:
+        return MaterialPageRoute(builder: (_) => view49.AddIntervalsView());
 
       default:
         return MaterialPageRoute(

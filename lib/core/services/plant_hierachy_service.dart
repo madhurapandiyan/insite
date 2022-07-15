@@ -44,9 +44,8 @@ class PlantHeirarchyAssetService extends BaseService {
       if (enableGraphQl) {
         var data = await Network()
             .getGraphqlPlantData(query: query, customerId: "THC");
-            Logger().w(data.data["frameSubscription"]);
-       return HierarchyAssets.fromJson(data.data["frameSubscription"]);
-       
+        Logger().w(data.data["frameSubscription"]);
+        return HierarchyAssets.fromJson(data.data["frameSubscription"]);
       } else {
         HierarchyAssets heierarchyssetsResults =
             await MyApi().getClientNine()!.getPlantHierarchyAssetsDetails(
@@ -68,16 +67,22 @@ class PlantHeirarchyAssetService extends BaseService {
   }
 
   Future<AssetCreationResponse?>? getAssetCreationData(
-      String machineSerialNumber) async {
+      String machineSerialNumber,query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["oemName"] = "THC";
       queryMap["machineSerialNumber"] = machineSerialNumber;
-      AssetCreationResponse assetCreationResponse = await MyApi()
-          .getClientSix()!
-          .getAssetCreationData(Urls.plantAssetCreationResult +
-              FilterUtils.constructQueryFromMap(queryMap));
-      return assetCreationResponse;
+      if (enableGraphQl) {
+           var data = await Network()
+            .getGraphqlPlantData(query: query, customerId: "THC");
+            return AssetCreationResponse.fromJson(data.data);
+      } else {
+        AssetCreationResponse assetCreationResponse = await MyApi()
+            .getClientSix()!
+            .getAssetCreationData(Urls.plantAssetCreationResult +
+                FilterUtils.constructQueryFromMap(queryMap));
+        return assetCreationResponse;
+      }
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -85,19 +90,24 @@ class PlantHeirarchyAssetService extends BaseService {
   }
 
   Future<AssetCreationResetData?> submitAssetCreationData(
-      AssetCreationPayLoad data) async {
+      AssetCreationPayLoad data, query) async {
     Map<String, String> queryMap = Map();
     queryMap["oemName"] = "THC";
-
-    if (isVisionLink) {
+    if (enableGraphQl) {
+      var data =
+          await Network().getGraphqlPlantData(query: query, customerId: "THC");
+      return AssetCreationResetData.fromJson(data.data);
     } else {
-      AssetCreationResetData assetCreationResetData = await MyApi()
-          .getClientSix()!
-          .submitAssetCreationData(
-              Urls.assetCreationResetdata +
-                  FilterUtils.constructQueryFromMap(queryMap),
-              data);
-      return assetCreationResetData;
+      if (isVisionLink) {
+      } else {
+        AssetCreationResetData assetCreationResetData = await MyApi()
+            .getClientSix()!
+            .submitAssetCreationData(
+                Urls.assetCreationResetdata +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                data);
+        return assetCreationResetData;
+      }
     }
 
     return null;

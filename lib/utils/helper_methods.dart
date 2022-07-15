@@ -7,6 +7,7 @@ import 'package:insite/core/models/utilization.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
 import 'package:insite/views/adminstration/asset_settings_configure/model/configure_grid_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +16,9 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import '../core/models/add_notification_payload.dart' as add;
 import '../core/models/add_notification_payload.dart';
+import '../core/models/maintenance_asset_india_stack.dart';
 import '../core/models/manage_notifications.dart';
+import '../widgets/dumb_widgets/maintenance_asset_list_item.dart';
 import 'date.dart';
 
 class Utils {
@@ -377,11 +380,35 @@ class Utils {
     }
   }
 
+  static String? maintenanceToDateFormate(String date) {
+    try {
+      DateTime parseDate = DateTime.parse(date);
+      var data = parseDate.add(Duration(hours: 18, minutes: 29, seconds: 59));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static String? maintenanceFromDateFormate(String date) {
+    try {
+      DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
+      var data = parseDate.add(Duration(hours: 18, minutes: 30, seconds: 00));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
   static String getDateInFormatyyyyMMddTHHmmssZEnd(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
-          .add(Duration(hours: 18, minutes: 29, seconds: 59));
+          .add(Duration(hours: 18, minutes: 29, seconds: 59))
+          .subtract(Duration(days: 1));
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -679,8 +706,9 @@ class Utils {
 
   static String generateCodeChallenge(String codeVerifier, bool isToSave) {
     final LocalService? _localService = locator<LocalService>();
-    Logger().w(codeVerifier);
+
     if (isToSave) {
+      Logger().w(codeVerifier);
       _localService!.saveCodeVerfier(codeVerifier);
     }
 
@@ -763,6 +791,15 @@ class Utils {
         break;
       case FilterType.MANUFACTURER:
         title = "MANUFACTURER";
+        break;
+      case FilterType.SERVICE_TYPE:
+        title = "SERVICE TYPE";
+        break;
+      case FilterType.SERVICE_STATUS:
+        title = "SERVICE STATUS";
+        break;
+      case FilterType.ASSET_TYPE:
+        title = "ASSET TYPE";
         break;
 
       default:
@@ -1052,6 +1089,19 @@ class Utils {
             : text.toLowerCase() == "orange" || text.toLowerCase() == "medium"
                 ? Colors.orange
                 : text.toLowerCase() == "yellow" || text.toLowerCase() == "low"
+                    ? Colors.yellow
+                    : buttonColorFive
+        : buttonColorFive;
+  }
+
+  static Color getMaintenanceColor(text) {
+    return text != null && text != null
+        ? text.toLowerCase() == "Overdue" || text.toLowerCase() == "Overdue"
+            ? buttonColorFive
+            : text.toLowerCase() == "orange" || text.toLowerCase() == "medium"
+                ? Colors.orange
+                : text.toLowerCase() == "upcoming" ||
+                        text.toLowerCase() == "low"
                     ? Colors.yellow
                     : buttonColorFive
         : buttonColorFive;
@@ -1763,5 +1813,105 @@ class Utils {
   static getEstimatedTargetRuntimePercentValue(idle, runtime) {
     var data = (idle / 100) * runtime as double;
     return data.roundToDouble();
+  }
+
+  static String tokenExpiresTime(int expireSec) {
+    DateTime currentTime = DateTime.now();
+    var tokenExpireTime = currentTime.add(Duration(seconds: expireSec));
+    Logger().i("Token Valid Upto $tokenExpireTime");
+    return tokenExpireTime.toString();
+  }
+
+  static List<MaitenanceTotal> getMaintenanceCount(
+      List<MaintenanceTotals>? value) {
+    List<MaitenanceTotal> maintenanceTotal = [
+      MaitenanceTotal(count: 0, total: MAINTENANCETOTAL.UPCOMING),
+      MaitenanceTotal(count: 0, total: MAINTENANCETOTAL.OVERDUE)
+    ];
+
+    for (var item in value!) {
+      if (item.name == "Upcoming" && item.count != 0) {
+        maintenanceTotal.first.count = item.count!;
+      } else if (item.name == "Overdue" && item.count != 0) {
+        maintenanceTotal.last.count = item.count!;
+      }
+    }
+    //Logger().d(maintenanceTotal.length);
+    // Logger().d(maintenanceTotal.first);
+    // Logger().d(maintenanceTotal.last);
+    // return "";
+    return maintenanceTotal;
+  }
+
+  static List<Map<String, dynamic>>? addMaintenanceIntervals(
+      List<MaintenanceCheckList> data) {
+    try {
+      List<Map<String, dynamic>> checkList = [];
+
+      for (var check in data) {
+        Map<String, dynamic> checkData = {
+          "checkListName": check.checkName,
+          "partList": []
+        };
+        for (var part in check.partList!) {
+          Map<String, dynamic> partsData = {
+            "partName": part.partName,
+            "partNo": part.partNo,
+            "quantity": part.quantiy
+          };
+          var partList = checkData["partList"] as List<dynamic>;
+          partList.add(partsData);
+        }
+        checkList.add(checkData);
+      }
+      Logger().w(checkList);
+      return checkList;
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  static List<Map<String, dynamic>>? updateMaintenanceIntervals(
+      MaintenanceIntervalData? mainInterval) {
+    List<Map<String, dynamic>> intervalList = [];
+    Map<String, dynamic> data = {
+      "intervalID": mainInterval!.intervalId,
+      "intervalDescription": mainInterval.intervalDescription!.isEmpty?"\""+ "\"": mainInterval.intervalDescription,
+      "firstOccurrences": mainInterval.initialOccurence,
+      "intervalName": mainInterval.intervalName
+    };
+    intervalList.add(data);
+    return intervalList;
+  }
+
+  static List<Map<String, dynamic>>? updateMaintenanceCheckList(
+      List<MaintenanceCheckList>? data, int intervalId) {
+    try {
+      List<Map<String, dynamic>> checkList = [];
+      if (data != null && data.isNotEmpty) {
+        for (var check in data) {
+          Map<String, dynamic> checkData = {
+            "ChecklistName": check.checkName,
+            "partList": []
+          };
+          for (var part in check.partList!) {
+            Map<String, dynamic> partsData = {
+              "partName": part.partName,
+              "partNo": part.partNo,
+              "quantity": part.quantiy,
+            };
+            var partList = checkData["partList"] as List<dynamic>;
+            partList.add(partsData);
+          }
+          checkList.add(checkData);
+        }
+        Logger().w(checkList);
+        return checkList;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 }

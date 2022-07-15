@@ -111,7 +111,7 @@ class AccountSearchViewModel extends InsiteViewModel {
         searchKey: textEditingController.text.isEmpty
             ? ""
             : textEditingController.text,
-        customerId: accountSelected!.CustomerUID,
+        customerId: accountSelected?.CustomerUID ?? "",
         isFromPagination: true);
     if (result!.isNotEmpty) {
       result.forEach((element) {

@@ -60,6 +60,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   AddNewNotificationsViewModel(AlertConfigEdit? data) {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
+    _geofenceservice?.setUp();
     setUp();
 
     Future.delayed(Duration(seconds: 1), () async {
@@ -982,7 +983,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   addContact() {
-    if (emailController.text.isEmail) {
+    if (emailController.text.isEmpty) {
       isShowingSelectedContact = true;
       isShowingSelectedContact = true;
       selectedUser.add(User(
@@ -1209,12 +1210,22 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         if (notificationTypeGroup.notificationTypeGroupName!
             .contains("Geofence")) {
           notificationTypeGroup.notificationTypes!.forEach((notification) {
-            notification.siteOperands!.forEach((element) {
-              _notificationSubTypes.add(element.operandName);
-            });
+            // if (notification.siteOperands != null &&
+            //     notification.siteOperands!.isNotEmpty) {
+
+            // }
+            _notificationSubTypes.add(notification.notificationTypeName);
+            // notification.siteOperands?.forEach((element) {
+            //   _notificationSubTypes.add(element.operandName);
+            // });
           });
-          _notificationSubTypes
-              .add("${_notificationSubTypes[1]} & ${_notificationSubTypes[2]}");
+          Logger().w(_notificationSubTypes[0]);
+          if (_notificationSubTypes.isNotEmpty &&
+              _noticationTypes.length != 1) {
+            _notificationSubTypes.add(
+                "${_notificationSubTypes[1]} & ${_notificationSubTypes[2]}");
+          }
+
           Logger().e(notificationTypeGroup.toJson());
           getGeofenceData();
         }

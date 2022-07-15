@@ -25,7 +25,8 @@ List<Category>? showsCategoryBasedOnAccountSelection(bool isTataHitachi) {
       Category(
           5, "LOCATION", "assets/images/location.svg", ScreenType.LOCATION),
       Category(6, "HEALTH", "assets/images/van.svg", ScreenType.HEALTH),
-      //Category(7, "MAINTENANCE", "assets/images/maint.svg", ScreenType.MAINTENANCE),
+      Category(7, "MAINTENANCE", "assets/images/maintenance.svg",
+          ScreenType.MAINTENANCE),
       Category(8, "ADMINISTRATION", "assets/images/admin.svg",
           ScreenType.ADMINISTRATION),
       Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
@@ -46,7 +47,8 @@ List<Category>? showsCategoryBasedOnAccountSelection(bool isTataHitachi) {
       Category(
           5, "LOCATION", "assets/images/location.svg", ScreenType.LOCATION),
       Category(6, "HEALTH", "assets/images/van.svg", ScreenType.HEALTH),
-      //Category(7, "MAINTENANCE", "assets/images/maint.svg", ScreenType.MAINTENANCE),
+      Category(7, "MAINTENANCE", "assets/images/maintenance.svg",
+          ScreenType.MAINTENANCE),
       Category(8, "ADMINISTRATION", "assets/images/admin.svg",
           ScreenType.ADMINISTRATION),
       // Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),

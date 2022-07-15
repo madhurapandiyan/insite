@@ -60,3 +60,5 @@ const String assetViewRoute0 = 'assetViewRoute0';
 const String mainViewRoute = 'mainViewRoute';
 const String detailPopupViewRoute = 'detailPopupViewRoute';
 const String mainDetailPopupViewRoute = 'mainDetailPopupViewRoute';
+const String maintenanceTabViewRoute = 'maintenanceTabViewRoute';
+const String addIntervalsViewRoute = 'addIntervalsViewRoute';

@@ -38,6 +38,8 @@ class Fleet {
   final String? lastOperatorName;
   final String? lastOperatorID;
   final double? modelYear;
+  final List<FleetGeofence>? geofences;
+  final List<FleetDevices>? devices;
 
   Fleet(
       {this.assetIdentifier,
@@ -72,7 +74,9 @@ class Fleet {
       this.productFamily,
       this.status,
       this.universalCustomerIdentifier,
-      this.universalCustomerName});
+      this.universalCustomerName,
+      this.geofences,
+      this.devices});
   factory Fleet.fromJson(Map<String, dynamic> json) => _$FleetFromJson(json);
 
   Map<String, dynamic> toJson() => _$FleetToJson(this);
@@ -90,4 +94,35 @@ class FleetSummaryResponse {
   }
 
   Map<String, dynamic> toJson() => _$FleetSummaryResponseToJson(this);
+}
+
+@JsonSerializable()
+class FleetGeofence {
+  final String? fenceIdentifier;
+  final String? name;
+  final String? areaSqM;
+  FleetGeofence({this.areaSqM, this.fenceIdentifier, this.name});
+  factory FleetGeofence.fromJson(Map<String, dynamic>? json) {
+    return _$FleetGeofenceFromJson(json!);
+  }
+
+  Map<String, dynamic> toJson() => _$FleetGeofenceToJson(this);
+}
+
+@JsonSerializable()
+class FleetDevices {
+  final String? deviceType;
+  final bool? isGpsRollOverAffected;
+  final String? mainboardSoftwareVersion;
+  final String? deviceSerialNumber;
+  FleetDevices(
+      {this.deviceSerialNumber,
+      this.deviceType,
+      this.isGpsRollOverAffected,
+      this.mainboardSoftwareVersion});
+
+  factory FleetDevices.fromJson(Map<String, dynamic>? json) {
+    return _$FleetDevicesFromJson(json!);
+  }
+  Map<String, dynamic> toJson() => _$FleetDevicesToJson(this);
 }

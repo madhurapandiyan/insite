@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/health/asset/asset_view.dart';
 import 'package:insite/views/health/fault/fault_view.dart';
 import 'package:insite/views/maintenance/asset/asset_view.dart';
 import 'package:insite/views/maintenance/main/main_view.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'maintenance_view_model.dart';
 
@@ -43,6 +46,7 @@ class _MaintenanceViewState extends State<MaintenanceView> {
             onFilterApplied: () {
               viewModel.refresh();
               refreshWithFilter();
+            
             },
             onRefineApplied: () {
               viewModel.refresh();
@@ -50,40 +54,53 @@ class _MaintenanceViewState extends State<MaintenanceView> {
             },
             screenType: ScreenType.MAINTENANCE,
             body: Container(
-              child: Stack(
+              child: Column(
                 children: [
-                  Column(
-                    children: [
-                      isListSelected
-                          ? Flexible(
-                              child: MainView(
-                                key: mainViewKey,
-                              ),
-                            )
-                          : Flexible(
-                              child: AssetMaintenanceView(
-                                key: assetMaintenaceViewKey,
-                              ),
-                            ),
-                    ],
-                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 16),
-                    child: Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ToggleButton(
-                            label1: 'Maintenance View',
-                            label2: 'Asset View',
-                            optionSelected: (bool value) {
-                              setState(() {
-                                isListSelected = value;
-                              });
-                            }),
-                        Spacer(),
+                        InsiteTextOverFlow(
+                          text: Utils.getPageTitle(ScreenType.MAINTENANCE),
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.bold,
+                          size: 16,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10.0,
+                          ),
+                          child: Row(
+                            children: [
+                              ToggleButton(
+                                  label1: 'Maintenance View',
+                                  label2: 'Asset View',
+                                  optionSelected: (bool value) {
+                                    setState(() {
+                                      isListSelected = value;
+                                    });
+                                  }),
+                              Spacer(),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
+                  isListSelected
+                      ? Flexible(
+                          child: MainView(
+                            key: mainViewKey,
+                          ),
+                        )
+                      : Flexible(
+                          child: AssetMaintenanceView(
+                            key: assetMaintenaceViewKey,
+                          ),
+                        ),
                 ],
               ),
             ),

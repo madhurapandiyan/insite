@@ -77,7 +77,13 @@ enum FilterType {
   @HiveField(20)
   REPORT_TYPE,
   @HiveField(21)
-  MANUFACTURER
+  MANUFACTURER,
+  @HiveField(22)
+  SERVICE_TYPE,
+  @HiveField(23)
+  SERVICE_STATUS,
+  @HiveField(24)
+  ASSET_TYPE
 }
 
 @HiveType(typeId: 2)

@@ -177,9 +177,15 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
     if (value.length < 4) {
       return null;
     } else {
-      AssetCreationResponse? data =
-          await _plantService!.getAssetCreationData(value);
-      assetCreationListData[index].model = data!.result!.modelName;
+      AssetCreationResponse? data = await _plantService!.getAssetCreationData(
+          value, graphqlSchemaService!.getAssetcreationModelName(value));
+      if (enableGraphQl) {
+        assetCreationListData[index].model =
+            data!.assetModelByMachineSerialNumber!.modelName!;
+      } else {
+        assetCreationListData[index].model = data!.result!.modelName;
+      }
+
       notifyListeners();
     }
   }
@@ -248,29 +254,53 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
       if (getAssetPayLoad.isEmpty) {
         return;
       } else {
+        print(graphqlSchemaService!
+            .creatingPlantasset(assetCreationListData, userId!));
         result = await _plantService!.submitAssetCreationData(
             AssetCreationPayLoad(
                 Source: "THC",
                 asset: getAssetPayLoad,
-                UserID: int.parse(userId!)));
+                UserID: int.parse(userId)),
+            graphqlSchemaService!
+                .creatingPlantasset(assetCreationListData, userId));
       }
-      for (int i = 0; i < result!.result!.length; i++) {
-        assetCreationListData.forEach((element) {
-          if (element.assetSerialNo!.trim().toUpperCase() ==
-              result!.result![i].vin) {
-            element.status = result!.result![i].status;
-            element.message = result!.result![i].message;
-          }
-        });
+      if (enableGraphQl) {
+        for (int i = 0; i < result!.createAsset!.length; i++) {
+          assetCreationListData.forEach((element) {
+            if (element.assetSerialNo!.trim().toUpperCase() ==
+                result!.createAsset![i].vin) {
+              element.status = result!.createAsset![i].status;
+              element.message = result!.createAsset![i].message;
+            }
+          });
+        }
+        onNextClicked();
+        pageController!.jumpToPage(currentPage);
+        //_isChangingSubmitAndResetButtonState = true;
+        // _isResetButtonState = true;
+        _issubmitButtonState = false;
+        screenOne = true;
+        notifyListeners();
+        hideLoadingDialog();
+      } else {
+        for (int i = 0; i < result!.result!.length; i++) {
+          assetCreationListData.forEach((element) {
+            if (element.assetSerialNo!.trim().toUpperCase() ==
+                result!.result![i].vin) {
+              element.status = result!.result![i].status;
+              element.message = result!.result![i].message;
+            }
+          });
+        }
+        onNextClicked();
+        pageController!.jumpToPage(currentPage);
+        //_isChangingSubmitAndResetButtonState = true;
+        // _isResetButtonState = true;
+        _issubmitButtonState = false;
+        screenOne = true;
+        notifyListeners();
+        hideLoadingDialog();
       }
-      onNextClicked();
-      pageController!.jumpToPage(currentPage);
-      //_isChangingSubmitAndResetButtonState = true;
-      // _isResetButtonState = true;
-      _issubmitButtonState = false;
-      screenOne = true;
-      notifyListeners();
-      hideLoadingDialog();
     } catch (e) {}
   }
 
@@ -283,6 +313,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
         formKeyScreenTwo.currentState!.reset();
         assetCreationListData.forEach((element) {
           element.model = null;
+          
         });
         screenOne = !screenOne;
         onPreviousClicked();
@@ -296,6 +327,7 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
 
         assetCreationListData.forEach((element) {
           element.model = "";
+          
         });
         _issubmitButtonState = false;
         _isResetButtonState = false;

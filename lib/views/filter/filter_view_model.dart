@@ -2,8 +2,10 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/maintenance_refine.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/services/asset_status_service.dart';
+import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:load/load.dart';
@@ -11,6 +13,7 @@ import 'package:logger/logger.dart';
 
 class FilterViewModel extends InsiteViewModel {
   AssetStatusService? _assetService = locator<AssetStatusService>();
+  MaintenanceService? _maintenanceService = locator<MaintenanceService>();
 
   bool _loading = false;
   bool get loading => _loading;
@@ -32,7 +35,9 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterFrequencyType = [];
   List<FilterData> filterFormatType = [];
   List<FilterData> filterReportType = [];
-
+  List<FilterData> serviceTypeReportType = [];
+  List<FilterData> serviceStatusReportType = [];
+  List<FilterData> assetType = [];
   bool isShowing = true;
 
   List<FilterData?>? selectedFilterData = [];
@@ -65,7 +70,8 @@ class FilterViewModel extends InsiteViewModel {
         screenType == ScreenType.LOCATION ||
         screenType == ScreenType.UTILIZATION ||
         screenType == ScreenType.ASSET_OPERATION ||
-        screenType == ScreenType.HEALTH) {
+        screenType == ScreenType.HEALTH ||
+        screenType == ScreenType.MAINTENANCE) {
       AssetCount? resultModel = await _assetService!.getAssetCount(
           "model",
           FilterType.MODEL,
@@ -119,8 +125,8 @@ class FilterViewModel extends InsiteViewModel {
           Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(startDate),
           Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate),
           graphqlSchemaService!.getFaultCountData(
-            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(
-                startDate),
+            startDate:
+                Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(startDate),
             endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate),
           ));
       addData(filterSeverity, resultSeverity, FilterType.SEVERITY);
@@ -152,6 +158,25 @@ class FilterViewModel extends InsiteViewModel {
           FilterType.REPORT_FORMAT,
           FilterType.REPORT_TYPE);
     }
+    if (screenType == ScreenType.MAINTENANCE) {
+      var data = await _maintenanceService!.getRefineData(
+          query: graphqlSchemaService!.getMaintenanceRefineData(
+              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+              toDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+              limit: 50,
+              pageNo: 1));
+      var serviceTypeAssetCount = getAssetCountFromMaintenanceRefine(
+          data!.maintenanceRefine!.maintenanceRefine![0]);
+      var serviceStatusAssetCount = getAssetCountFromMaintenanceRefine(
+          data.maintenanceRefine!.maintenanceRefine![1]);
+      var assetTypeCount = getAssetCountFromMaintenanceRefine(
+          data.maintenanceRefine!.maintenanceRefine![2]);
+      addData(serviceTypeReportType, serviceTypeAssetCount,
+          FilterType.SERVICE_TYPE);
+      addData(serviceStatusReportType, serviceStatusAssetCount,
+          FilterType.SERVICE_STATUS);
+      addData(assetType, assetTypeCount, FilterType.ASSET_TYPE);
+    }
 
     AssetCount? resultIdlingLevel = await _assetService!.getIdlingLevelData(
         startDate,
@@ -170,6 +195,20 @@ class FilterViewModel extends InsiteViewModel {
     _loading = false;
     hideLoadingDialog();
     notifyListeners();
+  }
+
+  AssetCount? getAssetCountFromMaintenanceRefine(MaintenanceRefineList data) {
+    AssetCount assetCountData;
+    List<Count>? counData = [];
+    Count? singleCountData;
+    if (data != null) {
+      data.typeValues!.forEach((element) {
+        singleCountData = Count(count: element.count, countOf: element.name);
+        counData.add(singleCountData!);
+      });
+      assetCountData = AssetCount(countData: counData);
+      return assetCountData;
+    }
   }
 
   addData(filterData, AssetCount? resultModel, type) {
@@ -269,11 +308,11 @@ class FilterViewModel extends InsiteViewModel {
     }
   }
 
-  void onFilterApplied() {
+  Future<void> onFilterApplied() async {
     _isRefreshing = true;
     notifyListeners();
-    updateFilterInDb(selectedFilterData!);
-    getSelectedFilterData();
+    await updateFilterInDb(selectedFilterData!);
+    await getSelectedFilterData();
     _isRefreshing = false;
     notifyListeners();
   }

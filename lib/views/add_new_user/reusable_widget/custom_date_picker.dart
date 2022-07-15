@@ -13,10 +13,11 @@ class CustomDatePicker extends StatelessWidget {
       controller: controller,
       style: TextStyle(
           fontSize: 14,
-          fontWeight: FontWeight.w900,
+          fontWeight: FontWeight.w600,
           color: Theme.of(context).textTheme.bodyText1!.color),
       decoration: InputDecoration(
         hintText: initialText == null ? "DD/MM/YYYY" : initialText,
+        contentPadding: EdgeInsets.all(15),
         hintStyle: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 14,

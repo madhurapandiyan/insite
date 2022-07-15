@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
+import 'package:insite/core/models/maintenance_asset_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/maintenance_detail_view_model.dart';
 import 'package:insite/views/detail/tabs/health/fault_list_item_view_model.dart';
 import 'package:insite/views/maintenance/asset/asset_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'insite_button.dart';
 import 'insite_row_item_text.dart';
@@ -33,6 +36,9 @@ class MaintenanceAssetListItem extends StatefulWidget {
 }
 
 class _MaintenanceAssetListItemState extends State<MaintenanceAssetListItem> {
+  int overdue = 0;
+  int upcoming = 0;
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MaintenanceItemDetailViewModel>.reactive(
@@ -43,292 +49,347 @@ class _MaintenanceAssetListItemState extends State<MaintenanceAssetListItem> {
             widget.onCallback!();
           },
           child: Card(
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(2),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
-                      // Icon(Icons.arrow_drop_down, color: Colors.white),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
-                      // Container(
-                      //     decoration: BoxDecoration(
-                      //         color: Colors.black,
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(4))),
-                      //     child: Icon(Icons.crop_square, color: Colors.black)),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: InsiteExpansionTile(
-                    // childrenPadding: EdgeInsets.all(0),
-                    title: Column(
-                      children: [
-                        Table(
-                          border: TableBorder.all(),
-                          columnWidths: {
-                            0: FlexColumnWidth(1.8),
-                            1: FlexColumnWidth(1),
-                          },
-                          children: [
-                            TableRow(
-                              children: [
-                                InsiteTableRowItemWithImage(
-                                  title: Utils.getMakeTitle(
-                                      "Asset ID" + "\n" + "-"),
-                                  path: "assets/images/EX210.png",
-                                ),
-                                InsiteTableRowItem(
-                                  title: "Make :",
-                                  content: widget.assetData!.makeCode,
-                                ),
-                                InsiteTableRowItem(
-                                  title: "Model :",
-                                  content: widget.assetData!.model,
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        Table(
-                          border: TableBorder.all(),
-                          columnWidths: {
-                            0: FlexColumnWidth(1),
-                            1: FlexColumnWidth(1),
-                          },
-                          children: [
-                            TableRow(children: [
-                              InsiteRichText(
-                                title: "Serial No. : ",
-                                content: widget.assetData!.assetSerialNumber,
-                                onTap: () {
-                                  widget.onCallback!();
-                                },
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InsiteExpansionTile(
+                      // childrenPadding: EdgeInsets.all(0),
+                      title: Column(
+                        children: [
+                          Table(
+                            border: TableBorder.all(),
+                            columnWidths: {
+                              0: FlexColumnWidth(1.8),
+                              1: FlexColumnWidth(1),
+                            },
+                            children: [
+                              TableRow(
                                 children: [
-                                  InsiteTableRowItemWithButton(
-                                    title: "Maintenance Totals: ",
-                                    buttonColor: Utils.getFaultColor(widget
-                                        .assetData!.dueInfo!.serviceStatus),
-                                    content: widget.assetData!.dueInfo != null
-                                        ? Utils.getFaultLabel(widget
-                                            .assetData!.overDueCount
-                                            .toString())
-                                        : "",
+                                  InsiteTableRowItemWithImage(
+                                    title: widget.assetData!.model,
+                                    // "${widget.assetData!.assetUID == null ? "-" : widget.assetData!.assetUID}",
+                                    path: widget.assetData!.model != null
+                                        ? Utils().getImageWithAssetIconKey(
+                                            model: widget.assetData!.model,
+                                            assetIconKey:
+                                                widget.assetData!.assetIcon)
+                                        : "assets/images/EX210.png",
                                   ),
-                                  // InsiteButton(
-                                  //   title: Utils.getFaultLabel(widget
-                                  //       .assetData!.upcomingCount
-                                  //       .toString()),
-                                  //   bgColor: Colors.black,
-                                  //   width: 20,
-                                  //   height: 20,
-                                  //   textColor: Colors.white,
+                                  // InsiteTableRowItem(
+                                  //   title: "Product Family :",
+                                  //   content: widget.assetData!.model,
                                   // )
-                                  InsiteText(
-                                    text: widget.assetData!.upcomingCount
-                                        .toString(),
-                                  )
                                 ],
                               ),
-                            ]),
-                          ],
-                        ),
-                      ],
-                    ),
-
-                    onExpansionChanged: (value) {
-                      viewModel.onExpanded();
-                    },
-                    initiallyExpanded: false,
-                    tilePadding: EdgeInsets.all(0),
-                    children: [
-                      Table(
-                        columnWidths: {
-                          0: FlexColumnWidth(3),
-                          1: FlexColumnWidth(3),
-                        },
-                        border: TableBorder.all(),
-                        children: [
-                          TableRow(children: [
-                            InsiteTableRowItem(
-                              title: "Current Hour Meter : ",
-                              content: widget.assetData!.currentHourMeter!
-                                  .toStringAsFixed(0),
-                            ),
-                          ]),
-                        ],
-                      ),
-                      viewModel.refreshing
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: InsiteProgressBar(),
-                            )
-                          : SizedBox(),
-                      viewModel.services.isNotEmpty
-                          ? Table(
-                              columnWidths: {
-                                0: FlexColumnWidth(1),
-                                1: FlexColumnWidth(1),
-                                2: FlexColumnWidth(1),
-                                3: FlexColumnWidth(1),
-                                4: FlexColumnWidth(1),
-                                5: FlexColumnWidth(1),
-                              },
-                              border: TableBorder.all(),
-                              children: [
-                                TableRow(children: [
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "Service",
-                                    size: 12,
-                                  ),
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "Service Status",
-                                    size: 12,
-                                  ),
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "Service Interval",
-                                    size: 12,
-                                  ),
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "Due At",
-                                    size: 12,
-                                  ),
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "Due In/ Overdue By",
-                                    size: 12,
-                                  ),
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "Due Date",
-                                    size: 12,
-                                  ),
-                                  InsiteTextWithPadding(
-                                    padding: EdgeInsets.all(8),
-                                    text: "Service Type",
-                                    size: 12,
-                                  ),
-                                ]),
-                              ],
-                            )
-                          : SizedBox(),
-                      viewModel.services.isNotEmpty
-                          ? Container(
-                              height: 200,
-                              child: Scrollbar(
-                                isAlwaysShown: true,
-                                child: SingleChildScrollView(
-                                  controller: viewModel.scrollController,
+                            ],
+                          ),
+                          Table(
+                            border: TableBorder.all(),
+                            columnWidths: {
+                              0: FlexColumnWidth(1),
+                              1: FlexColumnWidth(1),
+                            },
+                            children: [
+                              TableRow(children: [
+                                InsiteRichText(
+                                  title: "Serial No. : ",
+                                  content: widget.assetData!.assetSerialNumber,
+                                  onTap: () {
+                                    widget.onCallback!();
+                                  },
+                                ),
+                                InsiteTableRowItem(
+                                  title: "Current Hour Meter : ",
+                                  content: widget.assetData!.currentHourMeter!
+                                      .toStringAsFixed(0),
+                                ),
+                              ]),
+                            ],
+                          ),
+                          Table(
+                            columnWidths: {
+                              0: FlexColumnWidth(3),
+                              1: FlexColumnWidth(3),
+                            },
+                            border: TableBorder.all(),
+                            children: [
+                              TableRow(children: [
+                                // InsiteTableRowItem(
+                                //   title: "Current Hour Meter : ",
+                                //   content: widget.assetData!.currentHourMeter!
+                                //       .toStringAsFixed(0),
+                                // ),
+                                InsiteTableRowItem(
+                                  title: "Device Id :",
+                                  content: widget.assetData!.deviceSerialNumber,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Column(
+                                    // mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Table(
-                                        columnWidths: {
-                                          0: FlexColumnWidth(1),
-                                          1: FlexColumnWidth(2),
-                                          2: FlexColumnWidth(1),
-                                          3: FlexColumnWidth(1),
-                                          4: FlexColumnWidth(1),
-                                          5: FlexColumnWidth(1),
-                                        },
-                                        border: TableBorder.all(),
-                                        children: List.generate(
-                                            viewModel.services.length, (index) {
-                                          Services? services =
-                                              viewModel.services[index];
-                                          return TableRow(children: [
-                                            // InsiteTextWithPadding(
-                                            //   padding: EdgeInsets.all(8),
-                                            //   text: services!.serviceName,
-                                            //   size: 12,
-                                            // ),
-                                            InsiteRichText(
-                                              content: services!.serviceName,
-                                              onTap: () {
-                                                // serviceName!.clear();
-
-                                                widget.serviceCalBack!(
-                                                    services.serviceId,
-                                                    viewModel.assetDataValue!,
-                                                    viewModel.services);
-                                              },
-                                              title: " ",
-                                            ),
-                                            InsiteButton(
-                                              title: services
-                                                  .dueInfo!.serviceStatus,
-                                              padding: EdgeInsets.all(8),
-                                              margin: EdgeInsets.all(8),
-                                              bgColor: Utils.getFaultColor(
-                                                  "fault.severityLabel"),
-                                              height: 30,
-                                              width: 40,
-                                            ),
-                                            InsiteTextWithPadding(
-                                              padding: EdgeInsets.all(8),
-                                              text: services.nextOccurrence!
-                                                  .toStringAsFixed(0),
-                                              size: 12,
-                                            ),
-                                            InsiteTextWithPadding(
-                                              padding: EdgeInsets.all(8),
-                                              text: services.dueInfo!.dueAt!
-                                                  .toStringAsFixed(0),
-                                              size: 12,
-                                            ),
-                                            InsiteTextWithPadding(
-                                              padding: EdgeInsets.all(8),
-                                              text: services.dueInfo!.dueBy!
-                                                  .abs()
-                                                  .toStringAsFixed(0),
-                                              size: 12,
-                                            ),
-                                            InsiteTextWithPadding(
-                                              padding: EdgeInsets.all(8),
-                                              text: Utils
-                                                  .getLastReportedDateOneUTC(
-                                                      services
-                                                          .dueInfo!.dueDate),
-                                              size: 12,
-                                            ),
-                                            InsiteTextWithPadding(
-                                              padding: EdgeInsets.all(8),
-                                              text: services.serviceType,
-                                              size: 12,
-                                            ),
-                                          ]);
-                                        }),
+                                      // InsiteTableRowItemWithButton(
+                                      //   title: "Maintenance Totals: ",
+                                      //   buttonColor: Utils.getMaintenanceColor(
+                                      //       widget
+                                      //           .assetData!.dueInfo!.serviceStatus),
+                                      //   content: widget.assetData!.dueInfo != null
+                                      //       ? Utils.getFaultLabel(widget
+                                      //           .assetData!.overDueCount
+                                      //           .toString())
+                                      //       : "",
+                                      // ),
+                                      InsiteText(
+                                        text: "Maintenance Totals: ",
                                       ),
-                                      viewModel.loadingMore
-                                          ? Padding(
-                                              padding: EdgeInsets.all(8),
-                                              child: InsiteProgressBar(),
-                                            )
-                                          : SizedBox(),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          InsiteButton(
+                                            title: Utils.getMaintenanceCount(widget
+                                                            .assetData!
+                                                            .maintenanceTotals)
+                                                        .first
+                                                        .count ==
+                                                    0
+                                                ? "-"
+                                                : Utils.getMaintenanceCount(widget
+                                                        .assetData!
+                                                        .maintenanceTotals)
+                                                    .first
+                                                    .count
+                                                    .toString(),
+
+                                            bgColor: Colors.yellow.shade400,
+                                            width: 50,
+                                            //height: 20,
+                                            //textColor: Colors.white,
+                                          ),
+                                          InsiteButton(
+                                            title: Utils.getMaintenanceCount(widget
+                                                            .assetData!
+                                                            .maintenanceTotals)
+                                                        .last
+                                                        .count ==
+                                                    0
+                                                ? "-"
+                                                : Utils.getMaintenanceCount(widget
+                                                        .assetData!
+                                                        .maintenanceTotals)
+                                                    .last
+                                                    .count
+                                                    .toString(),
+                                            bgColor: Colors.red.shade400,
+                                            width: 50,
+                                            // height: 20,
+                                            //textColor: Colors.white,
+                                          )
+                                        ],
+                                      ),
+
+                                      // InsiteText(
+                                      //   text: widget.assetData!.upcomingCount
+                                      //       .toString(),
+                                      // )
                                     ],
                                   ),
                                 ),
-                              ),
-                            )
-                          : SizedBox(),
-                    ],
+                              ]),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      onExpansionChanged: (value) {
+                        //viewModel.onExpanded();
+                      },
+                      initiallyExpanded: false,
+                      tilePadding: EdgeInsets.all(0),
+                      // children: [
+                      //   Table(
+                      //     columnWidths: {
+                      //       0: FlexColumnWidth(3),
+                      //       1: FlexColumnWidth(3),
+                      //     },
+                      //     border: TableBorder.all(),
+                      //     children: [
+                      //       TableRow(children: [
+                      //         InsiteTableRowItem(
+                      //           title: "Current Hour Meter : ",
+                      //           content: widget.assetData!.currentHourMeter!
+                      //               .toStringAsFixed(0),
+                      //         ),
+                      //       ]),
+                      //     ],
+                      //   ),
+                      //   viewModel.refreshing
+                      //       ? Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: InsiteProgressBar(),
+                      //         )
+                      //       : SizedBox(),
+                      //   viewModel.services.isNotEmpty
+                      //       ? Table(
+                      //           columnWidths: {
+                      //             0: FlexColumnWidth(1),
+                      //             1: FlexColumnWidth(1),
+                      //             2: FlexColumnWidth(1),
+                      //             3: FlexColumnWidth(1),
+                      //             4: FlexColumnWidth(1),
+                      //             5: FlexColumnWidth(1),
+                      //           },
+                      //           border: TableBorder.all(),
+                      //           children: [
+                      //             TableRow(children: [
+                      //               InsiteTextWithPadding(
+                      //                 padding: EdgeInsets.all(8),
+                      //                 text: "Service",
+                      //                 size: 12,
+                      //               ),
+                      //               InsiteTextWithPadding(
+                      //                 padding: EdgeInsets.all(8),
+                      //                 text: "Service Status",
+                      //                 size: 12,
+                      //               ),
+                      //               InsiteTextWithPadding(
+                      //                 padding: EdgeInsets.all(8),
+                      //                 text: "Service Interval",
+                      //                 size: 12,
+                      //               ),
+                      //               InsiteTextWithPadding(
+                      //                 padding: EdgeInsets.all(8),
+                      //                 text: "Due At",
+                      //                 size: 12,
+                      //               ),
+                      //               InsiteTextWithPadding(
+                      //                 padding: EdgeInsets.all(8),
+                      //                 text: "Due In/ Overdue By",
+                      //                 size: 12,
+                      //               ),
+                      //               InsiteTextWithPadding(
+                      //                 padding: EdgeInsets.all(8),
+                      //                 text: "Due Date",
+                      //                 size: 12,
+                      //               ),
+                      //               InsiteTextWithPadding(
+                      //                 padding: EdgeInsets.all(8),
+                      //                 text: "Service Type",
+                      //                 size: 12,
+                      //               ),
+                      //             ]),
+                      //           ],
+                      //         )
+                      //       : SizedBox(),
+                      //   viewModel.services.isNotEmpty
+                      //       ? Container(
+                      //           height: 200,
+                      //           child: Scrollbar(
+                      //             isAlwaysShown: true,
+                      //             child: SingleChildScrollView(
+                      //               controller: viewModel.scrollController,
+                      //               child: Column(
+                      //                 children: [
+                      //                   Table(
+                      //                     columnWidths: {
+                      //                       0: FlexColumnWidth(1),
+                      //                       1: FlexColumnWidth(2),
+                      //                       2: FlexColumnWidth(1),
+                      //                       3: FlexColumnWidth(1),
+                      //                       4: FlexColumnWidth(1),
+                      //                       5: FlexColumnWidth(1),
+                      //                     },
+                      //                     border: TableBorder.all(),
+                      //                     children: List.generate(
+                      //                         viewModel.services.length, (index) {
+                      //                       Services? services =
+                      //                           viewModel.services[index];
+                      //                       return TableRow(children: [
+                      //                         // InsiteTextWithPadding(
+                      //                         //   padding: EdgeInsets.all(8),
+                      //                         //   text: services!.serviceName,
+                      //                         //   size: 12,
+                      //                         // ),
+                      //                         InsiteRichText(
+                      //                           content: services!.serviceName,
+                      //                           onTap: () {
+                      //                             // serviceName!.clear();
+
+                      //                             widget.serviceCalBack!(
+                      //                                 services.serviceId,
+                      //                                 viewModel.assetDataValue!,
+                      //                                 viewModel.services);
+                      //                           },
+                      //                           title: " ",
+                      //                         ),
+                      //                         InsiteButton(
+                      //                           title: services
+                      //                               .dueInfo!.serviceStatus,
+                      //                           padding: EdgeInsets.all(8),
+                      //                           margin: EdgeInsets.all(8),
+                      //                           bgColor: Utils.getFaultColor(
+                      //                               "fault.severityLabel"),
+                      //                           height: 30,
+                      //                           width: 40,
+                      //                         ),
+                      //                         InsiteTextWithPadding(
+                      //                           padding: EdgeInsets.all(8),
+                      //                           text: services.nextOccurrence!
+                      //                               .toStringAsFixed(0),
+                      //                           size: 12,
+                      //                         ),
+                      //                         InsiteTextWithPadding(
+                      //                           padding: EdgeInsets.all(8),
+                      //                           text: services.dueInfo!.dueAt!
+                      //                               .toStringAsFixed(0),
+                      //                           size: 12,
+                      //                         ),
+                      //                         InsiteTextWithPadding(
+                      //                           padding: EdgeInsets.all(8),
+                      //                           text: services.dueInfo!.dueBy!
+                      //                               .abs()
+                      //                               .toStringAsFixed(0),
+                      //                           size: 12,
+                      //                         ),
+                      //                         InsiteTextWithPadding(
+                      //                           padding: EdgeInsets.all(8),
+                      //                           text: Utils
+                      //                               .getLastReportedDateOneUTC(
+                      //                                   services
+                      //                                       .dueInfo!.dueDate),
+                      //                           size: 12,
+                      //                         ),
+                      //                         InsiteTextWithPadding(
+                      //                           padding: EdgeInsets.all(8),
+                      //                           text: services.serviceType,
+                      //                           size: 12,
+                      //                         ),
+                      //                       ]);
+                      //                     }),
+                      //                   ),
+                      //                   viewModel.loadingMore
+                      //                       ? Padding(
+                      //                           padding: EdgeInsets.all(8),
+                      //                           child: InsiteProgressBar(),
+                      //                         )
+                      //                       : SizedBox(),
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         )
+                      //       : SizedBox(),
+                      // ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -336,4 +397,10 @@ class _MaintenanceAssetListItemState extends State<MaintenanceAssetListItem> {
       viewModelBuilder: () => MaintenanceItemDetailViewModel(widget.assetData),
     );
   }
+}
+
+class MaitenanceTotal {
+  int? count;
+  MAINTENANCETOTAL? total;
+  MaitenanceTotal({this.count, this.total});
 }

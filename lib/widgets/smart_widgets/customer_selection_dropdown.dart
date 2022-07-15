@@ -55,7 +55,7 @@ class _AccountSelectionDropDownWidgetState
         setState(() {});
       } else {
         _displayList = _list;
-        setState(() {});
+        //  setState(() {});
       }
     }
   }
@@ -138,13 +138,21 @@ class _AccountSelectionDropDownWidgetState
                           ? Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: SearchBox(
-                                //controller: _textEditingController,
-                                hint: "Search",
-                                onTextChanged: onSearchTextChanged
-                                // (value) {
-                                //   widget.onChange!(value);
-                                // },
-                              ),
+                                  //controller: _textEditingController,
+                                  hint: "Search",
+                                  onTextChanged: (value) {
+                                    if (value != null &&
+                                        value.trim().isNotEmpty) {
+                                      onSearchTextChanged(value);
+                                    } else {
+                                      _displayList = _list;
+                                      //setState(() {});
+                                    }
+                                  }
+                                  // (value) {
+                                  //   widget.onChange!(value);
+                                  // },
+                                  ),
                             )
                           : SizedBox(),
                       showList

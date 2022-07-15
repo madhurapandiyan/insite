@@ -58,6 +58,7 @@ class AppbarViewModel extends InsiteViewModel {
     } else {
       if (screenType != ScreenType.HOME) {
         _navigationService.replaceWith(homeViewRoute);
+        _localStorageService.clearAll();
       }
     }
   }
