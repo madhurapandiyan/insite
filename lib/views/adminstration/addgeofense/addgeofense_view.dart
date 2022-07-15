@@ -22,7 +22,7 @@ class AddgeofenseView extends StatefulWidget {
 }
 
 class _AddgeofenseViewState extends State<AddgeofenseView> {
-  Color pickerColor = tango;
+  Color pickerColor = white;
   Color? currentColor;
   void endDatePicker(AddgeofenseViewModel model) {
     showDatePicker(
@@ -173,7 +173,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                             InsiteButton(
                                                 title: "",
                                                 bgColor: viewModel.isSearching
-                                                    ? tango
+                                                    ? Theme.of(context).buttonColor
                                                     : tuna,
                                                 onTap: () {
                                                   setState(() {
@@ -189,7 +189,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                 ? InsiteButton(
                                                     bgColor: viewModel
                                                             .isDrawingPolygon
-                                                        ? tango
+                                                        ? Theme.of(context).buttonColor
                                                         : tuna,
                                                     title: "",
                                                     onTap: viewModel.polygon!
@@ -237,7 +237,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                 children: [
                                                   uid == null
                                                       ? InsiteButton(
-                                                          bgColor: tuna,
+                                                          bgColor: Theme.of(context).buttonColor,
                                                           title: "",
                                                           onTap: viewModel
                                                                       .polygon!

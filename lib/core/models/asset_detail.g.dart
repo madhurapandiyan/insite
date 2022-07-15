@@ -8,6 +8,7 @@ part of 'asset_detail.dart';
 
 AssetDetail _$AssetDetailFromJson(Map<String, dynamic> json) => AssetDetail(
       json['assetUid'] as String?,
+      json['assetId'] as String?,
       json['assetSerialNumber'] as String?,
       (json['hourMeter'] as num?)?.toDouble(),
       json['lifetimeFuel'],
@@ -20,7 +21,7 @@ AssetDetail _$AssetDetailFromJson(Map<String, dynamic> json) => AssetDetail(
       json['lastReportedTimeUtc'] as String?,
       json['lastLocationUpdateUtc'] as String?,
       json['percentDEFRemaining'],
-      (json['lifetimeDEFLiters'] as num?)?.toDouble(),
+      json['lifetimeDEFLiters'],
       json['manufacturer'] as String?,
       (json['devices'] as List<dynamic>?)
           ?.map((e) => Device.fromJson(e as Map<String, dynamic>))
@@ -47,6 +48,7 @@ AssetDetail _$AssetDetailFromJson(Map<String, dynamic> json) => AssetDetail(
 Map<String, dynamic> _$AssetDetailToJson(AssetDetail instance) =>
     <String, dynamic>{
       'assetUid': instance.assetUid,
+      'assetId': instance.assetId,
       'assetSerialNumber': instance.assetSerialNumber,
       'makeCode': instance.makeCode,
       'manufacturer': instance.manufacturer,
