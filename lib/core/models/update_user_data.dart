@@ -4,8 +4,9 @@ part 'update_user_data.g.dart';
 @JsonSerializable()
 class UpdateResponse {
   final bool? isUpdated;
+  final bool? isDeleted;
 
-  UpdateResponse({this.isUpdated});
+  UpdateResponse({this.isUpdated, this.isDeleted});
 
   factory UpdateResponse.fromJson(Map<String, dynamic> json) =>
       _$UpdateResponseFromJson(json);

@@ -223,7 +223,7 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<CheckUserResponse> checkUser(String mail) async {
+  Future<CheckUserResponse?> checkUser(String mail) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
@@ -240,10 +240,15 @@ class AssetAdminManagerUserService extends BaseService {
                 ? ""
                 : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
-        Logger().w(data.data);
-        CheckUserResponse responce =
-            CheckUserResponse.fromJson(data.data["userEmail"]);
-        return responce;
+        if (data.data["userEmail"] != null) {
+          CheckUserResponse responce = CheckUserResponse(
+              users: (data.data["userEmail"]["users"] as List?)
+                  ?.map((e) => Users(userUid: e["userUid"]))
+                  .toList());
+          return responce;
+        } else {
+          return null;
+        }
       }
       if (isVisionLink) {
         CheckUserResponse response = await MyApi()
@@ -287,21 +292,21 @@ class AssetAdminManagerUserService extends BaseService {
       } else {
         var application1 = Application(
             iconUrl:
-                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insitefleet/",
+                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insitefleet/app.png",
             name: "InSite Fleet",
             enabled: true,
             tpaasAppName: "Frame-Fleet-IND",
             appUID: "f03001b8-ea9f-11e5-88ba-0a4c287ff82f");
         var application2 = Application(
             iconUrl:
-                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteservice/",
+                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteservice/app.png",
             name: "InSite Service",
             enabled: true,
             tpaasAppName: "Frame-Service-IND",
             appUID: "b5fe5c50-9c5f-11e7-b46d-0645f4ae660c");
         var application3 = Application(
             iconUrl:
-                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteadministrator/",
+                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteadministrator/app.png",
             name: "InSite Administrator",
             enabled: true,
             tpaasAppName: "Frame-Administrator-IND",
@@ -311,17 +316,18 @@ class AssetAdminManagerUserService extends BaseService {
         applications.add(application2);
         applications.add(application3);
         return ApplicationData(applications: applications);
-        Map<String, String?> queryMap = Map();
-        if (accountSelected != null) {
-          queryMap["CustomerUID"] = accountSelected!.CustomerUID;
-        }
-        ApplicationData adminManageUserResponse = await MyApi()
-            .getClientSeven()!
-            .getApplicationsData(
-                Urls.applicationsUrl +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
-        return adminManageUserResponse;
+
+        // Map<String, String?> queryMap = Map();
+        // if (accountSelected != null) {
+        //   queryMap["CustomerUID"] = accountSelected!.CustomerUID;
+        // }
+        // ApplicationData adminManageUserResponse = await MyApi()
+        //     .getClientSeven()!
+        //     .getApplicationsData(
+        //         Urls.applicationsUrl +
+        //             FilterUtils.constructQueryFromMap(queryMap),
+        //         accountSelected!.CustomerUID);
+        // return adminManageUserResponse;
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -704,8 +710,12 @@ class AssetAdminManagerUserService extends BaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query: graphqlSchemaService!
-                .getAssetSettingData(pageNumber, pageSize, deviceTypeSelected),
+            query: graphqlSchemaService!.getAssetSettingData(
+                pageNumber,
+                pageSize,
+                deviceTypeSelected,
+                searchKeyword,
+                searchKeyword.isEmpty ? "" : "assetSerialNumber"),
             customerId: accountSelected?.CustomerUID,
             subId: customerSelected?.CustomerUID == null
                 ? ""
@@ -960,11 +970,11 @@ class AssetAdminManagerUserService extends BaseService {
       var data = await Network().getGraphqlData(
           query: graphqlSchemaService!.getAssetListData(assetUid),
           customerId: accountSelected?.CustomerUID,
-          subId: customerSelected?.CustomerUID??"",
+          subId: customerSelected?.CustomerUID ?? "",
           userId: (await _localService!.getLoggedInUser())!.sub);
-          
+
       AssetListSettings assetData = AssetListSettings.fromJson(data.data);
-      
+
       return assetData;
     }
   }
@@ -985,7 +995,7 @@ class AssetAdminManagerUserService extends BaseService {
                 legacyAssetID: assetsetting.legacyAssetID,
                 modelYear: assetsetting.modelYear),
             customerId: accountSelected?.CustomerUID,
-            subId: customerSelected?.CustomerUID??"",
+            subId: customerSelected?.CustomerUID ?? "",
             userId: (await _localService!.getLoggedInUser())!.sub);
       }
       if (isVisionLink) {

@@ -60,144 +60,144 @@ class _NotificationViewState extends State<NotificationView> {
                         SizedBox(
                           height: 20,
                         ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 21.0),
-                                child: InsiteText(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InsiteText(
                                   text:
                                       "Notifications ( ${viewModel.assets.length.toString()} of ${viewModel.totalCount})",
                                   size: 14,
                                   fontWeight: FontWeight.w700,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  // InsiteText(
-                                  //     text: Utils.getDateInFormatddMMyyyy(
-                                  //             viewModel.startDate) +
-                                  //         " - " +
-                                  //         Utils.getDateInFormatddMMyyyy(
-                                  //             viewModel.endDate),
-                                  //     fontWeight: FontWeight.bold,
-                                  //     size: 11),
-                                  // SizedBox(
-                                  //   width: 4,
-                                  // ),
-                                  InsiteButton(
-                                    title: Utils.getDateInFormatddMMyyyy(
-                                            viewModel.startDate) +
-                                        " - " +
-                                        Utils.getDateInFormatddMMyyyy(
-                                            viewModel.endDate),
-                                    //  bgColor: Theme.of(context).backgroundColor,
-                                    textColor: white,
-                                    onTap: () async {
-                                      dateRange = [];
-                                      dateRange = await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            Dialog(
-                                                backgroundColor: transparent,
-                                                child: DateRangeView()),
-                                      );
-                                      viewModel.startDate =
-                                          dateRange!.first.toString();
-                                      viewModel.endDate =
-                                          dateRange!.last.toString();
-                                      viewModel.refresh();
-                                    },
-                                  ),
-                                ],
-                              ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    // InsiteText(
+                                    //     text: Utils.getDateInFormatddMMyyyy(
+                                    //             viewModel.startDate) +
+                                    //         " - " +
+                                    //         Utils.getDateInFormatddMMyyyy(
+                                    //             viewModel.endDate),
+                                    //     fontWeight: FontWeight.bold,
+                                    //     size: 11),
+                                    // SizedBox(
+                                    //   width: 4,
+                                    // ),
+                                    InsiteButton(
+                                      title: Utils.getDateInFormatddMMyyyy(
+                                              viewModel.startDate) +
+                                          " - " +
+                                          Utils.getDateInFormatddMMyyyy(
+                                              viewModel.endDate),
+                                      //  bgColor: Theme.of(context).backgroundColor,
+                                      textColor: white,
+                                      onTap: () async {
+                                        dateRange = [];
+                                        dateRange = await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              Dialog(
+                                                  backgroundColor: transparent,
+                                                  child: DateRangeView()),
+                                        );
+                                        viewModel.startDate =
+                                            dateRange!.first.toString();
+                                        viewModel.endDate =
+                                            dateRange!.last.toString();
+                                        viewModel.refresh();
+                                      },
+                                    ),
+                                  ],
+                                ),
 
-                              // Padding(
-                              //   padding: const EdgeInsets.only(right: 10.0),
-                              //   child: Row(
-                              //     children: [
-                              //       viewModel.showDelete
-                              //           ? ClipRRect(
-                              //               borderRadius: BorderRadius.only(
-                              //                 topLeft: Radius.circular(10),
-                              //                 topRight: Radius.circular(10),
-                              //                 bottomRight: Radius.circular(10),
-                              //                 bottomLeft: Radius.circular(10),
-                              //               ),
-                              //               child: InsiteButton(
-                              //                 title: "RESOLVE",
-                              //                 onTap: () {
-                              //                   viewModel.onItemDeselect();
-                              //                 },
-                              //                 // icon: Icon(
-                              //                 //   Icons.edit,
-                              //                 //   color: appbarcolor,
-                              //                 // )
-                              //               ),
-                              //             )
-                              //           : SizedBox(),
-                              //       SizedBox(
-                              //         width: 10,
-                              //       ),
-                              //       viewModel.showDelete
-                              //           ? ClipRRect(
-                              //               borderRadius: BorderRadius.only(
-                              //                 topLeft: Radius.circular(10),
-                              //                 topRight: Radius.circular(10),
-                              //                 bottomRight: Radius.circular(10),
-                              //                 bottomLeft: Radius.circular(10),
-                              //               ),
-                              //               child: InsiteButton(
-                              //                   title: "",
-                              //                   onTap: () {
-                              //                     // viewModel
-                              //                     //     .onDeleteClicked(context);
-                              //                   },
-                              //                   icon: Icon(
-                              //                     Icons.delete_outline,
-                              //                     color: appbarcolor,
-                              //                   )),
-                              //             )
-                              //           : SizedBox(),
-                              //       SizedBox(
-                              //         width: 10,
-                              //       ),
-                              //       viewModel.showDeSelect
-                              //           ? ClipRRect(
-                              //               borderRadius: BorderRadius.only(
-                              //                 topLeft: Radius.circular(10),
-                              //                 topRight: Radius.circular(10),
-                              //                 bottomRight: Radius.circular(10),
-                              //                 bottomLeft: Radius.circular(10),
-                              //               ),
-                              //               child: InsiteButton(
-                              //                   title: "",
-                              //                   onTap: () {
-                              //                     viewModel.onItemDeselect();
-                              //                   },
-                              //                   icon: Icon(
-                              //                     Icons.close,
-                              //                     color: appbarcolor,
-                              //                   )),
-                              //             )
-                              //           : SizedBox(),
-                              //       !viewModel.showDeSelect &&
-                              //               !viewModel.showDelete &&
-                              //               !viewModel.showEdit
-                              //           ? Container()
-                              //           : SizedBox(),
-                              //       SizedBox(
-                              //         width: 10,
-                              //       )
-                              //     ],
-                              //   ),
-                              // )
-                            ]),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(right: 10.0),
+                                //   child: Row(
+                                //     children: [
+                                //       viewModel.showDelete
+                                //           ? ClipRRect(
+                                //               borderRadius: BorderRadius.only(
+                                //                 topLeft: Radius.circular(10),
+                                //                 topRight: Radius.circular(10),
+                                //                 bottomRight: Radius.circular(10),
+                                //                 bottomLeft: Radius.circular(10),
+                                //               ),
+                                //               child: InsiteButton(
+                                //                 title: "RESOLVE",
+                                //                 onTap: () {
+                                //                   viewModel.onItemDeselect();
+                                //                 },
+                                //                 // icon: Icon(
+                                //                 //   Icons.edit,
+                                //                 //   color: appbarcolor,
+                                //                 // )
+                                //               ),
+                                //             )
+                                //           : SizedBox(),
+                                //       SizedBox(
+                                //         width: 10,
+                                //       ),
+                                //       viewModel.showDelete
+                                //           ? ClipRRect(
+                                //               borderRadius: BorderRadius.only(
+                                //                 topLeft: Radius.circular(10),
+                                //                 topRight: Radius.circular(10),
+                                //                 bottomRight: Radius.circular(10),
+                                //                 bottomLeft: Radius.circular(10),
+                                //               ),
+                                //               child: InsiteButton(
+                                //                   title: "",
+                                //                   onTap: () {
+                                //                     // viewModel
+                                //                     //     .onDeleteClicked(context);
+                                //                   },
+                                //                   icon: Icon(
+                                //                     Icons.delete_outline,
+                                //                     color: appbarcolor,
+                                //                   )),
+                                //             )
+                                //           : SizedBox(),
+                                //       SizedBox(
+                                //         width: 10,
+                                //       ),
+                                //       viewModel.showDeSelect
+                                //           ? ClipRRect(
+                                //               borderRadius: BorderRadius.only(
+                                //                 topLeft: Radius.circular(10),
+                                //                 topRight: Radius.circular(10),
+                                //                 bottomRight: Radius.circular(10),
+                                //                 bottomLeft: Radius.circular(10),
+                                //               ),
+                                //               child: InsiteButton(
+                                //                   title: "",
+                                //                   onTap: () {
+                                //                     viewModel.onItemDeselect();
+                                //                   },
+                                //                   icon: Icon(
+                                //                     Icons.close,
+                                //                     color: appbarcolor,
+                                //                   )),
+                                //             )
+                                //           : SizedBox(),
+                                //       !viewModel.showDeSelect &&
+                                //               !viewModel.showDelete &&
+                                //               !viewModel.showEdit
+                                //           ? Container()
+                                //           : SizedBox(),
+                                //       SizedBox(
+                                //         width: 10,
+                                //       )
+                                //     ],
+                                //   ),
+                                // )
+                              ]),
+                        ),
                         SizedBox(
                           height: 10,
                         ),
