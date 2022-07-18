@@ -42,8 +42,14 @@ class PlantHeirarchyAssetService extends BaseService {
         queryMap["OEM"] = "VEhD";
       }
       if (enableGraphQl) {
-        var data = await Network()
-            .getGraphqlPlantData(query: query, customerId: "THC");
+        var data = await Network().getGraphqlPlantData(
+          query: query,
+          customerId: "THC",
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
         Logger().w(data.data["frameSubscription"]);
         return HierarchyAssets.fromJson(data.data["frameSubscription"]);
       } else {
@@ -67,15 +73,21 @@ class PlantHeirarchyAssetService extends BaseService {
   }
 
   Future<AssetCreationResponse?>? getAssetCreationData(
-      String machineSerialNumber,query) async {
+      String machineSerialNumber, query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["oemName"] = "THC";
       queryMap["machineSerialNumber"] = machineSerialNumber;
       if (enableGraphQl) {
-           var data = await Network()
-            .getGraphqlPlantData(query: query, customerId: "THC");
-            return AssetCreationResponse.fromJson(data.data);
+        var data = await Network().getGraphqlPlantData(
+          query: query,
+          customerId: "THC",
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return AssetCreationResponse.fromJson(data.data);
       } else {
         AssetCreationResponse assetCreationResponse = await MyApi()
             .getClientSix()!
@@ -94,8 +106,14 @@ class PlantHeirarchyAssetService extends BaseService {
     Map<String, String> queryMap = Map();
     queryMap["oemName"] = "THC";
     if (enableGraphQl) {
-      var data =
-          await Network().getGraphqlPlantData(query: query, customerId: "THC");
+      var data = await Network().getGraphqlPlantData(
+        query: query,
+        customerId: "THC",
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
       return AssetCreationResetData.fromJson(data.data);
     } else {
       if (isVisionLink) {

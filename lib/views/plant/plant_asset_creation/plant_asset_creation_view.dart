@@ -95,22 +95,20 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InsiteText(
-                        size: 14,
-                        fontWeight: FontWeight.w700,
-                        text: "1. Enter Details",
-                      ),
-                      InsiteText(
-                        size: 14,
-                        fontWeight: FontWeight.w700,
-                        text: "2.Validation",
-                      ),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InsiteText(
+                      size: 14,
+                      fontWeight: FontWeight.w700,
+                      text: "1. Enter Details",
+                    ),
+                    InsiteText(
+                      size: 14,
+                      fontWeight: FontWeight.w700,
+                      text: "2.Validation",
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 20,
@@ -118,7 +116,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                 Stack(
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.90,
+                      width: MediaQuery.of(context).size.width * 0.85,
                       height: MediaQuery.of(context).size.height * 0.02,
                       decoration: BoxDecoration(
                         color: Theme.of(context).backgroundColor,
@@ -129,14 +127,16 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      height: MediaQuery.of(context).size.height * 0.02,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).buttonColor,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                    AnimatedContainer(
+                        duration: Duration(seconds: 1),
+                        height: MediaQuery.of(context).size.height * 0.02,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).buttonColor,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        width: viewModel.screenOne
+                            ? MediaQuery.of(context).size.width * 0.85
+                            : MediaQuery.of(context).size.width * 0.4),
                   ],
                 ),
                 SizedBox(
@@ -145,34 +145,30 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                 Expanded(
                   flex: 1,
                   child: PageView(
+                    physics: NeverScrollableScrollPhysics(),
                     controller: viewModel.pageController,
                     children: [
                       Form(
                         key: viewModel.formKeyScreenOne,
                         child: ListView.builder(
-                            itemCount:
-                                viewModel.assetCreationListData.length,
+                            itemCount: viewModel.assetCreationListData.length,
                             padding: EdgeInsets.all(8),
                             itemBuilder: (context, index) {
                               final dataModel =
                                   viewModel.assetCreationListData[index];
-                
+
                               return AssetCreationWidget(
-                                voidCallback: () {
-                                
-                                },
+                                voidCallback: () {},
                                 data: dataModel,
                                 onAssetSerialValueChange: (String value) {
                                   viewModel.getAssetSerialListValue(
                                       value.toUpperCase(), index);
                                 },
                                 onDeviceIdValueChange: (String value) {
-                                  viewModel.getDeviceIdListValue(
-                                      value, index);
+                                  viewModel.getDeviceIdListValue(value, index);
                                 },
                                 onHourMeterValueChange: (String value) {
-                                  viewModel.getHrsMeterListValue(
-                                      value, index);
+                                  viewModel.getHrsMeterListValue(value, index);
                                 },
                               );
                             }),
@@ -180,13 +176,12 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                       Form(
                         key: viewModel.formKeyScreenTwo,
                         child: ListView.builder(
-                            itemCount:
-                                viewModel.assetCreationListData.length,
+                            itemCount: viewModel.assetCreationListData.length,
                             padding: EdgeInsets.all(8),
                             itemBuilder: (context, index) {
                               final assetCreationData =
                                   viewModel.assetCreationListData[index];
-                
+
                               return AssetCreationValidationWidget(
                                 data: assetCreationData,
                                 voidCallback: () {

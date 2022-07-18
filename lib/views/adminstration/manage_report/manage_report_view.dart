@@ -73,6 +73,7 @@ class ManageReportView extends StatelessWidget {
                                   padding: const EdgeInsets.only(right: 10.0),
                                   child: InsiteButton(
                                     title: "Report Templates",
+                                    textColor: white,
                                     onTap: () {
                                       viewModel.onClickedTemplatePage();
                                     },

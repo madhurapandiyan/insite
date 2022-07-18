@@ -26,6 +26,8 @@ class PlantDashboardViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  int? totalcount;
+
   List<double?> _results = [];
   List<double?> get results => _results;
 
@@ -56,16 +58,23 @@ class PlantDashboardViewModel extends InsiteViewModel {
               graphqlSchemaService!.getPlantDashboardandCalendarData());
       if (result != null) {
         if (enableGraphQl) {
+          totalcount = result.plantDispatchSummary!.subscriptionEnded! +
+              result.plantDispatchSummary!.yetToBeActivated! +
+              result.plantDispatchSummary!.activeSubscription!;
           statusChartData.clear();
-         statusChartData.add(ChartSampleData(
-              x: names[1], y: (result.plantDispatchSummary!.activeSubscription), z: "active"));
           statusChartData.add(ChartSampleData(
-              x: names[2], y: (result.plantDispatchSummary!.yetToBeActivated), z: "inactive"));
+              x: names[1],
+              y: (result.plantDispatchSummary!.activeSubscription),
+              z: "active"));
+          statusChartData.add(ChartSampleData(
+              x: names[2],
+              y: (result.plantDispatchSummary!.yetToBeActivated),
+              z: "inactive"));
           statusChartData.add(ChartSampleData(
               x: names[3],
               y: (result.plantDispatchSummary!.yetToBeActivated),
               z: "subscriptionendasset"));
-           activatedChartData.clear();
+          activatedChartData.clear();
           activatedChartData.add(ChartSampleData(
               x: "Today",
               y: (result.plantDispatchSummary!.assetActivationByDay),

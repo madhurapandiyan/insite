@@ -35,6 +35,8 @@ class PlantAssetCreationViewModel extends InsiteViewModel {
 
   String? assetSerialValue;
 
+    
+
   String? deviceValue;
 
   String? hourMeterValue;

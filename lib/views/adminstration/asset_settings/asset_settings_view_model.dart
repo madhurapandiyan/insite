@@ -7,6 +7,7 @@ import 'package:insite/core/models/device_type.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/asset_settings_filter_view.dart';
 import 'package:insite/views/adminstration/asset_settings_configure/asset_settings_configure_view.dart';
+import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -20,11 +21,13 @@ class AssetSettingsViewModel extends InsiteViewModel {
   List<String> deviceTypeList = ["ALL"];
   String deviceTypeSelected = "ALL";
 
-  onDeviceTypeSelected(value) {
+  onDeviceTypeSelected(value) async {
+    showLoadingDialog();
     deviceTypeSelected = value;
     notifyListeners();
     pageNumber = 1;
-    getAssetSettingListData();
+    await getAssetSettingListData();
+    hideLoadingDialog();
   }
 
   int pageSize = 20;
@@ -49,6 +52,8 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
   List<AssetSettingsRow> _assets = [];
   List<AssetSettingsRow> get asset => _assets;
+
+  List<AssetSettingsRow> searchAsset = [];
 
   bool _loading = true;
   bool get loading => _loading;
@@ -94,21 +99,20 @@ class AssetSettingsViewModel extends InsiteViewModel {
         _totalCount = result.pageInfo!.totalRecords!;
       }
       if (!loadingMore) {
-        _assets.clear();
+        _assets = [];
       }
       for (var assetSetting in result.assetSettings!) {
         _assets.add(
             AssetSettingsRow(assetSettings: assetSetting, isSelected: false));
       }
+      searchAsset = _assets;
+      Logger().wtf(searchAsset.length);
       _loading = false;
       _loadingMore = false;
       _isRefreshing = false;
+
       notifyListeners();
     } else {
-      for (var assetSetting in result!.assetSettings!) {
-        _assets.add(
-            AssetSettingsRow(assetSettings: assetSetting, isSelected: false));
-      }
       _loading = false;
       _loadingMore = false;
       _isRefreshing = false;
@@ -124,17 +128,44 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   searchAssets(String searchValue) {
+    Logger().i(searchAsset.length);
     pageNumber = 1;
-    if (debounce != null) debounce!.cancel();
-    debounce = Timer(Duration(seconds: 2), () {
-      _searchKeyword = searchValue;
-      getAssetSettingListData();
-    });
+    if (textEditingController.text.length >= 4) {
+      if (debounce?.isActive ?? false) {
+        debounce!.cancel();
+      }
+      debounce = Timer(Duration(seconds: 2), () async {
+        showLoadingDialog();
+        _assets = [];
+        await getSearchListAssetData();
+        hideLoadingDialog();
+      });
+    } else {
+      _assets = [];
+      _assets.addAll(searchAsset);
+      _totalCount = searchAsset.length;
+      notifyListeners();
+    }
   }
 
-  updateSearchDataToEmpty() {
-    _assets = [];
-    // notifyListeners();
+  getSearchListAssetData() async {
+    ManageAssetConfiguration? result =
+        await _manageUserService.getAssetSettingData(
+            20, 1, textEditingController.text, deviceTypeSelected);
+    if (result != null && result.assetSettings!.isNotEmpty) {
+      if (result.pageInfo != null) {
+        _totalCount = result.pageInfo!.totalRecords!;
+      }
+      for (var assetSetting in result.assetSettings!) {
+        _assets.add(
+            AssetSettingsRow(assetSettings: assetSetting, isSelected: false));
+      }
+      notifyListeners();
+    } else {
+      _assets = [];
+      _totalCount = 0;
+      notifyListeners();
+    }
   }
 
   _loadMore() {

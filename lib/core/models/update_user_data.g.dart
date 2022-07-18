@@ -9,11 +9,13 @@ part of 'update_user_data.dart';
 UpdateResponse _$UpdateResponseFromJson(Map<String, dynamic> json) =>
     UpdateResponse(
       isUpdated: json['isUpdated'] as bool?,
+      isDeleted: json['isDeleted'] as bool?,
     );
 
 Map<String, dynamic> _$UpdateResponseToJson(UpdateResponse instance) =>
     <String, dynamic>{
       'isUpdated': instance.isUpdated,
+      'isDeleted': instance.isDeleted,
     };
 
 DeleteUserData _$DeleteUserDataFromJson(Map<String, dynamic> json) =>
