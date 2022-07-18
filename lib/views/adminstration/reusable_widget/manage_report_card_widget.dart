@@ -34,18 +34,18 @@ class ManageReportCardWidget extends StatelessWidget {
                   onTap: () {
                     voidCallback!();
                   },
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: scheduledReportsRow!.isSelected!
-                              ? Theme.of(context).buttonColor
-                              : Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Icon(
-                        Icons.crop_square,
-                        color: scheduledReportsRow!.isSelected!
-                            ? Theme.of(context).buttonColor
-                            : Colors.black,
-                      )),
+                  child:scheduledReportsRow!.isSelected!
+                            ? Icon(
+                                Icons.check_box_rounded,
+                                color: Theme.of(context).buttonColor,
+                              )
+                            : Icon(
+                                Icons.check_box_outline_blank,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color,
+                              ),
                 ),
               ],
             ),

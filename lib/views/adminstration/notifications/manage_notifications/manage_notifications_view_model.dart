@@ -100,10 +100,8 @@ class ManageNotificationsViewModel extends InsiteViewModel {
     Logger().i("deleteSelectedUsers");
 
     showLoadingDialog();
-    List<String> uids = [];
-    uids.add(alertId!);
     var result = await _notificationService!.deleteManageNotification(
-        alertId, _graphqlSchemaService!.deleteNotification(uids));
+        alertId, _graphqlSchemaService!.deleteNotification(alertId!));
     if (result != null) {
       await onRemovedSelectedNotification(index!);
       snackbarService!.showSnackbar(message: "Deleted successfully");

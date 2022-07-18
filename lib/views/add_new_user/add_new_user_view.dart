@@ -138,11 +138,10 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               SizedBox(
                                 height: 20,
                               ),
-                              CustomTextBoxWithName(
+                              CustomTextBox(
                                 controller: viewModel.phoneNumberController,
                                 title: "Phone number",
-                                text: "Optional",
-                                textInputType: TextInputType.phone,
+                                keyPadType: TextInputType.phone,
                               ),
                               SizedBox(
                                 height: 27,
@@ -278,7 +277,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: InsiteText(
-                                  text: "Job Type :",
+                                  text: "Job Type : ( Optional )",
                                   size: 14,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -308,7 +307,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               SizedBox(
                                 height: 20,
                               ),
-                              Align(
+                            /*  Align(
                                 alignment: Alignment.topLeft,
                                 child: InsiteText(
                                   text: "Job Title :",
@@ -341,10 +340,11 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               SizedBox(
                                 height: 20,
                               ),
+                              */
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: InsiteText(
-                                  text: "Address :",
+                                  text: "Address : ( Optional )",
                                   size: 14,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -389,40 +389,40 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               SizedBox(
                                 height: 20,
                               ),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: InsiteText(
-                                  text: "Language :",
-                                  size: 14,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(width: 1, color: black),
-                                    shape: BoxShape.rectangle,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
-                                    child: CustomDropDownWidget(
-                                      items: viewModel.languageTypeValueList,
-                                      onChanged: (String? value) {
-                                        unfocus();
-                                        viewModel
-                                            .onlanguageTypeValueSelected(value);
-                                      },
-                                      value: viewModel.languageTypeValue,
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: 20,
-                              ),
+                              // Align(
+                              //   alignment: Alignment.topLeft,
+                              //   child: InsiteText(
+                              //     text: "Language :",
+                              //     size: 14,
+                              //     fontWeight: FontWeight.w700,
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
+                              // Container(
+                              //     height:
+                              //         MediaQuery.of(context).size.height * 0.05,
+                              //     decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(10.0),
+                              //       border: Border.all(width: 1, color: black),
+                              //       shape: BoxShape.rectangle,
+                              //     ),
+                              //     child: Padding(
+                              //       padding: const EdgeInsets.only(left: 10.0),
+                              //       child: CustomDropDownWidget(
+                              //         items: viewModel.languageTypeValueList,
+                              //         onChanged: (String? value) {
+                              //           unfocus();
+                              //           viewModel
+                              //               .onlanguageTypeValueSelected(value);
+                              //         },
+                              //         value: viewModel.languageTypeValue,
+                              //       ),
+                              //     )),
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
                               // Padding(
                               //   padding: const EdgeInsets.only(left: 53.0),
                               //   child: Align(

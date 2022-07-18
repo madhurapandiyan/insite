@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
@@ -51,6 +52,7 @@ class GraphqlSchemaService extends BaseService {
   List<String> serviceStatusList = [];
   List<String> serviceTypeList = [];
   List<String> assetTypeList = [];
+  String doubleQuote = "\"";
 
   getReportFilterindividualList(
       {List<FilterData?>? filtlerList,
@@ -86,7 +88,6 @@ class GraphqlSchemaService extends BaseService {
       {List<FilterData?>? filtlerList,
       FilterType? type,
       List<String>? individualList}) {
-    String doubleQuote = "\"";
     var data = filtlerList!.where((element) => element?.type == type).toList();
     data.forEach((element) {
       // Logger().w(element?.toJson());
@@ -1815,6 +1816,13 @@ lastLocationUpdateUTC
         value
         unit
       }
+      siteOperands {
+        operandID,
+        operandName,
+        geoFenceID,
+        geoFenceUID,
+        name
+      }
       allAssetsInd
     }
     links {
@@ -2302,6 +2310,8 @@ mutation{
       List<Operand>? operand,
       List<Schedule>? schedule,
       List<String>? assetId,
+      List<String>? geofenceId,
+      dynamic siteOperand,
       NotificationSubscribers? notificationSubscribers}) {
     var data = """
 mutation{
@@ -2319,9 +2329,9 @@ operands:${Utils.getOperand(operand)}
 notificationTypeId: $notificationTypeId
 numberOfOccurences: $numberOfOccurences
 notificationDeliveryChannel:"$notificationDeliveryChannel"
-geofenceUIDs: null
+geofenceUIDs: ${geofenceId!.isNotEmpty ? Utils.getStringListData(geofenceId) : null}
 assetGroupUIDs: null
-siteOperands: null
+siteOperands: $siteOperand
 switchOperand: null
 zones: null
   ){
@@ -2585,15 +2595,14 @@ zones {
     return data;
   }
 
-  String deleteNotification(List<String> uids) {
+  String deleteNotification(String uids) {
     var data = """
 mutation{
-  deleteNotification(
-    notificationUID:${Utils.getStringListData(uids)}
+  deleteNotificationAlertConfig(
+    alertConfigUID:${doubleQuote + uids + doubleQuote}
   ){
-    successCount,
-    failureCount,
-    status
+    isDeleted,
+    
   }
 }""";
     return data;
@@ -2665,7 +2674,10 @@ mutation{
     return data;
   }
 
-  getAssetSettingData(int pageNo, int pageSize, String deviceType) {
+  getAssetSettingData(int pageNo, int pageSize, String deviceType,
+      String searchWord, String filterName) {
+    Logger().w(searchWord.isEmpty);
+    Logger().w(filterName.isEmpty);
     var data = """
 query{
   assetSettingsGrid(
@@ -2673,8 +2685,8 @@ query{
 endDate:""
 pageNumber:$pageNo
 pageSize: $pageSize
-filterName: ""
-filterValue: ""
+filterName: ${filterName.isEmpty ? doubleQuote + doubleQuote : doubleQuote + filterName + doubleQuote},
+filterValue: ${searchWord.isEmpty ? doubleQuote + doubleQuote : doubleQuote + searchWord + doubleQuote}
 sortColumn: ""
 deviceType: ${deviceType == "ALL" ? "\"\"" : "${"\"" + deviceType + "\""}"}
   ){
@@ -3171,4 +3183,5 @@ mutation{
 }""";
     return data;
   }
+ 
 }

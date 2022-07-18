@@ -89,9 +89,13 @@ class NotificationService extends BaseService {
             ? ""
             : customerSelected?.CustomerUID,
       );
-      NotificationsData? notificationsData =
-          NotificationsData.fromJson(data.data["seeAllNotificationList"]);
-      return notificationsData;
+      if (data.data["seeAllNotificationList"] != null) {
+        NotificationsData? notificationsData =
+            NotificationsData.fromJson(data.data["seeAllNotificationList"]);
+        return notificationsData;
+      } else {
+        return null;
+      }
     }
     if (isVisionLink) {
       try {
@@ -431,9 +435,9 @@ class NotificationService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
-        Logger().w(data);
-        UpdateResponse updateResponse =
-            UpdateResponse.fromJson(data.data["deleteNotification"]);
+
+        UpdateResponse updateResponse = UpdateResponse(
+            isDeleted: data.data["deleteNotificationAlertConfig"]["isDeleted"]);
         return updateResponse;
       }
       if (isVisionLink) {

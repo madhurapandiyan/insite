@@ -78,7 +78,8 @@ class PercentageWidget extends StatelessWidget {
                     size: 12,
                     fontWeight: FontWeight.bold,
                   ),
-            percent: percentage == null ? 0.0 :double.parse(percentage.toString()) ,
+            percent:
+                percentage == null ? 0.0 : double.parse(percentage.toString()),
             linearStrokeCap: LinearStrokeCap.butt,
             progressColor: color,
             backgroundColor: concrete,
@@ -124,8 +125,9 @@ class CustomPercentageWidget extends StatelessWidget {
                 text: label,
               ),
               InsiteText(
-                text: trailText,
-              ),
+                  text: trailText == "null" || trailText == null
+                      ? ""
+                      : trailText),
             ],
           ),
           SizedBox(
