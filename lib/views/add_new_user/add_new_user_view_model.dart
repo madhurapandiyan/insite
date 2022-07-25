@@ -53,7 +53,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   ];
 
   List<String> jobTypeList = [
-    "-Employee",
+    "Employee",
     "Non-Employee",
   ];
 
@@ -164,21 +164,24 @@ class AddNewUserViewModel extends InsiteViewModel {
         return;
       }
       showLoadingDialog();
-      CheckUserResponse response =
+      CheckUserResponse? response =
           await _manageUserService.checkUser(emailController.text);
+      Logger().w(response?.users?.first.userUid);
       if (response != null) {
         if (response.users != null && response.users!.isNotEmpty) {
-          snackbarService!.showSnackbar(message: "User is already available");
-          _enableAdd = false;
-        } else {
-          _enableAdd = true;
+          if (response.users!.any((element) => element.userUid != null)) {
+            snackbarService!.showSnackbar(message: "User is already available");
+            _enableAdd = false;
+          } else {
+            _enableAdd = true;
+          }
         }
-        hideLoadingDialog();
       } else {
-        _enableAdd = false;
-        snackbarService!.showSnackbar(message: "Checking user details failed");
-        hideLoadingDialog();
+        _enableAdd = true;
+        //snackbarService!.showSnackbar(message: "Checking user details failed");
       }
+      notifyListeners();
+      hideLoadingDialog();
     } on DioError catch (e) {
       Logger().e(e.type);
       hideLoadingDialog();
@@ -380,7 +383,7 @@ class AddNewUserViewModel extends InsiteViewModel {
           email: email,
           phoneNumber: phoneNumber,
           jobTitle: jobTitle,
-          jobType: jobType == "-Employee" ? 1 : 2,
+          jobType: jobType == "Employee" ? 1 : 2,
           address: address,
           state: state,
           country: country,

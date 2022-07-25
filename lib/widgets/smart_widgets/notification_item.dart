@@ -8,6 +8,7 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:insite/core/models/main_notification.dart' as main_notification;
+import 'package:logger/logger.dart';
 
 class NotificationItem extends StatelessWidget {
   final notification.Notification? notifications;
@@ -21,6 +22,7 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final jsonValue = jsonDecode(notifications!.notificationConfigJSON);
+    Logger().wtf("notifications : $jsonValue");
 
     return GestureDetector(
       onTap: () {
@@ -105,7 +107,9 @@ class NotificationItem extends StatelessWidget {
                         ),
                         InsiteTableRowItem(
                           title: "Hour Mtr.",
-                          content: jsonValue["HourMeter"].toStringAsFixed(2),
+                          content: jsonValue["HourMeter"] == null
+                              ? " "
+                              : jsonValue["HourMeter"].toStringAsFixed(2),
                         ),
                       ],
                     ),

@@ -36,7 +36,7 @@ void main() async {
     enableLogin: true,
     enalbeNativeLogin: false,
     isProd: false,
-    enableGraphql: true,
+    enableGraphql: false,
   );
 
   await LocatorInjector.setUpLocator();

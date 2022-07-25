@@ -154,11 +154,12 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                         controller: viewModel.textEditingController,
                         title: "Search assets",
                         onChanged: (searchText) {
-                          if (searchText.isNotEmpty) {
-                            viewModel.searchAssets(searchText);
-                          } else {
-                            viewModel.updateSearchDataToEmpty();
-                          }
+                          viewModel.searchAssets(searchText);
+                          // if (searchText.isNotEmpty) {
+
+                          // } else {
+                          //   viewModel.updateSearchDataToEmpty();
+                          // }
                         },
                       ),
                     ),
@@ -185,8 +186,10 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                                   },
                                 ),
                               )
-                            : EmptyView(
-                                title: "No assets found",
+                            : Expanded(
+                                child: EmptyView(
+                                  title: "No assets found",
+                                ),
                               ),
                     viewModel.loadingMore
                         ? Padding(

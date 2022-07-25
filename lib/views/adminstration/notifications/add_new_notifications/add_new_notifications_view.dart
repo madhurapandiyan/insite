@@ -610,7 +610,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                       children: [
                                                                         MultiSelectionDropDownWidget(
                                                                           initialValue:
-                                                                              "${viewModel.selectedList.length} Geofence Selected",
+                                                                              "${viewModel.selectedList!.length} Geofence Selected",
                                                                           items:
                                                                               viewModel.geoenceData,
                                                                           onConform:

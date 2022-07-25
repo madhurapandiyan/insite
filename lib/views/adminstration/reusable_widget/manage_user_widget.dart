@@ -32,18 +32,15 @@ class ManageUserWidget extends StatelessWidget {
                   // SizedBox(
                   //   height: 20,
                   // ),
-                  Container(
-                      decoration: BoxDecoration(
-                          color: user!.isSelected
-                              ? Theme.of(context).buttonColor
-                              : Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Icon(
-                        Icons.crop_square,
-                        color: user!.isSelected
-                            ? Theme.of(context).buttonColor
-                            : Colors.black,
-                      )),
+                  user!.isSelected
+                      ? Icon(
+                          Icons.check_box_rounded,
+                          color: Theme.of(context).buttonColor,
+                        )
+                      : Icon(
+                          Icons.check_box_outline_blank,
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
                 ],
               ),
             ),
@@ -69,10 +66,10 @@ class ManageUserWidget extends StatelessWidget {
                       content: user!.user!.loginId,
                     ),
                     InsiteTableRowItem(
-                        title: "Created At",
-                        content: Utils.getDateInFormatddMMyyyy(
-                            user!.user!.createdOn),
-                      ),
+                      title: "Created At",
+                      content:
+                          Utils.getDateInFormatddMMyyyy(user!.user!.createdOn),
+                    ),
                   ]),
                   TableRow(children: [
                     InsiteTableRowItem(
@@ -109,10 +106,7 @@ class ManageUserWidget extends StatelessWidget {
                         title: 'Created By',
                         content: user!.user!.createdBy,
                       ),
-                      InsiteTableRowItem(
-                        title: "",
-                        content: ""
-                      ),
+                      InsiteTableRowItem(title: "", content: ""),
                     ])
                   ],
                 )
