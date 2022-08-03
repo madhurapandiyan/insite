@@ -281,17 +281,17 @@ class _DashboardViewState extends State<DashboardView> {
                     SizedBox(
                       height: 20.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: MaintenanceDashBoard(
-                        countData: viewModel.maintenanceDashboardCount,
-                        isLoading: viewModel.maintenanceLoading,
-                        onFilterSelected: (val, filterType, count) {
-                          viewModel.onMaintenanceFilterClicked(
-                              val, filterType, count);
-                        },
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    //   child: MaintenanceDashBoard(
+                    //     countData: viewModel.maintenanceDashboardCount,
+                    //     isLoading: viewModel.maintenanceLoading,
+                    //     onFilterSelected: (val, filterType, count) {
+                    //       viewModel.onMaintenanceFilterClicked(
+                    //           val, filterType, count);
+                    //     },
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: GoogleMapHomeWidget(
