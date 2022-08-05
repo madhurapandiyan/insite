@@ -200,7 +200,7 @@ class DashboardViewModel extends InsiteViewModel {
     getIdlingLevelData(false, null);
     getUtilizationSummary();
     getFaultCountData();
-    getMaintenanceCountData();
+    //getMaintenanceCountData();
     _refreshing = false;
     // notifyListeners();
   }
@@ -221,7 +221,7 @@ class DashboardViewModel extends InsiteViewModel {
     getFuelLevelData();
     getUtilizationSummary();
     getFaultCountData();
-    getMaintenanceCountData();
+    //getMaintenanceCountData();
     await getIdlingLevelData(false, null);
     _refreshing = false;
     notifyListeners();

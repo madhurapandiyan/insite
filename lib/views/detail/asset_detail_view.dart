@@ -60,58 +60,58 @@ class _TabPageState extends State<AssetDetailView> {
 
   List<Category> typeOne = [
     Category(
-      1,
+      0,
       "DASHBOARD",
       "assets/images/clock.svg",
       ScreenType.DASHBOARD,
     ),
     Category(
-      2,
+      1,
       "UTILIZATION",
       "assets/images/supportmanager.svg",
       ScreenType.UTILIZATION,
     ),
     Category(
-      3,
+      2,
       "ASSET OPERATION",
       "assets/images/assetmanager.svg",
       ScreenType.ASSET_OPERATION,
     ),
     Category(
-      4,
+      3,
       "LOCATION",
       "assets/images/location.svg",
       ScreenType.LOCATION,
     ),
     Category(
-      5,
+      4,
       "HEALTH",
       "assets/images/health.svg",
       ScreenType.HEALTH,
     ),
-    Category(
-      6,
-      "MAINTENANCE",
-      "assets/images/maintenance.svg",
-      ScreenType.HEALTH,
-    ),
+    // Category(
+    //   5,
+    //   "MAINTENANCE",
+    //   "assets/images/maintenance.svg",
+    //   ScreenType.HEALTH,
+    // ),
   ];
 
   List<Category> typeTwo = [
     Category(
-      1,
+      0,
       "DASHBOARD",
       "assets/images/clock.svg",
       ScreenType.DASHBOARD,
     ),
     Category(
-      2,
+      1,
       "HEALTH",
       "assets/images/health.svg",
       ScreenType.HEALTH,
     ),
     Category(
-      3,
+      2,
       "LOCATION",
       "assets/images/location.svg",
       ScreenType.LOCATION,
@@ -290,7 +290,7 @@ class _TabPageState extends State<AssetDetailView> {
                                   children:
                                       List.generate(typeTwo.length, (index) {
                                     Category category = typeTwo[index];
-                                    return _tabcontainer(index, category);
+                                    return _tabcontainer(category.id, category);
                                   }),
                                 ),
                               ],
