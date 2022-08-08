@@ -56,8 +56,6 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   }
 
   getSubcriptionDeviceListData() async {
-    
-
     if (enableGraphQl) {
       if (filter == "CUSTOMER" ||
           filter == "PLANT" ||
@@ -85,45 +83,92 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
         _loadingMore = false;
         notifyListeners();
       } else {
-        Logger().wtf(filter);
-        result = await _subscriptionService!.getSubscriptionDeviceListData(
-            filter: filter,
-            start: start == 0 ? start : start + 1,
-            limit: limit,
-            filterType: filterType,
-            query: graphqlSchemaService!
-                .getPlantDashboardAndHierarchyListData(limit, start, filter));
-        if (result!.subscriptionFleetList != null) {
-          Logger().i(
-              result!.subscriptionFleetList!.provisioningInfo!.first.toJson());
-          start = start + limit;
-          devices.clear();
-          for (var i = 0;
-              i < result!.subscriptionFleetList!.provisioningInfo!.length;
-              i++) {
-            var items = result!.subscriptionFleetList!.provisioningInfo![i];
-            DetailResult fleetListData = DetailResult(
-                GPSDeviceID: items.gpsDeviceID,
-                VIN: items.vin,
-                Model: items.model,
-                ProductFamily: items.productFamily,
-                NetworkProvider: items.networkProvider,
-                DealerName: items.dealerName,
-                DealerCode: items.dealerCode,
-                CustomerName: items.customerName,
-                CustomerCode: items.customerCode,
-                Status: items.status,
-                Description: items.description);
-            devices.add(fleetListData);
+        if (filter == "active" ||
+            filter == "inactive" ||
+            filter == "subscriptionendasset") {
+          result = await _subscriptionService!.getSubscriptionDeviceListData(
+              filter: filter,
+              start: start == 0 ? start : start + 1,
+              limit: limit,
+              filterType: filterType,
+              query: graphqlSchemaService!
+                  .getPlantDashboardAndHierarchyListData(limit, start, filter));
+          if (result!.subscriptionFleetList != null) {
+            Logger().i(result!.subscriptionFleetList!.provisioningInfo!.first
+                .toJson());
+            start = start + limit;
+            devices.clear();
+            for (var i = 0;
+                i < result!.subscriptionFleetList!.provisioningInfo!.length;
+                i++) {
+              var items = result!.subscriptionFleetList!.provisioningInfo![i];
+              DetailResult fleetListData = DetailResult(
+                  GPSDeviceID: items.gpsDeviceID,
+                  VIN: items.vin,
+                  Model: items.model,
+                  ProductFamily: items.productFamily,
+                  NetworkProvider: items.networkProvider,
+                  DealerName: items.dealerName,
+                  DealerCode: items.dealerCode,
+                  CustomerName: items.customerName,
+                  CustomerCode: items.customerCode,
+                  Status: items.status,
+                  Description: items.description);
+              devices.add(fleetListData);
+            }
+            _loading = false;
+            _loadingMore = false;
+            notifyListeners();
+          } else {
+            _loading = false;
+            _loadingMore = false;
+            _shouldLoadmore = false;
+            notifyListeners();
           }
           _loading = false;
           _loadingMore = false;
           notifyListeners();
         } else {
-          _loading = false;
-          _loadingMore = false;
-          _shouldLoadmore = false;
-          notifyListeners();
+          result = await _subscriptionService!.getSubscriptionDeviceListData(
+              filter: filter,
+              start: start == 0 ? start : start + 1,
+              limit: limit,
+              filterType: filterType,
+              query: graphqlSchemaService!
+                  .getPlantDashboardAndHierarchyCalendarListData(
+                      limit, start, filter));
+          if (result!.subscriptionFleetList != null) {
+            Logger().i(result!.subscriptionFleetList!.provisioningInfo!.first
+                .toJson());
+            start = start + limit;
+            devices.clear();
+            for (var i = 0;
+                i < result!.subscriptionFleetList!.provisioningInfo!.length;
+                i++) {
+              var items = result!.subscriptionFleetList!.provisioningInfo![i];
+              DetailResult fleetListData = DetailResult(
+                  GPSDeviceID: items.gpsDeviceID,
+                  VIN: items.vin,
+                  Model: items.model,
+                  ProductFamily: items.productFamily,
+                  NetworkProvider: items.networkProvider,
+                  DealerName: items.dealerName,
+                  DealerCode: items.dealerCode,
+                  CustomerName: items.customerName,
+                  CustomerCode: items.customerCode,
+                  Status: items.status,
+                  Description: items.description);
+              devices.add(fleetListData);
+            }
+            _loading = false;
+            _loadingMore = false;
+            notifyListeners();
+          } else {
+            _loading = false;
+            _loadingMore = false;
+            _shouldLoadmore = false;
+            notifyListeners();
+          }
         }
       }
     } else {
@@ -139,10 +184,6 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
         _shouldLoadmore = false;
         notifyListeners();
       }
-
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
     }
   }
 

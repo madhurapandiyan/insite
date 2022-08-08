@@ -3341,7 +3341,43 @@ maintenanceIntervals(
         subscriptionFleetList(
             limit:$limit,
             start:$start,
-            status:"$status"
+            status:"$status",
+            
+        ){
+            count,
+            provisioningInfo{
+              gpsDeviceID,
+
+              model,
+              vin
+              productFamily,
+              customerCode,
+              dealerName,
+              dealerCode,
+              customerName,
+              status,
+              description,
+              networkProvider
+
+
+      }
+
+
+            }
+            }
+        }""";
+    return data;
+  }
+
+   String getPlantDashboardAndHierarchyCalendarListData(
+      int? limit, int? start, String? status) {
+    var data = """query{
+    frameSubscription{
+        subscriptionFleetList(
+            limit:$limit,
+            start:$start,
+            calendar:"$status"
+            
         ){
             count,
             provisioningInfo{
