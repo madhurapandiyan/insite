@@ -41,7 +41,7 @@ class DeviceListItem extends StatelessWidget {
                   ],
                 ),
               ),
-              BaseService().enableGraphQl
+              enableGraphQl
                   ? Expanded(
                       child: InsiteExpansionTile(
                       title: Table(

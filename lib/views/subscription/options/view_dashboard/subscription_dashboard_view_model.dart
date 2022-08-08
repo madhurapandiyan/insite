@@ -72,7 +72,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
   List<String> get filters => _filters;
 
   getSubscriptionDashboardData() async {
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       DashboardData? data = await _subscriptionService!
           .getGraphQlApiFromSubscription(
               graphqlSchemaService!.getSubscriptionDashboardResult());

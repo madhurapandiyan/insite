@@ -102,7 +102,7 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                   //margin: EdgeInsets.all(8),
                   // height: 50,
                   color: white,
-                  child: BaseService().enableGraphQl
+                  child: enableGraphQl
                       ? Column(
                           children: List.generate(
                               widget.modelData!.provisioningInfo.length,
@@ -168,7 +168,7 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
               ),
-              BaseService().enableGraphQl
+              enableGraphQl
                   ? InsiteButton(
                       textColor: Theme.of(context).textTheme.bodyText1!.color,
                       onTap:

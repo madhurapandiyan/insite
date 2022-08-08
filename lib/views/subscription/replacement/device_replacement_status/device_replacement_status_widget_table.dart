@@ -39,7 +39,7 @@ class ReplacementStatusTableWidget extends StatelessWidget {
                 //     ],
                 //   ),
                 // ),
-                BaseService().enableGraphQl
+                enableGraphQl
                     ? Expanded(
                         child: InsiteExpansionTile(
                           childrenPadding: EdgeInsets.all(10),

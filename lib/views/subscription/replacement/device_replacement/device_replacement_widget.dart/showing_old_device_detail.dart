@@ -72,7 +72,7 @@ class ShowingOldDeviceDetail extends StatelessWidget {
                       children: List.generate(
                           searchList.length,
                           (i) => SingleChildScrollView(
-                                child: BaseService().enableGraphQl
+                                child: enableGraphQl
                                     ? DeviceIdListWidget(
                                         onSelected: () {
                                           onSelectedDeviceId!(i);

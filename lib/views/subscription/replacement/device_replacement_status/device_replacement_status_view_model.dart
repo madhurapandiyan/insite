@@ -44,7 +44,7 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
 
   getTotalDeviceReplacementStatusModel() async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         totalDeviceReplacementStatusModel = await replacementService!
             .getReplacementDataDetails(graphqlSchemaService!
                 .getReplacementDetails(start: 1, limit: 100));

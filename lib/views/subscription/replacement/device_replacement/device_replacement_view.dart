@@ -156,7 +156,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                           ),
                           viewModel.searchingOldDeviceId
                               ? Card(
-                                  child: BaseService().enableGraphQl
+                                  child: enableGraphQl
                                       ? ShowingOldDeviceDetail(
                                           onSearching: () {
                                             if (viewModel.searchTextController
@@ -265,7 +265,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                               ? Card(
                                   child: Padding(
                                     padding: const EdgeInsets.all(20),
-                                    child: BaseService().enableGraphQl
+                                    child: enableGraphQl
                                         ? GettingNewDeviceId(
                                             onBackPressed: () {
                                               controller.animateToPage(1,
@@ -366,7 +366,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         top: 20, left: 10, right: 10),
-                                    child: BaseService().enableGraphQl
+                                    child: enableGraphQl
                                         ? ShowingNewDeviceDetail(
                                             onBackPressed: () {
                                               viewModel.onBackPressed();

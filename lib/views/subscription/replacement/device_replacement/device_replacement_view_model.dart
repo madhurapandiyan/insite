@@ -98,7 +98,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         notifyListeners();
         return null;
       } else {
-        if (BaseService().enableGraphQl) {
+        if (enableGraphQl) {
           SubscriptionDeviceFleetList? deviceFleetList =
               await replacementService!.getSearchedDeviceDetails(
                   graphqlSchemaService!
@@ -135,7 +135,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   onSelectedDeviceId(int i) {
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       searchTextController.text = searchList[i].gpsDeviceID!;
       checkingDeviceIdEnter = true;
       searchList.clear();
@@ -149,7 +149,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   onSelectedNewDeviceId(int i) {
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       replaceDeviceIdController.text =
           _replaceDeviceModelData!.provisioningInfo![i].gpsDeviceID!;
       checkingNewDeviceIdEnter = false;
@@ -173,7 +173,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         Fluttertoast.showToast(msg: "Enter valid device id");
         return false;
       } else {
-        if (BaseService().enableGraphQl) {
+        if (enableGraphQl) {
           showLoadingDialog();
           _searchList.clear();
           _deviceSearchModelResponse = await replacementService!
@@ -217,7 +217,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         checkingNewDeviceIdEnter = false;
         notifyListeners();
       } else {
-        if (BaseService().enableGraphQl) {
+        if (enableGraphQl) {
           _replaceDeviceModelData = await replacementService!
               .getSearchedDeviceDetails(graphqlSchemaService!
                   .getDeviceIdReplacement(searchWord, "inactive"));

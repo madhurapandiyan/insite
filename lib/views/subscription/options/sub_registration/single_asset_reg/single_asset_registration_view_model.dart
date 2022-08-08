@@ -384,7 +384,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   getSubcriptionDeviceListData(
       {required String name, int? code, String? type}) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         _detailResult.clear();
         _gpsDeviceId.clear();
         if (name.length >= 3) {
@@ -466,7 +466,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   getModelNamebySerialNumber(String value) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         if (value.length >= 7) {
           ModelResult? modelResult = await _subscriptionService!
               .getDeviceModelNameBySerialNumber(
@@ -536,7 +536,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   getSubscriptionModelData() async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         DashboardData? data = await _subscriptionService!
             .getGraphQlApiFromSubscription(
                 graphqlSchemaService!.getSubscriptionDashboardResult());
@@ -637,7 +637,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   onSelectedDeviceId(String? value) {
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       subscriptionFleetList!.provisioningInfo!.forEach((element) {
         if (element!.gpsDeviceID == value) {
           deviceIdController.text = element.gpsDeviceID!;
@@ -659,7 +659,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   onSelectedNameTile(String value) {
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       _devices.forEach((element) {
         if (element.name == value) {
           customerNameController.text = element.name!;
@@ -684,7 +684,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onSelectedDealerNameTile(String value) {
     Logger().i(_devices.length);
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       _devices.forEach((element) {
         if (element.name == value) {
           deviceNameController.text = element.name!;
@@ -708,7 +708,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   }
 
   onSelectedDealerCodeTile(String value) {
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       _devices.forEach((element) {
         if (element.code == value) {
           deviceNameController.text = element.name!;
@@ -733,7 +733,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onSelectedCodeTile(String value) {
     Logger().e(value);
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       _devices.forEach((element) {
         Logger().wtf(value);
         if (element.code == value) {
@@ -760,7 +760,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onCustomerNameChanges({String? name, String? type, int? code}) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         detailResultList.clear();
         if (name == null || name.isEmpty) {
           Future.delayed(Duration(seconds: 3), () {
@@ -840,7 +840,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onDealerNameChanges({String? name, String? type, int? code}) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         detailResultList.clear();
         if (name == null || name.isEmpty) {
           Future.delayed(Duration(seconds: 3), () {
@@ -922,7 +922,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onDealerCodeChanges({String? name, String? type, dynamic code}) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         detailResultList.clear();
         if (name == null || name.isEmpty) {
           Future.delayed(Duration(seconds: 3), () {
@@ -1005,7 +1005,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onCustomerCodeChanges({String? name, String? type, int? code}) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         detailResultList.clear();
         if (name == null || name.isEmpty) {
           Future.delayed(Duration(seconds: 3), () {

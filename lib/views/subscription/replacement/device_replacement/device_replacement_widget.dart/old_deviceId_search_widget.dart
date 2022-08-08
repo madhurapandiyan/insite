@@ -77,7 +77,7 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
                                 spreadRadius: 0.2)
                           ]),
                       child: SingleChildScrollView(
-                        child: BaseService().enableGraphQl
+                        child: enableGraphQl
                             ? Column(
                                 children: List.generate(
                                     searchList.length,

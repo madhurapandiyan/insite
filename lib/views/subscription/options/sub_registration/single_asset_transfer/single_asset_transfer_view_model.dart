@@ -678,7 +678,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onSelectedNameTile(String value) {
     Logger().i(_devices.length);
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       _devices.forEach((element) {
         if (element.name == value) {
           dealerNameController.text = element.name!;
@@ -703,7 +703,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onSelectedCodeTile(String value) {
     Logger().i(_devices.length);
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       _devices.forEach((element) {
         if (element.name == value) {
           dealerNameController.text = element.name!;
@@ -728,7 +728,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onSelectedDealerNameTile(String value) {
     Logger().i(_devices.length);
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       _devices.forEach((element) {
         if (element.name == value) {
           dealerNameController.text = element.name!;
@@ -753,7 +753,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onSelectedDealerCodeTile(String value) {
     Logger().i(_devices.length);
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       _devices.forEach((element) {
         if (element.name == value) {
           dealerNameController.text = element.name!;
@@ -778,7 +778,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onSelectedDeviceId(String value) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         showLoadingDialog();
         deviceDetailsPerIdGraphql = await _subscriptionService!
             .getDeviceDetailsbyIdGraphql(
@@ -955,7 +955,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onCustomerNameChanges({String? name, String? type, int? code}) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         detailResultList.clear();
         if (name == null || name.isEmpty) {
           Future.delayed(Duration(seconds: 3), () {
@@ -1037,7 +1037,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onCustomerCodeChanges({String? name, String? type, int? code}) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         detailResultList.clear();
         if (name == null || name.isEmpty) {
           Future.delayed(Duration(seconds: 3), () {
@@ -1120,7 +1120,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onDealerNameChanges({String? name, String? type, int? code}) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         detailResultList.clear();
         if (name == null || name.isEmpty) {
           Future.delayed(Duration(seconds: 3), () {
@@ -1200,7 +1200,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onDealerCodeChanges({String? name, String? type, dynamic code}) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         detailResultList.clear();
         if (name == null || name.isEmpty) {
           Future.delayed(Duration(seconds: 3), () {
@@ -1384,7 +1384,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   getDeviceIds(String text) async {
     try {
-      if (BaseService().enableGraphQl) {
+      if (enableGraphQl) {
         DeviceIdValues? deviceData = await _subscriptionService!
             .getAssetTransferDeviceIds(graphqlSchemaService!
                 .getDeviceIdTransfer(

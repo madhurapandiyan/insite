@@ -60,7 +60,7 @@ class FleetStatusViewModel extends InsiteViewModel {
   }
 
   getFleetStatusData() async {
-    if (BaseService().enableGraphQl) {
+    if (enableGraphQl) {
       Logger().i("getFleetStatusData");
       fleetProvisionStatus = await _subscriptionService!.getFleetDataGraphql(
           graphqlSchemaService!.getSubscriptionFleetData(start, limit));
