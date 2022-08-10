@@ -6,6 +6,21 @@ part of 'subscription_fleet_graphql.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+SubscriptionFleetGraph _$SubscriptionFleetGraphFromJson(
+        Map<String, dynamic> json) =>
+    SubscriptionFleetGraph(
+      fleetProvisionStatus: json['fleetProvisionStatus'] == null
+          ? null
+          : FleetProvisionStatus.fromJson(
+              json['fleetProvisionStatus'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$SubscriptionFleetGraphToJson(
+        SubscriptionFleetGraph instance) =>
+    <String, dynamic>{
+      'fleetProvisionStatus': instance.fleetProvisionStatus,
+    };
+
 FleetProvisionStatus _$FleetProvisionStatusFromJson(
         Map<String, dynamic> json) =>
     FleetProvisionStatus(

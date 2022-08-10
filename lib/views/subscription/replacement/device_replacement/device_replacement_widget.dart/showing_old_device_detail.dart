@@ -72,14 +72,7 @@ class ShowingOldDeviceDetail extends StatelessWidget {
                       children: List.generate(
                           searchList.length,
                           (i) => SingleChildScrollView(
-                                child: enableGraphQl
-                                    ? DeviceIdListWidget(
-                                        onSelected: () {
-                                          onSelectedDeviceId!(i);
-                                          FocusScope.of(context).unfocus();
-                                        },
-                                        deviceId: searchList[i].gpsDeviceID)
-                                    : DeviceIdListWidget(
+                                child:  DeviceIdListWidget(
                                         onSelected: () {
                                           onSelectedDeviceId!(i);
                                           FocusScope.of(context).unfocus();

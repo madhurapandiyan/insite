@@ -47,7 +47,7 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                                 : "Fleet Status ".toUpperCase() +
                                     "(" +
                                     viewModel.devices.length.toString() +
-                                    " of ${viewModel.subscriptionDashboardDetailResult?.result!.first.first.count == null ? viewModel.fleetProvisionStatus!.count : viewModel.subscriptionDashboardDetailResult!.result!.first.first.count}" +
+                                    " of ${viewModel.subscriptionDashboardDetailResult?.result!.first.first.count == null ? viewModel.fleetProvisionStatus!.fleetProvisionStatus!.count : viewModel.subscriptionDashboardDetailResult!.result!.first.first.count}" +
                                     " )",
                             size: 14,
                             fontWeight: FontWeight.w700,
@@ -89,20 +89,20 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                   Expanded(
                     child: viewModel.loading
                         ? InsiteProgressBar()
-                        : viewModel.devices.isNotEmpty
-                            ? ListView.builder(
-                                padding: EdgeInsets.all(8),
-                                itemCount: viewModel.devices.length,
-                                controller: viewModel.scrollController,
-                                itemBuilder: (context, index) {
-                                  var result = viewModel.devices[index];
-                                  // Logger().i(result!.count);
-                                  return DeviceListItem(
-                                    detailResult: result!,
-                                    onCallback: () {},
-                                  );
-                                },
-                              )
+                        // : viewModel.devices.isNotEmpty
+                        //     ? ListView.builder(
+                        //         padding: EdgeInsets.all(8),
+                        //         itemCount: viewModel.devices.length,
+                        //         controller: viewModel.scrollController,
+                        //         itemBuilder: (context, index) {
+                        //           var result = viewModel.devices[index];
+                        //           // Logger().i(result!.count);
+                        //           return DeviceListItem(
+                        //             detailResult: result!,
+                        //             onCallback: () {},
+                        //           );
+                        //         },
+                        //       )
                             : EmptyView(
                                 title: "No Results",
                               ),

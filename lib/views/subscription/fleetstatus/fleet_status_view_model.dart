@@ -44,7 +44,7 @@ class FleetStatusViewModel extends InsiteViewModel {
   }
   late Logger log;
   SubscriptionDashboardDetailResult? subscriptionDashboardDetailResult;
-  FleetProvisionStatus? fleetProvisionStatus;
+  SubscriptionFleetGraph? fleetProvisionStatus;
 
   _loadMore() {
     log.i("shouldLoadmore and is already loadingMore " +
@@ -61,27 +61,28 @@ class FleetStatusViewModel extends InsiteViewModel {
 
   getFleetStatusData() async {
     if (enableGraphQl) {
-      Logger().i("getFleetStatusData");
+     
       fleetProvisionStatus = await _subscriptionService!.getFleetDataGraphql(
           graphqlSchemaService!.getSubscriptionFleetData(start, limit));
 
-      if (fleetProvisionStatus != null) {
-        if (fleetProvisionStatus!.fleetProvisionStatusInfo!.isNotEmpty) {
-          start = start + limit;
-          devices.addAll(fleetProvisionStatus!.fleetProvisionStatusInfo!);
-          _loading = false;
-          _loadingMore = false;
-          notifyListeners();
-        } else {
-          _loading = false;
-          _loadingMore = false;
-          _shouldLoadmore = false;
-          notifyListeners();
-        }
+      if (fleetProvisionStatus!
+              .fleetProvisionStatus!.fleetProvisionStatusInfo!.isNotEmpty) {
+                Logger().w(fleetProvisionStatus!.fleetProvisionStatus!.fleetProvisionStatusInfo!.first.toJson());
+        start = start + limit;
+        devices.addAll(fleetProvisionStatus!
+            .fleetProvisionStatus!.fleetProvisionStatusInfo!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
+      } else {
+        _loading = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        notifyListeners();
       }
+      _loading = false;
+      _loadingMore = false;
+      notifyListeners();
     } else {
       Logger().i("getFleetStatusData");
       subscriptionDashboardDetailResult =

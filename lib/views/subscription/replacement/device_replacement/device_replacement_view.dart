@@ -156,208 +156,100 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                           ),
                           viewModel.searchingOldDeviceId
                               ? Card(
-                                  child: enableGraphQl
-                                      ? ShowingOldDeviceDetail(
-                                          onSearching: () {
-                                            if (viewModel.searchTextController
-                                                    .text.length <
-                                                4) {
-                                              Fluttertoast.showToast(
-                                                  msg: "Enter valid Device Id");
-                                            } else {
-                                              viewModel
-                                                  .onSearchingDeviceId()
-                                                  .then((value) {
-                                                if (value!) {
-                                                } else {
-                                                  //Logger().e("ma");
-                                                  //  controller.jumpToPage(1);
-                                                }
-                                              });
-                                            }
-                                          },
-                                          searchTextController:
-                                              viewModel.searchTextController,
-                                          onEnteringDeviceId: (value) {
-                                            viewModel.onEnteringDeviceId(value);
-                                          },
-                                          onSelectedDeviceId: (value) {
-                                            viewModel.onSelectedDeviceId(value);
-                                          },
-                                          searchList: viewModel.searchList,
-                                          onNextPressed: () {
-                                            controller.animateToPage(2,
-                                                duration:
-                                                    Duration(milliseconds: 500),
-                                                curve: Curves.easeInOut);
-                                          },
-                                          Vin: viewModel
-                                              .deviceSearchModelResponse!
-                                              .provisioningInfo![0]
-                                              .vin,
-                                          date: viewModel
-                                              .deviceSearchModelResponse!
-                                              .provisioningInfo![0]
-                                              .subscriptionStartDate,
-                                          deviceId: viewModel
-                                              .deviceSearchModelResponse!
-                                              .provisioningInfo![0]
-                                              .gpsDeviceID,
-                                          modelName: viewModel
-                                              .deviceSearchModelResponse!
-                                              .provisioningInfo![0]
-                                              .model,
-                                        )
-                                      : ShowingOldDeviceDetail(
-                                          onSearching: () {
-                                            if (viewModel.searchTextController
-                                                    .text.length <
-                                                4) {
-                                              Fluttertoast.showToast(
-                                                  msg: "Enter valid Device Id");
-                                            } else {
-                                              viewModel
-                                                  .onSearchingDeviceId()
-                                                  .then((value) {
-                                                if (value!) {
-                                                } else {
-                                                  //Logger().e("ma");
-                                                  //  controller.jumpToPage(1);
-                                                }
-                                              });
-                                            }
-                                          },
-                                          searchTextController:
-                                              viewModel.searchTextController,
-                                          onEnteringDeviceId: (value) {
-                                            viewModel.onEnteringDeviceId(value);
-                                          },
-                                          onSelectedDeviceId: (value) {
-                                            viewModel.onSelectedDeviceId(value);
-                                          },
-                                          searchList: viewModel.searchList,
-                                          onNextPressed: () {
-                                            controller.animateToPage(2,
-                                                duration:
-                                                    Duration(milliseconds: 500),
-                                                curve: Curves.easeInOut);
-                                          },
-                                          Vin: viewModel
-                                              .deviceSearchModelResponse!
-                                              .result!
-                                              .VIN,
-                                          date: viewModel
-                                              .deviceSearchModelResponse!
-                                              .result!
-                                              .S_StartDate,
-                                          deviceId: viewModel
-                                              .deviceSearchModelResponse!
-                                              .result!
-                                              .GPSDeviceID,
-                                          modelName: viewModel
-                                              .deviceSearchModelResponse!
-                                              .result!
-                                              .Model,
-                                        ),
+                                  child: ShowingOldDeviceDetail(
+                                    onSearching: () {
+                                      if (viewModel.searchTextController.text
+                                              .length <
+                                          4) {
+                                        Fluttertoast.showToast(
+                                            msg: "Enter valid Device Id");
+                                      } else {
+                                        viewModel
+                                            .onSearchingDeviceId()
+                                            .then((value) {
+                                          if (value!) {
+                                          } else {
+                                            //Logger().e("ma");
+                                            //  controller.jumpToPage(1);
+                                          }
+                                        });
+                                      }
+                                    },
+                                    searchTextController:
+                                        viewModel.searchTextController,
+                                    onEnteringDeviceId: (value) {
+                                      viewModel.onEnteringDeviceId(value);
+                                    },
+                                    onSelectedDeviceId: (value) {
+                                      viewModel.onSelectedDeviceId(value);
+                                    },
+                                    searchList: viewModel.searchList,
+                                    onNextPressed: () {
+                                      controller.animateToPage(2,
+                                          duration: Duration(milliseconds: 500),
+                                          curve: Curves.easeInOut);
+                                    },
+                                    Vin: viewModel
+                                        .deviceSearchModelResponse!.result!.VIN,
+                                    date: viewModel.deviceSearchModelResponse!
+                                        .result!.S_StartDate,
+                                    deviceId: viewModel
+                                        .deviceSearchModelResponse!
+                                        .result!
+                                        .GPSDeviceID,
+                                    modelName: viewModel
+                                        .deviceSearchModelResponse!
+                                        .result!
+                                        .Model,
+                                  ),
                                 )
                               : SizedBox(),
                           viewModel.searchingOldDeviceId
                               ? Card(
                                   child: Padding(
                                     padding: const EdgeInsets.all(20),
-                                    child: enableGraphQl
-                                        ? GettingNewDeviceId(
-                                            onBackPressed: () {
-                                              controller.animateToPage(1,
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  curve: Curves.easeInOut);
-                                            },
-                                            onNextPressed: () {
-                                              viewModel.onBackPressed();
-                                              controller.animateToPage(3,
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  curve: Curves.easeInOut);
-                                            },
-                                            onSelectingNewDeviceId: (value) {
-                                              viewModel
-                                                  .onSelectedNewDeviceId(value);
-                                            },
-                                            controller: viewModel
-                                                .replaceDeviceIdController,
-                                            modelData: viewModel
-                                                .replaceDeviceModelData,
-                                            showingDeviceId: viewModel
-                                                .checkingNewDeviceIdEnter,
-                                            onChange: (value) {
-                                              viewModel
-                                                  .onGettingReplaceDeviceId(
-                                                      value);
-                                            },
-                                            onDropDownValueChange: (value) {
-                                              viewModel
-                                                  .onDropDownChanged(value);
-                                              Focus.of(context).unfocus();
-                                            },
-                                            initialValue:
-                                                viewModel.initialvalue,
-                                            items: viewModel.dropDownValues,
-                                            modelName: viewModel
-                                                .deviceSearchModelResponse!
-                                                .provisioningInfo![0]
-                                                .model,
-                                            oldDeviceId: viewModel
-                                                .deviceSearchModelResponse!
-                                                .provisioningInfo![0]
-                                                .gpsDeviceID,
-                                          )
-                                        : GettingNewDeviceId(
-                                            onBackPressed: () {
-                                              controller.animateToPage(1,
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  curve: Curves.easeInOut);
-                                            },
-                                            onNextPressed: () {
-                                              viewModel.onBackPressed();
-                                              controller.animateToPage(3,
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  curve: Curves.easeInOut);
-                                            },
-                                            onSelectingNewDeviceId: (value) {
-                                              viewModel
-                                                  .onSelectedNewDeviceId(value);
-                                            },
-                                            controller: viewModel
-                                                .replaceDeviceIdController,
-                                            modelData: viewModel
-                                                .replaceDeviceModelData,
-                                            showingDeviceId: viewModel
-                                                .checkingNewDeviceIdEnter,
-                                            onChange: (value) {
-                                              viewModel
-                                                  .onGettingReplaceDeviceId(
-                                                      value);
-                                            },
-                                            onDropDownValueChange: (value) {
-                                              viewModel
-                                                  .onDropDownChanged(value);
-                                              Focus.of(context).unfocus();
-                                            },
-                                            initialValue:
-                                                viewModel.initialvalue,
-                                            items: viewModel.dropDownValues,
-                                            modelName: viewModel
-                                                .deviceSearchModelResponse!
-                                                .result!
-                                                .Model,
-                                            oldDeviceId: viewModel
-                                                .deviceSearchModelResponse!
-                                                .result!
-                                                .GPSDeviceID,
-                                          ),
+                                    child: GettingNewDeviceId(
+                                      onBackPressed: () {
+                                        controller.animateToPage(1,
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            curve: Curves.easeInOut);
+                                      },
+                                      onNextPressed: () {
+                                        viewModel.onBackPressed();
+                                        controller.animateToPage(3,
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            curve: Curves.easeInOut);
+                                      },
+                                      onSelectingNewDeviceId: (value) {
+                                        viewModel.onSelectedNewDeviceId(value);
+                                      },
+                                      controller:
+                                          viewModel.replaceDeviceIdController,
+                                      modelData:
+                                          viewModel.replaceDeviceModelData,
+                                      showingDeviceId:
+                                          viewModel.checkingNewDeviceIdEnter,
+                                      onChange: (value) {
+                                        viewModel
+                                            .onGettingReplaceDeviceId(value);
+                                      },
+                                      onDropDownValueChange: (value) {
+                                        viewModel.onDropDownChanged(value);
+                                        Focus.of(context).unfocus();
+                                      },
+                                      initialValue: viewModel.initialvalue,
+                                      items: viewModel.dropDownValues,
+                                      modelName: viewModel
+                                          .deviceSearchModelResponse!
+                                          .result!
+                                          .Model,
+                                      oldDeviceId: viewModel
+                                          .deviceSearchModelResponse!
+                                          .result!
+                                          .GPSDeviceID,
+                                    ),
                                   ),
                                 )
                               : SizedBox(),
@@ -366,186 +258,93 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(
                                         top: 20, left: 10, right: 10),
-                                    child: enableGraphQl
-                                        ? ShowingNewDeviceDetail(
-                                            onBackPressed: () {
-                                              viewModel.onBackPressed();
-                                              controller.animateToPage(2,
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  curve: Curves.easeInOut);
-                                            },
-                                            onReplacing: () {
-                                              setState(() {
-                                                viewModel.changingIndex = 4;
-                                              });
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (ctx) => AlertDialog(
-                                                        backgroundColor: tuna,
-                                                        actions: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
-                                                            children: [
-                                                              InsiteButton(
-                                                                width: 120,
-                                                                height: 40,
-                                                                title: "No",
-                                                                onTap: () =>
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop(),
-                                                                bgColor: tuna,
-                                                              ),
-                                                              InsiteButton(
-                                                                width: 120,
-                                                                height: 40,
-                                                                title: "Yes",
-                                                                onTap:
-                                                                    () async {
-                                                                  viewModel
-                                                                      .onRegister()
-                                                                      .then(
-                                                                          (value) {
-                                                                    viewModel
-                                                                        .onReplacementSuccessful();
-                                                                    if (value ==
-                                                                        "success") {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-
-                                                                      controller.animateToPage(
-                                                                          0,
-                                                                          duration: Duration(
-                                                                              milliseconds:
-                                                                                  500),
-                                                                          curve:
-                                                                              Curves.easeInOut);
-                                                                    } else {}
-                                                                  });
-                                                                },
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                        content: InsiteText(
-                                                          text:
-                                                              "Are you sure, do you want to replace ${viewModel.deviceSearchModelResponse!.result!.GPSDeviceID} with ${viewModel.replaceDeviceIdController.text}?",
+                                    child: ShowingNewDeviceDetail(
+                                      onBackPressed: () {
+                                        viewModel.onBackPressed();
+                                        controller.animateToPage(2,
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            curve: Curves.easeInOut);
+                                      },
+                                      onReplacing: () {
+                                        setState(() {
+                                          viewModel.changingIndex = 4;
+                                        });
+                                        showDialog(
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                                  backgroundColor: tuna,
+                                                  actions: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        InsiteButton(
+                                                          width: 120,
+                                                          height: 40,
+                                                          title: "No",
+                                                          onTap: () =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(),
+                                                          bgColor: tuna,
                                                         ),
-                                                      ));
-                                            },
-                                            oldDeviceId: viewModel
-                                                .deviceSearchModelResponse!
-                                                .provisioningInfo[0]
-                                                .gpsDeviceID,
-                                            modelName: viewModel
-                                                .deviceSearchModelResponse!
-                                                .provisioningInfo[0]
-                                                .model,
-                                            machineSerialNo: viewModel
-                                                .deviceSearchModelResponse!
-                                                .provisioningInfo[0]
-                                                .vin,
-                                            startDate: viewModel
-                                                .deviceSearchModelResponse!
-                                                .provisioningInfo[0]
-                                                .subscriptionStartDate,
-                                            newDeviceId: viewModel
-                                                .replaceDeviceIdController.text,
-                                          )
-                                        : ShowingNewDeviceDetail(
-                                            onBackPressed: () {
-                                              viewModel.onBackPressed();
-                                              controller.animateToPage(2,
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  curve: Curves.easeInOut);
-                                            },
-                                            onReplacing: () {
-                                              setState(() {
-                                                viewModel.changingIndex = 4;
-                                              });
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (ctx) => AlertDialog(
-                                                        backgroundColor: tuna,
-                                                        actions: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
-                                                            children: [
-                                                              InsiteButton(
-                                                                width: 120,
-                                                                height: 40,
-                                                                title: "No",
-                                                                onTap: () =>
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop(),
-                                                                bgColor: tuna,
-                                                              ),
-                                                              InsiteButton(
-                                                                width: 120,
-                                                                height: 40,
-                                                                title: "Yes",
-                                                                onTap:
-                                                                    () async {
-                                                                  //toDo
-                                                                  viewModel
-                                                                      .onRegister()
-                                                                      .then(
-                                                                          (value) {
-                                                                    viewModel
-                                                                        .onReplacementSuccessful();
-                                                                    if (value ==
-                                                                        "success") {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
+                                                        InsiteButton(
+                                                          width: 120,
+                                                          height: 40,
+                                                          title: "Yes",
+                                                          onTap: () async {
+                                                            //toDo
+                                                            viewModel
+                                                                .onRegister()
+                                                                .then((value) {
+                                                              viewModel
+                                                                  .onReplacementSuccessful();
+                                                              if (value ==
+                                                                  "success") {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
 
-                                                                      controller.animateToPage(
-                                                                          0,
-                                                                          duration: Duration(
-                                                                              milliseconds:
-                                                                                  500),
-                                                                          curve:
-                                                                              Curves.easeInOut);
-                                                                    } else {}
-                                                                  });
-                                                                },
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                        content: InsiteText(
-                                                          text:
-                                                              "Are you sure, do you want to replace ${viewModel.deviceSearchModelResponse!.result!.GPSDeviceID} with ${viewModel.replaceDeviceIdController.text}?",
-                                                        ),
-                                                      ));
-                                            },
-                                            oldDeviceId: viewModel
-                                                .deviceSearchModelResponse!
-                                                .result!
-                                                .GPSDeviceID,
-                                            modelName: viewModel
-                                                .deviceSearchModelResponse!
-                                                .result!
-                                                .Model,
-                                            machineSerialNo: viewModel
-                                                .deviceSearchModelResponse!
-                                                .result!
-                                                .VIN,
-                                            startDate: viewModel
-                                                .deviceSearchModelResponse!
-                                                .result!
-                                                .S_StartDate,
-                                            newDeviceId: viewModel
-                                                .replaceDeviceIdController.text,
-                                          ),
+                                                                controller.animateToPage(0,
+                                                                    duration: Duration(
+                                                                        milliseconds:
+                                                                            500),
+                                                                    curve: Curves
+                                                                        .easeInOut);
+                                                              } else {}
+                                                            });
+                                                          },
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                  content: InsiteText(
+                                                    text:
+                                                        "Are you sure, do you want to replace ${viewModel.deviceSearchModelResponse!.result!.GPSDeviceID} with ${viewModel.replaceDeviceIdController.text}?",
+                                                  ),
+                                                ));
+                                      },
+                                      oldDeviceId: viewModel
+                                          .deviceSearchModelResponse!
+                                          .result!
+                                          .GPSDeviceID,
+                                      modelName: viewModel
+                                          .deviceSearchModelResponse!
+                                          .result!
+                                          .Model,
+                                      machineSerialNo: viewModel
+                                          .deviceSearchModelResponse!
+                                          .result!
+                                          .VIN,
+                                      startDate: viewModel
+                                          .deviceSearchModelResponse!
+                                          .result!
+                                          .S_StartDate,
+                                      newDeviceId: viewModel
+                                          .replaceDeviceIdController.text,
+                                    ),
                                   ),
                                 )
                               : SizedBox()

@@ -77,22 +77,7 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
                                 spreadRadius: 0.2)
                           ]),
                       child: SingleChildScrollView(
-                        child: enableGraphQl
-                            ? Column(
-                                children: List.generate(
-                                    searchList.length,
-                                    (i) => DeviceIdListWidget(
-                                          onSelected: () {
-                                            onSelectedDeviceId!(i);
-                                            FocusScope.of(context).unfocus();
-                                          },
-                                          deviceId: searchList[i].gpsDeviceID,
-                                          // deviceId: searchList[i]?.containsList == null
-                                          //     ? searchList[i].gpsDeviceID
-                                          //     : searchList[i].containsList
-                                        )),
-                              )
-                            : Column(
+                        child:  Column(
                                 children: List.generate(
                                     searchList.length,
                                     (i) => DeviceIdListWidget(

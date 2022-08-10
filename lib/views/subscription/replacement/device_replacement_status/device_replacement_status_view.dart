@@ -31,13 +31,7 @@ class DeviceReplacementStatusView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            enableGraphQl
-                                ? InsiteText(
-                                    fontWeight: FontWeight.bold,
-                                    text:
-                                        "REPLACEMENT STATUS ( ${viewModel.deviceReplacementStatusModelList.length} of ${viewModel.totalDeviceReplacementStatusModel?.replacementHistory!.length} )",
-                                  )
-                                : InsiteText(
+                             InsiteText(
                                     fontWeight: FontWeight.bold,
                                     text:
                                         "REPLACEMENT STATUS ( ${viewModel.deviceReplacementStatusModelList.length} of ${viewModel.totalDeviceReplacementStatusModel?.result?.first.first.count} )",

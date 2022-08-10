@@ -349,22 +349,22 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<FleetProvisionStatus?> getFleetDataGraphql(String? query) async {
+  Future<SubscriptionFleetGraph?> getFleetDataGraphql(String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(
+        var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: accountSelected?.CustomerUID,
-          userId: (await _localService?.getLoggedInUser())?.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+          // customerId: accountSelected?.CustomerUID,
+          // userId: (await _localService?.getLoggedInUser())?.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
         );
 
-        FleetProvisionStatus? deviceDetails =
-            FleetProvisionStatus.fromJson(data.data["fleetProvisionStatus"]);
+        SubscriptionFleetGraph? deviceDetails =
+            SubscriptionFleetGraph.fromJson(data.data);
 
-        Logger().wtf("dashboard:${deviceDetails.toJson()}");
+       // Logger().wtf(data.data);
 
         return deviceDetails;
       }

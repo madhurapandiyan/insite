@@ -102,18 +102,7 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                   //margin: EdgeInsets.all(8),
                   // height: 50,
                   color: white,
-                  child: enableGraphQl
-                      ? Column(
-                          children: List.generate(
-                              widget.modelData!.provisioningInfo.length,
-                              (i) => DeviceIdListWidget(
-                                  onSelected: () {
-                                    widget.onSelectingNewDeviceId!(i);
-                                  },
-                                  deviceId: widget.modelData!
-                                      .provisioningInfo[i].gpsDeviceID)),
-                        )
-                      : Column(
+                  child:  Column(
                           children: List.generate(
                               widget.modelData!.result!.last.length,
                               (i) => DeviceIdListWidget(
@@ -168,29 +157,7 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
               ),
-              enableGraphQl
-                  ? InsiteButton(
-                      textColor: Theme.of(context).textTheme.bodyText1!.color,
-                      onTap:
-                          //widget.modelData!.result!.last.any((element) =>
-                          //     element.GPSDeviceID ==
-                          //   widget.controller!.text.toUpperCase().trim())
-                          // widget.controller!.text.isEmpty
-                          () {
-                        if (widget.modelData!.provisioningInfo.any((element) =>
-                            element.gpsDeviceID == widget.controller!.text)) {
-                          widget.onNextPressed!();
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: "Please check and fill the required field");
-                        }
-                      },
-                      // bgColor: white,
-                      title: "Next",
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.3,
-                    )
-                  : InsiteButton(
+               InsiteButton(
                       textColor: Theme.of(context).textTheme.bodyText1!.color,
                       onTap:
                           //widget.modelData!.result!.last.any((element) =>

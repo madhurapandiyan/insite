@@ -44,14 +44,14 @@ class Network {
       ));
     client.clear();
   }
-  getGraphqlPlantData({String? query, String? customerId}) async {
+  getGraphqlPlantData({String? query}) async {
     try {
       final Link link = DioLink(
         graphqlEndpoint,
         client: client,
         defaultHeaders: {
           "content-type": "application/json",
-          "CustomerId": customerId!,
+          "CustomerId": "THC",
           "Accept": "application/json",
           "Auth": "bearer " + await _localService!.getToken(),
           "Authorization": "bearer " + await _localService!.getToken(),

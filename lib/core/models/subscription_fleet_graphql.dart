@@ -2,6 +2,15 @@ import 'package:json_annotation/json_annotation.dart';
 part 'subscription_fleet_graphql.g.dart';
 
 @JsonSerializable()
+class SubscriptionFleetGraph {
+  FleetProvisionStatus? fleetProvisionStatus;
+  SubscriptionFleetGraph({this.fleetProvisionStatus});
+  factory SubscriptionFleetGraph.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionFleetGraphFromJson(json);
+  Map<String, dynamic> toJson() => _$SubscriptionFleetGraphToJson(this);
+}
+
+@JsonSerializable()
 class FleetProvisionStatus {
   int? count;
   List<FleetProvisionStatusInfo>? fleetProvisionStatusInfo;
