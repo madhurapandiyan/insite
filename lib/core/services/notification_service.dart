@@ -173,7 +173,7 @@ class NotificationService extends BaseService {
       if (enableGraphQl) {
         String doubleQuote = "\"";
         var data = await Network().getGraphqlData(
-          query: await _graphqlSchemaService.manageNotificationList(
+          query: _graphqlSchemaService.manageNotificationList(
               pageNumber: pageNumber,
               count: count,
               searchKey: doubleQuote + "$searchText" + doubleQuote),

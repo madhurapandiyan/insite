@@ -384,9 +384,13 @@ class FilterViewModel extends InsiteViewModel {
       clearFilterOfType(type);
     } else {
       Logger().e(type);
-      list.forEach((element) {
-        updateFilter(element);
-      });
+      if (type == FilterType.FUEL_LEVEL) {
+        updateFilter(list.first);
+      } else {
+        list.forEach((element) {
+          updateFilter(element);
+        });
+      }
     }
     notifyListeners();
     // updateFilterInDb(list);
@@ -394,7 +398,12 @@ class FilterViewModel extends InsiteViewModel {
   }
 
   updateFilter(FilterData value) async {
+    if (value.type == FilterType.FUEL_LEVEL) {
+      selectedFilterData!
+          .removeWhere((element) => element!.type == FilterType.FUEL_LEVEL);
+    }
     int size = selectedFilterData!.length;
+
     if (size == 0) {
       selectedFilterData!.add(value);
     } else {

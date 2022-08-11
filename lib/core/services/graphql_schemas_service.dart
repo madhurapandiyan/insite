@@ -437,7 +437,7 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
 }
 
   """;
-    
+
     return faultQueryString;
   }
 
@@ -655,7 +655,7 @@ locationReportedTimeUTC
   model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"}, 
   manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
   assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
-  fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}, 
+  fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + Utils.fuelFilterQuery(fuelLevelPercentLt) + "\""}"}, 
   idleEfficiencyGT:"", 
   idleEfficiencyLTE: "", 
   idleEfficiencyRanges: ${idleEficiencyGT == null ? "\"\"" : "${"\"" + idleEficiencyGT! + "\""}"}, 

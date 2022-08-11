@@ -22,21 +22,24 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   final GraphqlSchemaService? _graphqlSchemaService =
       locator<GraphqlSchemaService>();
 
-  ScrollController? scrollController;
+  ScrollController? scrollController = ScrollController();
   bool? isLoadMore;
   int pageNumber = 1;
   int pageCount = 50;
   ManageNotificationsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
-    scrollController = new ScrollController();
+
     scrollController?.addListener(() async {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
         if (totalCount != notifications.length) {
+          showLoadingDialog();
           _loadingMore = true;
-          pageNumber = pageNumber++;
+          pageNumber++;
+          Logger().w(pageNumber);
           await getManageNotificationsData();
+          hideLoadingDialog();
           notifyListeners();
         }
       }
@@ -190,7 +193,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
         }
         if (response.configuredAlerts != null &&
             response.configuredAlerts!.isNotEmpty) {
-          _notifications = response.configuredAlerts!;
+          _notifications.addAll(response.configuredAlerts!);
 
           for (var i = 0; i < _notifications.length; i++) {
             _notifications

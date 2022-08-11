@@ -78,24 +78,42 @@ class ManageNotificationsView extends StatelessWidget {
                             child: viewModel.loading
                                 ? InsiteProgressBar()
                                 : viewModel.notifications.isNotEmpty
-                                    ? ListView.builder(
-                                        controller: viewModel.scrollController,
-                                        itemBuilder: (context, int index) {
-                                          ConfiguredAlerts? alerts =
-                                              viewModel.notifications[index];
-                                          return ManageNotificationWidget(
-                                            alerts: alerts,
-                                            onDelete: () {
-                                              viewModel.onDeleteClicked(context,
-                                                  alerts.alertConfigUID, index);
-                                            },
-                                            onEdit: () {
-                                              viewModel.editNotification(index);
-                                            },
-                                          );
-                                        },
-                                        itemCount:
-                                            viewModel.notifications.length)
+                                    ? Column(
+                                        children: [
+                                          Expanded(
+                                            child: ListView.builder(
+                                                controller:
+                                                    viewModel.scrollController,
+                                                itemBuilder:
+                                                    (context, int index) {
+                                                  ConfiguredAlerts? alerts =
+                                                      viewModel
+                                                          .notifications[index];
+                                                  return ManageNotificationWidget(
+                                                    alerts: alerts,
+                                                    onDelete: () {
+                                                      viewModel.onDeleteClicked(
+                                                          context,
+                                                          alerts.alertConfigUID,
+                                                          index);
+                                                    },
+                                                    onEdit: () {
+                                                      viewModel
+                                                          .editNotification(
+                                                              index);
+                                                    },
+                                                  );
+                                                },
+                                                itemCount: viewModel
+                                                    .notifications.length),
+                                          ),
+                                          viewModel.loadingMore
+                                              ? Padding(
+                                                  padding: EdgeInsets.all(8),
+                                                  child: InsiteProgressBar())
+                                              : SizedBox()
+                                        ],
+                                      )
                                     // ListView.separated(
 
                                     //     separatorBuilder: (context, index) =>

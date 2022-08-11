@@ -9,7 +9,7 @@ class DateUtil {
         return (DateTime.now().subtract(Duration(days: 1)));
       case DateRangeType.currentWeek:
         return (DateTime.now()
-            .subtract(Duration(days: DateTime.now().weekday)));
+            .subtract(Duration(days: DateTime.now().weekday - 1)));
       case DateRangeType.lastSevenDays:
         return (DateTime.now().subtract(Duration(days: 6)));
       case DateRangeType.lastThirtyDays:
