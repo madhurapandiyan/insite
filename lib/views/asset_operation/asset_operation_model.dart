@@ -138,7 +138,7 @@ class AssetOperationViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
     await getAssetOperationCount();
-    updateDateRangeList();
+    // updateDateRangeList();
     AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
       startDate,
       endDate,
@@ -147,8 +147,8 @@ class AssetOperationViewModel extends InsiteViewModel {
       _menuItem,
       appliedFilters,
       await graphqlSchemaService!.getAssetOperationData(
-          startDate: Utils.getDateInFormatddMMyyyy(startDate),
-          endDate: Utils.getDateInFormatddMMyyyy(endDate),
+          startDate:startDate,
+          endDate: endDate,
           assetId: "",
           appliedFilter: appliedFilters,
           pageNo: pageNumber,

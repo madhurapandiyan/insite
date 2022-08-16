@@ -149,7 +149,12 @@ class _FilterViewState extends State<FilterView> {
                                   textColor: Colors.white,
                                   onTap: () async {
                                     await viewModel.onFilterApplied();
-                                    widget.onFilterApplied!(true);
+                                    Future.delayed(
+                                        Duration(
+                                          seconds: 1,
+                                        ), () async {
+                                      widget.onFilterApplied!(true);
+                                    });
                                   },
                                   width: 100,
                                   height: 40,
