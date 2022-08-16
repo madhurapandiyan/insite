@@ -83,7 +83,9 @@ enum FilterType {
   @HiveField(23)
   SERVICE_STATUS,
   @HiveField(24)
-  ASSET_TYPE
+  ASSET_TYPE,
+  @HiveField(25)
+  UTILIZATION_COUNT
 }
 
 @HiveType(typeId: 2)

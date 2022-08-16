@@ -28,7 +28,7 @@ class UtilizationListViewModel extends InsiteViewModel {
   int get totalCount => _totalCount;
 
   int pageNumber = 1;
-  int pageCount = 50;
+  int pageCount = 20;
   ScrollController? scrollController;
 
   List<AssetResult> _utilLizationListData = [];
@@ -60,7 +60,7 @@ class UtilizationListViewModel extends InsiteViewModel {
         }
       }
     });
-    Future.delayed(Duration(seconds: 2), () async {
+    Future.delayed(Duration(seconds: 0), () async {
       await getUtilization(true);
     });
   }
@@ -162,7 +162,7 @@ class UtilizationListViewModel extends InsiteViewModel {
       await getSelectedFilterData();
       await getDateRangeFilterData();
       pageNumber = 1;
-      pageCount = 50;
+      pageCount = 20;
       _refreshing = true;
       _shouldLoadmore = true;
       notifyListeners();

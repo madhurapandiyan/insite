@@ -241,5 +241,9 @@ abstract class InsiteViewModel extends BaseViewModel {
         DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 30)));
   }
 
+  clearSpecificFilterType({FilterType? type}) {
+    _assetStatusService!.clearSpecificFilterType(type: type);
+  }
+
   List<FilterData?>? appliedFilters = [];
 }

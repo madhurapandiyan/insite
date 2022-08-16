@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -54,7 +55,7 @@ class PlantHierachyView extends StatelessWidget {
                               height: 50,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                  color: Theme.of(context).indicatorColor,
+                          
                                   borderRadius: BorderRadius.only(
                                       topRight: Radius.circular(10),
                                       topLeft: Radius.circular(10))),
@@ -66,6 +67,7 @@ class PlantHierachyView extends StatelessWidget {
                                     child: InsiteText(
                                         text: "ASSET DETAILS",
                                         fontWeight: FontWeight.w700,
+                                        color: black,
                                         size: 12.0),
                                   ),
                                 ],

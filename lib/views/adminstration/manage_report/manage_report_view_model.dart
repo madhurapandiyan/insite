@@ -248,7 +248,7 @@ class ManageReportViewModel extends InsiteViewModel {
     TemplateDetails(
         title: "Utilization Details",
         description:
-            "he Utilization Details report provides all the Idle time,Working and Run time data for the Single Asset corresponding to the selected date range.")
+            "The Utilization Details report provides all the Idle time,Working and Run time data for the Single Asset corresponding to the selected date range.")
   ];
 
   searchReports(String searchValue) async {
