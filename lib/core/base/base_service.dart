@@ -10,12 +10,14 @@ class BaseService {
   bool enableGraphQl = false;
 
   BaseService({String? title}) {
+   
     log = getLogger(title ?? this.runtimeType.toString());
     try {
       if (AppConfig.instance!.apiFlavor == "visionlink") {
         isVisionLink = true;
       }
       if (AppConfig.instance!.enableGraphql == true) {
+         Logger().i("flavor");
         enableGraphQl = true;
       }
 

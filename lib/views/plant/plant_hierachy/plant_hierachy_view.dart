@@ -52,10 +52,10 @@ class PlantHierachyView extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              height: 50,
+                              padding: EdgeInsets.all(15),
+                              // height: 50,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                          
                                   borderRadius: BorderRadius.only(
                                       topRight: Radius.circular(10),
                                       topLeft: Radius.circular(10))),
@@ -63,12 +63,15 @@ class PlantHierachyView extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: InsiteText(
-                                        text: "ASSET DETAILS",
-                                        fontWeight: FontWeight.w700,
-                                        color: black,
-                                        size: 12.0),
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: InsiteText(
+                                          text: "ASSET DETAILS",
+                                          fontWeight: FontWeight.w700,
+                                          color: black,
+                                          size: 12.0)),
+                                  Divider(
+                                    thickness: 1.0,
+                                    color: Theme.of(context).dividerColor,
                                   ),
                                 ],
                               ),

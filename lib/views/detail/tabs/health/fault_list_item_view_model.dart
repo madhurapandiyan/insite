@@ -56,22 +56,26 @@ class FaultListItemViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-    FaultSummaryResponse? result = await _faultService!
-        .getAssetViewDetailSummaryList(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-            pageSize,
-            pageNumber,
-            appliedFilters,
-            fault!.asset["uid"],
-            await graphqlSchemaService!.getfaultQueryString(
-              pageNo: pageNumber,
-              limit: pageSize,
-                startDate:
-                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                applyFilter: appliedFilters,
-                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+    FaultSummaryResponse? result =
+        await _faultService!.getAssetViewDetailSummaryList(
+      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+      Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+      pageSize,
+      pageNumber,
+      appliedFilters,
+      fault!.asset["uid"],
+      graphqlSchemaService!.getFaultSingleData(
+        faultsId: fault!.asset["uid"],
+        startDate:  Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+        endDate:  Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        langeDesc: "en-US",
+        limit: pageSize,
+        pageSize: pageNumber
+
+      )
+    );
     if (result != null && result.faults != null) {
+      Logger().i("faults");
       if (result.faults!.isNotEmpty) {
         _faults.addAll(result.faults!);
         _refreshing = false;

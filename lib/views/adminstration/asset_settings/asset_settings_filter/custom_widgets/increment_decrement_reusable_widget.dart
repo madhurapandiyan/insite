@@ -5,7 +5,7 @@ import 'package:logger/logger.dart';
 
 class IncrementDecrementwidget extends StatefulWidget {
   final Function(String)? onValueChange;
-  final double? countValue;
+  final dynamic countValue;
 
   const IncrementDecrementwidget({
     this.onValueChange,

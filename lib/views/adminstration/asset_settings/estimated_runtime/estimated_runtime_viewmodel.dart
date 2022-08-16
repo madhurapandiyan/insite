@@ -3,6 +3,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
+import 'package:insite/core/models/estimated_response.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/asset_settings/asset_settings_filter/model/increment_decrement_model.dart';
@@ -15,8 +16,8 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   TextEditingController fulltargetTimeController = TextEditingController();
   TextEditingController fullIdleTimeController = TextEditingController();
 
-  List<String?>? _assetUid;
-  List<String?>? get assetUId => _assetUid;
+  List<String>? _assetUid;
+  List<String>? get assetUId => _assetUid;
   String? percentData;
 
   List<dynamic>? dummydata;
@@ -97,7 +98,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
 
   List<IncrementDecrementValue> createdCountValue = [];
 
-  EstimatedRuntimeViewModel(List<String?>? assetUidList) {
+  EstimatedRuntimeViewModel(List<String>? assetUidList) {
     Logger().i("viewModel:$assetUidList");
     _assetUid = assetUidList;
     this.log = getLogger(this.runtimeType.toString());
@@ -215,7 +216,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[i];
       if (data != null) {
-        data.runTimecount = double.parse(value);
+        data.runTimecount = int.parse(value);
         data.percentCount = Utils.getEstimatedTargetRuntimePercentValue(
             data.idleCount, data.runTimecount);
       }
@@ -235,7 +236,7 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[i];
       if (data != null) {
-        data.idleCount = double.parse(value);
+        data.idleCount = int.parse(value);
       }
       notifyListeners();
     }
@@ -295,28 +296,30 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
 
     var result = await _manageUserService!.getAssetTargetSettingsData(
         assetUId!,
-        startDate,
-        endDate,
+      Utils.getFaultDateFormatStartDate(startDate),
+        Utils.getFaultDateFormatEndDate( endDate),
         Idle(
-            sunday: double.parse(
-              countValue[0].idleCount.toString(),
-            ),
-            monday: double.parse(countValue[1].idleCount.toString()),
-            tuesday: double.parse(countValue[2].idleCount.toString()),
-            wednesday: double.parse(countValue[3].idleCount.toString()),
-            thursday: double.parse(countValue[4].idleCount.toString()),
-            friday: double.parse(countValue[5].idleCount.toString()),
-            saturday: double.parse(countValue[6].idleCount.toString())),
+            sunday: 
+             countValue[0].idleCount,
+            
+            monday:countValue[1].idleCount,
+            tuesday:countValue[2].idleCount,
+            wednesday:countValue[3].idleCount,
+            thursday:countValue[4].idleCount,
+            friday: countValue[5].idleCount,
+            saturday: countValue[6].idleCount),
         Runtime(
-            sunday: double.parse(countValue[0].runTimecount.toString()),
-            monday: double.parse(countValue[1].runTimecount.toString()),
-            tuesday: double.parse(countValue[2].runTimecount.toString()),
-            wednesday: double.parse(countValue[3].runTimecount.toString()),
-            thursday: double.parse(countValue[4].runTimecount.toString()),
-            friday: double.parse(countValue[5].runTimecount.toString()),
-            saturday: double.parse(countValue[6].runTimecount.toString())));
+            sunday: countValue[0].runTimecount,
+            monday: countValue[1].runTimecount,
+            tuesday: countValue[2].runTimecount,
+            wednesday:countValue[3].runTimecount,
+            thursday: countValue[4].runTimecount,
+            friday: countValue[5].runTimecount,
+            saturday: countValue[6].runTimecount),
+          
+            );
 
-    Logger().e(result);
+    Logger().e(result!.data!.updateAssetTargetSettings!.assetUIDs);
     if (result != null) {
       Navigator.of(context).pop(true);
     } else {
@@ -330,39 +333,45 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
 
   getEstimatedTargetSettingsData() async {
     try {
-      result =
-          await _manageUserService!.getEstimatedTargetSettingListData(assetUId);
+      String? startdate = Utils.getLastReportedDateFilterData(
+          DateTime.utc(2022, DateTime.january,02 ));
+      String? endDate = Utils.getLastReportedDateFilterData(
+          DateTime.utc(2022, DateTime.may, 28));
+      result = await _manageUserService!.getEstimatedTargetSettingListData(
+          assetUId,
+          graphqlSchemaService!
+              .getAssetTargetSettingsData(startdate,endDate,assetUId));
       if (result != null) {
         if (result!.assetTargetSettings!.isNotEmpty) {
           for (var i = 0; i < result!.assetTargetSettings!.length; i++) {
             final data = result!.assetTargetSettings![i];
             var sun = IncrementDecrementValue(
-                idleCount: data.idle!.sunday!.toDouble(),
-                runTimecount: data.runtime!.sunday!.toDouble(),
+                idleCount: data.idle!.sunday!,
+                runTimecount: data.runtime!.sunday!,
                 runtimeDays: "Sun");
             var mon = IncrementDecrementValue(
-                idleCount: data.idle!.monday!.toDouble(),
-                runTimecount: data.runtime!.monday!.toDouble(),
+                idleCount: data.idle!.monday!,
+                runTimecount: data.runtime!.monday!,
                 runtimeDays: "Mon");
             var tue = IncrementDecrementValue(
-                idleCount: data.idle!.tuesday!.toDouble(),
-                runTimecount: data.runtime!.tuesday!.toDouble(),
+                idleCount: data.idle!.tuesday!,
+                runTimecount: data.runtime!.tuesday!,
                 runtimeDays: "Tue");
             var wed = IncrementDecrementValue(
-                idleCount: data.idle!.wednesday!.toDouble(),
-                runTimecount: data.runtime!.wednesday!.toDouble(),
+                idleCount: data.idle!.wednesday!,
+                runTimecount: data.runtime!.wednesday!,
                 runtimeDays: "Wed");
             var thu = IncrementDecrementValue(
-                idleCount: data.idle!.thursday!.toDouble(),
-                runTimecount: data.runtime!.thursday!.toDouble(),
+                idleCount: data.idle!.thursday!,
+                runTimecount: data.runtime!.thursday!,
                 runtimeDays: "Thu");
             var fri = IncrementDecrementValue(
-                idleCount: data.idle!.friday!.toDouble(),
-                runTimecount: data.runtime!.friday!.toDouble(),
+                idleCount: data.idle!.friday!,
+                runTimecount: data.runtime!.friday!,
                 runtimeDays: "Fri");
             var sat = IncrementDecrementValue(
-                idleCount: data.idle!.saturday!.toDouble(),
-                runTimecount: data.runtime!.saturday!.toDouble(),
+                idleCount: data.idle!.saturday!,
+                runTimecount: data.runtime!.saturday!,
                 runtimeDays: "Sat");
             dateFilterUpdateListValue
                 .addAll([sun, mon, tue, wed, thu, fri, sat]);
@@ -407,32 +416,32 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
       });
 
       var sunT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue!.sunday!.toDouble(),
-          runTimecount: dateFilterRuntimeValue!.sunday!.toDouble(),
+          idleCount: dateFilterIdleValue!.sunday!,
+          runTimecount: dateFilterRuntimeValue!.sunday!,
           runtimeDays: "Sun");
       var monT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue!.monday!.toDouble(),
-          runTimecount: dateFilterRuntimeValue!.monday!.toDouble(),
+          idleCount: dateFilterIdleValue!.monday!,
+          runTimecount: dateFilterRuntimeValue!.monday!,
           runtimeDays: "Mon");
       var tueT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue!.tuesday!.toDouble(),
-          runTimecount: dateFilterRuntimeValue!.tuesday!.toDouble(),
+          idleCount: dateFilterIdleValue!.tuesday!,
+          runTimecount: dateFilterRuntimeValue!.tuesday!,
           runtimeDays: "Tue");
       var wedT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue!.wednesday!.toDouble(),
-          runTimecount: dateFilterRuntimeValue!.wednesday!.toDouble(),
+          idleCount: dateFilterIdleValue!.wednesday!,
+          runTimecount: dateFilterRuntimeValue!.wednesday!,
           runtimeDays: "Wed");
       var thuT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue!.thursday!.toDouble(),
-          runTimecount: dateFilterRuntimeValue!.thursday!.toDouble(),
+          idleCount: dateFilterIdleValue!.thursday!,
+          runTimecount: dateFilterRuntimeValue!.thursday!,
           runtimeDays: "Thu");
       var friT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue!.friday!.toDouble(),
-          runTimecount: dateFilterRuntimeValue!.friday!.toDouble(),
+          idleCount: dateFilterIdleValue!.friday!,
+          runTimecount: dateFilterRuntimeValue!.friday!,
           runtimeDays: "Fri");
       var satT = IncrementDecrementValue(
-          idleCount: dateFilterIdleValue!.saturday!.toDouble(),
-          runTimecount: dateFilterRuntimeValue!.saturday!.toDouble(),
+          idleCount: dateFilterIdleValue!.saturday!,
+          runTimecount: dateFilterRuntimeValue!.saturday!,
           runtimeDays: "Sat");
       dateFilterUpdateListValue
           .addAll([sunT, monT, tueT, wedT, thuT, friT, satT]);

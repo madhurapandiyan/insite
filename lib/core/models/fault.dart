@@ -32,6 +32,7 @@ class Fault {
   final String? faultCode;
   final FaultBasic? basic;
   final FaultDetails? details;
+ 
   final List<Count>? countData;
 
   Fault(
@@ -45,7 +46,8 @@ class Fault {
       this.faultType,
       this.faultOccuredUTC,
       this.severityLabel,
-      this.source});
+      this.source,
+     });
 
   factory Fault.fromJson(Map<String, dynamic> json) {
     return _$FaultFromJson(json);

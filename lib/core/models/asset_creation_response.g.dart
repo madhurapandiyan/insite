@@ -14,6 +14,12 @@ AssetCreationResponse _$AssetCreationResponseFromJson(
       result: json['result'] == null
           ? null
           : Result.fromJson(json['result'] as Map<String, dynamic>),
+      assetModelByMachineSerialNumber:
+          json['assetModelByMachineSerialNumber'] == null
+              ? null
+              : AssetModelByMachineSerialNumber.fromJson(
+                  json['assetModelByMachineSerialNumber']
+                      as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AssetCreationResponseToJson(
@@ -22,6 +28,28 @@ Map<String, dynamic> _$AssetCreationResponseToJson(
       'code': instance.code,
       'status': instance.status,
       'result': instance.result,
+      'assetModelByMachineSerialNumber':
+          instance.assetModelByMachineSerialNumber,
+    };
+
+AssetModelByMachineSerialNumber _$AssetModelByMachineSerialNumberFromJson(
+        Map<String, dynamic> json) =>
+    AssetModelByMachineSerialNumber(
+      endRange: json['endRange'] as int?,
+      modelName: json['modelName'] as String?,
+      groupClusterId: json['groupClusterId'] as int?,
+      startRange: json['startRange'] as int?,
+      startsWith: json['startsWith'] as String?,
+    );
+
+Map<String, dynamic> _$AssetModelByMachineSerialNumberToJson(
+        AssetModelByMachineSerialNumber instance) =>
+    <String, dynamic>{
+      'endRange': instance.endRange,
+      'modelName': instance.modelName,
+      'groupClusterId': instance.groupClusterId,
+      'startRange': instance.startRange,
+      'startsWith': instance.startsWith,
     };
 
 Result _$ResultFromJson(Map<String, dynamic> json) => Result(
