@@ -437,7 +437,7 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
 }
 
   """;
-    Logger().w(faultQueryString);
+
     return faultQueryString;
   }
 
@@ -520,15 +520,15 @@ locationReportedTimeUTC
     return assetFaultQuery;
   }
 
-  fleetSummary(
-      List<FilterData?>? applyFilter, pagenumber, startDate, endDate) async {
+  fleetSummary(List<FilterData?>? applyFilter, pagenumber, startDate, endDate,
+      int pageSize) async {
     await cleaValue();
     await clearAllList();
     await gettingFiltersValue(applyFilter);
 
     var data = """{
   fleetSummary(pageNumber:$pagenumber,
-    pageSize:50,
+    pageSize:$pageSize,
     startDateLocal:${startDate == null ? "\"\"" : "${"\"" + startDate + "\""}"}
     endDateLocal: ${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"}
     sort:"AssetSerialNumber",
@@ -558,9 +558,7 @@ locationReportedTimeUTC
       lastPercentDEFRemainingUTC
       lastReportedUTC
       lastReportedTime
-      notifications
       assetId
-      customStateDescription
       modelYear
       dealerCustomerNumber
       dealerCode
@@ -569,7 +567,6 @@ locationReportedTimeUTC
       lastReportedLocationLatitude
       universalCustomerIdentifier
       universalCustomerName
-      source
       hourMeter
       lifetimeFuelLiters
       lastLocationUpdateUTC
@@ -578,7 +575,6 @@ locationReportedTimeUTC
       lastPercentDEFRemainingTime
       fuelReportedTime
       lastPercentFuelRemainingUTC
-      esn
       odometer
       geofences{
         fenceIdentifier,
@@ -659,7 +655,7 @@ locationReportedTimeUTC
   model:${model == null ? "\"\"" : "${"\"" + model! + "\""}"}, 
   manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
   assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
-  fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}, 
+  fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + Utils.fuelFilterQuery(fuelLevelPercentLt) + "\""}"}, 
   idleEfficiencyGT:"", 
   idleEfficiencyLTE: "", 
   idleEfficiencyRanges: ${idleEficiencyGT == null ? "\"\"" : "${"\"" + idleEficiencyGT! + "\""}"}, 
@@ -715,6 +711,9 @@ fuelLevelPercentLT: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelP
       assets {
         assetUid
         assetId
+        assetIcon {
+        key
+      }
         makeCode
         model
         serialNumber
@@ -3183,5 +3182,4 @@ mutation{
 }""";
     return data;
   }
- 
 }

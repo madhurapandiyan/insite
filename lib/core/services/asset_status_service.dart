@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:insite/core/models/asset_status.dart';
 
 import 'package:insite/core/models/customer.dart';
@@ -188,6 +189,14 @@ class AssetStatusService extends DataBaseService {
       startDate, endDate, sort, screenType, appliedFilters, query) async {
     Logger().d("getAssetCountByFilter");
     try {
+      // AssetCount? assetCountFromLocal;
+
+      // assetCountFromLocal =
+      //     await getAssetCountFromLocal(FilterType.UTILIZATION_COUNT, null);
+      // if (assetCountFromLocal != null) {
+      //   Logger().w("AssetCount From Local");
+      //   return assetCountFromLocal;
+      // } else {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
@@ -200,6 +209,9 @@ class AssetStatusService extends DataBaseService {
         AssetCount assetCountFromGraphql =
             AssetCount.fromJson(data.data!['utilizationTotal']);
 
+        // var updated = await updateAssetCount(
+        //     assetCountFromGraphql, FilterType.UTILIZATION_COUNT);
+        // Logger().w("AssetCount From API");
         return assetCountFromGraphql;
       } else {
         if (isVisionLink) {
@@ -245,6 +257,7 @@ class AssetStatusService extends DataBaseService {
           }
         }
       }
+      // }
     } catch (e) {
       Logger().e(e);
       return null;
@@ -934,6 +947,29 @@ class AssetStatusService extends DataBaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+    }
+  }
+
+  clearSpecificFilterType({FilterType? type}) async {
+    Logger().w("filterData of type $type");
+    int? size = await assetCountBox.values.length;
+    List<int>? indexes = [];
+    var box = assetCountBox as Box<AssetCountData>;
+    if (size != null) {
+      for (var i = 0; i < size; i++) {
+        var countData = box.getAt(i);
+        if (countData!.type == type) {
+          indexes.add(i);
+        }
+      }
+      if (indexes.isNotEmpty) {
+        for (var i = 0; i < indexes.length; i++) {
+          box.deleteAt(i);
+        }
+        Logger().w("Deleted filterData of type $type");
+      }
+    } else {
+      Logger().w("CountBox is empty");
     }
   }
 }

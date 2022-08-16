@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
-class DateRangeViewModel extends BaseViewModel {
+class DateRangeViewModel extends InsiteViewModel {
   DateRangeService? _dateRangeService = locator<DateRangeService>();
 
   String? _startDate = DateFormat('yyyy-MM-dd')

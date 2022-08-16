@@ -44,6 +44,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
               screenType: ScreenType.UTILIZATION,
               viewModel: viewModel,
               onFilterApplied: () {
+              //  viewModel.clearDashboardFiltersDb();
                 viewModel.refresh();
                 refreshWithFilter();
               },

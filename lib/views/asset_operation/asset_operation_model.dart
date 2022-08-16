@@ -35,7 +35,7 @@ class AssetOperationViewModel extends InsiteViewModel {
   int get totalCount => _totalCount;
 
   int pageNumber = 1;
-  int pageSize = 50;
+  int pageSize = 20;
   ScrollController? scrollController;
 
   bool _loadingMore = false;
@@ -81,11 +81,11 @@ class AssetOperationViewModel extends InsiteViewModel {
         _loadMore();
       }
     });
-    Future.delayed(Duration(seconds: 1), () async {
+    Future.delayed(Duration(seconds: 0), () async {
       await getSelectedFilterData();
       await getDateRangeFilterData();
     });
-    Future.delayed(Duration(seconds: 2), () async {
+    Future.delayed(Duration(seconds: 1), () async {
       await getAssetSummaryList();
     });
   }
@@ -96,7 +96,7 @@ class AssetOperationViewModel extends InsiteViewModel {
     await getAssetOperationCount();
     updateDateRangeList();
     pageNumber = 1;
-    pageSize = 50;
+    pageSize = 20;
     if (_assets.isEmpty) {
       _loading = true;
     } else {
@@ -137,8 +137,8 @@ class AssetOperationViewModel extends InsiteViewModel {
   getAssetSummaryList() async {
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-     await getAssetOperationCount();
-    updateDateRangeList();
+    await getAssetOperationCount();
+    // updateDateRangeList();
     AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
       startDate,
       endDate,
@@ -147,8 +147,8 @@ class AssetOperationViewModel extends InsiteViewModel {
       _menuItem,
       appliedFilters,
       await graphqlSchemaService!.getAssetOperationData(
-          startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-          endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+          startDate:startDate,
+          endDate: endDate,
           assetId: "",
           appliedFilter: appliedFilters,
           pageNo: pageNumber,
