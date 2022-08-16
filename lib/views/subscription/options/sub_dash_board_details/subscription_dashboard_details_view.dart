@@ -83,6 +83,7 @@ class SubDashBoardDetailsView extends StatelessWidget {
                                                         )
                                                       : DeviceListItem(
                                                           detailResult: result,
+                                                          fleetProvisionStatusInfo: null,
                                                           onCallback: () {},
                                                         );
                                 },

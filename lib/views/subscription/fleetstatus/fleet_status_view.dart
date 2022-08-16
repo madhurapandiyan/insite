@@ -89,20 +89,21 @@ class _FleetStatusViewState extends State<FleetStatusView> {
                   Expanded(
                     child: viewModel.loading
                         ? InsiteProgressBar()
-                        // : viewModel.devices.isNotEmpty
-                        //     ? ListView.builder(
-                        //         padding: EdgeInsets.all(8),
-                        //         itemCount: viewModel.devices.length,
-                        //         controller: viewModel.scrollController,
-                        //         itemBuilder: (context, index) {
-                        //           var result = viewModel.devices[index];
-                        //           // Logger().i(result!.count);
-                        //           return DeviceListItem(
-                        //             detailResult: result!,
-                        //             onCallback: () {},
-                        //           );
-                        //         },
-                        //       )
+                        : viewModel.devices.isNotEmpty
+                            ? ListView.builder(
+                                padding: EdgeInsets.all(8),
+                                itemCount: viewModel.devices.length,
+                                controller: viewModel.scrollController,
+                                itemBuilder: (context, index) {
+                                  var result = viewModel.devices[index];
+                                  // Logger().i(result!.count);
+                                  return DeviceListItem(
+                                    detailResult: null,
+                                    fleetProvisionStatusInfo: result,
+                                    onCallback: () {},
+                                  );
+                                },
+                              )
                             : EmptyView(
                                 title: "No Results",
                               ),

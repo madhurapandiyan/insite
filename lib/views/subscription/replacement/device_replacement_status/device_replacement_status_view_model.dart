@@ -6,6 +6,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/replacement_service.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/subscription/replacement/model/device_replacement_details_graphql.dart';
 import 'package:insite/views/subscription/replacement/model/device_replacement_status_model.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
@@ -36,9 +37,13 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
   bool isLoading = true;
   bool isLoadMore = false;
 
-  List<dynamic> deviceReplacementStatusModelList = [];
+  List<ReplacementHistory> deviceReplacementStatusModelList = [];
 
-  dynamic totalDeviceReplacementStatusModel;
+  ReplacementData? totalDeviceReplacementStatusModel;
+
+  List<DeviceReplacementStatusModel> dataList=[];
+
+  TotalDeviceReplacementStatusModel ? totalDeviceReplacementStatusModelData;
   int startCount = 0;
   final controller = new ScrollController();
 
@@ -54,25 +59,25 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
         //   deviceReplacementStatusModelList.add(element);
         // });
 
-        for (var element
-            in totalDeviceReplacementStatusModel!.replacementHistory) {
+        for (var element in totalDeviceReplacementStatusModel!.replacementHistory!) {
           deviceReplacementStatusModelList.add(element);
         }
+        Logger().v(deviceReplacementStatusModelList.length);
         isLoading = false;
         isLoadMore = false;
         notifyListeners();
       } else {
-        totalDeviceReplacementStatusModel = await replacementService!
+        totalDeviceReplacementStatusModelData = await replacementService!
             .getTotalDeviceReplacementStatusModel(startCount);
         Logger().wtf(totalDeviceReplacementStatusModel);
         Logger().d(deviceReplacementStatusModelList);
-        totalDeviceReplacementStatusModel!.result![1].forEach((element) {
-          deviceReplacementStatusModelList.add(element);
+        totalDeviceReplacementStatusModelData!.result![1].forEach((element) {
+          dataList.add(element);
         });
-        // for (var i = 0; i < deviceReplacementStatusModelList.length; i++) {
-        //   deviceReplacementStatusModelList
-        //       .sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
-        // }
+        for (var i = 0; i < deviceReplacementStatusModelList.length; i++) {
+          dataList
+              .sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
+        }
         isLoading = false;
         isLoadMore = false;
         notifyListeners();

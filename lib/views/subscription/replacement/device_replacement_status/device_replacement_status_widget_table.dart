@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/subscription/replacement/model/device_replacement_details_graphql.dart';
 import 'package:insite/views/subscription/replacement/model/device_replacement_status_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class ReplacementStatusTableWidget extends StatelessWidget {
-  dynamic modelData;
+  ReplacementHistory? modelData;
   ReplacementStatusTableWidget({this.modelData});
   @override
   Widget build(BuildContext context) {
@@ -52,21 +53,21 @@ class ReplacementStatusTableWidget extends StatelessWidget {
                         TableRow(children: [
                           InsiteTableRowItem(
                             title: "Old Device ID : ",
-                            content: modelData!.OldDeviceId ?? "-",
+                            content: modelData!.oldDeviceId ?? "-",
                           ),
                           InsiteTableRowItem(
                             title: "New Device ID :",
-                            content: modelData!.NewDeviceId ?? "-",
+                            content: modelData!.newDeviceId ?? "-",
                           ),
                         ]),
                         TableRow(children: [
                           InsiteTableRowItem(
                             title: "Serial No",
-                            content: modelData!.VIN ?? "-",
+                            content: modelData!.vin ?? "-",
                           ),
                           InsiteTableRowItem(
                             title: "Reason  :",
-                            content: modelData!.Reason ?? "-",
+                            content: modelData!.reason ?? "-",
                           ),
                         ]),
                       ],
@@ -80,33 +81,33 @@ class ReplacementStatusTableWidget extends StatelessWidget {
                             children: [
                               InsiteTableRowItem(
                                 title: "Replacement Status : ",
-                                content: modelData!.State ?? "-",
+                                content: modelData!.state ?? "-",
                               ),
                               InsiteTableRowItem(
                                 title: "Description : ",
-                                content: modelData!.Description ?? "-",
+                                content: modelData!.description ?? "-",
                               ),
                             ],
                           ),
                           TableRow(children: [
                             InsiteTableRowItem(
                               title: "First Name :",
-                              content: modelData!.FirstName ?? "-",
+                              content: modelData!.firstName ?? "-",
                             ),
                             InsiteTableRowItem(
                               title: "Last Name : ",
-                              content: modelData!.LastName ?? "-",
+                              content: modelData!.lastName ?? "-",
                             ),
                           ]),
                           TableRow(children: [
                             InsiteTableRowItem(
                               title: "User Email :",
-                              content: modelData!.EmailID ?? "-",
+                              content: modelData!.emailID ?? "-",
                             ),
                             InsiteTableRowItem(
                               title: "Request Time : ",
                               content: Utils.getLastReportedDateFilterData(
-                                      DateTime.parse(modelData!.InsertUTC!)) ??
+                                      DateTime.parse(modelData!.insertUTC!)) ??
                                   "-",
                             ),
                           ]),

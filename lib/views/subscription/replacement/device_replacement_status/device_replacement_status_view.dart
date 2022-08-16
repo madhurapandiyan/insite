@@ -34,7 +34,7 @@ class DeviceReplacementStatusView extends StatelessWidget {
                              InsiteText(
                                     fontWeight: FontWeight.bold,
                                     text:
-                                        "REPLACEMENT STATUS ( ${viewModel.deviceReplacementStatusModelList.length} of ${viewModel.totalDeviceReplacementStatusModel?.result?.first.first.count} )",
+                                        "REPLACEMENT STATUS ( ${viewModel.deviceReplacementStatusModelList.length} of ${viewModel.totalDeviceReplacementStatusModel} )",
                                   ),
                             // InsiteButton(
                             //     height: MediaQuery.of(context).size.height *

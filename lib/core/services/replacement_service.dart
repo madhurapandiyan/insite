@@ -127,13 +127,9 @@ class ReplacementService extends BaseService {
   Future<ReplacementData?> getReplacementDataDetails(String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(
+        var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: accountSelected?.CustomerUID,
-          userId: (await _localService?.getLoggedInUser())?.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+         
         );
 
         ReplacementData? deviceDetails = ReplacementData.fromJson(data.data);
