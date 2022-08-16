@@ -1876,7 +1876,9 @@ class Utils {
     List<Map<String, dynamic>> intervalList = [];
     Map<String, dynamic> data = {
       "intervalID": mainInterval!.intervalId,
-      "intervalDescription": mainInterval.intervalDescription!.isEmpty?"\""+ "\"": mainInterval.intervalDescription,
+      "intervalDescription": mainInterval.intervalDescription!.isEmpty
+          ? "\"" + "\""
+          : mainInterval.intervalDescription,
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };
@@ -1912,6 +1914,20 @@ class Utils {
       }
     } catch (e) {
       Logger().e(e.toString());
+    }
+  }
+
+  static String fuelFilterQuery(String? fuelLevelPercentLt) {
+    if (fuelLevelPercentLt == "25") {
+      return "0%-25%";
+    } else if (fuelLevelPercentLt == "50") {
+      return "26%-50%";
+    } else if (fuelLevelPercentLt == "75") {
+      return "51%-75%";
+    } else if (fuelLevelPercentLt == "100") {
+      return "76%-25%";
+    } else {
+      return "";
     }
   }
 }

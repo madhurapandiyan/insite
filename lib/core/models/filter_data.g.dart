@@ -115,6 +115,8 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.SERVICE_STATUS;
       case 24:
         return FilterType.ASSET_TYPE;
+      case 25:
+        return FilterType.UTILIZATION_COUNT;
       default:
         return FilterType.ALL_ASSETS;
     }
@@ -197,6 +199,9 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.ASSET_TYPE:
         writer.writeByte(24);
+        break;
+      case FilterType.UTILIZATION_COUNT:
+        writer.writeByte(25);
         break;
     }
   }
@@ -345,6 +350,7 @@ const _$FilterTypeEnumMap = {
   FilterType.SERVICE_TYPE: 'SERVICE_TYPE',
   FilterType.SERVICE_STATUS: 'SERVICE_STATUS',
   FilterType.ASSET_TYPE: 'ASSET_TYPE',
+  FilterType.UTILIZATION_COUNT: 'UTILIZATION_COUNT',
 };
 
 const _$FilterSubTypeEnumMap = {

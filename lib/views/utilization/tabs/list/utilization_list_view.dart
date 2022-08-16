@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -23,22 +24,22 @@ class UtilizationListView extends StatefulWidget {
 class UtilizationListViewState extends State<UtilizationListView> {
   List<DateTime>? dateRange = [];
 
-  late var viewModel;
+  late var viewModelClass;
 
   @override
   void initState() {
-    viewModel = UtilizationListViewModel();
+    // viewModel = UtilizationListViewModel();
     super.initState();
   }
 
   @override
   void dispose() {
-    viewModel.dispose();
+    viewModelClass.dispose();
     super.dispose();
   }
 
   onFilterApplied() {
-    viewModel.refresh();
+    viewModelClass.refresh();
   }
 
   @override
@@ -46,6 +47,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
     return ViewModelBuilder<UtilizationListViewModel>.reactive(
         builder: (BuildContext context, UtilizationListViewModel viewModel,
             Widget? _) {
+          viewModelClass = viewModel;
           return Padding(
             padding: const EdgeInsets.only(top: 0),
             child: Stack(
@@ -85,7 +87,9 @@ class UtilizationListViewState extends State<UtilizationListView> {
                                 context: context,
                                 builder: (BuildContext context) => Dialog(
                                     backgroundColor: transparent,
-                                    child: DateRangeView()),
+                                    child: DateRangeView(
+                                      filterType: FilterType.UTILIZATION_COUNT,
+                                    )),
                               );
                               if (dateRange != null && dateRange!.isNotEmpty) {
                                 viewModel.refresh();
@@ -151,6 +155,6 @@ class UtilizationListViewState extends State<UtilizationListView> {
             ),
           );
         },
-        viewModelBuilder: () => viewModel);
+        viewModelBuilder: () => UtilizationListViewModel());
   }
 }

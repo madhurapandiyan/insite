@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
@@ -27,26 +28,21 @@ class _CustomListViewState extends State<CustomListView> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(30.0),
-          child: FadeInImage(
-            width: 36,
-            height: 36,
-            image: NetworkImage(
-                widget.applicationAccessData!.application!.iconUrl! + "app.png",
-                headers: {
-                  "Authorization": "Bearer 9a26dae0b4bb70e9165cf204a3cc4ae7",
-                }),
-            placeholder: AssetImage(
-              "assets/images/add_user_icon_one.png",
-            ),
-            imageErrorBuilder: (context, error, stackTrace) {
-              Logger().e(error);
-              return Image.asset("assets/images/add_user_icon_one.png",
-                  width: 36, height: 36, fit: BoxFit.none);
-            },
-            fit: BoxFit.cover,
-          ),
+        Container(
+          width: 45,
+          height: 45,
+          decoration: BoxDecoration(
+              color: white, borderRadius: BorderRadius.circular(8)),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(30.0),
+              child: Image.network(
+                widget.applicationAccessData!.application!.iconUrl!,
+                errorBuilder: (context, error, stackTrace) {
+                  Logger().e(error);
+                  return Image.asset("assets/images/add_user_icon_one.png",
+                      width: 45, height: 45, fit: BoxFit.fitWidth);
+                },
+              )),
         ),
         SizedBox(
           width: 8,

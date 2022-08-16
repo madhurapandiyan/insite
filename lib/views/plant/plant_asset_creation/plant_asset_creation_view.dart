@@ -52,6 +52,8 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                     height: MediaQuery.of(context).size.height *
                                         0.06,
                                     title: "Submit",
+                                    textColor:
+                                        Theme.of(context).backgroundColor,
                                     fontSize: 14,
                                     onTap: () {
                                       if (viewModel.validate()) {
@@ -65,6 +67,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.06,
                                 title: "Reset",
+                                textColor: Theme.of(context).backgroundColor,
                                 fontSize: 14,
                                 onTap: () {
                                   //viewModel.changedResetButtonState();
@@ -213,6 +216,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                       width: 120,
                       height: 40,
                       title: "Yes",
+                      textColor: Theme.of(context).backgroundColor,
                       onTap: () {
                         viewModel.submitAssetCreationData();
                         Navigator.pop(context);
@@ -222,6 +226,7 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                       width: 120,
                       height: 40,
                       title: "No",
+                      textColor: Theme.of(context).backgroundColor,
                       onTap: () {
                         Navigator.pop(context);
                       },

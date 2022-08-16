@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
@@ -52,20 +53,22 @@ class PlantHierachyView extends StatelessWidget {
                           children: [
                             Container(
                               padding: EdgeInsets.all(15),
-                             // height: 50,
+                              // height: 50,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                  //color: Theme.of(context).indicatorColor,
                                   borderRadius: BorderRadius.only(
                                       topRight: Radius.circular(10),
                                       topLeft: Radius.circular(10))),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  InsiteText(
-                                      text: "ASSET DETAILS",
-                                      fontWeight: FontWeight.w700,
-                                      size: 12.0),
+                                  Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: InsiteText(
+                                          text: "ASSET DETAILS",
+                                          fontWeight: FontWeight.w700,
+                                          color: black,
+                                          size: 12.0)),
                                   Divider(
                                     thickness: 1.0,
                                     color: Theme.of(context).dividerColor,

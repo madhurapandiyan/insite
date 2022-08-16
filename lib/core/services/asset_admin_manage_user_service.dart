@@ -293,21 +293,21 @@ class AssetAdminManagerUserService extends BaseService {
       } else {
         var application1 = Application(
             iconUrl:
-                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insitefleet/app.png",
+                "https://osg-in-pre-prod-pulse.frame-oesolutions.com/app/assets/app.fleet.png",
             name: "InSite Fleet",
             enabled: true,
             tpaasAppName: "Frame-Fleet-IND",
             appUID: "f03001b8-ea9f-11e5-88ba-0a4c287ff82f");
         var application2 = Application(
             iconUrl:
-                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteservice/app.png",
+                "https://osg-in-pre-prod-pulse.frame-oesolutions.com/app/assets/app.service.png",
             name: "InSite Service",
             enabled: true,
             tpaasAppName: "Frame-Service-IND",
             appUID: "b5fe5c50-9c5f-11e7-b46d-0645f4ae660c");
         var application3 = Application(
             iconUrl:
-                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteadministrator/app.png",
+                "https://osg-in-pre-prod-pulse.frame-oesolutions.com/app/assets/app.admin.png",
             name: "InSite Administrator",
             enabled: true,
             tpaasAppName: "Frame-Administrator-IND",

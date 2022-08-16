@@ -78,6 +78,7 @@ import 'package:insite/views/subscription/fleetstatus/fleet_status_view.dart'
     as view35;
 import 'package:insite/views/subscription/transferhistory/transfer_history_view.dart'
     as view36;
+import 'package:logger/logger.dart';
 
 import 'router_constants.dart' as visonLink;
 import 'package:insite/views/add_intervals/add_intervals_view.dart' as view45;
@@ -115,10 +116,12 @@ class Router {
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
-        var fleetArgs =(settings.arguments as Map)["arguments"] as view9.DetailArguments?;
+        Logger().w(settings.arguments);
+        var fleetArgs =
+            (settings.arguments as Map)["arguments"] as view9.DetailArguments;
         return MaterialPageRoute(
             builder: (_) => view9.AssetDetailView(
-                  fleet: fleetArgs!.fleet,
+                  fleet: fleetArgs.fleet,
                   tabIndex: fleetArgs.index,
                   type: fleetArgs.type,
                 ));
