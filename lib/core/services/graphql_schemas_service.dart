@@ -1972,7 +1972,11 @@ reportUid
   }
 }""";
     } else if (assetsDropDownValue == "Utilization Details" ||
-        assetsDropDownValue == "Fault Code Asset Details") {
+        assetsDropDownValue == "Fault Code Asset Details" ||
+        assetsDropDownValue == "Backhoe Loader Operation" ||
+        assetsDropDownValue == "Excavator Usage" ||
+        assetsDropDownValue == "Multi-Asset Backhoe Loader Operation" ||
+        assetsDropDownValue == "Multi-Asset Excavator Usage") {
       addReportPayLoad = """mutation{
   createNotificationReport(
     assetFilterCategoryID: 1,
@@ -3368,7 +3372,7 @@ maintenanceIntervals(
     return data;
   }
 
-   String getPlantDashboardAndHierarchyCalendarListData(
+  String getPlantDashboardAndHierarchyCalendarListData(
       int? limit, int? start, String? status) {
     var data = """query{
     frameSubscription{
@@ -3487,7 +3491,6 @@ mutation{
     return data;
   }
 
-
   creatingPlantasset(
       List<AssetCreationModel> assetCreationListData, String userId) {
     List<Map<String, String>> getAssetPayLoad = [];
@@ -3497,7 +3500,6 @@ mutation{
           element.deviceId == "" &&
           element.model == "" &&
           element.hourMeter == "") {
-           
       } else {
         Map<String, String> asset = {
           "machineSerialNumber": "\"" + element.assetSerialNo! + "\"",
@@ -3527,5 +3529,4 @@ createAsset(
 }""";
     return data;
   }
-
 }

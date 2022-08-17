@@ -4,10 +4,14 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_utilization.dart';
+import 'package:insite/core/models/maintenance_dashboard_count.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
+import 'package:insite/core/services/maintenance_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 class AssetDashboardViewModel extends InsiteViewModel {
@@ -19,9 +23,13 @@ class AssetDashboardViewModel extends InsiteViewModel {
   AssetDetail? _assetDetail;
   AssetDetail? get assetDetail => _assetDetail;
 
+    MaintenanceDashboardCount? maintenanceDashboardCount;
+
   AssetUtilization? _assetUtilization;
   AssetUtilization? get assetUtilization => _assetUtilization;
 
+ MaintenanceService? _maintenanceService = locator<MaintenanceService>();
+ 
   List<Note> _assetNotes = [];
   List<Note> get assetNotes => _assetNotes;
 
@@ -30,6 +38,9 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   bool _postingNote = false;
   bool get postingNote => _postingNote;
+
+   bool _maintenanceLoading = true;
+  bool get maintenanceLoading => _maintenanceLoading;
 
   double? _utilizationGreatestValue;
   double? get utilizationGreatestValue => _utilizationGreatestValue;
@@ -43,6 +54,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
       await getAssetDetail();
       await getAssetUtilization();
       await getNotes();
+      await getMaintenanceCountData();
     });
   }
 
@@ -85,4 +97,36 @@ class AssetDashboardViewModel extends InsiteViewModel {
     _postingNote = false;
     notifyListeners();
   }
+  getMaintenanceCountData() async {
+    try {
+      var data = await _maintenanceService?.getMaintenanceDashboardCount(
+          query: await graphqlSchemaService!.maintenanceDashboardCount(
+        fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+        endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+      ));
+      data?.maintenanceDashboard?.dashboardData!.forEach((element) {
+        if (element.displayName == "Overdue") {
+          element.maintenanceTotal = MAINTENANCETOTAL.OVERDUE;
+        }
+        if (element.displayName == "Upcoming") {
+          element.maintenanceTotal = MAINTENANCETOTAL.UPCOMING;
+        }
+        if (element.subCount != null) {
+          element.subCount!.forEach((dashboardData) {
+            if (dashboardData.displayName == "Next Week") {
+              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTWEEK;
+            }
+            if (dashboardData.displayName == "Next Month") {
+              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
+            }
+          });
+        }
+      });
+      maintenanceDashboardCount = data;
+      _maintenanceLoading = false;
+      notifyListeners();
+    } catch (e) {}
+  }
+   
+
 }

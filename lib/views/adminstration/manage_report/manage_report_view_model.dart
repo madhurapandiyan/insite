@@ -248,7 +248,24 @@ class ManageReportViewModel extends InsiteViewModel {
     TemplateDetails(
         title: "Utilization Details",
         description:
-            "The Utilization Details report provides all the Idle time,Working and Run time data for the Single Asset corresponding to the selected date range.")
+            "The Utilization Details report provides all the Idle time,Working and Run time data for the Single Asset corresponding to the selected date range."),
+    TemplateDetails(
+        title: "Backhoe Loader Operation",
+        description:
+            "The Backhoe Loader Operation is a single asset report that provides the split in hours of machine’s operation in the Backhoe Mode and Loader Mode. This report is exclusive of Backhoe Loader Product Families."),
+    TemplateDetails(
+        title: "Excavator Usage",
+        description:
+            "The Excavator Usage report is a single asset report that provides the split in hours of Excavator’s operation in Power Mode, Economy Mode, Auto-Idle Mode, Front & Swing and Travel. This report is exclusive of Excavator Product Families."),
+
+    TemplateDetails(
+        title: "Multi-Asset Backhoe Loader Operation",
+        description:
+            "The Multi-Asset Backhoe Loader Operation is a Multi asset report that provides the split in hours of machine’s operation in the Backhoe Mode and Loader Mode. This report is exclusive of Backhoe Loader Product Families"),
+    TemplateDetails(
+        title: "Multi-Asset Excavator Usage",
+        description:
+            "The Multi-Asset Excavator Usage report is a Multi asset report that provides the split in hours of Excavator’s operation in Power Mode, Economy Mode, Auto-Idle Mode, Front & Swing and Travel. This report is exclusive of Excavator Product Families.")
   ];
 
   searchReports(String searchValue) async {

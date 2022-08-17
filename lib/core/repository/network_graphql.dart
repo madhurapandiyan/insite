@@ -77,7 +77,7 @@ class Network {
       // Logger().w(customerId);
       // Logger().w(userId);
       // Logger().w(subId);
-      Logger().wtf(query);
+      //Logger().wtf(query);
 
       final Link link = DioLink(
         graphqlEndpoint,

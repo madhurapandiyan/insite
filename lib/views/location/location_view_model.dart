@@ -10,6 +10,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/marker.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -36,6 +37,7 @@ class LocationViewModel extends InsiteViewModel {
 
   bool _loading = true;
   bool get loading => _loading;
+
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
   CustomInfoWindowController get customInfoWindowController =>
@@ -54,6 +56,9 @@ class LocationViewModel extends InsiteViewModel {
   int? _totalCount = 0;
   int? get totalCount => _totalCount;
 
+  CameraPosition centerPosition =
+      CameraPosition(target: LatLng(30.666, 76.8127), zoom: 1);
+
   AssetLocationData? _assetLocation;
   AssetLocationData? get assetLocation => _assetLocation;
 
@@ -65,6 +70,8 @@ class LocationViewModel extends InsiteViewModel {
   bool showingCard = true;
 
   List<flutter_map.Marker> allMarkers = [];
+
+  String searchDropDownValue = "S/N";
 
   clusterMarker() {
     int index = 1;
@@ -254,22 +261,22 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   LocationViewModel(ScreenType type) {
-    this._pageType = type;
-    this.log = getLogger(this.runtimeType.toString());
-    _assetLocationService.setUp();
-    setUp();
-    manager = initClusterManager();
-    if (pageType == ScreenType.LOCATION) {
-      Future.delayed(Duration(seconds: 1), () async {
-        await getSelectedFilterData();
-        await getDateRangeFilterData();
-        await getAssetLocation();
-      });
-    } else if (pageType == ScreenType.DASHBOARD) {
-      Future.delayed(Duration(seconds: 1), () async {
-        await getAssetLocationHome();
-      });
-    }
+    // this._pageType = type;
+    // this.log = getLogger(this.runtimeType.toString());
+    // _assetLocationService.setUp();
+    // setUp();
+    // manager = initClusterManager();
+    // if (pageType == ScreenType.LOCATION) {
+    //   Future.delayed(Duration(seconds: 1), () async {
+    //     await getSelectedFilterData();
+    //     await getDateRangeFilterData();
+    //     await getAssetLocation();
+    //   });
+    // } else if (pageType == ScreenType.DASHBOARD) {
+    //   Future.delayed(Duration(seconds: 1), () async {
+    //     await getAssetLocationHome();
+    //   });
+    // }
   }
 
   refresh() async {

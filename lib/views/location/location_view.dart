@@ -2,16 +2,21 @@ import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/location_search.dart/location_search_widget.dart';
+import 'package:insite/views/location/location_search_box/location_search_box_view.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -24,7 +29,7 @@ class LocationView extends StatefulWidget {
 }
 
 class _LocationViewState extends State<LocationView> {
-  String _currentSelectedItem = "MAP";
+  String _currentSelectedItem = "SATELLITE";
   double zoomVal = 5.0;
   MapType currentType = MapType.normal;
   List<DateTime>? dateRange;
@@ -55,7 +60,7 @@ class _LocationViewState extends State<LocationView> {
               viewModel.refresh();
             },
             body: viewModel.loading
-                ? InsiteProgressBar()
+                ? LocationSearchBoxView()
                 : viewModel.assetLocation != null
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,13 +161,10 @@ class _LocationViewState extends State<LocationView> {
                                   compassEnabled: true,
                                   zoomControlsEnabled: false,
                                   markers: viewModel.markers,
-                                  initialCameraPosition: viewModel
-                                                  .assetLocation !=
-                                              null &&
+                                  initialCameraPosition: viewModel.assetLocation != null &&
                                           viewModel.assetLocation!.mapRecords!
                                               .isNotEmpty &&
-                                          viewModel.assetLocation!.mapRecords!
-                                                  .first !=
+                                          viewModel.assetLocation!.mapRecords!.first !=
                                               null &&
                                           viewModel
                                                   .assetLocation!
@@ -183,9 +185,12 @@ class _LocationViewState extends State<LocationView> {
                                                   .first!
                                                   .lastReportedLocationLongitude!),
                                           zoom: 5)
-                                      : CameraPosition(
-                                          target: LatLng(30.666, 76.8127),
-                                          zoom: 4),
+                                      : viewModel.centerPosition != null
+                                          ? CameraPosition(
+                                              target: LatLng(
+                                                  viewModel.centerPosition.target.latitude,
+                                                  viewModel.centerPosition.target.latitude))
+                                          : CameraPosition(target: LatLng(30.666, 76.8127), zoom: 4),
                                 ),
                                 CustomInfoWindow(
                                   controller:
@@ -197,8 +202,7 @@ class _LocationViewState extends State<LocationView> {
                                   offset: 1,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 10, top: 10, bottom: 10),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Align(
                                     alignment: Alignment.centerRight,
                                     child: Column(
@@ -207,74 +211,80 @@ class _LocationViewState extends State<LocationView> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(
-                                          color:
-                                              Theme.of(context).backgroundColor,
-
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.3,
-                                          // decoration: BoxDecoration(
-                                          //     border:
-                                          //         Border.all(width: 2, color: tuna)),
-                                          child: DropdownButton(
-                                            dropdownColor: Theme.of(context)
-                                                .backgroundColor,
-                                            icon: Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 4.0),
-                                              child: Container(
-                                                child: SvgPicture.asset(
-                                                  "assets/images/arrowdown.svg",
-                                                  width: 10,
-                                                  color: Theme.of(context)
-                                                      .iconTheme
-                                                      .color,
-                                                  height: 10,
-                                                ),
-                                              ),
-                                            ),
-                                            isExpanded: false,
-                                            hint: Text(
-                                              _currentSelectedItem,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .backgroundColor),
-                                            ),
-                                            items: [
-                                              'MAP',
-                                              'TERRAIN',
-                                              'SATELLITE',
-                                              'HYBRID'
-                                            ]
-                                                .map((map) => DropdownMenuItem(
-                                                      value: map,
-                                                      child: InsiteText(
-                                                        text: map,
-                                                        size: 11.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ))
-                                                .toList(),
-                                            value: _currentSelectedItem,
-                                            onChanged: (String? value) {
-                                              setState(() {
-                                                _currentSelectedItem = value!;
-                                              });
-                                            },
-                                            underline: Container(
-                                                height: 1.0,
-                                                decoration: BoxDecoration(
-                                                    border: Border(
-                                                        bottom: BorderSide(
-                                                            color: Colors
-                                                                .transparent,
-                                                            width: 0.0)))),
-                                          ),
+                                        Row(
+                                          children: [
+                                            // Container(
+                                            //   color: Theme.of(context)
+                                            //       .backgroundColor,
+                                            
+                                            //   padding: EdgeInsets.symmetric(
+                                            //       horizontal: 10),
+                                            //   width: MediaQuery.of(context)
+                                            //           .size
+                                            //           .width *
+                                            //       0.3,
+                                            //   // decoration: BoxDecoration(
+                                            //   //     border:
+                                            //   //         Border.all(width: 2, color: tuna)),
+                                            //   child: DropdownButton(
+                                            //     dropdownColor: Theme.of(context)
+                                            //         .backgroundColor,
+                                            //     icon: Padding(
+                                            //       padding: EdgeInsets.only(
+                                            //           right: 4.0),
+                                            //       child: Container(
+                                            //         child: SvgPicture.asset(
+                                            //           "assets/images/arrowdown.svg",
+                                            //           width: 10,
+                                            //           color: Theme.of(context)
+                                            //               .iconTheme
+                                            //               .color,
+                                            //           height: 10,
+                                            //         ),
+                                            //       ),
+                                            //     ),
+                                            //     isExpanded: false,
+                                            //     hint: Text(
+                                            //       _currentSelectedItem,
+                                            //       style: TextStyle(
+                                            //           color: Theme.of(context)
+                                            //               .backgroundColor),
+                                            //     ),
+                                            //     items: [
+                                            //       'SATELLITE',
+                                            //       'MAP',
+                                            //       'TERRAIN',
+                                            //       'HYBRID'
+                                            //     ]
+                                            //         .map((map) =>
+                                            //             DropdownMenuItem(
+                                            //               value: map,
+                                            //               child: InsiteText(
+                                            //                 text: map,
+                                            //                 size: 11.0,
+                                            //                 fontWeight:
+                                            //                     FontWeight.bold,
+                                            //               ),
+                                            //             ))
+                                            //         .toList(),
+                                            //     value: _currentSelectedItem,
+                                            //     onChanged: (String? value) {
+                                            //       setState(() {
+                                            //         _currentSelectedItem =
+                                            //             value!;
+                                            //       });
+                                            //     },
+                                            //     underline: Container(
+                                            //         height: 1.0,
+                                            //         decoration: BoxDecoration(
+                                            //             border: Border(
+                                            //                 bottom: BorderSide(
+                                            //                     color: Colors
+                                            //                         .transparent,
+                                            //                     width: 0.0)))),
+                                            //   ),
+                                            // ),
+                                          ],
                                         ),
                                         Column(
                                           children: [
@@ -426,15 +436,15 @@ class _LocationViewState extends State<LocationView> {
       case "MAP":
         Logger().i("map is in normal type ");
         return MapType.normal;
-        break;
+
       case "TERRAIN":
         Logger().i("map is in terrain type");
         return MapType.terrain;
-        break;
+
       case "SATELLITE":
         Logger().i("map is in satellite type ");
         return MapType.satellite;
-        break;
+
       case "HYBRID":
         Logger().i("map is in hybrid type ");
         return MapType.hybrid;
