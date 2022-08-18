@@ -296,7 +296,7 @@ class MaintenanceTabListData extends StatelessWidget {
     return servicesData!.isEmpty || servicesData == null
         ? Expanded(
             child: EmptyView(
-              title: "No Asset Found",
+              title: "No service pending or overdue at this time",
             ),
           )
         : Expanded(
@@ -402,7 +402,7 @@ class HistoryListData extends StatelessWidget {
     return listData!.isEmpty || listData == null
         ? Expanded(
             child: EmptyView(
-              title: "No History Found",
+              title: "No service history available to date",
             ),
           )
         : Expanded(

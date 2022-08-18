@@ -3,22 +3,39 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/asset_utilization.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/health/health_view.dart';
 import 'package:logger/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../../../core/services/date_range_service.dart';
 
 class AssetDashboardViewModel extends InsiteViewModel {
   Logger? log;
   AssetService? _assetSingleHistoryService = locator<AssetService>();
+  NavigationService? _navigationService = locator<NavigationService>();
   AssetUtilizationService? _assetUtilizationService =
       locator<AssetUtilizationService>();
+ DateRangeService? _dateRangeService = locator<DateRangeService>();
 
   AssetDetail? _assetDetail;
   AssetDetail? get assetDetail => _assetDetail;
 
+  bool _refreshing = false;
+  bool get refreshing => _refreshing;
+
+  AssetCount? _faultCountData;
+  AssetCount? get faultCountData => _faultCountData;
+
+  bool _faultCountloading = true;
+  bool get faultCountloading => _faultCountloading;
+  
   AssetUtilization? _assetUtilization;
   AssetUtilization? get assetUtilization => _assetUtilization;
 
@@ -33,6 +50,25 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   double? _utilizationGreatestValue;
   double? get utilizationGreatestValue => _utilizationGreatestValue;
+
+  FilterData? _currentFilterSelected;
+  FilterData? get currentFilterSelected => _currentFilterSelected;
+
+   gotoFaultPage() {
+    Logger().i("go to fault page");
+    _navigationService!
+        .navigateWithTransition(HealthView(), transition: "rightToLeft");
+  }
+  
+  onDateAndFilterSelected(FilterData data, FilterData dateFilter) async {
+    Logger().d("onFilterSelected ${data.title}");
+    await clearFilterDb();
+    if (currentFilterSelected != null) {
+      await addFilter(currentFilterSelected!);
+    }
+    await addFilter(data);
+    await _dateRangeService!.updateDateFilter(dateFilter);
+  }
 
   AssetDashboardViewModel(AssetDetail? detail) {
     this._assetDetail = detail;

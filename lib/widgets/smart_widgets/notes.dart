@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/theme/colors.dart';
@@ -10,6 +12,7 @@ class Notes extends StatelessWidget {
   const Notes({
     Key? key,
     required this.controller,
+     this.onDelete,
     required this.onTap,
     required this.isLoading,
     required this.notes,
@@ -17,10 +20,12 @@ class Notes extends StatelessWidget {
 
   final TextEditingController? controller;
   final Function onTap;
+  final Void Function()? onDelete;
   final bool isLoading;
-  final List<Note> notes;
+ final List<Note> notes;
   @override
   Widget build(BuildContext context) {
+    
     final kTextFieldBorder = OutlineInputBorder(
       borderSide: BorderSide(
         color: transparent,
@@ -31,6 +36,7 @@ class Notes extends StatelessWidget {
     );
 
     return Container(
+      
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
         child: Column(
@@ -129,9 +135,69 @@ class Notes extends StatelessWidget {
                       textColor: white,
                     ),
                   ),
+                  
                 ],
               ),
             ),
+            
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+            
+           InsiteButton(title: "Notes",bgColor: black,textColor: white,) ,
+           InsiteButton(title: "Author",bgColor: black,textColor: white,width: 100,) ,
+           InsiteButton(title: "Posted On",bgColor: black,textColor: white,width: 100,) ,
+           InsiteButton(title: "Delete",bgColor: black,textColor: white,) ,
+          ],),
+          
+          Container(
+            height: 200,
+            child:
+            ListView.builder(
+              itemBuilder: (context, index) {
+             
+              
+                return  ListTile(
+                title: Text(
+                  controller!.text
+                  //notes[index].assetUID as String
+                ),
+                leading: InkWell(
+                  onTap: () {
+                    showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: const Text('Notes'),
+          content:  Text(controller!.text),
+          actionsAlignment: MainAxisAlignment.start,
+          actions: <Widget>[
+           
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InsiteButton(
+                bgColor: Colors.grey,
+                width: 55,
+                onTap: () => Navigator.pop(context, 'OK'),
+                title: "OK",
+                
+              ),
+            ),
+          ],
+        ),
+      );
+      
+                  },
+                  child: Icon(Icons.visibility)),
+                trailing: InkWell(
+                  onTap:onDelete, 
+                  child: Icon(Icons.delete)),
+                iconColor: black,);
+              },
+             // itemCount: notes.length,
+              ),
+          
+          )
           ],
         ),
       ),
