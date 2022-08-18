@@ -3540,6 +3540,7 @@ createAsset(
            lastReportedLocationLongitude,
            assetIcon,
            assetId,
+           assetSerialNumber,
            model,
            makeCode,
            assetIdentifier,

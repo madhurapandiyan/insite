@@ -10,6 +10,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/detail/tabs/location/asset_location_view_model.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/views/location/location_search_box/location_search_box_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -172,6 +173,10 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                           target: LatLng(30.666, 76.8127),
                                           zoom: 4),
                             ),
+                            // Align(
+                            //   alignment: Alignment.topLeft,
+                            //   child: LocationSearchBoxView(),
+                            // ),
                             CustomInfoWindow(
                               controller: viewModel.customInfoWindowController,
                               height: widget.screenType == ScreenType.HEALTH

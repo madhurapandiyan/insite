@@ -60,7 +60,7 @@ class _LocationViewState extends State<LocationView> {
               viewModel.refresh();
             },
             body: viewModel.loading
-                ? LocationSearchBoxView()
+                ? InsiteProgressBar()
                 : viewModel.assetLocation != null
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,36 +161,50 @@ class _LocationViewState extends State<LocationView> {
                                   compassEnabled: true,
                                   zoomControlsEnabled: false,
                                   markers: viewModel.markers,
-                                  initialCameraPosition: viewModel.assetLocation != null &&
-                                          viewModel.assetLocation!.mapRecords!
-                                              .isNotEmpty &&
-                                          viewModel.assetLocation!.mapRecords!.first !=
-                                              null &&
-                                          viewModel
-                                                  .assetLocation!
-                                                  .mapRecords!
-                                                  .first!
-                                                  .lastReportedLocationLatitude !=
-                                              null
-                                      ? CameraPosition(
-                                          target: LatLng(
+                                  initialCameraPosition: viewModel
+                                          .isLocationSelected!
+                                      ? viewModel.centerPosition
+                                      : viewModel.assetLocation != null &&
+                                              viewModel.assetLocation!.mapRecords!
+                                                  .isNotEmpty &&
+                                              viewModel.assetLocation!.mapRecords!
+                                                      .first !=
+                                                  null &&
                                               viewModel
-                                                  .assetLocation!
-                                                  .mapRecords!
-                                                  .first!
-                                                  .lastReportedLocationLatitude!,
-                                              viewModel
-                                                  .assetLocation!
-                                                  .mapRecords!
-                                                  .first!
-                                                  .lastReportedLocationLongitude!),
-                                          zoom: 5)
-                                      : viewModel.centerPosition != null
+                                                      .assetLocation!
+                                                      .mapRecords!
+                                                      .first!
+                                                      .lastReportedLocationLatitude !=
+                                                  null
                                           ? CameraPosition(
                                               target: LatLng(
-                                                  viewModel.centerPosition.target.latitude,
-                                                  viewModel.centerPosition.target.latitude))
-                                          : CameraPosition(target: LatLng(30.666, 76.8127), zoom: 4),
+                                                  viewModel
+                                                      .assetLocation!
+                                                      .mapRecords!
+                                                      .first!
+                                                      .lastReportedLocationLatitude!,
+                                                  viewModel
+                                                      .assetLocation!
+                                                      .mapRecords!
+                                                      .first!
+                                                      .lastReportedLocationLongitude!),
+                                              zoom: 5)
+                                          : viewModel.centerPosition != null
+                                              ? CameraPosition(
+                                                  target:
+                                                      LatLng(viewModel.centerPosition.target.latitude, viewModel.centerPosition.target.latitude))
+                                              : CameraPosition(target: LatLng(30.666, 76.8127), zoom: 4),
+                                ),
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 20),
+                                    child: LocationSearchBoxView(
+                                      onSeletingSuggestion: (value) {
+                                        viewModel.onSeletingSuggestion(value);
+                                      },
+                                    ),
+                                  ),
                                 ),
                                 CustomInfoWindow(
                                   controller:
@@ -216,7 +230,7 @@ class _LocationViewState extends State<LocationView> {
                                             // Container(
                                             //   color: Theme.of(context)
                                             //       .backgroundColor,
-                                            
+
                                             //   padding: EdgeInsets.symmetric(
                                             //       horizontal: 10),
                                             //   width: MediaQuery.of(context)

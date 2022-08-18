@@ -28,6 +28,7 @@ class AutoCompleteTextView extends StatefulWidget
   final Function? focusLost;
   final int suggestionsApiFetchDelay;
   final Function? onValueChanged;
+  final List<String>? items;
 
   AutoCompleteTextView(
       {required this.controller,
@@ -44,6 +45,7 @@ class AutoCompleteTextView extends StatefulWidget
       this.focusGained,
       this.suggestionsApiFetchDelay = 0,
       this.focusLost,
+      this.items,
       this.onValueChanged});
   @override
   _AutoCompleteTextViewState createState() => _AutoCompleteTextViewState();
@@ -56,45 +58,35 @@ class AutoCompleteTextView extends StatefulWidget
 }
 
 class _AutoCompleteTextViewState extends State<AutoCompleteTextView> {
-  ScrollController scrollController = ScrollController();
-  FocusNode _focusNode = FocusNode();
-  late OverlayEntry _overlayEntry;
+  OverlayEntry? _overlayEntry;
   LayerLink _layerLink = LayerLink();
-  final suggestionsStreamController = new BehaviorSubject<List<String>?>();
+
   List<String>? suggestionShowList = [];
   Timer? _debounce;
   bool isSearching = true;
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus) {
-        this._overlayEntry = this._createOverlayEntry();
-        Overlay.of(context)!.insert(this._overlayEntry);
-        (widget.focusGained != null) ? widget.focusGained!() : () {};
-      } else {
-        this._overlayEntry.remove();
-        (widget.focusLost != null) ? widget.focusLost!() : () {};
-      }
-    });
-    widget.controller.addListener(_onSearchChanged);
-  }
-
-  _onSearchChanged() {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce =
-        Timer(Duration(milliseconds: widget.suggestionsApiFetchDelay), () {
-      if (isSearching == true) {
-        _getSuggestions(widget.controller.text);
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showOverLay();
     });
   }
 
-  _getSuggestions(String data) async {
-    if (data.length > 0 && data != null) {
-      List<String>? list = await widget.getSuggestionsMethod(data);
-      suggestionsStreamController.sink.add(list);
-    }
+  _onSearchChanged(String? text) {
+    widget.getSuggestionsMethod(text);
+    // if (_debounce?.isActive ?? false) _debounce!.cancel();
+    // _debounce =
+    //     Timer(Duration(milliseconds: widget.suggestionsApiFetchDelay), () {
+    //   if (isSearching == true) {
+    //     _getSuggestions(widget.controller.text);
+    //   }
+    // });
+  }
+
+  void showOverLay() {
+    final overlay = Overlay.of(context);
+    _overlayEntry = _createOverlayEntry();
+    overlay!.insert(_overlayEntry!);
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -108,45 +100,57 @@ class _AutoCompleteTextViewState extends State<AutoCompleteTextView> {
                 showWhenUnlinked: false,
                 offset: Offset(0.0, size.height + 5.0),
                 child: Material(
-                  elevation: 4.0,
-                  child: StreamBuilder<Object?>(
-                      stream: suggestionsStreamController.stream,
-                      builder: (context, suggestionData) {
-                        if (suggestionData.hasData &&
-                            widget.controller.text.isNotEmpty) {
-                          suggestionShowList = suggestionData.data as List<String>?;
-                          return ConstrainedBox(
-                            constraints: new BoxConstraints(
-                              maxHeight: 200,
-                            ),
-                            child: ListView.builder(
-                                controller: scrollController,
-                                padding: EdgeInsets.zero,
-                                shrinkWrap: true,
-                                itemCount: suggestionShowList!.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text(
-                                      suggestionShowList![index],
-                                      style: widget.suggestionStyle,
-                                      textAlign: widget.suggestionTextAlign,
-                                    ),
-                                    onTap: () {
-                                      isSearching = false;
-                                      widget.controller.text =
-                                          suggestionShowList![index];
-                                      suggestionsStreamController.sink.add([]);
-                                      widget.onTappedSuggestion(
-                                          widget.controller.text);
-                                    },
-                                  );
-                                }),
-                          );
-                        } else {
-                          return Container();
-                        }
-                      }),
-                ),
+                    elevation: 4.0,
+                    child: widget.items != null && widget.items!.isEmpty
+                        ? SizedBox()
+                        : ListView.builder(
+                            itemBuilder: (ctx, i) {
+                              return ListTile(
+                                title: Text(widget.items![i]),
+                              );
+                            },
+                            itemCount: widget.items!.length,
+                          )
+                    // StreamBuilder<Object?>(
+                    //     stream: suggestionsStreamController.stream,
+                    //     builder: (context, suggestionData) {
+                    //       if (suggestionData.hasData &&
+                    //           widget.controller.text.isNotEmpty) {
+                    //         suggestionShowList =
+                    //             suggestionData.data as List<String>?;
+                    //         return ConstrainedBox(
+                    //           constraints: new BoxConstraints(
+                    //             maxHeight: 200,
+                    //           ),
+                    //           child: ListView.builder(
+                    //               controller: scrollController,
+                    //               padding: EdgeInsets.zero,
+                    //               shrinkWrap: true,
+                    //               itemCount: suggestionShowList!.length,
+                    //               itemBuilder: (context, index) {
+                    //                 return ListTile(
+                    //                   title: Text(
+                    //                     suggestionShowList![index],
+                    //                     style: widget.suggestionStyle,
+                    //                     textAlign: widget.suggestionTextAlign,
+                    //                   ),
+                    //                   onTap: () {
+                    //                     isSearching = false;
+                    //                     widget.controller.text =
+                    //                         suggestionShowList![index];
+                    //                     suggestionsStreamController.sink
+                    //                         .add([]);
+                    //                     widget.onTappedSuggestion(
+                    //                         widget.controller.text);
+                    //                   },
+                    //                 );
+                    //               }),
+                    //         );
+                    //       } else {
+                    //         return Container();
+                    //       }
+                    //     }),
+                    ),
               ),
             ));
   }
@@ -154,29 +158,17 @@ class _AutoCompleteTextViewState extends State<AutoCompleteTextView> {
   @override
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
-      link: this._layerLink,
+      link: _layerLink,
       child: TextField(
-        controller: widget.controller,
         decoration: widget.tfTextDecoration,
         style: widget.tfStyle,
         cursorColor: widget.tfCursorColor,
         cursorWidth: widget.tfCursorWidth,
         textAlign: widget.tfTextAlign,
-        focusNode: this._focusNode,
         onChanged: (text) {
+          Logger().w(text);
           if (text.trim().isNotEmpty) {
-            (widget.onValueChanged != null)
-                ? widget.onValueChanged!(text)
-                : () {};
-            isSearching = true;
-            scrollController.animateTo(
-              0.0,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 300),
-            );
-          } else {
-            isSearching = false;
-            suggestionsStreamController.sink.add([]);
+            widget.getSuggestionsMethod(text);
           }
         },
       ),
@@ -185,8 +177,6 @@ class _AutoCompleteTextViewState extends State<AutoCompleteTextView> {
 
   @override
   void dispose() {
-    suggestionsStreamController.close();
-    scrollController.dispose();
     widget.controller.dispose();
     super.dispose();
   }

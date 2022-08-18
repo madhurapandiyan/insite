@@ -35,6 +35,8 @@ class LocationViewModel extends InsiteViewModel {
   List<LatLng> latlngs = [];
   List<InsiteMarker> clusterMarkers = [];
 
+  bool? isLocationSelected = false;
+
   bool _loading = true;
   bool get loading => _loading;
 
@@ -57,7 +59,7 @@ class LocationViewModel extends InsiteViewModel {
   int? get totalCount => _totalCount;
 
   CameraPosition centerPosition =
-      CameraPosition(target: LatLng(30.666, 76.8127), zoom: 1);
+      CameraPosition(target: LatLng(30.666, 76.8127), zoom: 10);
 
   AssetLocationData? _assetLocation;
   AssetLocationData? get assetLocation => _assetLocation;
@@ -260,23 +262,31 @@ class LocationViewModel extends InsiteViewModel {
     );
   }
 
+  onSeletingSuggestion(LatLng value) async {
+    var control = await controller.future;
+    control.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: value, zoom: 10)));
+    centerPosition = CameraPosition(target: value, zoom: 1);
+    notifyListeners();
+  }
+
   LocationViewModel(ScreenType type) {
-    // this._pageType = type;
-    // this.log = getLogger(this.runtimeType.toString());
-    // _assetLocationService.setUp();
-    // setUp();
-    // manager = initClusterManager();
-    // if (pageType == ScreenType.LOCATION) {
-    //   Future.delayed(Duration(seconds: 1), () async {
-    //     await getSelectedFilterData();
-    //     await getDateRangeFilterData();
-    //     await getAssetLocation();
-    //   });
-    // } else if (pageType == ScreenType.DASHBOARD) {
-    //   Future.delayed(Duration(seconds: 1), () async {
-    //     await getAssetLocationHome();
-    //   });
-    // }
+    this._pageType = type;
+    this.log = getLogger(this.runtimeType.toString());
+    _assetLocationService.setUp();
+    setUp();
+    manager = initClusterManager();
+    if (pageType == ScreenType.LOCATION) {
+      Future.delayed(Duration(seconds: 1), () async {
+        await getSelectedFilterData();
+        await getDateRangeFilterData();
+        await getAssetLocation();
+      });
+    } else if (pageType == ScreenType.DASHBOARD) {
+      Future.delayed(Duration(seconds: 1), () async {
+        await getAssetLocationHome();
+      });
+    }
   }
 
   refresh() async {
@@ -407,7 +417,6 @@ class LocationViewModel extends InsiteViewModel {
 
   getAssetLocation() async {
     Logger().d("getAssetLocation");
-
     AssetLocationData? result = await _assetLocationService.getAssetLocation(
         Utils.fleetLocationDateFormate(startDate),
         Utils.fleetLocationDateFormate(endDate),

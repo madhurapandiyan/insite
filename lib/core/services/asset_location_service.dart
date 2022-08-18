@@ -426,9 +426,11 @@ class AssetLocationService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
-        Logger().wtf(AssetLocationSearch.fromJson(data.data));
+
         AssetLocationSearch assetLocationSearch =
             AssetLocationSearch.fromJson(data.data);
+        Logger().wtf(assetLocationSearch
+            .assetLocation?.mapRecords?.first?.lastReportedLocationLatitude);
         return assetLocationSearch;
       }
     } catch (e) {
@@ -437,7 +439,8 @@ class AssetLocationService extends BaseService {
     return null;
   }
 
-  Future<SearchLocationGeofence?> getGeofenceSerachLocationData(String ? query) async {
+  Future<SearchLocationGeofence?> getGeofenceSerachLocationData(
+      String? query) async {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
@@ -448,9 +451,12 @@ class AssetLocationService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
-        Logger().wtf(AssetLocationSearch.fromJson(data.data));
+
         SearchLocationGeofence searchLocationGeofence =
             SearchLocationGeofence.fromJson(data.data);
+        Logger().wtf(searchLocationGeofence
+            .geofenceSearchLoaction?.locations?.first
+            .toJson());
         return searchLocationGeofence;
       }
     } catch (e) {

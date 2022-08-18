@@ -7,67 +7,36 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/search_location_geofence.dart';
 import 'package:insite/core/services/asset_location_service.dart';
+import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 
 class LocationSearchBoxViewModel extends InsiteViewModel {
-  CameraPosition centerPosition =
-      CameraPosition(target: LatLng(30.666, 76.8127), zoom: 1);
   var _assetLocationService = locator<AssetLocationService>();
-  bool _loading = false;
-  bool get loading => _loading;
 
-  bool isSearching = false;
+  List<String> dropDownList = ['S/N', 'Location'];
 
   String? searchDropDownValue = "S/N";
 
   TextEditingController searchController = TextEditingController();
 
-  List<LocationSearchData>? _locations = [];
-  List<LocationSearchData>? get locations => _locations;
-
-  List<FilterData> _filterLocations = [];
-  List<FilterData> get filterLocations => _filterLocations;
-
-  double? onZoomLatitude;
-  double? onZoomLongitude;
-  onLocationSelected(String locationLatitude, String locationLongitude) {
-    double parsedLatitude = double.parse(locationLatitude);
-    double parsedLongitude = double.parse(locationLongitude);
-    onZoomLatitude = parsedLatitude;
-    onZoomLongitude = parsedLongitude;
-    LatLng pickedLatLong = LatLng(parsedLatitude, parsedLongitude);
-    centerPosition = CameraPosition(target: pickedLatLong, zoom: 10);
-    Logger().wtf(centerPosition);
-    notifyListeners();
-  }
+  List<LocationKey>? list = [];
 
   searchLocation(query) async {
-    // List<LocationSearchData>? result =
-    //     await _assetLocationService.searchLocation(10, query);
-    // _locations = result;
-    // if (_locations != null && _locations!.isNotEmpty) {
-    //   _filterLocations.clear();
-    //   for (LocationSearchData data in _locations!) {
-    //     Logger().w(data.Address!.toJson());
-    //     FilterData filterData = FilterData(
-    //         count: data.Address!.Zip,
-    //         isSelected: isAlreadSelected(
-    //             data.Address!.City! + data.Address!.Country!,
-    //             FilterType.LOCATION_SEARCH),
-    //         title: data.Address!.City,
-    //         type: FilterType.LOCATION_SEARCH,
-    //         extras: [data.Coords!.Lat, data.Coords!.Lon, 10.toString()]);
-    //     _filterLocations.add(filterData);
-    //   }
-    // }
     SearchLocationGeofence? result =
         await _assetLocationService.getGeofenceSerachLocationData(
             graphqlSchemaService!.searchLocationData(10, query));
-    Logger()
-        .w(result!.geofenceSearchLoaction!.locations!.first.coords!.toJson());
-
-    _loading = false;
-    notifyListeners();
+    if (result?.geofenceSearchLoaction?.locations != null &&
+        result!.geofenceSearchLoaction!.locations!.isNotEmpty) {
+      list!.clear();
+      result.geofenceSearchLoaction!.locations!.forEach((element) {
+        LocationKey data = LocationKey(
+          value: element.shortString,
+          latitude: double.parse(element.coords?.lat ?? "0.0"),
+          longitude: double.parse(element.coords?.lon ?? "0.0"),
+        );
+        list!.add(data);
+      });
+    }
   }
 
   onChangedDropDownValue(String? value) {
@@ -75,22 +44,75 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onSearchTextChanged(String? value) {
-    if (value!.isNotEmpty && value.length > 2) {
-      if (searchDropDownValue == "S/N") {
-        searchLocationSeralNumber(value);
-      } else {
-        searchLocation(value);
-      }
+  searchLocationSeralNumber(String value) async {
+    AssetLocationSearch? result =
+        await _assetLocationService.getAssetLocationsearch(graphqlSchemaService!
+            .searchLocationSerialNumberData(
+                query: value, pageNumber: 1, pageSize: 1000));
 
-      notifyListeners();
+    if (result != null && result.assetLocation!.mapRecords!.isNotEmpty) {
+      list!.clear();
+      result.assetLocation!.mapRecords!.forEach((element) {
+        LocationKey data = LocationKey(
+            value: element!.assetSerialNumber ?? "",
+            latitude: element.lastReportedLocationLatitude,
+            longitude: element.lastReportedLocationLongitude);
+        list!.add(data);
+      });
     }
   }
 
-  searchLocationSeralNumber(String value) async {
-    AssetLocationSearch? result =
-        await _assetLocationService.getAssetLocationsearch(
-            graphqlSchemaService!.searchLocationSerialNumberData(query: value));
-    Logger().w(result!.assetLocation!.mapRecords!.first!.toJson());
+  onSearchTextChanged(String? value) async {
+    try {
+      if (value!.isNotEmpty && value.length > 2) {
+        if (searchDropDownValue == "S/N") {
+          await searchLocationSeralNumber(value);
+        } else {
+          await searchLocation(value);
+        }
+      } else {
+        list!.clear();
+      }
+      notifyListeners();
+    } catch (e) {}
   }
+
+  // Future<List<String>?> onSearchTextChanged(String? value) async {
+  //   if (value!.isNotEmpty && value.length > 2) {
+  //     //showLoadingDialog();
+  //     List<LocationSearchData>? result =
+  //         await _assetLocationService.searchLocation(10, value);
+  //     _locations = result;
+  //     if (_locations != null && _locations!.isNotEmpty) {
+  //       list!.clear();
+  //       for (LocationSearchData data in _locations!) {
+  //         list!.add(data.Address!.City!);
+  //       }
+  //     }
+  //     // hideLoadingDialog();
+  //     notifyListeners();
+  //   } else {
+  //     list!.clear();
+
+  //     notifyListeners();
+  //   }
+  // }
+
+  onSelect(String value) {
+    searchController.text = value;
+    notifyListeners();
+  }
+
+  onChangeDropDown(String value) {
+    searchDropDownValue = value;
+    searchController.clear();
+    notifyListeners();
+  }
+}
+
+class LocationKey {
+  final String? value;
+  final double? latitude;
+  final double? longitude;
+  LocationKey({this.latitude, this.longitude, this.value});
 }
