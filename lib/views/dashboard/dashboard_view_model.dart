@@ -91,6 +91,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   AssetCount? _faultCountData;
   AssetCount? get faultCountData => _faultCountData;
+  
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 

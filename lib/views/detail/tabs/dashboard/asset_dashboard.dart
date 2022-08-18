@@ -7,6 +7,7 @@ import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.da
 
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
 import 'package:insite/widgets/smart_widgets/fuel_level.dart';
 import 'package:insite/widgets/smart_widgets/maintenance_dashboard.dart';
@@ -169,6 +170,25 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                   SizedBox(
                     height: 20,
                   ),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: FaultHealthDashboard(
+                        screenType: ScreenType.DASHBOARD,
+                        countData: viewModel.faultCountData != null
+                            ? viewModel.faultCountData!.countData
+                            : [],
+                        onFilterSelected: (value, dateFilter) async {
+                          await viewModel.onDateAndFilterSelected(
+                              value, dateFilter);
+                          viewModel.gotoFaultPage();
+                        },
+                        loading: viewModel.faultCountloading,
+                        isRefreshing: viewModel.refreshing,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
                   viewModel.assetDetail != null
                       ? Padding(
                           padding: const EdgeInsets.symmetric(
@@ -228,6 +248,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         }
                       },
                       isLoading: viewModel.postingNote,
+                      notesListData: viewModel.getNotesDataList,
                     ),
                   ),
                   SizedBox(

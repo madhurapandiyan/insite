@@ -89,12 +89,12 @@ class _TabPageState extends State<AssetDetailView> {
       "assets/images/health.svg",
       ScreenType.HEALTH,
     ),
-    // Category(
-    //   5,
-    //   "MAINTENANCE",
-    //   "assets/images/maintenance.svg",
-    //   ScreenType.HEALTH,
-    // ),
+    Category(
+      5,
+      "MAINTENANCE",
+      "assets/images/maintenance.svg",
+      ScreenType.HEALTH,
+    ),
   ];
 
   List<Category> typeTwo = [

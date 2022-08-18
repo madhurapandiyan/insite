@@ -1,24 +1,31 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/note.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class Notes extends StatelessWidget {
-  const Notes({
-    Key? key,
-    required this.controller,
-    required this.onTap,
-    required this.isLoading,
-    required this.notes,
-  }) : super(key: key);
+  const Notes(
+      {Key? key,
+      required this.controller,
+      this.onDelete,
+      required this.onTap,
+      required this.isLoading,
+      required this.notes,
+      this.notesListData})
+      : super(key: key);
 
   final TextEditingController? controller;
   final Function onTap;
+  final Void Function()? onDelete;
   final bool isLoading;
   final List<Note> notes;
+  final List<Note>? notesListData;
   @override
   Widget build(BuildContext context) {
     final kTextFieldBorder = OutlineInputBorder(
@@ -132,6 +139,98 @@ class Notes extends StatelessWidget {
                 ],
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InsiteButton(
+                  title: "Notes",
+                  bgColor: black,
+                  textColor: white,
+                ),
+                InsiteButton(
+                  title: "Author",
+                  bgColor: black,
+                  textColor: white,
+                  width: 100,
+                ),
+                InsiteButton(
+                  title: "Posted On",
+                  bgColor: black,
+                  textColor: white,
+                  width: 100,
+                ),
+                InsiteButton(
+                  title: "Delete",
+                  bgColor: black,
+                  textColor: white,
+                ),
+              ],
+            ),
+            if (notesListData!.isEmpty) Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: InsiteProgressBar()) else Container(
+                    height: 200,
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        Note note = notesListData![index];
+                        return ListTile(
+                          minLeadingWidth: 0,
+                          title: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                child: Text(
+                                   note.userName!,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 100,
+                                child: InsiteText(text:note.lastModifiedUTC),),
+                            ],
+                          ),
+                          leading: InkWell(
+                              onTap: () {
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    title: const Text('Notes'),
+                                    content: Text(note.assetUserNote!),
+                                    actionsAlignment: MainAxisAlignment.start,
+                                    actions: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: InsiteButton(
+                                          bgColor: Colors.grey,
+                                          width: 55,
+                                          onTap: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          title: "OK",
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              child: Icon(Icons.visibility)),
+                          trailing: InkWell(
+                              onTap:(){
+                                
+                              } ,
+                               child: Icon(Icons.delete)),
+                          iconColor: black,
+                        );
+                      },
+                      itemCount: notesListData!.length,
+                    ),
+                  )
           ],
         ),
       ),

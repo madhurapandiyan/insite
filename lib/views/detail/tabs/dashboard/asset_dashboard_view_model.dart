@@ -3,27 +3,56 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/asset_utilization.dart';
+<<<<<<< HEAD
+import 'package:insite/core/models/filter_data.dart';
+=======
 import 'package:insite/core/models/maintenance_dashboard_count.dart';
+>>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
 import 'package:insite/core/models/note.dart';
+import 'package:insite/core/models/note_data.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+<<<<<<< HEAD
+import 'package:insite/views/health/health_view.dart';
+=======
 import 'package:intl/intl.dart';
+>>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
 import 'package:logger/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../../../core/services/date_range_service.dart';
 
 class AssetDashboardViewModel extends InsiteViewModel {
   Logger? log;
   AssetService? _assetSingleHistoryService = locator<AssetService>();
+  NavigationService? _navigationService = locator<NavigationService>();
   AssetUtilizationService? _assetUtilizationService =
       locator<AssetUtilizationService>();
+  DateRangeService? _dateRangeService = locator<DateRangeService>();
 
   AssetDetail? _assetDetail;
   AssetDetail? get assetDetail => _assetDetail;
 
+<<<<<<< HEAD
+  List<Note> _getNotes = [];
+  List<Note> get getNotesDataList => _getNotes;
+
+  bool _refreshing = false;
+  bool get refreshing => _refreshing;
+
+  AssetCount? _faultCountData;
+  AssetCount? get faultCountData => _faultCountData;
+
+  bool _faultCountloading = true;
+  bool get faultCountloading => _faultCountloading;
+=======
     MaintenanceDashboardCount? maintenanceDashboardCount;
+>>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
 
   AssetUtilization? _assetUtilization;
   AssetUtilization? get assetUtilization => _assetUtilization;
@@ -45,6 +74,25 @@ class AssetDashboardViewModel extends InsiteViewModel {
   double? _utilizationGreatestValue;
   double? get utilizationGreatestValue => _utilizationGreatestValue;
 
+  FilterData? _currentFilterSelected;
+  FilterData? get currentFilterSelected => _currentFilterSelected;
+
+  gotoFaultPage() {
+    Logger().i("go to fault page");
+    _navigationService!
+        .navigateWithTransition(HealthView(), transition: "rightToLeft");
+  }
+
+  onDateAndFilterSelected(FilterData data, FilterData dateFilter) async {
+    Logger().d("onFilterSelected ${data.title}");
+    await clearFilterDb();
+    if (currentFilterSelected != null) {
+      await addFilter(currentFilterSelected!);
+    }
+    await addFilter(data);
+    await _dateRangeService!.updateDateFilter(dateFilter);
+  }
+
   AssetDashboardViewModel(AssetDetail? detail) {
     this._assetDetail = detail;
     Logger().w(assetDetail?.toJson());
@@ -54,7 +102,11 @@ class AssetDashboardViewModel extends InsiteViewModel {
       await getAssetDetail();
       await getAssetUtilization();
       await getNotes();
+<<<<<<< HEAD
+      await getNotesData();
+=======
       await getMaintenanceCountData();
+>>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
     });
   }
 
@@ -97,6 +149,18 @@ class AssetDashboardViewModel extends InsiteViewModel {
     _postingNote = false;
     notifyListeners();
   }
+<<<<<<< HEAD
+
+  getNotesData() async {
+    NotesData? result = await _assetSingleHistoryService!
+        .getNotesData(graphqlSchemaService!.getNotes(assetDetail!.assetUid!));
+    Logger().w(result!.getMetadataNotes!.first.toJson());
+    for (var element in result.getMetadataNotes!) {
+      _getNotes.add(element);
+    }
+    notifyListeners();
+  }
+=======
   getMaintenanceCountData() async {
     try {
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
@@ -129,4 +193,5 @@ class AssetDashboardViewModel extends InsiteViewModel {
   }
    
 
+>>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
 }
