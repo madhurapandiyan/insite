@@ -57,7 +57,7 @@ class PlantDashboardViewModel extends InsiteViewModel {
           .getResultsFromSubscriptionApi(
               graphqlSchemaService!.getPlantDashboardandCalendarData());
       if (result != null) {
-        if (enableGraphQl) {
+        if (!enableGraphQl) {
           totalcount = result.plantDispatchSummary!.subscriptionEnded! +
               result.plantDispatchSummary!.yetToBeActivated! +
               result.plantDispatchSummary!.activeSubscription!;

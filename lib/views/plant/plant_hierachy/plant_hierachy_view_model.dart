@@ -47,7 +47,7 @@ class PlantHierachyViewModel extends InsiteViewModel {
           .getResultsFromPlantHierchyApi(
               graphqlSchemaService!.getHierarchyData()));
 
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         _assetType
             .addAll(["Customer", "Dealer", "Plant", "Total no. of Assets"]);
         _filterType.addAll(["CUSTOMER", "DEALER", "PLANT", "asset"]);

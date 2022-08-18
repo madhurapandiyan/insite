@@ -46,7 +46,7 @@ class SubScriptionService extends BaseService {
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlPlantData(
           query: query,
           customerId: "THC",
@@ -71,7 +71,7 @@ class SubScriptionService extends BaseService {
           Logger().d('no data found');
         }
 
-        Logger().d('subscription result: $dashboardResult');
+        Logger().d('subscription result: ${dashboardResult.toJson()}');
         return dashboardResult;
       }
     } catch (e) {
@@ -116,7 +116,7 @@ class SubScriptionService extends BaseService {
       if (limit != null) {
         queryMap["limit"] = limit.toString();
       }
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         if (filter == "CUSTOMER" ||
             filter == "asset" ||
             filter == "PLANT" ||
