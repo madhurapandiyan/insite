@@ -246,6 +246,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         }
                       },
                       isLoading: viewModel.postingNote,
+                      notesListData: viewModel.getNotesDataList,
                     ),
                   ),
                   SizedBox(

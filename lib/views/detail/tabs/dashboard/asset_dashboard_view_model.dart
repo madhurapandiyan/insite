@@ -7,6 +7,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/asset_utilization.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/note.dart';
+import 'package:insite/core/models/note_data.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -22,10 +23,13 @@ class AssetDashboardViewModel extends InsiteViewModel {
   NavigationService? _navigationService = locator<NavigationService>();
   AssetUtilizationService? _assetUtilizationService =
       locator<AssetUtilizationService>();
- DateRangeService? _dateRangeService = locator<DateRangeService>();
+  DateRangeService? _dateRangeService = locator<DateRangeService>();
 
   AssetDetail? _assetDetail;
   AssetDetail? get assetDetail => _assetDetail;
+
+  List<Note> _getNotes = [];
+  List<Note> get getNotesDataList => _getNotes;
 
   bool _refreshing = false;
   bool get refreshing => _refreshing;
@@ -35,7 +39,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   bool _faultCountloading = true;
   bool get faultCountloading => _faultCountloading;
-  
+
   AssetUtilization? _assetUtilization;
   AssetUtilization? get assetUtilization => _assetUtilization;
 
@@ -54,12 +58,12 @@ class AssetDashboardViewModel extends InsiteViewModel {
   FilterData? _currentFilterSelected;
   FilterData? get currentFilterSelected => _currentFilterSelected;
 
-   gotoFaultPage() {
+  gotoFaultPage() {
     Logger().i("go to fault page");
     _navigationService!
         .navigateWithTransition(HealthView(), transition: "rightToLeft");
   }
-  
+
   onDateAndFilterSelected(FilterData data, FilterData dateFilter) async {
     Logger().d("onFilterSelected ${data.title}");
     await clearFilterDb();
@@ -79,6 +83,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
       await getAssetDetail();
       await getAssetUtilization();
       await getNotes();
+      await getNotesData();
     });
   }
 
@@ -119,6 +124,16 @@ class AssetDashboardViewModel extends InsiteViewModel {
     await _assetSingleHistoryService!.postNotes(assetDetail!.assetUid, note);
     await getNotes();
     _postingNote = false;
+    notifyListeners();
+  }
+
+  getNotesData() async {
+    NotesData? result = await _assetSingleHistoryService!
+        .getNotesData(graphqlSchemaService!.getNotes(assetDetail!.assetUid!));
+    Logger().w(result!.getMetadataNotes!.first.toJson());
+    for (var element in result.getMetadataNotes!) {
+      _getNotes.add(element);
+    }
     notifyListeners();
   }
 }
