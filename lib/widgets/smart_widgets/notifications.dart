@@ -12,7 +12,7 @@ class Notifications extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height * 0.38,
       decoration: BoxDecoration(
-        color: tuna,
+        color: Theme.of(context).backgroundColor,
         border: Border.all(color: black, width: 0.0),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
@@ -31,7 +31,7 @@ class Notifications extends StatelessWidget {
                 ),
                 InsiteText(
                     text: 'NOTIFICATIONS',
-                    color: white,
+                  
                     fontWeight: FontWeight.bold,
                     size: 15),
               ],
@@ -49,7 +49,7 @@ class Notifications extends StatelessWidget {
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.8,
                     decoration: BoxDecoration(
-                      color: mediumgrey,
+                      color: Theme.of(context).backgroundColor,
                       border: Border.all(color: black, width: 0.0),
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
@@ -61,6 +61,7 @@ class Notifications extends StatelessWidget {
                           child: InsiteText(
                               text: 'No Notifications',
                               fontWeight: FontWeight.bold,
+                              
                               size: 15),
                         ),
                       ),

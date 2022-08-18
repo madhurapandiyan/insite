@@ -1722,10 +1722,11 @@ odometer
     return data;
   }
 
-  String assetLocationData({String? no, String? pageSize, String? sort}) {
+  String assetLocationData(
+      {String? no, String? pageSize, String? sort, String? query}) {
     var data = """
 query{
-  assetLocation(pageNumber:$no,pageSize:$pageSize,sort:"$sort"){
+  assetLocation(pageNumber:$no,pageSize:$pageSize,sort:"$sort", snContains:"$query"){
     pagination{
       totalCount,
       pageNumber,
@@ -1972,7 +1973,11 @@ reportUid
   }
 }""";
     } else if (assetsDropDownValue == "Utilization Details" ||
-        assetsDropDownValue == "Fault Code Asset Details") {
+        assetsDropDownValue == "Fault Code Asset Details" ||
+        assetsDropDownValue == "Backhoe Loader Operation" ||
+        assetsDropDownValue == "Excavator Usage" ||
+        assetsDropDownValue == "Multi-Asset Backhoe Loader Operation" ||
+        assetsDropDownValue == "Multi-Asset Excavator Usage") {
       addReportPayLoad = """mutation{
   createNotificationReport(
     assetFilterCategoryID: 1,
@@ -3368,7 +3373,7 @@ maintenanceIntervals(
     return data;
   }
 
-   String getPlantDashboardAndHierarchyCalendarListData(
+  String getPlantDashboardAndHierarchyCalendarListData(
       int? limit, int? start, String? status) {
     var data = """query{
     frameSubscription{
@@ -3487,7 +3492,6 @@ mutation{
     return data;
   }
 
-
   creatingPlantasset(
       List<AssetCreationModel> assetCreationListData, String userId) {
     List<Map<String, String>> getAssetPayLoad = [];
@@ -3497,7 +3501,6 @@ mutation{
           element.deviceId == "" &&
           element.model == "" &&
           element.hourMeter == "") {
-           
       } else {
         Map<String, String> asset = {
           "machineSerialNumber": "\"" + element.assetSerialNo! + "\"",
@@ -3528,4 +3531,40 @@ createAsset(
     return data;
   }
 
+  searchLocationSerialNumberData(
+      {int? pageNumber, int? pageSize, String? query}) {
+    var data = """query{
+   assetLocation(pageNumber:$pageNumber,pageSize:$pageSize,snContains:"$query"){
+       mapRecords{
+           lastReportedLocationLatitude,
+           lastReportedLocationLongitude,
+           assetIcon,
+           assetId,
+           assetSerialNumber,
+           model,
+           makeCode,
+           assetIdentifier,
+           manufacturer
+       }
+   }
+    
+}""";
+    return data;
+  }
+
+  searchLocationData(int? maxResult, String? query) {
+    var data = """query{
+ geofenceSearchLoaction(maxResults:$maxResult,query:"$query"){
+     err,
+     locations{
+         coords{
+             lat,
+             lon
+         },
+         shortString
+     }
+ }
+}""";
+return data;
+  }
 }

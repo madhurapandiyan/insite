@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/maintenance_dashboard_count.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
@@ -107,7 +108,10 @@ class MaintenanceDashBoard extends StatelessWidget {
                                           },
                                         ),
                                       )
-                                    : SizedBox()
+                                    : EmptyView(
+                                   
+                                      title: "No service information to display",
+                                    )
                               ],
                             );
                           },

@@ -28,7 +28,7 @@ class GoogleMapHomeWidget extends StatefulWidget {
 }
 
 class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
-  String _currentSelectedItem = "MAP";
+  String _currentSelectedItem = "SATELLITE";
   double zoomVal = 5.0;
   var viewModel;
   MapType currentType = MapType.normal;
@@ -123,9 +123,9 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                                 .color!),
                                       ),
                                       items: [
+                                        'SATELLITE',
                                         'MAP',
                                         'TERRAIN',
-                                        'SATELLITE',
                                         'HYBRID'
                                       ]
                                           .map((map) => DropdownMenuItem(
