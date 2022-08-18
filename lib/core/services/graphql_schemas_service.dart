@@ -1722,10 +1722,11 @@ odometer
     return data;
   }
 
-  String assetLocationData({String? no, String? pageSize, String? sort}) {
+  String assetLocationData(
+      {String? no, String? pageSize, String? sort, String? query}) {
     var data = """
 query{
-  assetLocation(pageNumber:$no,pageSize:$pageSize,sort:"$sort"){
+  assetLocation(pageNumber:$no,pageSize:$pageSize,sort:"$sort", snContains:"$query"){
     pagination{
       totalCount,
       pageNumber,
@@ -3528,5 +3529,41 @@ createAsset(
 }
 }""";
     return data;
+  }
+
+  searchLocationSerialNumberData(
+      {int? pageNumber, int? pageSize, String? query}) {
+    var data = """query{
+   assetLocation(pageNumber:$pageNumber,pageSize:$pageSize,snContains:"$query"){
+       mapRecords{
+           lastReportedLocationLatitude,
+           lastReportedLocationLongitude,
+           assetIcon,
+           assetId,
+           model,
+           makeCode,
+           assetIdentifier,
+           manufacturer
+       }
+   }
+    
+}""";
+    return data;
+  }
+
+  searchLocationData(int? maxResult, String? query) {
+    var data = """query{
+ geofenceSearchLoaction(maxResults:$maxResult,query:"$query"){
+     err,
+     locations{
+         coords{
+             lat,
+             lon
+         },
+         shortString
+     }
+ }
+}""";
+return data;
   }
 }

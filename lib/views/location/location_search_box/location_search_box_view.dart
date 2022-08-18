@@ -52,7 +52,9 @@ class LocationSearchBoxView extends StatelessWidget {
                           ))
                       .toList(),
                   value: viewModel.searchDropDownValue,
-                  onChanged: (String? value) {},
+                  onChanged: (String? value) {
+                    viewModel.onChangedDropDownValue(value);
+                  },
                   underline: Container(
                       height: 1.0,
                       decoration: BoxDecoration(

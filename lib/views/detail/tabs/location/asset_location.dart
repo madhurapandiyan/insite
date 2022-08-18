@@ -27,7 +27,7 @@ class AssetLocationView extends StatefulWidget {
 }
 
 class _AssetLocationViewState extends State<AssetLocationView> {
-  String _currentSelectedItem = "MAP";
+  String _currentSelectedItem = "SATELLITE";
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();
   MapType currentType = MapType.normal;
@@ -96,12 +96,12 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                             //     fontWeight: FontWeight.bold,
                             //     size: 12),
                             InsiteButton(
-                              title:  Utils.getDateInFormatddMMyyyy(
-                                        viewModel.startDate) +
-                                    " - " +
-                                    Utils.getDateInFormatddMMyyyy(
-                                        viewModel.endDate),
-                             // width: 90,
+                              title: Utils.getDateInFormatddMMyyyy(
+                                      viewModel.startDate) +
+                                  " - " +
+                                  Utils.getDateInFormatddMMyyyy(
+                                      viewModel.endDate),
+                              // width: 90,
                               //bgColor: Theme.of(context).backgroundColor,
                               textColor:
                                   Theme.of(context).textTheme.bodyText1!.color,
@@ -200,9 +200,9 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                             Theme.of(context).backgroundColor),
                                     child: CustomDropDownWidget(
                                       items: [
+                                        "SATELLITE",
                                         "MAP",
                                         "TERRAIN",
-                                        "SATELLITE",
                                         "HYBRID"
                                       ],
                                       value: _currentSelectedItem,
