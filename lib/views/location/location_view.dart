@@ -196,9 +196,9 @@ class _LocationViewState extends State<LocationView> {
                                               : CameraPosition(target: LatLng(30.666, 76.8127), zoom: 4),
                                 ),
                                 Align(
-                                  alignment: Alignment.topCenter,
+                                  alignment: Alignment.topLeft,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(top: 20),
+                                    padding: const EdgeInsets.only(top: 7,left: 20),
                                     child: LocationSearchBoxView(
                                       onSeletingSuggestion: (value) {
                                         viewModel.onSeletingSuggestion(value);
@@ -218,87 +218,83 @@ class _LocationViewState extends State<LocationView> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Align(
-                                    alignment: Alignment.centerRight,
+                                    alignment: Alignment.topRight,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Row(
-                                          children: [
-                                            // Container(
-                                            //   color: Theme.of(context)
-                                            //       .backgroundColor,
+                                        Container(
+                                          color: Theme.of(context)
+                                              .backgroundColor,
 
-                                            //   padding: EdgeInsets.symmetric(
-                                            //       horizontal: 10),
-                                            //   width: MediaQuery.of(context)
-                                            //           .size
-                                            //           .width *
-                                            //       0.3,
-                                            //   // decoration: BoxDecoration(
-                                            //   //     border:
-                                            //   //         Border.all(width: 2, color: tuna)),
-                                            //   child: DropdownButton(
-                                            //     dropdownColor: Theme.of(context)
-                                            //         .backgroundColor,
-                                            //     icon: Padding(
-                                            //       padding: EdgeInsets.only(
-                                            //           right: 4.0),
-                                            //       child: Container(
-                                            //         child: SvgPicture.asset(
-                                            //           "assets/images/arrowdown.svg",
-                                            //           width: 10,
-                                            //           color: Theme.of(context)
-                                            //               .iconTheme
-                                            //               .color,
-                                            //           height: 10,
-                                            //         ),
-                                            //       ),
-                                            //     ),
-                                            //     isExpanded: false,
-                                            //     hint: Text(
-                                            //       _currentSelectedItem,
-                                            //       style: TextStyle(
-                                            //           color: Theme.of(context)
-                                            //               .backgroundColor),
-                                            //     ),
-                                            //     items: [
-                                            //       'SATELLITE',
-                                            //       'MAP',
-                                            //       'TERRAIN',
-                                            //       'HYBRID'
-                                            //     ]
-                                            //         .map((map) =>
-                                            //             DropdownMenuItem(
-                                            //               value: map,
-                                            //               child: InsiteText(
-                                            //                 text: map,
-                                            //                 size: 11.0,
-                                            //                 fontWeight:
-                                            //                     FontWeight.bold,
-                                            //               ),
-                                            //             ))
-                                            //         .toList(),
-                                            //     value: _currentSelectedItem,
-                                            //     onChanged: (String? value) {
-                                            //       setState(() {
-                                            //         _currentSelectedItem =
-                                            //             value!;
-                                            //       });
-                                            //     },
-                                            //     underline: Container(
-                                            //         height: 1.0,
-                                            //         decoration: BoxDecoration(
-                                            //             border: Border(
-                                            //                 bottom: BorderSide(
-                                            //                     color: Colors
-                                            //                         .transparent,
-                                            //                     width: 0.0)))),
-                                            //   ),
-                                            // ),
-                                          ],
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
+                                          // decoration: BoxDecoration(
+                                          //     border:
+                                          //         Border.all(width: 2, color: tuna)),
+                                          child: DropdownButton(
+                                            dropdownColor: Theme.of(context)
+                                                .backgroundColor,
+                                            icon: Padding(
+                                              padding: EdgeInsets.only(
+                                                  right: 4.0),
+                                              child: Container(
+                                                child: SvgPicture.asset(
+                                                  "assets/images/arrowdown.svg",
+                                                  width: 10,
+                                                  color: Theme.of(context)
+                                                      .iconTheme
+                                                      .color,
+                                                  height: 10,
+                                                ),
+                                              ),
+                                            ),
+                                            isExpanded: false,
+                                            hint: Text(
+                                              _currentSelectedItem,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .backgroundColor),
+                                            ),
+                                            items: [
+                                              'SATELLITE',
+                                              'MAP',
+                                              'TERRAIN',
+                                              'HYBRID'
+                                            ]
+                                                .map((map) =>
+                                                    DropdownMenuItem(
+                                                      value: map,
+                                                      child: InsiteText(
+                                                        text: map,
+                                                        size: 11.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ))
+                                                .toList(),
+                                            value: _currentSelectedItem,
+                                            onChanged: (String? value) {
+                                              setState(() {
+                                                _currentSelectedItem =
+                                                    value!;
+                                              });
+                                            },
+                                            underline: Container(
+                                                height: 1.0,
+                                                decoration: BoxDecoration(
+                                                    border: Border(
+                                                        bottom: BorderSide(
+                                                            color: Colors
+                                                                .transparent,
+                                                            width: 0.0)))),
+                                          ),
                                         ),
                                         Column(
                                           children: [
