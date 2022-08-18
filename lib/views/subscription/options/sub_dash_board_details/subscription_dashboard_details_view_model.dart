@@ -56,18 +56,18 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   }
 
   getSubcriptionDeviceListData() async {
-    if (enableGraphQl) {
+    result = await _subscriptionService!.getSubscriptionDeviceListData(
+        filter: filter,
+        start: start == 0 ? start : start + 1,
+        limit: limit,
+        filterType: filterType,
+        query:
+            graphqlSchemaService!.getHierarchyListData(start, limit, filter));
+    if (!enableGraphQl) {
       if (filter == "CUSTOMER" ||
           filter == "PLANT" ||
           filter == "DEALER" ||
           filter == "asset") {
-        result = await _subscriptionService!.getSubscriptionDeviceListData(
-            filter: filter,
-            start: start == 0 ? start : start + 1,
-            limit: limit,
-            filterType: filterType,
-            query: graphqlSchemaService!
-                .getHierarchyListData(start, limit, filter));
         Logger().i(result!.assetOrHierarchyByTypeAndId!.first.toJson());
         for (int i = 0; i < result!.assetOrHierarchyByTypeAndId!.length; i++) {
           var items = result!.assetOrHierarchyByTypeAndId![i];
