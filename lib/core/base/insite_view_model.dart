@@ -29,11 +29,15 @@ abstract class InsiteViewModel extends BaseViewModel {
   }
 
   bool isVisionLink = false;
+  bool enableGraphQl = false;
 
   InsiteViewModel() {
     try {
       if (AppConfig.instance!.apiFlavor == "visionlink") {
         isVisionLink = true;
+      }
+      if (AppConfig.instance!.enableGraphql == true) {
+        enableGraphQl = true;
       }
 // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
       //       if ("com.trimble.insite.visionlink" == packageInfo.packageName ||

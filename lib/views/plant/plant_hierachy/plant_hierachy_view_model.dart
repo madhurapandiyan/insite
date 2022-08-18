@@ -14,7 +14,8 @@ import 'package:stacked_services/stacked_services.dart';
 class PlantHierachyViewModel extends InsiteViewModel {
   Logger? log;
 
-  PlantHeirarchyAssetService? _plantHierarchyService = locator<PlantHeirarchyAssetService>();
+  PlantHeirarchyAssetService? _plantHierarchyService =
+      locator<PlantHeirarchyAssetService>();
   LocalService? _localService = locator<LocalService>();
   NavigationService? _navigationService = locator<NavigationService>();
 
@@ -42,16 +43,33 @@ class PlantHierachyViewModel extends InsiteViewModel {
 
   getPlantHeirrchyAssetData() async {
     try {
-      HierarchyAssets? assetsData =
-          await (_plantHierarchyService!.getResultsFromPlantHierchyApi());
-      _assetType.addAll(["Customer", "Dealer", "Plant", "Total no. of Assets"]);
-      _filterType.addAll(["CUSTOMER", "DEALER", "PLANT", "asset"]);
+      HierarchyAssets? assetsData = await (_plantHierarchyService!
+          .getResultsFromPlantHierchyApi(
+              graphqlSchemaService!.getHierarchyData()));
 
-      final customerCount = assetsData!.result![0][0].customerCount;
-      final dealerCount = assetsData.result![0][0].dealerCount;
-      final plantCount = assetsData.result![0][0].plantCount;
-      final totalAssets = assetsData.result![1][0].totalAssets;
-      _assetCount.addAll([customerCount, dealerCount, plantCount, totalAssets]);
+      if (!enableGraphQl) {
+        _assetType
+            .addAll(["Customer", "Dealer", "Plant", "Total no. of Assets"]);
+        _filterType.addAll(["CUSTOMER", "DEALER", "PLANT", "asset"]);
+        _assetCount.addAll([
+          assetsData!.plantHierarchyDetails!.totalCustomerCount,
+          assetsData.plantHierarchyDetails!.totalDealerCount,
+          assetsData.plantHierarchyDetails!.totalPlantCount,
+          assetsData.plantHierarchyDetails!.totalAssetCount
+        ]);
+      } else {
+        _assetType
+            .addAll(["Customer", "Dealer", "Plant", "Total no. of Assets"]);
+        _filterType.addAll(["CUSTOMER", "DEALER", "PLANT", "asset"]);
+
+        final customerCount = assetsData!.result![0][0].customerCount;
+        final dealerCount = assetsData.result![0][0].dealerCount;
+        final plantCount = assetsData.result![0][0].plantCount;
+        final totalAssets = assetsData.result![1][0].totalAssets;
+        _assetCount
+            .addAll([customerCount, dealerCount, plantCount, totalAssets]);
+      }
+
       _loading = false;
     } catch (e) {
       Logger().e(e.toString());

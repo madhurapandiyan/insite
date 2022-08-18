@@ -12,7 +12,7 @@ import 'package:stacked/stacked.dart';
 import 'asset_settings_filter_view_model.dart';
 
 class AssetSettingsFilterView extends StatefulWidget {
-  final List<String?>? assetUids;
+  final List<String>? assetUids;
 
   AssetSettingsFilterView({this.assetUids});
 

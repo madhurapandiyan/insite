@@ -51,6 +51,7 @@ class LocationSearchViewModel extends InsiteViewModel {
         _filterLocations.add(filterData);
       }
     }
+    
     _loading = false;
     notifyListeners();
   }

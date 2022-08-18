@@ -4,12 +4,73 @@ part 'subscription_dashboard_details.g.dart';
 @JsonSerializable()
 class SubscriptionDashboardDetailResult {
   List<List<DetailResult>>? result;
-  SubscriptionDashboardDetailResult({this.result});
+  SubscriptionFleetList? subscriptionFleetList;
+  List<AssetOrHierarchyByTypeAndId>? assetOrHierarchyByTypeAndId;
+  SubscriptionDashboardDetailResult({this.result,this.subscriptionFleetList,this.assetOrHierarchyByTypeAndId});
   factory SubscriptionDashboardDetailResult.fromJson(
           Map<String, dynamic> json) =>
       _$SubscriptionDashboardDetailResultFromJson(json);
   Map<String, dynamic> toJson() =>
       _$SubscriptionDashboardDetailResultToJson(this);
+}
+
+@JsonSerializable()
+class AssetOrHierarchyByTypeAndId {
+  String? name;
+  String? userName;
+  String? code;
+  String? email;
+  String ? id;
+
+  AssetOrHierarchyByTypeAndId(
+      {this.name, this.userName, this.code, this.email,this.id});
+
+  factory AssetOrHierarchyByTypeAndId.fromJson(Map<String, dynamic> json)=>_$AssetOrHierarchyByTypeAndIdFromJson(json);
+
+  Map<String, dynamic> toJson()=>_$AssetOrHierarchyByTypeAndIdToJson(this);
+}
+
+@JsonSerializable()
+class SubscriptionFleetList {
+  int ? count;
+  List<ProvisioningInfo>? provisioningInfo;
+  SubscriptionFleetList({this.count,this.provisioningInfo});
+  factory  SubscriptionFleetList.fromJson(Map<String, dynamic> json)=>_$SubscriptionFleetListFromJson(json); 
+  
+
+  Map<String, dynamic> toJson()=>_$SubscriptionFleetListToJson(this); 
+
+}
+@JsonSerializable()
+class ProvisioningInfo {
+  String? gpsDeviceID;
+  String? model;
+  String? vin;
+  String? productFamily;
+  String? customerCode;
+  String? dealerName;
+  String? dealerCode;
+  String? customerName;
+  dynamic status;
+  dynamic description;
+  String ? networkProvider;
+
+  ProvisioningInfo(
+      {this.gpsDeviceID,
+      this.model,
+      this.vin,
+      this.productFamily,
+      this.customerCode,
+      this.dealerName,
+      this.dealerCode,
+      this.customerName,
+      this.status,
+      this.description,
+      this.networkProvider});
+
+ factory ProvisioningInfo.fromJson(Map<String, dynamic> json)=>_$ProvisioningInfoFromJson(json); 
+
+  Map<String, dynamic> toJson()=>_$ProvisioningInfoToJson(this); 
 }
 
 // @JsonSerializable()
@@ -26,6 +87,7 @@ class DetailResult {
   // to diplay key name as displayed on endpoint.
   @JsonKey(name: "totalDevice")
   double? totalDevice;
+  
 
   @JsonKey(name: "GPSDeviceID")
   String? GPSDeviceID;

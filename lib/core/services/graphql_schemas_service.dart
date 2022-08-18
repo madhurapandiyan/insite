@@ -1,15 +1,18 @@
 import 'dart:io';
 
 import 'package:insite/core/base/base_service.dart';
+import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
+import 'package:insite/views/plant/plant_asset_creation/asset_creation_model.dart';
 import 'package:logger/logger.dart';
 
 import '../logger.dart';
 import '../models/add_notification_payload.dart';
+import '../models/asset_creation_payload.dart';
 
 class GraphqlSchemaService extends BaseService {
   GraphqlSchemaService._internal() {
@@ -934,7 +937,7 @@ userEmail(EmailID:"$emailId"){
       String? customerUid,
       int? jobType,
       Details? details}) {
-    String doubleQuote = "\"";
+    String intQuote = "\"";
     List<Map<String, dynamic>> roleData = [];
     role!.forEach((element) {
       roleData.add({
@@ -943,7 +946,7 @@ userEmail(EmailID:"$emailId"){
       });
     });
     final String addUserData = """mutation {
-  userManagementCreateUser(requestBody: {fname: ${doubleQuote + firstName! + doubleQuote}, lname: ${doubleQuote + lastName! + doubleQuote}, email: ${doubleQuote + emailId! + doubleQuote}, 
+  userManagementCreateUser(requestBody: {fname: ${intQuote + firstName! + intQuote}, lname: ${intQuote + lastName! + intQuote}, email: ${intQuote + emailId! + intQuote}, 
       JobType:$jobType,
     address: ${addressData!.toJson()}, 
       details:{
@@ -1719,10 +1722,11 @@ odometer
     return data;
   }
 
-  String assetLocationData({String? no, String? pageSize, String? sort}) {
+  String assetLocationData(
+      {String? no, String? pageSize, String? sort, String? query}) {
     var data = """
 query{
-  assetLocation(pageNumber:$no,pageSize:$pageSize,sort:"$sort"){
+  assetLocation(pageNumber:$no,pageSize:$pageSize,sort:"$sort", snContains:"$query"){
     pagination{
       totalCount,
       pageNumber,
@@ -1969,7 +1973,11 @@ reportUid
   }
 }""";
     } else if (assetsDropDownValue == "Utilization Details" ||
-        assetsDropDownValue == "Fault Code Asset Details") {
+        assetsDropDownValue == "Fault Code Asset Details" ||
+        assetsDropDownValue == "Backhoe Loader Operation" ||
+        assetsDropDownValue == "Excavator Usage" ||
+        assetsDropDownValue == "Multi-Asset Backhoe Loader Operation" ||
+        assetsDropDownValue == "Multi-Asset Excavator Usage") {
       addReportPayLoad = """mutation{
   createNotificationReport(
     assetFilterCategoryID: 1,
@@ -2847,6 +2855,145 @@ mutation{
     return data;
   }
 
+  String getAssetTargetSettingsData(
+      String? startDate, String? endDate, List<String>? assetID) {
+    Logger().w(startDate);
+    var data = """mutation{
+     assetTargetSettings(startDate:"$startDate",endDate:"$endDate",assetID:${Utils.getStringListData(assetID!)}){
+    assetTargetSettings{
+      startDate,
+      endDate,
+      runtime{
+        sunday,
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday
+      },
+      idle{
+          sunday,
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday
+      },
+      assetUid
+      
+      
+       
+    }
+  }
+    }""";
+    return data;
+  }
+
+  String getAddEStimatedRuntimeData(String? assetId, String? startDate,
+      String? endDate, Idle? idle, Runtime? runtime) {
+    int runtimeMon = int.parse(runtime!.monday!.toString());
+    int runtimeTue = int.parse(runtime.tuesday!.toString());
+    int runtimeWed = int.parse(runtime.wednesday!.toString());
+    int runtimeThu = int.parse(runtime.thursday!.toString());
+    int runtimeFri = int.parse(runtime.friday!.toString());
+    int runtimeSat = int.parse(runtime.saturday!.toString());
+    int runtimeSun = int.parse(runtime.sunday!.toString());
+    int idleMon = int.parse(idle!.monday.toString());
+    int idleTue = int.parse(idle.tuesday.toString());
+    int idleWed = int.parse(idle.wednesday.toString());
+    int idleThu = int.parse(idle.thursday.toString());
+    int idleFri = int.parse(idle.friday.toString());
+    int idleSat = int.parse(idle.saturday.toString());
+    int idleSun = int.parse(idle.sunday.toString());
+    var data = """mutation{
+      updateAssetTargetSettings(assetTargetSettings:{
+       assetUid:"$assetId"
+       startDate:"$startDate",
+       endDate:"$endDate",
+       runtime:{
+         sunday:$runtimeSun,
+        
+    monday:$runtimeMon,
+    tuesday:$runtimeTue,
+    wednesday:$runtimeWed,
+    thursday:$runtimeThu,
+    friday:$runtimeFri,
+    saturday:$runtimeSat
+        
+       },
+       idle:{
+        sunday:$idleSun
+        
+    monday:$idleMon,
+    tuesday:$idleTue
+    wednesday:$idleWed,
+    thursday:$idleThu,
+    friday:$idleFri,
+    saturday:$idleSat
+       }
+      }){
+    assetUIDs
+  }
+    }""";
+
+    return data;
+  }
+
+  static String globalSearch(String? snContains, String? assetIdContains) {
+    var data = """query{
+getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"){
+    topMatches{
+      assetUid,
+      serialNumber
+    }
+    totalCount
+  }
+   }""";
+    return data;
+  }
+
+  String getSingleAssetData(
+      {String? startDateTime,
+      String? endDateTime,
+      int? page,
+      int? limit,
+      String? assetUid}) {
+    var data = """query{
+  singleAsset(
+  startDateTime:"$startDateTime",
+    endDateTime:"$endDateTime",
+    page:$page,
+    limit:$limit,
+    
+ assetUid:"$assetUid"
+    
+    
+  ){
+    limit
+    page,
+    total,
+    page
+    assetData{
+      assetUID
+    faults{
+      source,
+      description,
+      severityLabel,
+      faultClosureUTC,
+      severity,
+      hours,
+      faultCode,
+      lastReportedLocationLatitude,
+      lastReportedLocationLongitude
+    }
+    }
+    }
+    }""";
+    return data;
+  }
+
   getMaintenanceListData(
       {String? startDate,
       String? endDate,
@@ -3018,6 +3165,35 @@ query{
     return data;
   }
 
+  String getFaultSingleData(
+      {String? startDate,
+      String? endDate,
+      int? pageSize,
+      int? limit,
+      String? faultsId,
+      String? langeDesc}) {
+    var data = """query{
+   faultsinglesData(
+       startDateTime:"$startDate"
+       endDateTime:"$endDate",
+       pageSize:$pageSize,
+       limit:$limit,
+       langDesc:"$langeDesc",
+       faultsId:"$faultsId"
+
+   ){
+      status,
+      msg,
+      faults{
+          description,
+          source,
+          faultOccuredUTC,
+          severityLabel
+
+      } """;
+    return data;
+  }
+
   onCompletion(
       {String? assetId,
       String? performedBy,
@@ -3073,6 +3249,25 @@ toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
     return data;
   }
 
+  String getPlantDashboardandCalendarData() {
+    var data = """query{
+    frameSubscription{
+        plantDispatchSummary{
+         plantAssetCount,
+         subscriptionEnded,
+         yetToBeActivated,
+          totalDevicesSupplied,
+          activeSubscription,
+          assetActivationByDay,
+          assetActivationByMonth,
+          assetActivationByWeek
+
+        }
+        }
+        }""";
+    return data;
+  }
+
   maintenanceDashboardCount(
       {String? fromDate, String? endDate, String? prodFamily}) {
     var data = """query{
@@ -3090,6 +3285,20 @@ maintenanceDashboard(fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate +
   }
 }
 }""";
+    return data;
+  }
+
+  String getHierarchyData() {
+    var data = """query{
+    frameSubscription{
+       plantHierarchyDetails{
+           totalAssetCount,
+           totalCustomerCount,
+           totalDealerCount,
+           totalPlantCount
+       }
+       }
+       }""";
     return data;
   }
 
@@ -3129,6 +3338,76 @@ maintenanceIntervals(
     return data;
   }
 
+  String getPlantDashboardAndHierarchyListData(
+      int? limit, int? start, String? status) {
+    var data = """query{
+    frameSubscription{
+        subscriptionFleetList(
+            limit:$limit,
+            start:$start,
+            status:"$status",
+            
+        ){
+            count,
+            provisioningInfo{
+              gpsDeviceID,
+
+              model,
+              vin
+              productFamily,
+              customerCode,
+              dealerName,
+              dealerCode,
+              customerName,
+              status,
+              description,
+              networkProvider
+
+
+      }
+
+
+            }
+            }
+        }""";
+    return data;
+  }
+
+  String getPlantDashboardAndHierarchyCalendarListData(
+      int? limit, int? start, String? status) {
+    var data = """query{
+    frameSubscription{
+        subscriptionFleetList(
+            limit:$limit,
+            start:$start,
+            calendar:"$status"
+            
+        ){
+            count,
+            provisioningInfo{
+              gpsDeviceID,
+
+              model,
+              vin
+              productFamily,
+              customerCode,
+              dealerName,
+              dealerCode,
+              customerName,
+              status,
+              description,
+              networkProvider
+
+
+      }
+
+
+            }
+            }
+        }""";
+    return data;
+  }
+
   addMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
     var data = """
 mutation{
@@ -3150,6 +3429,23 @@ mutation{
     return data;
   }
 
+  String getHierarchyListData(int? start, int? limit, dynamic type) {
+    var data = """query{
+   assetOrHierarchyByTypeAndId(
+       start:$start,
+       limit:$limit,
+       type:$type
+      
+   ){
+   name,
+   userName,
+   code,
+   email
+   }
+   }""";
+    return data;
+  }
+
   updateMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
     var data = """
 mutation{
@@ -3160,6 +3456,19 @@ mutation{
      message
   }
 }""";
+    return data;
+  }
+
+  String getAssetcreationModelName(String? value) {
+    var data = """query{
+    assetModelByMachineSerialNumber(machineSerialNumber:"$value"){
+        endRange,
+        modelName,
+        groupClusterId,
+        startRange,
+        startsWith
+        }
+    }""";
     return data;
   }
 
@@ -3181,5 +3490,81 @@ mutation{
 }
 }""";
     return data;
+  }
+
+  creatingPlantasset(
+      List<AssetCreationModel> assetCreationListData, String userId) {
+    List<Map<String, String>> getAssetPayLoad = [];
+
+    for (var element in assetCreationListData) {
+      if (element.assetSerialNo == "" &&
+          element.deviceId == "" &&
+          element.model == "" &&
+          element.hourMeter == "") {
+      } else {
+        Map<String, String> asset = {
+          "machineSerialNumber": "\"" + element.assetSerialNo! + "\"",
+          "model": "\"" + element.model! + "\"",
+          "deviceId": "\"" + element.deviceId! + "\"",
+          "hmrValue": "\"" + element.hourMeter! + "\""
+        };
+        getAssetPayLoad.add(asset);
+      }
+    }
+
+    var data = """mutation{
+createAsset(
+      request: {
+      source: "THC",
+      userID: ${int.parse(userId)},
+      asset: $getAssetPayLoad
+    }
+
+){
+    code,
+    status,
+    message,
+    requestID,
+    vin
+}
+}""";
+    return data;
+  }
+
+  searchLocationSerialNumberData(
+      {int? pageNumber, int? pageSize, String? query}) {
+    var data = """query{
+   assetLocation(pageNumber:$pageNumber,pageSize:$pageSize,snContains:"$query"){
+       mapRecords{
+           lastReportedLocationLatitude,
+           lastReportedLocationLongitude,
+           assetIcon,
+           assetId,
+           assetSerialNumber,
+           model,
+           makeCode,
+           assetIdentifier,
+           manufacturer
+       }
+   }
+    
+}""";
+    return data;
+  }
+
+  searchLocationData(int? maxResult, String? query) {
+    var data = """query{
+ geofenceSearchLoaction(maxResults:$maxResult,query:"$query"){
+     err,
+     locations{
+         coords{
+             lat,
+             lon
+         },
+         shortString
+     }
+ }
+}""";
+return data;
   }
 }

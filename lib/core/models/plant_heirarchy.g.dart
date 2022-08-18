@@ -13,11 +13,34 @@ HierarchyAssets _$HierarchyAssetsFromJson(Map<String, dynamic> json) =>
               .map((e) => Result.fromJson(e as Map<String, dynamic>))
               .toList())
           .toList(),
+      plantHierarchyDetails: json['plantHierarchyDetails'] == null
+          ? null
+          : PlantHierarchyDetails.fromJson(
+              json['plantHierarchyDetails'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$HierarchyAssetsToJson(HierarchyAssets instance) =>
     <String, dynamic>{
       'result': instance.result,
+      'plantHierarchyDetails': instance.plantHierarchyDetails,
+    };
+
+PlantHierarchyDetails _$PlantHierarchyDetailsFromJson(
+        Map<String, dynamic> json) =>
+    PlantHierarchyDetails(
+      totalAssetCount: json['totalAssetCount'] as int?,
+      totalCustomerCount: json['totalCustomerCount'] as int?,
+      totalDealerCount: json['totalDealerCount'] as int?,
+      totalPlantCount: json['totalPlantCount'] as int?,
+    );
+
+Map<String, dynamic> _$PlantHierarchyDetailsToJson(
+        PlantHierarchyDetails instance) =>
+    <String, dynamic>{
+      'totalAssetCount': instance.totalAssetCount,
+      'totalCustomerCount': instance.totalCustomerCount,
+      'totalDealerCount': instance.totalDealerCount,
+      'totalPlantCount': instance.totalPlantCount,
     };
 
 Result _$ResultFromJson(Map<String, dynamic> json) => Result(

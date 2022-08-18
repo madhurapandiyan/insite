@@ -4,10 +4,30 @@ part 'plant_heirarchy.g.dart';
 @JsonSerializable()
 class HierarchyAssets {
   List<List<Result>>? result;
-  HierarchyAssets({this.result});
+  PlantHierarchyDetails? plantHierarchyDetails;
+  HierarchyAssets({this.result, this.plantHierarchyDetails});
   factory HierarchyAssets.fromJson(Map<String, dynamic> json) =>
       _$HierarchyAssetsFromJson(json);
   Map<String, dynamic> toJson() => _$HierarchyAssetsToJson(this);
+}
+
+@JsonSerializable()
+class PlantHierarchyDetails {
+  int? totalAssetCount;
+  int? totalCustomerCount;
+  int? totalDealerCount;
+  int? totalPlantCount;
+
+  PlantHierarchyDetails(
+      {this.totalAssetCount,
+      this.totalCustomerCount,
+      this.totalDealerCount,
+      this.totalPlantCount});
+
+       factory PlantHierarchyDetails.fromJson(Map<String, dynamic> json) =>
+      _$PlantHierarchyDetailsFromJson(json);
+  Map<String, dynamic> toJson() => _$PlantHierarchyDetailsToJson(this);
+
 }
 
 @JsonSerializable()

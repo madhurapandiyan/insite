@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
+import 'package:logger/logger.dart';
 
 class GeofencingMap extends StatefulWidget {
   final List<String>? mapType;
@@ -44,13 +45,7 @@ class _GeofencingMapState extends State<GeofencingMap> {
           },
           zoomControlsEnabled: false,
           zoomGesturesEnabled: true,
-          mapType: widget.initialValue == widget.mapType![0]
-              ? MapType.normal
-              : widget.initialValue == widget.mapType![1]
-                  ? MapType.terrain
-                  : widget.initialValue == widget.mapType![2]
-                      ? MapType.satellite
-                      : MapType.hybrid,
+          mapType:mapType(widget.initialValue),
           initialCircles: widget.circle,
           initialCameraPosition: widget.camPosition,
           initialPolygons:
@@ -64,5 +59,28 @@ class _GeofencingMapState extends State<GeofencingMap> {
                 }
               : (_) {}),
     );
+  }
+  
+ MapType mapType(String? initialValue) {
+  Logger().w(initialValue);
+   switch (initialValue) {
+      case "MAP":
+        Logger().i("map is in normal type ");
+        return MapType.normal;
+
+      case "TERRAIN":
+        Logger().i("map is in terrain type");
+        return MapType.terrain;
+
+      case "SATELLITE":
+        Logger().i("map is in satellite type ");
+        return MapType.satellite;
+
+      case "HYBRID":
+        Logger().i("map is in hybrid type ");
+        return MapType.hybrid;
+      default:
+        return MapType.normal;
+    }
   }
 }

@@ -153,22 +153,21 @@ class Utils {
   static String suceessRegistration =
       "Registration successful.Asset status may take a few minutes to check status, click Asset Status after 10 minutes";
 
-  static double getHrsValueeData(
-      double? percentageValue, double? runTimeValue) {
+  static dynamic getHrsValueeData(
+      dynamic percentageValue, dynamic runTimeValue) {
     if (percentageValue == 0 && runTimeValue == 0) {
       return 0.0;
     }
-    double hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
+    int hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
     return hrsData;
   }
 
-  static String getPercentageValueData(
-      double? runTimevalue, double? idleValue) {
+  static String getPercentageValueData(runTimevalue, idleValue) {
     if (runTimevalue == 0 && idleValue == 0) {
       return "0";
     }
     double perData = ((idleValue! / runTimevalue!) * 100);
-    int data = perData.toInt();
+    var data = perData;
 
     return data.toString();
   }
@@ -1375,6 +1374,74 @@ class Utils {
         "longitude"
       ];
       return list;
+    } else if (value == "Backhoe Loader Operation") {
+      Logger().w(list.length);
+      list = [
+        "assetSerialNumber",
+        "lastReportedTime",
+        "lastReportedTimeZoneAbbrev",
+        "lastRuntimeHourMeter",
+        "runtimeHours",
+        "idleHours",
+        "workingHours",
+        "backhoeIdleHours",
+        "backhoeWorkingHours",
+        "backhoeRuntimeHours",
+        "loaderIdleHours",
+        "loaderWorkingHours",
+        "loaderRuntimeHours",
+      ];
+      return list;
+    } else if (value == "Excavator Usage") {
+      list = [
+        "assetSerialNumber",
+        "lastReportedTime",
+        "lastReportedTimeZoneAbbrev",
+        "lastRuntimeHourMeter",
+        "runtimeHours",
+        "idleHours",
+        "workingHours",
+        "rockBreakerRuntimeHours",
+        "distanceTravelledHours",
+        "powerModeRuntimeHours",
+        "standardModeRuntimeHours",
+        "autoIdleRuntimeHours",
+      ];
+      return list;
+    } else if (value == "Multi-Asset Backhoe Loader Operation") {
+      list = [
+        "assetSerialNumber",
+        "latestUtzReport",
+        "lastReportedTimeZoneAbbrev",
+        "lastRuntimeHourMeter",
+        "runtimeHours",
+        "idleHours",
+        "workingHours",
+        "lastUtzLocation",
+        "backhoeIdleHours",
+        "backhoeWorkingHours",
+        "backhoeRuntimeHours",
+        "loaderIdleHours",
+        "loaderWorkingHours",
+        "loaderRuntimeHours",
+      ];
+      return list;
+    } else if (value == "Multi-Asset Excavator Usage") {
+      list = [
+        "assetSerialNumber",
+        "latestUtzReport",
+        "lastReportedTimeZoneAbbrev",
+        "runtimeHours",
+        "idleHours",
+        "workingHours",
+        "lastUtzLocation",
+        "rockBreakerRuntimeHours",
+        "distanceTravelledHours",
+        "powerModeRuntimeHours",
+        "standardModeRuntimeHours",
+        "autoIdleRuntimeHours",
+      ];
+      return list;
     }
     return null;
   }
@@ -1409,12 +1476,29 @@ class Utils {
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=${associatedIdentifier!.first}&startDateTime=&endDateTime=&langDesc=en-US";
         return querUrl;
+      case "Backhoe Loader Operation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v5/Utilization/Details?AssetUid=347790bd-282e-11ec-82e0-0ae8ba8d3970&startDate=07%2F25%2F2022&endDate=07%2F25%2F2022&sort=-LastReportedUtilizationTime&includeNonReportedDays=true&includeOutsideLastReportedDay=false";
+        return querUrl;
+      case "Excavator Usage":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v5/Utilization/Details?AssetUid=fba953c3-b251-11eb-82db-0ae8ba8d3970&startDate=&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=false&sort=-LastReportedUtilizationTime";
+        return querUrl;
+      case "Multi-Asset Backhoe Loader Operation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
+      case "Multi-Asset Excavator Usage":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
     }
   }
 
   static String? getEditQueryUrl(
       String assetsDropDownValue, List<String>? associatedIdentifier) {
     String querUrl;
+
     switch (assetsDropDownValue) {
       case "FleetSummary":
         querUrl =
@@ -1441,6 +1525,10 @@ class Utils {
       case "FaultCodeAssetDetails":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=${associatedIdentifier!.first}&startDateTime=&endDateTime=&langDesc=en-US";
+        return querUrl;
+      case "BackhoeLoaderOperation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v5/Utilization/Details?AssetUid=347790bd-282e-11ec-82e0-0ae8ba8d3970&startDate=07%2F25%2F2022&endDate=07%2F25%2F2022&sort=-LastReportedUtilizationTime&includeNonReportedDays=true&includeOutsideLastReportedDay=false";
         return querUrl;
     }
   }
@@ -1481,7 +1569,8 @@ class Utils {
   static String getSvcMethod(String? assetsDropDownValue) {
     if (assetsDropDownValue == "Utilization Details") {
       return "";
-    } else if (assetsDropDownValue == "Fault Code Asset Details") {
+    } else if (assetsDropDownValue == "Fault Code Asset Details" ||
+        assetsDropDownValue == "Backhoe Loader Operation") {
       return "GET";
     } else {
       return "POST";
