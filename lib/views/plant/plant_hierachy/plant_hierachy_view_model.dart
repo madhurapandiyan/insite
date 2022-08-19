@@ -43,11 +43,10 @@ class PlantHierachyViewModel extends InsiteViewModel {
 
   getPlantHeirrchyAssetData() async {
     try {
-      HierarchyAssets? assetsData = await (_plantHierarchyService!
-          .getResultsFromPlantHierchyApi(
-              graphqlSchemaService!.getHierarchyData()));
-
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
+        HierarchyAssets? assetsData = await (_plantHierarchyService!
+            .getResultsFromPlantHierchyApi(
+                graphqlSchemaService!.getHierarchyData()));
         _assetType
             .addAll(["Customer", "Dealer", "Plant", "Total no. of Assets"]);
         _filterType.addAll(["CUSTOMER", "DEALER", "PLANT", "asset"]);
@@ -58,6 +57,9 @@ class PlantHierachyViewModel extends InsiteViewModel {
           assetsData.plantHierarchyDetails!.totalAssetCount
         ]);
       } else {
+        HierarchyAssets? assetsData = await (_plantHierarchyService!
+            .getResultsFromPlantHierchyApi(
+                graphqlSchemaService!.getHierarchyData()));
         _assetType
             .addAll(["Customer", "Dealer", "Plant", "Total no. of Assets"]);
         _filterType.addAll(["CUSTOMER", "DEALER", "PLANT", "asset"]);
