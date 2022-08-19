@@ -5,11 +5,11 @@ import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/asset_utilization.dart';
-<<<<<<< HEAD
+
 import 'package:insite/core/models/filter_data.dart';
-=======
+
 import 'package:insite/core/models/maintenance_dashboard_count.dart';
->>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
+
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/note_data.dart';
 import 'package:insite/core/services/asset_service.dart';
@@ -17,11 +17,11 @@ import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
-<<<<<<< HEAD
+
 import 'package:insite/views/health/health_view.dart';
-=======
+
 import 'package:intl/intl.dart';
->>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
+
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -38,7 +38,6 @@ class AssetDashboardViewModel extends InsiteViewModel {
   AssetDetail? _assetDetail;
   AssetDetail? get assetDetail => _assetDetail;
 
-<<<<<<< HEAD
   List<Note> _getNotes = [];
   List<Note> get getNotesDataList => _getNotes;
 
@@ -50,15 +49,14 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   bool _faultCountloading = true;
   bool get faultCountloading => _faultCountloading;
-=======
-    MaintenanceDashboardCount? maintenanceDashboardCount;
->>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
+
+  MaintenanceDashboardCount? maintenanceDashboardCount;
 
   AssetUtilization? _assetUtilization;
   AssetUtilization? get assetUtilization => _assetUtilization;
 
- MaintenanceService? _maintenanceService = locator<MaintenanceService>();
- 
+  MaintenanceService? _maintenanceService = locator<MaintenanceService>();
+
   List<Note> _assetNotes = [];
   List<Note> get assetNotes => _assetNotes;
 
@@ -68,7 +66,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
   bool _postingNote = false;
   bool get postingNote => _postingNote;
 
-   bool _maintenanceLoading = true;
+  bool _maintenanceLoading = true;
   bool get maintenanceLoading => _maintenanceLoading;
 
   double? _utilizationGreatestValue;
@@ -102,11 +100,10 @@ class AssetDashboardViewModel extends InsiteViewModel {
       await getAssetDetail();
       await getAssetUtilization();
       await getNotes();
-<<<<<<< HEAD
+
       await getNotesData();
-=======
+
       await getMaintenanceCountData();
->>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
     });
   }
 
@@ -149,7 +146,6 @@ class AssetDashboardViewModel extends InsiteViewModel {
     _postingNote = false;
     notifyListeners();
   }
-<<<<<<< HEAD
 
   getNotesData() async {
     NotesData? result = await _assetSingleHistoryService!
@@ -160,7 +156,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
     }
     notifyListeners();
   }
-=======
+
   getMaintenanceCountData() async {
     try {
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
@@ -168,30 +164,33 @@ class AssetDashboardViewModel extends InsiteViewModel {
         fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
         endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
       ));
-      data?.maintenanceDashboard?.dashboardData!.forEach((element) {
-        if (element.displayName == "Overdue") {
-          element.maintenanceTotal = MAINTENANCETOTAL.OVERDUE;
-        }
-        if (element.displayName == "Upcoming") {
-          element.maintenanceTotal = MAINTENANCETOTAL.UPCOMING;
-        }
-        if (element.subCount != null) {
-          element.subCount!.forEach((dashboardData) {
-            if (dashboardData.displayName == "Next Week") {
-              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTWEEK;
-            }
-            if (dashboardData.displayName == "Next Month") {
-              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
-            }
-          });
-        }
-      });
-      maintenanceDashboardCount = data;
-      _maintenanceLoading = false;
+      if (data?.maintenanceDashboard?.dashboardData != null &&
+          data!.maintenanceDashboard!.dashboardData!.isNotEmpty) {
+        data.maintenanceDashboard?.dashboardData!.forEach((element) {
+          if (element.displayName == "Overdue") {
+            element.maintenanceTotal = MAINTENANCETOTAL.OVERDUE;
+          }
+          if (element.displayName == "Upcoming") {
+            element.maintenanceTotal = MAINTENANCETOTAL.UPCOMING;
+          }
+          if (element.subCount != null) {
+            element.subCount!.forEach((dashboardData) {
+              if (dashboardData.displayName == "Next Week") {
+                dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTWEEK;
+              }
+              if (dashboardData.displayName == "Next Month") {
+                dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
+              }
+            });
+          }
+        });
+        maintenanceDashboardCount = data;
+        _maintenanceLoading = false;
+      } else {
+        _maintenanceLoading = false;
+      }
+
       notifyListeners();
     } catch (e) {}
   }
-   
-
->>>>>>> d12fcac01e33bab440685f655a0eac783842a8ba
 }
