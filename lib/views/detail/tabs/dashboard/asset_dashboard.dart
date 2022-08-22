@@ -171,24 +171,24 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     height: 20,
                   ),
                   Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: FaultHealthDashboard(
-                        screenType: ScreenType.DASHBOARD,
-                        countData: viewModel.faultCountData != null
-                            ? viewModel.faultCountData!.countData
-                            : [],
-                        onFilterSelected: (value, dateFilter) async {
-                          await viewModel.onDateAndFilterSelected(
-                              value, dateFilter);
-                          viewModel.gotoFaultPage();
-                        },
-                        loading: viewModel.faultCountloading,
-                        isRefreshing: viewModel.refreshing,
-                      ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: FaultHealthDashboard(
+                      screenType: ScreenType.DASHBOARD,
+                      countData: viewModel.faultCountData != null
+                          ? viewModel.faultCountData!.countData
+                          : [],
+                      onFilterSelected: (value, dateFilter) async {
+                        await viewModel.onDateAndFilterSelected(
+                            value, dateFilter);
+                        viewModel.gotoFaultPage();
+                      },
+                      loading: viewModel.faultCountloading,
+                      isRefreshing: viewModel.refreshing,
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
                   viewModel.assetDetail != null
                       ? Padding(
                           padding: const EdgeInsets.symmetric(
@@ -238,8 +238,11 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
                     ),
-                    child: Notes(
+                    child:  Notes(
                       controller: notesController,
+                      onDelete: (value) {
+                        viewModel.deletNotes(value);
+                      },
                       notes: viewModel.assetNotes,
                       onTap: () {
                         if (notesController!.text.isNotEmpty) {
@@ -248,7 +251,6 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         }
                       },
                       isLoading: viewModel.postingNote,
-                      notesListData: viewModel.getNotesDataList,
                     ),
                   ),
                   SizedBox(
@@ -267,28 +269,30 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: NotificationWidget(
+                      count: 1,
+                      isLoading: viewModel.notificationLoading,
+                      notificationType: viewModel.notificationCountDatas,
                     ),
-                    child: Notifications(),
                   ),
                   SizedBox(
                     height: 20.0,
                   ),
-                   Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: MaintenanceDashBoard(
-                        countData: viewModel.maintenanceDashboardCount,
-                        isLoading: viewModel.maintenanceLoading,
-                        onFilterSelected: (val, filterType, count) {
-                          // viewModel.onMaintenanceFilterClicked(
-                          //     val, filterType, count);
-                        },
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: MaintenanceDashBoard(
+                      countData: viewModel.maintenanceDashboardCount,
+                      isLoading: viewModel.maintenanceLoading,
+                      onFilterSelected: (val, filterType, count) {
+                        // viewModel.onMaintenanceFilterClicked(
+                        //     val, filterType, count);
+                      },
                     ),
-                    SizedBox(
-                      height: 20,
-                    )
+                  ),
+                  SizedBox(
+                    height: 20,
+                  )
                 ],
               ),
             ),

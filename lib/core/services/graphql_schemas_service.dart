@@ -3339,14 +3339,14 @@ maintenanceIntervals(
   }
 
   String getPlantDashboardAndHierarchyListData(
-      {int? limit, int? start, String? status,String? calendar}) {
+      {int? limit, int? start, String? status, String? calendar}) {
     var data = """query{
     frameSubscription{
         subscriptionFleetList(
-             limit:${limit!=null?limit:null},
-            start:${start!=null?start:null},
-            status:"${status!=null?status:""}",
-             calendar:"${calendar!=null?calendar:""}",
+             limit:${limit != null ? limit : null},
+            start:${start != null ? start : null},
+            status:"${status != null ? status : ""}",
+             calendar:"${calendar != null ? calendar : ""}",
             
         ){
             count,
@@ -3382,7 +3382,7 @@ maintenanceIntervals(
   //           limit:$limit,
   //           start:$start,
   //           calendar:"$status"
-            
+
   //       ){
   //           count,
   //           provisioningInfo{
@@ -3399,9 +3399,7 @@ maintenanceIntervals(
   //             description,
   //             networkProvider
 
-
   //     }
-
 
   //           }
   //           }
@@ -3565,6 +3563,30 @@ createAsset(
          shortString
      }
  }
+}""";
+    return data;
+  }
+
+  notificationDashboardCount() {
+    var data =
+        """query (\$assetUIDs: String, \$productFamily: String, \$notificationStatus: Int, \$notificationUserStatus: Int) {
+  seeAllNotificationCount(assetUIDs: \$assetUIDs, productFamily: \$productFamily, notificationStatus: \$notificationStatus, notificationUserStatus: \$notificationUserStatus) {
+    notifications {
+      count
+      notificationSubType
+      notificationType
+    }
+    status
+  }
+}
+""";
+    return data;
+  }
+
+  deleteNotes() {
+    var data = """
+mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
+  deleteMetaDataNotes(userAssetNoteUid:\$userAssetNoteUid)
 }""";
     return data;
   }

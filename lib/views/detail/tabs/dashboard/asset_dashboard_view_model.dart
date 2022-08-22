@@ -12,7 +12,9 @@ import 'package:insite/core/models/maintenance_dashboard_count.dart';
 
 import 'package:insite/core/models/note.dart';
 import 'package:insite/core/models/note_data.dart';
+import 'package:insite/core/models/notification.dart';
 import 'package:insite/core/services/asset_service.dart';
+import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/enums.dart';
@@ -21,6 +23,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/health/health_view.dart';
 
 import 'package:intl/intl.dart';
+import 'package:load/load.dart';
 
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -31,6 +34,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
   Logger? log;
   AssetService? _assetSingleHistoryService = locator<AssetService>();
   NavigationService? _navigationService = locator<NavigationService>();
+  AssetStatusService? _assetService = locator<AssetStatusService>();
   AssetUtilizationService? _assetUtilizationService =
       locator<AssetUtilizationService>();
   DateRangeService? _dateRangeService = locator<DateRangeService>();
@@ -75,6 +79,12 @@ class AssetDashboardViewModel extends InsiteViewModel {
   FilterData? _currentFilterSelected;
   FilterData? get currentFilterSelected => _currentFilterSelected;
 
+  bool _notificationLoading = true;
+  bool get notificationLoading => _notificationLoading;
+
+  NotificationData? _notificationCountDatas;
+  NotificationData? get notificationCountDatas => _notificationCountDatas;
+
   gotoFaultPage() {
     Logger().i("go to fault page");
     _navigationService!
@@ -100,10 +110,8 @@ class AssetDashboardViewModel extends InsiteViewModel {
       await getAssetDetail();
       await getAssetUtilization();
       await getNotes();
-
-      await getNotesData();
-
       await getMaintenanceCountData();
+      await getNotificationCountData();
     });
   }
 
@@ -147,16 +155,6 @@ class AssetDashboardViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getNotesData() async {
-    NotesData? result = await _assetSingleHistoryService!
-        .getNotesData(graphqlSchemaService!.getNotes(assetDetail!.assetUid!));
-    Logger().w(result!.getMetadataNotes!.first.toJson());
-    for (var element in result.getMetadataNotes!) {
-      _getNotes.add(element);
-    }
-    notifyListeners();
-  }
-
   getMaintenanceCountData() async {
     try {
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
@@ -191,6 +189,36 @@ class AssetDashboardViewModel extends InsiteViewModel {
       }
 
       notifyListeners();
+    } catch (e) {
+      _maintenanceLoading = false;
+      notifyListeners();
+    }
+  }
+
+  getNotificationCountData() async {
+    try {
+      var data = await _assetService?.getNotificationDashboardCount(
+          query: await graphqlSchemaService!.notificationDashboardCount(),
+          payload: {"assetUIDs": assetDetail!.assetUid});
+
+      if (data?.notifications != null) {
+        _notificationCountDatas = data;
+        _notificationLoading = false;
+      } else {
+        _notificationLoading = false;
+      }
+      notifyListeners();
     } catch (e) {}
+  }
+
+  deletNotes(String? userid) async {
+    showLoadingDialog();
+    var isDeleted = await _assetSingleHistoryService!
+        .deleteNote({"userAssetNoteUid": userid});
+    if (isDeleted) {
+      _assetNotes.removeWhere((element) => element.userAssetNoteUID == userid);
+    }
+    notifyListeners();
+    hideLoadingDialog();
   }
 }

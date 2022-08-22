@@ -58,8 +58,9 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                           ),
                           viewModel.showEdit
                               ? Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 5),
-                                child: ClipRRect(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: ClipRRect(
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
@@ -76,9 +77,9 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                                           color: appbarcolor,
                                         )),
                                   ),
-                              )
+                                )
                               : SizedBox(),
-                              
+
                           viewModel.showMenu
                               ? ClipRRect(
                                   borderRadius: BorderRadius.only(
@@ -223,17 +224,17 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
               fontWeight: FontWeight.w700,
               size: 14,
             )),
-        // viewModel.showEdit
-        //     ? PopupMenuItem(
-        //         value: "Show/Edit Target",
-        //         child: InsiteText(
-        //           text: "Show/Edit Target",
-        //           fontWeight: FontWeight.w700,
-        //           size: 14,
-        //         ))
-        //     : PopupMenuItem(
-        //         child: SizedBox(),
-        //       ),
+        viewModel.showEdit
+            ? PopupMenuItem(
+                value: "Show/Edit Target",
+                child: InsiteText(
+                  text: "Show/Edit Target",
+                  fontWeight: FontWeight.w700,
+                  size: 14,
+                ))
+            : PopupMenuItem(
+                child: SizedBox(),
+              ),
         viewModel.showEdit
             ? PopupMenuItem(
                 value: "Configure",

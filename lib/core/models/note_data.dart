@@ -7,7 +7,7 @@ class NotesData {
   List<Note>? getMetadataNotes;
   NotesData({this.getMetadataNotes});
   factory NotesData.fromJson(Map<String, dynamic> json) =>
-      _$NotesdataFromJson(json);
+      _$NotesDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NotesdataToJson(this);
+  Map<String, dynamic> toJson() => _$NotesDataToJson(this);
 }
