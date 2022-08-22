@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/maintenance_dashboard_count.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
@@ -58,61 +59,73 @@ class MaintenanceDashBoard extends StatelessWidget {
                 ),
                 isLoading!
                     ? Expanded(child: InsiteProgressBar())
-                    : Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: countData
-                              ?.maintenanceDashboard?.dashboardData?.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            var data = countData
-                                ?.maintenanceDashboard?.dashboardData?[index];
-                            return Column(
-                              children: [
-                                maintenanceDetailCount(data: data),
-                                data?.subCount != null &&
-                                        data!.subCount!.isNotEmpty
-                                    ? Container(
-                                        height: 100,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemCount: data.subCount?.length,
-                                          itemBuilder:
-                                              (BuildContext context, int i) {
-                                            return ListTile(
-                                              title: InsiteText(
-                                                  text: data
-                                                      .subCount?[i].displayName,
-                                                  fontWeight: FontWeight.w700,
-                                                  size: 14.0),
-                                              trailing: InsiteText(
-                                                  text: data.subCount?[i].count
-                                                      .toString(),
-                                                  fontWeight: FontWeight.w700,
-                                                  size: 14.0),
-                                              onTap: () {
-                                                onFilterSelected!(
-                                                    data.subCount![i]
-                                                        .maintenanceTotal!,
-                                                    data.displayName!,
-                                                    data.subCount![i].count!);
+                    : countData == null
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.2,
+                          )
+                        : Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: countData
+                                  ?.maintenanceDashboard?.dashboardData?.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var data = countData?.maintenanceDashboard
+                                    ?.dashboardData?[index];
+                                return Column(
+                                  children: [
+                                    maintenanceDetailCount(data: data),
+                                    data?.subCount != null &&
+                                            data!.subCount!.isNotEmpty
+                                        ? Container(
+                                            height: 100,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.vertical,
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              itemCount: data.subCount?.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int i) {
+                                                return ListTile(
+                                                  title: InsiteText(
+                                                      text: data.subCount?[i]
+                                                          .displayName,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      size: 14.0),
+                                                  trailing: InsiteText(
+                                                      text: data
+                                                          .subCount?[i].count
+                                                          .toString(),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      size: 14.0),
+                                                  onTap: () {
+                                                    onFilterSelected!(
+                                                        data.subCount![i]
+                                                            .maintenanceTotal!,
+                                                        data.displayName!,
+                                                        data.subCount![i]
+                                                            .count!);
+                                                  },
+                                                );
                                               },
-                                            );
-                                          },
-                                        ),
-                                      )
-                                    : SizedBox()
-                              ],
-                            );
-                          },
-                        ),
-                      ),
+                                            ),
+                                          )
+                                        : EmptyView(
+                                            title:
+                                                "No service information to display",
+                                          )
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
                 Divider(
                   thickness: 2,
                 ),
@@ -122,7 +135,8 @@ class MaintenanceDashBoard extends StatelessWidget {
                   child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: InsiteTextAlign(
-                          text: "Viewing upcoming data for next 30 days".toUpperCase(),
+                          text: "Viewing upcoming data for next 30 days"
+                              .toUpperCase(),
                           textAlign: TextAlign.center,
                           fontWeight: FontWeight.w900,
                           size: 10.0)),

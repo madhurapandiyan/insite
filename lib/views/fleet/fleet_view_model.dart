@@ -15,7 +15,7 @@ class FleetViewModel extends InsiteViewModel {
   NavigationService? _navigationService = locator<NavigationService>();
 
   int pageNumber = 1;
-  int pageSize = 50;
+  int pageSize = 20;
   ScrollController? scrollController;
 
   List<Fleet> _assets = [];
@@ -49,12 +49,12 @@ class FleetViewModel extends InsiteViewModel {
         }
       }
     });
-    Future.delayed(Duration(seconds: 1), () async {
+    Future.delayed(Duration(seconds: 0), () async {
       await getSelectedFilterData();
       await getDateRangeFilterData();
     });
-    Future.delayed(Duration(seconds: 2), () {
-      getFleetSummaryList();
+    Future.delayed(Duration(seconds: 1), () async {
+      await getFleetSummaryList();
     });
   }
 
@@ -138,7 +138,7 @@ class FleetViewModel extends InsiteViewModel {
       FleetSummaryResponse? result;
       await getSelectedFilterData();
       pageNumber = 1;
-      pageSize = 50;
+      pageSize = 20;
       _isRefreshing = true;
       _shouldLoadmore = true;
       notifyListeners();

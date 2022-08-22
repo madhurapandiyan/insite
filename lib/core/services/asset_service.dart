@@ -5,6 +5,7 @@ import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/note.dart';
+import 'package:insite/core/models/note_data.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
@@ -40,7 +41,7 @@ class AssetService extends BaseService {
       List<FilterData?>? appliedFilters,
       query) async {
     try {
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
@@ -187,6 +188,7 @@ class AssetService extends BaseService {
               : customerSelected?.CustomerUID,
         );
         var notesData = data.data["getMetadataNotes"] as List;
+        Logger().w(notesData);
         notesData.forEach((element) {
           var notesFromJson = Note.fromJson(element as Map<String, dynamic>);
           notes?.add(notesFromJson);
@@ -237,5 +239,25 @@ class AssetService extends BaseService {
       Logger().e(e);
       return null;
     }
+  }
+
+  Future<NotesData?> getNotesData(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        NotesData note = NotesData.fromJson(data.data);
+        return note;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
   }
 }

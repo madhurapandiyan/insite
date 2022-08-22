@@ -1,4 +1,5 @@
 import 'package:insite/core/models/complete.dart';
+import 'package:insite/core/models/estimated_response.dart';
 import 'package:insite/core/models/maintenance_asset_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/report_count.dart';
@@ -111,6 +112,7 @@ import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
 part 'Retrofit.g.dart';
+
 
 //part 'Retrofit.g.dart';
 
@@ -799,13 +801,13 @@ abstract class RestClient {
       @Header("service") serviceHeader);
 
   @PUT('{url}')
-  Future<EstimatedAssetSetting> getAssetTargetSettingsDataVL(
+  Future<EstimatedResponse> getAssetTargetSettingsDataVL(
       @Path() String url,
       @Body() EstimatedAssetSetting estimatedAssetSetting,
       @Header("x-visionlink-customeruid") customerId);
 
   @PUT('{url}')
-  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+  Future<EstimatedResponse> getAssetTargetSettingsData(
       @Path() String url,
       @Body() EstimatedAssetSetting estimatedAssetSetting,
       @Header("x-visionlink-customeruid") customerId,

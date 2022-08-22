@@ -1,10 +1,16 @@
+
 import 'package:json_annotation/json_annotation.dart';
 part 'subscription_dashboard.g.dart';
 
 @JsonSerializable()
 class SubscriptionDashboardResult {
+
   List<List<ResultSubscription>>? result;
-  SubscriptionDashboardResult({this.result});
+  SubscriptionDashboardResult({this.result,this.plantDispatchSummary});
+  //List<List<Result>>? result;
+  PlantDispatchSummary? plantDispatchSummary;
+  //SubscriptionDashboardResult({this.result, this.plantDispatchSummary});
+
   factory SubscriptionDashboardResult.fromJson(Map<String, dynamic> json) =>
       _$SubscriptionDashboardResultFromJson(json);
   Map<String, dynamic> toJson() => _$SubscriptionDashboardResultToJson(this);
@@ -62,4 +68,32 @@ class ResultSubscription {
   factory ResultSubscription.fromJson(Map<String, dynamic> json) =>
       _$ResultSubscriptionFromJson(json);
   Map<String, dynamic> toJson() => _$ResultSubscriptionToJson(this);
+}
+
+@JsonSerializable()
+class FrameSubscription{
+  PlantDispatchSummary ? plantDispatchSummary;
+
+  FrameSubscription({this.plantDispatchSummary});
+   factory FrameSubscription.fromJson(Map<String, dynamic> json)=>_$FrameSubscriptionFromJson(json);
+  Map<String, dynamic> toJson()=>_$FrameSubscriptionToJson(this); 
+}
+
+
+@JsonSerializable(
+  
+)
+class PlantDispatchSummary {
+  int ? activeSubscription;
+  int ? yetToBeActivated;
+  int ? subscriptionEnded;
+  dynamic assetActivationByDay;
+  int ? assetActivationByWeek;
+  int ?  assetActivationByMonth;
+
+  PlantDispatchSummary({this.activeSubscription,this.yetToBeActivated,this.subscriptionEnded,this.assetActivationByDay,this.assetActivationByWeek,this.assetActivationByMonth});
+
+  factory PlantDispatchSummary.fromJson(Map<String, dynamic> json)=>_$PlantDispatchSummaryFromJson(json);
+
+  Map<String, dynamic> toJson()=>_$PlantDispatchSummaryToJson(this); 
 }

@@ -105,7 +105,7 @@ class SubDashBoardDetailsView extends StatelessWidget {
         );
       },
       viewModelBuilder: () =>
-          SubDashBoardDetailsViewModel(filterKey, filterType),
+          SubDashBoardDetailsViewModel(filterKey, detailType!,filterType),
     );
   }
 }

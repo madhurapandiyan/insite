@@ -18,6 +18,7 @@ import 'package:insite/core/models/edit_report_response.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/estimated_cycle_volume_payload.dart';
+import 'package:insite/core/models/estimated_response.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/favorite_payload.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
@@ -292,21 +293,21 @@ class AssetAdminManagerUserService extends BaseService {
       } else {
         var application1 = Application(
             iconUrl:
-                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insitefleet/app.png",
+                "https://osg-in-pre-prod-pulse.frame-oesolutions.com/app/assets/app.fleet.png",
             name: "InSite Fleet",
             enabled: true,
             tpaasAppName: "Frame-Fleet-IND",
             appUID: "f03001b8-ea9f-11e5-88ba-0a4c287ff82f");
         var application2 = Application(
             iconUrl:
-                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteservice/app.png",
+                "https://osg-in-pre-prod-pulse.frame-oesolutions.com/app/assets/app.service.png",
             name: "InSite Service",
             enabled: true,
             tpaasAppName: "Frame-Service-IND",
             appUID: "b5fe5c50-9c5f-11e7-b46d-0645f4ae660c");
         var application3 = Application(
             iconUrl:
-                "https://visionlinkassets.myvisionlink.com/app-icons/v1/insiteadministrator/app.png",
+                "https://osg-in-pre-prod-pulse.frame-oesolutions.com/app/assets/app.admin.png",
             name: "InSite Administrator",
             enabled: true,
             tpaasAppName: "Frame-Administrator-IND",
@@ -665,8 +666,10 @@ class AssetAdminManagerUserService extends BaseService {
                 ? ""
                 : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
+
         ListDeviceTypeResponse response = ListDeviceTypeResponse.fromJson(
             data.data["assetSettingDeviceTypes"]);
+
         return response;
       }
       if (isVisionLink) {
@@ -780,11 +783,17 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<dynamic> getAssetTargetSettingsData(
-      List<String?> assetUid, startDate, endDate, idle, runTime) async {
+  Future<EstimatedResponse?> getAssetTargetSettingsData(
+      List<String?> assetUid,
+      startDate,
+      endDate,
+      Idle? idle,
+      Runtime? runTime) async {
     try {
+      var dataUid;
       List<AssetTargetSettings> getAssetList = [];
       for (int i = 0; i < assetUid.length; i++) {
+        dataUid = assetUid[i];
         getAssetList.add(
           AssetTargetSettings(
             assetUid: assetUid[i],
@@ -800,23 +809,37 @@ class AssetAdminManagerUserService extends BaseService {
           EstimatedAssetSetting(assetTargetSettings: getAssetList);
       Logger().i(listSettingTargetData.toJson());
 
-      if (isVisionLink) {
-        var result = await MyApi()
-            .getClientSeven()!
-            .getAssetTargetSettingsDataVL(Urls.assetSettingsTarget,
-                listSettingTargetData, accountSelected!.CustomerUID);
-        Logger().i(result);
-
-        return result;
+      if (enableGraphQl) {
+       
+        var data =await Network().getGraphqlData(
+            query: graphqlSchemaService!.getAddEStimatedRuntimeData(dataUid,
+                startDate, endDate, idle, runTime),
+            customerId: accountSelected!.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+         return EstimatedResponse.fromJson(
+             data.data["updateAssetTargetSettings"]);
       } else {
-        EstimatedAssetSetting result = await MyApi()
-            .getClientSix()!
-            .getAssetTargetSettingsData(
-                Urls.assetSettingsTargetListData,
-                listSettingTargetData,
-                accountSelected!.CustomerUID,
-                "in-vlmasterdata-api-vlmd-assetsettings");
-        return result;
+        if (isVisionLink) {
+          EstimatedResponse result = await MyApi()
+              .getClientSeven()!
+              .getAssetTargetSettingsDataVL(Urls.assetSettingsTarget,
+                  listSettingTargetData, accountSelected!.CustomerUID);
+          Logger().i(result);
+
+          return result;
+        } else {
+          EstimatedResponse result = await MyApi()
+              .getClientSix()!
+              .getAssetTargetSettingsData(
+                  Urls.assetSettingsTargetListData,
+                  listSettingTargetData,
+                  accountSelected!.CustomerUID,
+                  "in-vlmasterdata-api-vlmd-assetsettings");
+          return result;
+        }
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -899,36 +922,57 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<EstimatedAssetSetting?> getEstimatedTargetSettingListData(
-      List<String?>? assetUids) async {
+      List<String?>? assetUids, query) async {
     String? startdate = Utils.getLastReportedDateFilterData(
         DateTime.utc(2021, DateTime.september, 12));
     String? endDate = Utils.getLastReportedDateFilterData(
         DateTime.utc(2022, DateTime.february, 05));
-    try {
-      Map<String, String?> queryMap = Map();
-      queryMap["endDate"] = endDate;
-      queryMap["startDate"] = startdate;
 
-      if (isVisionLink) {
-        EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
-            .getClientSeven()!
-            .getEstimatedTagetListData(
-                Urls.getEstimatedAsetSettingTargetDataVL +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                assetUids,
-                accountSelected!.CustomerUID);
+    if (enableGraphQl) {
+      try {
+        var data = await Network().getGraphqlData(
+            query: query,
+           customerId: accountSelected!.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
 
-        return assetSettingsDataResponse;
-      } else {
-        EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
-            .getClientSix()!
-            .getEstimatedTagetListData(Urls.estimatedTargetSettingsData,
-                assetUids, "in-vlmasterdata-api-vlmd-assetsettings");
-        return assetSettingsDataResponse;
+        EstimatedAssetSetting estimatedAssetSetting =
+            EstimatedAssetSetting.fromJson(
+                data.data["assetTargetSettings"]);
+
+        return estimatedAssetSetting;
+      } catch (e) {
+        Logger().e(e.toString());
       }
-    } catch (e) {
-      Logger().e(e.toString());
-      return null;
+    } else {
+      try {
+        Map<String, String?> queryMap = Map();
+        queryMap["endDate"] = endDate;
+        queryMap["startDate"] = startdate;
+
+        if (isVisionLink) {
+          EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
+              .getClientSeven()!
+              .getEstimatedTagetListData(
+                  Urls.getEstimatedAsetSettingTargetDataVL +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  assetUids,
+                  accountSelected!.CustomerUID);
+
+          return assetSettingsDataResponse;
+        } else {
+          EstimatedAssetSetting assetSettingsDataResponse = await MyApi()
+              .getClientSix()!
+              .getEstimatedTagetListData(Urls.estimatedTargetSettingsData,
+                  assetUids, "in-vlmasterdata-api-vlmd-assetsettings");
+          return assetSettingsDataResponse;
+        }
+      } catch (e) {
+        Logger().e(e.toString());
+        return null;
+      }
     }
   }
 

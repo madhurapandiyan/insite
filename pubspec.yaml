@@ -40,6 +40,8 @@ dependencies:
   geobase: ^0.1.1
   in_app_update: ^3.0.0
   jwt_decoder: ^2.0.1
+  flutter_typeahead: ^4.0.0
+
 
 
   hive: ^2.0.4

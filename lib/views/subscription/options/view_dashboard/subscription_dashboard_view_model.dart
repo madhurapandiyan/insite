@@ -72,6 +72,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
   List<String> get filters => _filters;
 
   getSubscriptionDashboardData() async {
+
     if (enableGraphQl) {
       DashboardData? data = await _subscriptionService!
           .getGraphQlApiFromSubscription(
@@ -110,10 +111,20 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
         _loading = false;
         notifyListeners();
       }
+
+    Logger().i("getApplicationAccessData");
+    SubscriptionDashboardResult? result =
+        await _subscriptionService!.getResultsFromSubscriptionApi("");
+    if (result == null) {
+      Logger().d('no results found');
+      _loading = false;
+
     } else {
       Logger().i("getApplicationAccessData");
       SubscriptionDashboardResult? result =
-          await _subscriptionService!.getResultsFromSubscriptionApi();
+          await _subscriptionService!.getResultsFromSubscriptionApi(
+            ""
+          );
       if (result == null) {
         Logger().d('no results found');
         _loading = false;
@@ -215,6 +226,7 @@ class SubscriptionDashboardViewModel extends InsiteViewModel {
 
       notifyListeners();
     }
+  }
   }
 
   gotoDetailsPage(String filter) {

@@ -132,8 +132,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
   ];
 
   String? initialName = "select";
-  String initialMapType = "MAP";
-  List<String> mapType = ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID'];
+  String initialMapType = "SATELLITE";
+  List<String> mapType = ['SATELLITE','MAP', 'TERRAIN',  'HYBRID'];
   CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
   Completer<GoogleMapController> googleMapController = Completer();

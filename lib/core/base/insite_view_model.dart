@@ -28,15 +28,15 @@ abstract class InsiteViewModel extends BaseViewModel {
     _is401 = value;
   }
 
-  bool enableGraphQl = false;
   bool isVisionLink = false;
+  bool enableGraphQl = false;
 
   InsiteViewModel() {
     try {
       if (AppConfig.instance!.apiFlavor == "visionlink") {
         isVisionLink = true;
       }
-      if (AppConfig.instance?.enableGraphql == true) {
+      if (AppConfig.instance!.enableGraphql == true) {
         enableGraphQl = true;
       }
 // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
@@ -243,6 +243,10 @@ abstract class InsiteViewModel extends BaseViewModel {
         DateFormat("yyyy-MM-dd").format(DateTime.now());
     _maintenanceEndDate = _localService?.getMaintenanceEndDate() ??
         DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 30)));
+  }
+
+  clearSpecificFilterType({FilterType? type}) {
+    _assetStatusService!.clearSpecificFilterType(type: type);
   }
 
   List<FilterData?>? appliedFilters = [];

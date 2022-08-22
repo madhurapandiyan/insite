@@ -51,6 +51,7 @@ class HealthDashboardViewModel extends InsiteViewModel {
             Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate));
 
     if (result != null) {
+      Logger().wtf("fault data");
       _faultData = result.summaryData![0].countData;
     }
     _loading = false;

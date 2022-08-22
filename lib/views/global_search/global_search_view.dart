@@ -60,7 +60,6 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               viewModel.updateSearchDataToEmpty();
                             }
                           },
-                          
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: white,
@@ -68,8 +67,10 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16.0)),
                               borderSide: BorderSide(
-                                color:
-                                    Theme.of(context).textTheme.bodyText1!.color!,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color!,
                               ),
                             ),
                             hintText: "Search S/N",
@@ -77,8 +78,10 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16.0)),
                               borderSide: BorderSide(
-                                color:
-                                    Theme.of(context).textTheme.bodyText1!.color!,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color!,
                               ),
                             ),
                             // hiding drop down menu for global search
@@ -116,8 +119,8 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               child: ListView.builder(
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    TopMatch match =
-                                        viewModel.searchData!.topMatches![index];
+                                    TopMatch match = viewModel
+                                        .searchData!.topMatches![index];
                                     return GestureDetector(
                                       onTap: () {
                                         // viewModel.onDetailPageSelected(match);

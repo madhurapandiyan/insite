@@ -168,6 +168,14 @@ class AddReportViewModel extends InsiteViewModel {
         assetsDropDownValue = templateTitleValue;
       } else if (templateTitleValue == "Utilization Details") {
         assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Backhoe Loader Operation") {
+        assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Excavator Usage") {
+        assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Multi-Asset Backhoe Loader Operation") {
+        assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Multi-Asset Excavator Usage") {
+        assetsDropDownValue = templateTitleValue;
       }
 
       reportFleetAssets!
@@ -194,12 +202,17 @@ class AddReportViewModel extends InsiteViewModel {
           if (isVisionLink) {
             reportFleetAssets!.add(assetItems.reportName!);
           } else {
+            Logger().w(assetItems.reportName);
             if (assetItems.reportName == "MultiAssetUtilization" ||
                 assetItems.reportName == "UtilizationDetails" ||
                 assetItems.reportName == "FaultSummaryFaultsList" ||
                 assetItems.reportName == "FaultCodeAssetDetails" ||
                 assetItems.reportName == "FleetSummary" ||
-                assetItems.reportName == "AssetOperation") {
+                assetItems.reportName == "AssetOperation" ||
+                assetItems.reportName == "BackhoeLoaderOperation" ||
+                assetItems.reportName == "ExcavatorUsageReport" ||
+                assetItems.reportName == "MultiAssetBackhoeLoaderOperation" ||
+                assetItems.reportName == "MultiAssetExcavatorUsageReport") {
               reportFleetAssets!.add(assetItems.reportTypeName!);
             }
           }
@@ -718,7 +731,7 @@ class AddReportViewModel extends InsiteViewModel {
       showLoadingDialog();
       var data = Utils.reportSvcBody(assetsDropDownValue, associatedIdentifier);
 
-      Logger().i(data);
+      Logger().i(addReportPayLoad.toJson());
 
       ManageReportResponse? result = await _manageUserService!
           .getAddReportSaveData(

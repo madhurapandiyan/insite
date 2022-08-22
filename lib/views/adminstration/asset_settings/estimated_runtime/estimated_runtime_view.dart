@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedRunTimeWidgetView extends StatefulWidget {
-  final List<String?>? assetUids;
+  final List<String>? assetUids;
 
   EstimatedRunTimeWidgetView({this.assetUids});
 
