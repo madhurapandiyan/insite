@@ -13,6 +13,7 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'maintenance_tab_view_model.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -34,6 +35,7 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
   List<String?>? dateRange = [];
   @override
   Widget build(BuildContext context) {
+    Logger().wtf(widget.summaryData!.assetID);
     return ViewModelBuilder<MaintenanceTabViewModel>.reactive(
       builder:
           (BuildContext context, MaintenanceTabViewModel viewModel, Widget? _) {
@@ -293,7 +295,7 @@ class MaintenanceTabListData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return servicesData!.isEmpty || servicesData == null
+    return servicesData == null
         ? Expanded(
             child: EmptyView(
               title: "No service pending or overdue at this time",

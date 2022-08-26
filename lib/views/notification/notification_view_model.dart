@@ -127,10 +127,12 @@ class NotificationViewModel extends InsiteViewModel {
               startDate!,
               endDate!,
               _graphqlSchemaService!.seeAllNotification(
-                  endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-                  startDate:
-                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                  pageNo: pageNumber));
+                  // endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                  // startDate:
+                  //     Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                  pageNo: pageNumber,
+                  
+                  ));
       if (response != null) {
         _assets.clear();
         if (response.total!.items != null) {
@@ -232,9 +234,7 @@ class NotificationViewModel extends InsiteViewModel {
             startDate,
             endDate,
             _graphqlSchemaService!.seeAllNotification(
-                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-                startDate:
-                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+               
                 pageNo: pageNumber));
     if (response != null) {
       if (response.total!.items != null) {

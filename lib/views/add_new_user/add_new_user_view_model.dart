@@ -480,9 +480,12 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   bool validateMobile(String value) {
 // Indian Mobile number are of 10 digit only
-    if (value.length == 10)
+    if (value.startsWith("+")) {
+      if (value.length <= 7 || value.length == 15) {
+        return true;
+      }
       return true;
-    else
+    } else
       return false;
   }
 

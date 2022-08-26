@@ -46,7 +46,7 @@ class SubScriptionService extends BaseService {
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlPlantData(
           query: query,
           customerId: "THC",

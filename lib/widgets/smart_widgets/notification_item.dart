@@ -8,6 +8,7 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:insite/core/models/main_notification.dart' as main_notification;
+import 'package:logger/logger.dart';
 
 class NotificationItem extends StatelessWidget {
   final notification.Notification? notifications;
@@ -21,6 +22,7 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final jsonValue = jsonDecode(notifications!.notificationConfigJSON);
+    Logger().w(jsonValue);
 
     return GestureDetector(
       onTap: () {
@@ -43,19 +45,19 @@ class NotificationItem extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                          decoration: BoxDecoration(
-                              color: notifications!.isSelected!
-                                  ? Theme.of(context).buttonColor
-                                  : Theme.of(context).backgroundColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4))),
-                          child: Icon(
-                            Icons.crop_square,
-                            color: notifications!.isSelected!
-                                ? Theme.of(context).buttonColor
-                                : Colors.black,
-                          )),
+                      // Container(
+                      //     decoration: BoxDecoration(
+                      //         color: notifications!.isSelected!
+                      //             ? Theme.of(context).buttonColor
+                      //             : Theme.of(context).backgroundColor,
+                      //         borderRadius:
+                      //             BorderRadius.all(Radius.circular(4))),
+                      //     child: Icon(
+                      //       Icons.crop_square,
+                      //       color: notifications!.isSelected!
+                      //           ? Theme.of(context).buttonColor
+                      //           : Colors.black,
+                      //     )),
                     ],
                   ),
                 ),
@@ -104,9 +106,10 @@ class NotificationItem extends StatelessWidget {
                           content: notifications!.notificationSubType,
                         ),
                         InsiteTableRowItem(
-                          title: "Hour Mtr.",
-                          content: jsonValue["HourMeter"].toStringAsFixed(2),
-                        ),
+                            title: "Hour Mtr.",
+                            content: jsonValue["HourMeter"] != null
+                                ? jsonValue["HourMeter"]
+                                : "-"),
                       ],
                     ),
                   ],
