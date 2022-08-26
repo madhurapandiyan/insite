@@ -46,7 +46,6 @@ class SubScriptionService extends BaseService {
     }
   }
 
-
   Future<DashboardData?> getGraphQlApiFromSubscription(String? query) async {
     try {
       if (enableGraphQl) {
@@ -72,10 +71,8 @@ class SubScriptionService extends BaseService {
     }
   }
 
-
-
-   Future<SubscriptionDashboardResult?> getResultsFromSubscriptionApi(String query) async { 
-
+  Future<SubscriptionDashboardResult?> getResultsFromSubscriptionApi(
+      String query) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
@@ -84,11 +81,11 @@ class SubScriptionService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlPlantData(
           query: query,
-          // customerId: "THC",
-          // userId: (await _localService!.getLoggedInUser())!.sub,
-          // subId: customerSelected?.CustomerUID == null
-          //     ? ""
-          //     : customerSelected?.CustomerUID,
+          customerId: "THC",
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
         );
         Logger().w(data.data["frameSubscription"]);
         SubscriptionDashboardResult subscriptionDashboardResult =
@@ -113,7 +110,7 @@ class SubScriptionService extends BaseService {
       print(e.toString());
       return null;
     }
-   }
+  }
 
   Future<SubscriptionFleetList?> getDeviceDetailsFromGraphql(
       String? query) async {
@@ -184,17 +181,34 @@ class SubScriptionService extends BaseService {
             filter == "DEALER") {
           var data = await Network().getGraphqlPlantData(
             query: query,
-            // customerId: "THC",
-            // userId: (await _localService!.getLoggedInUser())!.sub,
-            // subId: customerSelected?.CustomerUID == null
-            //     ? ""
-            //     : customerSelected?.CustomerUID,
+            customerId: "THC",
+            userId: (await _localService!.getLoggedInUser())!.sub,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
           );
           //Logger().i(data.data);
           return SubscriptionDashboardDetailResult.fromJson(data.data);
+        } else if (filter == "active" ||
+            filter == "total" ||
+            filter == "inactive"||
+            filter=="subscriptionendasset"||
+            filter=="subscriptionendingasset_month"||
+            filter=="plantasset"||
+            filter=="5T WL") {
+          var data = await Network().getGraphqlPlantData(
+            query: query,
+            customerId: "THC",
+            userId: (await _localService!.getLoggedInUser())!.sub,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+          );
+          //Logger().i(data.data);
+          return SubscriptionDashboardDetailResult.fromJson(
+              data.data["frameSubscription"]);
         } else {
-          var data = await Network()
-              .getGraphqlPlantData(query: query);
+          var data = await Network().getGraphqlPlantData(query: query);
           return SubscriptionDashboardDetailResult.fromJson(
               data.data["frameSubscription"]);
         }
@@ -409,10 +423,10 @@ class SubScriptionService extends BaseService {
         SubscriptionFleetGraph? deviceDetails =
             SubscriptionFleetGraph.fromJson(data.data);
 
-       // Logger().wtf(data.data);
+        // Logger().wtf(data.data);
 
         return deviceDetails;
-      }
+      } else {}
     } catch (e) {
       print(e.toString());
       return null;

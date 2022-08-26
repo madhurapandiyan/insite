@@ -3554,14 +3554,19 @@ maintenanceIntervals(
   }
 
   String getPlantDashboardAndHierarchyListData(
-      {int? limit, int? start, String? status,String? calendar}) {
+      {int? limit,
+      int? start,
+      String? status,
+      String? calendar,
+      String? model}) {
     var data = """query{
     frameSubscription{
         subscriptionFleetList(
-             limit:${limit!=null?limit:null},
-            start:${start!=null?start:null},
-            status:"${status!=null?status:""}",
-             calendar:"${calendar!=null?calendar:""}",
+             limit:${limit != null ? limit : null},
+            start:${start != null ? start : null},
+            status:"${status != null ? status : ""}",
+             calendar:"${calendar != null ? calendar : ""}",
+             model:"${model != null ? model : ""}"
             
         ){
             count,
@@ -3577,7 +3582,11 @@ maintenanceIntervals(
               customerName,
               status,
               description,
-              networkProvider
+              networkProvider,
+              subscriptionStartDate,
+              actualStartDate,
+              subscriptionEndDate
+              
 
 
       }
@@ -3597,7 +3606,7 @@ maintenanceIntervals(
   //           limit:$limit,
   //           start:$start,
   //           calendar:"$status"
-            
+
   //       ){
   //           count,
   //           provisioningInfo{
@@ -3614,9 +3623,7 @@ maintenanceIntervals(
   //             description,
   //             networkProvider
 
-
   //     }
-
 
   //           }
   //           }
@@ -3708,7 +3715,6 @@ mutation{
     return data;
   }
 
-
   creatingPlantasset(
       List<AssetCreationModel> assetCreationListData, String userId) {
     List<Map<String, String>> getAssetPayLoad = [];
@@ -3784,5 +3790,4 @@ createAsset(
 }""";
     return data;
   }
-
 }

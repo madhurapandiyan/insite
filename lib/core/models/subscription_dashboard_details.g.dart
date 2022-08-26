@@ -82,6 +82,9 @@ ProvisioningInfo _$ProvisioningInfoFromJson(Map<String, dynamic> json) =>
       status: json['status'],
       description: json['description'],
       networkProvider: json['networkProvider'] as String?,
+      actualStartDate: json['actualStartDate'] as String?,
+      subscriptionEndDate: json['subscriptionEndDate'] as String?,
+      subscriptionStartDate: json['subscriptionStartDate'] as String?,
     );
 
 Map<String, dynamic> _$ProvisioningInfoToJson(ProvisioningInfo instance) =>
@@ -97,6 +100,9 @@ Map<String, dynamic> _$ProvisioningInfoToJson(ProvisioningInfo instance) =>
       'status': instance.status,
       'description': instance.description,
       'networkProvider': instance.networkProvider,
+      'subscriptionStartDate': instance.subscriptionStartDate,
+      'actualStartDate': instance.actualStartDate,
+      'subscriptionEndDate': instance.subscriptionEndDate,
     };
 
 DetailResult _$DetailResultFromJson(Map<String, dynamic> json) => DetailResult(

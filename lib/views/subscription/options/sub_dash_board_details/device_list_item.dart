@@ -155,37 +155,43 @@ class DeviceListItem extends StatelessWidget {
                               TableRow(
                                 children: [
                                   InsiteTableRowItem(
-                                    title: "Status :",
-                                    content: detailResult!.fk_State == 2
-                                        ? "Success"
-                                        : "Failed",
+                                    title: "Network Provider",
+                                    content:
+                                        detailResult!.NetworkProvider != null
+                                            ? detailResult!.NetworkProvider
+                                            : "-",
                                   ),
                                   InsiteTableRowItem(
-                                    title: "Description :",
-                                    content: detailResult!.Description != null
-                                        ? detailResult!.Description
+                                    title: "Subscription Start Date",
+                                    content: detailResult!.SubscriptionStartDate != null
+                                        ? Utils.getDateInFormatddMMyyyy(
+                                            detailResult!.SubscriptionStartDate)
+                                        : "-",
+                                  ),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  InsiteTableRowItem(
+                                    title: "Actual Start Date :",
+                                    content:
+                                        detailResult!.SubscriptionStartDate !=
+                                                null
+                                            ? Utils.getDateInFormatddMMyyyy(
+                                                detailResult!.ActualStartDate)
+                                            : "",
+                                  ),
+                                  InsiteTableRowItem(
+                                    title: "Subscription End Date :",
+                                    content: detailResult!
+                                                .SubscriptionStartDate !=
+                                            null
+                                        ? Utils.getDateInFormatddMMyyyy(
+                                            detailResult!.SubscriptionEndDate)
                                         : "",
                                   ),
                                 ],
                               ),
-                              // TableRow(
-                              //   children: [
-                              //     InsiteTableRowItem(
-                              //       title: "Actual Start Date :",
-                              //       content: detailResult!.SubscriptionStartDate != null
-                              //           ? Utils.getDateInFormatddMMyyyy(
-                              //               detailResult!.ActualStartDate)
-                              //           : "",
-                              //     ),
-                              //     InsiteTableRowItem(
-                              //       title: "Subscription End Date :",
-                              //       content: detailResult!.SubscriptionStartDate != null
-                              //           ? Utils.getDateInFormatddMMyyyy(
-                              //               detailResult!.SubscriptionEndDate)
-                              //           : "",
-                              //     ),
-                              //   ],
-                              // ),
                             ],
                           )
                         ],

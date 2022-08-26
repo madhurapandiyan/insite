@@ -48,7 +48,10 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        _loadMore();
+        if (result!.subscriptionFleetList!.provisioningInfo!.isEmpty) {
+        } else {
+          _loadMore();
+        }
       }
     });
     Future.delayed(Duration(seconds: 1), () {
@@ -57,50 +60,54 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   }
 
   getSubcriptionDeviceListData() async {
+    Logger().w(type);
     // if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE &&
     //     _filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE) {
-      if (type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.CUSTOMER ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.DEALER ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.ASSET) {
+    if (type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.CUSTOMER ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.DEALER ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.ASSET) {
+      result = await _subscriptionService!.getSubscriptionDeviceListData(
+          filter: filter,
+          start: start,
+          limit: limit,
+          filterType: filterType,
+          query:
+              graphqlSchemaService!.getHierarchyListData(start, limit, filter));
+    } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED) {
+      if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE ||
+          type == PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED &&
+              _filterType == PLANTSUBSCRIPTIONFILTERTYPE.DATE) {
         result = await _subscriptionService!.getSubscriptionDeviceListData(
             filter: filter,
             start: start,
             limit: limit,
             filterType: filterType,
-            query: graphqlSchemaService!
-                .getHierarchyListData(start, limit, filter));
-      } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED) {
-        if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE ||
-            type == PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED &&
-                _filterType == PLANTSUBSCRIPTIONFILTERTYPE.DATE) {
-          result = await _subscriptionService!.getSubscriptionDeviceListData(
-              filter: filter,
-              start: start,
-              limit: limit,
-              filterType: filterType,
-              query: graphqlSchemaService!
-                  .getPlantDashboardAndHierarchyListData(
-                      limit: limit, start: start, calendar: filter));
-        } else {
-          result = await _subscriptionService!.getSubscriptionDeviceListData(
-              filter: filter,
-              start: start,
-              limit: limit,
-              filterType: filterType,
-              query: graphqlSchemaService!
-                  .getPlantDashboardAndHierarchyListData(
-                      limit: limit,
-                      start: start,
-                      status: filter,
-                      calendar: filter));
-        }
+            query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
+                limit: limit, start: start,
+                 status: filter,
+                calendar: filter,
+                 model: filter));
+      } else {
+        result = await _subscriptionService!.getSubscriptionDeviceListData(
+            filter: filter,
+            start: start,
+            limit: limit,
+            filterType: filterType,
+            query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
+                limit: limit,
+                start: start,
+                status: filter,
+                calendar: filter,
+                model: filter));
       }
+    }
     //}
 
     if (enableGraphQl) {
+      Logger().wtf(filter);
       if (filter == "CUSTOMER" ||
           filter == "PLANT" ||
           filter == "DEALER" ||
@@ -125,7 +132,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
           if (result!.subscriptionFleetList != null &&
               result!.subscriptionFleetList!.provisioningInfo!.isNotEmpty) {
             Logger().i(result!.subscriptionFleetList!.provisioningInfo!.first
-                .toJson());
+                .subscriptionStartDate);
 
             for (var i = 0;
                 i < result!.subscriptionFleetList!.provisioningInfo!.length;
@@ -142,7 +149,10 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
                   CustomerName: items.customerName,
                   CustomerCode: items.customerCode,
                   Status: items.status,
-                  Description: items.description);
+                  Description: items.description,
+                  ActualStartDate: items.actualStartDate,
+                  SubscriptionEndDate: items.subscriptionEndDate,
+                  SubscriptionStartDate: items.subscriptionStartDate);
               devices.add(fleetListData);
             }
             _loading = false;

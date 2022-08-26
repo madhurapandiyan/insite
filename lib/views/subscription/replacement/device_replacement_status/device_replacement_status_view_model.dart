@@ -36,14 +36,15 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
 
   bool isLoading = true;
   bool isLoadMore = false;
+  int totalCount = 0;
 
   List<ReplacementHistory> deviceReplacementStatusModelList = [];
 
   ReplacementData? totalDeviceReplacementStatusModel;
 
-  List<DeviceReplacementStatusModel> dataList=[];
+  List<DeviceReplacementStatusModel> dataList = [];
 
-  TotalDeviceReplacementStatusModel ? totalDeviceReplacementStatusModelData;
+  TotalDeviceReplacementStatusModel? totalDeviceReplacementStatusModelData;
   int startCount = 0;
   final controller = new ScrollController();
 
@@ -58,14 +59,20 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
         //     .forEach((element) {
         //   deviceReplacementStatusModelList.add(element);
         // });
-
-        for (var element in totalDeviceReplacementStatusModel!.replacementHistory!) {
-          deviceReplacementStatusModelList.add(element);
+        if (totalDeviceReplacementStatusModel!.replacementHistory != null) {
+          for (var element
+              in totalDeviceReplacementStatusModel!.replacementHistory!) {
+            deviceReplacementStatusModelList.add(element);
+          }
+          Logger().v(deviceReplacementStatusModelList.length);
+          isLoading = false;
+          isLoadMore = false;
+          notifyListeners();
+        } else {
+          isLoading = false;
+          isLoadMore = false;
+          notifyListeners();
         }
-        Logger().v(deviceReplacementStatusModelList.length);
-        isLoading = false;
-        isLoadMore = false;
-        notifyListeners();
       } else {
         totalDeviceReplacementStatusModelData = await replacementService!
             .getTotalDeviceReplacementStatusModel(startCount);
@@ -75,8 +82,7 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
           dataList.add(element);
         });
         for (var i = 0; i < deviceReplacementStatusModelList.length; i++) {
-          dataList
-              .sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
+          dataList.sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
         }
         isLoading = false;
         isLoadMore = false;

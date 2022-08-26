@@ -10,6 +10,7 @@ import 'package:insite/views/subscription/options/sub_dash_board_details/to_be_a
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'subscription_dashboard_details_view_model.dart';
 
@@ -81,11 +82,14 @@ class SubDashBoardDetailsView extends StatelessWidget {
                                                           detailResult: result,
                                                           onCallback: () {},
                                                         )
-                                                      : DeviceListItem(
-                                                          detailResult: result,
-                                                          fleetProvisionStatusInfo: null,
-                                                          onCallback: () {},
-                                                        );
+                                                      
+                                                          : DeviceListItem(
+                                                              detailResult:
+                                                                  result,
+                                                              fleetProvisionStatusInfo:
+                                                                  null,
+                                                              onCallback: () {},
+                                                            );
                                 },
                               )
                             : EmptyView(
@@ -105,7 +109,7 @@ class SubDashBoardDetailsView extends StatelessWidget {
         );
       },
       viewModelBuilder: () =>
-          SubDashBoardDetailsViewModel(filterKey, detailType!,filterType),
+          SubDashBoardDetailsViewModel(filterKey, detailType!, filterType),
     );
   }
 }

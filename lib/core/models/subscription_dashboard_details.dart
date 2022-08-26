@@ -6,7 +6,10 @@ class SubscriptionDashboardDetailResult {
   List<List<DetailResult>>? result;
   SubscriptionFleetList? subscriptionFleetList;
   List<AssetOrHierarchyByTypeAndId>? assetOrHierarchyByTypeAndId;
-  SubscriptionDashboardDetailResult({this.result,this.subscriptionFleetList,this.assetOrHierarchyByTypeAndId});
+  SubscriptionDashboardDetailResult(
+      {this.result,
+      this.subscriptionFleetList,
+      this.assetOrHierarchyByTypeAndId});
   factory SubscriptionDashboardDetailResult.fromJson(
           Map<String, dynamic> json) =>
       _$SubscriptionDashboardDetailResultFromJson(json);
@@ -20,27 +23,28 @@ class AssetOrHierarchyByTypeAndId {
   String? userName;
   String? code;
   String? email;
-  String ? id;
+  String? id;
 
   AssetOrHierarchyByTypeAndId(
-      {this.name, this.userName, this.code, this.email,this.id});
+      {this.name, this.userName, this.code, this.email, this.id});
 
-  factory AssetOrHierarchyByTypeAndId.fromJson(Map<String, dynamic> json)=>_$AssetOrHierarchyByTypeAndIdFromJson(json);
+  factory AssetOrHierarchyByTypeAndId.fromJson(Map<String, dynamic> json) =>
+      _$AssetOrHierarchyByTypeAndIdFromJson(json);
 
-  Map<String, dynamic> toJson()=>_$AssetOrHierarchyByTypeAndIdToJson(this);
+  Map<String, dynamic> toJson() => _$AssetOrHierarchyByTypeAndIdToJson(this);
 }
 
 @JsonSerializable()
 class SubscriptionFleetList {
-  int ? count;
+  int? count;
   List<ProvisioningInfo>? provisioningInfo;
-  SubscriptionFleetList({this.count,this.provisioningInfo});
-  factory  SubscriptionFleetList.fromJson(Map<String, dynamic> json)=>_$SubscriptionFleetListFromJson(json); 
-  
+  SubscriptionFleetList({this.count, this.provisioningInfo});
+  factory SubscriptionFleetList.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionFleetListFromJson(json);
 
-  Map<String, dynamic> toJson()=>_$SubscriptionFleetListToJson(this); 
-
+  Map<String, dynamic> toJson() => _$SubscriptionFleetListToJson(this);
 }
+
 @JsonSerializable()
 class ProvisioningInfo {
   String? gpsDeviceID;
@@ -53,7 +57,10 @@ class ProvisioningInfo {
   String? customerName;
   dynamic status;
   dynamic description;
-  String ? networkProvider;
+  String? networkProvider;
+  String? subscriptionStartDate;
+  String? actualStartDate;
+  String? subscriptionEndDate;
 
   ProvisioningInfo(
       {this.gpsDeviceID,
@@ -66,11 +73,15 @@ class ProvisioningInfo {
       this.customerName,
       this.status,
       this.description,
-      this.networkProvider});
+      this.networkProvider,
+      this.actualStartDate,
+      this.subscriptionEndDate,
+      this.subscriptionStartDate});
 
- factory ProvisioningInfo.fromJson(Map<String, dynamic> json)=>_$ProvisioningInfoFromJson(json); 
+  factory ProvisioningInfo.fromJson(Map<String, dynamic> json) =>
+      _$ProvisioningInfoFromJson(json);
 
-  Map<String, dynamic> toJson()=>_$ProvisioningInfoToJson(this); 
+  Map<String, dynamic> toJson() => _$ProvisioningInfoToJson(this);
 }
 
 // @JsonSerializable()
@@ -87,7 +98,6 @@ class DetailResult {
   // to diplay key name as displayed on endpoint.
   @JsonKey(name: "totalDevice")
   double? totalDevice;
-  
 
   @JsonKey(name: "GPSDeviceID")
   String? GPSDeviceID;
