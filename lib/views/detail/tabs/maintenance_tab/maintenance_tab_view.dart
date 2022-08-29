@@ -295,7 +295,7 @@ class MaintenanceTabListData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return servicesData == null
+    return  servicesData == null||servicesData!.isEmpty 
         ? Expanded(
             child: EmptyView(
               title: "No service pending or overdue at this time",

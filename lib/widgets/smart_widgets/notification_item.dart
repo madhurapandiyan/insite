@@ -108,7 +108,7 @@ class NotificationItem extends StatelessWidget {
                         InsiteTableRowItem(
                             title: "Hour Mtr.",
                             content: jsonValue["HourMeter"] != null
-                                ? jsonValue["HourMeter"]
+                                ? jsonValue["HourMeter"].toStringAsFixed(2)
                                 : "-"),
                       ],
                     ),

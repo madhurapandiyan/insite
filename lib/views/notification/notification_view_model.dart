@@ -127,9 +127,9 @@ class NotificationViewModel extends InsiteViewModel {
               startDate!,
               endDate!,
               _graphqlSchemaService!.seeAllNotification(
-                  // endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-                  // startDate:
-                  //     Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                  endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                  startDate:
+                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
                   pageNo: pageNumber,
                   
                   ));
