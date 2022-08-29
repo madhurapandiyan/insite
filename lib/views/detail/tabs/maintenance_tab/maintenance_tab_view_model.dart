@@ -180,7 +180,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
               
               page: pageNumber,
               query: await graphqlSchemaService!.getMaintenanceListData(
-                  assetId: "752961ad-c1d9-11eb-82df-0ae8ba8d3970",
+                  assetId: summaryData!.assetID,
                   startDate:
                       Utils.maintenanceFromDateFormate(maintenanceStartDate!),
                   endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
