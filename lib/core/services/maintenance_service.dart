@@ -78,7 +78,7 @@ class MaintenanceService extends BaseService {
       if (enableGraphQl) {
         // print(await _localService!.getToken());
         // Logger().i(await _localService!.getStaggedToken());
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -135,7 +135,7 @@ class MaintenanceService extends BaseService {
       String? query}) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -233,7 +233,7 @@ class MaintenanceService extends BaseService {
   Future<MaintenanceCheckListModelPop?> getMaintenanceServiceItemCheckList(
       {String? query}) async {
     if (enableGraphQl) {
-      var data = await Network().getStaggedGraphqlData(
+      var data = await Network().getGraphqlData(
         query: query,
         customerId: accountSelected?.CustomerUID,
         userId: (await _localService!.getLoggedInUser())!.sub,
@@ -326,7 +326,7 @@ class MaintenanceService extends BaseService {
 
   Future onCompletion(String? query) async {
     if (enableGraphQl) {
-      var maintenancepostData = await Network().getStaggedGraphqlData(
+      var maintenancepostData = await Network().getGraphqlData(
         query: query,
         customerId: accountSelected?.CustomerUID,
         userId: (await _localService!.getLoggedInUser())!.sub,
@@ -341,7 +341,7 @@ class MaintenanceService extends BaseService {
 
   Future<MaintenanceRefineData?> getRefineData({String? query}) async {
     if (enableGraphQl) {
-      var maintenancepostData = await Network().getStaggedGraphqlData(
+      var maintenancepostData = await Network().getGraphqlData(
         query: query,
         customerId: accountSelected?.CustomerUID,
         userId: (await _localService!.getLoggedInUser())!.sub,
@@ -359,7 +359,7 @@ class MaintenanceService extends BaseService {
       {String? query}) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -381,7 +381,7 @@ class MaintenanceService extends BaseService {
   Future<MaintenanceIntervals?> getMaintenanceIntervals(String query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -402,7 +402,7 @@ class MaintenanceService extends BaseService {
   Future<dynamic> addMaintenanceIntervals(String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -420,7 +420,7 @@ class MaintenanceService extends BaseService {
   Future<dynamic> updateMaintenanceIntervals(String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -438,7 +438,7 @@ class MaintenanceService extends BaseService {
   Future<dynamic> deletMaintenanceIntervals(String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,

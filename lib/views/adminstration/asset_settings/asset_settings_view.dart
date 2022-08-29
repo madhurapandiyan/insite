@@ -56,6 +56,7 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                               size: 14,
                             ),
                           ),
+
                           // viewModel.showEdit
                           //     ? Padding(
                           //       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -78,7 +79,31 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                           //         ),
                           //     )
                           //     : SizedBox(),
-                              
+
+                          viewModel.showEdit
+                              ? Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                    ),
+                                    child: InsiteButton(
+                                        title: "",
+                                        onTap: () {
+                                          viewModel.onClickEditselected();
+                                        },
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: appbarcolor,
+                                        )),
+                                  ),
+                                )
+                              : SizedBox(),
+
                           viewModel.showMenu
                               ? ClipRRect(
                                   borderRadius: BorderRadius.only(
@@ -223,17 +248,17 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
               fontWeight: FontWeight.w700,
               size: 14,
             )),
-        // viewModel.showEdit
-        //     ? PopupMenuItem(
-        //         value: "Show/Edit Target",
-        //         child: InsiteText(
-        //           text: "Show/Edit Target",
-        //           fontWeight: FontWeight.w700,
-        //           size: 14,
-        //         ))
-        //     : PopupMenuItem(
-        //         child: SizedBox(),
-        //       ),
+        viewModel.showEdit
+            ? PopupMenuItem(
+                value: "Show/Edit Target",
+                child: InsiteText(
+                  text: "Show/Edit Target",
+                  fontWeight: FontWeight.w700,
+                  size: 14,
+                ))
+            : PopupMenuItem(
+                child: SizedBox(),
+              ),
         viewModel.showEdit
             ? PopupMenuItem(
                 value: "Configure",

@@ -3571,4 +3571,28 @@ createAsset(
 }""";
     return data;
   }
+
+  notificationDashboardCount() {
+    var data =
+        """query (\$assetUIDs: String, \$productFamily: String, \$notificationStatus: Int, \$notificationUserStatus: Int) {
+  seeAllNotificationCount(assetUIDs: \$assetUIDs, productFamily: \$productFamily, notificationStatus: \$notificationStatus, notificationUserStatus: \$notificationUserStatus) {
+    notifications {
+      count
+      notificationSubType
+      notificationType
+    }
+    status
+  }
+}
+""";
+    return data;
+  }
+
+  deleteNotes() {
+    var data = """
+mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
+  deleteMetaDataNotes(userAssetNoteUid:\$userAssetNoteUid)
+}""";
+    return data;
+  }
 }

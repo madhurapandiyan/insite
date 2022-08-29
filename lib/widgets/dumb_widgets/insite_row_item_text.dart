@@ -9,11 +9,9 @@ import 'insite_text.dart';
 class InsiteTableRowItem extends StatelessWidget {
   final String? title;
   final dynamic content;
+  final TextOverflow? overFlow;
 
-  const InsiteTableRowItem({
-    this.title,
-    this.content,
-  });
+  const InsiteTableRowItem({this.title, this.content, this.overFlow});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +20,11 @@ class InsiteTableRowItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          InsiteText(
+          InsiteTextOverFlow(
             text: title,
             size: 14,
             fontWeight: FontWeight.bold,
+            overflow: overFlow != null ? overFlow : null,
           ),
           InsiteText(
             text: content.toString(),

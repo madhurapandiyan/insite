@@ -305,8 +305,12 @@ class _DashboardViewState extends State<DashboardView> {
                     ),
                     //For Notification widget we haven't any data for that so we commented
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Notifications(),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: NotificationWidget(
+                        count: 1,
+                        isLoading: viewModel.notificationLoading,
+                        notificationType: viewModel.notificationCountDatas,
+                      ),
                     ),
                     // SizedBox(
                     //   height: 20.0,

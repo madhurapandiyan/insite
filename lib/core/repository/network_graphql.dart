@@ -63,6 +63,7 @@ class Network {
       {String? query,
       String? customerId,
       String? userId,
+      dynamic payLoad,
       String? subId}) async {
     try {
       // String? tokenTime = await _localService!.getExpiry();
@@ -94,8 +95,8 @@ class Network {
       );
       final res = await link
           .request(Request(
-            operation: Operation(document: gql.parseString(query!)),
-          ))
+              operation: Operation(document: gql.parseString(query!)),
+              variables: payLoad == null ? {} : payLoad))
           .first;
 
       return res;
@@ -129,60 +130,60 @@ class Network {
     }
   }
 
-  getStaggedGraphqlData(
-      {String? query,
-      String? customerId,
-      String? userId,
-      String? subId}) async {
-    try {
-      // queryUrl = query;
-      // customerUserId = userId;
-      // customerUid = customerId;
-      // subUid = subId;
-      // Logger().w(customerId);
-      // Logger().w(userId);
-      // Logger().w(subId);
+  // getStaggedGraphqlData(
+  //     {String? query,
+  //     String? customerId,
+  //     String? userId,
+  //     String? subId}) async {
+  //   try {
+  //     // queryUrl = query;
+  //     // customerUserId = userId;
+  //     // customerUid = customerId;
+  //     // subUid = subId;
+  //     // Logger().w(customerId);
+  //     // Logger().w(userId);
+  //     // Logger().w(subId);
 
-      final Link link = DioLink(
-        graphqlEndpoint,
-        client: client,
-        defaultHeaders: {
-          "content-type": "application/json",
-          "x-visionlink-customeruid": customerId!,
-          //"service": "in-vfleet-uf-webapi",
-          "Accept": "application/json",
-          "X-VisionLink-UserUid": userId!,
-          "Authorization": "bearer " + await _localService!.getToken(),
-          "sub-customeruid": subId!
-        },
-      );
-      final res = await link
-          .request(Request(
-            operation: Operation(document: gql.parseString(query!)),
-          ))
-          .first;
+  //     final Link link = DioLink(
+  //       graphqlEndpoint,
+  //       client: client,
+  //       defaultHeaders: {
+  //         "content-type": "application/json",
+  //         "x-visionlink-customeruid": customerId!,
+  //         //"service": "in-vfleet-uf-webapi",
+  //         "Accept": "application/json",
+  //         "X-VisionLink-UserUid": userId!,
+  //         "Authorization": "bearer " + await _localService!.getToken(),
+  //         "sub-customeruid": subId!
+  //       },
+  //     );
+  //     final res = await link
+  //         .request(Request(
+  //           operation: Operation(document: gql.parseString(query!)),
+  //         ))
+  //         .first;
 
-      return res;
-    } catch (e) {
-      Logger().e(e.toString());
-      if (e is DioLinkServerException) {
-        var error = e;
-        if (error.response.statusCode == 401) {
-          await staggedRefreshToken();
-          var data = await getStaggedGraphqlData(
-              query: query,
-              customerId: customerId,
-              userId: userId,
-              subId: subId);
-          return data;
-        } else {
-          throw e;
-        }
-      } else {
-        throw e;
-      }
-    }
-  }
+  //     return res;
+  //   } catch (e) {
+  //     Logger().e(e.toString());
+  //     if (e is DioLinkServerException) {
+  //       var error = e;
+  //       if (error.response.statusCode == 401) {
+  //         await staggedRefreshToken();
+  //         var data = await getStaggedGraphqlData(
+  //             query: query,
+  //             customerId: customerId,
+  //             userId: userId,
+  //             subId: subId);
+  //         return data;
+  //       } else {
+  //         throw e;
+  //       }
+  //     } else {
+  //       throw e;
+  //     }
+  //   }
+  // }
 
   Future<LoginResponse?> refreshToken() async {
     var currentCodeVerifier = await _localService!.getCodeVerifier();
@@ -205,7 +206,8 @@ class Network {
     }
   }
 
-  getGraphqlPlantData({String? query,
+  getGraphqlPlantData(
+      {String? query,
       String? customerId,
       String? userId,
       String? subId}) async {
@@ -229,7 +231,7 @@ class Network {
 
       return res;
     } catch (e) {
-        Logger().e(e.toString());
+      Logger().e(e.toString());
       if (e is DioLinkServerException) {
         var error = e;
         if (error.response.statusCode == 401) {
