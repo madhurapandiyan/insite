@@ -64,8 +64,8 @@ class MaintenanceTabViewModel extends InsiteViewModel {
   late ScrollController scrollController;
 
   MaintenanceTabViewModel(SummaryData? summaryData) {
-    _summaryData = summaryData;
-    Logger().i(" $summaryData");
+   this. _summaryData = summaryData;
+    Logger().i( summaryData!.assetID);
     setUp();
 
     _maintenanceService!.setUp();
@@ -145,7 +145,9 @@ class MaintenanceTabViewModel extends InsiteViewModel {
               Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
               pageSize,
               pageNumber,
-              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate));
+              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+               
+              );
 
       _loading = false;
 
@@ -175,6 +177,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
                   Utils.maintenanceFromDateFormate(maintenanceStartDate!),
               endTime: Utils.maintenanceToDateFormate(maintenanceEndDate!),
               limit: pageSize,
+              
               page: pageNumber,
               query: await graphqlSchemaService!.getMaintenanceListData(
                   assetId: summaryData!.assetID,

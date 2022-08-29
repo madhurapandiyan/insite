@@ -2125,7 +2125,11 @@ reportUid
 }""";
       return editSaveData;
     } else if (assetsDropDownValue == "Utilization Details" ||
-        assetsDropDownValue == "Fault Code Asset Details") {
+        assetsDropDownValue == "Fault Code Asset Details" ||
+        assetsDropDownValue == "Backhoe Loader Operation" ||
+        assetsDropDownValue == "Excavator Usage" ||
+        assetsDropDownValue == "Multi-Asset Excavator Usage Report" ||
+        assetsDropDownValue == "Multi-Asset Excavator Usage") {
       editSaveData = """mutation{
   updateNotificationReport(reportUid:"$reportUid",
     reportPeriod:1,
@@ -2144,6 +2148,7 @@ reportUid
     reqId
   }
 }""";
+      Logger().wtf(editSaveData);
       return editSaveData;
     } else if (assetsDropDownValue == "Fault Summary Faults List") {
       editSaveData = """mutation{
@@ -2629,8 +2634,8 @@ query{
     pageNumber:$pageNo,
     notificationStatus:${notificationStatus ?? []},
     notificationUserStatus:$notificationUserStatus,
-    fromDate:"$startDate",
-    toDate:"$endDate",
+    fromDate:"${startDate != null ? startDate : ""}",
+    toDate:"${endDate != null ? endDate : ""}",
     assetUIDs:${assetUIDs == null ? "\"\"" : "${"\"" + assetUIDs + "\""}"},,
      notificationType:${Utils.getStringListData(notificationType ?? [])}
   ){

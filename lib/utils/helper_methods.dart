@@ -1530,6 +1530,19 @@ class Utils {
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v5/Utilization/Details?AssetUid=347790bd-282e-11ec-82e0-0ae8ba8d3970&startDate=07%2F25%2F2022&endDate=07%2F25%2F2022&sort=-LastReportedUtilizationTime&includeNonReportedDays=true&includeOutsideLastReportedDay=false";
         return querUrl;
+      case "Excavator Usage":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v5/Utilization/Details?AssetUid=fba953c3-b251-11eb-82db-0ae8ba8d3970&startDate=&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=false&sort=-LastReportedUtilizationTime";
+        return querUrl;
+
+      case "Multi-AssetBackhoeLoaderOperation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
+      case "Multi-AssetExcavatorUsage":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
     }
   }
 
@@ -1847,6 +1860,16 @@ class Utils {
     } else if (value == "Fault Summary Faults List" ||
         value == "FaultSummaryFaultsList") {
       return "Fault Summary Faults List";
+    } else if (value == "MultiAssetExcavatorUsageReport"||value=="Multi-Asset Excavator Usage Report") {
+       
+      return "Multi-Asset Excavator Usage Report";
+    } else if (value == "BackhoeLoaderOperation") {
+      return "BackhoeLoaderOperation";
+    } else if (value == "ExcavatorUsage") {
+      return "ExcavatorUsage";
+    } else if (value == "MultiAssetExcavatorUsage") {
+     
+      return "Multi-Asset Excavator Usage";
     } else {
       return null;
     }

@@ -366,6 +366,15 @@ class AddReportViewModel extends InsiteViewModel {
             assetsDropDownValue = element.reportTypeName;
           }
         });
+        if (resultData.scheduledReport!.reportPeriod == 1) {
+          frequencyDropDownValue = "Daily";
+        }
+        if (resultData.scheduledReport!.reportPeriod == 2) {
+          frequencyDropDownValue = "Weekly";
+        }
+        if (resultData.scheduledReport!.reportPeriod == 3) {
+          frequencyDropDownValue = "Monthly";
+        }
         reportFleetAssets?.add(assetsDropDownValue!);
         nameController.text = resultData.scheduledReport!.reportTitle!;
         reportFormat = resultData.scheduledReport?.reportFormat;
@@ -898,7 +907,7 @@ class AddReportViewModel extends InsiteViewModel {
         });
         var data =
             Utils.reportSvcBody(assetsDropDownValue, associatedIdentifier);
-        Logger().w(data);
+      
 
         ManageReportResponse? result =
             await _manageUserService!.getEditReportSaveData(
@@ -926,6 +935,9 @@ class AddReportViewModel extends InsiteViewModel {
                       ? null
                       : Utils.getStringListData(data) ?? "",
                 )!);
+                  Logger().i(addReportPayLoad.toJson());
+            
+               
         if (result != null) {
           // Logger().d(result.metadata!.toJson());
           _snackBarservice!

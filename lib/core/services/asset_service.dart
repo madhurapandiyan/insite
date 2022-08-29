@@ -188,10 +188,10 @@ class AssetService extends BaseService {
               : customerSelected?.CustomerUID,
         );
         var notesData = data.data["getMetadataNotes"] as List;
-        Logger().w(notesData);
+        // Logger().w(notesData);
         notesData.forEach((element) {
           var notesFromJson = Note.fromJson(element as Map<String, dynamic>);
-          notes?.add(notesFromJson);
+          notes.add(notesFromJson);
         });
         Logger().e(notes);
         return notes;

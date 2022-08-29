@@ -150,7 +150,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                 alignment: Alignment.topLeft,
                                 child: InsiteText(
                                   text:
-                                      "Application Permissions : (Definitions)",
+                                      "Application Permissions:",
                                   fontWeight: FontWeight.w700,
                                   size: 14,
                                 ),
