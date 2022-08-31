@@ -78,14 +78,14 @@ class SubScriptionService extends BaseService {
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
-      if (enableGraphQl) {
+      if (!enableGraphQl) {
         var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: "THC",
-          userId: (await _localService!.getLoggedInUser())!.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+          // customerId: "THC",
+          // userId: (await _localService!.getLoggedInUser())!.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
         );
         Logger().w(data.data["frameSubscription"]);
         SubscriptionDashboardResult subscriptionDashboardResult =
@@ -181,11 +181,11 @@ class SubScriptionService extends BaseService {
             filter == "DEALER") {
           var data = await Network().getGraphqlPlantData(
             query: query,
-            customerId: "THC",
-            userId: (await _localService!.getLoggedInUser())!.sub,
-            subId: customerSelected?.CustomerUID == null
-                ? ""
-                : customerSelected?.CustomerUID,
+            // customerId: "THC",
+            // userId: (await _localService!.getLoggedInUser())!.sub,
+            // subId: customerSelected?.CustomerUID == null
+            //     ? ""
+            //     : customerSelected?.CustomerUID,
           );
           //Logger().i(data.data);
           return SubscriptionDashboardDetailResult.fromJson(data.data);
@@ -198,11 +198,11 @@ class SubScriptionService extends BaseService {
             filter=="5T WL") {
           var data = await Network().getGraphqlPlantData(
             query: query,
-            customerId: "THC",
-            userId: (await _localService!.getLoggedInUser())!.sub,
-            subId: customerSelected?.CustomerUID == null
-                ? ""
-                : customerSelected?.CustomerUID,
+            // customerId: "THC",
+            // userId: (await _localService!.getLoggedInUser())!.sub,
+            // subId: customerSelected?.CustomerUID == null
+            //     ? ""
+            //     : customerSelected?.CustomerUID,
           );
           //Logger().i(data.data);
           return SubscriptionDashboardDetailResult.fromJson(
@@ -658,5 +658,14 @@ class SubScriptionService extends BaseService {
       Logger().e(e.toString());
       return null;
     }
+  }
+  getIndustryTransferData() async{
+  try{
+    if(enableGraphQl){
+      
+    }
+  }catch(e){
+    Logger().e(e.toString());
+  }
   }
 }

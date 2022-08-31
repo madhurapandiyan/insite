@@ -22,7 +22,8 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final jsonValue = jsonDecode(notifications!.notificationConfigJSON);
-    Logger().wtf("notifications : $jsonValue");
+
+    Logger().w(jsonValue);
 
     return GestureDetector(
       onTap: () {
@@ -45,19 +46,19 @@ class NotificationItem extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                          decoration: BoxDecoration(
-                              color: notifications!.isSelected!
-                                  ? Theme.of(context).buttonColor
-                                  : Theme.of(context).backgroundColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(4))),
-                          child: Icon(
-                            Icons.crop_square,
-                            color: notifications!.isSelected!
-                                ? Theme.of(context).buttonColor
-                                : Colors.black,
-                          )),
+                      // Container(
+                      //     decoration: BoxDecoration(
+                      //         color: notifications!.isSelected!
+                      //             ? Theme.of(context).buttonColor
+                      //             : Theme.of(context).backgroundColor,
+                      //         borderRadius:
+                      //             BorderRadius.all(Radius.circular(4))),
+                      //     child: Icon(
+                      //       Icons.crop_square,
+                      //       color: notifications!.isSelected!
+                      //           ? Theme.of(context).buttonColor
+                      //           : Colors.black,
+                      //     )),
                     ],
                   ),
                 ),

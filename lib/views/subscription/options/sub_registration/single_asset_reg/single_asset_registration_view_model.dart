@@ -471,8 +471,10 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       Logger().i("getApplicationAccessData");
       SubscriptionDashboardResult? result =
           await _subscriptionService!.getResultsFromSubscriptionApi("");
+
       if (result == null) {
         Logger().d('no results found');
+
         _loading = false;
         return "no results found";
       } else {

@@ -59,11 +59,10 @@ class MaintenanceDashBoard extends StatelessWidget {
                 ),
                 isLoading!
                     ? Expanded(child: InsiteProgressBar())
-                    : countData == null
-                        ? SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.2,
-                          )
-                        : Expanded(
+                    : countData?.maintenanceDashboard?.dashboardData != null &&
+                            countData!
+                                .maintenanceDashboard!.dashboardData!.isNotEmpty
+                        ? Expanded(
                             child: ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
@@ -117,13 +116,15 @@ class MaintenanceDashBoard extends StatelessWidget {
                                               },
                                             ),
                                           )
-                                        : EmptyView(
-                                            title:
-                                                "No service information to display",
-                                          )
+                                        : SizedBox()
                                   ],
                                 );
                               },
+                            ),
+                          )
+                        : Expanded(
+                            child: EmptyView(
+                              title: "No service information to display",
                             ),
                           ),
                 Divider(

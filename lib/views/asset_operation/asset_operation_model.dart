@@ -138,7 +138,7 @@ class AssetOperationViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
     await getAssetOperationCount();
-    // updateDateRangeList();
+     updateDateRangeList();
     AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
       startDate,
       endDate,

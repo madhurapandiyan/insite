@@ -2340,7 +2340,11 @@ reportUid
 }""";
       return editSaveData;
     } else if (assetsDropDownValue == "Utilization Details" ||
-        assetsDropDownValue == "Fault Code Asset Details") {
+        assetsDropDownValue == "Fault Code Asset Details" ||
+        assetsDropDownValue == "Backhoe Loader Operation" ||
+        assetsDropDownValue == "Excavator Usage" ||
+        assetsDropDownValue == "Multi-Asset Excavator Usage Report" ||
+        assetsDropDownValue == "Multi-Asset Excavator Usage") {
       editSaveData = """mutation{
   updateNotificationReport(reportUid:"$reportUid",
     reportPeriod:1,
@@ -2359,6 +2363,7 @@ reportUid
     reqId
   }
 }""";
+      Logger().wtf(editSaveData);
       return editSaveData;
     } else if (assetsDropDownValue == "Fault Summary Faults List") {
       editSaveData = """mutation{
@@ -2844,8 +2849,8 @@ query{
     pageNumber:$pageNo,
     notificationStatus:${notificationStatus ?? []},
     notificationUserStatus:$notificationUserStatus,
-    fromDate:"$startDate",
-    toDate:"$endDate",
+    fromDate:"${startDate != null ? startDate : ""}",
+    toDate:"${endDate != null ? endDate : ""}",
     assetUIDs:${assetUIDs == null ? "\"\"" : "${"\"" + assetUIDs + "\""}"},,
      notificationType:${Utils.getStringListData(notificationType ?? [])}
   ){
@@ -3559,14 +3564,18 @@ maintenanceIntervals(
       String? status,
       String? calendar,
       String? model}) {
-    var data = """query{
+    {
+      var data = """query{
     frameSubscription{
         subscriptionFleetList(
              limit:${limit != null ? limit : null},
             start:${start != null ? start : null},
             status:"${status != null ? status : ""}",
              calendar:"${calendar != null ? calendar : ""}",
+
              model:"${model != null ? model : ""}"
+
+
             
         ){
             count,
@@ -3595,41 +3604,42 @@ maintenanceIntervals(
             }
             }
         }""";
-    return data;
+      return data;
+    }
+
+    // String getPlantDashboardAndHierarchyCalendarListData(
+    //     {int? limit, int? start, String? status}) {
+    //   var data = """query{
+    //   frameSubscription{
+    //       subscriptionFleetList(
+    //           limit:$limit,
+    //           start:$start,
+    //           calendar:"$status"
+
+    //       ){
+    //           count,
+    //           provisioningInfo{
+    //             gpsDeviceID,
+
+    //             model,
+    //             vin
+    //             productFamily,
+    //             customerCode,
+    //             dealerName,
+    //             dealerCode,
+    //             customerName,
+    //             status,
+    //             description,
+    //             networkProvider
+
+    //     }
+
+    //           }
+    //           }
+    //       }""";
+    //   return data;
+    // }
   }
-
-  // String getPlantDashboardAndHierarchyCalendarListData(
-  //     {int? limit, int? start, String? status}) {
-  //   var data = """query{
-  //   frameSubscription{
-  //       subscriptionFleetList(
-  //           limit:$limit,
-  //           start:$start,
-  //           calendar:"$status"
-
-  //       ){
-  //           count,
-  //           provisioningInfo{
-  //             gpsDeviceID,
-
-  //             model,
-  //             vin
-  //             productFamily,
-  //             customerCode,
-  //             dealerName,
-  //             dealerCode,
-  //             customerName,
-  //             status,
-  //             description,
-  //             networkProvider
-
-  //     }
-
-  //           }
-  //           }
-  //       }""";
-  //   return data;
-  // }
 
   addMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
     var data = """
@@ -3787,6 +3797,40 @@ createAsset(
          shortString
      }
  }
+}""";
+    return data;
+  }
+
+  notificationDashboardCount() {
+    var data =
+        """query (\$assetUIDs: String, \$productFamily: String, \$notificationStatus: Int, \$notificationUserStatus: Int) {
+  seeAllNotificationCount(assetUIDs: \$assetUIDs, productFamily: \$productFamily, notificationStatus: \$notificationStatus, notificationUserStatus: \$notificationUserStatus) {
+    notifications {
+      count
+      notificationSubType
+      notificationType
+    }
+    status
+  }
+}
+""";
+    return data;
+  }
+
+  deleteNotes() {
+    var data = """
+mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
+  deleteMetaDataNotes(userAssetNoteUid:\$userAssetNoteUid)
+}""";
+    return data;
+  }
+
+  singleAssetTransferIndustryData() {
+    var data = """query{
+    primarySecondaryIndustries{
+        primaryIndustry,
+        secondaryIndustries
+    }
 }""";
     return data;
   }

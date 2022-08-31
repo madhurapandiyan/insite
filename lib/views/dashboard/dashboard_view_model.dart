@@ -6,6 +6,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/maintenance_dashboard_count.dart';
+import 'package:insite/core/models/notification.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -91,7 +92,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   AssetCount? _faultCountData;
   AssetCount? get faultCountData => _faultCountData;
-  
+
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
@@ -100,6 +101,12 @@ class DashboardViewModel extends InsiteViewModel {
 
   bool _maintenanceLoading = true;
   bool get maintenanceLoading => _maintenanceLoading;
+
+  bool _notificationLoading = true;
+  bool get notificationLoading => _notificationLoading;
+
+  NotificationData? _notificationCountDatas;
+  NotificationData? get notificationCountDatas => _notificationCountDatas;
 
   String _endDayRange = DateFormat('yyyy-MM-dd').format(DateTime.now());
   set endDayRange(String endDay) {
@@ -201,9 +208,10 @@ class DashboardViewModel extends InsiteViewModel {
     getIdlingLevelData(false, null);
     getUtilizationSummary();
     getFaultCountData();
-    //getMaintenanceCountData();
+    getMaintenanceCountData();
+    getNotificationCountData();
     _refreshing = false;
-    // notifyListeners();
+    notifyListeners();
   }
 
   onRefereshClicked() {
@@ -397,7 +405,10 @@ class DashboardViewModel extends InsiteViewModel {
       maintenanceDashboardCount = data;
       _maintenanceLoading = false;
       notifyListeners();
-    } catch (e) {}
+    } catch (e) {
+      _maintenanceLoading = false;
+      notifyListeners();
+    }
   }
 
   onMaintenanceFilterClicked(
@@ -576,6 +587,7 @@ class DashboardViewModel extends InsiteViewModel {
       // await addFilter(filterData);
       _refreshing = true;
       _maintenanceLoading = true;
+      _notificationLoading = true;
       notifyListeners();
       // if (isFromProdFamily) {
       //   await getProductFamilyAssetCount();
@@ -589,6 +601,7 @@ class DashboardViewModel extends InsiteViewModel {
       await getIdlingLevelFilterData(filterData.title);
       await getFaultCountDataFilterData(filterData.title);
       await getMaintenanceCountDataWithFilter(filterData);
+      await getNotificationCountDataWithFilter(filterData);
       _refreshing = false;
       notifyListeners();
     } catch (e) {
@@ -684,5 +697,38 @@ class DashboardViewModel extends InsiteViewModel {
           _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
+  }
+
+  getNotificationCountData() async {
+    try {
+      var data = await _assetService?.getNotificationDashboardCount(
+          query: await graphqlSchemaService!.notificationDashboardCount(),
+          payload: {"productFamily": ""});
+
+      if (data?.notifications != null) {
+        _notificationCountDatas = data;
+        _notificationLoading = false;
+      } else {
+        _notificationLoading = false;
+      }
+      notifyListeners();
+    } catch (e) {}
+  }
+
+  getNotificationCountDataWithFilter(FilterData filterData) async {
+    try {
+      var data = await _assetService?.getNotificationDashboardCount(
+          query: await graphqlSchemaService!.notificationDashboardCount(),
+          payload: {"productFamily": filterData.title});
+
+      if (data?.notifications != null) {
+        _notificationCountDatas = data;
+        _notificationLoading = false;
+      } else {
+        _notificationLoading = false;
+      }
+
+      notifyListeners();
+    } catch (e) {}
   }
 }

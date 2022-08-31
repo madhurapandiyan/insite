@@ -44,11 +44,11 @@ class PlantHeirarchyAssetService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: "THC",
-          userId: (await _localService!.getLoggedInUser())!.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+          // customerId: "THC",
+          // userId: (await _localService!.getLoggedInUser())!.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
         );
         Logger().w(data.data["frameSubscription"]);
         return HierarchyAssets.fromJson(data.data["frameSubscription"]);
@@ -81,11 +81,11 @@ class PlantHeirarchyAssetService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: "THC",
-          userId: (await _localService!.getLoggedInUser())!.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+          // customerId: "THC",
+          // userId: (await _localService!.getLoggedInUser())!.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
         );
         return AssetCreationResponse.fromJson(data.data);
       } else {
@@ -108,11 +108,11 @@ class PlantHeirarchyAssetService extends BaseService {
     if (enableGraphQl) {
       var data = await Network().getGraphqlPlantData(
         query: query,
-        customerId: "THC",
-        userId: (await _localService!.getLoggedInUser())!.sub,
-        subId: customerSelected?.CustomerUID == null
-            ? ""
-            : customerSelected?.CustomerUID,
+        // customerId: "THC",
+        // userId: (await _localService!.getLoggedInUser())!.sub,
+        // subId: customerSelected?.CustomerUID == null
+        //     ? ""
+        //     : customerSelected?.CustomerUID,
       );
       return AssetCreationResetData.fromJson(data.data);
     } else {

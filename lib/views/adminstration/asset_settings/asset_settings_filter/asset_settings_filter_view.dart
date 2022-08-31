@@ -58,25 +58,25 @@ class _AssetSettingsFilterViewState extends State<AssetSettingsFilterView> {
                       assetUids: widget.assetUids,
                     ),
                   ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  FilterItemWidget(
-                    text: "set estimated fuel burn rate".toUpperCase(),
-                    body: EstimatedBurnRateWidget(
-                      assetUids: widget.assetUids,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  FilterItemWidget(
-                    text: "set estimated mileage".toUpperCase(),
-                    body: EstimatedMileage(
-                      // assetSetting: widget.assetSetting,
-                      assetUids: widget.assetUids,
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: 8,
+                  // ),
+                  // FilterItemWidget(
+                  //   text: "set estimated fuel burn rate".toUpperCase(),
+                  //   body: EstimatedBurnRateWidget(
+                  //     assetUids: widget.assetUids,
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 8,
+                  // ),
+                  // FilterItemWidget(
+                  //   text: "set estimated mileage".toUpperCase(),
+                  //   body: EstimatedMileage(
+                  //     // assetSetting: widget.assetSetting,
+                  //     assetUids: widget.assetUids,
+                  //   ),
+                  // ),
                   // SizedBox(
                   //   height: 8,
                   // ),

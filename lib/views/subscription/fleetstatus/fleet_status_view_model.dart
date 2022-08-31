@@ -61,14 +61,15 @@ class FleetStatusViewModel extends InsiteViewModel {
 
   getFleetStatusData() async {
     if (enableGraphQl) {
-     
       fleetProvisionStatus = await _subscriptionService!.getFleetDataGraphql(
           graphqlSchemaService!.getSubscriptionFleetData(start, limit));
 
       if (fleetProvisionStatus!
-              .fleetProvisionStatus!.fleetProvisionStatusInfo!.isNotEmpty) {
-                Logger().w(fleetProvisionStatus!.fleetProvisionStatus!.fleetProvisionStatusInfo!.first.toJson());
-        start = start + limit;
+          .fleetProvisionStatus!.fleetProvisionStatusInfo!.isNotEmpty) {
+        Logger().w(fleetProvisionStatus!
+            .fleetProvisionStatus!.fleetProvisionStatusInfo!.first
+            .toJson());
+       // start = start + limit;
         devices.addAll(fleetProvisionStatus!
             .fleetProvisionStatus!.fleetProvisionStatusInfo!);
         _loading = false;
@@ -94,7 +95,7 @@ class FleetStatusViewModel extends InsiteViewModel {
       if (subscriptionDashboardDetailResult != null) {
         if (subscriptionDashboardDetailResult!.result!.isNotEmpty) {
           start = start + limit;
-         // devices.addAll(subscriptionDashboardDetailResult!.result![1]);
+          // devices.addAll(subscriptionDashboardDetailResult!.result![1]);
           _loading = false;
           _loadingMore = false;
           notifyListeners();

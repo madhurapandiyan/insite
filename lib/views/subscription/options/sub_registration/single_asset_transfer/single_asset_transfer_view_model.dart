@@ -212,6 +212,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   SingleAssetTransferViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     Future.delayed(Duration(seconds: 1), () {});
+    getIndustryGraphqlData(initialIndustryDetail);
   }
 
   allowAssetTransferClicked() async {
@@ -264,6 +265,20 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   onSelectingSubIndustry(String value) {
     _initialSubIndustryDetailValue = value;
     notifyListeners();
+  }
+
+  getIndustryGraphqlData(String? value) {
+    if (enableGraphQl) {
+      _initialIndustryDetail = "Select Industry Details";
+      _industryDetails = [];
+      _initialSubIndustryDetailValue = "Select Secondary Details";
+      _industrySubDetails = [];
+      _showSubIndustry = true;
+      notifyListeners();
+      Logger().w("graphql api  integration");
+    } else {
+      updateIndustry(value!);
+    }
   }
 
   updateIndustry(String value) {

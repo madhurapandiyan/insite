@@ -5,6 +5,7 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/date_slider.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'insite_expansion_tile.dart';
 
 class AssetOperationListItem extends StatelessWidget {
@@ -110,6 +111,7 @@ class AssetOperationListItem extends StatelessWidget {
                   children: [
                     DateSlider(
                       list: getSliderData(),
+                      
                     )
                   ],
                 ),
@@ -122,6 +124,7 @@ class AssetOperationListItem extends StatelessWidget {
   }
 
   List<SliderData> getSliderData() {
+   
     List<SliderData> list = [];
     for (DateTime time in days!) {
       String day = DateFormat('EEE').format(time);
@@ -134,6 +137,7 @@ class AssetOperationListItem extends StatelessWidget {
                   .toStringAsFixed(1)
               : "");
       list.add(data);
+      Logger().wtf(list.length);
     }
     return list;
   }

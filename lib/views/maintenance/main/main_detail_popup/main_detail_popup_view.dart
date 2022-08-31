@@ -445,17 +445,17 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                       //     //     true);
                       //   },
                       // ),
-                      InsiteButton(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        title: "Next".toUpperCase(),
-                        fontSize: 12,
-                        textColor: white,
-                        onTap: () {
-                          _tabController!.index = 1;
-                          viewModel.onTabChange(1);
-                        },
-                      ),
+                      // InsiteButton(
+                      //   width: MediaQuery.of(context).size.width * 0.4,
+                      //   height: MediaQuery.of(context).size.height * 0.06,
+                      //   title: "Next".toUpperCase(),
+                      //   fontSize: 12,
+                      //   textColor: white,
+                      //   onTap: () {
+                      //     _tabController!.index = 1;
+                      //     viewModel.onTabChange(1);
+                      //   },
+                      // ),
                     ],
                   ),
                 ],

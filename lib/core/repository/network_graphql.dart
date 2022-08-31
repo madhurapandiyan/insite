@@ -44,55 +44,55 @@ class Network {
       ));
     client.clear();
   }
-  // getGraphqlPlantData({String? query}) async {
-  //   try {
-  //     final Link link = DioLink(
-  //       graphqlEndpoint,
-  //       client: client,
-  //       defaultHeaders: {
-  //         "content-type": "application/json",
-  //         "CustomerId": "THC",
-  //         "Accept": "application/json",
-  //         "Auth": "bearer " + await _localService!.getToken(),
-  //         "Authorization": "bearer " + await _localService!.getToken(),
-  //       },
-  //     );
-  //     final res = await link
-  //         .request(Request(
-  //           operation: Operation(document: gql.parseString(query!)),
-  //         ))
-  //         .first;
+  getGraphqlPlantData({String? query}) async {
+    try {
+      final Link link = DioLink(
+        graphqlEndpoint,
+        client: client,
+        defaultHeaders: {
+          "content-type": "application/json",
+          "CustomerId": "THC",
+          "Accept": "application/json",
+          "Auth": "bearer " + await _localService!.getToken(),
+          "Authorization": "bearer " + await _localService!.getToken(),
+        },
+      );
+      final res = await link
+          .request(Request(
+            operation: Operation(document: gql.parseString(query!)),
+          ))
+          .first;
 
-  //     return res;
-  //   } catch (e) {
-  //     Logger().e(e.toString());
-  //     //     if (e is DioLinkServerException) {
-  //     //       var error = e;
-  //     //       if (error.response.statusCode == 401) {
-  //     //         var refreshLoginResponce = await refreshToken();
-  //     //         if (refreshLoginResponce != null) {
-  //     //           await _localService!.saveTokenInfo(refreshLoginResponce);
-  //     //           await _localService!.saveToken(refreshLoginResponce.access_token);
-  //     //           await _localService!
-  //     //               .saveRefreshToken(refreshLoginResponce.refresh_token);
-  //     //           var tokenTime =
-  //     //               Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
-  //     //           await _localService!.saveExpiryTime(tokenTime);
-  //     //           var data = await getGraphqlData(
-  //     //               query: query,
-  //     //               customerId: customerId,
-  //     //               userId: userId,
-  //     //               subId: subId);
-  //     //           return data;
-  //     //         }
-  //     //       } else {
-  //     //         throw e;
-  //     //       }
-  //     //     } else {
-  //     //       throw e;
-  //     //     }
-  //   }
-  // }
+      return res;
+    } catch (e) {
+      Logger().e(e.toString());
+      //     if (e is DioLinkServerException) {
+      //       var error = e;
+      //       if (error.response.statusCode == 401) {
+      //         var refreshLoginResponce = await refreshToken();
+      //         if (refreshLoginResponce != null) {
+      //           await _localService!.saveTokenInfo(refreshLoginResponce);
+      //           await _localService!.saveToken(refreshLoginResponce.access_token);
+      //           await _localService!
+      //               .saveRefreshToken(refreshLoginResponce.refresh_token);
+      //           var tokenTime =
+      //               Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+      //           await _localService!.saveExpiryTime(tokenTime);
+      //           var data = await getGraphqlData(
+      //               query: query,
+      //               customerId: customerId,
+      //               userId: userId,
+      //               subId: subId);
+      //           return data;
+      //         }
+      //       } else {
+      //         throw e;
+      //       }
+      //     } else {
+      //       throw e;
+      //     }
+    }
+  }
 
   getGraphqlAccountData(
     String? query,
@@ -114,6 +114,7 @@ class Network {
       {String? query,
       String? customerId,
       String? userId,
+      dynamic payLoad,
       String? subId}) async {
     try {
       // String? tokenTime = await _localService!.getExpiry();
@@ -145,8 +146,8 @@ class Network {
       );
       final res = await link
           .request(Request(
-            operation: Operation(document: gql.parseString(query!)),
-          ))
+              operation: Operation(document: gql.parseString(query!)),
+              variables: payLoad == null ? {} : payLoad))
           .first;
 
       return res;
@@ -180,60 +181,60 @@ class Network {
     }
   }
 
-  getStaggedGraphqlData(
-      {String? query,
-      String? customerId,
-      String? userId,
-      String? subId}) async {
-    try {
-      // queryUrl = query;
-      // customerUserId = userId;
-      // customerUid = customerId;
-      // subUid = subId;
-      // Logger().w(customerId);
-      // Logger().w(userId);
-      // Logger().w(subId);
+  // getStaggedGraphqlData(
+  //     {String? query,
+  //     String? customerId,
+  //     String? userId,
+  //     String? subId}) async {
+  //   try {
+  //     // queryUrl = query;
+  //     // customerUserId = userId;
+  //     // customerUid = customerId;
+  //     // subUid = subId;
+  //     // Logger().w(customerId);
+  //     // Logger().w(userId);
+  //     // Logger().w(subId);
 
-      final Link link = DioLink(
-        graphqlEndpoint,
-        client: client,
-        defaultHeaders: {
-          "content-type": "application/json",
-          "x-visionlink-customeruid": customerId!,
-          //"service": "in-vfleet-uf-webapi",
-          "Accept": "application/json",
-          "X-VisionLink-UserUid": userId!,
-          "Authorization": "bearer " + await _localService!.getToken(),
-          "sub-customeruid": subId!
-        },
-      );
-      final res = await link
-          .request(Request(
-            operation: Operation(document: gql.parseString(query!)),
-          ))
-          .first;
+  //     final Link link = DioLink(
+  //       graphqlEndpoint,
+  //       client: client,
+  //       defaultHeaders: {
+  //         "content-type": "application/json",
+  //         "x-visionlink-customeruid": customerId!,
+  //         //"service": "in-vfleet-uf-webapi",
+  //         "Accept": "application/json",
+  //         "X-VisionLink-UserUid": userId!,
+  //         "Authorization": "bearer " + await _localService!.getToken(),
+  //         "sub-customeruid": subId!
+  //       },
+  //     );
+  //     final res = await link
+  //         .request(Request(
+  //           operation: Operation(document: gql.parseString(query!)),
+  //         ))
+  //         .first;
 
-      return res;
-    } catch (e) {
-      Logger().e(e.toString());
-      if (e is DioLinkServerException) {
-        var error = e;
-        if (error.response.statusCode == 401) {
-          await staggedRefreshToken();
-          var data = await getStaggedGraphqlData(
-              query: query,
-              customerId: customerId,
-              userId: userId,
-              subId: subId);
-          return data;
-        } else {
-          throw e;
-        }
-      } else {
-        throw e;
-      }
-    }
-  }
+  //     return res;
+  //   } catch (e) {
+  //     Logger().e(e.toString());
+  //     if (e is DioLinkServerException) {
+  //       var error = e;
+  //       if (error.response.statusCode == 401) {
+  //         await staggedRefreshToken();
+  //         var data = await getStaggedGraphqlData(
+  //             query: query,
+  //             customerId: customerId,
+  //             userId: userId,
+  //             subId: subId);
+  //         return data;
+  //       } else {
+  //         throw e;
+  //       }
+  //     } else {
+  //       throw e;
+  //     }
+  //   }
+  // }
 
   Future<LoginResponse?> refreshToken() async {
     var currentCodeVerifier = await _localService!.getCodeVerifier();
@@ -256,59 +257,59 @@ class Network {
     }
   }
 
-  getGraphqlPlantData(
-      {String? query,
-      String? customerId,
-      String? userId,
-      String? subId}) async {
-    try {
-      final Link link = DioLink(
-        graphqlEndpoint,
-        client: client,
-        defaultHeaders: {
-          "content-type": "application/json",
-          "CustomerId": customerId!,
-          "Accept": "application/json",
-          "Auth": "bearer " + await _localService!.getToken(),
-          "Authorization": "bearer " + await _localService!.getToken(),
-        },
-      );
-      final res = await link
-          .request(Request(
-            operation: Operation(document: gql.parseString(query!)),
-          ))
-          .first;
+  // getGraphqlPlantData(
+  //     {String? query,
+  //     String? customerId,
+  //     String? userId,
+  //     String? subId}) async {
+  //   try {
+  //     final Link link = DioLink(
+  //       graphqlEndpoint,
+  //       client: client,
+  //       defaultHeaders: {
+  //         "content-type": "application/json",
+  //         "CustomerId": customerId!,
+  //         "Accept": "application/json",
+  //         "Auth": "bearer " + await _localService!.getToken(),
+  //         "Authorization": "bearer " + await _localService!.getToken(),
+  //       },
+  //     );
+  //     final res = await link
+  //         .request(Request(
+  //           operation: Operation(document: gql.parseString(query!)),
+  //         ))
+  //         .first;
 
-      return res;
-    } catch (e) {
-      Logger().e(e.toString());
-      if (e is DioLinkServerException) {
-        var error = e;
-        if (error.response.statusCode == 401) {
-          var refreshLoginResponce = await refreshToken();
-          if (refreshLoginResponce != null) {
-            await _localService!.saveTokenInfo(refreshLoginResponce);
-            await _localService!.saveToken(refreshLoginResponce.access_token);
-            await _localService!
-                .saveRefreshToken(refreshLoginResponce.refresh_token);
-            var tokenTime =
-                Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
-            await _localService!.saveExpiryTime(tokenTime);
-            var data = await getGraphqlData(
-                query: query,
-                customerId: customerId,
-                userId: userId,
-                subId: subId);
-            return data;
-          }
-        } else {
-          throw e;
-        }
-      } else {
-        throw e;
-      }
-    }
-  }
+  //     return res;
+  //   } catch (e) {
+  //     Logger().e(e.toString());
+  //     if (e is DioLinkServerException) {
+  //       var error = e;
+  //       if (error.response.statusCode == 401) {
+  //         var refreshLoginResponce = await refreshToken();
+  //         if (refreshLoginResponce != null) {
+  //           await _localService!.saveTokenInfo(refreshLoginResponce);
+  //           await _localService!.saveToken(refreshLoginResponce.access_token);
+  //           await _localService!
+  //               .saveRefreshToken(refreshLoginResponce.refresh_token);
+  //           var tokenTime =
+  //               Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+  //           await _localService!.saveExpiryTime(tokenTime);
+  //           var data = await getGraphqlData(
+  //               query: query,
+  //               customerId: customerId,
+  //               userId: userId,
+  //               subId: subId);
+  //           return data;
+  //         }
+  //       } else {
+  //         throw e;
+  //       }
+  //     } else {
+  //       throw e;
+  //     }
+  //   }
+  // }
 
   static final Network _singleton = Network._internal();
 
