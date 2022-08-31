@@ -10,7 +10,7 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class LocationSearchBoxView extends StatelessWidget {
-  final Function(LatLng)? onSeletingSuggestion;
+  final Function(dynamic, bool isSerialNo)? onSeletingSuggestion;
 
   LocationSearchBoxView({this.onSeletingSuggestion});
   @override
@@ -99,8 +99,19 @@ class LocationSearchBoxView extends StatelessWidget {
                         onSuggestionSelected: (suggestion) {
                           if ((suggestion as LocationKey?) != null) {
                             viewModel.onSelect(suggestion!.value as String);
-                            onSeletingSuggestion!(LatLng(
-                                suggestion.latitude!, suggestion.longitude!));
+                            if (viewModel.searchDropDownValue == "S/N") {
+                              onSeletingSuggestion!(
+                                  LatLng(suggestion.latitude!,
+                                      suggestion.longitude!),
+                                  true);
+                            } else {
+                              var data = viewModel
+                                  .result!.assetLocation!.mapRecords!
+                                  .singleWhere((element) =>
+                                      element!.assetIdentifier ==
+                                      suggestion.value);
+                              onSeletingSuggestion!(data, false);
+                            }
                           }
                         },
                         textFieldConfiguration: TextFieldConfiguration(

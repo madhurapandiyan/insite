@@ -1563,17 +1563,7 @@ class Utils {
       return null;
     } else if (value == "Fault Summary Faults List" ||
         value == "FaultSummaryFaultsList") {
-      return {
-        "colFilters": getStringListData([
-          "basic",
-          "details",
-          "dynamic",
-          "asset.basic",
-          "asset.details",
-          "asset.dynamic"
-        ]),
-        "assetuids": getStringListData(assetIds!)
-      };
+      return null;
     } else {
       return null;
     }

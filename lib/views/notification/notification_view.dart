@@ -16,6 +16,8 @@ import 'package:stacked/stacked.dart';
 import 'notification_view_model.dart';
 
 class NotificationView extends StatefulWidget {
+  final String? filterValue;
+  NotificationView({this.filterValue});
   @override
   State<NotificationView> createState() => _NotificationViewState();
 }
@@ -273,7 +275,7 @@ class _NotificationViewState extends State<NotificationView> {
               )),
         );
       },
-      viewModelBuilder: () => NotificationViewModel(),
+      viewModelBuilder: () => NotificationViewModel(value: widget.filterValue),
     );
   }
 

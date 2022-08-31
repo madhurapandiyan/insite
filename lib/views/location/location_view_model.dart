@@ -270,6 +270,29 @@ class LocationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  onSeletingSuggestionSn(MapRecord value) async {
+    _assetLocation!.mapRecords!.clear();
+    clusterMarkers.clear();
+    markers.clear();
+    latlngs.clear();
+    manager!.items.toList().clear();
+
+    notifyListeners();
+    var control = await controller.future;
+    control.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(value.lastReportedLocationLatitude!,
+            value.lastReportedLocationLongitude!),
+        zoom: 10)));
+    centerPosition = CameraPosition(
+        target: LatLng(value.lastReportedLocationLatitude!,
+            value.lastReportedLocationLongitude!),
+        zoom: 1);
+    _assetLocation!.mapRecords?.add(value);
+    clusterMarker();
+    manager!.updateMap();
+    notifyListeners();
+  }
+
   LocationViewModel(ScreenType type) {
     this._pageType = type;
     this.log = getLogger(this.runtimeType.toString());

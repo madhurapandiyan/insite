@@ -54,7 +54,7 @@ class GlobalSearchViewModel extends InsiteViewModel {
             index: 0,
             fleet: Fleet(
                 assetSerialNumber: fleet.serialNumber,
-                assetId: fleet.assetUID,
+                assetId: fleet.assetUid,
                 assetIdentifier: fleet.assetID)));
   }
 }

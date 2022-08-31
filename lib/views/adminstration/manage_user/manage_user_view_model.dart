@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -23,6 +24,8 @@ class ManageUserViewModel extends InsiteViewModel {
   set searchKeyword(String keyword) {
     this._searchKeyword = keyword;
   }
+
+
 
   updateSearchDataToEmpty() {
     Logger().d("updateSearchDataToEmpty");

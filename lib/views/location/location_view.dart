@@ -198,10 +198,19 @@ class _LocationViewState extends State<LocationView> {
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(top: 7,left: 20),
+                                    padding:
+                                        const EdgeInsets.only(top: 7, left: 20),
                                     child: LocationSearchBoxView(
-                                      onSeletingSuggestion: (value) {
-                                        viewModel.onSeletingSuggestion(value);
+                                      onSeletingSuggestion:
+                                          (value, isSerialNo) {
+                                        viewModel.customInfoWindowController
+                                            .hideInfoWindow!();
+                                        if (isSerialNo) {
+                                          viewModel.onSeletingSuggestion(value);
+                                        } else {
+                                          viewModel
+                                              .onSeletingSuggestionSn(value);
+                                        }
                                       },
                                     ),
                                   ),
@@ -226,8 +235,8 @@ class _LocationViewState extends State<LocationView> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
-                                          color: Theme.of(context)
-                                              .backgroundColor,
+                                          color:
+                                              Theme.of(context).backgroundColor,
 
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 10),
@@ -242,8 +251,8 @@ class _LocationViewState extends State<LocationView> {
                                             dropdownColor: Theme.of(context)
                                                 .backgroundColor,
                                             icon: Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: 4.0),
+                                              padding:
+                                                  EdgeInsets.only(right: 4.0),
                                               child: Container(
                                                 child: SvgPicture.asset(
                                                   "assets/images/arrowdown.svg",
@@ -268,8 +277,7 @@ class _LocationViewState extends State<LocationView> {
                                               'TERRAIN',
                                               'HYBRID'
                                             ]
-                                                .map((map) =>
-                                                    DropdownMenuItem(
+                                                .map((map) => DropdownMenuItem(
                                                       value: map,
                                                       child: InsiteText(
                                                         text: map,
@@ -282,8 +290,7 @@ class _LocationViewState extends State<LocationView> {
                                             value: _currentSelectedItem,
                                             onChanged: (String? value) {
                                               setState(() {
-                                                _currentSelectedItem =
-                                                    value!;
+                                                _currentSelectedItem = value!;
                                               });
                                             },
                                             underline: Container(

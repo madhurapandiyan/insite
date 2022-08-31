@@ -21,6 +21,8 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
 
   List<LocationKey>? list = [];
 
+  AssetLocationSearch? result;
+
   searchLocation(query) async {
     SearchLocationGeofence? result =
         await _assetLocationService.getGeofenceSerachLocationData(
@@ -45,14 +47,13 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
   }
 
   searchLocationSeralNumber(String value) async {
-    AssetLocationSearch? result =
-        await _assetLocationService.getAssetLocationsearch(graphqlSchemaService!
-            .searchLocationSerialNumberData(
-                query: value, pageNumber: 1, pageSize: 1000));
+    result = await _assetLocationService.getAssetLocationsearch(
+        graphqlSchemaService!.searchLocationSerialNumberData(
+            query: value, pageNumber: 1, pageSize: 1000));
 
-    if (result != null && result.assetLocation!.mapRecords!.isNotEmpty) {
+    if (result != null && result!.assetLocation!.mapRecords!.isNotEmpty) {
       list!.clear();
-      result.assetLocation!.mapRecords!.forEach((element) {
+      result!.assetLocation!.mapRecords!.forEach((element) {
         LocationKey data = LocationKey(
             value: element!.assetSerialNumber ?? "",
             latitude: element.lastReportedLocationLatitude,

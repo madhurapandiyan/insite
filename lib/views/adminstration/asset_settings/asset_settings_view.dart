@@ -43,18 +43,15 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
-                            child: InsiteText(
-                              text: "manage asset configuration".toUpperCase() +
-                                  " (" +
-                                  viewModel.asset.length.toString() +
-                                  " of " +
-                                  viewModel.totalCount.toString() +
-                                  " )",
-                              fontWeight: FontWeight.w700,
-                              size: 14,
-                            ),
+                          InsiteText(
+                            text: "manage asset configuration".toUpperCase() +
+                                " (" +
+                                viewModel.asset.length.toString() +
+                                " of " +
+                                viewModel.totalCount.toString() +
+                                " )",
+                            fontWeight: FontWeight.w700,
+                            size: 14,
                           ),
 
                           // viewModel.showEdit
@@ -80,29 +77,29 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                           //     )
                           //     : SizedBox(),
 
-                          viewModel.showEdit
-                              ? Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10),
-                                    ),
-                                    child: InsiteButton(
-                                        title: "",
-                                        onTap: () {
-                                          viewModel.onClickEditselected();
-                                        },
-                                        icon: Icon(
-                                          Icons.edit,
-                                          color: appbarcolor,
-                                        )),
-                                  ),
-                                )
-                              : SizedBox(),
+                          // viewModel.showEdit
+                          //     ? Padding(
+                          //         padding:
+                          //             const EdgeInsets.symmetric(horizontal: 5),
+                          //         child: ClipRRect(
+                          //           borderRadius: BorderRadius.only(
+                          //             topLeft: Radius.circular(10),
+                          //             topRight: Radius.circular(10),
+                          //             bottomRight: Radius.circular(10),
+                          //             bottomLeft: Radius.circular(10),
+                          //           ),
+                          //           child: InsiteButton(
+                          //               title: "",
+                          //               onTap: () {
+                          //                 viewModel.onClickEditselected();
+                          //               },
+                          //               icon: Icon(
+                          //                 Icons.edit,
+                          //                 color: appbarcolor,
+                          //               )),
+                          //         ),
+                          //       )
+                          //     : SizedBox(),
 
                           viewModel.showMenu
                               ? ClipRRect(
@@ -248,17 +245,17 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
               fontWeight: FontWeight.w700,
               size: 14,
             )),
-        viewModel.showEdit
-            ? PopupMenuItem(
-                value: "Show/Edit Target",
-                child: InsiteText(
-                  text: "Show/Edit Target",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ))
-            : PopupMenuItem(
-                child: SizedBox(),
-              ),
+        // viewModel.showEdit
+        //     ? PopupMenuItem(
+        //         value: "Show/Edit Target",
+        //         child: InsiteText(
+        //           text: "Show/Edit Target",
+        //           fontWeight: FontWeight.w700,
+        //           size: 14,
+        //         ))
+        //     : PopupMenuItem(
+        //         child: SizedBox(),
+        //       ),
         viewModel.showEdit
             ? PopupMenuItem(
                 value: "Configure",

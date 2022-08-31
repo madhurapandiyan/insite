@@ -783,12 +783,8 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<EstimatedResponse?> getAssetTargetSettingsData(
-      List<String?> assetUid,
-      startDate,
-      endDate,
-      Idle? idle,
-      Runtime? runTime) async {
+  Future<EstimatedResponse?> getAssetTargetSettingsData(List<String?> assetUid,
+      startDate, endDate, Idle? idle, Runtime? runTime) async {
     try {
       var dataUid;
       List<AssetTargetSettings> getAssetList = [];
@@ -810,17 +806,16 @@ class AssetAdminManagerUserService extends BaseService {
       Logger().i(listSettingTargetData.toJson());
 
       if (enableGraphQl) {
-       
-        var data =await Network().getGraphqlData(
-            query: graphqlSchemaService!.getAddEStimatedRuntimeData(dataUid,
-                startDate, endDate, idle, runTime),
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!.getAddEStimatedRuntimeData(
+                dataUid, startDate, endDate, idle, runTime),
             customerId: accountSelected!.CustomerUID,
             subId: customerSelected?.CustomerUID == null
                 ? ""
                 : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
-         return EstimatedResponse.fromJson(
-             data.data["updateAssetTargetSettings"]);
+        return EstimatedResponse.fromJson(
+            data.data["updateAssetTargetSettings"]);
       } else {
         if (isVisionLink) {
           EstimatedResponse result = await MyApi()
@@ -932,15 +927,14 @@ class AssetAdminManagerUserService extends BaseService {
       try {
         var data = await Network().getGraphqlData(
             query: query,
-           customerId: accountSelected!.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
             subId: customerSelected?.CustomerUID == null
                 ? ""
                 : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
 
         EstimatedAssetSetting estimatedAssetSetting =
-            EstimatedAssetSetting.fromJson(
-                data.data["assetTargetSettings"]);
+            EstimatedAssetSetting.fromJson(data.data["assetTargetSettings"]);
 
         return estimatedAssetSetting;
       } catch (e) {
@@ -1752,6 +1746,7 @@ class AssetAdminManagerUserService extends BaseService {
         Logger().w(query);
         var data = await Network().getGraphqlData(
             query: query,
+            payLoad: addReportPayLoad.toJson(),
             subId: customerSelected?.CustomerUID == null
                 ? ""
                 : customerSelected?.CustomerUID,
@@ -1790,6 +1785,7 @@ class AssetAdminManagerUserService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query: query,
+            payLoad: addReportPayLoad.toJson(),
             subId: customerSelected?.CustomerUID == null
                 ? ""
                 : customerSelected?.CustomerUID,

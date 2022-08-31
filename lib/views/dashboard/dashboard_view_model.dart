@@ -24,6 +24,7 @@ import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/maintenance/main/main_view.dart';
 import 'package:insite/views/maintenance/maintenance_view.dart';
+import 'package:insite/views/notification/notification_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -730,5 +731,11 @@ class DashboardViewModel extends InsiteViewModel {
 
       notifyListeners();
     } catch (e) {}
+  }
+
+  onNotificationFilterClicked(String value) {
+    _navigationService!.navigateToView(NotificationView(
+      filterValue: value,
+    ));
   }
 }

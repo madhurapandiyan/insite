@@ -3,11 +3,11 @@ part 'search_data.g.dart';
 
 @JsonSerializable()
 class TopMatch {
-  final String? assetUID;
+  final String? assetUid;
   final String? assetID;
   final String? serialNumber;
 
-  TopMatch({this.assetID, this.assetUID, this.serialNumber});
+  TopMatch({this.assetID, this.assetUid, this.serialNumber});
 
   factory TopMatch.fromJson(Map<String, dynamic> json) =>
       _$TopMatchFromJson(json);
