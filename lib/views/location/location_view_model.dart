@@ -40,7 +40,7 @@ class LocationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  MinMaxZoomPreference? minMaxZoomPreference;
+  
 
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();

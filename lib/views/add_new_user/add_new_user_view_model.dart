@@ -94,7 +94,8 @@ class AddNewUserViewModel extends InsiteViewModel {
   AddNewUserViewModel(Users? user, bool? isEdit) {
     this.user = user;
     this._enableAdd = isEdit!;
-    if (user!=null&&user.loginId != null &&
+    if (user != null &&
+        user.loginId != null &&
         user.first_name != null &&
         user.last_name != null &&
         user.phone != null &&
@@ -232,8 +233,10 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   getUser() async {
     Logger().i("getUser ");
-    ManageUser? result = await _manageUserService.getUser(user!.userUid,
-        graphqlSchemaService!.getManageUserEditData(user!.loginId, 1));
+    ManageUser? result = await _manageUserService.getUser(
+        user!.userUid,
+        graphqlSchemaService!
+            .userManagementUserList(email: user!.loginId, pageNo: 1));
     try {
       if (result != null) {
         // this.user = result.user!;

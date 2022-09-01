@@ -3494,41 +3494,5 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
     return data;
   }
 
-  getManageUserEditData(String? searchKey, int? pageNumber) {
-    var data = """query{
-    userManagementUserList(searchKey:"$searchKey",pageNumber:$pageNumber){
-    users{
-    first_name,
-    last_name,
-    
-    address{
-        city,
-        state,
-        country,
-        
-    },
-    loginId,
-    application_access{
-        role_name,
-        userUID,
-        applicationIconUrl,
-        applicationName
-    },
-    userUid,
-    createdBy,
-    createdOn,
-    job_title,
-    job_type,
-    lastLoginDate,
-    user_type,
-    emailVerified,
-    
-    
-    
-
-    }
-    }
-}""";
-    return data;
-  }
+  
 }
