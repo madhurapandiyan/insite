@@ -266,7 +266,7 @@ class LocationViewModel extends InsiteViewModel {
 
   onSeletingSuggestion(LatLng value) async {
     Logger().w(value.latitude);
-    Logger().i("trigger");
+   
     GoogleMapController control = await controller.future;
     control.animateCamera(CameraUpdate.newLatLngZoom(value, 10));
 
@@ -275,7 +275,8 @@ class LocationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onSeletingSuggestionSn(LatLng value) async {
+  onSeletingSuggestionSn(MapRecord value) async {
+    Logger().w(value.toJson());
     _assetLocation!.mapRecords!.clear();
     clusterMarkers.clear();
     markers.clear();
@@ -283,17 +284,18 @@ class LocationViewModel extends InsiteViewModel {
     manager!.items.toList().clear();
 
     notifyListeners();
-   
-    //Logger().w(_assetLocation!.mapRecords!.first!.toJson());
-    GoogleMapController control = await controller.future;
-    control.animateCamera(CameraUpdate.newLatLngZoom(value, 10));
-    centerPosition = CameraPosition(target: value, zoom: 1);
-      clusterMarkers.add(InsiteMarker(
-        latLng: value
-      ));
+    var control = await controller.future;
+    control.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(value.lastReportedLocationLatitude!,
+            value.lastReportedLocationLongitude!),
+        zoom: 10)));
+    centerPosition = CameraPosition(
+        target: LatLng(value.lastReportedLocationLatitude!,
+            value.lastReportedLocationLongitude!),
+        zoom: 1);
+    _assetLocation!.mapRecords?.add(value);
+    clusterMarker();
     manager!.updateMap();
-    notifyListeners();
-
     notifyListeners();
   }
 
