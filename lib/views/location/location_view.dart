@@ -206,10 +206,11 @@ class _LocationViewState extends State<LocationView> {
                                         viewModel.customInfoWindowController
                                             .hideInfoWindow!();
                                         if (isSerialNo) {
-                                          viewModel.onSeletingSuggestion(value);
-                                        } else {
+                                        
                                           viewModel
                                               .onSeletingSuggestionSn(value);
+                                        } else {
+                                          viewModel.onSeletingSuggestion(value);
                                         }
                                       },
                                     ),

@@ -803,7 +803,7 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
   String deleteUser(List<String> usersId, String customerId) {
     var deleteString = """mutation userManagementDeleteUser{
   userManagementDeleteUser(deleteUser: {
-  users: $usersId,
+  users: ${Utils.getStringListData(usersId)},
      customerUid:"$customerId"
   }){
      isDeleted
@@ -3490,6 +3490,44 @@ createAsset(
     var data = """
 mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
   deleteMetaDataNotes(userAssetNoteUid:\$userAssetNoteUid)
+}""";
+    return data;
+  }
+
+  getManageUserEditData(String? searchKey, int? pageNumber) {
+    var data = """query{
+    userManagementUserList(searchKey:"$searchKey",pageNumber:$pageNumber){
+    users{
+    first_name,
+    last_name,
+    
+    address{
+        city,
+        state,
+        country,
+        
+    },
+    loginId,
+    application_access{
+        role_name,
+        userUID,
+        applicationIconUrl,
+        applicationName
+    },
+    userUid,
+    createdBy,
+    createdOn,
+    job_title,
+    job_type,
+    lastLoginDate,
+    user_type,
+    emailVerified,
+    
+    
+    
+
+    }
+    }
 }""";
     return data;
   }

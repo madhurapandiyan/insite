@@ -25,8 +25,6 @@ class ManageUserViewModel extends InsiteViewModel {
     this._searchKeyword = keyword;
   }
 
-
-
   updateSearchDataToEmpty() {
     Logger().d("updateSearchDataToEmpty");
     _assets = [];
@@ -58,6 +56,9 @@ class ManageUserViewModel extends InsiteViewModel {
 
   bool _showDeSelect = false;
   bool get showDeSelect => _showDeSelect;
+
+  bool _showMenu = false;
+  bool get showMenu => _showMenu;
 
   int pageNumber = 1;
 
@@ -165,6 +166,26 @@ class ManageUserViewModel extends InsiteViewModel {
     }
   }
 
+  onSelectedItemClicK(String value, BuildContext context) {
+    if (value == "Deselect All") {
+      onItemDeselect();
+    } else if (value == "Delete") {
+      onDeleteClicked(context);
+    } else if (value == "Edit User") {
+      onEditClicked();
+    } else if (value == "Add User") {
+       onClickedAddUserView();
+    }
+  }
+
+
+  onClickedAddUserView(){
+    _navigationService!.navigateWithTransition(AddNewUserView(
+      isEdit: false,
+      user: null,
+    ),transition: "fade");
+  }
+
   onItemSelected(index) {
     try {
       _assets[index].isSelected = !_assets[index].isSelected;
@@ -188,7 +209,8 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   onEditClicked() {
-    UserRow row = _assets.firstWhere((element) => element.isSelected);
+    UserRow row = _assets.singleWhere((element) => element.isSelected);
+    Logger().wtf(row.user!.toJson());
     onCardButtonSelected(row.user!);
   }
 
@@ -225,10 +247,11 @@ class ManageUserViewModel extends InsiteViewModel {
       for (int i = 0; i < assets.length; i++) {
         var data = assets[i];
         if (data.isSelected) {
-          userIds.add(doubleQuote + data.user!.userUid! + doubleQuote);
+          userIds.add(data.user!.userUid!);
         }
       }
-      if (userIds.isNotEmpty) {
+      Logger().w(userIds.length);
+      if (userIds != null) {
         showLoadingDialog();
         var result = await _manageUserService!.deleteUsers(userIds);
         if (result != null) {
@@ -244,16 +267,13 @@ class ManageUserViewModel extends InsiteViewModel {
     }
   }
 
-  deleteUsersFromList(List<String?> ids) async {
+  deleteUsersFromList(List<String?> ids) {
     Logger().i("deleteUsersFromList");
-    for (int i = 0; i < assets.length; i++) {
-      var data = assets[i];
-      for (int j = 0; j < ids.length; j++) {
-        if (data.user!.userUid == ids[j]) {
-          assets.removeAt(i);
-        }
-      }
-    }
+
+    ids.forEach((id) {
+      assets.removeWhere((element) => element.user!.userUid == id);
+    });
+
     _totalCount = _totalCount - ids.length;
     notifyListeners();
     checkEditAndDeleteVisibility();
@@ -274,15 +294,18 @@ class ManageUserViewModel extends InsiteViewModel {
           _showEdit = false;
           _showDelete = true;
           _showDeSelect = true;
+          _showMenu = true;
         } else {
           _showEdit = true;
           _showDelete = true;
           _showDeSelect = true;
+          _showMenu = true;
         }
       } else {
         _showEdit = false;
         _showDelete = false;
         _showDeSelect = false;
+        _showMenu = false;
       }
     } catch (e) {}
     notifyListeners();

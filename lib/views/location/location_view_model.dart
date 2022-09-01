@@ -40,6 +40,8 @@ class LocationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  MinMaxZoomPreference? minMaxZoomPreference;
+
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
   CustomInfoWindowController get customInfoWindowController =>
@@ -263,14 +265,17 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   onSeletingSuggestion(LatLng value) async {
-    var control = await controller.future;
-    control.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: value, zoom: 10)));
+    Logger().w(value.latitude);
+    Logger().i("trigger");
+    GoogleMapController control = await controller.future;
+    control.animateCamera(CameraUpdate.newLatLngZoom(value, 10));
+
     centerPosition = CameraPosition(target: value, zoom: 1);
+
     notifyListeners();
   }
 
-  onSeletingSuggestionSn(MapRecord value) async {
+  onSeletingSuggestionSn(LatLng value) async {
     _assetLocation!.mapRecords!.clear();
     clusterMarkers.clear();
     markers.clear();
@@ -278,18 +283,17 @@ class LocationViewModel extends InsiteViewModel {
     manager!.items.toList().clear();
 
     notifyListeners();
-    var control = await controller.future;
-    control.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(value.lastReportedLocationLatitude!,
-            value.lastReportedLocationLongitude!),
-        zoom: 10)));
-    centerPosition = CameraPosition(
-        target: LatLng(value.lastReportedLocationLatitude!,
-            value.lastReportedLocationLongitude!),
-        zoom: 1);
-    _assetLocation!.mapRecords?.add(value);
-    clusterMarker();
+   
+    //Logger().w(_assetLocation!.mapRecords!.first!.toJson());
+    GoogleMapController control = await controller.future;
+    control.animateCamera(CameraUpdate.newLatLngZoom(value, 10));
+    centerPosition = CameraPosition(target: value, zoom: 1);
+      clusterMarkers.add(InsiteMarker(
+        latLng: value
+      ));
     manager!.updateMap();
+    notifyListeners();
+
     notifyListeners();
   }
 

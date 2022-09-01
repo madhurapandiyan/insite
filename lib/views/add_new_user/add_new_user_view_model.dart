@@ -68,7 +68,7 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   List<String> languageTypeValueList = ["English"];
 
-  String? jobTypeValue;
+  String? jobTypeValue = "Employee";
 
   onJobTypeSelected(value) {
     jobTypeValue = value;
@@ -94,7 +94,12 @@ class AddNewUserViewModel extends InsiteViewModel {
   AddNewUserViewModel(Users? user, bool? isEdit) {
     this.user = user;
     this._enableAdd = isEdit!;
-    if (user != null) {
+    if (user!=null&&user.loginId != null &&
+        user.first_name != null &&
+        user.last_name != null &&
+        user.phone != null &&
+        user.address!.country != null &&
+        user.address!.zipcode != null) {
       emailController.text = user.loginId!;
       firstNameController.text = user.first_name!;
       lastNameController.text = user.last_name!;
@@ -227,10 +232,43 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   getUser() async {
     Logger().i("getUser ");
-    ManageUser? result = await _manageUserService.getUser(user!.userUid);
+    ManageUser? result = await _manageUserService.getUser(user!.userUid,
+        graphqlSchemaService!.getManageUserEditData(user!.loginId, 1));
     try {
       if (result != null) {
-        this.user = result.user!;
+        // this.user = result.user!;
+
+        Logger().w(result.users!.first.toJson());
+        for (var editData in result.users!) {
+          emailController.text = editData.loginId!;
+          firstNameController.text = editData.first_name!;
+          lastNameController.text = editData.last_name!;
+          //jobTypeValue = editData.job_type!;
+          jobTitleValue = editData.job_title;
+        }
+
+        for (int i = 0; i < assetsData.length; i++) {
+          var data = assetsData[i];
+          for (var element in result.users!) {
+            for (int j = 0; j < element.application_access!.length; j++) {
+              var dataApplication = element.application_access![j];
+
+              if (data.application!.tpaasAppName ==
+                  dataApplication.applicationName) {
+                assetsData[i].isSelected = true;
+                assetsData[i].isPermissionSelected = true;
+                Logger().i("getUser ${dataApplication.role_name}");
+                var applicationData = ApplicationSelectedDropDown(
+                    accessData: data,
+                    applicationName: data.application!.tpaasAppName,
+                    value: dataApplication.role_name,
+                    key: data.application!.appUID);
+                applicationSelectedDropDownList.add(applicationData);
+              }
+            }
+          }
+        }
+
         jobTypeValue = result.user!.job_type!;
         jobTitleValue = result.user!.job_title!;
         Logger().i("getUser ${result.user!.application_access!.length}");

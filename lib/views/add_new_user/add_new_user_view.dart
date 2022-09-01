@@ -482,7 +482,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               // ),
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: InsiteButton(
+                                child: 
+                               widget.user==null? InsiteButton(
                                   width:
                                       MediaQuery.of(context).size.width * 0.38,
                                   height: MediaQuery.of(context).size.height *
@@ -531,7 +532,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     }
                                   },
                                   textColor: appbarcolor,
-                                ),
+                                ):SizedBox()
                               ),
                               SizedBox(
                                 height: 50,

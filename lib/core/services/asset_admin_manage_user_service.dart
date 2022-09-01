@@ -188,35 +188,48 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<ManageUser?> getUser(String? userId) async {
+  Future<ManageUser?> getUser(String? userId, String? query) async {
     Logger().i("getUser $isVisionLink");
     try {
-      if (isVisionLink) {
-        Map<String, String?> queryMap = Map();
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected!.CustomerUID;
-        }
-        ManageUser adminManageUserResponse = await MyApi()
-            .getClientSeven()!
-            .getUser(
-                Urls.adminManagerUserSumaryVL +
-                    "/" +
-                    userId! +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
-        return adminManageUserResponse;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+            return ManageUser.fromJson(data.data["userManagementUserList"]);
       } else {
-        Map<String, String?> queryMap = Map();
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected!.CustomerUID;
+        if (isVisionLink) {
+          Map<String, String?> queryMap = Map();
+          if (customerSelected != null) {
+            queryMap["customerUid"] = customerSelected!.CustomerUID;
+          }
+          ManageUser adminManageUserResponse = await MyApi()
+              .getClientSeven()!
+              .getUser(
+                  Urls.adminManagerUserSumaryVL +
+                      "/" +
+                      userId! +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return adminManageUserResponse;
+        } else {
+          Map<String, String?> queryMap = Map();
+          if (customerSelected != null) {
+            queryMap["customerUid"] = customerSelected!.CustomerUID;
+          }
+          ManageUser adminManageUserResponse = await MyApi()
+              .getClient()!
+              .getUser(
+                  Urls.adminManagerUserSumary +
+                      "/" +
+                      userId! +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return adminManageUserResponse;
         }
-        ManageUser adminManageUserResponse = await MyApi().getClient()!.getUser(
-            Urls.adminManagerUserSumary +
-                "/" +
-                userId! +
-                FilterUtils.constructQueryFromMap(queryMap),
-            accountSelected!.CustomerUID);
-        return adminManageUserResponse;
       }
     } catch (e) {
       Logger().e(e.toString());

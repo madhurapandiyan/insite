@@ -32,6 +32,7 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
       list!.clear();
       result.geofenceSearchLoaction!.locations!.forEach((element) {
         LocationKey data = LocationKey(
+          
           value: element.shortString,
           latitude: double.parse(element.coords?.lat ?? "0.0"),
           longitude: double.parse(element.coords?.lon ?? "0.0"),

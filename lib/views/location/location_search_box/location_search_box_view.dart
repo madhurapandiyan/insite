@@ -101,16 +101,15 @@ class LocationSearchBoxView extends StatelessWidget {
                             viewModel.onSelect(suggestion!.value as String);
                             if (viewModel.searchDropDownValue == "S/N") {
                               onSeletingSuggestion!(
+                                LatLng(suggestion.latitude!,
+                                    suggestion.longitude!),
+                                true,
+                              );
+                            } else {
+                              onSeletingSuggestion!(
                                   LatLng(suggestion.latitude!,
                                       suggestion.longitude!),
-                                  true);
-                            } else {
-                              var data = viewModel
-                                  .result!.assetLocation!.mapRecords!
-                                  .singleWhere((element) =>
-                                      element!.assetIdentifier ==
-                                      suggestion.value);
-                              onSeletingSuggestion!(data, false);
+                                  false);
                             }
                           }
                         },
