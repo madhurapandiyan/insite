@@ -803,7 +803,7 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
   String deleteUser(List<String> usersId, String customerId) {
     var deleteString = """mutation userManagementDeleteUser{
   userManagementDeleteUser(deleteUser: {
-  users: $usersId,
+  users: ${Utils.getStringListData(usersId)},
      customerUid:"$customerId"
   }){
      isDeleted
@@ -3493,4 +3493,6 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
 }""";
     return data;
   }
+
+  
 }

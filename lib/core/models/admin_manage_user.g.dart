@@ -136,9 +136,13 @@ ManageUser _$ManageUserFromJson(Map<String, dynamic> json) => ManageUser(
       user: json['user'] == null
           ? null
           : Users.fromJson(json['user'] as Map<String, dynamic>),
+      users: (json['users'] as List<dynamic>?)
+          ?.map((e) => Users.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ManageUserToJson(ManageUser instance) =>
     <String, dynamic>{
       'user': instance.user,
+      'users': instance.users,
     };

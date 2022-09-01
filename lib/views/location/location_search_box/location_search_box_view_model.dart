@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_search.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/location_search.dart';
@@ -21,7 +22,7 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
 
   List<LocationKey>? list = [];
 
-  AssetLocationSearch? result;
+AssetLocationSearch ? result;
 
   searchLocation(query) async {
     SearchLocationGeofence? result =

@@ -130,8 +130,9 @@ class ApplicationAccessData {
 @JsonSerializable()
 class ManageUser {
   Users? user;
+  List<Users>? users;
 
-  ManageUser({this.user});
+  ManageUser({this.user,this.users});
 
   factory ManageUser.fromJson(Map<String, dynamic> json) =>
       _$ManageUserFromJson(json);
