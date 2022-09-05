@@ -66,7 +66,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     setUp();
 
     Future.delayed(Duration(seconds: 1), () async {
-      showLoadingDialog();
+      showLoadingDialog(tapDismiss: false);
       await getNotificationTypesData();
       await onGettingFaultCodeData();
       hideLoadingDialog();
@@ -1319,8 +1319,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       geofenceData = await _geofenceservice!.getGeofenceData();
       if (geofenceData != null) {
         geofenceData!.geofences!.forEach((element) {
-          geoenceData.add(CheckBoxDropDown(
-              items: element.GeofenceName));
+          geoenceData.add(CheckBoxDropDown(items: element.GeofenceName));
         });
       }
       hideLoadingDialog();
@@ -1406,7 +1405,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           element!.contains("Odometer") ||
           element.contains("Switches") ||
           element.contains("Fluid Analysis") ||
-          element.contains("Maintenance") ||
+          //  element.contains("Maintenance") ||
           element.contains("Inspection") ||
           element.contains("Asset Security") ||
           element.contains("Fluid Analysis") ||
@@ -1954,7 +1953,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       await gettingNotificationIdandOperands();
       AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
           alertCategoryID: 1,
-          alertGroupId: 1,
+          alertGroupId: dropDownInitialValue == "Geofence" ? 2 : 1,
           alertTitle: notificationController.text,
           allAssets: false,
           assetUIDs: assetUidData,
@@ -1975,21 +1974,21 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             await _notificationService!.addNewNotification(
                 notificationPayLoad,
                 graphqlSchemaService!.createNotification(
-                  geofenceId: geofenceId,
-                  siteOperand: siteOperand,
-                  alertCategoryID: 1,
-                  alertGroupId: dropDownInitialValue == "Geofence" ? 2 : 1,
-                  alertTitle: notificationController.text,
-                  assetId: assetUidData,
-                  currentDate: DateFormat("MM/dd/yyyy").format(DateTime.now()),
-                  notificationDeliveryChannel: "email",
-                  notificationSubscribers: NotificationSubscribers(
-                      emailIds: emailIds, phoneNumbers: []),
-                  notificationTypeGroupID: notificationTypeGroupID,
-                  notificationTypeId: notificationTypeId,
-                  operand: operandData,
-                  numberOfOccurences: 1,
-                  schedule: scheduleDay,
+                  // geofenceId: geofenceId,
+                  // siteOperand: siteOperand,
+                  // alertCategoryID: 1,
+                  // alertGroupId: dropDownInitialValue == "Geofence" ? 2 : 1,
+                  // alertTitle: notificationController.text,
+                  // assetId: assetUidData,
+                  // currentDate: DateFormat("MM/dd/yyyy").format(DateTime.now()),
+                  // notificationDeliveryChannel: "email",
+                  // notificationSubscribers: NotificationSubscribers(
+                  //     emailIds: emailIds, phoneNumbers: []),
+                  // notificationTypeGroupID: notificationTypeGroupID,
+                  // notificationTypeId: notificationTypeId,
+                  // operand: operandData,
+                  // numberOfOccurences: 1,
+                  // schedule: scheduleDay,
                 ));
 
         if (response != null) {

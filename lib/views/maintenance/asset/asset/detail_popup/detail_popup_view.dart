@@ -273,8 +273,8 @@ class _DetailPopupViewState extends State<DetailPopupView>
                                   color: Theme.of(context).backgroundColor,
                                   border: Border.all(color: Colors.white)),
                               tabs: [
-                                Tab(text: "\t Checklist & Parts List \t"),
-                                Tab(text: "\t Complete \t "),
+                                Tab(text: " Checklist & Parts List "),
+                                Tab(text: " Complete  "),
                               ]),
                         ),
                         Padding(

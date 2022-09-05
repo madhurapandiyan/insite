@@ -3,7 +3,6 @@ import 'package:insite/core/models/notification.dart' as notCount;
 
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
-import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -14,7 +13,7 @@ class NotificationWidget extends StatefulWidget {
   final notCount.NotificationData? notificationType;
   final double? count;
   final bool? isLoading;
-  final Function(MAINTENANCETOTAL, String, int count)? onFilterSelected;
+  final Function(String)? onFilterSelected;
 
   NotificationWidget(
       {this.notificationType,
@@ -27,7 +26,8 @@ class NotificationWidget extends StatefulWidget {
 }
 
 class _FaultWidgetState extends State<NotificationWidget> {
-  Widget maintenanceDetailCount({notCount.Notification? data}) {
+  Widget maintenanceDetailCount(
+      {notCount.Notification? data, Function? onTap}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -35,10 +35,13 @@ class _FaultWidgetState extends State<NotificationWidget> {
             text: data!.notificationSubType,
             fontWeight: FontWeight.w700,
             size: 14.0),
-       InsiteButton(
-        title: data.count!.round().toString(),
-        textColor: white,
-       )
+        InsiteButton(
+          title: data.count!.round().toString(),
+          onTap: () {
+            widget.onFilterSelected!(data.notificationSubType!);
+          },
+          textColor: white,
+        )
       ],
     );
   }
@@ -78,7 +81,9 @@ class _FaultWidgetState extends State<NotificationWidget> {
                                     .notificationType!.notifications![index];
                                 return Column(
                                   children: [
-                                    maintenanceDetailCount(data: data),
+                                    maintenanceDetailCount(
+                                      data: data,
+                                    ),
                                     // data?. != null &&
                                     //         data!.subCount!.isNotEmpty
                                     //     ? Container(

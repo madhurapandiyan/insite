@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/asset_location_search.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/location_search.dart';
@@ -20,6 +21,8 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
   TextEditingController searchController = TextEditingController();
 
   List<LocationKey>? list = [];
+
+AssetLocationSearch ? result;
 
   searchLocation(query) async {
     SearchLocationGeofence? result =
@@ -45,14 +48,13 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
   }
 
   searchLocationSeralNumber(String value) async {
-    AssetLocationSearch? result =
-        await _assetLocationService.getAssetLocationsearch(graphqlSchemaService!
-            .searchLocationSerialNumberData(
-                query: value, pageNumber: 1, pageSize: 1000));
+    result = await _assetLocationService.getAssetLocationsearch(
+        graphqlSchemaService!.searchLocationSerialNumberData(
+            query: value, pageNumber: 1, pageSize: 1000));
 
-    if (result != null && result.assetLocation!.mapRecords!.isNotEmpty) {
+    if (result != null && result!.assetLocation!.mapRecords!.isNotEmpty) {
       list!.clear();
-      result.assetLocation!.mapRecords!.forEach((element) {
+      result!.assetLocation!.mapRecords!.forEach((element) {
         LocationKey data = LocationKey(
             value: element!.assetSerialNumber ?? "",
             latitude: element.lastReportedLocationLatitude,

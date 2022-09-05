@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/models/asset_location.dart';
+import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/location/location_search_box/location_search_box_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -10,7 +12,7 @@ import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class LocationSearchBoxView extends StatelessWidget {
-  final Function(LatLng)? onSeletingSuggestion;
+  final Function(dynamic, bool isSerialNo)? onSeletingSuggestion;
 
   LocationSearchBoxView({this.onSeletingSuggestion});
   @override
@@ -99,8 +101,20 @@ class LocationSearchBoxView extends StatelessWidget {
                         onSuggestionSelected: (suggestion) {
                           if ((suggestion as LocationKey?) != null) {
                             viewModel.onSelect(suggestion!.value as String);
-                            onSeletingSuggestion!(LatLng(
-                                suggestion.latitude!, suggestion.longitude!));
+                            if (viewModel.searchDropDownValue == "S/N") {
+                              var data = viewModel
+                                  .result!.assetLocation!.mapRecords!
+                                  .singleWhere((element) =>
+                                      element!.assetSerialNumber ==
+                                      suggestion.value);
+
+                              onSeletingSuggestion!(data, true);
+                            } else {
+                              onSeletingSuggestion!(
+                                  LatLng(suggestion.latitude!,
+                                      suggestion.longitude!),
+                                  false);
+                            }
                           }
                         },
                         textFieldConfiguration: TextFieldConfiguration(

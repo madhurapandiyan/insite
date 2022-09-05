@@ -75,9 +75,13 @@ class NotificationViewModel extends InsiteViewModel {
 
   bool _loading = true;
   bool get loading => _loading;
+  List<String>? filterValue = [];
 
-  NotificationViewModel() {
+  NotificationViewModel({String? value}) {
     this.log = getLogger(this.runtimeType.toString());
+    if (value != null && value.isNotEmpty) {
+      filterValue!.add(value);
+    }
     _mainNotificationService!.setUp();
     setUp();
 
@@ -120,19 +124,18 @@ class NotificationViewModel extends InsiteViewModel {
 
       await getNotificationData();
 
-      notification.NotificationsData? response = await _mainNotificationService!
-          .getNotificationsData(
+      notification.NotificationsData? response =
+          await _mainNotificationService!.getNotificationsData(
               "0",
               "0",
               startDate!,
               endDate!,
               _graphqlSchemaService!.seeAllNotification(
-                  endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-                  startDate:
-                      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                  pageNo: pageNumber,
-                  
-                  ));
+                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                startDate:
+                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                pageNo: pageNumber,
+              ));
       if (response != null) {
         _assets.clear();
         if (response.total!.items != null) {
@@ -234,8 +237,7 @@ class NotificationViewModel extends InsiteViewModel {
             startDate,
             endDate,
             _graphqlSchemaService!.seeAllNotification(
-               
-                pageNo: pageNumber));
+                pageNo: pageNumber, notificationType: filterValue));
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;

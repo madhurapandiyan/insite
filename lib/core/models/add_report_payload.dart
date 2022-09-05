@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'add_report_payload.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class AddReportPayLoad {
   int? assetFilterCategoryID;
   int? reportCategoryID;
@@ -14,16 +14,30 @@ class AddReportPayLoad {
   String? emailSubject;
   List<String>? emailRecipients;
   String? svcMethod;
-  dynamic svcbody;
+
   bool? allAssets;
-  String ?emailContent;
+  String? emailContent;
   // List<Null>? filterOptions;
   // List<Null>? filterTag;
   String? queryUrl;
   String? reportType;
   List<String>? reportColumns;
- // List<String>?  svcBody;
-
+  List<String>? svcbody;
+  List<String>? assetFilterUIDs;
+  String? productfamily;
+  String? model;
+  String? assetstatus;
+  String? fuelLevelPercentLT;
+  String? idleEfficiencyGT;
+  String? idleEfficiencyLTE;
+  String? assetIDContains;
+  String? snContains;
+  String? Latitude;
+  String? Longitude;
+  String? radiuskm;
+  String? manufacturer;
+  SvcbodyResponse? svcbodyJson;
+  String? reportUid;
   AddReportPayLoad(
       {this.assetFilterCategoryID,
       this.reportCategoryID,
@@ -37,17 +51,44 @@ class AddReportPayLoad {
       this.emailRecipients,
       this.svcMethod,
       this.allAssets,
-      this.svcbody,
+
       // this.filterOptions,
       // this.filterTag,
       this.queryUrl,
       this.emailContent,
       this.reportType,
       this.reportColumns,
+      this.Latitude,
+      this.Longitude,
+      this.assetFilterUIDs,
+      this.assetIDContains,
+      this.assetstatus,
+      this.fuelLevelPercentLT,
+      this.idleEfficiencyGT,
+      this.idleEfficiencyLTE,
+      this.manufacturer,
+      this.model,
+      this.productfamily,
+      this.radiuskm,
+      this.snContains,
+      this.svcbody,
+      this.svcbodyJson,
       //this.svcBody
-      });
+      this.reportUid});
 
- factory AddReportPayLoad.fromJson(Map<String, dynamic> json)=>_$AddReportPayLoadFromJson(json);
+  factory AddReportPayLoad.fromJson(Map<String, dynamic> json) =>
+      _$AddReportPayLoadFromJson(json);
 
-  Map<String, dynamic> toJson()=>_$AddReportPayLoadToJson(this); 
+  Map<String, dynamic> toJson() => _$AddReportPayLoadToJson(this);
+}
+
+@JsonSerializable()
+class SvcbodyResponse {
+  List<String>? assetuids;
+  List<String>? colFilters;
+  SvcbodyResponse({this.assetuids, this.colFilters});
+  factory SvcbodyResponse.fromJson(Map<String, dynamic> json) =>
+      _$SvcbodyResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SvcbodyResponseToJson(this);
 }

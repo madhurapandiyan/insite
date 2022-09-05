@@ -106,6 +106,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                     setState(() {
                                       dateRange = dateRange;
                                     });
+                                    viewModel.calenderViewChange();
                                     viewModel.refresh();
                                   }
                                 },
@@ -242,7 +243,8 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                   },
                                   onSelectionChanged:
                                       (calendarSelectionDetails) {},
-                                  view: CalendarView.week,
+                                  view: viewModel.calenderView,
+                                  //initialDisplayDate: DateTime.tryParse(viewModel.startDate!),
                                   todayHighlightColor:
                                       Theme.of(context).buttonColor,
                                   todayTextStyle: TextStyle(
@@ -259,8 +261,11 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                             .bodyText1!
                                             .color),
                                   ),
-                                  minDate: viewModel.minDate,
-                                  maxDate: viewModel.maxDate,
+                                  minDate:
+                                      DateTime.tryParse(viewModel.startDate!),
+                                  maxDate:
+                                      DateTime.tryParse(viewModel.endDate!)!
+                                          .add(Duration(days: 1)),
                                   onViewChanged: onViewChanged,
                                   viewHeaderStyle: ViewHeaderStyle(
                                     dayTextStyle: TextStyle(

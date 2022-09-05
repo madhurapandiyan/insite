@@ -119,12 +119,19 @@ class AssetDashboardViewModel extends InsiteViewModel {
     AssetUtilization? result = await _assetUtilizationService!
         .getAssetUtilGraphDate(assetDetail?.assetUid,
             '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}');
-    _assetUtilization = result;
-    _utilizationGreatestValue = Utils.greatestOfThree(
-        _assetUtilization!.totalDay!.runtimeHours!,
-        _assetUtilization!.totalWeek!.runtimeHours!,
-        _assetUtilization!.totalMonth!.runtimeHours);
-    _loading = false;
+    if (result!.totalDay == null ||
+        result.totalMonth == null ||
+        result.totalWeek == null) {
+      _loading = false;
+    } else {
+      _assetUtilization = result;
+      _utilizationGreatestValue = Utils.greatestOfThree(
+          _assetUtilization!.totalDay!.runtimeHours!,
+          _assetUtilization!.totalWeek!.runtimeHours!,
+          _assetUtilization!.totalMonth!.runtimeHours);
+      _loading = false;
+    }
+
     notifyListeners();
   }
 

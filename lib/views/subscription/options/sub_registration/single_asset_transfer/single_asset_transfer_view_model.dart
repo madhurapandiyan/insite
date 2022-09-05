@@ -15,6 +15,7 @@ import 'package:insite/core/models/get_single_transfer_deviceId_graphql.dart';
 import 'package:insite/core/models/get_single_transfer_device_id.dart';
 import 'package:insite/core/models/hierachy_graphql.dart';
 import 'package:insite/core/models/hierarchy_model.dart';
+import 'package:insite/core/models/industry_list_data.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
 import 'package:insite/core/models/preview_data.dart';
 import 'package:insite/core/services/local_service.dart';
@@ -267,13 +268,32 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getIndustryGraphqlData(String? value) {
+  getIndustryGraphqlData(String? value) async {
     if (enableGraphQl) {
       _initialIndustryDetail = "Select Industry Details";
-      _industryDetails = [];
+      _industryDetails = ["Select Industry Details"];
       _initialSubIndustryDetailValue = "Select Secondary Details";
-      _industrySubDetails = [];
-      _showSubIndustry = true;
+      _industrySubDetails = ["Select Secondary Details"];
+      _showSubIndustry = false;
+      notifyListeners();
+      IndustryListData? result = await _subscriptionService!
+          .getIndustryTransferData(
+              graphqlSchemaService!.singleAssetTransferIndustryData());
+      if (result != null) {
+        result.primarySecondaryIndustries!.forEach((element) {
+          _industryDetails.add(element.primaryIndustry!);
+         
+        });
+
+        for (var i = 0; i < result.primarySecondaryIndustries!.length; i++) {
+          var data=result.primarySecondaryIndustries![i];
+          if(data.primaryIndustry==value){
+            _showSubIndustry=true;
+            _industrySubDetails.add(data.secondaryIndustries!);
+          }
+        }
+      }
+      Logger().wtf(result!.primarySecondaryIndustries!.first.toJson());
       notifyListeners();
       Logger().w("graphql api  integration");
     } else {

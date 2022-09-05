@@ -40,6 +40,8 @@ class LocationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
+  
+
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
   CustomInfoWindowController get customInfoWindowController =>
@@ -263,10 +265,37 @@ class LocationViewModel extends InsiteViewModel {
   }
 
   onSeletingSuggestion(LatLng value) async {
-    var control = await controller.future;
-    control.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: value, zoom: 10)));
+    Logger().w(value.latitude);
+   
+    GoogleMapController control = await controller.future;
+    control.animateCamera(CameraUpdate.newLatLngZoom(value, 10));
+
     centerPosition = CameraPosition(target: value, zoom: 1);
+
+    notifyListeners();
+  }
+
+  onSeletingSuggestionSn(MapRecord value) async {
+    Logger().w(value.toJson());
+    _assetLocation!.mapRecords!.clear();
+    clusterMarkers.clear();
+    markers.clear();
+    latlngs.clear();
+    manager!.items.toList().clear();
+
+    notifyListeners();
+    var control = await controller.future;
+    control.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(value.lastReportedLocationLatitude!,
+            value.lastReportedLocationLongitude!),
+        zoom: 10)));
+    centerPosition = CameraPosition(
+        target: LatLng(value.lastReportedLocationLatitude!,
+            value.lastReportedLocationLongitude!),
+        zoom: 1);
+    _assetLocation!.mapRecords?.add(value);
+    clusterMarker();
+    manager!.updateMap();
     notifyListeners();
   }
 

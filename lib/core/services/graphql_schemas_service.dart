@@ -874,8 +874,7 @@ locationReportedTimeUTC
   manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
   assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
   fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + Utils.fuelFilterQuery(fuelLevelPercentLt) + "\""}"}, 
-  idleEfficiencyGT:"", 
-  idleEfficiencyLTE: "", 
+
   idleEfficiencyRanges: ${idleEficiencyGT == null ? "\"\"" : "${"\"" + idleEficiencyGT! + "\""}"}, 
   startDate: "$startDate", 
   EndDate: "$endDate") {
@@ -1018,7 +1017,7 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
   String deleteUser(List<String> usersId, String customerId) {
     var deleteString = """mutation userManagementDeleteUser{
   userManagementDeleteUser(deleteUser: {
-  users: $usersId,
+  users: ${Utils.getStringListData(usersId)},
      customerUid:"$customerId"
   }){
      isDeleted
@@ -2138,118 +2137,43 @@ lastLocationUpdateUTC
   }
 
   String addReportPayLoad(
-      {int? reportCategoryID,
-      int? reportFormat,
-      String? reportTitle,
-      String? reportScheduledDate,
-      String? reportStartDate,
-      String? reportEndDate,
-      String? emailSubject,
-      List? emailRecipients,
-      String? emailContent,
-      String? svcMethod,
-      bool? allAssets,
-      dynamic svcbody,
-      String? queryUrl,
-      dynamic svcBodyJson,
-      dynamic reportColumns,
-      String? assetsDropDownValue,
-      String? reportType}) {
-    var addReportPayLoad;
-    if (assetsDropDownValue == "Asset Operation" ||
-        assetsDropDownValue == "Fleet Summary" ||
-        assetsDropDownValue == "Multi-Asset Utilization") {
-      addReportPayLoad = """mutation{
-  createNotificationReport(
-    assetFilterCategoryID: 1,
-    reportCategoryID: 0,
-    reportFormat: $reportFormat,
-    reportPeriod: 1,
-  reportTitle: "$reportTitle",
-    reportScheduledDate: "$reportScheduledDate",
-    reportStartDate: "$reportStartDate",
-    emailSubject: "$emailSubject",
-  emailRecipients:$emailRecipients,
-    svcMethod:"$svcMethod",
-    allAssets: false,
-    filterOptions: [
-      
-    ],
-    filterTag: [
-      
-    ],
-    queryUrl: "$queryUrl",
-    reportType: "$reportType",
-    reportColumns: ${Utils.getStringListData(reportColumns)},
-    svcbody:$svcbody,
-   reportEndDate:${reportEndDate == null ? "\"\"" : "${"\"" + reportEndDate + "\""}"}
-    ){
-reportUid
-  }
-}""";
-    } else if (assetsDropDownValue == "Utilization Details" ||
-        assetsDropDownValue == "Fault Code Asset Details" ||
-        assetsDropDownValue == "Backhoe Loader Operation" ||
-        assetsDropDownValue == "Excavator Usage" ||
-        assetsDropDownValue == "Multi-Asset Backhoe Loader Operation" ||
-        assetsDropDownValue == "Multi-Asset Excavator Usage") {
-      addReportPayLoad = """mutation{
-  createNotificationReport(
-    assetFilterCategoryID: 1,
-    reportCategoryID: 0,
-    reportFormat: $reportFormat,
-    reportPeriod: 1,
-  reportTitle: "$reportTitle",
-    reportScheduledDate: "$reportScheduledDate",
-    reportStartDate: "$reportStartDate",
-    emailSubject: "$emailSubject",
-  emailRecipients:$emailRecipients,
-    svcMethod:"$svcMethod",
-    allAssets: false,
-    filterOptions: [
-      
-    ],
-    filterTag: [
-      
-    ],
-    queryUrl: "$queryUrl",
-    reportType: "$reportType",
-    reportColumns: ${Utils.getStringListData(reportColumns)},
- reportEndDate:${reportEndDate == null ? "\"\"" : "${"\"" + reportEndDate + "\""}"}
-    ){
-reportUid
-  }
-}""";
-    } else if (assetsDropDownValue == "Fault Summary Faults List") {
-      addReportPayLoad = """mutation{
-  createNotificationReport(
-    assetFilterCategoryID: 1,
-    reportCategoryID: 0,
-    reportFormat: $reportFormat,
-    reportPeriod: 1,
-  reportTitle: "$reportTitle",
-    reportScheduledDate: "$reportScheduledDate",
-    reportStartDate: "$reportStartDate",
-    emailSubject: "$emailSubject",
-  emailRecipients:$emailRecipients,
-  svcbodyJson:$svcBodyJson
-    svcMethod:"$svcMethod",
-    allAssets: false,
-    filterOptions: [
-      
-    ],
-    filterTag: [
-      
-    ],
-    queryUrl: "$queryUrl",
-    reportType: "$reportType",
-    reportColumns: ${Utils.getStringListData(reportColumns)},
- reportEndDate:${reportEndDate == null ? "\"\"" : "${"\"" + reportEndDate + "\""}"}
-    ){
-reportUid
-  }
-}""";
+      // {int? reportCategoryID,
+      // int? reportFormat,
+      // String? reportTitle,
+      // String? reportScheduledDate,
+      // String? reportStartDate,
+      // String? reportEndDate,
+      // String? emailSubject,
+      // List? emailRecipients,
+      // String? emailContent,
+      // String? svcMethod,
+      // bool? allAssets,
+      // dynamic svcbody,
+      // String? queryUrl,
+      // dynamic svcBodyJson,
+      // dynamic reportColumns,
+      // String? assetsDropDownValue,
+      // String? reportType}
+      ) {
+    var addReportPayLoad = """
+mutation (\$assetFilterCategoryID: Int, \$assetFilterUIDs: [String], \$reportCategoryID: Int, \$reportFormat: Int, \$reportPeriod: Int, \$reportTitle: String, \$reportScheduledDate: String, \$reportStartDate: String, \$reportEndDate: String, \$emailSubject: String, \$emailRecipients: [String], \$emailContent: String, \$svcMethod: String, \$allAssets: Boolean, \$filterOptions: [filterOptionsObj], \$filterTag: [filterTag], \$queryUrl: String, \$reportType: String, \$reportColumns: [String], \$svcbody: [String], \$svcbodyJson: svcbodyResponse, \$productfamily: String, \$model: String, \$assetstatus: String, \$fuelLevelPercentLT: String, \$idleEfficiencyGT: String, \$idleEfficiencyLTE: String, \$assetIDContains: String, \$snContains: String, \$Latitude: String, \$Longitude: String, \$radiuskm: String, \$manufacturer: String) {
+  createNotificationReport(assetFilterCategoryID: \$assetFilterCategoryID, assetFilterUIDs: \$assetFilterUIDs, reportCategoryID: \$reportCategoryID, reportFormat: \$reportFormat, reportPeriod: \$reportPeriod, reportTitle: \$reportTitle, reportScheduledDate: \$reportScheduledDate, reportStartDate: \$reportStartDate, reportEndDate: \$reportEndDate, emailContent: \$emailContent, emailSubject: \$emailSubject, emailRecipients: \$emailRecipients, svcMethod: \$svcMethod, allAssets: \$allAssets, filterOptions: \$filterOptions, filterTag: \$filterTag, queryUrl: \$queryUrl, reportType: \$reportType, reportColumns: \$reportColumns, svcbody: \$svcbody, svcbodyJson: \$svcbodyJson, assetstatus: \$assetstatus, fuelLevelPercentLT: \$fuelLevelPercentLT, idleEfficiencyGT: \$idleEfficiencyGT, idleEfficiencyLTE: \$idleEfficiencyLTE, assetIDContains: \$assetIDContains, snContains: \$snContains, Latitude: \$Latitude, Longitude: \$Longitude, radiuskm: \$radiuskm, manufacturer: \$manufacturer, productfamily: \$productfamily, model: \$model) {
+    reportUid
+    link {
+      rel
+      href
+      method
     }
+    status
+    reqId
+    msg
+    body {
+      status
+      title
+    }
+  }
+}
+""";
 
     return addReportPayLoad;
   }
@@ -2304,90 +2228,79 @@ reportUid
   }
 
   String? getEditReportsaveData(
-      {String? reportUid,
-      String? emailSubject,
-      List? emailRecipients,
-      String? queryUrl,
-      dynamic svcbody,
-      String? emailContent,
-      String? reportTitle,
-      String? reportEndDate,
-      String? assetsDropDownValue,
-      dynamic svcbodyJson}) {
-    Logger().w(reportUid);
-    var editSaveData;
-    if (assetsDropDownValue == "Asset Operation" ||
-        assetsDropDownValue == "Fleet Summary" ||
-        assetsDropDownValue == "Multi-Asset Utilization") {
-      editSaveData = """mutation{
-  updateNotificationReport(reportUid:"$reportUid",
-    reportPeriod:1,
-    emailSubject:"$emailSubject",
-    emailRecipients:$emailRecipients ,
-    queryUrl:"$queryUrl",
-    svcbody:$svcbody,
-    emailContent:"$emailContent",
-    assetFilterCategoryID:1,
-    allAssets:false,
-    filterTag:[],
-    filterOptions:[],  
-    reportTitle:"$reportTitle",
-    reportEndDate:"$reportEndDate",
-  ){
+      // {String? reportUid,
+      // String? emailSubject,
+      // List? emailRecipients,
+      // String? queryUrl,
+      // dynamic svcbody,
+      // String? emailContent,
+      // String? reportTitle,
+      // String? reportEndDate,
+      // String? assetsDropDownValue,
+      // dynamic svcbodyJson}
+      ) {
+    var editSaveData =
+        """mutation (\$reportUid: String, \$assetFilterUIDs: [String], \$reportPeriod: Int, \$reportTitle: String, \$emailSubject: String, \$emailContent: String, \$emailRecipients: [String], \$queryUrl: String, \$reportEndDate: String, \$assetFilterCategoryID: Int, \$allAssets: Boolean, \$filterTag: [filterTag], \$filterOptions: [filterOptionsObj], \$svcbody: [String], \$svcbodyJson: svcbodyResponse){
+  updateNotificationReport(reportUid: \$reportUid, assetFilterUIDs: \$assetFilterUIDs, reportPeriod: \$reportPeriod, reportTitle: \$reportTitle, emailSubject: \$emailSubject, emailContent: \$emailContent, emailRecipients: \$emailRecipients, queryUrl: \$queryUrl, reportEndDate: \$reportEndDate, assetFilterCategoryID: \$assetFilterCategoryID, allAssets: \$allAssets, filterTag: \$filterTag, filterOptions: \$filterOptions, svcbody: \$svcbody, svcbodyJson: \$svcbodyJson){
     status,
     reqId
   }
 }""";
-      return editSaveData;
-    } else if (assetsDropDownValue == "Utilization Details" ||
-        assetsDropDownValue == "Fault Code Asset Details" ||
-        assetsDropDownValue == "Backhoe Loader Operation" ||
-        assetsDropDownValue == "Excavator Usage" ||
-        assetsDropDownValue == "Multi-Asset Excavator Usage Report" ||
-        assetsDropDownValue == "Multi-Asset Excavator Usage") {
-      editSaveData = """mutation{
-  updateNotificationReport(reportUid:"$reportUid",
-    reportPeriod:1,
-    emailSubject:"$emailSubject",
-    emailRecipients:$emailRecipients ,
-    queryUrl:"$queryUrl",
-    emailContent:"$emailContent",
-    assetFilterCategoryID:1,
-    allAssets:false,
-    filterTag:[],
-    filterOptions:[],  
-    reportTitle:"$reportTitle",
-    reportEndDate:"$reportEndDate",
-  ){
-    status,
-    reqId
-  }
-}""";
-      Logger().wtf(editSaveData);
-      return editSaveData;
-    } else if (assetsDropDownValue == "Fault Summary Faults List") {
-      editSaveData = """mutation{
-  updateNotificationReport(reportUid:"$reportUid",
-    reportPeriod:1,
-    emailSubject:"$emailSubject",
-    emailRecipients:$emailRecipients ,
-    queryUrl:"$queryUrl",
-    emailContent:"$emailContent",
-    assetFilterCategoryID:1,
-    allAssets:false,
-    filterTag:[],
-    filterOptions:[],
-    svcbodyJson:$svcbodyJson  
-    reportTitle:"$reportTitle",
-    reportEndDate:"$reportEndDate",
-  ){
-    status,
-    reqId
-  }
-}""";
-      return editSaveData;
-    }
-    return null;
+    return editSaveData;
+//     Logger().w(reportUid);
+//     var editSaveData;
+//     if (assetsDropDownValue == "Asset Operation" ||
+//         assetsDropDownValue == "Fleet Summary" ||
+//         assetsDropDownValue == "Multi-Asset Utilization") {
+//     } else if (assetsDropDownValue == "Utilization Details" ||
+//         assetsDropDownValue == "Fault Code Asset Details" ||
+//         assetsDropDownValue == "Backhoe Loader Operation" ||
+//         assetsDropDownValue == "Excavator Usage" ||
+//         assetsDropDownValue == "Multi-Asset Excavator Usage Report" ||
+//         assetsDropDownValue == "Multi-Asset Excavator Usage") {
+//       editSaveData = """mutation{
+//   updateNotificationReport(reportUid:"$reportUid",
+//     reportPeriod:1,
+//     emailSubject:"$emailSubject",
+//     emailRecipients:$emailRecipients ,
+//     queryUrl:"$queryUrl",
+//     emailContent:"$emailContent",
+//     assetFilterCategoryID:1,
+//     allAssets:false,
+//     filterTag:[],
+//     filterOptions:[],
+//     reportTitle:"$reportTitle",
+//     reportEndDate:"$reportEndDate",
+//   ){
+//     status,
+//     reqId
+//   }
+// }""";
+//       Logger().wtf(editSaveData);
+//       return editSaveData;
+//     } else if (assetsDropDownValue == "Fault Summary Faults List") {
+//       editSaveData = """mutation{
+//   updateNotificationReport(reportUid:"$reportUid",
+//     reportPeriod:1,
+//     emailSubject:"$emailSubject",
+//     emailRecipients:$emailRecipients ,
+//     queryUrl:"$queryUrl",
+//     emailContent:"$emailContent",
+//     assetFilterCategoryID:1,
+//     allAssets:false,
+//     filterTag:[],
+//     filterOptions:[],
+//     svcbodyJson:$svcbodyJson
+//     reportTitle:"$reportTitle",
+//     reportEndDate:"$reportEndDate",
+//   ){
+//     status,
+//     reqId
+//   }
+// }""";
+//       return editSaveData;
+//     }
+//     return null;
   }
 
   var reportFilterCountData = """query{
@@ -2526,42 +2439,26 @@ mutation{
   }
 
   String createNotification(
-      {int? alertCategoryID,
-      String? currentDate,
-      String? alertTitle,
-      int? alertGroupId,
-      int? notificationTypeGroupID,
-      int? notificationTypeId,
-      int? numberOfOccurences,
-      String? notificationDeliveryChannel,
-      List<Operand>? operand,
-      List<Schedule>? schedule,
-      List<String>? assetId,
-      List<String>? geofenceId,
-      dynamic siteOperand,
-      NotificationSubscribers? notificationSubscribers}) {
+      // {
+      //   int? alertCategoryID,
+      // String? currentDate,
+      // String? alertTitle,
+      // int? alertGroupId,
+      // int? notificationTypeGroupID,
+      // int? notificationTypeId,
+      // int? numberOfOccurences,
+      // String? notificationDeliveryChannel,
+      // List<Operand>? operand,
+      // List<Schedule>? schedule,
+      // List<String>? assetId,
+      // List<String>? geofenceId,
+      // dynamic siteOperand,
+      // NotificationSubscribers? notificationSubscribers
+      // }
+      ) {
     var data = """
-mutation{
-  createNotification(
-    alertCategoryID: $alertCategoryID
-assetUIDs: ${Utils.getStringListData(assetId!)}
-notificationSubscribers:${Utils.getNotificationSubscribers(notificationSubscribers!)}
-allAssets: false
-currentDate: "$currentDate"
-schedule: ${Utils.getNotificationSchedule(schedule!)}
-alertTitle: "$alertTitle"
-alertGroupId: $alertGroupId
-notificationTypeGroupID: $notificationTypeGroupID
-operands:${Utils.getOperand(operand)}
-notificationTypeId: $notificationTypeId
-numberOfOccurences: $numberOfOccurences
-notificationDeliveryChannel:"$notificationDeliveryChannel"
-geofenceUIDs: ${geofenceId!.isNotEmpty ? Utils.getStringListData(geofenceId) : null}
-assetGroupUIDs: null
-siteOperands: $siteOperand
-switchOperand: null
-zones: null
-  ){
+mutation createNotification(\$alertCategoryID: Int, \$notificationSubscribers: notificationSubscribersObj, \$allAssets: Boolean, \$currentDate: String, \$schedule: [scheduleObj], \$alertTitle: String, \$alertGroupId: Int, \$notificationTypeGroupID: Int, \$assetUIDs: [String], \$operands: [createNotificationOperandsObj], \$notificationTypeId: Int, \$numberOfOccurences: Int, \$notificationDeliveryChannel: String, \$geofenceUIDs: [String], \$assetGroupUIDs: [String], \$siteOperands: [siteOperandsObj], \$switchOperand: createNotificationSwitchOperandObj, \$zones: [zoneObj]){
+ createNotification(alertCategoryID: \$alertCategoryID, allAssets: \$allAssets, currentDate: \$currentDate, schedule: \$schedule, alertTitle: \$alertTitle, alertGroupId: \$alertGroupId, notificationTypeGroupID: \$notificationTypeGroupID, assetUIDs: \$assetUIDs, operands: \$operands, notificationTypeId: \$notificationTypeId, numberOfOccurences: \$numberOfOccurences, notificationDeliveryChannel: \$notificationDeliveryChannel, notificationSubscribers: \$notificationSubscribers, geofenceUIDs: \$geofenceUIDs, assetGroupUIDs: \$assetGroupUIDs, siteOperands: \$siteOperands, switchOperand: \$switchOperand, zones: \$zones){
     alertConfig{
       alertUID
     }
@@ -3187,7 +3084,7 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
     page:$page,
     limit:$limit,
     
- assetUid:"$assetUid"
+ assetUid:["$assetUid"]
     
     
   ){
@@ -3199,6 +3096,8 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
       assetUID
     faults{
       source,
+      faultIdentifiers,
+      occurrences,
       description,
       severityLabel,
       faultClosureUTC,
@@ -3488,10 +3387,22 @@ toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
     return data;
   }
 
-  maintenanceDashboardCount(
-      {String? fromDate, String? endDate, String? prodFamily}) {
+  maintenanceDashboardCount({
+    String? fromDate,
+    String? endDate,
+    String? prodFamily,
+    String? assetId,
+    String? nextWeekEndDate,
+    String? todayEndDate,
+  }) {
     var data = """query{
-maintenanceDashboard(fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"},toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"},productFamily:${prodFamily == null ? "\"" + "\"" : "\"" + prodFamily + "\""}){
+maintenanceDashboard(
+    assetId:${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"},
+      todayEndDate:${todayEndDate == null ? "\"\"" : "${"\"" + todayEndDate + "\""}"},
+  nextWeekEndDate:${nextWeekEndDate == null ? "\"\"" : "${"\"" + nextWeekEndDate + "\""}"},
+  fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"},
+  toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"},
+  productFamily:${prodFamily == null ? "\"" + "\"" : "\"" + prodFamily + "\""}){
   status,
   dashboardData{
     count,

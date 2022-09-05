@@ -188,35 +188,48 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<ManageUser?> getUser(String? userId) async {
+  Future<ManageUser?> getUser(String? userId, String? query) async {
     Logger().i("getUser $isVisionLink");
     try {
-      if (isVisionLink) {
-        Map<String, String?> queryMap = Map();
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected!.CustomerUID;
-        }
-        ManageUser adminManageUserResponse = await MyApi()
-            .getClientSeven()!
-            .getUser(
-                Urls.adminManagerUserSumaryVL +
-                    "/" +
-                    userId! +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
-        return adminManageUserResponse;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+            return ManageUser.fromJson(data.data["userManagementUserList"]);
       } else {
-        Map<String, String?> queryMap = Map();
-        if (customerSelected != null) {
-          queryMap["customerUid"] = customerSelected!.CustomerUID;
+        if (isVisionLink) {
+          Map<String, String?> queryMap = Map();
+          if (customerSelected != null) {
+            queryMap["customerUid"] = customerSelected!.CustomerUID;
+          }
+          ManageUser adminManageUserResponse = await MyApi()
+              .getClientSeven()!
+              .getUser(
+                  Urls.adminManagerUserSumaryVL +
+                      "/" +
+                      userId! +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return adminManageUserResponse;
+        } else {
+          Map<String, String?> queryMap = Map();
+          if (customerSelected != null) {
+            queryMap["customerUid"] = customerSelected!.CustomerUID;
+          }
+          ManageUser adminManageUserResponse = await MyApi()
+              .getClient()!
+              .getUser(
+                  Urls.adminManagerUserSumary +
+                      "/" +
+                      userId! +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return adminManageUserResponse;
         }
-        ManageUser adminManageUserResponse = await MyApi().getClient()!.getUser(
-            Urls.adminManagerUserSumary +
-                "/" +
-                userId! +
-                FilterUtils.constructQueryFromMap(queryMap),
-            accountSelected!.CustomerUID);
-        return adminManageUserResponse;
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -783,12 +796,8 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<EstimatedResponse?> getAssetTargetSettingsData(
-      List<String?> assetUid,
-      startDate,
-      endDate,
-      Idle? idle,
-      Runtime? runTime) async {
+  Future<EstimatedResponse?> getAssetTargetSettingsData(List<String?> assetUid,
+      startDate, endDate, Idle? idle, Runtime? runTime) async {
     try {
       var dataUid;
       List<AssetTargetSettings> getAssetList = [];
@@ -810,17 +819,16 @@ class AssetAdminManagerUserService extends BaseService {
       Logger().i(listSettingTargetData.toJson());
 
       if (enableGraphQl) {
-       
-        var data =await Network().getGraphqlData(
-            query: graphqlSchemaService!.getAddEStimatedRuntimeData(dataUid,
-                startDate, endDate, idle, runTime),
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!.getAddEStimatedRuntimeData(
+                dataUid, startDate, endDate, idle, runTime),
             customerId: accountSelected!.CustomerUID,
             subId: customerSelected?.CustomerUID == null
                 ? ""
                 : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
-         return EstimatedResponse.fromJson(
-             data.data["updateAssetTargetSettings"]);
+        return EstimatedResponse.fromJson(
+            data.data["updateAssetTargetSettings"]);
       } else {
         if (isVisionLink) {
           EstimatedResponse result = await MyApi()
@@ -932,15 +940,14 @@ class AssetAdminManagerUserService extends BaseService {
       try {
         var data = await Network().getGraphqlData(
             query: query,
-           customerId: accountSelected!.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
             subId: customerSelected?.CustomerUID == null
                 ? ""
                 : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
 
         EstimatedAssetSetting estimatedAssetSetting =
-            EstimatedAssetSetting.fromJson(
-                data.data["assetTargetSettings"]);
+            EstimatedAssetSetting.fromJson(data.data["assetTargetSettings"]);
 
         return estimatedAssetSetting;
       } catch (e) {
@@ -1752,6 +1759,7 @@ class AssetAdminManagerUserService extends BaseService {
         Logger().w(query);
         var data = await Network().getGraphqlData(
             query: query,
+            payLoad: addReportPayLoad.toJson(),
             subId: customerSelected?.CustomerUID == null
                 ? ""
                 : customerSelected?.CustomerUID,
@@ -1790,6 +1798,7 @@ class AssetAdminManagerUserService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query: query,
+            payLoad: addReportPayLoad.toJson(),
             subId: customerSelected?.CustomerUID == null
                 ? ""
                 : customerSelected?.CustomerUID,

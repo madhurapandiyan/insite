@@ -10,6 +10,7 @@ import 'package:insite/core/models/get_single_transfer_deviceId_graphql.dart';
 import 'package:insite/core/models/get_single_transfer_device_id.dart';
 import 'package:insite/core/models/hierachy_graphql.dart';
 import 'package:insite/core/models/hierarchy_model.dart';
+import 'package:insite/core/models/industry_list_data.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
 
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -191,11 +192,11 @@ class SubScriptionService extends BaseService {
           return SubscriptionDashboardDetailResult.fromJson(data.data);
         } else if (filter == "active" ||
             filter == "total" ||
-            filter == "inactive"||
-            filter=="subscriptionendasset"||
-            filter=="subscriptionendingasset_month"||
-            filter=="plantasset"||
-            filter=="5T WL") {
+            filter == "inactive" ||
+            filter == "subscriptionendasset" ||
+            filter == "subscriptionendingasset_month" ||
+            filter == "plantasset" ||
+            filter == "5T WL") {
           var data = await Network().getGraphqlPlantData(
             query: query,
             // customerId: "THC",
@@ -659,13 +660,22 @@ class SubScriptionService extends BaseService {
       return null;
     }
   }
-  getIndustryTransferData() async{
-  try{
-    if(enableGraphQl){
-      
+
+  Future<IndustryListData?> getIndustryTransferData(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlPlantData(
+          query: query,
+          // customerId: accountSelected?.CustomerUID,
+          // userId: (await _localService?.getLoggedInUser())?.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
+        );
+        return IndustryListData.fromJson(data.data);
+      }
+    } catch (e) {
+      Logger().e(e.toString());
     }
-  }catch(e){
-    Logger().e(e.toString());
-  }
   }
 }

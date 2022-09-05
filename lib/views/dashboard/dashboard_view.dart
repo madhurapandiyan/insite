@@ -293,13 +293,13 @@ class _DashboardViewState extends State<DashboardView> {
                         },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: GoogleMapHomeWidget(
-                        isRefreshing: viewModel.refreshing,
-                        key: filterLocationKey,
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    //   child: GoogleMapHomeWidget(
+                    //     isRefreshing: viewModel.refreshing,
+                    //     key: filterLocationKey,
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 20.0,
                     ),
@@ -310,6 +310,9 @@ class _DashboardViewState extends State<DashboardView> {
                         count: 1,
                         isLoading: viewModel.notificationLoading,
                         notificationType: viewModel.notificationCountDatas,
+                        onFilterSelected: (value) {
+                          viewModel.onNotificationFilterClicked(value);
+                        },
                       ),
                     ),
                     // SizedBox(

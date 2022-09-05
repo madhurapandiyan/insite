@@ -107,7 +107,10 @@ class AccountSelectionViewModel extends InsiteViewModel {
   }
 
   addCustomers(List<Customer> list) {
-    for (Customer customer in list) {
+    if(list.isNotEmpty){
+      Logger().e("inside sorting order");
+      list.sort((a, b) => a.DisplayName!.compareTo(b.DisplayName!),);
+      for (Customer customer in list) {
       if (_accountSelected != null &&
           _accountSelected!.DisplayName == customer.DisplayName) {
         _customers.add(AccountData(
@@ -124,24 +127,30 @@ class AccountSelectionViewModel extends InsiteViewModel {
         addCustomers(customer.Children!);
       }
     }
+    }
+    
   }
 
   addSubCustomers(List<Customer> list) {
-    for (Customer customer in list) {
-      if (_subAccountSelected != null &&
-          _subAccountSelected!.DisplayName == customer.DisplayName) {
-        _subCustomers.add(AccountData(
-            isSelected: true,
-            selectionType: AccountType.CUSTOMER,
-            value: customer));
-      } else {
-        _subCustomers.add(AccountData(
-            isSelected: false,
-            selectionType: AccountType.CUSTOMER,
-            value: customer));
-      }
-      if (customer.Children!.isNotEmpty) {
-        addSubCustomers(customer.Children!);
+    if (list.isNotEmpty) {
+      Logger().v("inside sorting");
+      list.sort((a, b) => a.DisplayName!.compareTo(b.DisplayName!));
+      for (Customer customer in list) {
+        if (_subAccountSelected != null &&
+            _subAccountSelected!.DisplayName == customer.DisplayName) {
+          _subCustomers.add(AccountData(
+              isSelected: true,
+              selectionType: AccountType.CUSTOMER,
+              value: customer));
+        } else {
+          _subCustomers.add(AccountData(
+              isSelected: false,
+              selectionType: AccountType.CUSTOMER,
+              value: customer));
+        }
+        if (customer.Children!.isNotEmpty) {
+          addSubCustomers(customer.Children!);
+        }
       }
     }
   }
@@ -178,6 +187,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
                 DisplayName: "ALL ACCOUNTS",
                 Children: [])));
       }
+
       addSubCustomers(result);
     }
     Logger().d("getSubCustomerList result " + _subCustomers.length.toString());

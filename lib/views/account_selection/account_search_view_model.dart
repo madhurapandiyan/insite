@@ -114,12 +114,19 @@ class AccountSearchViewModel extends InsiteViewModel {
         customerId: accountSelected?.CustomerUID ?? "",
         isFromPagination: true);
     if (result!.isNotEmpty) {
+      Logger().w("sub account");
       result.forEach((element) {
+
         displayList!.add(AccountData(
             isSelected: false,
             selectionType: AccountType.CUSTOMER,
             value: element));
       });
+      if(displayList!.isNotEmpty){
+        Logger().v("inside sorting");
+        displayList!.sort((a, b) => a.value!.DisplayName!.compareTo(b.value!.DisplayName!),);
+      }
+      
     }
 
     notifyListeners();

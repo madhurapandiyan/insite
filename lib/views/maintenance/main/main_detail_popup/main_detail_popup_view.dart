@@ -294,9 +294,9 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                             tabs: [
                               Container(
                                 child:
-                                    Tab(text: "\t Checklist & Parts List \t"),
+                                    Tab(text: " Checklist & Parts List "),
                               ),
-                              Container(child: Tab(text: "\t Complete \t "))
+                              Container(child: Tab(text: " Complete  "))
                             ]),
                       ),
                       Padding(

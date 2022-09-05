@@ -24,6 +24,7 @@ import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/maintenance/main/main_view.dart';
 import 'package:insite/views/maintenance/maintenance_view.dart';
+import 'package:insite/views/notification/notification_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -358,9 +359,9 @@ class DashboardViewModel extends InsiteViewModel {
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCount(
         Utils.getFaultDateFormatStartDate(
-            DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
-        Utils.getFaultDateFormatEndDate(
-            DateTime.now().subtract(Duration(days: 1))),
+            DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
+                .subtract(Duration(days: 1))),
+        Utils.getFaultDateFormatEndDate(DateTime.now()),
         graphqlSchemaService!.getFaultCountData(
           startDate: Utils.getFaultDateFormatStartDate(
               DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
@@ -378,37 +379,47 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getMaintenanceCountData() async {
+    var outputFormat = DateFormat('yyyy/MM/dd 18:29:59');
+    var todayEndDate = outputFormat.format(DateTime.now());
+    var date = DateTime.now();
+    var nextWeekEndDate = new DateTime(date.year, date.month, date.day + 6);
+
     try {
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
-        fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-        endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
-      ));
-      data?.maintenanceDashboard?.dashboardData!.forEach((element) {
-        if (element.displayName == "Overdue") {
-          element.maintenanceTotal = MAINTENANCETOTAL.OVERDUE;
-        }
-        if (element.displayName == "Upcoming") {
-          element.maintenanceTotal = MAINTENANCETOTAL.UPCOMING;
-        }
-        if (element.subCount != null) {
-          element.subCount!.forEach((dashboardData) {
-            if (dashboardData.displayName == "Next Week") {
-              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTWEEK;
-            }
-            if (dashboardData.displayName == "Next Month") {
-              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
-            }
-          });
-        }
-      });
-      maintenanceDashboardCount = data;
-      _maintenanceLoading = false;
+              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+              endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+              nextWeekEndDate:
+                  Utils.maintenanceToDateFormate(nextWeekEndDate.toString()),
+              todayEndDate: todayEndDate));
+      if (data?.maintenanceDashboard?.dashboardData != null &&
+          data!.maintenanceDashboard!.dashboardData!.isNotEmpty) {
+        data.maintenanceDashboard?.dashboardData!.forEach((element) {
+          if (element.displayName == "Overdue") {
+            element.maintenanceTotal = MAINTENANCETOTAL.OVERDUE;
+          }
+          if (element.displayName == "Upcoming") {
+            element.maintenanceTotal = MAINTENANCETOTAL.UPCOMING;
+          }
+          if (element.subCount != null) {
+            element.subCount!.forEach((dashboardData) {
+              if (dashboardData.displayName == "Next Week") {
+                dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTWEEK;
+              }
+              if (dashboardData.displayName == "Next Month") {
+                dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
+              }
+            });
+          }
+        });
+        maintenanceDashboardCount = data;
+        _maintenanceLoading = false;
+      } else {
+        _maintenanceLoading = false;
+      }
+
       notifyListeners();
-    } catch (e) {
-      _maintenanceLoading = false;
-      notifyListeners();
-    }
+    } catch (e) {}
   }
 
   onMaintenanceFilterClicked(
@@ -730,5 +741,11 @@ class DashboardViewModel extends InsiteViewModel {
 
       notifyListeners();
     } catch (e) {}
+  }
+
+  onNotificationFilterClicked(String value) {
+    _navigationService!.navigateToView(NotificationView(
+      filterValue: value,
+    ));
   }
 }

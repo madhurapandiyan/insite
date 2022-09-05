@@ -87,3 +87,4 @@ keyAlias=<alias name>
 storeFile=<location of the key store file, such as /Users/<user name>/upload-keystore.jks>
 
 for more info #see https://flutter.dev/docs/deployment/android#reference-the-keystore-from-the-app
+

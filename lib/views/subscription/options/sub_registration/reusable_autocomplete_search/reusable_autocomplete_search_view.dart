@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/subscription/options/sub_registration/single_asset_reg/single_asset_registration_view_model.dart';
 import 'package:logger/logger.dart';
 
 class ReusableAutocompleteSearchView extends StatefulWidget {
   final TextEditingController? reuseController;
-  final List<String?>? data;
+  final List<String>? data;
   final String Function(String?)? validator;
   final Function(String)? onSelected;
   final Function(String)? onChanged;
@@ -40,72 +42,59 @@ class _ReusableAutocompleteSearchViewState
 
   @override
   Widget build(BuildContext context) {
-    return Autocomplete(
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text.isEmpty) {
-          return Iterable<String>.empty();
-        } else {
-          widget.data!.map((e) {
-            dataValues.add(e!);
-          }).toList();
-          dataValues.forEach((element) {
-            if (element
-                .toLowerCase()
-                .contains(textEditingValue.text.toLowerCase())) {
-              filteredValues.add(element);
-            }
-          });
-          return filteredValues;
+    return TypeAheadField(
+      noItemsFoundBuilder: (_) {
+        return SizedBox();
+      },
+      suggestionsCallback: (pattern) async {
+        try {
+          Completer<List<String>> completer = new Completer();
+          Logger().w(pattern);
+          if (pattern.isNotEmpty) {
+            await widget.onChanged!(pattern);
+            completer.complete(widget.data);
+            return completer.future;
+          } else {
+            return [];
+          }
+        } catch (e) {
+          Logger().e(e.toString());
+          return [];
         }
       },
-      onSelected: widget.onSelected,
-
-      fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
-        return Container(
-          height: 35,
-          child: TextFormField(
-            onTap: widget.onTap as void Function()?,
-            controller:
-                widget.formFieldType == null || widget.formFieldType == true
-                    ? widget.reuseController
-                    : controller,
-            focusNode: focusNode,
-            cursorColor: addUserBgColor,
-            validator: widget.validator,
-            onChanged: widget.onChanged,
-            maxLines: 1,
-            enabled: widget.isEnabled,
-            style: TextStyle(
-              color: Theme.of(context).textTheme.bodyText1!.color,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-            ),
-          //  onEditingComplete: onEditingComplete,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(left: 12, top: 22),
-              isDense: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1!.color!,
-                    width: 1),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1!.color!,
-                    width: 1),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.bodyText1!.color!,
-                    width: 1),
-              ),
-            ),
-          ),
+      itemBuilder: (context, suggestion) {
+        var data = suggestion as String?;
+        return ListTile(
+          title: Text(data!),
         );
       },
+      hideOnEmpty: true,
+      hideSuggestionsOnKeyboardHide: false,
+      keepSuggestionsOnSuggestionSelected: false,
+      getImmediateSuggestions: true,
+      onSuggestionSelected: (suggestion) {
+        // if ((suggestion as LocationKey?) != null) {
+        //   viewModel.onSelect(suggestion!.value as String);
+        //   onSeletingSuggestion!(
+        //       LatLng(suggestion.latitude!, suggestion.longitude!));
+        // }
+      },
+      textFieldConfiguration: TextFieldConfiguration(
+        cursorColor: addUserBgColor,
+        controller: widget.reuseController,
+        maxLines: 1,
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodyText1!.color,
+          fontWeight: FontWeight.w700,
+          fontSize: 14,
+        ),
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(left: 16, top: 12, bottom: 12),
+            isDense: true,
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: black, width: 1)),
+            fillColor: white),
+      ),
     );
   }
 

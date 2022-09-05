@@ -140,7 +140,14 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               ),
                               CustomTextBox(
                                 controller: viewModel.phoneNumberController,
-                                title: "Phone number",
+                                title: "Phone number: (Optional)",
+                                validator: (value) {
+                                  if (value!.isEmpty || value.length == 10) {
+                                    return null;
+                                  } else {
+                                    return "Please Enter Valid Mobile Number";
+                                  }
+                                },
                                 keyPadType: TextInputType.phone,
                               ),
                               SizedBox(
@@ -149,8 +156,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: InsiteText(
-                                  text:
-                                      "Application Permissions:",
+                                  text: "Application Permissions:",
                                   fontWeight: FontWeight.w700,
                                   size: 14,
                                 ),
@@ -307,7 +313,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               SizedBox(
                                 height: 20,
                               ),
-                            /*  Align(
+                              /*  Align(
                                 alignment: Alignment.topLeft,
                                 child: InsiteText(
                                   text: "Job Title :",
@@ -476,7 +482,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               // ),
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: InsiteButton(
+                                child: 
+                               widget.user==null? InsiteButton(
                                   width:
                                       MediaQuery.of(context).size.width * 0.38,
                                   height: MediaQuery.of(context).size.height *
@@ -525,7 +532,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     }
                                   },
                                   textColor: appbarcolor,
-                                ),
+                                ):SizedBox()
                               ),
                               SizedBox(
                                 height: 50,

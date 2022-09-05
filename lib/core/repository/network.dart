@@ -141,7 +141,7 @@ class HttpWrapper {
       Logger().wtf(response?.toJson());
       _localService!.clearAll();
       _localStorageService.clearAll();
-      navigationService!.replaceWith(indiaStackLoginViewRoute,
+      navigationService!.replaceWith(indiaStackSplashViewRoute,
           arguments: LoginArguments(response: response));
     } catch (e) {
       Logger().e(e.toString());

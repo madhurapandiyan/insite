@@ -221,7 +221,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
             fleet: Fleet(
                 assetSerialNumber: match.serialNumber,
                 assetId: match.assetID,
-                assetIdentifier: match.assetUID)));
+                assetIdentifier: match.assetUid)));
   }
 
   Future<bool> onBackPressed() {

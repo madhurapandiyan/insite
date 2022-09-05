@@ -28,21 +28,7 @@ class TimeSlots extends StatelessWidget {
   showTimePickerWidget(Function(String) callBack, BuildContext ctx) {
     showTimePicker(
             builder: (context, child) {
-              return Theme(
-                data: ThemeData.light().copyWith(
-                  colorScheme: ColorScheme.light(
-                    primary: Theme.of(context).cardColor,
-                    onPrimary: Theme.of(context).backgroundColor,
-                  ),
-                  buttonTheme: ButtonThemeData(
-                    colorScheme: ColorScheme.dark(
-                      primary: Theme.of(context).cardColor,
-                      onPrimary: Theme.of(context).backgroundColor,
-                    ),
-                  ),
-                ),
-                child: child!,
-              );
+              return child!;
             },
             context: ctx,
             initialTime: TimeOfDay.now())
@@ -68,7 +54,7 @@ class TimeSlots extends StatelessWidget {
           },
         ),
         InsiteButton(
-           bgColor: Theme.of(context).cardColor,
+          bgColor: Theme.of(context).cardColor,
           width: 100,
           title: initialEndValue,
           onTap: () {
@@ -84,7 +70,7 @@ class TimeSlots extends StatelessWidget {
                   color: Theme.of(context).textTheme.bodyText1!.color!),
               borderRadius: BorderRadius.circular(5)),
           child: CustomDropDownWidget(
-            items:type,
+            items: type,
             value: initialTypeValue,
             onChanged: (value) {
               typeChanged!(value);

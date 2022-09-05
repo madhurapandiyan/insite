@@ -58,18 +58,20 @@ class HealthListItem extends StatelessWidget {
                     title: 'Location :',
                     content: faultElement!.lastReportedLocation ?? "-",
                   ),
+                ]),
+                TableRow(children: [
                   InsiteTableRowItem(
                     title: 'Hour Meter :',
                     content: faultElement!.hours == null
                         ? "-"
                         : faultElement!.hours.toString(),
                   ),
-                ]),
-                TableRow(children: [
                   InsiteTableRowItem(
                     title: 'Source :',
                     content: faultElement!.source ?? "-",
                   ),
+                ]),
+                TableRow(children: [
                   InsiteTableRowItem(
                     title: 'Reported Date :',
                     content: faultElement!.lastReportedTimeUTC != null
@@ -97,9 +99,45 @@ class HealthListItem extends StatelessWidget {
                       )
                     ],
                   )
-                ])
+                ]),
               ],
             ),
+            children: [
+              Table(
+                border: TableBorder.all(),
+                columnWidths: {
+                  1: FlexColumnWidth(1),
+                  2: FlexColumnWidth(1),
+                  3: FlexColumnWidth(1)
+                },
+                children: [
+                  TableRow(children: [
+                    InsiteTableRowItem(
+                      title: 'SPN_FMI',
+                      content: faultElement!.faultIdentifiers != null
+                          ? faultElement!.faultIdentifiers
+                          : "-",
+                    ),
+                    InsiteTableRowItem(
+                      title: 'Occurence Count :',
+                      content: faultElement!.occurrences ?? "-",
+                    ),
+                  ]),
+                  TableRow(children: [
+                    InsiteTableRowItem(
+                      title: 'Fault Reported Time :',
+                      content: faultElement!.lastReportedTimeUTC != null
+                          ? faultElement!.lastReportedTimeUTC
+                          : "-",
+                    ),
+                    InsiteTableRowItem(
+                        title: 'Location :',
+                        content:
+                            "${faultElement!.lastReportedLocationLatitude ?? "-"}/${faultElement!.lastReportedLocationLongitude ?? "-"}"),
+                  ])
+                ],
+              )
+            ],
             tilePadding: EdgeInsets.all(0),
             childrenPadding: EdgeInsets.all(0),
           ))

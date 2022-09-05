@@ -4,10 +4,12 @@ import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/single_asset_operation.dart';
 import 'package:insite/core/models/single_asset_operation_chart_data.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class SingleAssetOperationViewModel extends InsiteViewModel {
   Logger? log;
@@ -39,6 +41,8 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
   SingleAssetOperation? get singleAssetOperation => _singleAssetOperation;
 
   List<DateTime> days = [];
+
+  CalendarView calenderView = CalendarView.week;
 
   updateDateRangeList() {
     try {
@@ -117,5 +121,36 @@ class SingleAssetOperationViewModel extends InsiteViewModel {
     if (_assetOperationDates.isEmpty) return;
     _minDate = _assetOperationDates.first!;
     _maxDate = _assetOperationDates.last;
+  }
+
+  calenderViewChange() {
+    switch (dateRange) {
+      case DateRangeType.currentWeek:
+        calenderView = CalendarView.workWeek;
+        break;
+      case DateRangeType.currentMonth:
+        calenderView = CalendarView.month;
+        break;
+      case DateRangeType.lastSevenDays:
+        calenderView = CalendarView.week;
+        break;
+      case DateRangeType.lastThirtyDays:
+        calenderView = CalendarView.month;
+        break;
+      case DateRangeType.previousMonth:
+        calenderView = CalendarView.timelineMonth;
+        break;
+      case DateRangeType.previousWeek:
+        calenderView = CalendarView.timelineWeek;
+        break;
+      case DateRangeType.today:
+        calenderView = CalendarView.day;
+        break;
+      case DateRangeType.yesterday:
+        calenderView = CalendarView.day;
+        break;
+      default:
+    }
+    notifyListeners();
   }
 }

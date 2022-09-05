@@ -373,8 +373,8 @@ class FaultService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
   }
 
   Future<HealthListResponse?> getAssetViewLocationSummary(assetUid, startDate,
