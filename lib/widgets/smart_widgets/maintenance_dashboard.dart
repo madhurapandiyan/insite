@@ -66,7 +66,7 @@ class MaintenanceDashBoard extends StatelessWidget {
                             child: ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.vertical,
-                              physics: NeverScrollableScrollPhysics(),
+                              // physics: NeverScrollableScrollPhysics(),
                               itemCount: countData
                                   ?.maintenanceDashboard?.dashboardData?.length,
                               itemBuilder: (BuildContext context, int index) {
@@ -78,7 +78,7 @@ class MaintenanceDashBoard extends StatelessWidget {
                                     data?.subCount != null &&
                                             data!.subCount!.isNotEmpty
                                         ? Container(
-                                            height: 100,
+                                            height: 150,
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 10),
                                             child: ListView.builder(

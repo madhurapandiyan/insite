@@ -31,7 +31,8 @@ class Fault {
   String? faultCode;
   double? lastReportedLocationLatitude;
   double? lastReportedLocationLongitude;
-
+  String? faultIdentifiers;
+  String? occurrences;
   Fault(
       {this.description,
       this.lastReportedLocation,
@@ -41,6 +42,8 @@ class Fault {
       this.severityLabel,
       this.lastReportedLocationLatitude,
       this.lastReportedLocationLongitude,
+      this.faultIdentifiers,
+      this.occurrences,
       this.source});
 
   factory Fault.fromJson(Map<String, dynamic> json) => _$FaultFromJson(json);

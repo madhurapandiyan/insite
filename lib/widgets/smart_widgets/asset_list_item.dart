@@ -111,7 +111,6 @@ class AssetOperationListItem extends StatelessWidget {
                   children: [
                     DateSlider(
                       list: getSliderData(),
-                      
                     )
                   ],
                 ),
@@ -124,7 +123,6 @@ class AssetOperationListItem extends StatelessWidget {
   }
 
   List<SliderData> getSliderData() {
-   
     List<SliderData> list = [];
     for (DateTime time in days!) {
       String day = DateFormat('EEE').format(time);
@@ -137,7 +135,6 @@ class AssetOperationListItem extends StatelessWidget {
                   .toStringAsFixed(1)
               : "");
       list.add(data);
-      Logger().wtf(list.length);
     }
     return list;
   }

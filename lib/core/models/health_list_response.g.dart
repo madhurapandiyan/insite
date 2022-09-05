@@ -43,6 +43,8 @@ Fault _$FaultFromJson(Map<String, dynamic> json) => Fault(
           (json['lastReportedLocationLatitude'] as num?)?.toDouble(),
       lastReportedLocationLongitude:
           (json['lastReportedLocationLongitude'] as num?)?.toDouble(),
+      faultIdentifiers: json['faultIdentifiers'] as String?,
+      occurrences: json['occurrences'] as String?,
       source: json['source'] as String?,
     );
 
@@ -56,4 +58,6 @@ Map<String, dynamic> _$FaultToJson(Fault instance) => <String, dynamic>{
       'faultCode': instance.faultCode,
       'lastReportedLocationLatitude': instance.lastReportedLocationLatitude,
       'lastReportedLocationLongitude': instance.lastReportedLocationLongitude,
+      'faultIdentifiers': instance.faultIdentifiers,
+      'occurrences': instance.occurrences,
     };

@@ -201,13 +201,11 @@ class _LocationViewState extends State<LocationView> {
                                     padding:
                                         const EdgeInsets.only(top: 7, left: 20),
                                     child: LocationSearchBoxView(
-                                     
                                       onSeletingSuggestion:
                                           (value, isSerialNo) {
                                         viewModel.customInfoWindowController
                                             .hideInfoWindow!();
                                         if (isSerialNo) {
-                                        
                                           viewModel
                                               .onSeletingSuggestionSn(value);
                                         } else {
@@ -459,14 +457,12 @@ class _LocationViewState extends State<LocationView> {
       case "TERRAIN":
         Logger().i("map is in terrain type");
         return MapType.terrain;
-
       case "SATELLITE":
         Logger().i("map is in satellite type ");
-        return MapType.satellite;
-
+        return MapType.hybrid;
       case "HYBRID":
         Logger().i("map is in hybrid type ");
-        return MapType.hybrid;
+        return MapType.satellite;
       default:
         return MapType.normal;
     }

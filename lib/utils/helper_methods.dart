@@ -406,8 +406,8 @@ class Utils {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
-          .add(Duration(hours: 18, minutes: 29, seconds: 59))
-          .subtract(Duration(days: 1));
+          .add(Duration(hours: 18, minutes: 29, seconds: 59));
+
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -830,13 +830,13 @@ class Utils {
     } else if (data.type == FilterType.FUEL_LEVEL) {
       Logger().wtf(title);
       if (title == "100") {
-        title = "Fuel Level : " + " " + "75-100" + "%";
+        title = "Fuel Level : " + " " + "76-100" + "%";
       } else if (title == "25") {
         title = "Fuel Level : " + "" + "0-25" + "%";
       } else if (title == "50") {
-        title = "Fuel Level : " + "" + "25-50" + "%";
+        title = "Fuel Level : " + "" + "26-50" + "%";
       } else if (title == "75") {
-        title = "Fuel Level : " + "" + "50-75" + "%";
+        title = "Fuel Level : " + "" + "51-75" + "%";
       }
     } else if (data.type == FilterType.SEVERITY) {
       title = Utils.getFaultLabel(data.title!);
@@ -1850,15 +1850,14 @@ class Utils {
     } else if (value == "Fault Summary Faults List" ||
         value == "FaultSummaryFaultsList") {
       return "Fault Summary Faults List";
-    } else if (value == "MultiAssetExcavatorUsageReport"||value=="Multi-Asset Excavator Usage Report") {
-       
+    } else if (value == "MultiAssetExcavatorUsageReport" ||
+        value == "Multi-Asset Excavator Usage Report") {
       return "Multi-Asset Excavator Usage Report";
     } else if (value == "BackhoeLoaderOperation") {
       return "BackhoeLoaderOperation";
     } else if (value == "ExcavatorUsage") {
       return "ExcavatorUsage";
     } else if (value == "MultiAssetExcavatorUsage") {
-     
       return "Multi-Asset Excavator Usage";
     } else {
       return null;

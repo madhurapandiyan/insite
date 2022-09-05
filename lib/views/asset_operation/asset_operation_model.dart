@@ -91,12 +91,6 @@ class AssetOperationViewModel extends InsiteViewModel {
   }
 
   void refresh() async {
-    await getDateRangeFilterData();
-    await getSelectedFilterData();
-    await getAssetOperationCount();
-    updateDateRangeList();
-    pageNumber = 1;
-    pageSize = 20;
     if (_assets.isEmpty) {
       _loading = true;
     } else {
@@ -104,6 +98,13 @@ class AssetOperationViewModel extends InsiteViewModel {
     }
     _shouldLoadmore = true;
     notifyListeners();
+    await getDateRangeFilterData();
+    await getSelectedFilterData();
+    await getAssetOperationCount();
+    updateDateRangeList();
+    pageNumber = 1;
+    pageSize = 20;
+
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
     AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
@@ -138,7 +139,7 @@ class AssetOperationViewModel extends InsiteViewModel {
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
     await getAssetOperationCount();
-     updateDateRangeList();
+    updateDateRangeList();
     AssetSummaryResponse? result = await _assetService!.getAssetSummaryList(
       startDate,
       endDate,
@@ -147,7 +148,7 @@ class AssetOperationViewModel extends InsiteViewModel {
       _menuItem,
       appliedFilters,
       await graphqlSchemaService!.getAssetOperationData(
-          startDate:startDate,
+          startDate: startDate,
           endDate: endDate,
           assetId: "",
           appliedFilter: appliedFilters,

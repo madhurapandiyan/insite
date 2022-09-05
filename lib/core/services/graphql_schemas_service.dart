@@ -659,8 +659,7 @@ locationReportedTimeUTC
   manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
   assetstatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
   fuelLevelPercentLT:${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + Utils.fuelFilterQuery(fuelLevelPercentLt) + "\""}"}, 
- idleEfficiencyGT: "${Utils.getIdlingFilterData(idleEficiencyGT)?.first ?? ""}",  
-idleEfficiencyLTE: "${Utils.getIdlingFilterData(idleEficiencyGT)?.last ?? ""}", 
+
   idleEfficiencyRanges: ${idleEficiencyGT == null ? "\"\"" : "${"\"" + idleEficiencyGT! + "\""}"}, 
   startDate: "$startDate", 
   EndDate: "$endDate") {
@@ -2870,7 +2869,7 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
     page:$page,
     limit:$limit,
     
- assetUid:"$assetUid"
+ assetUid:["$assetUid"]
     
     
   ){
@@ -2882,6 +2881,8 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
       assetUID
     faults{
       source,
+      faultIdentifiers,
+      occurrences,
       description,
       severityLabel,
       faultClosureUTC,
@@ -3171,10 +3172,22 @@ toDate: ${toDate == null ? "\"\"" : "${"\"" + toDate + "\""}"}
     return data;
   }
 
-  maintenanceDashboardCount(
-      {String? fromDate, String? endDate, String? prodFamily}) {
+  maintenanceDashboardCount({
+    String? fromDate,
+    String? endDate,
+    String? prodFamily,
+    String? assetId,
+    String? nextWeekEndDate,
+    String? todayEndDate,
+  }) {
     var data = """query{
-maintenanceDashboard(fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"},toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"},productFamily:${prodFamily == null ? "\"" + "\"" : "\"" + prodFamily + "\""}){
+maintenanceDashboard(
+    assetId:${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"},
+      todayEndDate:${todayEndDate == null ? "\"\"" : "${"\"" + todayEndDate + "\""}"},
+  nextWeekEndDate:${nextWeekEndDate == null ? "\"\"" : "${"\"" + nextWeekEndDate + "\""}"},
+  fromDate:${fromDate == null ? "\"\"" : "${"\"" + fromDate + "\""}"},
+  toDate:${endDate == null ? "\"\"" : "${"\"" + endDate + "\""}"},
+  productFamily:${prodFamily == null ? "\"" + "\"" : "\"" + prodFamily + "\""}){
   status,
   dashboardData{
     count,
@@ -3493,6 +3506,4 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
 }""";
     return data;
   }
-
-  
 }

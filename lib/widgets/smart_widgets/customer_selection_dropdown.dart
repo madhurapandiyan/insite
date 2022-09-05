@@ -184,7 +184,7 @@ class _AccountSelectionDropDownWidgetState
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            data.value!.DisplayName!,
+                                            data.value!.Name!,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 color: _displayList![index]

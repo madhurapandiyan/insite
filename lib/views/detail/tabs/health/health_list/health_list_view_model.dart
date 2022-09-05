@@ -59,12 +59,13 @@ class HealthListViewModel extends InsiteViewModel {
           limit,
           page,
           Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-           graphqlSchemaService?.getSingleAssetData(
-             assetUid: assetDetail!.assetUid,
-             startDateTime:  Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-             endDateTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-             page: page,
-             limit: limit));
+          graphqlSchemaService?.getSingleAssetData(
+              assetUid: assetDetail!.assetUid,
+              startDateTime:
+                  Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+              endDateTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              page: page,
+              limit: limit));
       if (result != null && result.assetData != null) {
         if (result.assetData!.faults!.isNotEmpty) {
           _faults.addAll(result.assetData!.faults!);
@@ -94,31 +95,9 @@ class HealthListViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     _refreshing = true;
     notifyListeners();
-    HealthListResponse? result = await _faultService!.getHealthListData(
-        _assetDetail!.assetUid,
-        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        limit,
-        page,
-        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-        ""
-        // graphqlSchemaService?.getfaultQueryString(
-        //     applyFilter: appliedFilters,
-        //     endDate: endDate,
-        //     startDate: startDate,
-        //     limit: limit,
-        //     pageNo: page)
-        );
-    if (result != null) {
-      _faults.clear();
-      _faults.addAll(result.assetData!.faults!);
-      _refreshing = false;
-      _loading = false;
-      notifyListeners();
-    } else {
-      _refreshing = false;
-      _loading = false;
-      notifyListeners();
-    }
+    await getHealthListData();
+    _refreshing = false;
+    notifyListeners();
   }
 
   _loadMore() {

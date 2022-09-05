@@ -446,6 +446,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     DateFormat("yyyy-MM-dd").format(toDate!),
                                     //'${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                     describeEnum(viewModel.selectedDateRange));
+
                                 Future.delayed(Duration(milliseconds: 500), () {
                                   Navigator.pop(context, [fromDate!, toDate!]);
                                 });
@@ -457,6 +458,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                           viewModel.clearSpecificFilterType(
                               type: widget.filterType);
                         }
+                        viewModel.dateType = viewModel.selectedDateRange;
                       },
                       textColor: white,
                       title: 'Apply',

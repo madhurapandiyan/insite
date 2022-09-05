@@ -71,6 +71,8 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
+  DateRangeType? _dateRange = DateRangeType.currentWeek;
+  DateRangeType? get dateRange => _dateRange;
 
   String? codeChallenge;
   static String _createCodeVerifier() {
