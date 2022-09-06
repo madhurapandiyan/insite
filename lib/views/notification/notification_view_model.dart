@@ -237,7 +237,7 @@ class NotificationViewModel extends InsiteViewModel {
             startDate,
             endDate,
             _graphqlSchemaService!.seeAllNotification(
-                pageNo: pageNumber, notificationType: filterValue));
+                pageNo: pageNumber, notificationType: filterValue,notificationUserStatus: 0,notificationStatus: 0));
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;

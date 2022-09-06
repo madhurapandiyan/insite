@@ -236,10 +236,10 @@ class AddNewUserViewModel extends InsiteViewModel {
     ManageUser? result = await _manageUserService.getUser(
         user!.userUid,
         graphqlSchemaService!
-            .userManagementUserList(email: user!.loginId, pageNo: 1));
+            .userManagementUserList(searchKey: user!.loginId, pageNo: 1));
     try {
       if (result != null) {
-        // this.user = result.user!;
+         //this.user = result.user!;
 
         Logger().w(result.users!.first.toJson());
         for (var editData in result.users!) {

@@ -56,7 +56,7 @@ class HealthListItem extends StatelessWidget {
                   ),
                   InsiteTableRowItem(
                     title: 'Location :',
-                    content: faultElement!.lastReportedLocation ?? "-",
+                    content: "${faultElement!.lastReportedLocationLatitude ?? "-"}/${faultElement!.lastReportedLocationLongitude ?? "-"}",
                   ),
                 ]),
                 TableRow(children: [
@@ -73,11 +73,9 @@ class HealthListItem extends StatelessWidget {
                 ]),
                 TableRow(children: [
                   InsiteTableRowItem(
-                    title: 'Reported Date :',
-                    content: faultElement!.lastReportedTimeUTC != null
-                        ? Utils.getLastReportedDateOneUTC(
-                            faultElement!.lastReportedTimeUTC)
-                        : "-",
+                    title: 'Fault Reported Time :',
+                    content: Utils.getLastReportedDateOneUTC(faultElement!.lastReportedTimeUTC)
+                    
                   ),
                   Column(
                     children: [
@@ -123,18 +121,18 @@ class HealthListItem extends StatelessWidget {
                       content: faultElement!.occurrences ?? "-",
                     ),
                   ]),
-                  TableRow(children: [
-                    InsiteTableRowItem(
-                      title: 'Fault Reported Time :',
-                      content: faultElement!.lastReportedTimeUTC != null
-                          ? faultElement!.lastReportedTimeUTC
-                          : "-",
-                    ),
-                    InsiteTableRowItem(
-                        title: 'Location :',
-                        content:
-                            "${faultElement!.lastReportedLocationLatitude ?? "-"}/${faultElement!.lastReportedLocationLongitude ?? "-"}"),
-                  ])
+                  // TableRow(children: [
+                  //   InsiteTableRowItem(
+                  //     title: 'Fault Reported Time :',
+                  //     content: faultElement!.lastReportedTimeUTC != null
+                  //         ? faultElement!.lastReportedTimeUTC
+                  //         : "-",
+                  //   ),
+                  //   InsiteTableRowItem(
+                  //       title: 'Location :',
+                  //       content:
+                  //           "${faultElement!.lastReportedLocationLatitude ?? "-"}/${faultElement!.lastReportedLocationLongitude ?? "-"}"),
+                  // ])
                 ],
               )
             ],

@@ -764,10 +764,10 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
       {String? searchKey,
       int? userType,
       int? jobType,
-      String? email,
+    
       int? pageNo}) {
     return """{
-  userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, EmailID: "${email == null ? "" : email}") {
+  userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, ) {
     users {
       first_name
       last_name
@@ -2519,21 +2519,21 @@ mutation{
 
   String seeAllNotification(
       {int? pageNo,
-      List<int>? notificationStatus,
+      int? notificationStatus,
       String? startDate,
       String? endDate,
       int? notificationUserStatus,
-      String? assetUIDs,
+      //String? assetUIDs,
       List<String>? notificationType}) {
     var data = """
 query{
   seeAllNotificationList(
     pageNumber:$pageNo,
-    notificationStatus:${notificationStatus ?? []},
+    notificationStatus:${notificationStatus ?? 0},
     notificationUserStatus:$notificationUserStatus,
     fromDate:"${startDate != null ? startDate : ""}",
     toDate:"${endDate != null ? endDate : ""}",
-    assetUIDs:${assetUIDs == null ? "\"\"" : "${"\"" + assetUIDs + "\""}"},,
+  
      notificationType:${Utils.getStringListData(notificationType ?? [])}
   ){
     links{
@@ -2890,7 +2890,8 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
       hours,
       faultCode,
       lastReportedLocationLatitude,
-      lastReportedLocationLongitude
+      lastReportedLocationLongitude,
+      lastReportedTimeUTC
     }
     }
     }

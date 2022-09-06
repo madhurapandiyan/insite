@@ -136,6 +136,7 @@ class DashboardViewModel extends InsiteViewModel {
     _assetLocationService!.setUp();
     _localStorageService!.setUp();
     _assetUtilizationService!.setUp();
+    _maintenanceService!.setUp();
     _dateRangeService!.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () async {

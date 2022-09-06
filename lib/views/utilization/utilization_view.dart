@@ -46,11 +46,11 @@ class _UtilLizationViewState extends State<UtilLizationView> {
               onFilterApplied: () {
               //  viewModel.clearDashboardFiltersDb();
                 viewModel.refresh();
-                refreshWithFilter();
+                //refreshWithFilter();
               },
               onRefineApplied: () {
                 viewModel.refresh();
-                refreshWithFilter();
+                //refreshWithFilter();
               },
               body: Stack(
                 children: [
