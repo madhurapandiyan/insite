@@ -55,7 +55,7 @@ class DateSlider extends StatelessWidget {
                       title: data.value,
                       padding: EdgeInsets.all(8),
                       margin: EdgeInsets.all(8),
-                      bgColor: Theme.of(context).backgroundColor,
+                     
                       textColor: Theme.of(context).textTheme.bodyText1!.color,
                     ),
             ],

@@ -92,6 +92,7 @@ class MainViewModel extends InsiteViewModel {
     if (isVisionLink) {
       MaintenanceViewData? result =
           await _maintenanceService!.getMaintenanceData(
+          
         startTime:
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(maintenanceStartDate),
         endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(maintenanceEndDate),

@@ -18,20 +18,22 @@ class UtilLizationView extends StatefulWidget {
 }
 
 class _UtilLizationViewState extends State<UtilLizationView> {
-  bool isListSelected = true;
+ 
   int rangeChoice = 1;
   bool isRangeSelectionVisible = false;
 
   final GlobalKey<UtilizationListViewState> listViewKey = new GlobalKey();
   final GlobalKey<UtilizationGraphViewState> graphViewKey = new GlobalKey();
 
-  void refreshWithFilter() {
-    if (isListSelected) {
-      listViewKey.currentState!.onFilterApplied();
-    } else {
-      graphViewKey.currentState!.onFilterApplied();
-    }
-  }
+  
+
+  // void refreshWithFilter() {
+  //   if (visListSelected) {
+  //     listViewKey.currentState!.onFilterApplied();
+  //   } else {
+  //     graphViewKey.currentState!.onFilterApplied();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
               onFilterApplied: () {
               //  viewModel.clearDashboardFiltersDb();
                 viewModel.refresh();
-                //refreshWithFilter();
+               // refreshWithFilter();
               },
               onRefineApplied: () {
                 viewModel.refresh();
@@ -56,7 +58,7 @@ class _UtilLizationViewState extends State<UtilLizationView> {
                 children: [
                   Column(
                     children: [
-                      isListSelected
+                      viewModel.isListSelected
                           ? Flexible(
                               child: UtilizationListView(
                                 key: listViewKey,

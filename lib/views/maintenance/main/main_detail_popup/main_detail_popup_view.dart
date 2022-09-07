@@ -233,14 +233,14 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Container(
                             height: 50,
-                            // decoration: BoxDecoration(
-                            //     border: Border.all(
-                            //       color: Theme.of(context)
-                            //           .textTheme
-                            //           .bodyText1!
-                            //           .color!,
-                            //     ),
-                            //     borderRadius: BorderRadius.circular(10)),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color!,
+                                ),
+                                borderRadius: BorderRadius.circular(10)),
                             child: DropdownButton<MainPopViewDropDown>(
                               //focusNode: onFocus,
                               isExpanded: true,
@@ -274,8 +274,15 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                         height: 30,
                       ),
                       Container(
-                        color: Theme.of(context).backgroundColor,
-                        width: MediaQuery.of(context).size.width * 1,
+                        margin: EdgeInsets.all(5),
+                       // color: Theme.of(context).backgroundColor,
+                        //width: MediaQuery.of(context).size.width * 1,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color!,
+                            ),
+                            borderRadius: BorderRadius.circular(10)),
                         child: TabBar(
                             controller: _tabController,
                             // labelPadding: const EdgeInsets.only(
@@ -286,15 +293,13 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                             labelColor: Theme.of(context).backgroundColor,
                             unselectedLabelColor: Theme.of(context).buttonColor,
                             indicatorSize: TabBarIndicatorSize.tab,
-                           
                             indicator: BoxDecoration(
                                 //borderRadius: BorderRadius.circular(10),
                                 color: Theme.of(context).buttonColor,
                                 border: Border.all(color: Colors.white)),
                             tabs: [
                               Container(
-                                child:
-                                    Tab(text: " Checklist & Parts List "),
+                                child: Tab(text: " Checklist & Parts List "),
                               ),
                               Container(child: Tab(text: " Complete  "))
                             ]),

@@ -11,6 +11,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'utilization_list_view_model.dart';
 
@@ -24,30 +25,40 @@ class UtilizationListView extends StatefulWidget {
 class UtilizationListViewState extends State<UtilizationListView> {
   List<DateTime>? dateRange = [];
 
-  late var viewModelClass;
+   UtilizationListViewModel? viewModelClass;
 
-  @override
-  void initState() {
-    // viewModel = UtilizationListViewModel();
-    super.initState();
+   @override
+  void didUpdateWidget(covariant UtilizationListView oldWidget) {
+   viewModelClass=UtilizationListViewModel();
+   //onFilterApplied();
+    super.didUpdateWidget(oldWidget);
   }
+   
 
-  @override
-  void dispose() {
-    viewModelClass.dispose();
-    super.dispose();
-  }
+  // @override
+  // void initState() {
+  //    viewModelClass = UtilizationListViewModel();
+  //   super.initState();
+  // }
+
+  // @override
+  // void dispose() {
+  //   viewModelClass.dispose();
+  //   super.dispose();
+  // }
 
   onFilterApplied() {
-    viewModelClass.refresh();
+    Logger().v("refresh");
+    viewModelClass!.refresh();
   }
 
   @override
   Widget build(BuildContext context) {
+    Logger().v("inside utilization listview item");
     return ViewModelBuilder<UtilizationListViewModel>.reactive(
         builder: (BuildContext context, UtilizationListViewModel viewModel,
             Widget? _) {
-          viewModelClass = viewModel;
+      // viewModelClass=viewModel;
           return Padding(
             padding: const EdgeInsets.only(top: 0),
             child: Stack(

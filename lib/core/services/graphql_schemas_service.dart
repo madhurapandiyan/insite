@@ -1374,7 +1374,9 @@ query{
       workingFuelConsumedLitersCalloutTypes,
       lastReportedTime,
       lastReportedTimeZoneAbbrev,
-      dailyreportedtimeTypes
+      dailyreportedtimeTypes,
+      runtimeFuelConsumptionRate
+
       
     }
   }
@@ -2911,9 +2913,11 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
     await cleaValue();
     await gettingFiltersValue(appliedFilter);
     await gettingLocationFilter(appliedFilter);
+    Logger().v(assetId);
 
     var data = """
 {
+  
   maintenanceList(
     fromDate: ${startDate == null ? "\"\"" : "${"\"" + startDate + "\""}"}, 
     limit: ${limit ?? null}, 
