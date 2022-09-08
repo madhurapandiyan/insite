@@ -17,7 +17,8 @@ import 'notification_view_model.dart';
 
 class NotificationView extends StatefulWidget {
   final String? filterValue;
-  NotificationView({this.filterValue});
+  final String ?productFamily;
+  NotificationView({this.filterValue,this.productFamily});
   @override
   State<NotificationView> createState() => _NotificationViewState();
 }
@@ -275,7 +276,7 @@ class _NotificationViewState extends State<NotificationView> {
               )),
         );
       },
-      viewModelBuilder: () => NotificationViewModel(value: widget.filterValue),
+      viewModelBuilder: () => NotificationViewModel(value: widget.filterValue,filterData: widget.productFamily),
     );
   }
 

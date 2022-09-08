@@ -109,6 +109,8 @@ class DashboardViewModel extends InsiteViewModel {
   NotificationData? _notificationCountDatas;
   NotificationData? get notificationCountDatas => _notificationCountDatas;
 
+  String? notificationFilterTitle;
+
   String _endDayRange = DateFormat('yyyy-MM-dd').format(DateTime.now());
   set endDayRange(String endDay) {
     this._endDayRange = endDay;
@@ -593,6 +595,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   getFilterDataApplied(FilterData filterData, bool isFromProdFamily) async {
     try {
+      notificationFilterTitle = filterData.title;
       this._isFilterApplied = true;
       this._currentFilterSelected = filterData;
       // await clearFilterOfTypeInDb(FilterType.PRODUCT_FAMILY);
@@ -676,6 +679,7 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFaultCountDataFilterData(dropDownValue) async {
+    Logger().v(endDate);
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCountFilterApplied(
@@ -687,7 +691,7 @@ class DashboardViewModel extends InsiteViewModel {
             startDate: Utils.getFaultDateFormatStartDate(
                 DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
             endDate: Utils.getFaultDateFormatEndDate(
-                DateTime.now().subtract(Duration(days: 1)))));
+                DateTime.now())));
     if (count != null) {
       _faultCountData = count;
     }
@@ -747,6 +751,7 @@ class DashboardViewModel extends InsiteViewModel {
   onNotificationFilterClicked(String value) {
     _navigationService!.navigateToView(NotificationView(
       filterValue: value,
+      productFamily: notificationFilterTitle,
     ));
   }
 }

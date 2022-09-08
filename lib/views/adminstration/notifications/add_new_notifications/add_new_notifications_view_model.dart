@@ -1132,6 +1132,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   updateModelValue(String value) {
+    Logger().w(value);
     _dropDownInitialValue = value;
     _showZone = true;
     getNotificationSubTypes();
@@ -1337,6 +1338,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           if (notificationTypeGroup.notificationTypeGroupName!
               .contains("Fault")) {
             notificationTypeGroup.notificationTypes?.forEach((element) {
+              Logger().v(element.notificationTypeName);
               notificationTypes.add(element.notificationTypeName);
             });
           } else {
@@ -1404,7 +1406,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           element!.contains("Odometer") ||
           element.contains("Switches") ||
           element.contains("Fluid Analysis") ||
-          //  element.contains("Maintenance") ||
+          element.contains("Maintenance") ||
           element.contains("Inspection") ||
           element.contains("Asset Security") ||
           element.contains("Fluid Analysis") ||
@@ -1973,22 +1975,22 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             await _notificationService!.addNewNotification(
                 notificationPayLoad,
                 graphqlSchemaService!.createNotification(
-                  // geofenceId: geofenceId,
-                  // siteOperand: siteOperand,
-                  // alertCategoryID: 1,
-                  // alertGroupId: dropDownInitialValue == "Geofence" ? 2 : 1,
-                  // alertTitle: notificationController.text,
-                  // assetId: assetUidData,
-                  // currentDate: DateFormat("MM/dd/yyyy").format(DateTime.now()),
-                  // notificationDeliveryChannel: "email",
-                  // notificationSubscribers: NotificationSubscribers(
-                  //     emailIds: emailIds, phoneNumbers: []),
-                  // notificationTypeGroupID: notificationTypeGroupID,
-                  // notificationTypeId: notificationTypeId,
-                  // operand: operandData,
-                  // numberOfOccurences: 1,
-                  // schedule: scheduleDay,
-                ));
+                    // geofenceId: geofenceId,
+                    // siteOperand: siteOperand,
+                    // alertCategoryID: 1,
+                    // alertGroupId: dropDownInitialValue == "Geofence" ? 2 : 1,
+                    // alertTitle: notificationController.text,
+                    // assetId: assetUidData,
+                    // currentDate: DateFormat("MM/dd/yyyy").format(DateTime.now()),
+                    // notificationDeliveryChannel: "email",
+                    // notificationSubscribers: NotificationSubscribers(
+                    //     emailIds: emailIds, phoneNumbers: []),
+                    // notificationTypeGroupID: notificationTypeGroupID,
+                    // notificationTypeId: notificationTypeId,
+                    // operand: operandData,
+                    // numberOfOccurences: 1,
+                    // schedule: scheduleDay,
+                    ));
 
         if (response != null) {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");

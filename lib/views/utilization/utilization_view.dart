@@ -18,7 +18,7 @@ class UtilLizationView extends StatefulWidget {
 }
 
 class _UtilLizationViewState extends State<UtilLizationView> {
- 
+    bool isListSelected = true;
   int rangeChoice = 1;
   bool isRangeSelectionVisible = false;
 
@@ -27,13 +27,13 @@ class _UtilLizationViewState extends State<UtilLizationView> {
 
   
 
-  // void refreshWithFilter() {
-  //   if (visListSelected) {
-  //     listViewKey.currentState!.onFilterApplied();
-  //   } else {
-  //     graphViewKey.currentState!.onFilterApplied();
-  //   }
-  // }
+  void refreshWithFilter() {
+    if (isListSelected) {
+      listViewKey.currentState!.onFilterApplied();
+    } else {
+      graphViewKey.currentState!.onFilterApplied();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

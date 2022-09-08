@@ -761,11 +761,7 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
   }
 
   String userManagementUserList(
-      {String? searchKey,
-      int? userType,
-      int? jobType,
-    
-      int? pageNo}) {
+      {String? searchKey, int? userType, int? jobType, int? pageNo}) {
     return """{
   userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, ) {
     users {
@@ -779,6 +775,7 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
       lastLoginDate
       createdOn
       createdBy
+      emailVerified
       application_access {
         userUID
         role_name
@@ -2526,7 +2523,8 @@ mutation{
       String? endDate,
       int? notificationUserStatus,
       //String? assetUIDs,
-      List<String>? notificationType}) {
+      List<String>? notificationType,
+      String? productFamily}) {
     var data = """
 query{
   seeAllNotificationList(
@@ -2537,6 +2535,7 @@ query{
     toDate:"${endDate != null ? endDate : ""}",
   
      notificationType:${Utils.getStringListData(notificationType ?? [])}
+     productFamily:"${productFamily != null ? productFamily : ""}"
   ){
     links{
       next,

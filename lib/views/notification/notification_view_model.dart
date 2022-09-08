@@ -76,8 +76,11 @@ class NotificationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
   List<String>? filterValue = [];
+  String ? productFamilyFilterData;
 
-  NotificationViewModel({String? value}) {
+  NotificationViewModel({String? value,String ? filterData}) {
+    Logger().e(filterData);
+    productFamilyFilterData=filterData;
     this.log = getLogger(this.runtimeType.toString());
     if (value != null && value.isNotEmpty) {
       filterValue!.add(value);
@@ -237,7 +240,7 @@ class NotificationViewModel extends InsiteViewModel {
             startDate,
             endDate,
             _graphqlSchemaService!.seeAllNotification(
-                pageNo: pageNumber, notificationType: filterValue,notificationUserStatus: 0,notificationStatus: 0));
+                pageNo: pageNumber, notificationType: filterValue,notificationUserStatus: 0,notificationStatus: 0,productFamily: productFamilyFilterData));
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;

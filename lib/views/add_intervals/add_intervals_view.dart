@@ -154,18 +154,18 @@ Widget onSelectedIntervalsDetails(
           SizedBox(
             width: 10,
           ),
-          data.editable == true
-              ? Expanded(
-                  child: InsiteButton(
-                    height: 40,
-                    onTap: () {
-                      onEditIntervals!();
-                    },
-                    textColor: backgroundColor1,
-                    title: "Edit",
-                  ),
-                )
-              : SizedBox(),
+          // data.editable == true
+          //     ? Expanded(
+          //         child: InsiteButton(
+          //           height: 40,
+          //           onTap: () {
+          //             onEditIntervals!();
+          //           },
+          //           textColor: backgroundColor1,
+          //           title: "Edit",
+          //         ),
+          //       )
+          //     : SizedBox(),
         ])
       ],
     ),

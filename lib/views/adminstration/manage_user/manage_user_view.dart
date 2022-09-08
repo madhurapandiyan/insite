@@ -63,8 +63,9 @@ class ManageUserView extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 10.0),
                                 child: Row(
                                   children: [
-                                    viewModel.showMenu
-                                        ? ClipRRect(
+                                    // viewModel.showMenu
+                                    //     ? 
+                                        ClipRRect(
                                             borderRadius: BorderRadius.only(
                                               topLeft: Radius.circular(10),
                                               topRight: Radius.circular(10),
@@ -81,7 +82,7 @@ class ManageUserView extends StatelessWidget {
                                                     viewModel, context),
                                               ),
                                             ))
-                                        : SizedBox(),
+                                      
                                     // viewModel.showEdit
                                     //     ? ClipRRect(
                                     //         borderRadius: BorderRadius.only(
@@ -229,56 +230,63 @@ class ManageUserView extends StatelessWidget {
     return PopupMenuButton<String>(
       offset: Offset(30, 50),
       itemBuilder: (context) => [
-        viewModel.showEdit
-            ? PopupMenuItem(
-                value: "Add User",
-                child: InsiteText(
-                  text: "Add User",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ))
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
-        viewModel.showEdit
-            ? PopupMenuItem(
-                value: "Edit User",
-                child: InsiteText(
-                  text: "Edit User",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              )
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
-        viewModel.showDelete
-            ? PopupMenuItem(
-                value: "Delete",
-                child: InsiteText(
-                  text: "Delete",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              )
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
-        viewModel.showDeSelect
-            ? PopupMenuItem(
-                value: "Deselect All",
-                child: InsiteText(
-                  text: "Deselect All",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ))
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              )
+        PopupMenuItem(
+            value: "Add User",
+            child: InsiteText(
+              text: "Add User",
+              fontWeight: FontWeight.w700,
+              size: 14,
+            )),
+        // viewModel.showEdit
+        //     ? PopupMenuItem(
+        //         value: "Edit User",
+        //         child: InsiteText(
+        //           text: "Edit User",
+        //           fontWeight: FontWeight.w700,
+        //           size: 14,
+        //         ),
+        //       )
+        //     : PopupMenuItem(
+        //         child: SizedBox(),
+        //         height: 0,
+        //       ),
+        // viewModel.showDelete
+        //     ? PopupMenuItem(
+        //         value: "Delete",
+        //         child: InsiteText(
+        //           text: "Delete",
+        //           fontWeight: FontWeight.w700,
+        //           size: 14,
+        //         ),
+        //       )
+        //     : PopupMenuItem(
+        //         child: SizedBox(),
+        //         height: 0,
+        //       ),
+        // viewModel.showDeSelect
+        //     ? PopupMenuItem(
+        //         value: "Deselect All",
+        //         child: InsiteText(
+        //           text: "Deselect All",
+        //           fontWeight: FontWeight.w700,
+        //           size: 14,
+        //         ))
+        //     : PopupMenuItem(
+        //         child: SizedBox(),
+        //         height: 0,
+        //       ),
+        // viewModel.showVerifyUser
+        //     ? PopupMenuItem(
+        //         value: "Resend Invitation",
+        //         child: InsiteText(
+        //           text: "Resend Invitation",
+        //           fontWeight: FontWeight.w700,
+        //           size: 14,
+        //         ))
+        //     : PopupMenuItem(
+        //         child: SizedBox(),
+        //         height: 0,
+        //       ),
       ],
       onSelected: (value) {
         Logger().i("value:$value");
