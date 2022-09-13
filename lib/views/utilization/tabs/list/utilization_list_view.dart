@@ -77,7 +77,19 @@ class UtilizationListViewState extends State<UtilizationListView> {
                 child: Stack(
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                         Padding(
+                           padding: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 16),
+                           child: InsiteTextOverFlow(
+                            text: Utils.getPageTitle(ScreenType.UTILIZATION),
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.bold,
+                            size: 16,
+                        ),
+                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 24),

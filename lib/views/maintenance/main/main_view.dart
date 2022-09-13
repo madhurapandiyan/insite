@@ -30,6 +30,12 @@ class MainViewState extends State<MainView> {
   List<String?>? dateRange = [];
   MainViewModel? model;
 
+  // @override
+  // initState() {
+  //   model = MainViewModel();
+  //   super.initState();
+  // }
+
   onFilterApplied() {
     model!.refresh();
   }

@@ -25,6 +25,7 @@ import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/maintenance/main/main_view.dart';
 import 'package:insite/views/maintenance/maintenance_view.dart';
 import 'package:insite/views/notification/notification_view.dart';
+import 'package:insite/views/utilization/tabs/list/utilization_list_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -357,7 +358,7 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFaultCountData() async {
-    Logger().i("get fault count data");
+    Logger().e("get fault count data");
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCount(
@@ -485,7 +486,7 @@ class DashboardViewModel extends InsiteViewModel {
       await addFilter(currentFilterSelected!);
     }
     await addFilter(data);
-    await _dateRangeService!.updateDateFilter(dateFilter);
+    //await _dateRangeService!.updateDateFilter(dateFilter);
   }
 
   gotoFaultPage() {
@@ -503,7 +504,7 @@ class DashboardViewModel extends InsiteViewModel {
   gotoUtilizationPage() {
     Logger().i("go to utilization page");
     _navigationService!
-        .navigateWithTransition(UtilLizationView(), transition: "rightToLeft");
+        .navigateWithTransition(UtilizationListView(), transition: "rightToLeft");
   }
 
   getUtilizationSummary() async {

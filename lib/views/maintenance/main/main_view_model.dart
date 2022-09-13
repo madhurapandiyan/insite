@@ -197,10 +197,13 @@ class MainViewModel extends InsiteViewModel {
   }
 
   refresh() async {
+    Logger().v("main");
     _loading = true;
     notifyListeners();
     _maintenanceList.clear();
+     await getSelectedFilterData();
     await getMaintenanceViewList();
+    
     // await getSelectedFilterData();
     // await getDateRangeFilterData();
     // pageNumber = 1;

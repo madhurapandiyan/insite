@@ -2912,7 +2912,7 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
     await cleaValue();
     await gettingFiltersValue(appliedFilter);
     await gettingLocationFilter(appliedFilter);
-    Logger().v(assetId);
+    // Logger().v(assetId);
 
     var data = """
 {
@@ -3507,6 +3507,24 @@ createAsset(
     var data = """
 mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
   deleteMetaDataNotes(userAssetNoteUid:\$userAssetNoteUid)
+}""";
+    return data;
+  }
+
+  getSingleAssetFaulSummaryData({String? assetUid,String ? startDate,String ? endDate}) {
+    var data = """query{
+    faultSummaryData(assetUid:"$assetUid",
+    startDateTime:"$startDate",
+    endDateTime:"$endDate"){
+        summaryData{
+            
+            countData{
+                assetCount,
+                countOf,
+                faultCount
+            }
+        }
+    }
 }""";
     return data;
   }
