@@ -761,13 +761,9 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
   }
 
   String userManagementUserList(
-      {String? searchKey,
-      int? userType,
-      int? jobType,
-      String? email,
-      int? pageNo}) {
+      {String? searchKey, int? userType, int? jobType, int? pageNo}) {
     return """{
-  userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, EmailID: "${email == null ? "" : email}") {
+  userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, ) {
     users {
       first_name
       last_name
@@ -779,6 +775,7 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
       lastLoginDate
       createdOn
       createdBy
+      emailVerified
       application_access {
         userUID
         role_name
@@ -1374,7 +1371,9 @@ query{
       workingFuelConsumedLitersCalloutTypes,
       lastReportedTime,
       lastReportedTimeZoneAbbrev,
-      dailyreportedtimeTypes
+      dailyreportedtimeTypes,
+      runtimeFuelConsumptionRate
+
       
     }
   }
@@ -2519,22 +2518,24 @@ mutation{
 
   String seeAllNotification(
       {int? pageNo,
-      List<int>? notificationStatus,
+      int? notificationStatus,
       String? startDate,
       String? endDate,
       int? notificationUserStatus,
-      String? assetUIDs,
-      List<String>? notificationType}) {
+      //String? assetUIDs,
+      List<String>? notificationType,
+      String? productFamily}) {
     var data = """
 query{
   seeAllNotificationList(
     pageNumber:$pageNo,
-    notificationStatus:${notificationStatus ?? []},
+    notificationStatus:${notificationStatus ?? 0},
     notificationUserStatus:$notificationUserStatus,
     fromDate:"${startDate != null ? startDate : ""}",
     toDate:"${endDate != null ? endDate : ""}",
-    assetUIDs:${assetUIDs == null ? "\"\"" : "${"\"" + assetUIDs + "\""}"},,
+  
      notificationType:${Utils.getStringListData(notificationType ?? [])}
+     productFamily:"${productFamily != null ? productFamily : ""}"
   ){
     links{
       next,
@@ -2890,7 +2891,8 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
       hours,
       faultCode,
       lastReportedLocationLatitude,
-      lastReportedLocationLongitude
+      lastReportedLocationLongitude,
+      lastReportedTimeUTC
     }
     }
     }
@@ -2910,9 +2912,11 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
     await cleaValue();
     await gettingFiltersValue(appliedFilter);
     await gettingLocationFilter(appliedFilter);
+    // Logger().v(assetId);
 
     var data = """
 {
+  
   maintenanceList(
     fromDate: ${startDate == null ? "\"\"" : "${"\"" + startDate + "\""}"}, 
     limit: ${limit ?? null}, 
@@ -3503,6 +3507,24 @@ createAsset(
     var data = """
 mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
   deleteMetaDataNotes(userAssetNoteUid:\$userAssetNoteUid)
+}""";
+    return data;
+  }
+
+  getSingleAssetFaulSummaryData({String? assetUid,String ? startDate,String ? endDate}) {
+    var data = """query{
+    faultSummaryData(assetUid:"$assetUid",
+    startDateTime:"$startDate",
+    endDateTime:"$endDate"){
+        summaryData{
+            
+            countData{
+                assetCount,
+                countOf,
+                faultCount
+            }
+        }
+    }
 }""";
     return data;
   }

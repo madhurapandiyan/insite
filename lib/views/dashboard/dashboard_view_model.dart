@@ -25,6 +25,7 @@ import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/maintenance/main/main_view.dart';
 import 'package:insite/views/maintenance/maintenance_view.dart';
 import 'package:insite/views/notification/notification_view.dart';
+import 'package:insite/views/utilization/tabs/list/utilization_list_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -109,6 +110,8 @@ class DashboardViewModel extends InsiteViewModel {
   NotificationData? _notificationCountDatas;
   NotificationData? get notificationCountDatas => _notificationCountDatas;
 
+  String? notificationFilterTitle;
+
   String _endDayRange = DateFormat('yyyy-MM-dd').format(DateTime.now());
   set endDayRange(String endDay) {
     this._endDayRange = endDay;
@@ -136,6 +139,7 @@ class DashboardViewModel extends InsiteViewModel {
     _assetLocationService!.setUp();
     _localStorageService!.setUp();
     _assetUtilizationService!.setUp();
+    _maintenanceService!.setUp();
     _dateRangeService!.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () async {
@@ -354,7 +358,7 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFaultCountData() async {
-    Logger().i("get fault count data");
+    Logger().e("get fault count data");
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCount(
@@ -482,7 +486,7 @@ class DashboardViewModel extends InsiteViewModel {
       await addFilter(currentFilterSelected!);
     }
     await addFilter(data);
-    await _dateRangeService!.updateDateFilter(dateFilter);
+    //await _dateRangeService!.updateDateFilter(dateFilter);
   }
 
   gotoFaultPage() {
@@ -500,7 +504,7 @@ class DashboardViewModel extends InsiteViewModel {
   gotoUtilizationPage() {
     Logger().i("go to utilization page");
     _navigationService!
-        .navigateWithTransition(UtilLizationView(), transition: "rightToLeft");
+        .navigateWithTransition(UtilizationListView(), transition: "rightToLeft");
   }
 
   getUtilizationSummary() async {
@@ -592,6 +596,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   getFilterDataApplied(FilterData filterData, bool isFromProdFamily) async {
     try {
+      notificationFilterTitle = filterData.title;
       this._isFilterApplied = true;
       this._currentFilterSelected = filterData;
       // await clearFilterOfTypeInDb(FilterType.PRODUCT_FAMILY);
@@ -675,6 +680,7 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFaultCountDataFilterData(dropDownValue) async {
+    Logger().v(endDate);
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCountFilterApplied(
@@ -686,7 +692,7 @@ class DashboardViewModel extends InsiteViewModel {
             startDate: Utils.getFaultDateFormatStartDate(
                 DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
             endDate: Utils.getFaultDateFormatEndDate(
-                DateTime.now().subtract(Duration(days: 1)))));
+                DateTime.now())));
     if (count != null) {
       _faultCountData = count;
     }
@@ -746,6 +752,7 @@ class DashboardViewModel extends InsiteViewModel {
   onNotificationFilterClicked(String value) {
     _navigationService!.navigateToView(NotificationView(
       filterValue: value,
+      productFamily: notificationFilterTitle,
     ));
   }
 }

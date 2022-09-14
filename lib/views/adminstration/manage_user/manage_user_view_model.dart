@@ -68,6 +68,9 @@ class ManageUserViewModel extends InsiteViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
+  bool _showVerifyUser = false;
+  bool get showVerifyUser => _showVerifyUser;
+
   ScrollController? scrollController;
 
   bool _loading = true;
@@ -128,11 +131,14 @@ class ManageUserViewModel extends InsiteViewModel {
           _totalCount = result.total!.items!;
         }
         if (result.users!.isNotEmpty) {
+          Logger()
+              .v(result.users!.any((element) => element.emailVerified == "NO"));
           Logger().i("list of assets " + result.users!.length.toString());
           if (!loadingMore) {
             Logger().i("assets");
             _assets.clear();
           }
+
           for (var user in result.users!) {
             _assets.add(UserRow(user: user, isSelected: false));
           }
@@ -174,16 +180,17 @@ class ManageUserViewModel extends InsiteViewModel {
     } else if (value == "Edit User") {
       onEditClicked();
     } else if (value == "Add User") {
-       onClickedAddUserView();
+      onClickedAddUserView();
     }
   }
 
-
-  onClickedAddUserView(){
-    _navigationService!.navigateWithTransition(AddNewUserView(
-      isEdit: false,
-      user: null,
-    ),transition: "fade");
+  onClickedAddUserView() {
+    _navigationService!.navigateWithTransition(
+        AddNewUserView(
+          isEdit: false,
+          user: null,
+        ),
+        transition: "fade");
   }
 
   onItemSelected(index) {
@@ -283,29 +290,45 @@ class ManageUserViewModel extends InsiteViewModel {
     Logger().i("checkEditAndDeleteVisibility");
     try {
       var count = 0;
+      var userVerifyCount = 0;
       for (int i = 0; i < _assets.length; i++) {
         var data = _assets[i];
-        if (data.isSelected) {
-          count++;
+        if (data.isSelected && data.user!.emailVerified == "NO") {
+          userVerifyCount++;
+        } else {
+          if (data.isSelected) {
+            count++;
+          }
         }
       }
-      if (count > 0) {
-        if (count > 1) {
-          _showEdit = false;
-          _showDelete = true;
-          _showDeSelect = true;
-          _showMenu = true;
-        } else {
-          _showEdit = true;
-          _showDelete = true;
-          _showDeSelect = true;
-          _showMenu = true;
-        }
-      } else {
-        _showEdit = false;
+
+      if (userVerifyCount > 0) {
+        _showMenu = true;
         _showDelete = false;
         _showDeSelect = false;
-        _showMenu = false;
+        _showVerifyUser = true;
+      } else {
+        if (count > 0) {
+          if (count > 1) {
+            _showEdit = false;
+            _showDelete = true;
+            _showDeSelect = true;
+            _showMenu = true;
+            _showVerifyUser = false;
+          } else {
+            _showEdit = true;
+            _showDelete = true;
+            _showDeSelect = true;
+            _showMenu = true;
+            _showVerifyUser = false;
+          }
+        } else {
+          _showEdit = false;
+          _showDelete = false;
+          _showDeSelect = false;
+          _showMenu = false;
+          _showVerifyUser = false;
+        }
       }
     } catch (e) {}
     notifyListeners();

@@ -115,6 +115,7 @@ class UtilizationListViewModel extends InsiteViewModel {
         await getSelectedFilterData();
         await getDateRangeFilterData();
         await getUtilizationCount();
+        
       }
       Utilization? result = await _utilizationService!.getUtilizationResult(
           startDate,
@@ -134,10 +135,12 @@ class UtilizationListViewModel extends InsiteViewModel {
               pageNo: pageNumber));
       Logger().wtf(result?.assetResults?.length);
       if (result != null) {
+      
         if (result.assetResults!.isNotEmpty) {
           _utilLizationListData.addAll(result.assetResults!);
           _loading = false;
           _loadingMore = false;
+          
           notifyListeners();
         } else {
           _utilLizationListData.addAll(result.assetResults!);
@@ -185,7 +188,7 @@ class UtilizationListViewModel extends InsiteViewModel {
               pageNo: pageNumber));
       if (result != null) {
         _utilLizationListData.clear();
-
+        _utilLizationListData.addAll(result!.assetResults!);
         Logger().wtf(_utilLizationListData.length);
         _refreshing = false;
         notifyListeners();
@@ -193,7 +196,7 @@ class UtilizationListViewModel extends InsiteViewModel {
         _refreshing = false;
         notifyListeners();
       }
-      _utilLizationListData.addAll(result!.assetResults!);
+
       Logger().i("list of _utilLizationListData " +
           _utilLizationListData.length.toString());
     } catch (e) {
@@ -215,6 +218,7 @@ class UtilizationListViewModel extends InsiteViewModel {
               Utils.getIdlingDateParse(endDate),
               appliedFilters));
       if (assetCount != null) {
+        Logger().w(assetCount.countData![0].count!);
         if (assetCount.countData!.isNotEmpty &&
             assetCount.countData![0].count != null) {
           _totalCount = assetCount.countData![0].count!;

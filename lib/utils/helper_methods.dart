@@ -1721,7 +1721,7 @@ class Utils {
 
       var inputDate = DateTime.parse(parseDate)
           .add(Duration(hours: 18, seconds: 00, minutes: 30));
-      //.subtract(Duration(days: 1))
+      //.subtract(Duration(days: 1));
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);

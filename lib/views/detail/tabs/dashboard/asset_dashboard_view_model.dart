@@ -2,9 +2,12 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
+import 'package:insite/core/models/asset_dashboard_fault_data.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/asset_utilization.dart';
+import 'package:insite/core/models/db/asset_count_data.dart';
+import 'package:insite/core/models/fault.dart';
 
 import 'package:insite/core/models/filter_data.dart';
 
@@ -17,6 +20,7 @@ import 'package:insite/core/services/asset_service.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/asset_utilization_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
+import 'package:insite/utils/date.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 
@@ -63,6 +67,8 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   List<Note> _assetNotes = [];
   List<Note> get assetNotes => _assetNotes;
+
+  List<Count>? faultCountDataList = [];
 
   bool _loading = true;
   bool get loading => _loading;
@@ -112,6 +118,7 @@ class AssetDashboardViewModel extends InsiteViewModel {
       await getNotes();
       await getMaintenanceCountData();
       await getNotificationCountData();
+      await getFaultCountData();
     });
   }
 
@@ -227,5 +234,28 @@ class AssetDashboardViewModel extends InsiteViewModel {
     }
     notifyListeners();
     hideLoadingDialog();
+  }
+
+  getFaultCountData() async {
+    AssetDashboardFaultData? assetDashboardFaultData =
+        await _assetSingleHistoryService!.getAssetDashboardFaultCountData(
+      graphqlSchemaService!.getSingleAssetFaulSummaryData(
+          assetUid: assetDetail?.assetUid,
+          startDate: Utils.getFaultDateFormatStartDate(
+              DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
+                  .subtract(Duration(days: 1))),
+          endDate: Utils.getFaultDateFormatEndDate(DateTime.now())),
+    );
+    Logger().v(
+        assetDashboardFaultData!.summaryData!.first.countData!.first.countOf);
+
+    for (var i = 0; i < assetDashboardFaultData.summaryData!.length; i++) {
+      var data = assetDashboardFaultData.summaryData![i];
+      for (var j = 0; j < data.countData!.length; j++) {
+        faultCountDataList!.add(data.countData![j]);
+      }
+    }
+    _faultCountloading = false;
+    notifyListeners();
   }
 }

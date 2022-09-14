@@ -111,7 +111,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
             limit: pageSize,
             page: pageNumber,
             query: await graphqlSchemaService!.getMaintenanceListData(
-                assetId: summaryData!.assetID,
+                assetId: summaryData!.assetUID,
                 histroy: true,
                 startDate:
                     Utils.maintenanceFromDateFormate(maintenanceStartDate!),
@@ -146,6 +146,8 @@ class MaintenanceTabViewModel extends InsiteViewModel {
               pageSize,
               pageNumber,
               Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+
+
                
               );
 
@@ -171,6 +173,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
         notifyListeners();
       }
     } else {
+      Logger().w("data");
       MaintenanceListData? maintenanceListData = await _maintenanceService!
           .getMaintenanceListData(
               startTime:

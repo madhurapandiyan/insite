@@ -10,14 +10,16 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
+import 'package:insite/views/adminstration/manage_user/manage_user_view.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class AddNewUserViewModel extends InsiteViewModel {
   Logger? log;
   var _manageUserService = locator<AssetAdminManagerUserService>();
-
+   var _navigatorService=locator<NavigationService>();
   List<ApplicationAccess>? selectedList;
   TextEditingController emailController = new TextEditingController();
   TextEditingController firstNameController = new TextEditingController();
@@ -236,10 +238,10 @@ class AddNewUserViewModel extends InsiteViewModel {
     ManageUser? result = await _manageUserService.getUser(
         user!.userUid,
         graphqlSchemaService!
-            .userManagementUserList(email: user!.loginId, pageNo: 1));
+            .userManagementUserList(searchKey: user!.loginId, pageNo: 1));
     try {
       if (result != null) {
-        // this.user = result.user!;
+        //this.user = result.user!;
 
         Logger().w(result.users!.first.toJson());
         for (var editData in result.users!) {
@@ -424,7 +426,11 @@ class AddNewUserViewModel extends InsiteViewModel {
           email: email,
           phoneNumber: phoneNumber,
           jobTitle: jobTitle,
-          jobType: jobType == "Employee" ? 1 : 2,
+          jobType: jobType == null
+              ? 0
+              : jobType == "Employee"
+                  ? 1
+                  : 2,
           address: address,
           state: state,
           country: country,
@@ -434,6 +440,7 @@ class AddNewUserViewModel extends InsiteViewModel {
           roles: roles);
       if (result != null) {
         snackbarService!.showSnackbar(message: "Added successfully");
+         _navigatorService.clearTillFirstAndShowView(ManageUserView());
         reset();
       } else {
         snackbarService!.showSnackbar(message: "Adding user failed");
@@ -460,16 +467,10 @@ class AddNewUserViewModel extends InsiteViewModel {
       return false;
     }
 
-    if (phoneNumberController.text.isNotEmpty) {
-      if (validateMobile(phoneNumberController.text)) {
-        return true;
-      } else {
-        snackbarService?.showSnackbar(
-          message: "Please enter valid phone number",
-        );
-      }
-      return false;
-    }
+    // if (phoneNumberController.text.isEmpty) {
+    //   snackbarService?.showSnackbar(message: "Phone Number is Empty");
+    //   return false;
+    // }
 
     if (applicationSelectedDropDownList.isEmpty) {
       snackbarService?.showSnackbar(
