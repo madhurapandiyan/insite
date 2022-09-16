@@ -38,11 +38,13 @@ class MainViewState extends State<MainView> {
 
   onFilterApplied() {
     model!.refresh();
+    
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
+      
       builder: (BuildContext context, MainViewModel viewModel, Widget? _) {
         model = viewModel;
         return Stack(

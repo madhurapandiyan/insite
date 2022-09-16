@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
-import 'package:logger/logger.dart';
 
 class GeofencingMap extends StatefulWidget {
   final List<String>? mapType;
@@ -15,19 +16,24 @@ class GeofencingMap extends StatefulWidget {
   final CameraPosition? camPosition;
   final Completer<GoogleMapController>? completer;
   final Function(CameraPosition)? onPan;
+  final Set<Marker>? markers;
 
-  GeofencingMap(
-      {this.mapType,
-      this.gettingData,
-      this.color,
-      this.initialValue,
-      this.circle,
-      this.polygon,
-      this.polyline,
-      this.isDrawing,
-      this.camPosition,
-      this.completer,
-      this.onPan});
+  final CustomInfoWindowController? customInfoWindowController;
+  GeofencingMap({
+    this.mapType,
+    this.gettingData,
+    this.color,
+    this.initialValue,
+    this.circle,
+    this.polygon,
+    this.polyline,
+    this.isDrawing,
+    this.camPosition,
+    this.completer,
+    this.onPan,
+    this.markers,
+    this.customInfoWindowController,
+  });
 
   @override
   _GeofencingMapState createState() => _GeofencingMapState();
@@ -42,10 +48,20 @@ class _GeofencingMapState extends State<GeofencingMap> {
       controller: GoogleMapsController(
           onMapCreated: (controller) {
             widget.completer!.complete(controller);
+            widget.customInfoWindowController!.googleMapController = controller;
+          },
+          onCameraMove: (position) {
+            widget.customInfoWindowController!.onCameraMove!();
           },
           zoomControlsEnabled: false,
           zoomGesturesEnabled: true,
-          mapType: mapType(widget.initialValue),
+          mapType: widget.initialValue == widget.mapType![0]
+              ? MapType.normal
+              : widget.initialValue == widget.mapType![1]
+                  ? MapType.terrain
+                  : widget.initialValue == widget.mapType![2]
+                      ? MapType.satellite
+                      : MapType.hybrid,
           initialCircles: widget.circle,
           initialCameraPosition: widget.camPosition,
           initialPolygons:
@@ -53,34 +69,12 @@ class _GeofencingMapState extends State<GeofencingMap> {
           initialPolylines: widget.polyline!.isEmpty
               ? null
               : widget.polyline as Set<Polyline>?,
+          initialMarkers: widget.markers,
           onTap: widget.isDrawing!
               ? (latlng) {
                   widget.gettingData!(latlng);
                 }
               : (_) {}),
     );
-  }
-
-  MapType mapType(String? initialValue) {
-    Logger().w(initialValue);
-    switch (initialValue) {
-      case "MAP":
-        Logger().i("map is in normal type ");
-        return MapType.normal;
-
-      case "TERRAIN":
-        Logger().i("map is in terrain type");
-        return MapType.terrain;
-
-      case "SATELLITE":
-        Logger().i("map is in satellite type ");
-        return MapType.hybrid;
-
-      case "HYBRID":
-        Logger().i("map is in hybrid type ");
-        return MapType.satellite;
-      default:
-        return MapType.normal;
-    }
   }
 }

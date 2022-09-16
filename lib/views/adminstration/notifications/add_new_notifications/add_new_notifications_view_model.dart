@@ -38,6 +38,7 @@ import 'model/fault_code_type_search.dart';
 class AddNewNotificationsViewModel extends InsiteViewModel {
   Logger? log;
 
+  bool? isShowExistTitle = false;
   NotificationService? _notificationService = locator<NotificationService>();
   LocalService? _localService = locator<LocalService>();
 
@@ -1434,7 +1435,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
         if (notificationExists?.alertTitleExists == true) {
           _snackBarservice!.showSnackbar(message: "Notification title exists");
-          notificationController.clear();
+          isShowExistTitle = true;
+          //notificationController.clear();
+        } else {
+          isShowExistTitle = false;
         }
         notifyListeners();
       } else {
@@ -1919,6 +1923,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       _snackBarservice!.showSnackbar(message: "Notification Name is required");
       return;
     }
+    if (isShowExistTitle!) {
+      _snackBarservice!.showSnackbar(message: "Notification title exists");
+    }
     if (_dropDownInitialValue == "Select") {
       _snackBarservice!
           .showSnackbar(message: "Please Select Notification Type");
@@ -1939,6 +1946,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       _snackBarservice!.showSnackbar(message: "Please Select Asset");
       return;
     }
+    
     if (scheduleDay.isEmpty) {
       _snackBarservice!.showSnackbar(message: "Please Schedule Notification");
       return;

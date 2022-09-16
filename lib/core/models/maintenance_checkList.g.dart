@@ -23,14 +23,24 @@ MaintenanceCheckListModel _$MaintenanceCheckListModelFromJson(
     );
 
 Map<String, dynamic> _$MaintenanceCheckListModelToJson(
-        MaintenanceCheckListModel instance) =>
-    <String, dynamic>{
-      'status': instance.status,
-      'serviceStatus': instance.serviceStatus,
-      'dueInOverdueBy': instance.dueInOverdueBy,
-      'maintenanceCheckList': instance.maintenanceCheckList,
-      'maintenanceServiceList': instance.maintenanceServiceList,
-    };
+    MaintenanceCheckListModel instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('status', instance.status);
+  writeNotNull('serviceStatus', instance.serviceStatus);
+  writeNotNull('dueInOverdueBy', instance.dueInOverdueBy);
+  writeNotNull('maintenanceCheckList',
+      instance.maintenanceCheckList?.map((e) => e.toJson()).toList());
+  writeNotNull('maintenanceServiceList',
+      instance.maintenanceServiceList?.map((e) => e.toJson()).toList());
+  return val;
+}
 
 MaintenanceCheckListModelPop _$MaintenanceCheckListModelPopFromJson(
         Map<String, dynamic> json) =>
@@ -49,14 +59,24 @@ MaintenanceCheckListModelPop _$MaintenanceCheckListModelPopFromJson(
     );
 
 Map<String, dynamic> _$MaintenanceCheckListModelPopToJson(
-        MaintenanceCheckListModelPop instance) =>
-    <String, dynamic>{
-      'status': instance.status,
-      'serviceStatus': instance.serviceStatus,
-      'dueInOverdueBy': instance.dueInOverdueBy,
-      'maintenanceCheckList': instance.maintenanceCheckList,
-      'maintenanceServiceList': instance.maintenanceServiceList,
-    };
+    MaintenanceCheckListModelPop instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('status', instance.status);
+  writeNotNull('serviceStatus', instance.serviceStatus);
+  writeNotNull('dueInOverdueBy', instance.dueInOverdueBy);
+  writeNotNull('maintenanceCheckList',
+      instance.maintenanceCheckList?.map((e) => e.toJson()).toList());
+  writeNotNull('maintenanceServiceList',
+      instance.maintenanceServiceList?.map((e) => e.toJson()).toList());
+  return val;
+}
 
 MaitenanceCheckListData _$MaitenanceCheckListDataFromJson(
         Map<String, dynamic> json) =>
@@ -71,14 +91,22 @@ MaitenanceCheckListData _$MaitenanceCheckListDataFromJson(
     );
 
 Map<String, dynamic> _$MaitenanceCheckListDataToJson(
-        MaitenanceCheckListData instance) =>
-    <String, dynamic>{
-      'checkListName': instance.checkListName,
-      'checkListID': instance.checkListID,
-      'isChecked': instance.isChecked,
-      'partList': instance.partList,
-      'checkListDescription': instance.checkListDescription,
-    };
+    MaitenanceCheckListData instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('checkListName', instance.checkListName);
+  writeNotNull('checkListID', instance.checkListID);
+  writeNotNull('isChecked', instance.isChecked);
+  writeNotNull('partList', instance.partList?.map((e) => e.toJson()).toList());
+  writeNotNull('checkListDescription', instance.checkListDescription);
+  return val;
+}
 
 MaitenanceCheckListDataPop _$MaitenanceCheckListDataPopFromJson(
         Map<String, dynamic> json) =>
@@ -93,14 +121,22 @@ MaitenanceCheckListDataPop _$MaitenanceCheckListDataPopFromJson(
     );
 
 Map<String, dynamic> _$MaitenanceCheckListDataPopToJson(
-        MaitenanceCheckListDataPop instance) =>
-    <String, dynamic>{
-      'checkListName': instance.checkListName,
-      'checkListID': instance.checkListID,
-      'isChecked': instance.isChecked,
-      'partList': instance.partList,
-      'checkListDescription': instance.checkListDescription,
-    };
+    MaitenanceCheckListDataPop instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('checkListName', instance.checkListName);
+  writeNotNull('checkListID', instance.checkListID);
+  writeNotNull('isChecked', instance.isChecked);
+  writeNotNull('partList', instance.partList?.map((e) => e.toJson()).toList());
+  writeNotNull('checkListDescription', instance.checkListDescription);
+  return val;
+}
 
 MaintenanceServiceList _$MaintenanceServiceListFromJson(
         Map<String, dynamic> json) =>
@@ -110,11 +146,19 @@ MaintenanceServiceList _$MaintenanceServiceListFromJson(
     );
 
 Map<String, dynamic> _$MaintenanceServiceListToJson(
-        MaintenanceServiceList instance) =>
-    <String, dynamic>{
-      'serviceName': instance.serviceName,
-      'serviceId': instance.serviceId,
-    };
+    MaintenanceServiceList instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('serviceName', instance.serviceName);
+  writeNotNull('serviceId', instance.serviceId);
+  return val;
+}
 
 PartListData _$PartListDataFromJson(Map<String, dynamic> json) => PartListData(
       description: json['description'] as String?,
@@ -125,15 +169,23 @@ PartListData _$PartListDataFromJson(Map<String, dynamic> json) => PartListData(
       units: json['units'] as String?,
     );
 
-Map<String, dynamic> _$PartListDataToJson(PartListData instance) =>
-    <String, dynamic>{
-      'partName': instance.partName,
-      'partNo': instance.partNo,
-      'quantity': instance.quantity,
-      'partId': instance.partId,
-      'description': instance.description,
-      'units': instance.units,
-    };
+Map<String, dynamic> _$PartListDataToJson(PartListData instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('partName', instance.partName);
+  writeNotNull('partNo', instance.partNo);
+  writeNotNull('description', instance.description);
+  writeNotNull('units', instance.units);
+  writeNotNull('quantity', instance.quantity);
+  writeNotNull('partId', instance.partId);
+  return val;
+}
 
 PartListDataPop _$PartListDataPopFromJson(Map<String, dynamic> json) =>
     PartListDataPop(
@@ -145,15 +197,23 @@ PartListDataPop _$PartListDataPopFromJson(Map<String, dynamic> json) =>
       units: json['units'] as String?,
     );
 
-Map<String, dynamic> _$PartListDataPopToJson(PartListDataPop instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'partNo': instance.partNo,
-      'quantity': instance.quantity,
-      'partId': instance.partId,
-      'description': instance.description,
-      'units': instance.units,
-    };
+Map<String, dynamic> _$PartListDataPopToJson(PartListDataPop instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('name', instance.name);
+  writeNotNull('partNo', instance.partNo);
+  writeNotNull('quantity', instance.quantity);
+  writeNotNull('partId', instance.partId);
+  writeNotNull('description', instance.description);
+  writeNotNull('units', instance.units);
+  return val;
+}
 
 MaintenanceIntervals _$MaintenanceIntervalsFromJson(
         Map<String, dynamic> json) =>
@@ -166,12 +226,21 @@ MaintenanceIntervals _$MaintenanceIntervalsFromJson(
     );
 
 Map<String, dynamic> _$MaintenanceIntervalsToJson(
-        MaintenanceIntervals instance) =>
-    <String, dynamic>{
-      'status': instance.status,
-      'totalCount': instance.totalCount,
-      'intervalList': instance.intervalList,
-    };
+    MaintenanceIntervals instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('status', instance.status);
+  writeNotNull('totalCount', instance.totalCount);
+  writeNotNull(
+      'intervalList', instance.intervalList?.map((e) => e.toJson()).toList());
+  return val;
+}
 
 IntervalList _$IntervalListFromJson(Map<String, dynamic> json) => IntervalList(
       checkList: (json['checkList'] as List<dynamic>?)
@@ -185,12 +254,117 @@ IntervalList _$IntervalListFromJson(Map<String, dynamic> json) => IntervalList(
       intervalName: json['intervalName'] as String?,
     );
 
-Map<String, dynamic> _$IntervalListToJson(IntervalList instance) =>
-    <String, dynamic>{
-      'intervalID': instance.intervalID,
-      'intervalName': instance.intervalName,
-      'firstOccurrences': instance.firstOccurrences,
-      'intervalDescription': instance.intervalDescription,
-      'editable': instance.editable,
-      'checkList': instance.checkList,
-    };
+Map<String, dynamic> _$IntervalListToJson(IntervalList instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('intervalID', instance.intervalID);
+  writeNotNull('intervalName', instance.intervalName);
+  writeNotNull('firstOccurrences', instance.firstOccurrences);
+  writeNotNull('intervalDescription', instance.intervalDescription);
+  writeNotNull('editable', instance.editable);
+  writeNotNull(
+      'checkList', instance.checkList?.map((e) => e.toJson()).toList());
+  return val;
+}
+
+AddMaintenanceIntervalPayload _$AddMaintenanceIntervalPayloadFromJson(
+        Map<String, dynamic> json) =>
+    AddMaintenanceIntervalPayload(
+      assetId: json['assetId'] as String?,
+      checklist: (json['checklist'] as List<dynamic>?)
+          ?.map((e) => MaitenanceCheckListDataPayLoad.fromJson(
+              e as Map<String, dynamic>))
+          .toList(),
+      currentHourMeter: (json['currentHourMeter'] as num?)?.toDouble(),
+      description: json['description'] as String?,
+      initialOccurence: json['initialOccurence'] as int?,
+      intervalName: json['intervalName'] as String?,
+      make: json['make'] as String?,
+      model: json['model'] as String?,
+      serialNumber: json['serialNumber'] as String?,
+      units: json['units'] as String?,
+    );
+
+Map<String, dynamic> _$AddMaintenanceIntervalPayloadToJson(
+    AddMaintenanceIntervalPayload instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('intervalName', instance.intervalName);
+  writeNotNull('initialOccurence', instance.initialOccurence);
+  writeNotNull('description', instance.description);
+  writeNotNull(
+      'checklist', instance.checklist?.map((e) => e.toJson()).toList());
+  writeNotNull('assetId', instance.assetId);
+  writeNotNull('serialNumber', instance.serialNumber);
+  writeNotNull('make', instance.make);
+  writeNotNull('model', instance.model);
+  writeNotNull('currentHourMeter', instance.currentHourMeter);
+  writeNotNull('units', instance.units);
+  return val;
+}
+
+PartListDataPayLoad _$PartListDataPayLoadFromJson(Map<String, dynamic> json) =>
+    PartListDataPayLoad(
+      partName: json['partName'] as String?,
+      partNo: json['partNo'] as String?,
+      quantity: json['quantity'] as int?,
+      units: json['units'] as String?,
+    );
+
+Map<String, dynamic> _$PartListDataPayLoadToJson(PartListDataPayLoad instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('partName', instance.partName);
+  writeNotNull('partNo', instance.partNo);
+  writeNotNull('units', instance.units);
+  writeNotNull('quantity', instance.quantity);
+  return val;
+}
+
+MaitenanceCheckListDataPayLoad _$MaitenanceCheckListDataPayLoadFromJson(
+        Map<String, dynamic> json) =>
+    MaitenanceCheckListDataPayLoad(
+      checkListID: json['checkListID'] as int?,
+      checkListName: json['checkListName'] as String?,
+      isChecked: json['isChecked'] as bool?,
+      partList: (json['partList'] as List<dynamic>?)
+          ?.map((e) => PartListDataPayLoad.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      checkListDescription: json['checkListDescription'] as String?,
+    );
+
+Map<String, dynamic> _$MaitenanceCheckListDataPayLoadToJson(
+    MaitenanceCheckListDataPayLoad instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('checkListName', instance.checkListName);
+  writeNotNull('checkListID', instance.checkListID);
+  writeNotNull('isChecked', instance.isChecked);
+  writeNotNull('partList', instance.partList?.map((e) => e.toJson()).toList());
+  writeNotNull('checkListDescription', instance.checkListDescription);
+  return val;
+}

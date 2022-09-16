@@ -75,29 +75,56 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                         viewModel.refresh();
                       },
                     ),
-                    InsiteButton(
-                      width: 200,
-                      title: Utils.getDateInFormatddMMyyyy(
-                              viewModel.maintenanceStartDate) +
-                          " - " +
-                          Utils.getDateInFormatddMMyyyy(
-                              viewModel.maintenanceEndDate),
-                      //width: 90,
-                      //bgColor: Theme.of(context).backgroundColor,
-                      textColor: white,
-                      onTap: () async {
-                        dateRange = [];
-                        dateRange = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Dialog(
-                              backgroundColor: transparent,
-                              child: DateRangeMaintenanceView()),
-                        );
-                        if (dateRange != null && dateRange!.isNotEmpty) {
-                          viewModel.refresh();
-                        }
-                      },
-                    ),
+                    viewModel.isToggled
+                        ? InsiteButton(
+                            width: 200,
+                            title: Utils.getDateInFormatddMMyyyy(
+                                    viewModel.maintenanceStartDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.maintenanceEndDate),
+                            //width: 90,
+                            //bgColor: Theme.of(context).backgroundColor,
+                            textColor: white,
+                            onTap: () async {
+                              dateRange = [];
+                              dateRange = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) => Dialog(
+                                    backgroundColor: transparent,
+                                    child: DateRangeMaintenanceView()),
+                              );
+                              if (dateRange != null && dateRange!.isNotEmpty) {
+                                viewModel.refresh();
+                              }
+                            },
+                          )
+                        : InsiteButton(
+                            title: Utils.getDateInFormatddMMyyyy(
+                                    viewModel.startDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.endDate),
+                            height: 36,
+                            onTap: () async {
+                              dateRange = [];
+                              dateRange = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) => Dialog(
+                                    backgroundColor: transparent,
+                                    child: DateRangeView()),
+                              );
+                              if (dateRange != null && dateRange!.isNotEmpty) {
+                                setState(() {
+                                  dateRange = dateRange;
+                                });
+                                viewModel.refresh();
+                              }
+                            },
+                            textColor: white,
+                            //width: 100,
+                            // bgColor: Theme.of(context).backgroundColor,
+                          ),
                   ],
                 ),
                 SizedBox(
@@ -295,7 +322,7 @@ class MaintenanceTabListData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  servicesData == null||servicesData!.isEmpty 
+    return servicesData == null || servicesData!.isEmpty
         ? Expanded(
             child: EmptyView(
               title: "No service pending or overdue at this time",

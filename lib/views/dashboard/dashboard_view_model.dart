@@ -459,11 +459,15 @@ class DashboardViewModel extends InsiteViewModel {
     try {
       maintenanceDashboardCount = null;
       notifyListeners();
+      Logger().w(maintenanceStartDate);
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
-              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-              endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
-              prodFamily: filterData.title));
+              fromDate: Utils.maintenanceFromDateFormateEndDate(maintenanceStartDate!),
+              endDate: Utils.maintenanceFromDateFormate(maintenanceEndDate!),
+              prodFamily: filterData.title,
+              todayEndDate: Utils.maintenanceFromDateFormate(maintenanceEndDate!),
+              nextWeekEndDate: Utils.maintenanceFromDateNextWeekEndDate(maintenanceEndDate!)
+              ));
       maintenanceDashboardCount = data;
       _maintenanceLoading = false;
       notifyListeners();

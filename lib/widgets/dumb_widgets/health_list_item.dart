@@ -58,7 +58,7 @@ class HealthListItem extends StatelessWidget {
                     ),
                     InsiteTableRowItem(
                       title: 'Location :',
-                      content: "${faultElement!.lastReportedLocationLatitude ?? "-"}/${faultElement!.lastReportedLocationLongitude ?? "-"}",
+                      content: faultElement!.lastReportedLocation??"-",
                     ),
                   ]),
                   TableRow(children: [
@@ -66,7 +66,7 @@ class HealthListItem extends StatelessWidget {
                       title: 'Hour Meter :',
                       content: faultElement!.hours == null
                           ? "-"
-                          : faultElement!.hours.toString(),
+                          : faultElement!.hours!.toStringAsFixed(2),
                     ),
                     InsiteTableRowItem(
                       title: 'Source :',

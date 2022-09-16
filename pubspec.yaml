@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.0.11+11
+version: 2.0.8+8
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
@@ -189,6 +189,13 @@ flutter:
     - assets/images/model/TMX20.png
     - assets/images/maintenance.svg
     - assets/images/invert.svg
+    - assets/images/dashboardicon.svg
+    - assets/images/fleeticon.svg
+    - assets/images/utilizationicon.svg
+    - assets/images/maintenanceicon.svg
+    - assets/images/healthicon.svg
+    - assets/images/asset_operationicon.svg
+    - assets/images/adminisitratoricon.svg
     
   fonts:
     - family: Roboto

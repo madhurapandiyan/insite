@@ -22,7 +22,7 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final jsonValue = jsonDecode(notifications!.notificationConfigJSON);
-    Logger().w(jsonValue);
+
 
     return GestureDetector(
       onTap: () {

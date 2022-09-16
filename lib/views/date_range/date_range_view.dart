@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/date.dart';
 import 'package:insite/utils/enums.dart';
@@ -15,16 +14,14 @@ import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class DateRangeView extends StatefulWidget {
-  FilterType? filterType;
   @override
   _DateRangeViewState createState() => _DateRangeViewState();
 
-  DateRangeView({this.filterType});
+  const DateRangeView({Key? key}) : super(key: key);
 }
 
 class _DateRangeViewState extends State<DateRangeView> {
   DateTime? fromDate, toDate;
-
   DateTime? customFromDate, customToDate;
   DateTime? _selectedDay;
   CustomDatePick currentCustomDatePick = CustomDatePick.customNoDate;
@@ -446,7 +443,6 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     DateFormat("yyyy-MM-dd").format(toDate!),
                                     //'${toDate!.year}-${toDate!.month}-${toDate!.day}',
                                     describeEnum(viewModel.selectedDateRange));
-
                                 Future.delayed(Duration(milliseconds: 500), () {
                                   Navigator.pop(context, [fromDate!, toDate!]);
                                 });
@@ -454,11 +450,6 @@ class _DateRangeViewState extends State<DateRangeView> {
                             }
                           }
                         }
-                        if (widget.filterType != null) {
-                          viewModel.clearSpecificFilterType(
-                              type: widget.filterType);
-                        }
-                        viewModel.dateType = viewModel.selectedDateRange;
                       },
                       textColor: white,
                       title: 'Apply',

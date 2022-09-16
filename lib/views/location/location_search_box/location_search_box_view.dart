@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:insite/core/models/asset_location.dart';
-import 'package:insite/core/models/asset_location_history.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/location/location_search_box/location_search_box_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -14,7 +12,9 @@ import 'package:stacked/stacked.dart';
 class LocationSearchBoxView extends StatelessWidget {
   final Function(dynamic, bool isSerialNo)? onSeletingSuggestion;
 
-  LocationSearchBoxView({this.onSeletingSuggestion});
+  final double? searchBoxWidth;
+
+  LocationSearchBoxView({this.onSeletingSuggestion, this.searchBoxWidth});
   @override
   Widget build(BuildContext context) {
     var mediaQuerry = MediaQuery.of(context);
@@ -22,7 +22,8 @@ class LocationSearchBoxView extends StatelessWidget {
       builder: (BuildContext context, LocationSearchBoxViewModel viewModel,
           Widget? _) {
         return Container(
-          width: mediaQuerry.size.width * 0.6,
+          width: mediaQuerry.size.width * searchBoxWidth!,
+          height: mediaQuerry.size.height * 0.065,
           decoration: new BoxDecoration(
               color: Colors.white,
               borderRadius: new BorderRadius.all(new Radius.circular(8))),
@@ -32,7 +33,7 @@ class LocationSearchBoxView extends StatelessWidget {
                 return Row(
                   children: [
                     Container(
-                      width: constrain.maxWidth * 0.2,
+                      width: constrain.maxWidth * 0.25,
                       decoration: new BoxDecoration(
                           color: Colors.white,
                           borderRadius:
@@ -67,72 +68,74 @@ class LocationSearchBoxView extends StatelessWidget {
                     //     onChanged: (_) {},
                     //   ),
                     // ),
-                    Container(
-                      width: constrain.maxWidth * 0.8,
-                      decoration: new BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              new BorderRadius.all(new Radius.circular(8))),
-                      child: TypeAheadField(
-                        noItemsFoundBuilder: (_) {
-                          return SizedBox();
-                        },
-                        suggestionsCallback: (pattern) async {
-                          Completer<List<LocationKey>> completer =
-                              new Completer();
-                          if (pattern.isNotEmpty) {
-                            await viewModel.onSearchTextChanged(pattern);
-                            completer.complete(viewModel.list);
-                            return completer.future;
-                          } else {
-                            return [];
-                          }
-                        },
-                        itemBuilder: (context, suggestion) {
-                          var data = suggestion as LocationKey;
-                          return ListTile(
-                            title: Text(data.value!),
-                          );
-                        },
-                        hideOnEmpty: true,
-                        hideSuggestionsOnKeyboardHide: false,
-                        keepSuggestionsOnSuggestionSelected: false,
-                        getImmediateSuggestions: true,
-                        onSuggestionSelected: (suggestion) {
-                          if ((suggestion as LocationKey?) != null) {
-                            viewModel.onSelect(suggestion!.value as String);
-                            if (viewModel.searchDropDownValue == "S/N") {
-                              var data = viewModel
-                                  .result!.assetLocation!.mapRecords!
-                                  .singleWhere((element) =>
-                                      element!.assetSerialNumber ==
-                                      suggestion.value);
-
-                              onSeletingSuggestion!(data, true);
+                    Expanded(
+                      child: Container(
+                        decoration: new BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                new BorderRadius.all(new Radius.circular(8))),
+                        child: TypeAheadField(
+                          noItemsFoundBuilder: (_) {
+                            return SizedBox();
+                          },
+                          suggestionsCallback: (pattern) async {
+                            Completer<List<LocationKey>> completer =
+                                new Completer();
+                            if (pattern.isNotEmpty) {
+                              await viewModel.onSearchTextChanged(pattern);
+                              completer.complete(viewModel.list);
+                              return completer.future;
                             } else {
-                              onSeletingSuggestion!(
-                                  LatLng(suggestion.latitude!,
-                                      suggestion.longitude!),
-                                  false);
+                              return [];
                             }
-                          }
-                        },
-                        textFieldConfiguration: TextFieldConfiguration(
-                          cursorColor: addUserBgColor,
-                          controller: viewModel.searchController,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Theme.of(context).textTheme.bodyText1!.color,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
+                          },
+                          itemBuilder: (context, suggestion) {
+                            var data = suggestion as LocationKey;
+                            return ListTile(
+                              title: Text(data.value!),
+                            );
+                          },
+                          hideOnEmpty: true,
+                          hideSuggestionsOnKeyboardHide: false,
+                          keepSuggestionsOnSuggestionSelected: false,
+                          getImmediateSuggestions: true,
+                          onSuggestionSelected: (suggestion) {
+                            if ((suggestion as LocationKey?) != null) {
+                              viewModel.onSelect(suggestion!.value as String);
+                              if (viewModel.searchDropDownValue == "S/N") {
+                                var data = viewModel
+                                    .result!.assetLocation!.mapRecords!
+                                    .singleWhere((element) =>
+                                        element!.assetSerialNumber ==
+                                        suggestion.value);
+                                Logger().w(data!.toJson());
+                                onSeletingSuggestion!(data, true);
+                              } else {
+                                onSeletingSuggestion!(
+                                    LatLng(suggestion.latitude!,
+                                        suggestion.longitude!),
+                                    false);
+                              }
+                            }
+                          },
+                          textFieldConfiguration: TextFieldConfiguration(
+                            cursorColor: addUserBgColor,
+                            controller: viewModel.searchController,
+                            maxLines: 1,
+                            style: TextStyle(
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                            ),
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    left: 16, top: 12, bottom: 12),
+                                isDense: true,
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                fillColor: white),
                           ),
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  left: 16, top: 12, bottom: 12),
-                              isDense: true,
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              fillColor: white),
                         ),
                       ),
                     )

@@ -120,10 +120,15 @@ class UpdateUserData {
       this.roles,
       this.src,
       this.company,
-      this.language});
+      this.language,
+      this.email,
+      this.isAssetSecurityEnabled,
+      this.JobType,
+      this.customerUid});
 
   String? fname;
   String? lname;
+  String? email;
   String? cwsEmail;
   String? phone;
   String? sso_id;
@@ -134,6 +139,9 @@ class UpdateUserData {
   String? src;
   String? company;
   String? language;
+  bool? isAssetSecurityEnabled;
+  int? JobType;
+  String? customerUid;
 
   factory UpdateUserData.fromJson(Map<String, dynamic> json) =>
       _$UpdateUserDataFromJson(json);

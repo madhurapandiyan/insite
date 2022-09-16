@@ -32,11 +32,11 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
           },
           child: Card(
             child: Padding(
-              padding: const EdgeInsets.only(left: 10,right: 10),
+              padding: const EdgeInsets.only(left: 10, right: 10),
               child: Row(
                 children: [
                   Container(
-                   // padding: EdgeInsets.all(2),
+                    // padding: EdgeInsets.all(2),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -73,22 +73,21 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                     "\n" +
                                     widget.fault!.asset["details"]["model"],
                                 path: widget.fault!.asset["details"] != null &&
-                                        widget.fault!.asset["details"]["model"] !=
+                                        widget.fault!.asset["details"]
+                                                ["model"] !=
                                             null
                                     ? Utils().getImageWithAssetIconKey(
                                         model: widget.fault!.asset["details"]
                                             ["model"],
-                                        assetIconKey: widget
-                                            .fault!.asset["details"]["assetIcon"])
+                                        assetIconKey: widget.fault!
+                                            .asset["details"]["assetIcon"])
                                     : "assets/images/EX210.png",
                               ),
                               InsiteTableRowItem(
-                                title: "Date/Time",
+                                title: "Asset Status",
                                 content: widget.fault!.asset != null &&
                                         widget.fault!.asset["dynamic"] != null
-                                    ? Utils.getLastReportedDateOneUTC(
-                                        widget.fault!.asset["dynamic"]
-                                            ["locationReportedTimeUTC"])
+                                    ? widget.fault!.asset["dynamic"]["status"]
                                     : "-",
                               )
                             ],
@@ -141,7 +140,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                 title: "Location : ",
                                 content: widget.fault!.asset != null &&
                                         widget.fault!.asset["dynamic"] != null
-                                    ? (widget.fault!.asset["dynamic"]["location"])
+                                    ? (widget.fault!.asset["dynamic"]
+                                        ["location"])
                                     : "-",
                               ),
                             ]),
@@ -150,7 +150,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                 title: "Current Hour Meter : ",
                                 content: widget.fault!.asset != null &&
                                         widget.fault!.asset["dynamic"] != null
-                                    ? (widget.fault!.asset["dynamic"]["hourMeter"]
+                                    ? (widget
+                                        .fault!.asset["dynamic"]["hourMeter"]
                                         .toString())
                                     : "-",
                               ),
@@ -221,7 +222,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                           border: TableBorder.all(),
                                           children: List.generate(
                                               viewModel.faults.length, (index) {
-                                            Fault fault = viewModel.faults[index];
+                                            Fault fault =
+                                                viewModel.faults[index];
                                             return TableRow(children: [
                                               InsiteTextWithPadding(
                                                 padding: EdgeInsets.all(8),
@@ -231,7 +233,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                                 size: 12,
                                               ),
                                               InsiteButton(
-                                                title: fault.severityLabel ?? "",
+                                                title:
+                                                    fault.severityLabel ?? "",
                                                 padding: EdgeInsets.all(8),
                                                 margin: EdgeInsets.all(8),
                                                 bgColor: Utils.getFaultColor(
