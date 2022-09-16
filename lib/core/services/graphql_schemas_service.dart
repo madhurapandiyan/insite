@@ -369,7 +369,7 @@ manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
 modelList:${model == null ? "\"\"" : "${"\"" + model! + "\""}"}
 deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
 assetStatusList:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}
-fuelLevelPercentLT: ""
+
 fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
   ) {
     faults {
@@ -765,6 +765,7 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
     return """{
   userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, ) {
     users {
+      invitationUID
       first_name
       last_name
       user_type
@@ -2892,7 +2893,9 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
       faultCode,
       lastReportedLocationLatitude,
       lastReportedLocationLongitude,
-      lastReportedTimeUTC
+      lastReportedTimeUTC,
+      lastReportedLocation
+
     }
     }
     }
@@ -3097,6 +3100,8 @@ query{
           source,
           faultOccuredUTC,
           severityLabel
+          }
+          }
 
       } """;
     return data;
@@ -3259,7 +3264,11 @@ maintenanceIntervals(
   }
 
   String getPlantDashboardAndHierarchyListData(
-      {int? limit, int? start, String? status, String? calendar}) {
+      {int? limit,
+      int? start,
+      String? status,
+      String? calendar,
+      String? model}) {
     var data = """query{
     frameSubscription{
         subscriptionFleetList(
@@ -3267,6 +3276,7 @@ maintenanceIntervals(
             start:${start != null ? start : null},
             status:"${status != null ? status : ""}",
              calendar:"${calendar != null ? calendar : ""}",
+             model:"${model != null ? model : ""}"
             
         ){
             count,
@@ -3327,24 +3337,15 @@ maintenanceIntervals(
   //   return data;
   // }
 
-  addMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
-    var data = """
-mutation{
-  createMaintenanceIntervals(
-    intervalName:${mainInterval!.intervalName ?? ""},
-    initialOccurence:${mainInterval.initialOccurence ?? 0},
-     description:${mainInterval.description ?? ""},
-    assetId:${mainInterval.assetId ?? ""},
-    serialNumber:${mainInterval.serialno ?? ""},
-    make:${mainInterval.make ?? ""},
-    model:${mainInterval.model ?? ""},
-    currentHourMeter:${mainInterval.currentHrmeter ?? null},
-    checklist:${Utils.addMaintenanceIntervals(mainInterval.checkList!)}
-  ){
+  addMaintenanceIntervals() {
+    var data =
+        """mutation createMaintenanceIntervals(\$intervalName: String, \$initialOccurence: Int, \$description: String, \$checklist: [createMaintenanceIntervals], \$assetId: String, \$serialNumber: String, \$make: String, \$model: String, \$currentHourMeter: Float, \$units: String) {
+  createMaintenanceIntervals(intervalName: \$intervalName, initialOccurence: \$initialOccurence, description: \$description, checklist: \$checklist, assetId: \$assetId, serialNumber: \$serialNumber, make: \$make, model: \$model, currentHourMeter: \$currentHourMeter, units: \$units){
     status,
-     message
+    message
   }
-}""";
+}
+""";
     return data;
   }
 
@@ -3511,7 +3512,8 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
     return data;
   }
 
-  getSingleAssetFaulSummaryData({String? assetUid,String ? startDate,String ? endDate}) {
+  getSingleAssetFaulSummaryData(
+      {String? assetUid, String? startDate, String? endDate}) {
     var data = """query{
     faultSummaryData(assetUid:"$assetUid",
     startDateTime:"$startDate",
@@ -3526,6 +3528,29 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
         }
     }
 }""";
+    return data;
+  }
+
+  resentInvitation() {
+    var data = """query  Resend(\$resendID: String){
+  resend(resendID: \$resendID){
+    invitation_id,
+    count,
+    isInvitationSent,
+    isUpdated
+  }
+}""";
+    return data;
+  }
+
+  editUser() {
+    var data = """
+mutation userManagementCreateUser(\$requestBody: createUserBody!, \$userUId: String)
+{userManagementCreateUser(requestBody: \$requestBody, userUId: \$userUId){
+  count
+  invitation_id
+  isUpdated
+  }}""";
     return data;
   }
 }

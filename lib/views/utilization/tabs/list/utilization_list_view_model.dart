@@ -217,12 +217,13 @@ class UtilizationListViewModel extends InsiteViewModel {
               Utils.getIdlingDateParse(startDate),
               Utils.getIdlingDateParse(endDate),
               appliedFilters));
-      if (assetCount != null) {
-        Logger().w(assetCount.countData![0].count!);
+     if (assetCount != null) {
         if (assetCount.countData!.isNotEmpty &&
             assetCount.countData![0].count != null) {
           _totalCount = assetCount.countData![0].count!;
         }
+      } else {
+        _totalCount = 0;
       }
       notifyListeners();
     } catch (e) {

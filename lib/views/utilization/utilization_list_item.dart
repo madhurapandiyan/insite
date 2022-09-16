@@ -426,7 +426,7 @@ class UtilizationListItem extends StatelessWidget {
                             TableRow(
                               children: [
                                 InsiteTableRowItem(
-                                  title: "Last Utiization Report",
+                                  title: "Last Utilization Report",
                                   content:
                                       utilizationData!.lastReportedTime != null
                                           ? Utils.getLastReportedDateOne(

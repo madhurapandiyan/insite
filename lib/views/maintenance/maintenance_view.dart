@@ -45,7 +45,7 @@ class _MaintenanceViewState extends State<MaintenanceView> {
             viewModel: viewModel,
             onFilterApplied: () {
               viewModel.refresh();
-              //refreshWithFilter();
+              refreshWithFilter();
             },
             onRefineApplied: () {
               viewModel.refresh();

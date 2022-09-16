@@ -124,7 +124,7 @@ class UtilizationListViewState extends State<UtilizationListView> {
                                     builder: (BuildContext context) => Dialog(
                                         backgroundColor: transparent,
                                         child: DateRangeView(
-                                          filterType: FilterType.UTILIZATION_COUNT,
+                                          //filterType: FilterType.UTILIZATION_COUNT,
                                         )),
                                   );
                                   if (dateRange != null && dateRange!.isNotEmpty) {

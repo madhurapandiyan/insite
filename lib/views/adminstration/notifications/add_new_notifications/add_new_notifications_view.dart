@@ -64,7 +64,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                           Icons.crop_square,
                           color: listData[i].state!
                               ? Theme.of(context).buttonColor
-                              : Theme.of(context).cardColor,
+                              : Colors.black,
                         ),
                         label: InsiteText(
                           text: listData[i].text,
@@ -304,9 +304,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                               .customizable,
                                                           viewModel
                                                               .onCustomiozablestateChange),
-                                                      viewModel.customizable
-                                                              .first.state!
-                                                          ? Padding(
+                                                      Padding(
                                                               padding:
                                                                   const EdgeInsets
                                                                           .only(
@@ -316,8 +314,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                       .customizableState,
                                                                   viewModel
                                                                       .checkingCustomizeableState),
-                                                            )
-                                                          : SizedBox(),
+                                                            ),
+                                                        
                                                       SizedBox(
                                                         height: 10,
                                                       ),

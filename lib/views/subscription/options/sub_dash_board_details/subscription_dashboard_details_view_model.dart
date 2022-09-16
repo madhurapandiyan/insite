@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
@@ -57,47 +58,55 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   }
 
   getSubcriptionDeviceListData() async {
-    // if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE &&
-    //     _filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE) {
-      if (type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.CUSTOMER ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.DEALER ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.ASSET) {
+    if (type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.CUSTOMER ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.DEALER ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.ASSET) {
+      result = await _subscriptionService!.getSubscriptionDeviceListData(
+          filter: filter,
+          start: start,
+          limit: limit,
+          filterType: filterType,
+          query:
+              graphqlSchemaService!.getHierarchyListData(start, limit, filter));
+    } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE ||
+        type == PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED) {
+      if (filter == "active" ||
+          filter == "inactive" ||
+          filter == "subscriptionendasset" ||
+          filter == "total" ||
+          filter == "plantasset" ||
+          filter == "subscriptionendasset") {
         result = await _subscriptionService!.getSubscriptionDeviceListData(
             filter: filter,
             start: start,
             limit: limit,
             filterType: filterType,
-            query: graphqlSchemaService!
-                .getHierarchyListData(start, limit, filter));
-      } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE ||
-          type == PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED) {
-        if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE ||
-            type == PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED &&
-                _filterType == PLANTSUBSCRIPTIONFILTERTYPE.DATE) {
-          result = await _subscriptionService!.getSubscriptionDeviceListData(
-              filter: filter,
-              start: start,
+            query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
               limit: limit,
-              filterType: filterType,
-              query: graphqlSchemaService!
-                  .getPlantDashboardAndHierarchyListData(
-                      limit: limit, start: start, calendar: filter));
-        } else {
-          result = await _subscriptionService!.getSubscriptionDeviceListData(
-              filter: filter,
               start: start,
-              limit: limit,
-              filterType: filterType,
-              query: graphqlSchemaService!
-                  .getPlantDashboardAndHierarchyListData(
-                      limit: limit,
-                      start: start,
-                      status: filter,
-                      calendar: filter));
-        }
+              status: filter,
+            ));
+      } else if (filter == "day" || filter == "week" || filter == "month") {
+        result = await _subscriptionService!.getSubscriptionDeviceListData(
+            filter: filter,
+            start: start,
+            limit: limit,
+            filterType: filterType,
+            query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
+                limit: limit, start: start, calendar: filter));
+      } else {
+        result = await _subscriptionService!.getSubscriptionDeviceListData(
+            filter: filter,
+            start: start,
+            limit: limit,
+            filterType: filterType,
+            query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
+                limit: limit, start: start, model: filter));
       }
+    }
+
     //}
 
     if (enableGraphQl) {

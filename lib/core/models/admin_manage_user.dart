@@ -44,6 +44,7 @@ class Total {
 @JsonSerializable()
 class Users {
   String? userUid;
+  String? invitationUID;
   String? first_name;
   String? last_name;
   String? loginId;
@@ -57,6 +58,8 @@ class Users {
   String? createdBy;
   String? emailVerified;
   String? phone;
+  @JsonKey(ignore: true)
+  bool? verifiedUser;
 
   Users(
       {this.userUid,
@@ -84,8 +87,17 @@ class Address {
   String? country;
   String? zipcode;
   String? city;
+  String? state;
+  String? addressline1;
+  String? addressline2;
 
-  Address({this.country, this.zipcode, this.city});
+  Address(
+      {this.country,
+      this.zipcode,
+      this.city,
+      this.addressline1,
+      this.addressline2,
+      this.state});
 
   factory Address.fromJson(Map<String, dynamic> json) =>
       _$AddressFromJson(json);
@@ -132,7 +144,7 @@ class ManageUser {
   Users? user;
   List<Users>? users;
 
-  ManageUser({this.user,this.users});
+  ManageUser({this.user, this.users});
 
   factory ManageUser.fromJson(Map<String, dynamic> json) =>
       _$ManageUserFromJson(json);

@@ -37,7 +37,7 @@ class _NotificationViewState extends State<NotificationView> {
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {
-                //viewModel.refresh();
+                viewModel.refresh();
               },
               onRefineApplied: () {
                 //viewModel.refresh();
@@ -101,6 +101,7 @@ class _NotificationViewState extends State<NotificationView> {
                                       //  bgColor: Theme.of(context).backgroundColor,
                                       textColor: white,
                                       onTap: () async {
+                                     
                                         dateRange = [];
                                         dateRange = await showDialog(
                                           context: context,
@@ -115,6 +116,7 @@ class _NotificationViewState extends State<NotificationView> {
                                             dateRange!.last.toString();
                                         viewModel.refresh();
                                       },
+                                      
                                     ),
                                   ],
                                 ),

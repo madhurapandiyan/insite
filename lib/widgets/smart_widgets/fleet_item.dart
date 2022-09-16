@@ -154,7 +154,7 @@ class FleetListItem extends StatelessWidget {
                               InsiteTableRowItem(
                                 title: "Hour Meter",
                                 content: fleet!.hourMeter != null
-                                    ? fleet!.hourMeter!.toString() + " hrs"
+                                    ? fleet!.hourMeter!.toStringAsFixed(2) + " hrs"
                                     : "-",
                               ),
                               InsiteTableRowItem(

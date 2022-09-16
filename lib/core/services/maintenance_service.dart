@@ -399,11 +399,13 @@ class MaintenanceService extends BaseService {
     }
   }
 
-  Future<dynamic> addMaintenanceIntervals(String? query) async {
+  Future<dynamic> addMaintenanceIntervals(
+      String? query, AddMaintenanceIntervalPayload? payLoad) async {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
+          payLoad: payLoad!.toJson(),
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null

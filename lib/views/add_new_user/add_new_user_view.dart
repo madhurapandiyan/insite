@@ -142,10 +142,17 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                 controller: viewModel.phoneNumberController,
                                 title: "Phone number: (Optional)",
                                 validator: (value) {
-                                  if (value!.isEmpty || value.length == 10) {
+                                  if (value!.isEmpty) {
+                                    return null;
+                                  }
+
+                                  String pattern = "^(?:[+0]9)?[0-9]{7,15}\$";
+                                  RegExp regex = new RegExp(pattern);
+
+                                  if (regex.hasMatch(value)) {
                                     return null;
                                   } else {
-                                    return "Please Enter Valid Mobile Number";
+                                    return 'Enter Valid Phone Number';
                                   }
                                 },
                                 keyPadType: TextInputType.phone,
@@ -481,59 +488,82 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                               //   height: 30,
                               // ),
                               Align(
-                                alignment: Alignment.topLeft,
-                                child: 
-                               widget.user==null? InsiteButton(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.38,
-                                  height: MediaQuery.of(context).size.height *
-                                      0.050,
-                                  title: "save".toUpperCase(),
-                                  fontSize: 14,
-                                  onTap: () async {
-                                    unfocus();
-                                    Logger().i("on save click");
-                                    try {
-                                      if (widget.user != null) {
-                                        Logger().i("editing user");
+                                  alignment: Alignment.topLeft,
+                                  child: widget.user == null
+                                      ? InsiteButton(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.38,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.050,
+                                          title: "save".toUpperCase(),
+                                          fontSize: 14,
+                                          onTap: () async {
+                                            unfocus();
+                                            Logger().i("on save click");
+                                            try {
+                                              if (widget.user != null) {
+                                                Logger().i("editing user");
 
-                                        await viewModel.getEditUserData(
-                                            viewModel.firstNameController.text,
-                                            viewModel.lastNameController.text,
-                                            viewModel.emailController.text,
-                                            viewModel.jobTitleValue,
-                                            viewModel
-                                                .phoneNumberController.text,
-                                            viewModel.jobTypeValue,
-                                            "SSO",
-                                            viewModel.addressController.text,
-                                            viewModel.stateController.text,
-                                            viewModel.countryController.text,
-                                            viewModel.pinCodeController.text);
-                                      } else {
-                                        Logger().i("adding user");
-                                        await viewModel.getAddUserData(
-                                          viewModel.firstNameController.text,
-                                          viewModel.lastNameController.text,
-                                          viewModel.emailController.text,
-                                          viewModel.phoneNumberController.text,
-                                          viewModel.jobTitleValue,
-                                          viewModel.jobTypeValue,
-                                          viewModel.addressController.text,
-                                          viewModel.stateController.text,
-                                          viewModel.countryController.text,
-                                          viewModel.pinCodeController.text,
-                                          "SSO",
-                                          viewModel.emailController.text,
-                                        );
-                                      }
-                                    } catch (e) {
-                                      Logger().e(e);
-                                    }
-                                  },
-                                  textColor: appbarcolor,
-                                ):SizedBox()
-                              ),
+                                                await viewModel.getEditUserData(
+                                                    viewModel
+                                                        .firstNameController
+                                                        .text,
+                                                    viewModel.lastNameController
+                                                        .text,
+                                                    viewModel
+                                                        .emailController.text,
+                                                    viewModel.jobTitleValue,
+                                                    viewModel
+                                                        .phoneNumberController
+                                                        .text,
+                                                    viewModel.jobTypeValue,
+                                                    "SSO",
+                                                    viewModel
+                                                        .addressController.text,
+                                                    viewModel
+                                                        .stateController.text,
+                                                    viewModel
+                                                        .countryController.text,
+                                                    viewModel.pinCodeController
+                                                        .text);
+                                              } else {
+                                                Logger().i("adding user");
+                                                await viewModel.getAddUserData(
+                                                  viewModel
+                                                      .firstNameController.text,
+                                                  viewModel
+                                                      .lastNameController.text,
+                                                  viewModel
+                                                      .emailController.text,
+                                                  viewModel
+                                                      .phoneNumberController
+                                                      .text,
+                                                  viewModel.jobTitleValue,
+                                                  viewModel.jobTypeValue,
+                                                  viewModel
+                                                      .addressController.text,
+                                                  viewModel
+                                                      .stateController.text,
+                                                  viewModel
+                                                      .countryController.text,
+                                                  viewModel
+                                                      .pinCodeController.text,
+                                                  "SSO",
+                                                  viewModel
+                                                      .emailController.text,
+                                                );
+                                              }
+                                            } catch (e) {
+                                              Logger().e(e);
+                                            }
+                                          },
+                                          textColor: appbarcolor,
+                                        )
+                                      : SizedBox()),
                               SizedBox(
                                 height: 50,
                               )

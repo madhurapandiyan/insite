@@ -67,7 +67,7 @@ class FaultListItem extends StatelessWidget {
                                 : "assets/images/0.png",
                           ),
                           InsiteTableRowItem(
-                            title: "Date/Time :",
+                            title: "Fault Reported Time :",
                             content: fault!.basic != null &&
                                     fault!.basic!.faultOccuredUTC != null
                                 ? Utils.getLastReportedDateOneUTC(

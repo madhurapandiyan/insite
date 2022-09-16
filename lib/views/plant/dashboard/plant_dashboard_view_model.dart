@@ -26,8 +26,6 @@ class PlantDashboardViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  int? totalcount;
-
   List<double?> _results = [];
   List<double?> get results => _results;
 
@@ -53,46 +51,10 @@ class PlantDashboardViewModel extends InsiteViewModel {
   getSubscriptionDashboardData() async {
     Logger().i("getApplicationAccessData");
     try {
-      if (enableGraphQl) {
-        SubscriptionDashboardResult? result = await _subscriptionService!
-            .getResultsFromSubscriptionApi(
-                graphqlSchemaService!.getPlantDashboardandCalendarData());
-        totalcount = result!.plantDispatchSummary!.subscriptionEnded! +
-            result.plantDispatchSummary!.yetToBeActivated! +
-            result.plantDispatchSummary!.activeSubscription!;
-        statusChartData.clear();
-        statusChartData.add(ChartSampleData(
-            x: names[1],
-            y: (result.plantDispatchSummary!.activeSubscription),
-            z: "active"));
-        statusChartData.add(ChartSampleData(
-            x: names[2],
-            y: (result.plantDispatchSummary!.yetToBeActivated),
-            z: "inactive"));
-        statusChartData.add(ChartSampleData(
-            x: names[3],
-            y: (result.plantDispatchSummary!.yetToBeActivated),
-            z: "subscriptionendasset"));
-        activatedChartData.clear();
-        activatedChartData.add(ChartSampleData(
-            x: "Today",
-            y: (result.plantDispatchSummary!.assetActivationByDay),
-            z: "day"));
-        activatedChartData.add(ChartSampleData(
-            x: "Week",
-            y: (result.plantDispatchSummary!.assetActivationByWeek),
-            z: "week"));
-        activatedChartData.add(ChartSampleData(
-            x: "Month",
-            y: (result.plantDispatchSummary!.assetActivationByMonth),
-            z: "month"));
-        Logger().i("activatedChartData $activatedChartData}");
-      } else {
-        SubscriptionDashboardResult? result = await _subscriptionService!
-            .getResultsFromSubscriptionApi(
-                graphqlSchemaService!.getPlantDashboardandCalendarData());
-        Logger().w("plant api");
-        final totalDeviceSupplied = result!.result![3][0].totalDevice;
+      SubscriptionDashboardResult? result =
+          await _subscriptionService!.getResultsFromSubscriptionApi();
+      if (result != null) {
+        final totalDeviceSupplied = result.result![3][0].totalDevice;
         final plantAssetCount = result.result![4][0].plantAssetCount;
         final activeSubScription = result.result![0][0].activeList;
         final yetToBeActivated = result.result![1][0].inActiveList;
@@ -183,27 +145,24 @@ class PlantDashboardViewModel extends InsiteViewModel {
           th340hPrimeCount
         ]);
         notifyListeners();
-        statusChartData.clear();
-        statusChartData.add(ChartSampleData(
-            x: names[1], y: (results[1]!.toInt()), z: "active"));
+
+        statusChartData.add(
+            ChartSampleData(x: names[1], y: (results[1]!.toInt()), z: "active"));
         statusChartData.add(ChartSampleData(
             x: names[2], y: (results[2]!.toInt()), z: "inactive"));
         statusChartData.add(ChartSampleData(
             x: names[3], y: (results[3]!.toInt()), z: "subscriptionendasset"));
-        activatedChartData.clear();
+
         activatedChartData.add(ChartSampleData(
             x: "Today", y: (result.result![6][0].dayCount!.toInt()), z: "day"));
         activatedChartData.add(ChartSampleData(
-            x: "Week",
-            y: (result.result![7][0].weekCount!.toInt()),
-            z: "week"));
+            x: "Week", y: (result.result![7][0].weekCount!.toInt()), z: "week"));
         activatedChartData.add(ChartSampleData(
             x: "Month",
             y: (result.result![8][0].monthCount!.toInt()),
             z: "month"));
         Logger().i("activatedChartData $activatedChartData}");
       }
-
       _loading = false;
       notifyListeners();
     } catch (e) {

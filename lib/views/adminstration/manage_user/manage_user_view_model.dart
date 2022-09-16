@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -24,6 +23,10 @@ class ManageUserViewModel extends InsiteViewModel {
   set searchKeyword(String keyword) {
     this._searchKeyword = keyword;
   }
+
+  List<String> verifiedUserPopUp = ["Delete User", "Edit User"];
+  List<String> nonVerifiedUser = ["Resend-Invitation", "Add User"];
+  List<String> popUpList = [];
 
   updateSearchDataToEmpty() {
     Logger().d("updateSearchDataToEmpty");
@@ -57,9 +60,6 @@ class ManageUserViewModel extends InsiteViewModel {
   bool _showDeSelect = false;
   bool get showDeSelect => _showDeSelect;
 
-  bool _showMenu = false;
-  bool get showMenu => _showMenu;
-
   int pageNumber = 1;
 
   bool _refreshing = false;
@@ -67,9 +67,6 @@ class ManageUserViewModel extends InsiteViewModel {
 
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
-
-  bool _showVerifyUser = false;
-  bool get showVerifyUser => _showVerifyUser;
 
   ScrollController? scrollController;
 
@@ -82,6 +79,7 @@ class ManageUserViewModel extends InsiteViewModel {
       setUp();
       _manageUserService!.setUp();
       scrollController = new ScrollController();
+      popUpList.addAll(verifiedUserPopUp);
       scrollController!.addListener(() {
         if (scrollController!.position.pixels ==
             scrollController!.position.maxScrollExtent) {
@@ -131,14 +129,18 @@ class ManageUserViewModel extends InsiteViewModel {
           _totalCount = result.total!.items!;
         }
         if (result.users!.isNotEmpty) {
-          Logger()
-              .v(result.users!.any((element) => element.emailVerified == "NO"));
+          result.users!.forEach((element) {
+            if (element.emailVerified == "NO") {
+              element.verifiedUser = false;
+            } else {
+              element.verifiedUser = true;
+            }
+          });
           Logger().i("list of assets " + result.users!.length.toString());
           if (!loadingMore) {
             Logger().i("assets");
             _assets.clear();
           }
-
           for (var user in result.users!) {
             _assets.add(UserRow(user: user, isSelected: false));
           }
@@ -172,34 +174,39 @@ class ManageUserViewModel extends InsiteViewModel {
     }
   }
 
-  onSelectedItemClicK(String value, BuildContext context) {
-    if (value == "Deselect All") {
-      onItemDeselect();
-    } else if (value == "Delete") {
-      onDeleteClicked(context);
-    } else if (value == "Edit User") {
-      onEditClicked();
-    } else if (value == "Add User") {
-      onClickedAddUserView();
-    }
-  }
-
-  onClickedAddUserView() {
-    _navigationService!.navigateWithTransition(
-        AddNewUserView(
-          isEdit: false,
-          user: null,
-        ),
-        transition: "fade");
-  }
-
   onItemSelected(index) {
     try {
       _assets[index].isSelected = !_assets[index].isSelected;
+      var selectedUser =
+          _assets.where((element) => element.isSelected).toList();
+      if (selectedUser.isNotEmpty) {
+        popUpList.clear();
+        var allVerified =
+            selectedUser.every((element) => element.user!.verifiedUser!);
+        var allNonVerified =
+            selectedUser.every((element) => !element.user!.verifiedUser!);
+        Logger().w("verified: $allVerified");
+        Logger().w("non-verified: $allNonVerified");
+        if (allVerified) {
+          Logger().wtf(verifiedUserPopUp);
+          if (selectedUser.length == 1) {
+            popUpList.addAll(verifiedUserPopUp);
+          } else
+            popUpList.add("Delete User");
+        }
+        if (allNonVerified) {
+          Logger().wtf(nonVerifiedUser);
+          popUpList.addAll(nonVerifiedUser);
+        }
+        if (allVerified == false && allNonVerified == false) {
+          popUpList.add("Delete User");
+        }
+      }
+
+      notifyListeners();
     } catch (e) {
       Logger().e(e);
     }
-    notifyListeners();
     checkEditAndDeleteVisibility();
   }
 
@@ -216,9 +223,33 @@ class ManageUserViewModel extends InsiteViewModel {
   }
 
   onEditClicked() {
-    UserRow row = _assets.singleWhere((element) => element.isSelected);
-    Logger().wtf(row.user!.toJson());
+    UserRow row = _assets.firstWhere((element) => element.isSelected);
     onCardButtonSelected(row.user!);
+  }
+
+  onPopSelected(String value, BuildContext ctx) async {
+    if (value == "Add User") {
+      onAddNewUserClicked();
+    } else if (value == "Edit User") {
+      var user = _assets.singleWhere((element) => element.isSelected);
+      _navigationService!.navigateWithTransition(
+          AddNewUserView(
+            isEdit: true,
+            user: user.user,
+          ),
+          transition: "fade");
+    } else if (value == "Resend-Invitation") {
+      showLoadingDialog();
+      var user = _assets.singleWhere((element) => element.isSelected);
+      // var data =
+      //     await _manageUserService!.resendInvitation(user.user!.invitationUID!);
+      // if (data == true) {
+      //   snackbarService!.showSnackbar(message: "Invitation Sent Successfully");
+      // }
+      hideLoadingDialog();
+    } else {
+      onDeleteClicked(ctx);
+    }
   }
 
   onDeleteClicked(BuildContext context) async {
@@ -254,11 +285,10 @@ class ManageUserViewModel extends InsiteViewModel {
       for (int i = 0; i < assets.length; i++) {
         var data = assets[i];
         if (data.isSelected) {
-          userIds.add(data.user!.userUid!);
+          userIds.add(doubleQuote + data.user!.userUid! + doubleQuote);
         }
       }
-      Logger().w(userIds.length);
-      if (userIds != null) {
+      if (userIds.isNotEmpty) {
         showLoadingDialog();
         var result = await _manageUserService!.deleteUsers(userIds);
         if (result != null) {
@@ -274,61 +304,45 @@ class ManageUserViewModel extends InsiteViewModel {
     }
   }
 
-  deleteUsersFromList(List<String?> ids) {
+  deleteUsersFromList(List<String?> ids) async {
     Logger().i("deleteUsersFromList");
-
-    ids.forEach((id) {
-      assets.removeWhere((element) => element.user!.userUid == id);
-    });
-
+    for (int i = 0; i < assets.length; i++) {
+      var data = assets[i];
+      for (int j = 0; j < ids.length; j++) {
+        if (data.user!.userUid == ids[j]) {
+          assets.removeAt(i);
+        }
+      }
+    }
     _totalCount = _totalCount - ids.length;
     notifyListeners();
-    checkEditAndDeleteVisibility();
+    //checkEditAndDeleteVisibility();
   }
 
   checkEditAndDeleteVisibility() {
     Logger().i("checkEditAndDeleteVisibility");
     try {
       var count = 0;
-      var userVerifyCount = 0;
       for (int i = 0; i < _assets.length; i++) {
         var data = _assets[i];
-        if (data.isSelected && data.user!.emailVerified == "NO") {
-          userVerifyCount++;
-        } else {
-          if (data.isSelected) {
-            count++;
-          }
+        if (data.isSelected) {
+          count++;
         }
       }
-
-      if (userVerifyCount > 0) {
-        _showMenu = true;
+      if (count > 0) {
+        if (count > 1) {
+          _showEdit = false;
+          _showDelete = true;
+          _showDeSelect = true;
+        } else {
+          _showEdit = true;
+          _showDelete = true;
+          _showDeSelect = true;
+        }
+      } else {
+        _showEdit = false;
         _showDelete = false;
         _showDeSelect = false;
-        _showVerifyUser = true;
-      } else {
-        if (count > 0) {
-          if (count > 1) {
-            _showEdit = false;
-            _showDelete = true;
-            _showDeSelect = true;
-            _showMenu = true;
-            _showVerifyUser = false;
-          } else {
-            _showEdit = true;
-            _showDelete = true;
-            _showDeSelect = true;
-            _showMenu = true;
-            _showVerifyUser = false;
-          }
-        } else {
-          _showEdit = false;
-          _showDelete = false;
-          _showDeSelect = false;
-          _showMenu = false;
-          _showVerifyUser = false;
-        }
       }
     } catch (e) {}
     notifyListeners();

@@ -5,14 +5,16 @@ class AddressCustomTextBox extends StatelessWidget {
   final String? title;
   final TextEditingController? controller;
   final FocusNode? focusNode;
-
-  AddressCustomTextBox({this.controller, this.title, this.focusNode});
+  bool? isenabled;
+  AddressCustomTextBox(
+      {this.controller, this.title, this.focusNode, this.isenabled = true});
 
   @override
   Widget build(BuildContext context) {
-    return TextField( 
-     focusNode: focusNode,
+    return TextField(
+      focusNode: focusNode,
       autofocus: false,
+      enabled: isenabled,
       maxLines: 5,
       controller: controller,
       style: TextStyle(
@@ -28,7 +30,7 @@ class AddressCustomTextBox extends StatelessWidget {
           contentPadding: EdgeInsets.only(left: 15, top: 20),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(color:black, width: 1)),
+              borderSide: BorderSide(color: black, width: 1)),
           disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(color: black, width: 1)),

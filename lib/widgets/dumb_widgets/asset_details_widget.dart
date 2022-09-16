@@ -95,7 +95,7 @@ class AssetDetailWidgt extends StatelessWidget {
                   InsiteTableRowItem(
                     title: "Hour Meter",
                     content: detail!.hourMeter != null
-                        ? detail!.hourMeter!.round().toString() + " Hrs"
+                        ? detail!.hourMeter!.toString() + " Hrs"
                         : "",
                   ),
                 ]),

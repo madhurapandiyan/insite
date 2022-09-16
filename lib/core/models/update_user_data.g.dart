@@ -139,12 +139,17 @@ UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) =>
       src: json['src'] as String?,
       company: json['company'] as String?,
       language: json['language'] as String?,
+      email: json['email'] as String?,
+      isAssetSecurityEnabled: json['isAssetSecurityEnabled'] as bool?,
+      JobType: json['JobType'] as int?,
+      customerUid: json['customerUid'] as String?,
     );
 
 Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
     <String, dynamic>{
       'fname': instance.fname,
       'lname': instance.lname,
+      'email': instance.email,
       'cwsEmail': instance.cwsEmail,
       'phone': instance.phone,
       'sso_id': instance.sso_id,
@@ -155,6 +160,9 @@ Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
       'src': instance.src,
       'company': instance.company,
       'language': instance.language,
+      'isAssetSecurityEnabled': instance.isAssetSecurityEnabled,
+      'JobType': instance.JobType,
+      'customerUid': instance.customerUid,
     };
 
 AddressData _$AddressDataFromJson(Map<String, dynamic> json) => AddressData(

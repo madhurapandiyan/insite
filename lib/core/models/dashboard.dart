@@ -16,18 +16,19 @@ class Category {
 List<Category>? showsCategoryBasedOnAccountSelection(bool isTataHitachi) {
   if (isTataHitachi) {
     categories = [
-      Category(1, "DASHBOARD", "assets/images/clock.svg", ScreenType.DASHBOARD),
-      Category(2, "FLEET", "assets/images/truck.svg", ScreenType.FLEET),
-      Category(3, "UTILIZATION", "assets/images/supportmanager.svg",
+      Category(1, "DASHBOARD", "assets/images/dashboardicon.svg",
+          ScreenType.DASHBOARD),
+      Category(2, "FLEET", "assets/images/fleeticon.svg", ScreenType.FLEET),
+      Category(3, "UTILIZATION", "assets/images/utilizationicon.svg",
           ScreenType.UTILIZATION),
-      Category(4, "ASSET OPERATION", "assets/images/assetmanager.svg",
+      Category(4, "ASSET OPERATION", "assets/images/asset_operationicon.svg",
           ScreenType.ASSET_OPERATION),
       Category(
           5, "LOCATION", "assets/images/location.svg", ScreenType.LOCATION),
-      Category(6, "HEALTH", "assets/images/van.svg", ScreenType.HEALTH),
-       Category(7, "MAINTENANCE", "assets/images/maintenance.svg",
+      Category(6, "HEALTH", "assets/images/healthicon.svg", ScreenType.HEALTH),
+      Category(7, "MAINTENANCE", "assets/images/maintenanceicon.svg",
           ScreenType.MAINTENANCE),
-      Category(8, "ADMINISTRATOR", "assets/images/admin.svg",
+      Category(8, "ADMINISTRATOR", "assets/images/adminisitratoricon.svg",
           ScreenType.ADMINISTRATION),
       Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
       Category(
@@ -38,18 +39,19 @@ List<Category>? showsCategoryBasedOnAccountSelection(bool isTataHitachi) {
     return categories;
   } else {
     categories = [
-      Category(1, "DASHBOARD", "assets/images/clock.svg", ScreenType.DASHBOARD),
-      Category(2, "FLEET", "assets/images/truck.svg", ScreenType.FLEET),
-      Category(3, "UTILIZATION", "assets/images/supportmanager.svg",
+      Category(1, "DASHBOARD", "assets/images/dashboardicon.svg",
+          ScreenType.DASHBOARD),
+      Category(2, "FLEET", "assets/images/fleeticon.svg", ScreenType.FLEET),
+      Category(3, "UTILIZATION", "assets/images/utilizationicon.svg",
           ScreenType.UTILIZATION),
-      Category(4, "ASSET OPERATION", "assets/images/assetmanager.svg",
+      Category(4, "ASSET OPERATION", "assets/images/asset_operationicon.svg",
           ScreenType.ASSET_OPERATION),
       Category(
           5, "LOCATION", "assets/images/location.svg", ScreenType.LOCATION),
-      Category(6, "HEALTH", "assets/images/van.svg", ScreenType.HEALTH),
-      Category(7, "MAINTENANCE", "assets/images/maintenance.svg",
+      Category(6, "HEALTH", "assets/images/healthicon.svg", ScreenType.HEALTH),
+      Category(7, "MAINTENANCE", "assets/images/maintenanceicon.svg",
           ScreenType.MAINTENANCE),
-      Category(8, "ADMINISTRATOR", "assets/images/admin.svg",
+      Category(8, "ADMINISTRATOR", "assets/images/adminisitratoricon.svg",
           ScreenType.ADMINISTRATION),
       // Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
       // Category(
