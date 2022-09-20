@@ -1,9 +1,11 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location.dart';
+import 'package:insite/core/models/asset_location_search.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/location_search.dart';
+import 'package:insite/core/models/search_location_geofence.dart';
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
@@ -406,6 +408,56 @@ class AssetLocationService extends BaseService {
                 accountSelected!.CustomerUID,
                 Urls.vfleetMapPrefix);
         return assetLocationDataResponse;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<AssetLocationSearch?> getAssetLocationsearch(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        AssetLocationSearch assetLocationSearch =
+            AssetLocationSearch.fromJson(data.data);
+        Logger().wtf(assetLocationSearch
+            .assetLocation?.mapRecords?.first?.lastReportedLocationLatitude);
+        return assetLocationSearch;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<SearchLocationGeofence?> getGeofenceSerachLocationData(
+      String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        SearchLocationGeofence searchLocationGeofence =
+            SearchLocationGeofence.fromJson(data.data);
+        Logger().wtf(searchLocationGeofence
+            .geofenceSearchLoaction?.locations?.first
+            .toJson());
+        return searchLocationGeofence;
       }
     } catch (e) {
       Logger().e(e.toString());

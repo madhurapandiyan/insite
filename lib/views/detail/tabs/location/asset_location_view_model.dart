@@ -78,6 +78,7 @@ class AssetLocationViewModel extends InsiteViewModel {
             Utils.fleetLocationSingleAssetEndDateFormate(endDate),
             assetDetail!.assetUid);
     if (result != null) {
+      
       _assetLocationHistory = result;
       updateMarkers();
     } else {
@@ -146,8 +147,17 @@ class AssetLocationViewModel extends InsiteViewModel {
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             null,
             5000,
-            appliedFilters);
+            appliedFilters,
+            graphqlSchemaService!.getSingleAssetData(
+             assetUid: assetDetail!.assetUid,
+             startDateTime:  Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+             endDateTime:   Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+             limit: 5000,
+             page: 1
+            )
+            );
     if (result != null) {
+      Logger().i("asset location");
       _healthListResponse = result;
       updateMarkersForFault();
     }
@@ -169,7 +179,8 @@ class AssetLocationViewModel extends InsiteViewModel {
             Utils.getDateInFormatyyyyMMddTHHmmssZ(endDate),
             null,
             2500,
-            appliedFilters);
+            appliedFilters,
+            "");
     if (result != null) {
       _healthListResponse = result;
       updateMarkersForFault();

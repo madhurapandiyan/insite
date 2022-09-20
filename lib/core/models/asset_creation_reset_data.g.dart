@@ -14,6 +14,9 @@ AssetCreationResetData _$AssetCreationResetDataFromJson(
       result: (json['result'] as List<dynamic>?)
           ?.map((e) => Result.fromJson(e as Map<String, dynamic>))
           .toList(),
+      createAsset: (json['createAsset'] as List<dynamic>?)
+          ?.map((e) => CreateAsset.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$AssetCreationResetDataToJson(
@@ -22,6 +25,7 @@ Map<String, dynamic> _$AssetCreationResetDataToJson(
       'code': instance.code,
       'status': instance.status,
       'result': instance.result,
+      'createAsset': instance.createAsset,
     };
 
 Result _$ResultFromJson(Map<String, dynamic> json) => Result(
@@ -46,4 +50,21 @@ Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
       'Model': instance.Model,
       'HMRValue': instance.HMRValue,
       'AssetCreationDate': instance.AssetCreationDate,
+    };
+
+CreateAsset _$CreateAssetFromJson(Map<String, dynamic> json) => CreateAsset(
+      code: json['code'] as String?,
+      status: json['status'] as String?,
+      message: json['message'] as String?,
+      gpsDeviceId: json['gpsDeviceId'] as String?,
+      vin: json['vin'] as String?,
+    );
+
+Map<String, dynamic> _$CreateAssetToJson(CreateAsset instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'status': instance.status,
+      'message': instance.message,
+      'gpsDeviceId': instance.gpsDeviceId,
+      'vin': instance.vin,
     };

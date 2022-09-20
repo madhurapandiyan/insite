@@ -12,9 +12,11 @@ class InsiteButton extends StatelessWidget {
   final Icon? icon;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
+ 
   final bool isSelectable;
   const InsiteButton(
       {this.title,
+     
       this.width,
       this.onTap,
       this.isSelectable = false,

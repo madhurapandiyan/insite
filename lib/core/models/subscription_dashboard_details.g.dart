@@ -14,12 +14,89 @@ SubscriptionDashboardDetailResult _$SubscriptionDashboardDetailResultFromJson(
               .map((e) => DetailResult.fromJson(e as Map<String, dynamic>))
               .toList())
           .toList(),
+      subscriptionFleetList: json['subscriptionFleetList'] == null
+          ? null
+          : SubscriptionFleetList.fromJson(
+              json['subscriptionFleetList'] as Map<String, dynamic>),
+      assetOrHierarchyByTypeAndId: (json['assetOrHierarchyByTypeAndId']
+              as List<dynamic>?)
+          ?.map((e) =>
+              AssetOrHierarchyByTypeAndId.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$SubscriptionDashboardDetailResultToJson(
         SubscriptionDashboardDetailResult instance) =>
     <String, dynamic>{
       'result': instance.result,
+      'subscriptionFleetList': instance.subscriptionFleetList,
+      'assetOrHierarchyByTypeAndId': instance.assetOrHierarchyByTypeAndId,
+    };
+
+AssetOrHierarchyByTypeAndId _$AssetOrHierarchyByTypeAndIdFromJson(
+        Map<String, dynamic> json) =>
+    AssetOrHierarchyByTypeAndId(
+      name: json['name'] as String?,
+      userName: json['userName'] as String?,
+      code: json['code'] as String?,
+      email: json['email'] as String?,
+      id: json['id'] as String?,
+    );
+
+Map<String, dynamic> _$AssetOrHierarchyByTypeAndIdToJson(
+        AssetOrHierarchyByTypeAndId instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'userName': instance.userName,
+      'code': instance.code,
+      'email': instance.email,
+      'id': instance.id,
+    };
+
+SubscriptionFleetList _$SubscriptionFleetListFromJson(
+        Map<String, dynamic> json) =>
+    SubscriptionFleetList(
+      count: json['count'] as int?,
+      provisioningInfo: (json['provisioningInfo'] as List<dynamic>?)
+          ?.map((e) => ProvisioningInfo.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$SubscriptionFleetListToJson(
+        SubscriptionFleetList instance) =>
+    <String, dynamic>{
+      'count': instance.count,
+      'provisioningInfo': instance.provisioningInfo,
+    };
+
+ProvisioningInfo _$ProvisioningInfoFromJson(Map<String, dynamic> json) =>
+    ProvisioningInfo(
+      gpsDeviceID: json['gpsDeviceID'] as String?,
+      model: json['model'] as String?,
+      vin: json['vin'] as String?,
+      productFamily: json['productFamily'] as String?,
+      customerCode: json['customerCode'] as String?,
+      dealerName: json['dealerName'] as String?,
+      dealerCode: json['dealerCode'] as String?,
+      customerName: json['customerName'] as String?,
+      status: json['status'],
+      description: json['description'],
+      networkProvider: json['networkProvider'] as String?,
+    );
+
+Map<String, dynamic> _$ProvisioningInfoToJson(ProvisioningInfo instance) =>
+    <String, dynamic>{
+      'gpsDeviceID': instance.gpsDeviceID,
+      'model': instance.model,
+      'vin': instance.vin,
+      'productFamily': instance.productFamily,
+      'customerCode': instance.customerCode,
+      'dealerName': instance.dealerName,
+      'dealerCode': instance.dealerCode,
+      'customerName': instance.customerName,
+      'status': instance.status,
+      'description': instance.description,
+      'networkProvider': instance.networkProvider,
     };
 
 DetailResult _$DetailResultFromJson(Map<String, dynamic> json) => DetailResult(

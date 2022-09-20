@@ -13,7 +13,7 @@ class CustomTextBox extends StatelessWidget {
   final Widget? prefixWidget;
   final TextEditingController? controller;
   final Function(String)? onChanged;
-  final Function(String)? validator;
+  final String? Function(String?)? validator;
   final Function(String?)? onSaved;
   final Function(String)? onFieldSubmmit;
   final TextInputType? keyPadType;
@@ -45,7 +45,8 @@ class CustomTextBox extends StatelessWidget {
       this.onTap,
       this.isShowingBorderColor = false,
       this.helperText,
-      this.contentPadding,this.maxLength});
+      this.contentPadding,
+      this.maxLength});
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +55,11 @@ class CustomTextBox extends StatelessWidget {
         maxLength: maxLength,
         onTap: onTap == null ? null : onTap!(),
         keyboardType: keyPadType,
+        autovalidateMode: validator != null ? AutovalidateMode.always : null,
         onChanged: onChanged,
         onSaved: onSaved,
         onFieldSubmitted: onFieldSubmmit,
-        validator: validator as String? Function(String?)?,
+        validator: validator,
         focusNode: focusNode,
         autofocus: false,
         controller: controller,

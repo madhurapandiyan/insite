@@ -19,6 +19,7 @@ import 'package:insite/views/maintenance/maintenance_view.dart';
 import 'package:insite/views/notification/notification_view.dart';
 import 'package:insite/views/plant/plant_view.dart';
 import 'package:insite/views/subscription/subscription_view.dart';
+import 'package:insite/views/utilization/tabs/list/utilization_list_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -72,7 +73,7 @@ class HomeViewModel extends InsiteViewModel {
           .navigateWithTransition(AssetOperationView(), transition: "fade");
     } else if (type == ScreenType.UTILIZATION) {
       _navigationService!
-          .navigateWithTransition(UtilLizationView(), transition: "fade");
+          .navigateWithTransition(UtilizationListView(), transition: "fade");
     } else if (type == ScreenType.LOCATION) {
       _navigationService!
           .navigateWithTransition(LocationView(), transition: "fade");

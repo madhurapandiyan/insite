@@ -1,3 +1,4 @@
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
@@ -7,6 +8,7 @@ import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_bo
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/location_search.dart/location_search_widget.dart';
 import 'package:insite/views/adminstration/reusable_widget/dropdown.dart';
+import 'package:insite/views/location/location_search_box/location_search_box_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -107,7 +109,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                         ),
                         child: viewModel.isSearching
                             ? LocationSearchView(getLatLong: (lat, long) {
-                                viewModel.onLocationSelected(lat!, long!);
+                                //viewModel.onLocationSelected(lat!, long!);
                               }, onApply: (_) {
                                 viewModel.onLocationSearchApply();
                               })
@@ -123,6 +125,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                       color: theme.backgroundColor,
                                     ),
                                     child: GeofencingMap(
+                                      customInfoWindowController:
+                                          viewModel.customInfoWindowController,
                                       completer: viewModel.googleMapController,
                                       camPosition: viewModel.centerPosition,
                                       color: currentColor,
@@ -132,20 +136,29 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                       circle: viewModel.circle,
                                       polygon: viewModel.polygon,
                                       polyline: viewModel.polyline,
+                                      markers: viewModel.markers,
                                       gettingData: (LatLng latlng) {
                                         viewModel.onGettingLatLang(latlng);
+                                        viewModel.customInfoWindowController
+                                            .hideInfoWindow!();
                                       },
                                     ),
                                   ),
+                                  CustomInfoWindow(
+                                    controller:
+                                        viewModel.customInfoWindowController,
+                                    offset: 15,
+                                  ),
                                   Container(
-                                    padding: EdgeInsets.only(top: 10),
+                                    padding: EdgeInsets.only(
+                                        top: 10, left: 10, right: 10),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             InsiteButton(
                                                 bgColor: tuna,
@@ -170,26 +183,27 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                               initialvalue:
                                                   viewModel.initialMapType,
                                             ),
-                                            InsiteButton(
-                                                title: "",
-                                                bgColor: viewModel.isSearching
-                                                    ? Theme.of(context).buttonColor
-                                                    : tuna,
-                                                onTap: () {
-                                                  setState(() {
-                                                    viewModel.isSearching =
-                                                        !viewModel.isSearching;
-                                                  });
-                                                },
-                                                icon: Icon(
-                                                  Icons.search,
-                                                  color: appbarcolor,
-                                                )),
+                                            // InsiteButton(
+                                            //     title: "",
+                                            //     bgColor: viewModel.isSearching
+                                            //         ? Theme.of(context).buttonColor
+                                            //         : tuna,
+                                            //     onTap: () {
+                                            //       setState(() {
+                                            //         viewModel.isSearching =
+                                            //             !viewModel.isSearching;
+                                            //       });
+                                            //     },
+                                            //     icon: Icon(
+                                            //       Icons.search,
+                                            //       color: appbarcolor,
+                                            //     )),
                                             uid == null
                                                 ? InsiteButton(
                                                     bgColor: viewModel
                                                             .isDrawingPolygon
-                                                        ? Theme.of(context).buttonColor
+                                                        ? Theme.of(context)
+                                                            .buttonColor
                                                         : tuna,
                                                     title: "",
                                                     onTap: viewModel.polygon!
@@ -209,8 +223,10 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   )
                                           ],
                                         ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
                                         Container(
-                                          padding: EdgeInsets.all(10),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -230,6 +246,20 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                     Icons.minimize,
                                                     color: appbarcolor,
                                                   )),
+                                              LocationSearchBoxView(
+                                                  onSeletingSuggestion:
+                                                      (value, isSerialNo) {
+                                                    if (!isSerialNo) {
+                                                      viewModel
+                                                          .onLocationSearchedSerialNo(
+                                                              value);
+                                                    } else {
+                                                      viewModel
+                                                          .onLocationSelected(
+                                                              value);
+                                                    }
+                                                  },
+                                                  searchBoxWidth: 0.5),
                                               Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -237,7 +267,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                 children: [
                                                   uid == null
                                                       ? InsiteButton(
-                                                          bgColor: Theme.of(context).buttonColor,
+                                                          bgColor:
+                                                              Theme.of(context)
+                                                                  .buttonColor,
                                                           title: "",
                                                           onTap: viewModel
                                                                       .polygon!

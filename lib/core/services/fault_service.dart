@@ -235,85 +235,82 @@ class FaultService extends BaseService {
       assetId,
       query) async {
     try {
-      // if (enableGraphQl) {
-      //   var data = await Network().getGraphqlData(
-      //     query: query,
-      //     customerId: accountSelected?.CustomerUID,
-      //     userId: (await _localService!.getLoggedInUser())!.sub,
-      //     subId: customerSelected?.CustomerUID == null
-      //         ? ""
-      //         : customerSelected?.CustomerUID,
-      //   );
-
-      //   FaultSummaryResponse faultSummaryResponse =
-      //       FaultSummaryResponse.fromJson(data.data!['faultdata']);
-
-      //   return faultSummaryResponse;
-      // } else {
-      if (isVisionLink) {
-        FaultSummaryResponse fleetSummaryResponse =
-            accountSelected != null && customerSelected != null
-                ? await MyApi().getClientThree()!.assetViewDetailSummaryURLVL(
-                    Urls.assetHealthSummaryVL +
-                        "/${assetId}/Faults" +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            customerSelected?.CustomerUID,
-                            "en-US",
-                            appliedFilters!,
-                            ScreenType.HEALTH),
-                    accountSelected!.CustomerUID)
-                : await MyApi().getClientThree()!.assetViewDetailSummaryURLVL(
-                    Urls.assetHealthSummaryVL +
-                        "/${assetId}/Faults" +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            null,
-                            "en-US",
-                            appliedFilters!,
-                            ScreenType.HEALTH),
-                    accountSelected!.CustomerUID);
-        return fleetSummaryResponse;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return FaultSummaryResponse.fromJson(data.data["faultsinglesData"]);
       } else {
-        FaultSummaryResponse fleetSummaryResponse =
-            accountSelected != null && customerSelected != null
-                ? await MyApi().getClient()!.assetViewDetailSummaryURL(
-                    Urls.assetHealthSummary +
-                        "/${assetId}/Faults" +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            customerSelected?.CustomerUID,
-                            "en-US",
-                            appliedFilters!,
-                            ScreenType.HEALTH),
-                    accountSelected!.CustomerUID,
-                    Urls.faultPrefix)
-                : await MyApi().getClient()!.assetViewDetailSummaryURL(
-                    Urls.assetHealthSummary +
-                        "/${assetId}/Faults" +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            pageNumber,
-                            pageSize,
-                            null,
-                            "en-US",
-                            appliedFilters!,
-                            ScreenType.HEALTH),
-                    accountSelected!.CustomerUID,
-                    Urls.faultPrefix);
-        return fleetSummaryResponse;
+        if (isVisionLink) {
+          FaultSummaryResponse fleetSummaryResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClientThree()!.assetViewDetailSummaryURLVL(
+                      Urls.assetHealthSummaryVL +
+                          "/${assetId}/Faults" +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              customerSelected?.CustomerUID,
+                              "en-US",
+                              appliedFilters!,
+                              ScreenType.HEALTH),
+                      accountSelected!.CustomerUID)
+                  : await MyApi().getClientThree()!.assetViewDetailSummaryURLVL(
+                      Urls.assetHealthSummaryVL +
+                          "/${assetId}/Faults" +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              null,
+                              "en-US",
+                              appliedFilters!,
+                              ScreenType.HEALTH),
+                      accountSelected!.CustomerUID);
+          return fleetSummaryResponse;
+        } else {
+          FaultSummaryResponse fleetSummaryResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient()!.assetViewDetailSummaryURL(
+                      Urls.assetHealthSummary +
+                          "/${assetId}/Faults" +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              customerSelected?.CustomerUID,
+                              "en-US",
+                              appliedFilters!,
+                              ScreenType.HEALTH),
+                      accountSelected!.CustomerUID,
+                      Urls.faultPrefix)
+                  : await MyApi().getClient()!.assetViewDetailSummaryURL(
+                      Urls.assetHealthSummary +
+                          "/${assetId}/Faults" +
+                          FilterUtils.getFilterURL(
+                              startDate,
+                              endDate,
+                              pageNumber,
+                              pageSize,
+                              null,
+                              "en-US",
+                              appliedFilters!,
+                              ScreenType.HEALTH),
+                      accountSelected!.CustomerUID,
+                      Urls.faultPrefix);
+
+          return fleetSummaryResponse;
+        }
       }
-      // }
     } catch (e) {
       Logger().e(e);
       return null;
@@ -332,6 +329,7 @@ class FaultService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
+        return HealthListResponse.fromJson(data.data["singleAsset"]);
       }
       if (isVisionLink) {
         HealthListResponse healthListResponse =
@@ -375,24 +373,61 @@ class FaultService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+      return null;
     }
-    return null;
   }
 
-  Future<HealthListResponse?> getAssetViewLocationSummary(
-    assetUid,
-    startDate,
-    endDate,
-    page,
-    limit,
-    List<FilterData?>? appliedFilters,
-  ) async {
+  Future<HealthListResponse?> getAssetViewLocationSummary(assetUid, startDate,
+      endDate, page, limit, List<FilterData?>? appliedFilters, query) async {
     try {
-      if (isVisionLink) {
-        HealthListResponse healthListResponse =
-            accountSelected != null && customerSelected != null
-                ? await MyApi().getClient()!.assetViewLocationSummaryURLVL(
-                      Urls.assetViewDetailSummaryV1VL +
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return HealthListResponse.fromJson(data.data["singleAsset"]);
+      } else {
+        if (isVisionLink) {
+          HealthListResponse healthListResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient()!.assetViewLocationSummaryURLVL(
+                        Urls.assetViewDetailSummaryV1VL +
+                            FilterUtils.getFilterURL(
+                                startDate,
+                                endDate,
+                                page,
+                                limit,
+                                customerSelected?.CustomerUID,
+                                "en-US",
+                                appliedFilters!,
+                                ScreenType.HEALTH),
+                        assetUid,
+                        accountSelected!.CustomerUID,
+                      )
+                  : await MyApi().getClient()!.assetViewLocationSummaryURLVL(
+                        Urls.assetViewDetailSummaryV1VL +
+                            FilterUtils.getFilterURL(
+                                startDate,
+                                endDate,
+                                page,
+                                limit,
+                                null,
+                                "en-US",
+                                appliedFilters!,
+                                ScreenType.HEALTH),
+                        assetUid,
+                        accountSelected!.CustomerUID,
+                      );
+          return healthListResponse;
+        } else {
+          HealthListResponse healthListResponse =
+              accountSelected != null && customerSelected != null
+                  ? await MyApi().getClient()!.assetViewLocationSummaryURL(
+                      Urls.assetViewDetailSummaryV1 +
                           FilterUtils.getFilterURL(
                               startDate,
                               endDate,
@@ -404,9 +439,9 @@ class FaultService extends BaseService {
                               ScreenType.HEALTH),
                       assetUid,
                       accountSelected!.CustomerUID,
-                    )
-                : await MyApi().getClient()!.assetViewLocationSummaryURLVL(
-                      Urls.assetViewDetailSummaryV1VL +
+                      Urls.faultPrefix)
+                  : await MyApi().getClient()!.assetViewLocationSummaryURL(
+                      Urls.assetViewDetailSummaryV1 +
                           FilterUtils.getFilterURL(
                               startDate,
                               endDate,
@@ -418,40 +453,9 @@ class FaultService extends BaseService {
                               ScreenType.HEALTH),
                       assetUid,
                       accountSelected!.CustomerUID,
-                    );
-        return healthListResponse;
-      } else {
-        HealthListResponse healthListResponse =
-            accountSelected != null && customerSelected != null
-                ? await MyApi().getClient()!.assetViewLocationSummaryURL(
-                    Urls.assetViewDetailSummaryV1 +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            page,
-                            limit,
-                            customerSelected?.CustomerUID,
-                            "en-US",
-                            appliedFilters!,
-                            ScreenType.HEALTH),
-                    assetUid,
-                    accountSelected!.CustomerUID,
-                    Urls.faultPrefix)
-                : await MyApi().getClient()!.assetViewLocationSummaryURL(
-                    Urls.assetViewDetailSummaryV1 +
-                        FilterUtils.getFilterURL(
-                            startDate,
-                            endDate,
-                            page,
-                            limit,
-                            null,
-                            "en-US",
-                            appliedFilters!,
-                            ScreenType.HEALTH),
-                    assetUid,
-                    accountSelected!.CustomerUID,
-                    Urls.faultPrefix);
-        return healthListResponse;
+                      Urls.faultPrefix);
+          return healthListResponse;
+        }
       }
     } catch (e) {
       Logger().e(e);

@@ -10,6 +10,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_location.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/marker.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -34,8 +35,13 @@ class LocationViewModel extends InsiteViewModel {
   List<LatLng> latlngs = [];
   List<InsiteMarker> clusterMarkers = [];
 
+  bool? isLocationSelected = false;
+
   bool _loading = true;
   bool get loading => _loading;
+
+  
+
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
   CustomInfoWindowController get customInfoWindowController =>
@@ -54,6 +60,9 @@ class LocationViewModel extends InsiteViewModel {
   int? _totalCount = 0;
   int? get totalCount => _totalCount;
 
+  CameraPosition centerPosition =
+      CameraPosition(target: LatLng(30.666, 76.8127), zoom: 10);
+
   AssetLocationData? _assetLocation;
   AssetLocationData? get assetLocation => _assetLocation;
 
@@ -65,6 +74,8 @@ class LocationViewModel extends InsiteViewModel {
   bool showingCard = true;
 
   List<flutter_map.Marker> allMarkers = [];
+
+  String searchDropDownValue = "S/N";
 
   clusterMarker() {
     int index = 1;
@@ -253,6 +264,41 @@ class LocationViewModel extends InsiteViewModel {
     );
   }
 
+  onSeletingSuggestion(LatLng value) async {
+    Logger().w(value.latitude);
+   
+    GoogleMapController control = await controller.future;
+    control.animateCamera(CameraUpdate.newLatLngZoom(value, 10));
+
+    centerPosition = CameraPosition(target: value, zoom: 1);
+
+    notifyListeners();
+  }
+
+  onSeletingSuggestionSn(MapRecord value) async {
+    Logger().w(value.toJson());
+    _assetLocation!.mapRecords!.clear();
+    clusterMarkers.clear();
+    markers.clear();
+    latlngs.clear();
+    manager!.items.toList().clear();
+
+    notifyListeners();
+    var control = await controller.future;
+    control.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(value.lastReportedLocationLatitude!,
+            value.lastReportedLocationLongitude!),
+        zoom: 10)));
+    centerPosition = CameraPosition(
+        target: LatLng(value.lastReportedLocationLatitude!,
+            value.lastReportedLocationLongitude!),
+        zoom: 1);
+    _assetLocation!.mapRecords?.add(value);
+    clusterMarker();
+    manager!.updateMap();
+    notifyListeners();
+  }
+
   LocationViewModel(ScreenType type) {
     this._pageType = type;
     this.log = getLogger(this.runtimeType.toString());
@@ -400,7 +446,6 @@ class LocationViewModel extends InsiteViewModel {
 
   getAssetLocation() async {
     Logger().d("getAssetLocation");
-
     AssetLocationData? result = await _assetLocationService.getAssetLocation(
         Utils.fleetLocationDateFormate(startDate),
         Utils.fleetLocationDateFormate(endDate),

@@ -227,10 +227,10 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   onClickEditselected() {
-    List<String?> assetUids = [];
+    List<String> assetUids = [];
     for (int i = 0; i < _assets.length; i++) {
       if (_assets[i].isSelected) {
-        assetUids.add(_assets[i].assetSettings!.assetUid);
+        assetUids.add(_assets[i].assetSettings!.assetUid!);
       }
     }
 
@@ -247,7 +247,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
     }
   }
 
-  onCardButtonSelected(List<String?> assetUid) async {
+  onCardButtonSelected(List<String> assetUid) async {
     var result = await _navigationservice.navigateWithTransition(
         AssetSettingsFilterView(
           assetUids: assetUid,

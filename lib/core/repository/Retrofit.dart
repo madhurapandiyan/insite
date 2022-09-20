@@ -1,4 +1,5 @@
 import 'package:insite/core/models/complete.dart';
+import 'package:insite/core/models/estimated_response.dart';
 import 'package:insite/core/models/maintenance_asset_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/report_count.dart';
@@ -111,6 +112,7 @@ import 'package:dio/dio.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/asset_mileage_settings.dart';
 part 'Retrofit.g.dart';
+
 
 //part 'Retrofit.g.dart';
 
@@ -732,12 +734,12 @@ abstract class RestClient {
   Future<AddUser> addUserData(
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
-      @Body() AddUserData updateUserData);
+      @Body() UpdateUserData updateUserData);
 
   @POST("{url}")
   Future<AddUser> inviteUser(
       @Path() String url,
-      @Body() AddUserDataIndStack updateUserData,
+      @Body() UpdateUserData updateUserData,
       @Header("x-visionlink-customeruid") customerId,
       @Header("X-VisionLink-UserUid") userId,
       @Header("service") String serviceHeader);
@@ -799,13 +801,13 @@ abstract class RestClient {
       @Header("service") serviceHeader);
 
   @PUT('{url}')
-  Future<EstimatedAssetSetting> getAssetTargetSettingsDataVL(
+  Future<EstimatedResponse> getAssetTargetSettingsDataVL(
       @Path() String url,
       @Body() EstimatedAssetSetting estimatedAssetSetting,
       @Header("x-visionlink-customeruid") customerId);
 
   @PUT('{url}')
-  Future<EstimatedAssetSetting> getAssetTargetSettingsData(
+  Future<EstimatedResponse> getAssetTargetSettingsData(
       @Path() String url,
       @Body() EstimatedAssetSetting estimatedAssetSetting,
       @Header("x-visionlink-customeruid") customerId,

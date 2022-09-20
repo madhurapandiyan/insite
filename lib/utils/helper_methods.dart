@@ -153,22 +153,21 @@ class Utils {
   static String suceessRegistration =
       "Registration successful.Asset status may take a few minutes to check status, click Asset Status after 10 minutes";
 
-  static double getHrsValueeData(
-      double? percentageValue, double? runTimeValue) {
+  static dynamic getHrsValueeData(
+      dynamic percentageValue, dynamic runTimeValue) {
     if (percentageValue == 0 && runTimeValue == 0) {
       return 0.0;
     }
-    double hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
+    int hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
     return hrsData;
   }
 
-  static String getPercentageValueData(
-      double? runTimevalue, double? idleValue) {
+  static String getPercentageValueData(runTimevalue, idleValue) {
     if (runTimevalue == 0 && idleValue == 0) {
       return "0";
     }
     double perData = ((idleValue! / runTimevalue!) * 100);
-    int data = perData.toInt();
+    var data = perData;
 
     return data.toString();
   }
@@ -393,8 +392,8 @@ class Utils {
 
   static String? maintenanceFromDateFormate(String date) {
     try {
-      DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
-      var data = parseDate.add(Duration(hours: 18, minutes: 30, seconds: 00));
+      DateTime parseDate = DateTime.parse(date);
+      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
       var formatedStringData = data.toString();
       return formatedStringData.replaceRange(19, formatedStringData.length, "");
     } catch (e) {
@@ -403,12 +402,50 @@ class Utils {
     }
   }
 
+  static String? maintenanceFromDateFormateEndDate(String date) {
+    try {
+      DateTime parseDate = DateTime.parse(date);
+      var data = parseDate.add(Duration(hours: 00, minutes: 00, seconds: 00));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  static String? maintenanceFromDateNextWeekEndDate(String date) {
+    try {
+      DateTime parseDate = DateTime.parse(date).add(Duration(days: 6));
+      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  static String getDateInFormatMMddyyyy(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString())
+          .subtract(Duration(days: 1))
+          .add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("MM/dd/yyyy");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
   static String getDateInFormatyyyyMMddTHHmmssZEnd(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString())
-          .add(Duration(hours: 18, minutes: 29, seconds: 59))
-          .subtract(Duration(days: 1));
+          .add(Duration(hours: 18, minutes: 29, seconds: 59));
+
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -831,13 +868,13 @@ class Utils {
     } else if (data.type == FilterType.FUEL_LEVEL) {
       Logger().wtf(title);
       if (title == "100") {
-        title = "Fuel Level : " + " " + "75-100" + "%";
+        title = "Fuel Level : " + " " + "76-100" + "%";
       } else if (title == "25") {
         title = "Fuel Level : " + "" + "0-25" + "%";
       } else if (title == "50") {
-        title = "Fuel Level : " + "" + "25-50" + "%";
+        title = "Fuel Level : " + "" + "26-50" + "%";
       } else if (title == "75") {
-        title = "Fuel Level : " + "" + "50-75" + "%";
+        title = "Fuel Level : " + "" + "51-75" + "%";
       }
     } else if (data.type == FilterType.SEVERITY) {
       title = Utils.getFaultLabel(data.title!);
@@ -1375,6 +1412,74 @@ class Utils {
         "longitude"
       ];
       return list;
+    } else if (value == "Backhoe Loader Operation") {
+      Logger().w(list.length);
+      list = [
+        "assetSerialNumber",
+        "lastReportedTime",
+        "lastReportedTimeZoneAbbrev",
+        "lastRuntimeHourMeter",
+        "runtimeHours",
+        "idleHours",
+        "workingHours",
+        "backhoeIdleHours",
+        "backhoeWorkingHours",
+        "backhoeRuntimeHours",
+        "loaderIdleHours",
+        "loaderWorkingHours",
+        "loaderRuntimeHours",
+      ];
+      return list;
+    } else if (value == "Excavator Usage") {
+      list = [
+        "assetSerialNumber",
+        "lastReportedTime",
+        "lastReportedTimeZoneAbbrev",
+        "lastRuntimeHourMeter",
+        "runtimeHours",
+        "idleHours",
+        "workingHours",
+        "rockBreakerRuntimeHours",
+        "distanceTravelledHours",
+        "powerModeRuntimeHours",
+        "standardModeRuntimeHours",
+        "autoIdleRuntimeHours",
+      ];
+      return list;
+    } else if (value == "Multi-Asset Backhoe Loader Operation") {
+      list = [
+        "assetSerialNumber",
+        "latestUtzReport",
+        "lastReportedTimeZoneAbbrev",
+        "lastRuntimeHourMeter",
+        "runtimeHours",
+        "idleHours",
+        "workingHours",
+        "lastUtzLocation",
+        "backhoeIdleHours",
+        "backhoeWorkingHours",
+        "backhoeRuntimeHours",
+        "loaderIdleHours",
+        "loaderWorkingHours",
+        "loaderRuntimeHours",
+      ];
+      return list;
+    } else if (value == "Multi-Asset Excavator Usage") {
+      list = [
+        "assetSerialNumber",
+        "latestUtzReport",
+        "lastReportedTimeZoneAbbrev",
+        "runtimeHours",
+        "idleHours",
+        "workingHours",
+        "lastUtzLocation",
+        "rockBreakerRuntimeHours",
+        "distanceTravelledHours",
+        "powerModeRuntimeHours",
+        "standardModeRuntimeHours",
+        "autoIdleRuntimeHours",
+      ];
+      return list;
     }
     return null;
   }
@@ -1409,12 +1514,29 @@ class Utils {
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=${associatedIdentifier!.first}&startDateTime=&endDateTime=&langDesc=en-US";
         return querUrl;
+      case "Backhoe Loader Operation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v5/Utilization/Details?AssetUid=347790bd-282e-11ec-82e0-0ae8ba8d3970&startDate=07%2F25%2F2022&endDate=07%2F25%2F2022&sort=-LastReportedUtilizationTime&includeNonReportedDays=true&includeOutsideLastReportedDay=false";
+        return querUrl;
+      case "Excavator Usage":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v5/Utilization/Details?AssetUid=fba953c3-b251-11eb-82db-0ae8ba8d3970&startDate=&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=false&sort=-LastReportedUtilizationTime";
+        return querUrl;
+      case "Multi-Asset Backhoe Loader Operation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
+      case "Multi-Asset Excavator Usage":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
     }
   }
 
   static String? getEditQueryUrl(
       String assetsDropDownValue, List<String>? associatedIdentifier) {
     String querUrl;
+
     switch (assetsDropDownValue) {
       case "FleetSummary":
         querUrl =
@@ -1442,6 +1564,23 @@ class Utils {
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-fault/1.0/health/FaultDetails/v1?assetUid=${associatedIdentifier!.first}&startDateTime=&endDateTime=&langDesc=en-US";
         return querUrl;
+      case "BackhoeLoaderOperation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v5/Utilization/Details?AssetUid=347790bd-282e-11ec-82e0-0ae8ba8d3970&startDate=07%2F25%2F2022&endDate=07%2F25%2F2022&sort=-LastReportedUtilizationTime&includeNonReportedDays=true&includeOutsideLastReportedDay=false";
+        return querUrl;
+      case "Excavator Usage":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-utilization/1.0/api/v5/Utilization/Details?AssetUid=fba953c3-b251-11eb-82db-0ae8ba8d3970&startDate=&endDate=&includeNonReportedDays=true&includeOutsideLastReportedDay=false&sort=-LastReportedUtilizationTime";
+        return querUrl;
+
+      case "Multi-AssetBackhoeLoaderOperation":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
+      case "Multi-AssetExcavatorUsage":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
     }
   }
 
@@ -1462,17 +1601,7 @@ class Utils {
       return null;
     } else if (value == "Fault Summary Faults List" ||
         value == "FaultSummaryFaultsList") {
-      return {
-        "colFilters": getStringListData([
-          "basic",
-          "details",
-          "dynamic",
-          "asset.basic",
-          "asset.details",
-          "asset.dynamic"
-        ]),
-        "assetuids": getStringListData(assetIds!)
-      };
+      return null;
     } else {
       return null;
     }
@@ -1481,7 +1610,8 @@ class Utils {
   static String getSvcMethod(String? assetsDropDownValue) {
     if (assetsDropDownValue == "Utilization Details") {
       return "";
-    } else if (assetsDropDownValue == "Fault Code Asset Details") {
+    } else if (assetsDropDownValue == "Fault Code Asset Details" ||
+        assetsDropDownValue == "Backhoe Loader Operation") {
       return "GET";
     } else {
       return "POST";
@@ -1629,7 +1759,7 @@ class Utils {
 
       var inputDate = DateTime.parse(parseDate)
           .add(Duration(hours: 18, seconds: 00, minutes: 30));
-      //.subtract(Duration(days: 1))
+      //.subtract(Duration(days: 1));
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
@@ -1758,6 +1888,15 @@ class Utils {
     } else if (value == "Fault Summary Faults List" ||
         value == "FaultSummaryFaultsList") {
       return "Fault Summary Faults List";
+    } else if (value == "MultiAssetExcavatorUsageReport" ||
+        value == "Multi-Asset Excavator Usage Report") {
+      return "Multi-Asset Excavator Usage Report";
+    } else if (value == "BackhoeLoaderOperation") {
+      return "BackhoeLoaderOperation";
+    } else if (value == "ExcavatorUsage") {
+      return "ExcavatorUsage";
+    } else if (value == "MultiAssetExcavatorUsage") {
+      return "Multi-Asset Excavator Usage";
     } else {
       return null;
     }
@@ -1882,6 +2021,7 @@ class Utils {
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };
+    Logger().wtf(data.values);
     intervalList.add(data);
     return intervalList;
   }
@@ -1925,7 +2065,7 @@ class Utils {
     } else if (fuelLevelPercentLt == "75") {
       return "51%-75%";
     } else if (fuelLevelPercentLt == "100") {
-      return "76%-25%";
+      return "76%-100%";
     } else {
       return "";
     }

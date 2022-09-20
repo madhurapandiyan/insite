@@ -1,8 +1,8 @@
 class IncrementDecrementValue {
   final String? runtimeDays;
-  double? runTimecount;
-  double? idleCount;
-  double? percentCount;
+  dynamic? runTimecount;
+  dynamic? idleCount;
+  dynamic? percentCount;
 
   IncrementDecrementValue(
       {this.runTimecount, this.runtimeDays, this.idleCount, this.percentCount});

@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class EstimatedRunTimeWidgetView extends StatefulWidget {
-  final List<String?>? assetUids;
+  final List<String>? assetUids;
 
   EstimatedRunTimeWidgetView({this.assetUids});
 
@@ -125,7 +125,7 @@ class _EstimatedRunTimeWidgetViewState
                           controller: viewModel.endDateController,
                           voidCallback: () async {
                             await getEndDatePicker(viewModel);
-                           // viewModel.getDateFilter(startDate!, endDate!);
+                            // viewModel.getDateFilter(startDate!, endDate!);
                           },
                         )),
                   ),
@@ -160,8 +160,9 @@ class _EstimatedRunTimeWidgetViewState
                                   .bodyText1!
                                   .color!)),
                       child: Container(
-                        color:
-                            viewModel.isSelectedFullWeekTarget ? tango : null,
+                        color: viewModel.isSelectedFullWeekTarget
+                            ? Theme.of(context).buttonColor
+                            : null,
                       ),
                     )),
                 SizedBox(
@@ -195,7 +196,9 @@ class _EstimatedRunTimeWidgetViewState
                                   .bodyText1!
                                   .color!)),
                       child: Container(
-                        color: viewModel.isSelectedFullWeekIdle ? tango : null,
+                        color: viewModel.isSelectedFullWeekIdle
+                            ? Theme.of(context).buttonColor
+                            : null,
                       ),
                     )),
                 SizedBox(
@@ -231,7 +234,7 @@ class _EstimatedRunTimeWidgetViewState
                         value: dropDownValue,
                         onChanged: (String? value) {
                           dropDownValue = value!;
-                         // viewModel.onChangeStateValue();
+                          // viewModel.onChangeStateValue();
                           setState(() {});
                         },
                       ),
@@ -436,7 +439,7 @@ class _EstimatedRunTimeWidgetViewState
                     title: "apply".toUpperCase(),
                     fontSize: 12,
                     textColor: textcolor,
-                    bgColor: tango,
+                    bgColor: Theme.of(context).buttonColor,
                     onTap: () {
                       viewModel.onClickValueRunTimeApply();
                       viewModel.onIdleClickValueApply();

@@ -13,6 +13,7 @@ import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/dumb_widgets/toggle_button.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'maintenance_tab_view_model.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -34,6 +35,7 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
   List<String?>? dateRange = [];
   @override
   Widget build(BuildContext context) {
+    Logger().wtf(widget.summaryData!.assetID);
     return ViewModelBuilder<MaintenanceTabViewModel>.reactive(
       builder:
           (BuildContext context, MaintenanceTabViewModel viewModel, Widget? _) {
@@ -73,29 +75,56 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                         viewModel.refresh();
                       },
                     ),
-                    InsiteButton(
-                      width: 200,
-                      title: Utils.getDateInFormatddMMyyyy(
-                              viewModel.maintenanceStartDate) +
-                          " - " +
-                          Utils.getDateInFormatddMMyyyy(
-                              viewModel.maintenanceEndDate),
-                      //width: 90,
-                      //bgColor: Theme.of(context).backgroundColor,
-                      textColor: white,
-                      onTap: () async {
-                        dateRange = [];
-                        dateRange = await showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Dialog(
-                              backgroundColor: transparent,
-                              child: DateRangeMaintenanceView()),
-                        );
-                        if (dateRange != null && dateRange!.isNotEmpty) {
-                          viewModel.refresh();
-                        }
-                      },
-                    ),
+                    viewModel.isToggled
+                        ? InsiteButton(
+                            width: 200,
+                            title: Utils.getDateInFormatddMMyyyy(
+                                    viewModel.maintenanceStartDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.maintenanceEndDate),
+                            //width: 90,
+                            //bgColor: Theme.of(context).backgroundColor,
+                            textColor: white,
+                            onTap: () async {
+                              dateRange = [];
+                              dateRange = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) => Dialog(
+                                    backgroundColor: transparent,
+                                    child: DateRangeMaintenanceView()),
+                              );
+                              if (dateRange != null && dateRange!.isNotEmpty) {
+                                viewModel.refresh();
+                              }
+                            },
+                          )
+                        : InsiteButton(
+                            title: Utils.getDateInFormatddMMyyyy(
+                                    viewModel.startDate) +
+                                " - " +
+                                Utils.getDateInFormatddMMyyyy(
+                                    viewModel.endDate),
+                            height: 36,
+                            onTap: () async {
+                              dateRange = [];
+                              dateRange = await showDialog(
+                                context: context,
+                                builder: (BuildContext context) => Dialog(
+                                    backgroundColor: transparent,
+                                    child: DateRangeView()),
+                              );
+                              if (dateRange != null && dateRange!.isNotEmpty) {
+                                setState(() {
+                                  dateRange = dateRange;
+                                });
+                                viewModel.refresh();
+                              }
+                            },
+                            textColor: white,
+                            //width: 100,
+                            // bgColor: Theme.of(context).backgroundColor,
+                          ),
                   ],
                 ),
                 SizedBox(
@@ -293,10 +322,10 @@ class MaintenanceTabListData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return servicesData!.isEmpty || servicesData == null
+    return servicesData == null || servicesData!.isEmpty
         ? Expanded(
             child: EmptyView(
-              title: "No Asset Found",
+              title: "No service pending or overdue at this time",
             ),
           )
         : Expanded(
@@ -402,7 +431,7 @@ class HistoryListData extends StatelessWidget {
     return listData!.isEmpty || listData == null
         ? Expanded(
             child: EmptyView(
-              title: "No History Found",
+              title: "No service history available to date",
             ),
           )
         : Expanded(

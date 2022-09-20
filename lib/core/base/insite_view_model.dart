@@ -29,11 +29,15 @@ abstract class InsiteViewModel extends BaseViewModel {
   }
 
   bool isVisionLink = false;
+  bool enableGraphQl = false;
 
   InsiteViewModel() {
     try {
       if (AppConfig.instance!.apiFlavor == "visionlink") {
         isVisionLink = true;
+      }
+      if (AppConfig.instance!.enableGraphql == true) {
+        enableGraphQl = true;
       }
 // PackageInfo.fromPlatform().then((PackageInfo packageInfo) => {
       //       if ("com.trimble.insite.visionlink" == packageInfo.packageName ||
@@ -67,6 +71,8 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
+  DateRangeType? _dateRange = DateRangeType.currentWeek;
+  DateRangeType? get dateRange => _dateRange;
 
   String? codeChallenge;
   static String _createCodeVerifier() {
@@ -134,7 +140,7 @@ abstract class InsiteViewModel extends BaseViewModel {
       appliedFilters = await _filterService!.getSelectedFilters();
       Logger().d("getSelectedFilterData ${appliedFilters!.length.toString()}");
       notifyListeners();
-      // return appliedFilters;
+       //return appliedFilters;
     } catch (e) {
       Logger().e(e.toString());
     }

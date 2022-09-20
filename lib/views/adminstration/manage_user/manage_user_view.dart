@@ -93,51 +93,66 @@ class ManageUserView extends StatelessWidget {
                                               bottomRight: Radius.circular(10),
                                               bottomLeft: Radius.circular(10),
                                             ),
-                                            child: InsiteButton(
-                                                title: "",
-                                                onTap: () {
-                                                  viewModel
-                                                      .onDeleteClicked(context);
-                                                },
-                                                icon: Icon(
-                                                  Icons.delete_outline,
-                                                  color: appbarcolor,
-                                                )),
-                                          )
-                                        : SizedBox(),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    viewModel.showDeSelect
-                                        ? ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10),
-                                              bottomRight: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
+                                            child: Container(
+                                              margin: EdgeInsets.only(top: 5),
+                                              child: PopupMenuButton(
+                                                  iconSize: 35,
+                                                  itemBuilder: (ctx) {
+                                                    return List.generate(
+                                                        viewModel.popUpList
+                                                            .length,
+                                                        (index) =>
+                                                            PopupMenuItem(
+                                                              value: viewModel
+                                                                      .popUpList[
+                                                                  index],
+                                                              child: InsiteText(
+                                                                text: viewModel
+                                                                        .popUpList[
+                                                                    index],
+                                                              ),
+                                                            ));
+                                                  },
+                                                  onSelected: (value ) {
+                                                    viewModel.onPopSelected(value as String,
+                                                        context);
+                                                  }),
                                             ),
-                                            child: InsiteButton(
-                                                title: "",
-                                                onTap: () {
-                                                  viewModel.onItemDeselect();
-                                                },
-                                                icon: Icon(
-                                                  Icons.close,
-                                                  color: appbarcolor,
-                                                )),
                                           )
                                         : SizedBox(),
-                                    !viewModel.showDeSelect &&
-                                            !viewModel.showDelete &&
-                                            !viewModel.showEdit
-                                        ? InsiteButton(
-                                            title: "Add User",
-                                            textColor: Colors.white,
-                                            onTap: () {
-                                              viewModel.onAddNewUserClicked();
-                                            },
-                                          )
-                                        : SizedBox(),
+                                    // SizedBox(
+                                    //   width: 10,
+                                    // ),
+                                    // viewModel.showDeSelect
+                                    //     ? ClipRRect(
+                                    //         borderRadius: BorderRadius.only(
+                                    //           topLeft: Radius.circular(10),
+                                    //           topRight: Radius.circular(10),
+                                    //           bottomRight: Radius.circular(10),
+                                    //           bottomLeft: Radius.circular(10),
+                                    //         ),
+                                    //         child: InsiteButton(
+                                    //             title: "",
+                                    //             onTap: () {
+                                    //               viewModel.onItemDeselect();
+                                    //             },
+                                    //             icon: Icon(
+                                    //               Icons.close,
+                                    //               color: appbarcolor,
+                                    //             )),
+                                    //       )
+                                    //     : SizedBox(),
+                                    // !viewModel.showDeSelect &&
+                                    //         !viewModel.showDelete &&
+                                    //         !viewModel.showEdit
+                                    //     ? InsiteButton(
+                                    //         title: "Add User",
+                                    //         textColor: Colors.white,
+                                    //         onTap: () {
+                                    //           viewModel.onAddNewUserClicked();
+                                    //         },
+                                    //       )
+                                    //     : SizedBox(),
                                     SizedBox(
                                       width: 10,
                                     )

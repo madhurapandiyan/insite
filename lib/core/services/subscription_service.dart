@@ -12,6 +12,7 @@ import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_serial_number_results.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
@@ -39,7 +40,7 @@ class SubScriptionService extends BaseService {
     }
   }
 
-  Future<SubscriptionDashboardResult?> getResultsFromSubscriptionApi() async {
+   Future<SubscriptionDashboardResult?> getResultsFromSubscriptionApi() async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
@@ -68,7 +69,8 @@ class SubScriptionService extends BaseService {
       int? limit,
       String? name,
       int? code,
-      PLANTSUBSCRIPTIONFILTERTYPE? filterType}) async {
+      PLANTSUBSCRIPTIONFILTERTYPE? filterType,
+      query}) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
@@ -97,20 +99,42 @@ class SubScriptionService extends BaseService {
       if (limit != null) {
         queryMap["limit"] = limit.toString();
       }
-
-      SubscriptionDashboardDetailResult dashboardResult =
-          await MyApi().getClientNine()!.getSubcriptionDeviceListData(
-                filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE
-                    ? Urls.plantHierarchyAssetsResult +
-                        FilterUtils.constructQueryFromMap(queryMap)
-                    : Urls.subscriptionResults +
-                        FilterUtils.constructQueryFromMap(queryMap),
-              );
-      if (dashboardResult == null) {
-        Logger().d('no data found');
+      if (enableGraphQl) {
+        if (filter == "CUSTOMER" ||
+            filter == "asset" ||
+            filter == "PLANT" ||
+            filter == "DEALER") {
+          var data = await Network().getGraphqlPlantData(
+            query: query,
+            customerId: "THC",
+            userId: (await _localService!.getLoggedInUser())!.sub,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+          );
+          //Logger().i(data.data);
+          return SubscriptionDashboardDetailResult.fromJson(data.data);
+        } else {
+          var data = await Network()
+              .getGraphqlPlantData(query: query, customerId: "THC");
+          return SubscriptionDashboardDetailResult.fromJson(
+              data.data["frameSubscription"]);
+        }
+      } else {
+        SubscriptionDashboardDetailResult dashboardResult =
+            await MyApi().getClientNine()!.getSubcriptionDeviceListData(
+                  filterType == PLANTSUBSCRIPTIONFILTERTYPE.TYPE
+                      ? Urls.plantHierarchyAssetsResult +
+                          FilterUtils.constructQueryFromMap(queryMap)
+                      : Urls.subscriptionResults +
+                          FilterUtils.constructQueryFromMap(queryMap),
+                );
+        if (dashboardResult == null) {
+          Logger().d('no data found');
+        }
+        Logger().d('subscription result: $dashboardResult');
+        return dashboardResult;
       }
-      Logger().d('subscription result: $dashboardResult');
-      return dashboardResult;
     } catch (e) {
       print(e.toString());
       return null;

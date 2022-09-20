@@ -24,6 +24,10 @@ class ManageUserViewModel extends InsiteViewModel {
     this._searchKeyword = keyword;
   }
 
+  List<String> verifiedUserPopUp = ["Delete User", "Edit User"];
+  List<String> nonVerifiedUser = ["Resend-Invitation", "Add User"];
+  List<String> popUpList = [];
+
   updateSearchDataToEmpty() {
     Logger().d("updateSearchDataToEmpty");
     _assets = [];
@@ -75,6 +79,7 @@ class ManageUserViewModel extends InsiteViewModel {
       setUp();
       _manageUserService!.setUp();
       scrollController = new ScrollController();
+      popUpList.addAll(verifiedUserPopUp);
       scrollController!.addListener(() {
         if (scrollController!.position.pixels ==
             scrollController!.position.maxScrollExtent) {
@@ -124,6 +129,13 @@ class ManageUserViewModel extends InsiteViewModel {
           _totalCount = result.total!.items!;
         }
         if (result.users!.isNotEmpty) {
+          result.users!.forEach((element) {
+            if (element.emailVerified == "NO") {
+              element.verifiedUser = false;
+            } else {
+              element.verifiedUser = true;
+            }
+          });
           Logger().i("list of assets " + result.users!.length.toString());
           if (!loadingMore) {
             Logger().i("assets");
@@ -165,10 +177,36 @@ class ManageUserViewModel extends InsiteViewModel {
   onItemSelected(index) {
     try {
       _assets[index].isSelected = !_assets[index].isSelected;
+      var selectedUser =
+          _assets.where((element) => element.isSelected).toList();
+      if (selectedUser.isNotEmpty) {
+        popUpList.clear();
+        var allVerified =
+            selectedUser.every((element) => element.user!.verifiedUser!);
+        var allNonVerified =
+            selectedUser.every((element) => !element.user!.verifiedUser!);
+        Logger().w("verified: $allVerified");
+        Logger().w("non-verified: $allNonVerified");
+        if (allVerified) {
+          Logger().wtf(verifiedUserPopUp);
+          if (selectedUser.length == 1) {
+            popUpList.addAll(verifiedUserPopUp);
+          } else
+            popUpList.add("Delete User");
+        }
+        if (allNonVerified) {
+          Logger().wtf(nonVerifiedUser);
+          popUpList.addAll(nonVerifiedUser);
+        }
+        if (allVerified == false && allNonVerified == false) {
+          popUpList.add("Delete User");
+        }
+      }
+
+      notifyListeners();
     } catch (e) {
       Logger().e(e);
     }
-    notifyListeners();
     checkEditAndDeleteVisibility();
   }
 
@@ -187,6 +225,31 @@ class ManageUserViewModel extends InsiteViewModel {
   onEditClicked() {
     UserRow row = _assets.firstWhere((element) => element.isSelected);
     onCardButtonSelected(row.user!);
+  }
+
+  onPopSelected(String value, BuildContext ctx) async {
+    if (value == "Add User") {
+      onAddNewUserClicked();
+    } else if (value == "Edit User") {
+      var user = _assets.singleWhere((element) => element.isSelected);
+      _navigationService!.navigateWithTransition(
+          AddNewUserView(
+            isEdit: true,
+            user: user.user,
+          ),
+          transition: "fade");
+    } else if (value == "Resend-Invitation") {
+      showLoadingDialog();
+      var user = _assets.singleWhere((element) => element.isSelected);
+      var data =
+          await _manageUserService!.resendInvitation(user.user!.invitationUID!);
+      if (data == true) {
+        snackbarService!.showSnackbar(message: "Invitation Sent Successfully");
+      }
+      hideLoadingDialog();
+    } else {
+      onDeleteClicked(ctx);
+    }
   }
 
   onDeleteClicked(BuildContext context) async {
@@ -253,7 +316,7 @@ class ManageUserViewModel extends InsiteViewModel {
     }
     _totalCount = _totalCount - ids.length;
     notifyListeners();
-    checkEditAndDeleteVisibility();
+    //checkEditAndDeleteVisibility();
   }
 
   checkEditAndDeleteVisibility() {
