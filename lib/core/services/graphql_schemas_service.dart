@@ -584,7 +584,7 @@ manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
 modelList:${model == null ? "\"\"" : "${"\"" + model! + "\""}"}
 deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
 assetStatusList:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}
-fuelLevelPercentLT: ""
+
 fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
   ) {
     faults {
@@ -984,6 +984,7 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
     return """{
   userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, EmailID: "${email == null ? "" : email}") {
     users {
+      invitationUID
       first_name
       last_name
       user_type
@@ -994,6 +995,7 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
       lastLoginDate
       createdOn
       createdBy
+      emailVerified
       application_access {
         userUID
         role_name
@@ -1141,41 +1143,30 @@ userEmail(EmailID:"$emailId"){
     return fleetUtilization;
   }
 
-  String addUser(
-      {String? firstName,
-      String? lastName,
-      String? emailId,
-      String? phoneNo,
-      AddressData? addressData,
-      List<Role>? role,
-      String? customerUid,
-      int? jobType,
-      Details? details}) {
-    String intQuote = "\"";
-    List<Map<String, dynamic>> roleData = [];
-    role!.forEach((element) {
-      roleData.add({
-        "role_id": element.role_id,
-        "application_name": element.application_name
-      });
-    });
-    final String addUserData = """mutation {
-  userManagementCreateUser(requestBody: {fname: ${intQuote + firstName! + intQuote}, lname: ${intQuote + lastName! + intQuote}, email: ${intQuote + emailId! + intQuote}, 
-      JobType:$jobType,
-    address: ${addressData!.toJson()}, 
-      details:{
-        user_type: "Standard"
-      }, 
-      roles: $roleData, 
-      customerUid: "$customerUid", 
-      isAssetSecurityEnabled: true
-      }) {
-    count
-    invitation_id
+  String addUser() {
+    final String addUserData =
+        """mutation userManagementCreateUser(\$requestBody: createUserBody!, \$userUId: String){
+   userManagementCreateUser(requestBody: \$requestBody, userUId: \$userUId){
+    invitation_id,
+    count,
+    isInvitationSent,
+    isUpdated
   }
-}""";
+}
+""";
     print(addUserData);
     return addUserData;
+  }
+
+  editUser() {
+    var data = """
+mutation userManagementCreateUser(\$requestBody: createUserBody!, \$userUId: String)
+{userManagementCreateUser(requestBody: \$requestBody, userUId: \$userUId){
+  count
+  invitation_id
+  isUpdated
+  }}""";
+    return data;
   }
 
   String getAccountHierarchy({int? limit, int? start, String? searchKey}) {
@@ -1589,7 +1580,9 @@ query{
       workingFuelConsumedLitersCalloutTypes,
       lastReportedTime,
       lastReportedTimeZoneAbbrev,
-      dailyreportedtimeTypes
+      dailyreportedtimeTypes,
+      runtimeFuelConsumptionRate
+
       
     }
   }
@@ -2734,22 +2727,24 @@ mutation{
 
   String seeAllNotification(
       {int? pageNo,
-      List<int>? notificationStatus,
+      int? notificationStatus,
       String? startDate,
       String? endDate,
       int? notificationUserStatus,
-      String? assetUIDs,
-      List<String>? notificationType}) {
+      //String? assetUIDs,
+      List<String>? notificationType,
+      String? productFamily}) {
     var data = """
 query{
   seeAllNotificationList(
     pageNumber:$pageNo,
-    notificationStatus:${notificationStatus ?? []},
+    notificationStatus:${notificationStatus ?? 0},
     notificationUserStatus:$notificationUserStatus,
     fromDate:"${startDate != null ? startDate : ""}",
     toDate:"${endDate != null ? endDate : ""}",
-    assetUIDs:${assetUIDs == null ? "\"\"" : "${"\"" + assetUIDs + "\""}"},,
+  
      notificationType:${Utils.getStringListData(notificationType ?? [])}
+     productFamily:"${productFamily != null ? productFamily : ""}"
   ){
     links{
       next,
@@ -3105,7 +3100,10 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
       hours,
       faultCode,
       lastReportedLocationLatitude,
-      lastReportedLocationLongitude
+      lastReportedLocationLongitude,
+      lastReportedTimeUTC,
+      lastReportedLocation
+
     }
     }
     }
@@ -3125,9 +3123,11 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
     await cleaValue();
     await gettingFiltersValue(appliedFilter);
     await gettingLocationFilter(appliedFilter);
+    // Logger().v(assetId);
 
     var data = """
 {
+  
   maintenanceList(
     fromDate: ${startDate == null ? "\"\"" : "${"\"" + startDate + "\""}"}, 
     limit: ${limit ?? null}, 
@@ -3308,6 +3308,8 @@ query{
           source,
           faultOccuredUTC,
           severityLabel
+          }
+          }
 
       } """;
     return data;
@@ -3469,7 +3471,7 @@ maintenanceIntervals(
     return data;
   }
 
-  String getPlantDashboardAndHierarchyListData(
+   String getPlantDashboardAndHierarchyListData(
       {int? limit,
       int? start,
       String? status,
@@ -3483,16 +3485,12 @@ maintenanceIntervals(
             start:${start != null ? start : null},
             status:"${status != null ? status : ""}",
              calendar:"${calendar != null ? calendar : ""}",
-
              model:"${model != null ? model : ""}"
-
-
             
         ){
             count,
             provisioningInfo{
               gpsDeviceID,
-
               model,
               vin
               productFamily,
@@ -3507,11 +3505,7 @@ maintenanceIntervals(
               actualStartDate,
               subscriptionEndDate
               
-
-
       }
-
-
             }
             }
         }""";
@@ -3552,24 +3546,48 @@ maintenanceIntervals(
     // }
   }
 
-  addMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
-    var data = """
-mutation{
-  createMaintenanceIntervals(
-    intervalName:${mainInterval!.intervalName ?? ""},
-    initialOccurence:${mainInterval.initialOccurence ?? 0},
-     description:${mainInterval.description ?? ""},
-    assetId:${mainInterval.assetId ?? ""},
-    serialNumber:${mainInterval.serialno ?? ""},
-    make:${mainInterval.make ?? ""},
-    model:${mainInterval.model ?? ""},
-    currentHourMeter:${mainInterval.currentHrmeter ?? null},
-    checklist:${Utils.addMaintenanceIntervals(mainInterval.checkList!)}
-  ){
+  // String getPlantDashboardAndHierarchyCalendarListData(
+  //     {int? limit, int? start, String? status}) {
+  //   var data = """query{
+  //   frameSubscription{
+  //       subscriptionFleetList(
+  //           limit:$limit,
+  //           start:$start,
+  //           calendar:"$status"
+
+  //       ){
+  //           count,
+  //           provisioningInfo{
+  //             gpsDeviceID,
+
+  //             model,
+  //             vin
+  //             productFamily,
+  //             customerCode,
+  //             dealerName,
+  //             dealerCode,
+  //             customerName,
+  //             status,
+  //             description,
+  //             networkProvider
+
+  //     }
+
+  //           }
+  //           }
+  //       }""";
+  //   return data;
+  // }
+
+  addMaintenanceIntervals() {
+    var data =
+        """mutation createMaintenanceIntervals(\$intervalName: String, \$initialOccurence: Int, \$description: String, \$checklist: [createMaintenanceIntervals], \$assetId: String, \$serialNumber: String, \$make: String, \$model: String, \$currentHourMeter: Float, \$units: String) {
+  createMaintenanceIntervals(intervalName: \$intervalName, initialOccurence: \$initialOccurence, description: \$description, checklist: \$checklist, assetId: \$assetId, serialNumber: \$serialNumber, make: \$make, model: \$model, currentHourMeter: \$currentHourMeter, units: \$units){
     status,
-     message
+    message
   }
-}""";
+}
+""";
     return data;
   }
 
@@ -3594,7 +3612,7 @@ mutation{
     var data = """
 mutation{
   updateMaintenanceIntervals(
-    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)},
+    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)}
     checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
     status,
      message
@@ -3741,7 +3759,38 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
     primarySecondaryIndustries{
         primaryIndustry,
         secondaryIndustries
+        }
+        }""";
+    return data;
+  }
+
+  getSingleAssetFaulSummaryData(
+      {String? assetUid, String? startDate, String? endDate}) {
+    var data = """query{
+    faultSummaryData(assetUid:"$assetUid",
+    startDateTime:"$startDate",
+    endDateTime:"$endDate"){
+        summaryData{
+            
+            countData{
+                assetCount,
+                countOf,
+                faultCount
+            }
+        }
     }
+}""";
+    return data;
+  }
+
+  resentInvitation() {
+    var data = """query  Resend(\$resendID: String){
+  resend(resendID: \$resendID){
+    invitation_id,
+    count,
+    isInvitationSent,
+    isUpdated
+  }
 }""";
     return data;
   }

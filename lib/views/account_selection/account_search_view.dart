@@ -97,7 +97,10 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                         Expanded(
                           child: ListView.builder(
                             itemCount: viewModel.displayList!.length,
-                            controller: viewModel.scrollController,
+                            controller:
+                                widget.selectionType == AccountType.ACCOUNT
+                                    ? null
+                                    : viewModel.scrollController,
                             // shrinkWrap: true,
                             // physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {

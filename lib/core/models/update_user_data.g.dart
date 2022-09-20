@@ -8,15 +8,21 @@ part of 'update_user_data.dart';
 
 UpdateResponse _$UpdateResponseFromJson(Map<String, dynamic> json) =>
     UpdateResponse(
-      isUpdated: json['isUpdated'] as bool?,
       isDeleted: json['isDeleted'] as bool?,
     );
 
-Map<String, dynamic> _$UpdateResponseToJson(UpdateResponse instance) =>
-    <String, dynamic>{
-      'isUpdated': instance.isUpdated,
-      'isDeleted': instance.isDeleted,
-    };
+Map<String, dynamic> _$UpdateResponseToJson(UpdateResponse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('isDeleted', instance.isDeleted);
+  return val;
+}
 
 DeleteUserData _$DeleteUserDataFromJson(Map<String, dynamic> json) =>
     DeleteUserData(
@@ -24,10 +30,18 @@ DeleteUserData _$DeleteUserDataFromJson(Map<String, dynamic> json) =>
           (json['users'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$DeleteUserDataToJson(DeleteUserData instance) =>
-    <String, dynamic>{
-      'users': instance.users,
-    };
+Map<String, dynamic> _$DeleteUserDataToJson(DeleteUserData instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('users', instance.users);
+  return val;
+}
 
 DeleteUserDataIndStack _$DeleteUserDataIndStackFromJson(
         Map<String, dynamic> json) =>
@@ -37,11 +51,20 @@ DeleteUserDataIndStack _$DeleteUserDataIndStackFromJson(
     );
 
 Map<String, dynamic> _$DeleteUserDataIndStackToJson(
-        DeleteUserDataIndStack instance) =>
-    <String, dynamic>{
-      'users': instance.users,
-      'customerUid': instance.customerUid,
-    };
+    DeleteUserDataIndStack instance) {
+  final val = <String, dynamic>{
+    'users': instance.users,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('customerUid', instance.customerUid);
+  return val;
+}
 
 AddUserData _$AddUserDataFromJson(Map<String, dynamic> json) => AddUserData(
       fname: json['fname'] as String?,
@@ -64,21 +87,29 @@ AddUserData _$AddUserDataFromJson(Map<String, dynamic> json) => AddUserData(
       language: json['language'] as String?,
     );
 
-Map<String, dynamic> _$AddUserDataToJson(AddUserData instance) =>
-    <String, dynamic>{
-      'fname': instance.fname,
-      'lname': instance.lname,
-      'cwsEmail': instance.cwsEmail,
-      'phone': instance.phone,
-      'sso_id': instance.sso_id,
-      'company': instance.company,
-      'isCATSSOUserCreation': instance.isCATSSOUserCreation,
-      'address': instance.address,
-      'details': instance.details,
-      'roles': instance.roles,
-      'src': instance.src,
-      'language': instance.language,
-    };
+Map<String, dynamic> _$AddUserDataToJson(AddUserData instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('fname', instance.fname);
+  writeNotNull('lname', instance.lname);
+  writeNotNull('cwsEmail', instance.cwsEmail);
+  writeNotNull('phone', instance.phone);
+  writeNotNull('sso_id', instance.sso_id);
+  writeNotNull('company', instance.company);
+  writeNotNull('isCATSSOUserCreation', instance.isCATSSOUserCreation);
+  writeNotNull('address', instance.address?.toJson());
+  writeNotNull('details', instance.details?.toJson());
+  writeNotNull('roles', instance.roles?.map((e) => e.toJson()).toList());
+  writeNotNull('src', instance.src);
+  writeNotNull('language', instance.language);
+  return val;
+}
 
 AddUserDataIndStack _$AddUserDataIndStackFromJson(Map<String, dynamic> json) =>
     AddUserDataIndStack(
@@ -102,22 +133,29 @@ AddUserDataIndStack _$AddUserDataIndStackFromJson(Map<String, dynamic> json) =>
       customerUid: json['customerUid'] as String?,
     );
 
-Map<String, dynamic> _$AddUserDataIndStackToJson(
-        AddUserDataIndStack instance) =>
-    <String, dynamic>{
-      'fname': instance.fname,
-      'lname': instance.lname,
-      'email': instance.email,
-      'phone': instance.phone,
-      'company': instance.company,
-      'address': instance.address?.toJson(),
-      'details': instance.details?.toJson(),
-      'roles': instance.roles?.map((e) => e.toJson()).toList(),
-      'src': instance.src,
-      'language': instance.language,
-      'customerUid': instance.customerUid,
-      'isAssetSecurityEnabled': instance.isAssetSecurityEnabled,
-    };
+Map<String, dynamic> _$AddUserDataIndStackToJson(AddUserDataIndStack instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('fname', instance.fname);
+  writeNotNull('lname', instance.lname);
+  writeNotNull('email', instance.email);
+  writeNotNull('phone', instance.phone);
+  writeNotNull('company', instance.company);
+  writeNotNull('address', instance.address?.toJson());
+  writeNotNull('details', instance.details?.toJson());
+  writeNotNull('roles', instance.roles?.map((e) => e.toJson()).toList());
+  writeNotNull('src', instance.src);
+  writeNotNull('language', instance.language);
+  writeNotNull('customerUid', instance.customerUid);
+  writeNotNull('isAssetSecurityEnabled', instance.isAssetSecurityEnabled);
+  return val;
+}
 
 UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) =>
     UpdateUserData(
@@ -139,23 +177,39 @@ UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) =>
       src: json['src'] as String?,
       company: json['company'] as String?,
       language: json['language'] as String?,
+      JobType: json['JobType'] as int?,
+      customerUid: json['customerUid'] as String?,
+      email: json['email'] as String?,
+      isAssetSecurityEnabled: json['isAssetSecurityEnabled'] as bool?,
     );
 
-Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) =>
-    <String, dynamic>{
-      'fname': instance.fname,
-      'lname': instance.lname,
-      'cwsEmail': instance.cwsEmail,
-      'phone': instance.phone,
-      'sso_id': instance.sso_id,
-      'isCatssoUserCreation': instance.isCatssoUserCreation,
-      'address': instance.address,
-      'details': instance.details,
-      'roles': instance.roles,
-      'src': instance.src,
-      'company': instance.company,
-      'language': instance.language,
-    };
+Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('fname', instance.fname);
+  writeNotNull('lname', instance.lname);
+  writeNotNull('cwsEmail', instance.cwsEmail);
+  writeNotNull('phone', instance.phone);
+  writeNotNull('sso_id', instance.sso_id);
+  writeNotNull('isCatssoUserCreation', instance.isCatssoUserCreation);
+  writeNotNull('address', instance.address?.toJson());
+  writeNotNull('details', instance.details?.toJson());
+  writeNotNull('roles', instance.roles?.map((e) => e.toJson()).toList());
+  writeNotNull('src', instance.src);
+  writeNotNull('company', instance.company);
+  writeNotNull('language', instance.language);
+  writeNotNull('email', instance.email);
+  writeNotNull('customerUid', instance.customerUid);
+  writeNotNull('JobType', instance.JobType);
+  writeNotNull('isAssetSecurityEnabled', instance.isAssetSecurityEnabled);
+  return val;
+}
 
 AddressData _$AddressDataFromJson(Map<String, dynamic> json) => AddressData(
       addressline1: json['addressline1'] as String?,
@@ -165,14 +219,22 @@ AddressData _$AddressDataFromJson(Map<String, dynamic> json) => AddressData(
       zipcode: json['zipcode'] as String?,
     );
 
-Map<String, dynamic> _$AddressDataToJson(AddressData instance) =>
-    <String, dynamic>{
-      'addressline1': instance.addressline1,
-      'addressline2': instance.addressline2,
-      'country': instance.country,
-      'state': instance.state,
-      'zipcode': instance.zipcode,
-    };
+Map<String, dynamic> _$AddressDataToJson(AddressData instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('addressline1', instance.addressline1);
+  writeNotNull('addressline2', instance.addressline2);
+  writeNotNull('country', instance.country);
+  writeNotNull('state', instance.state);
+  writeNotNull('zipcode', instance.zipcode);
+  return val;
+}
 
 Details _$DetailsFromJson(Map<String, dynamic> json) => Details(
       job_title: json['job_title'] as String?,
@@ -180,18 +242,36 @@ Details _$DetailsFromJson(Map<String, dynamic> json) => Details(
       user_type: json['user_type'] as String?,
     );
 
-Map<String, dynamic> _$DetailsToJson(Details instance) => <String, dynamic>{
-      'job_title': instance.job_title,
-      'job_type': instance.job_type,
-      'user_type': instance.user_type,
-    };
+Map<String, dynamic> _$DetailsToJson(Details instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('job_title', instance.job_title);
+  writeNotNull('job_type', instance.job_type);
+  writeNotNull('user_type', instance.user_type);
+  return val;
+}
 
 Role _$RoleFromJson(Map<String, dynamic> json) => Role(
       role_id: json['role_id'] as int?,
       application_name: json['application_name'] as String?,
     );
 
-Map<String, dynamic> _$RoleToJson(Role instance) => <String, dynamic>{
-      'role_id': instance.role_id,
-      'application_name': instance.application_name,
-    };
+Map<String, dynamic> _$RoleToJson(Role instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('role_id', instance.role_id);
+  writeNotNull('application_name', instance.application_name);
+  return val;
+}

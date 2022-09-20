@@ -63,25 +63,6 @@ class ManageUserView extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 10.0),
                                 child: Row(
                                   children: [
-                                    viewModel.showMenu
-                                        ? ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10),
-                                              bottomRight: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8.0),
-                                              child: InsitePopMenuItemButton(
-                                                width: 40,
-                                                height: 40,
-                                                widget: onContextMenuSelected(
-                                                    viewModel, context),
-                                              ),
-                                            ))
-                                        : SizedBox(),
                                     // viewModel.showEdit
                                     //     ? ClipRRect(
                                     //         borderRadius: BorderRadius.only(
@@ -101,29 +82,44 @@ class ManageUserView extends StatelessWidget {
                                     //             )),
                                     //       )
                                     //     : SizedBox(),
-                                    // SizedBox(
-                                    //   width: 10,
-                                    // ),
-                                    // viewModel.showDelete
-                                    //     ? ClipRRect(
-                                    //         borderRadius: BorderRadius.only(
-                                    //           topLeft: Radius.circular(10),
-                                    //           topRight: Radius.circular(10),
-                                    //           bottomRight: Radius.circular(10),
-                                    //           bottomLeft: Radius.circular(10),
-                                    //         ),
-                                    //         child: InsiteButton(
-                                    //             title: "",
-                                    //             onTap: () {
-                                    //               viewModel
-                                    //                   .onDeleteClicked(context);
-                                    //             },
-                                    //             icon: Icon(
-                                    //               Icons.delete_outline,
-                                    //               color: appbarcolor,
-                                    //             )),
-                                    //       )
-                                    //     : SizedBox(),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    viewModel.showDelete
+                                        ? ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10),
+                                              bottomRight: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                            ),
+                                            child: Container(
+                                              margin: EdgeInsets.only(top: 5),
+                                              child: PopupMenuButton(
+                                                  iconSize: 35,
+                                                  itemBuilder: (ctx) {
+                                                    return List.generate(
+                                                        viewModel.popUpList
+                                                            .length,
+                                                        (index) =>
+                                                            PopupMenuItem(
+                                                              value: viewModel
+                                                                      .popUpList[
+                                                                  index],
+                                                              child: InsiteText(
+                                                                text: viewModel
+                                                                        .popUpList[
+                                                                    index],
+                                                              ),
+                                                            ));
+                                                  },
+                                                  onSelected: (value ) {
+                                                    viewModel.onPopSelected(value as String,
+                                                        context);
+                                                  }),
+                                            ),
+                                          )
+                                        : SizedBox(),
                                     // SizedBox(
                                     //   width: 10,
                                     // ),
@@ -157,9 +153,9 @@ class ManageUserView extends StatelessWidget {
                                     //         },
                                     //       )
                                     //     : SizedBox(),
-                                    // SizedBox(
-                                    //   width: 10,
-                                    // )
+                                    SizedBox(
+                                      width: 10,
+                                    )
                                   ],
                                 ),
                               )
@@ -221,74 +217,6 @@ class ManageUserView extends StatelessWidget {
         );
       },
       viewModelBuilder: () => ManageUserViewModel(),
-    );
-  }
-
-  Widget onContextMenuSelected(
-      ManageUserViewModel viewModel, BuildContext context) {
-    return PopupMenuButton<String>(
-      offset: Offset(30, 50),
-      itemBuilder: (context) => [
-        viewModel.showEdit
-            ? PopupMenuItem(
-                value: "Add User",
-                child: InsiteText(
-                  text: "Add User",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ))
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
-        viewModel.showEdit
-            ? PopupMenuItem(
-                value: "Edit User",
-                child: InsiteText(
-                  text: "Edit User",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              )
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
-        viewModel.showDelete
-            ? PopupMenuItem(
-                value: "Delete",
-                child: InsiteText(
-                  text: "Delete",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              )
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
-        viewModel.showDeSelect
-            ? PopupMenuItem(
-                value: "Deselect All",
-                child: InsiteText(
-                  text: "Deselect All",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ))
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              )
-      ],
-      onSelected: (value) {
-        Logger().i("value:$value");
-        viewModel.onSelectedItemClicK(value, context);
-      },
-      icon: Icon(
-        Icons.more_vert,
-        color: appbarcolor,
-        size: 25,
-      ),
     );
   }
 }

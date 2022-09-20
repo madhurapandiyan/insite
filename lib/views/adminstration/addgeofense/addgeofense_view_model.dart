@@ -1,13 +1,16 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart' as flutter_map;
 import 'package:geobase/geobase.dart';
 import 'package:geodesy/geodesy.dart' as geodesy;
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:point_in_polygon/point_in_polygon.dart' as point;
-
+import 'package:insite/core/models/marker.dart';
+import 'package:latlong2/latlong.dart' as latlng;
 import 'package:geocore/geocore.dart' as Geo;
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -37,7 +40,9 @@ class AddgeofenseViewModel extends InsiteViewModel {
   Logger? log;
 
   AddgeofenseViewModel() {
+    _geofenceService!.setUp();
     this.log = getLogger(this.runtimeType.toString());
+
     _geofenceService!.setUp();
     isVisionlinkCheck = isVisionLink;
     if (isVisionlinkCheck!) {
@@ -45,6 +50,12 @@ class AddgeofenseViewModel extends InsiteViewModel {
     }
   }
   double zoomValue = 1;
+  CustomInfoWindowController _customInfoWindowController =
+      CustomInfoWindowController();
+  CustomInfoWindowController get customInfoWindowController =>
+      _customInfoWindowController;
+  Set<Marker> markers = Set();
+  List<LatLng> latlngs = [];
 
   Geofencepayload? geofenceRequestPayload;
 
@@ -52,8 +63,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   late GeofenceModelWithMaterialData geofenceWithMaterialData;
 
-  AssetLocationData? _assetLocation;
-  AssetLocationData? get assetLocation => _assetLocation;
+  MapRecord? _assetLocation;
+  MapRecord? get assetLocation => _assetLocation;
 
   String? finalPolygonWKTstring;
   Set<Circle>? _circle = {};
@@ -132,10 +143,9 @@ class AddgeofenseViewModel extends InsiteViewModel {
   ];
 
   String? initialName = "select";
-  String initialMapType = "SATELLITE";
-  List<String> mapType = ['SATELLITE','MAP', 'TERRAIN',  'HYBRID'];
-  CustomInfoWindowController customInfoWindowController =
-      CustomInfoWindowController();
+  String initialMapType = "HYBRID";
+  List<String> mapType = ['MAP', 'TERRAIN', 'SATELLITE', 'HYBRID'];
+
   Completer<GoogleMapController> googleMapController = Completer();
   CameraPosition centerPosition =
       CameraPosition(target: LatLng(30.666, 76.8127), zoom: 1);
@@ -239,14 +249,57 @@ class AddgeofenseViewModel extends InsiteViewModel {
     }
   }
 
-  onLocationSelected(String locationLatitude, String locationLongitude) {
-    double parsedLatitude = double.parse(locationLatitude);
-    double parsedLongitude = double.parse(locationLongitude);
-    onZoomLatitude = parsedLatitude;
-    onZoomLongitude = parsedLongitude;
-    LatLng pickedLatLong = LatLng(parsedLatitude, parsedLongitude);
-    centerPosition = CameraPosition(target: pickedLatLong, zoom: 10);
-    notifyListeners();
+  onLocationSelected(MapRecord? data) async {
+    try {
+      // double parsedLatitude = double.parse(locationLatitude);
+      // double parsedLongitude = double.parse(locationLongitude);
+      // onZoomLatitude = parsedLatitude;
+      // onZoomLongitude = parsedLongitude;
+      _customInfoWindowController.hideInfoWindow!();
+      LatLng pickedLatLong = LatLng(data!.lastReportedLocationLatitude!,
+          data.lastReportedLocationLatitude!);
+      centerPosition = CameraPosition(target: pickedLatLong, zoom: 10);
+      var contro = await googleMapController.future;
+      contro.animateCamera(CameraUpdate.newCameraPosition(centerPosition));
+      _assetLocation = data;
+      markers.clear();
+      markers.add(Marker(
+        markerId: MarkerId(DateTime.now().toString()),
+        icon: await _getMarkerBitmap(125, text: "1"),
+        position: pickedLatLong,
+        onTap: () {
+          _customInfoWindowController.addInfoWindow!(
+              Container(
+                color: white,
+                width: 100,
+                height: 50,
+                child: Center(child: Text(_assetLocation!.assetSerialNumber!)),
+              ),
+              pickedLatLong);
+        },
+      ));
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  onLocationSearchedSerialNo(LatLng pos) async {
+    try {
+      // double parsedLatitude = double.parse(locationLatitude);
+      // double parsedLongitude = double.parse(locationLongitude);
+      // onZoomLatitude = parsedLatitude;
+      // onZoomLongitude = parsedLongitude;
+      markers.clear();
+      _customInfoWindowController.hideInfoWindow!();
+      LatLng pickedLatLong = pos;
+      centerPosition = CameraPosition(target: pickedLatLong, zoom: 10);
+      var contro = await googleMapController.future;
+      contro.animateCamera(CameraUpdate.newCameraPosition(centerPosition));
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   onLocationSearchApply() {
@@ -837,5 +890,40 @@ class AddgeofenseViewModel extends InsiteViewModel {
     } catch (e) {
       Logger().e(e.toString());
     }
+  }
+
+  Future<BitmapDescriptor> _getMarkerBitmap(int size, {String? text}) async {
+    if (kIsWeb) size = (size / 2).floor();
+
+    final PictureRecorder pictureRecorder = PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint1 = Paint()..color = Colors.white;
+    final Paint paint2 = Paint()..color = Colors.blue;
+
+    canvas.drawCircle(Offset(size / 2, size / 2), size / 2.0, paint1);
+    canvas.drawCircle(Offset(size / 2, size / 2), size / 2.2, paint2);
+    canvas.drawCircle(Offset(size / 2, size / 2), size / 2.8, paint1);
+
+    if (text != null) {
+      TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
+      painter.text = TextSpan(
+        text: text,
+        style: TextStyle(
+            fontSize: size / 3,
+            color: darkGrey,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w400),
+      );
+      painter.layout();
+      painter.paint(
+        canvas,
+        Offset(size / 2 - painter.width / 2, size / 2 - painter.height / 2),
+      );
+    }
+
+    final img = await pictureRecorder.endRecording().toImage(size, size);
+    final data = await img.toByteData(format: ImageByteFormat.png);
+
+    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 }

@@ -88,65 +88,67 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
             SizedBox(
               height: 10,
             ),
-            
-            widget.countData!.isNotEmpty?
-         Expanded(
-                    child: ListView.builder(
-                        itemCount: widget.countData!.length,
-                        shrinkWrap: true,
-                        padding: EdgeInsets.symmetric(horizontal: 4),
-                        physics: NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          Count countResponse = widget.countData![index];
-                           
-                
-                return FaultWidget(
-                            data: countResponse,
-                            showAssetCount: false,
-                            screenType: widget.screenType,
-                            onSelected: () {
-                              if (countResponse.faultCount! > 0) {
-                                widget.onFilterSelected!(
-                                    FilterData(
-                                        isSelected: true,
-                                        count:
-                                            countResponse.assetCount.toString(),
-                                        title: countResponse.countOf,
-                                        type: FilterType.SEVERITY),
-                                    Utils.onFilterIdleDate(
-                                        DateRangeType.lastSevenDays));
-                              }
-                            },
-                            buttonColor: buttonColor[index],
-                            level: Utils.getFaultLabel(countResponse.countOf!),
-                          );
-                        }),
-                  ):Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: EmptyView(title: "No fault codes to display"),
-            ) ,
-               (widget.countData!.isNotEmpty)
+            widget.loading!
+                ? InsiteProgressBar()
+                : widget.countData!.isNotEmpty
+                    ? Expanded(
+                        child: ListView.builder(
+                            itemCount: widget.countData!.length,
+                            shrinkWrap: true,
+                            padding: EdgeInsets.symmetric(horizontal: 4),
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              Count countResponse = widget.countData![index];
+
+                              return FaultWidget(
+                                data: countResponse,
+                                showAssetCount: false,
+                                screenType: widget.screenType,
+                                onSelected: () {
+                                  if (countResponse.faultCount! > 0) {
+                                    widget.onFilterSelected!(
+                                        FilterData(
+                                            isSelected: true,
+                                            count: countResponse.assetCount
+                                                .toString(),
+                                            title: countResponse.countOf,
+                                            type: FilterType.SEVERITY),
+                                        Utils.onFilterIdleDate(
+                                            DateRangeType.lastSevenDays));
+                                  }
+                                },
+                                buttonColor: buttonColor[index],
+                                level:
+                                    Utils.getFaultLabel(countResponse.countOf!),
+                              );
+                            }),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: EmptyView(title: "No fault codes to display"),
+                      ),
+            (widget.countData!.isNotEmpty)
                 ? Column(
-                  children: [
-                   Divider(
-              thickness: 1.0,
-              color: Theme.of(context).dividerColor,
-            ),
-            Container(
-              width: double.maxFinite,
-              height: MediaQuery.of(context).size.height * 0.05,
-              child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: InsiteTextAlign(
-                      text: "VIEWING DATA FOR 7 DAYS",
-                      textAlign: TextAlign.center,
-                      fontWeight: FontWeight.w900,
-                      size: 10.0)),
-            ),
-                  ],
-                ):SizedBox(),
-           
+                    children: [
+                      Divider(
+                        thickness: 1.0,
+                        color: Theme.of(context).dividerColor,
+                      ),
+                      Container(
+                        width: double.maxFinite,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: InsiteTextAlign(
+                                text: "VIEWING DATA FOR 7 DAYS",
+                                textAlign: TextAlign.center,
+                                fontWeight: FontWeight.w900,
+                                size: 10.0)),
+                      ),
+                    ],
+                  )
+                : SizedBox(),
           ],
         ),
       ),

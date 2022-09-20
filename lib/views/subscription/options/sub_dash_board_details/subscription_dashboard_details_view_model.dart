@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
@@ -111,19 +112,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
                 limit: limit, start: start, model: filter));
       }
     }
-    //else {
-    //   result = await _subscriptionService!.getSubscriptionDeviceListData(
-    //       filter: filter,
-    //       start: start,
-    //       limit: limit,
-    //       filterType: filterType,
-    //       query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
-    //           limit: limit,
-    //           start: start,
-    //           status: filter,
-    //           calendar: filter,
-    //           model: filter));
-    // }
+   
 
     if (enableGraphQl) {
       Logger().wtf(filter);

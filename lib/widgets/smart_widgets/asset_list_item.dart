@@ -12,11 +12,9 @@ class AssetOperationListItem extends StatelessWidget {
   final Asset? asset;
   final List<DateTime>? days;
   final VoidCallback? onCallback;
-  const AssetOperationListItem({
-    this.asset,
-    this.onCallback,
-    this.days,
-  });
+  final VoidCallback? sliderCallBack;
+  const AssetOperationListItem(
+      {this.asset, this.onCallback, this.days, this.sliderCallBack});
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +108,9 @@ class AssetOperationListItem extends StatelessWidget {
                   tilePadding: EdgeInsets.all(0),
                   children: [
                     DateSlider(
+                      sliderCallBack: () {
+                        sliderCallBack!();
+                      },
                       list: getSliderData(),
                     )
                   ],

@@ -1,5 +1,6 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/asset.dart';
+import 'package:insite/core/models/asset_dashboard_fault_data.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/asset_device.dart';
 import 'package:insite/core/models/customer.dart';
@@ -279,5 +280,25 @@ class AssetService extends BaseService {
     }
 
     // }
+  }
+
+  Future<AssetDashboardFaultData?> getAssetDashboardFaultCountData(
+    String query
+  ) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query:query,
+            customerId: accountSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID);
+                return AssetDashboardFaultData.fromJson(data.data["faultSummaryData"]);
+                
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 }

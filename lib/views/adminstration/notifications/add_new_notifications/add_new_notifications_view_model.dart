@@ -32,7 +32,7 @@ import 'package:stacked_services/stacked_services.dart';
 import '../../add_group/asset_selection_widget/asset_selection_widget_view.dart';
 import '../../add_group/model/add_group_model.dart';
 import './model/zone.dart';
-
+import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'model/fault_code_type_search.dart';
 
 class AddNewNotificationsViewModel extends InsiteViewModel {
@@ -1405,11 +1405,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           element!.contains("Odometer") ||
           element.contains("Switches") ||
           element.contains("Fluid Analysis") ||
-          //  element.contains("Maintenance") ||
+          //element.contains("Maintenance") ||
+          element.contains("Fuel") ||
+          element.contains("Fuel Loss") ||
           element.contains("Inspection") ||
           element.contains("Asset Security") ||
           element.contains("Fluid Analysis") ||
-          element.contains("Geofence") ||
+          //element.contains("Geofence") ||
           element.contains("Zone Inclusion/Exclusion") ||
           element.contains("Fluid Analysis") ||
           element.contains("Power Mode") ||
@@ -1498,27 +1500,45 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
-  cancel() {
-    _showZone = false;
-    nameController.clear();
-    notificationController.clear();
-    emailController.clear();
-    descriptionController.clear();
-    occurenceController.clear();
-    inclusionZoneName.clear();
-    exclusionZoneName.clear();
-    nameController.clear();
-    notificationController.clear();
-    emailController.clear();
-    descriptionController.clear();
-    occurenceController.clear();
-    assetStatusOccurenceController.clear();
-    selectedUser.clear();
-    selectedAsset?.clear();
-    scheduleDay.clear();
-    _dropDownInitialValue = "select";
-    _dropDownSubInitialValue = "Options";
-    notifyListeners();
+  cancel(BuildContext context) async {
+    bool? value = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            child: InsiteDialog(
+              title: "Confirm Cancellation",
+              message:
+                  "All the unsaved changes will be lost. Are you sure you want to cancel the operation?",
+              onPositiveActionClicked: () {
+                Navigator.pop(context, true);
+                _showZone = false;
+                nameController.clear();
+                notificationController.clear();
+                emailController.clear();
+                descriptionController.clear();
+                occurenceController.clear();
+                inclusionZoneName.clear();
+                exclusionZoneName.clear();
+                nameController.clear();
+                notificationController.clear();
+                emailController.clear();
+                descriptionController.clear();
+                occurenceController.clear();
+                assetStatusOccurenceController.clear();
+                selectedUser.clear();
+                selectedAsset?.clear();
+                scheduleDay.clear();
+                _dropDownInitialValue = "select";
+                _dropDownSubInitialValue = "Options";
+                notifyListeners();
+              },
+              onNegativeActionClicked: () {
+                Navigator.pop(context, false);
+              },
+            ));
+      },
+    );
   }
 
   getFaultCodeOperandsAndNotificationId() {
@@ -1970,26 +1990,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       Logger().w(notificationPayLoad.toJson());
 
       try {
-        NotificationAdded? response =
-            await _notificationService!.addNewNotification(
-                notificationPayLoad,
-                graphqlSchemaService!.createNotification(
-                  // geofenceId: geofenceId,
-                  // siteOperand: siteOperand,
-                  // alertCategoryID: 1,
-                  // alertGroupId: dropDownInitialValue == "Geofence" ? 2 : 1,
-                  // alertTitle: notificationController.text,
-                  // assetId: assetUidData,
-                  // currentDate: DateFormat("MM/dd/yyyy").format(DateTime.now()),
-                  // notificationDeliveryChannel: "email",
-                  // notificationSubscribers: NotificationSubscribers(
-                  //     emailIds: emailIds, phoneNumbers: []),
-                  // notificationTypeGroupID: notificationTypeGroupID,
-                  // notificationTypeId: notificationTypeId,
-                  // operand: operandData,
-                  // numberOfOccurences: 1,
-                  // schedule: scheduleDay,
-                ));
+        NotificationAdded? response = await _notificationService!
+            .addNewNotification(notificationPayLoad,
+                graphqlSchemaService!.createNotification());
 
         if (response != null) {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");

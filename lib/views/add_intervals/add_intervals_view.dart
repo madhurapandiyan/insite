@@ -3,6 +3,7 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/maintenance_checkList.dart' as check;
 import 'package:insite/theme/colors.dart';
+import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -349,6 +350,7 @@ class ManageIntervals extends StatelessWidget {
 
 class AddIntervalsChecklist extends StatefulWidget {
   final AddIntervalsViewModel? viewModel;
+
   AddIntervalsChecklist({this.viewModel});
 
   @override
@@ -362,59 +364,81 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
       Function(int?)? onPartListDeleted,
       Function? onPartListAdded,
       Function? onPartListDelete,
+      Function(String, int)? onUnitSelected,
       CheckAndPartList? checkListData}) {
     return Card(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
-                //width: MediaQuery.of(ctx!).size.width * 0.5,
-                child: CustomTextBox(
-              controller: checkListData!.checkListName,
-              title: "Enter Checklist Name",
-            )),
-          ),
-          InsiteButton(
-            title: "Delete CheckList",
-            width: 200,
-            onTap: () {
-              onPartListDelete!();
-            },
-            height: 40,
-            textColor: Theme.of(ctx!).backgroundColor,
-          ),
-          Divider(),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        width: 500,
+        // decoration: BoxDecoration(
+        //     border: Border.all(color: Colors.grey),
+        //     borderRadius: BorderRadius.all(Radius.circular(5))),
+        padding: EdgeInsets.all(10),
+        // margin: EdgeInsets.all(2),
+        child: Column(
+          children: [
+            Row(
               children: [
-                checkListData.partListData!.isEmpty
-                    ? SizedBox()
-                    : Column(
-                        children: List.generate(
-                            checkListData.partListData!.length, (j) {
-                          return partListWidget(
-                              partListData: checkListData.partListData![j],
-                              ctx: ctx,
-                              onPartListDeleted: () {
-                                onPartListDeleted!(j);
-                              });
-                        }),
-                      ),
+                Expanded(
+                  child: Container(
+                      margin: EdgeInsets.only(right: 10),
+                      width: MediaQuery.of(ctx!).size.width * 0.5,
+                      child: CustomTextBox(
+                        controller: checkListData!.checkListName,
+                        title: "Enter Checklist Name",
+                      )),
+                ),
                 InsiteButton(
-                  title: "Add Parts",
+                  icon: Icon(
+                    Icons.delete,
+                    color: Theme.of(ctx).backgroundColor,
+                  ),
+                  title: "",
+                
                   onTap: () {
-                    onPartListAdded!();
+                    onPartListDelete!();
                   },
-                  height: 40,
+                 
                   textColor: Theme.of(ctx).backgroundColor,
                 ),
               ],
             ),
-          )
-        ],
+            Divider(
+              color: Colors.black,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  checkListData.partListData!.isEmpty
+                      ? SizedBox()
+                      : Column(
+                          children: List.generate(
+                              checkListData.partListData!.length, (j) {
+                            return partListWidget(
+                                partListData: checkListData.partListData![j],
+                                ctx: ctx,
+                                onUnitSelected: (value) {
+                                  onUnitSelected!(value, j);
+                                },
+                                onPartListDeleted: () {
+                                  onPartListDeleted!(j);
+                                });
+                          }),
+                        ),
+                  InsiteButton(
+                    title: "Add Parts",
+                    onTap: () {
+                      onPartListAdded!();
+                    },
+                    height: 40,
+                    textColor: Theme.of(ctx).backgroundColor,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -423,7 +447,8 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
       {BuildContext? ctx,
       Function? onPartListDeleted,
       Function? onPartListAdded,
-      PartListData? partListData}) {
+      Function(String)? onUnitSelected,
+      PartListDataClass? partListData}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -435,11 +460,29 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
         SizedBox(
           height: 10,
         ),
-        Container(
-            width: MediaQuery.of(ctx!).size.width * 0.5,
-            child: CustomTextBox(
-              controller: partListData!.partName,
-            )),
+        Row(
+          children: [
+            Container(
+                margin: EdgeInsets.only(right: 10),
+                width: MediaQuery.of(ctx!).size.width * 0.5,
+                child: CustomTextBox(
+                  controller: partListData!.partName,
+                )),
+            InsiteButton(
+              icon: Icon(
+                Icons.delete,
+                color: Theme.of(context).backgroundColor,
+              ),
+              // height: 50,
+              onTap: () {
+                onPartListDeleted!();
+              },
+             
+              textColor: Theme.of(ctx).backgroundColor,
+              title: "",
+            ),
+          ],
+        ),
         SizedBox(
           height: 15,
         ),
@@ -476,15 +519,35 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
         SizedBox(
           height: 15,
         ),
-        InsiteButton(
-          height: 40,
-          onTap: () {
-            onPartListDeleted!();
-          },
-          width: MediaQuery.of(ctx).size.width * 0.35,
-          textColor: Theme.of(ctx).backgroundColor,
-          title: "Delete",
+        InsiteText(
+          text: "Units",
+          size: 14,
+          fontWeight: FontWeight.bold,
         ),
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+            width: MediaQuery.of(ctx).size.width * 0.5,
+            child: CustomDropDownWidget(
+              items: partListData.items,
+              value: partListData.value,
+              onChanged: (value) {
+                onUnitSelected!(value!);
+              },
+            )),
+        SizedBox(
+          height: 15,
+        ),
+        // InsiteButton(
+        //   height: 40,
+        //   onTap: () {
+        //     onPartListDeleted!();
+        //   },
+        //   width: MediaQuery.of(ctx).size.width * 0.35,
+        //   textColor: Theme.of(ctx).backgroundColor,
+        //   title: "Delete",
+        // ),
         SizedBox(
           height: 15,
         ),
@@ -496,7 +559,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+        margin: EdgeInsets.only(top: 5, left: 10, right: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -510,7 +573,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                 padding: EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: tango,
+                  color: Theme.of(context).buttonColor,
                 ),
                 child: Center(
                   child: Row(
@@ -645,46 +708,36 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
             // )
             widget.viewModel!.checkListData.isEmpty
                 ? SizedBox()
-                : Column(
-                    children: List.generate(
-                        widget.viewModel!.checkListData.length, (i) {
-                      var data = widget.viewModel!.checkListData[i];
-                      return Column(
-                        children: [
-                          // ListTile(
-                          //   title: InsiteText(
-                          //       text: data.checkListName!.text.isEmpty
-                          //           ? "New CheckList"
-                          //           : data.checkListName!.text,
-                          //       fontWeight: FontWeight.bold),
-                          //   onTap: () {
-                          //     widget.viewModel!.onTileExpanded(i);
-                          //   },
-                          //   trailing: IconButton(
-                          //       onPressed: () {
-                          //         widget.viewModel!.onCheckListDelete(i);
-                          //       },
-                          //       icon: Icon(Icons.delete)),
-                          // ),
-                          // data.expansionState!
-                          //     ?
-                          checkListAndPartList(
-                              onPartListDelete: () {
-                                widget.viewModel!.onCheckListDelete(i);
-                              },
-                              onPartListAdded: () {
-                                widget.viewModel!.onPartListAdded(i);
-                              },
-                              onPartListDeleted: (partListIndex) {
-                                widget.viewModel!
-                                    .onPartListDeleted(i, partListIndex!);
-                              },
-                              ctx: context,
-                              checkListData: data)
-                          // : SizedBox(),
-                        ],
-                      );
-                    }),
+                : Container(
+                    width: 600,
+                    child: Column(
+                      children: List.generate(
+                          widget.viewModel!.checkListData.length, (i) {
+                        var data = widget.viewModel!.checkListData[i];
+                        return Column(
+                          children: [
+                            checkListAndPartList(
+                                onPartListDelete: () {
+                                  widget.viewModel!.onCheckListDelete(i);
+                                },
+                                onPartListAdded: () {
+                                  widget.viewModel!.onPartListAdded(i);
+                                },
+                                onPartListDeleted: (partListIndex) {
+                                  widget.viewModel!
+                                      .onPartListDeleted(i, partListIndex!);
+                                },
+                                onUnitSelected: (value, partListIndex) {
+                                  widget.viewModel!.onPartUnitChanged(
+                                      i, partListIndex, value);
+                                },
+                                ctx: context,
+                                checkListData: data)
+                            // : SizedBox(),
+                          ],
+                        );
+                      }),
+                    ),
                   ),
             SizedBox(
               height: 10,

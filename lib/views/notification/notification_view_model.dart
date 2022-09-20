@@ -76,8 +76,11 @@ class NotificationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
   List<String>? filterValue = [];
+  String? productFamilyFilterData;
 
-  NotificationViewModel({String? value}) {
+  NotificationViewModel({String? value, String? filterData}) {
+    //Logger().e(filterData);
+    productFamilyFilterData = filterData;
     this.log = getLogger(this.runtimeType.toString());
     if (value != null && value.isNotEmpty) {
       filterValue!.add(value);
@@ -95,7 +98,7 @@ class NotificationViewModel extends InsiteViewModel {
       }
     });
     Future.delayed(Duration(seconds: 1), () async {
-      await getNotificationData();
+      await getNotificationData(false);
     });
   }
   onItemDeselect() {
@@ -122,7 +125,7 @@ class NotificationViewModel extends InsiteViewModel {
       Logger().wtf("start date " + startDate!);
       Logger().wtf("end date " + endDate!);
 
-      await getNotificationData();
+      //await getNotificationData();
 
       notification.NotificationsData? response =
           await _mainNotificationService!.getNotificationsData(
@@ -135,6 +138,9 @@ class NotificationViewModel extends InsiteViewModel {
                 startDate:
                     Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
                 pageNo: pageNumber,
+                notificationType: filterValue,
+                notificationUserStatus: 0,
+                notificationStatus: 0,
               ));
       if (response != null) {
         _assets.clear();
@@ -229,15 +235,22 @@ class NotificationViewModel extends InsiteViewModel {
     checkEditAndDeleteVisibility();
   }
 
-  getNotificationData() async {
-    notification.NotificationsData? response = await _mainNotificationService!
-        .getNotificationsData(
+  getNotificationData(bool isFirst) async {
+    notification.NotificationsData? response =
+        await _mainNotificationService!.getNotificationsData(
             "0",
             "0",
             startDate,
             endDate,
             _graphqlSchemaService!.seeAllNotification(
-                pageNo: pageNumber, notificationType: filterValue));
+              pageNo: pageNumber,
+              notificationType: filterValue,
+              notificationUserStatus: 0,
+              notificationStatus: 0,
+              productFamily: productFamilyFilterData,
+              startDate: isFirst?startDate:null,
+              endDate: isFirst?endDate:null
+            ));
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;
@@ -314,12 +327,16 @@ class NotificationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  _loadMore() {
+  _loadMore() async {
     if (_shouldLoadmore && !_loadingMore) {
       pageNumber++;
       _loadingMore = true;
+
       notifyListeners();
-      getNotificationData();
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
+
+      await getNotificationData(true);
     }
   }
 

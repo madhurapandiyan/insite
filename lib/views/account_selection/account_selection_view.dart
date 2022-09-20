@@ -103,34 +103,35 @@ class _AccountSelectionViewState extends State<AccountSelectionView> {
                                   ),
                                 ],
                               ),
-                              viewModel.accountSelected != null
-                                  ? Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 8),
-                                      child: AccountSelectionDropDownWidget(
-                                        onChange: (value) {
-                                          viewModel.onSearchingCustomerAccount(
-                                              value);
-                                        },
-                                        selectionType: AccountType.ACCOUNT,
-                                        onSelected: (AccountData? value) {
-                                          viewModel
-                                              .setAccountSelected(value!.value);
-                                        },
-                                        onReset: () {
-                                          viewModel.resetSelection();
-                                        },
-                                        selected: viewModel.accountSelected !=
-                                                null
-                                            ? AccountData(
-                                                selectionType:
-                                                    AccountType.ACCOUNT,
-                                                value:
-                                                    viewModel.accountSelected)
-                                            : null,
-                                        list: viewModel.customers,
-                                      ))
-                                  : Container(
+                              // viewModel.accountSelected != null
+                              //     ? Container(
+                              //         margin: const EdgeInsets.symmetric(
+                              //             horizontal: 16, vertical: 8),
+                              //         child: AccountSelectionDropDownWidget(
+                              //           onChange: (value) {
+                              //             viewModel.onSearchingCustomerAccount(
+                              //                 value);
+                              //           },
+                              //           selectionType: AccountType.ACCOUNT,
+                              //           onSelected: (AccountData? value) {
+                              //             viewModel
+                              //                 .setAccountSelected(value!.value);
+                              //           },
+                              //           onReset: () {
+                              //             viewModel.resetSelection();
+                              //           },
+                              //           selected: viewModel.accountSelected !=
+                              //                   null
+                              //               ? AccountData(
+                              //                   selectionType:
+                              //                       AccountType.ACCOUNT,
+                              //                   value:
+                              //                       viewModel.accountSelected)
+                              //               : null,
+                              //           list: viewModel.customers,
+                              //         ))
+                              //     : 
+                                  Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 16, vertical: 8),
                                       child: AccountSearchView(

@@ -174,8 +174,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: FaultHealthDashboard(
                       screenType: ScreenType.DASHBOARD,
-                      countData: viewModel.faultCountData != null
-                          ? viewModel.faultCountData!.countData
+                      countData: viewModel.faultCountDataList != null
+                          ? viewModel.faultCountDataList
                           : [],
                       onFilterSelected: (value, dateFilter) async {
                         await viewModel.onDateAndFilterSelected(

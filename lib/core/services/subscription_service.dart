@@ -50,13 +50,13 @@ class SubScriptionService extends BaseService {
   Future<DashboardData?> getGraphQlApiFromSubscription(String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(
+        var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: accountSelected?.CustomerUID,
-          userId: (await _localService?.getLoggedInUser())?.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+          // customerId: accountSelected?.CustomerUID,
+          // userId: (await _localService?.getLoggedInUser())?.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
         );
 
         DashboardData? dashboardResult = DashboardData.fromJson(
@@ -79,7 +79,7 @@ class SubScriptionService extends BaseService {
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
-      if (!enableGraphQl) {
+      if (enableGraphQl) {
         var data = await Network().getGraphqlPlantData(
           query: query,
           // customerId: "THC",
@@ -107,6 +107,8 @@ class SubScriptionService extends BaseService {
         Logger().d('subscription result: ${dashboardResult.toJson()}');
         return dashboardResult;
       }
+
+    
     } catch (e) {
       print(e.toString());
       return null;

@@ -10,8 +10,10 @@ class InsiteTableRowItem extends StatelessWidget {
   final String? title;
   final dynamic content;
   final TextOverflow? overFlow;
+  final Color? unVerifiedUserColor;
 
-  const InsiteTableRowItem({this.title, this.content, this.overFlow});
+  const InsiteTableRowItem(
+      {this.title, this.content, this.overFlow, this.unVerifiedUserColor});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,9 @@ class InsiteTableRowItem extends StatelessWidget {
           ),
           InsiteText(
             text: content.toString(),
+            color: unVerifiedUserColor != null
+                ? unVerifiedUserColor
+                : Theme.of(context).textTheme.bodyText1!.color,
           )
         ],
       ),

@@ -368,11 +368,8 @@ class _TabPageState extends State<AssetDetailView> {
                                                   children: [
                                                     MaintenanceTabView(
                                                       summaryData: SummaryData(
-                                                          assetID: widget
-                                                              .fleet!.assetId,
-                                                          assetSerialNumber: widget
-                                                              .fleet!
-                                                              .assetSerialNumber),
+                                                          assetID: viewModel.assetDetail!.assetUid,
+                                                          assetSerialNumber:viewModel.assetDetail!.assetSerialNumber),
                                                       serviceCalBack: (value,
                                                           assetDataValue,
                                                           services,

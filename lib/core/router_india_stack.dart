@@ -121,14 +121,13 @@ class Router {
         Logger().w(settings.arguments);
         var fleetArgs =
             (settings.arguments as Map)["arguments"] as view9.DetailArguments;
-
-        Logger().w(fleetArgs.type);
-
+        Logger().w(fleetArgs.fleet!.assetId);
         return MaterialPageRoute(
             builder: (_) => view9.AssetDetailView(
                   fleet: fleetArgs.fleet,
                   tabIndex: fleetArgs.index,
                   type: fleetArgs.type,
+                  
                 ));
       case locationViewRoute:
         return MaterialPageRoute(builder: (_) => view10.LocationView());

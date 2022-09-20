@@ -26,11 +26,9 @@ class PlantDashboardViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  int? totalcount;
-
   List<double?> _results = [];
   List<double?> get results => _results;
-
+int? totalcount;
   List<String?> _modelNames = [];
   List<String?> get modelNames => _modelNames;
   List<double?> _modelCount = [];

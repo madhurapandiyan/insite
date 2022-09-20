@@ -12,6 +12,7 @@ import 'package:insite/widgets/smart_widgets/asset_list_item.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'asset_operation_model.dart';
 
@@ -175,6 +176,10 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                                           asset: asset,
                                           days: viewModel.days,
                                           onCallback: () {
+                                            viewModel
+                                                .onDetailPageSelected(asset);
+                                          },
+                                          sliderCallBack: (){
                                             viewModel
                                                 .onDetailPageSelected(asset);
                                           },

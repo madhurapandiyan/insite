@@ -140,7 +140,7 @@ abstract class InsiteViewModel extends BaseViewModel {
       appliedFilters = await _filterService!.getSelectedFilters();
       Logger().d("getSelectedFilterData ${appliedFilters!.length.toString()}");
       notifyListeners();
-      // return appliedFilters;
+       //return appliedFilters;
     } catch (e) {
       Logger().e(e.toString());
     }

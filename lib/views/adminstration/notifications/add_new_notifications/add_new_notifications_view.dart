@@ -64,7 +64,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                           Icons.crop_square,
                           color: listData[i].state!
                               ? Theme.of(context).buttonColor
-                              : Theme.of(context).cardColor,
+                              : Colors.black,
                         ),
                         label: InsiteText(
                           text: listData[i].text,
@@ -304,9 +304,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                               .customizable,
                                                           viewModel
                                                               .onCustomiozablestateChange),
-                                                      viewModel.customizable
-                                                              .first.state!
-                                                          ? Padding(
+                                                      Padding(
                                                               padding:
                                                                   const EdgeInsets
                                                                           .only(
@@ -316,8 +314,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                       .customizableState,
                                                                   viewModel
                                                                       .checkingCustomizeableState),
-                                                            )
-                                                          : SizedBox(),
+                                                            ),
+                                                       
                                                       SizedBox(
                                                         height: 10,
                                                       ),
@@ -610,7 +608,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                       children: [
                                                                         MultiSelectionDropDownWidget(
                                                                           initialValue:
-                                                                              "${viewModel.selectedList!.length} Geofence Selected",
+                                                                              "${viewModel.selectedList?.length} Geofence Selected",
                                                                           items:
                                                                               viewModel.geoenceData,
                                                                           onConform:
@@ -693,56 +691,82 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                           height:
                                                                               20,
                                                                         ),
-                                                                        viewModel.dropDownSubInitialValue ==
-                                                                                "Overdue"
-                                                                            ? Column(
-                                                                                children: List.generate(viewModel.overDueState.length, (i) {
-                                                                                return Column(
-                                                                                  children: [
-                                                                                    TextBoxWithSwitch(
-                                                                                      onTap: () {
-                                                                                        viewModel.checkingOverduestate(i);
-                                                                                      },
-                                                                                      controller: viewModel.overDueState[i].controller,
-                                                                                      isEnable: viewModel.overDueState[i].state,
-                                                                                      title: viewModel.overDueState[i].text,
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      height: 20,
-                                                                                    ),
-                                                                                  ],
-                                                                                );
-                                                                              }))
-                                                                            : viewModel.dropDownSubInitialValue == "Upcoming"
-                                                                                ? Column(
-                                                                                    children: List.generate(viewModel.upcomingState.length, (i) {
-                                                                                    return Column(
-                                                                                      children: [
-                                                                                        TextBoxWithSwitch(
-                                                                                          onTap: () {
-                                                                                            viewModel.checkingUpcomingState(i);
-                                                                                          },
-                                                                                          controller: viewModel.upcomingState[i].controller,
-                                                                                          isEnable: viewModel.upcomingState[i].state,
-                                                                                          title: viewModel.upcomingState[i].text,
-                                                                                          suffixTitle: viewModel.upcomingState[i].suffixTitle,
-                                                                                        ),
-                                                                                        SizedBox(
-                                                                                          height: 20,
-                                                                                        ),
-                                                                                      ],
-                                                                                    );
-                                                                                  }))
-                                                                                : viewModel.dropDownInitialValue == "Asset Status"
+                                                                        // viewModel.dropDownSubInitialValue ==
+                                                                        //         "Overdue"
+                                                                        //     ? Column(
+                                                                        //         children: List.generate(viewModel.overDueState.length, (i) {
+                                                                        //         return Column(
+                                                                        //           children: [
+                                                                        //             TextBoxWithSwitch(
+                                                                        //               onTap: () {
+                                                                        //                 viewModel.checkingOverduestate(i);
+                                                                        //               },
+                                                                        //               controller: viewModel.overDueState[i].controller,
+                                                                        //               isEnable: viewModel.overDueState[i].state,
+                                                                        //               title: viewModel.overDueState[i].text,
+                                                                        //             ),
+                                                                        //             SizedBox(
+                                                                        //               height: 20,
+                                                                        //             ),
+                                                                        //           ],
+                                                                        //         );
+                                                                        //       }))
+                                                                        //     : viewModel.dropDownSubInitialValue == "Upcoming"
+                                                                        //         ? Column(
+                                                                        //             children: List.generate(viewModel.upcomingState.length, (i) {
+                                                                        //             return Column(
+                                                                        //               children: [
+                                                                        //                 TextBoxWithSwitch(
+                                                                        //                   onTap: () {
+                                                                        //                     viewModel.checkingUpcomingState(i);
+                                                                        //                   },
+                                                                        //                   controller: viewModel.upcomingState[i].controller,
+                                                                        //                   isEnable: viewModel.upcomingState[i].state,
+                                                                        //                   title: viewModel.upcomingState[i].text,
+                                                                        //                   suffixTitle: viewModel.upcomingState[i].suffixTitle,
+                                                                        //                 ),
+                                                                        //                 SizedBox(
+                                                                        //                   height: 20,
+                                                                        //                 ),
+                                                                        //               ],
+                                                                        //             );
+                                                                        //           }))
+                                                                        //         :
+                                                                        viewModel.dropDownInitialValue ==
+                                                                                "Asset Status"
+                                                                            ? TextBoxWithSuffixAndPrefix(
+                                                                                prefixTitle: "After",
+                                                                                suffixTitle: "Occurences",
+                                                                                controller: viewModel.assetStatusOccurenceController,
+                                                                                onChange: (value) {
+                                                                                  viewModel.onChangingOccurence(value);
+                                                                                },
+                                                                              )
+                                                                            : viewModel.dropDownInitialValue == "Engine Hours"
+                                                                                ? TextBoxWithSuffixAndPrefix(
+                                                                                    suffixTitle: "Hours",
+                                                                                    controller: viewModel.assetStatusOccurenceController,
+                                                                                    onChange: (value) {
+                                                                                      viewModel.onChangingOccurence(value);
+                                                                                    },
+                                                                                  )
+                                                                                : viewModel.dropDownInitialValue == "Fuel"
                                                                                     ? TextBoxWithSuffixAndPrefix(
-                                                                                        prefixTitle: "After",
-                                                                                        suffixTitle: "Occurences",
+                                                                                        suffixTitle: "%",
                                                                                         controller: viewModel.assetStatusOccurenceController,
                                                                                         onChange: (value) {
                                                                                           viewModel.onChangingOccurence(value);
                                                                                         },
                                                                                       )
-                                                                                    : viewModel.dropDownInitialValue == "Engine Hours"
+                                                                                    // : viewModel.dropDownInitialValue == "Odometer"
+                                                                                    //     ? TextBoxWithSuffixAndPrefix(
+                                                                                    //         suffixTitle: "Miles",
+                                                                                    //         controller: viewModel.odometerOccurenceController,
+                                                                                    //         onChange: (value) {
+                                                                                    //           //viewModel.onChagingeOdometerOccurenceBox(value);
+                                                                                    //         },
+                                                                                    //       )
+                                                                                    : viewModel.dropDownInitialValue == "Excessive Daily Idle"
                                                                                         ? TextBoxWithSuffixAndPrefix(
                                                                                             suffixTitle: "Hours",
                                                                                             controller: viewModel.assetStatusOccurenceController,
@@ -750,31 +774,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                               viewModel.onChangingOccurence(value);
                                                                                             },
                                                                                           )
-                                                                                        : viewModel.dropDownInitialValue == "Fuel"
-                                                                                            ? TextBoxWithSuffixAndPrefix(
-                                                                                                suffixTitle: "%",
-                                                                                                controller: viewModel.assetStatusOccurenceController,
-                                                                                                onChange: (value) {
-                                                                                                  viewModel.onChangingOccurence(value);
-                                                                                                },
-                                                                                              )
-                                                                                            // : viewModel.dropDownInitialValue == "Odometer"
-                                                                                            //     ? TextBoxWithSuffixAndPrefix(
-                                                                                            //         suffixTitle: "Miles",
-                                                                                            //         controller: viewModel.odometerOccurenceController,
-                                                                                            //         onChange: (value) {
-                                                                                            //           //viewModel.onChagingeOdometerOccurenceBox(value);
-                                                                                            //         },
-                                                                                            //       )
-                                                                                            : viewModel.dropDownInitialValue == "Excessive Daily Idle"
-                                                                                                ? TextBoxWithSuffixAndPrefix(
-                                                                                                    suffixTitle: "Hours",
-                                                                                                    controller: viewModel.assetStatusOccurenceController,
-                                                                                                    onChange: (value) {
-                                                                                                      viewModel.onChangingOccurence(value);
-                                                                                                    },
-                                                                                                  )
-                                                                                                : SizedBox()
+                                                                                        : SizedBox()
                                                                       ],
                                                                     )),
                                 ],
@@ -1210,7 +1210,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     fontSize: 12,
                                     bgColor: Theme.of(context).backgroundColor,
                                     onTap: () {
-                                      //viewModel.cancel();
+                                      viewModel.cancel(context);
                                     },
                                   ),
                                   SizedBox(

@@ -196,12 +196,14 @@ class FilterItemState extends State<FilterItem> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InsiteTextOverFlow(
-                                text: "(" + data.count! + ") ",
-                                overflow: TextOverflow.ellipsis,
-                                color: data.isSelected! ? white : null,
-                                fontWeight: FontWeight.bold,
-                                size: 16),
+                            widget.filterType == FilterType.SEVERITY
+                                ? SizedBox()
+                                : InsiteTextOverFlow(
+                                    text: "(" + data.count! + ") ",
+                                    overflow: TextOverflow.ellipsis,
+                                    color: data.isSelected! ? white : null,
+                                    fontWeight: FontWeight.bold,
+                                    size: 16),
                             Expanded(
                               child: InsiteText(
                                   text: Utils.getFilterTitleForList(data),

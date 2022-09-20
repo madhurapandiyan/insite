@@ -392,13 +392,51 @@ class Utils {
 
   static String? maintenanceFromDateFormate(String date) {
     try {
-      DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
-      var data = parseDate.add(Duration(hours: 18, minutes: 30, seconds: 00));
+      DateTime parseDate = DateTime.parse(date);
+      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
       var formatedStringData = data.toString();
       return formatedStringData.replaceRange(19, formatedStringData.length, "");
     } catch (e) {
       Logger().e(e.toString());
       return null;
+    }
+  }
+
+  static String? maintenanceFromDateFormateEndDate(String date) {
+    try {
+      DateTime parseDate = DateTime.parse(date);
+      var data = parseDate.add(Duration(hours: 00, minutes: 00, seconds: 00));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  static String? maintenanceFromDateNextWeekEndDate(String date) {
+    try {
+      DateTime parseDate = DateTime.parse(date).add(Duration(days: 6));
+      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
+      var formatedStringData = data.toString();
+      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  static String getDateInFormatMMddyyyy(date) {
+    try {
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var inputDate = DateTime.parse(parseDate.toString())
+          .subtract(Duration(days: 1))
+          .add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("MM/dd/yyyy");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
     }
   }
 
@@ -1721,7 +1759,7 @@ class Utils {
 
       var inputDate = DateTime.parse(parseDate)
           .add(Duration(hours: 18, seconds: 00, minutes: 30));
-      //.subtract(Duration(days: 1))
+      //.subtract(Duration(days: 1));
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
@@ -1983,6 +2021,7 @@ class Utils {
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };
+    Logger().wtf(data.values);
     intervalList.add(data);
     return intervalList;
   }
@@ -2026,7 +2065,7 @@ class Utils {
     } else if (fuelLevelPercentLt == "75") {
       return "51%-75%";
     } else if (fuelLevelPercentLt == "100") {
-      return "76%-25%";
+      return "76%-100%";
     } else {
       return "";
     }

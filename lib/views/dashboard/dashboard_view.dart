@@ -312,6 +312,7 @@ class _DashboardViewState extends State<DashboardView> {
                         notificationType: viewModel.notificationCountDatas,
                         onFilterSelected: (value) {
                           viewModel.onNotificationFilterClicked(value);
+                          
                         },
                       ),
                     ),

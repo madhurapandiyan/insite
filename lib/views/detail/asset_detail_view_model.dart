@@ -46,7 +46,7 @@ class AssetDetailViewModel extends InsiteViewModel {
     _assetService!.setUp();
     try {
       Logger()
-          .i("asset choosen assetSerialNumber " + fleet!.assetSerialNumber!);
+          .i("asset choosen assetSerialNumber " + fleet!.assetId!);
       Logger().i(fleet!.assetIdentifier);
       //Logger().i("asset choosen assetId " + fleet!.assetId!);
     } catch (e) {
