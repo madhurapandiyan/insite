@@ -50,6 +50,7 @@ Map<String, dynamic> _$TotalToJson(Total instance) => <String, dynamic>{
 
 Users _$UsersFromJson(Map<String, dynamic> json) => Users(
       userUid: json['userUid'] as String?,
+      invitationUID: json['invitationUID'] as String?,
       first_name: json['first_name'] as String?,
       last_name: json['last_name'] as String?,
       loginId: json['loginId'] as String?,
@@ -67,7 +68,7 @@ Users _$UsersFromJson(Map<String, dynamic> json) => Users(
       createdBy: json['createdBy'] as String?,
       emailVerified: json['emailVerified'] as String?,
       phone: json['phone'] as String?,
-    )..invitationUID = json['invitationUID'] as String?;
+    );
 
 Map<String, dynamic> _$UsersToJson(Users instance) => <String, dynamic>{
       'userUid': instance.userUid,
@@ -143,13 +144,9 @@ ManageUser _$ManageUserFromJson(Map<String, dynamic> json) => ManageUser(
       user: json['user'] == null
           ? null
           : Users.fromJson(json['user'] as Map<String, dynamic>),
-      users: (json['users'] as List<dynamic>?)
-          ?.map((e) => Users.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
 Map<String, dynamic> _$ManageUserToJson(ManageUser instance) =>
     <String, dynamic>{
       'user': instance.user,
-      'users': instance.users,
     };

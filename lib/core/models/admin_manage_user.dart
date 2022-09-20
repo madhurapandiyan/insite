@@ -63,6 +63,7 @@ class Users {
 
   Users(
       {this.userUid,
+      this.invitationUID,
       this.first_name,
       this.last_name,
       this.loginId,
@@ -75,6 +76,7 @@ class Users {
       this.lastLoginDate,
       this.createdBy,
       this.emailVerified,
+      this.verifiedUser,
       this.phone});
 
   factory Users.fromJson(Map<String, dynamic> json) => _$UsersFromJson(json);
@@ -142,9 +144,8 @@ class ApplicationAccessData {
 @JsonSerializable()
 class ManageUser {
   Users? user;
-  List<Users>? users;
 
-  ManageUser({this.user, this.users});
+  ManageUser({this.user});
 
   factory ManageUser.fromJson(Map<String, dynamic> json) =>
       _$ManageUserFromJson(json);

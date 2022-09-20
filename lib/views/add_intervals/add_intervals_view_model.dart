@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/edit_interval_response.dart';
 import 'package:insite/core/models/maintenance_checkList.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
@@ -306,11 +307,13 @@ class AddIntervalsViewModel extends InsiteViewModel {
                   .toList());
       Logger().w(maitenanceCheckListData!.toJson());
       if (isEditing) {
-        print(_graphqlSchemaService!
-            .updateMaintenanceIntervals(maintenanceInterval));
-        data = await _maintenanceService!.updateMaintenanceIntervals(
+        Logger().i(maintenanceInterval!.intervalName);
+       EditIntervalResponse? data = await _maintenanceService!.updateMaintenanceIntervals(
             _graphqlSchemaService!
                 .updateMaintenanceIntervals(maintenanceInterval));
+                if(data!=null){
+                  Logger().w(data.updateMaintenanceIntervals!.message);
+                }
       } else {
         data = await _maintenanceService!.addMaintenanceIntervals(
             _graphqlSchemaService!.addMaintenanceIntervals(),

@@ -734,12 +734,12 @@ abstract class RestClient {
   Future<AddUser> addUserData(
       @Path() String url,
       @Header("x-visionlink-customeruid") customerId,
-      @Body() AddUserData updateUserData);
+      @Body() UpdateUserData updateUserData);
 
   @POST("{url}")
   Future<AddUser> inviteUser(
       @Path() String url,
-      @Body() AddUserDataIndStack updateUserData,
+      @Body() UpdateUserData updateUserData,
       @Header("x-visionlink-customeruid") customerId,
       @Header("X-VisionLink-UserUid") userId,
       @Header("service") String serviceHeader);

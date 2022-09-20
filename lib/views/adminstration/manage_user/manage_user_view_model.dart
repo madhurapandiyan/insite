@@ -241,11 +241,11 @@ class ManageUserViewModel extends InsiteViewModel {
     } else if (value == "Resend-Invitation") {
       showLoadingDialog();
       var user = _assets.singleWhere((element) => element.isSelected);
-      // var data =
-      //     await _manageUserService!.resendInvitation(user.user!.invitationUID!);
-      // if (data == true) {
-      //   snackbarService!.showSnackbar(message: "Invitation Sent Successfully");
-      // }
+      var data =
+          await _manageUserService!.resendInvitation(user.user!.invitationUID!);
+      if (data == true) {
+        snackbarService!.showSnackbar(message: "Invitation Sent Successfully");
+      }
       hideLoadingDialog();
     } else {
       onDeleteClicked(ctx);

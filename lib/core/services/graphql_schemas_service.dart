@@ -761,9 +761,13 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
   }
 
   String userManagementUserList(
-      {String? searchKey, int? userType, int? jobType, int? pageNo}) {
+      {String? searchKey,
+      int? userType,
+      int? jobType,
+      String? email,
+      int? pageNo}) {
     return """{
-  userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, ) {
+  userManagementUserList(pageNumber: $pageNo, sort: "", searchKey: "$searchKey", userType: $userType, jobType: $jobType, EmailID: "${email == null ? "" : email}") {
     users {
       invitationUID
       first_name
@@ -924,41 +928,30 @@ userEmail(EmailID:"$emailId"){
     return fleetUtilization;
   }
 
-  String addUser(
-      {String? firstName,
-      String? lastName,
-      String? emailId,
-      String? phoneNo,
-      AddressData? addressData,
-      List<Role>? role,
-      String? customerUid,
-      int? jobType,
-      Details? details}) {
-    String intQuote = "\"";
-    List<Map<String, dynamic>> roleData = [];
-    role!.forEach((element) {
-      roleData.add({
-        "role_id": element.role_id,
-        "application_name": element.application_name
-      });
-    });
-    final String addUserData = """mutation {
-  userManagementCreateUser(requestBody: {fname: ${intQuote + firstName! + intQuote}, lname: ${intQuote + lastName! + intQuote}, email: ${intQuote + emailId! + intQuote}, 
-      JobType:$jobType,
-    address: ${addressData!.toJson()}, 
-      details:{
-        user_type: "Standard"
-      }, 
-      roles: $roleData, 
-      customerUid: "$customerUid", 
-      isAssetSecurityEnabled: true
-      }) {
-    count
-    invitation_id
+  String addUser() {
+    final String addUserData =
+        """mutation userManagementCreateUser(\$requestBody: createUserBody!, \$userUId: String){
+   userManagementCreateUser(requestBody: \$requestBody, userUId: \$userUId){
+    invitation_id,
+    count,
+    isInvitationSent,
+    isUpdated
   }
-}""";
+}
+""";
     print(addUserData);
     return addUserData;
+  }
+
+  editUser() {
+    var data = """
+mutation userManagementCreateUser(\$requestBody: createUserBody!, \$userUId: String)
+{userManagementCreateUser(requestBody: \$requestBody, userUId: \$userUId){
+  count
+  invitation_id
+  isUpdated
+  }}""";
+    return data;
   }
 
   String getAccountHierarchy({int? limit, int? start, String? searchKey}) {
@@ -3370,7 +3363,7 @@ maintenanceIntervals(
     var data = """
 mutation{
   updateMaintenanceIntervals(
-    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)},
+    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)}
     checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
     status,
      message
@@ -3540,17 +3533,6 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
     isUpdated
   }
 }""";
-    return data;
-  }
-
-  editUser() {
-    var data = """
-mutation userManagementCreateUser(\$requestBody: createUserBody!, \$userUId: String)
-{userManagementCreateUser(requestBody: \$requestBody, userUId: \$userUId){
-  count
-  invitation_id
-  isUpdated
-  }}""";
     return data;
   }
 }
