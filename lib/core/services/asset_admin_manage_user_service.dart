@@ -188,7 +188,7 @@ class AssetAdminManagerUserService extends BaseService {
     }
   }
 
-  Future<ManageUser?> getUser(String? userId, String? query) async {
+  Future<ManageUser?> getUser(String? userId, String query) async {
     Logger().i("getUser $isVisionLink");
     try {
       if (enableGraphQl) {
@@ -199,37 +199,37 @@ class AssetAdminManagerUserService extends BaseService {
                 ? ""
                 : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
-            return ManageUser.fromJson(data.data["userManagementUserList"]);
-      } else {
-        if (isVisionLink) {
-          Map<String, String?> queryMap = Map();
-          if (customerSelected != null) {
-            queryMap["customerUid"] = customerSelected!.CustomerUID;
-          }
-          ManageUser adminManageUserResponse = await MyApi()
-              .getClientSeven()!
-              .getUser(
-                  Urls.adminManagerUserSumaryVL +
-                      "/" +
-                      userId! +
-                      FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected!.CustomerUID);
-          return adminManageUserResponse;
-        } else {
-          Map<String, String?> queryMap = Map();
-          if (customerSelected != null) {
-            queryMap["customerUid"] = customerSelected!.CustomerUID;
-          }
-          ManageUser adminManageUserResponse = await MyApi()
-              .getClient()!
-              .getUser(
-                  Urls.adminManagerUserSumary +
-                      "/" +
-                      userId! +
-                      FilterUtils.constructQueryFromMap(queryMap),
-                  accountSelected!.CustomerUID);
-          return adminManageUserResponse;
+        ManageUser adminManageUserResponse = ManageUser(
+            user: Users.fromJson(
+                (data.data["userManagementUserList"]["users"] as List).first));
+        return adminManageUserResponse;
+      }
+      if (isVisionLink) {
+        Map<String, String?> queryMap = Map();
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected!.CustomerUID;
         }
+        ManageUser adminManageUserResponse = await MyApi()
+            .getClientSeven()!
+            .getUser(
+                Urls.adminManagerUserSumaryVL +
+                    "/" +
+                    userId! +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                accountSelected!.CustomerUID);
+        return adminManageUserResponse;
+      } else {
+        Map<String, String?> queryMap = Map();
+        if (customerSelected != null) {
+          queryMap["customerUid"] = customerSelected!.CustomerUID;
+        }
+        ManageUser adminManageUserResponse = await MyApi().getClient()!.getUser(
+            Urls.adminManagerUserSumary +
+                "/" +
+                userId! +
+                FilterUtils.constructQueryFromMap(queryMap),
+            accountSelected!.CustomerUID);
+        return adminManageUserResponse;
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -350,81 +350,34 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<UpdateResponse?> getSaveUserData(
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      jobTitle,
-      jobType,
-      address,
-      state,
-      country,
-      zipcode,
-      userType,
-      roles,
-      userUid) async {
+      UpdateUserData? payload, userUid) async {
     Logger().i("getSaveUserData");
     try {
-      Logger().d(
-          "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
-      Logger().d(
-          "details ${Details(job_title: jobTitle, job_type: jobType, user_type: userType).toJson()}");
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!.editUser(),
+            customerId: accountSelected?.CustomerUID,
+            payLoad: {"requestBody": payload!.toJson(), "userUId": userUid},
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        Logger().i(data);
+        return UpdateResponse(
+            isDeleted: data.data["userManagementCreateUser"]["isUpdated"]);
+      }
       if (isVisionLink) {
         UpdateResponse updateResponse = await MyApi()
             .getClientSeven()!
-            .updateUserData(
-                Urls.adminManagerUserSumaryVL + "/" + userUid,
-                accountSelected!.CustomerUID,
-                UpdateUserData(
-                    fname: firstName,
-                    lname: lastName,
-                    cwsEmail: email,
-                    phone: phoneNumber,
-                    sso_id: email,
-                    isCatssoUserCreation: true,
-                    src: "VisionLink",
-                    company: "NYL",
-                    language: "en-US",
-                    address: AddressData(
-                        addressline1: address,
-                        addressline2: "",
-                        state: state,
-                        country: country,
-                        zipcode: zipcode),
-                    roles: roles,
-                    details: Details(
-                        job_title: jobTitle,
-                        job_type: jobType,
-                        user_type: userType)));
+            .updateUserData(Urls.adminManagerUserSumaryVL + "/" + userUid,
+                accountSelected!.CustomerUID, payload!);
 
         return updateResponse;
       } else {
         UpdateResponse updateResponse = await MyApi()
             .getClient()!
-            .updateUserData(
-                Urls.adminManagerUserSumaryVL + "/" + userUid,
-                accountSelected!.CustomerUID,
-                UpdateUserData(
-                    fname: firstName,
-                    lname: lastName,
-                    cwsEmail: email,
-                    sso_id: email,
-                    phone: phoneNumber,
-                    isCatssoUserCreation: true,
-                    src: "VisionLink",
-                    company: "NYL",
-                    language: "en-US",
-                    address: AddressData(
-                        addressline1: address,
-                        state: state,
-                        addressline2: "",
-                        country: country,
-                        zipcode: zipcode),
-                    roles: roles,
-                    details: Details(
-                        job_title: jobTitle,
-                        job_type: jobType,
-                        user_type: userType)));
+            .updateUserData(Urls.adminManagerUserSumaryVL + "/" + userUid,
+                accountSelected!.CustomerUID, payload!);
         return updateResponse;
       }
     } catch (e) {
@@ -462,55 +415,24 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<AddUser?> getAddUserData(
-      {String? firstName,
-      String? lastName,
-      String? email,
-      String? phoneNumber,
-      String? jobTitle,
-      int? jobType,
-      String? address,
-      String? state,
-      String? country,
-      String? zipcode,
-      String? userType,
-      String? sso_id,
-      roles}) async {
+      {UpdateUserData? payload, String? userId}) async {
     Logger().i("getAddUserData");
     try {
       if (enableGraphQl) {
-        String doubleQuote = "\"";
-        Logger().w(
-          customerSelected != null
-              ? customerSelected!.CustomerUID
-              : accountSelected!.CustomerUID,
-        );
+        payload!.customerUid = customerSelected != null
+            ? customerSelected!.CustomerUID
+            : accountSelected!.CustomerUID;
+        Map<String, dynamic> json = {};
+        if (userId != null) {
+          json["userUId"] = userId;
+        }
+        json["requestBody"] = payload.toJson();
+
+        Logger().w(json);
+
         var data = await Network().getGraphqlData(
-            query: graphqlSchemaService!.addUser(
-                firstName: firstName,
-                jobType: jobType,
-                lastName: lastName,
-                customerUid: customerSelected != null
-                    ? customerSelected!.CustomerUID
-                    : accountSelected!.CustomerUID,
-                emailId: email,
-                phoneNo: phoneNumber == null ? "" : phoneNumber,
-                role: roles,
-                addressData: AddressData(
-                    addressline1: doubleQuote +
-                        "${address == null ? "" : address}" +
-                        doubleQuote,
-                    state: doubleQuote +
-                        "${state == null ? "" : state}" +
-                        doubleQuote,
-                    addressline2: "\"\"",
-                    country: doubleQuote +
-                        "${country == null ? "" : country}" +
-                        doubleQuote,
-                    zipcode: doubleQuote +
-                        "${zipcode == null ? "" : zipcode}" +
-                        doubleQuote),
-                details:
-                    Details(user_type: doubleQuote + "Standard" + doubleQuote)),
+            query: graphqlSchemaService!.addUser(),
+            payLoad: json,
             customerId: accountSelected?.CustomerUID,
             subId: customerSelected?.CustomerUID == null
                 ? ""
@@ -520,90 +442,13 @@ class AssetAdminManagerUserService extends BaseService {
         return AddUser.fromJson(data.data["userManagementCreateUser"]);
       }
       if (isVisionLink) {
-        Logger().d(
-            "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
-        Logger().d(
-            "details ${Details(job_title: jobTitle, job_type: jobType == 1 ? "-Employee" : "-Non-Employee", user_type: userType).toJson()}");
         AddUser addUserResponse = await MyApi().getClientSeven()!.addUserData(
-            Urls.addUserSummaryVL,
-            accountSelected!.CustomerUID,
-            AddUserData(
-                fname: firstName,
-                lname: lastName,
-                cwsEmail: email,
-                sso_id: sso_id,
-                phone: phoneNumber,
-                isCATSSOUserCreation: true,
-                src: "VisionLink",
-                company: "NYL",
-                language: "en-US",
-                address: AddressData(
-                    addressline1: address,
-                    state: state,
-                    addressline2: " ",
-                    country: country,
-                    zipcode: zipcode),
-                roles: roles,
-                details: Details(
-                    job_title: jobTitle,
-                    job_type: jobType == 1 ? "-Employee" : "-Non-Employee",
-                    user_type: userType)));
+            Urls.addUserSummaryVL, accountSelected!.CustomerUID, payload!);
         return addUserResponse;
       } else {
-        Logger().d(
-            "address ${AddressData(addressline1: address, state: state, country: country, zipcode: zipcode).toJson()}");
-        Logger().d(
-            "details ${Details(job_title: jobTitle, job_type: jobType == 1 ? "-Employee" : "-Non-Employee", user_type: userType).toJson()}");
-        Logger().w(AddUserDataIndStack(
-                fname: firstName,
-                customerUid: customerSelected != null
-                    ? customerSelected!.CustomerUID
-                    : accountSelected!.CustomerUID,
-                lname: lastName,
-                email: email,
-                phone: phoneNumber,
-                isAssetSecurityEnabled: true,
-                src: "VisionLink",
-                company: "NYL",
-                language: "en-US",
-                address: AddressData(
-                    addressline1: address,
-                    state: state,
-                    addressline2: " ",
-                    country: country,
-                    zipcode: zipcode),
-                roles: roles,
-                details: Details(
-                    job_title: jobTitle,
-                    job_type: jobType == 1 ? "-Employee" : "-Non-Employee",
-                    user_type: "Standard"))
-            .toJson());
-
         AddUser addUserResponse = await MyApi().getClient()!.inviteUser(
             Urls.adminManagerUserSumary + "/Invite",
-            AddUserDataIndStack(
-                fname: firstName,
-                customerUid: customerSelected != null
-                    ? customerSelected!.CustomerUID
-                    : accountSelected!.CustomerUID,
-                lname: lastName,
-                email: email,
-                phone: phoneNumber,
-                isAssetSecurityEnabled: true,
-                src: "VisionLink",
-                company: "NYL",
-                language: "en-US",
-                address: AddressData(
-                    addressline1: address,
-                    state: state,
-                    addressline2: " ",
-                    country: country,
-                    zipcode: zipcode),
-                roles: roles,
-                details: Details(
-                    job_title: jobTitle,
-                    job_type: jobType == 1 ? "-Employee" : "-Non-Employee",
-                    user_type: "Standard")),
+            payload!,
             accountSelected!.CustomerUID,
             (await _localService!.getLoggedInUser())!.sub,
             "in-identitymanager-identitywebapi");
@@ -1828,6 +1673,18 @@ class AssetAdminManagerUserService extends BaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+    }
+  }
+   Future<bool?> resendInvitation(String id) async {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlData(
+          query: graphqlSchemaService!.resentInvitation(),
+          customerId: accountSelected?.CustomerUID,
+          subId: customerSelected?.CustomerUID ?? "",
+          payLoad: {"resendID": id},
+          userId: (await _localService!.getLoggedInUser())!.sub);
+
+      return data.data["resend"]["isInvitationSent"];
     }
   }
 }

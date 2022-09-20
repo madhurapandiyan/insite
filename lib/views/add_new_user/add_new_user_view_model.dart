@@ -8,18 +8,17 @@ import 'package:insite/core/models/application.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
+import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
-import 'package:insite/views/adminstration/manage_user/manage_user_view.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class AddNewUserViewModel extends InsiteViewModel {
   Logger? log;
   var _manageUserService = locator<AssetAdminManagerUserService>();
-   var _navigatorService=locator<NavigationService>();
+
   List<ApplicationAccess>? selectedList;
   TextEditingController emailController = new TextEditingController();
   TextEditingController firstNameController = new TextEditingController();
@@ -42,6 +41,9 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   bool _enableAdd = false;
   bool get enableAdd => _enableAdd;
+
+  bool _isLoading = true;
+  bool get isLoading => _isLoading;
 
   bool _setDefaultPreferenceToUser = false;
   bool get setDefaultPreferenceToUser => _setDefaultPreferenceToUser;
@@ -70,7 +72,7 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   List<String> languageTypeValueList = ["English"];
 
-  String? jobTypeValue = "Employee";
+  String? jobTypeValue;
 
   onJobTypeSelected(value) {
     jobTypeValue = value;
@@ -96,34 +98,9 @@ class AddNewUserViewModel extends InsiteViewModel {
   AddNewUserViewModel(Users? user, bool? isEdit) {
     this.user = user;
     this._enableAdd = isEdit!;
-    if (user != null &&
-        user.loginId != null &&
-        user.first_name != null &&
-        user.last_name != null &&
-        user.phone != null &&
-        user.address!.country != null &&
-        user.address!.zipcode != null) {
-      emailController.text = user.loginId!;
-      firstNameController.text = user.first_name!;
-      lastNameController.text = user.last_name!;
-      phoneNumberController.text = user.phone!;
-      addressController.text = user.address!.country!;
-      pinCodeController.text = user.address!.zipcode!;
-      selectedList = [];
-    } else {
-      emailController.text = "";
-      firstNameController.text = "";
-      lastNameController.text = "";
-      phoneNumberController.text = "";
-      addressController.text = "";
-      pinCodeController.text = "";
-      countryController.text = "";
-      stateController.text = "";
-      selectedList = [];
-    }
+
     _manageUserService.setUp();
     this.log = getLogger(this.runtimeType.toString());
-    showLoadingDialog();
     Future.delayed(Duration(seconds: 1), () async {
       await getData();
     });
@@ -133,8 +110,10 @@ class AddNewUserViewModel extends InsiteViewModel {
     await getApplicationAccessData();
     if (user != null) {
       await getUser();
+      Logger().i("edit user");
+    } else {
+      _isLoading = false;
     }
-    hideLoadingDialog();
   }
 
   onApplicationAccessSelection(int index) {
@@ -238,45 +217,23 @@ class AddNewUserViewModel extends InsiteViewModel {
     ManageUser? result = await _manageUserService.getUser(
         user!.userUid,
         graphqlSchemaService!
-            .userManagementUserList(searchKey: user!.loginId, pageNo: 1));
+            .userManagementUserList(pageNo: 1, searchKey: this.user!.loginId));
     try {
       if (result != null) {
-        //this.user = result.user!;
-
-        Logger().w(result.users!.first.toJson());
-        for (var editData in result.users!) {
-          emailController.text = editData.loginId!;
-          firstNameController.text = editData.first_name!;
-          lastNameController.text = editData.last_name!;
-          //jobTypeValue = editData.job_type!;
-          jobTitleValue = editData.job_title;
-        }
-
-        for (int i = 0; i < assetsData.length; i++) {
-          var data = assetsData[i];
-          for (var element in result.users!) {
-            for (int j = 0; j < element.application_access!.length; j++) {
-              var dataApplication = element.application_access![j];
-
-              if (data.application!.tpaasAppName ==
-                  dataApplication.applicationName) {
-                assetsData[i].isSelected = true;
-                assetsData[i].isPermissionSelected = true;
-                Logger().i("getUser ${dataApplication.role_name}");
-                var applicationData = ApplicationSelectedDropDown(
-                    accessData: data,
-                    applicationName: data.application!.tpaasAppName,
-                    value: dataApplication.role_name,
-                    key: data.application!.appUID);
-                applicationSelectedDropDownList.add(applicationData);
-              }
-            }
-          }
-        }
-
-        jobTypeValue = result.user!.job_type!;
-        jobTitleValue = result.user!.job_title!;
-        Logger().i("getUser ${result.user!.application_access!.length}");
+        this.user = result.user;
+        emailController.text = result.user?.loginId ?? "";
+        firstNameController.text = result.user?.first_name ?? "";
+        lastNameController.text = result.user?.last_name ?? "";
+        phoneNumberController.text = result.user?.phone ?? "";
+        addressController.text =
+            "${result.user?.address?.addressline1 ?? "" + "${result.user?.address?.addressline2 ?? ""}"}";
+        countryController.text = result.user?.address?.country ?? "";
+        stateController.text = result.user?.address?.state ?? "";
+        jobTypeValue = result.user?.job_type == "UnKnown"
+            ? null
+            : result.user?.job_type ?? null;
+        jobTitleValue = result.user?.job_title ?? null;
+        Logger().i("getUser ${result.user?.application_access?.length}");
         for (var applicationAccess in result.user!.application_access!) {
           for (int i = 0; i < assetsData.length; i++) {
             var data = assetsData[i];
@@ -287,7 +244,7 @@ class AddNewUserViewModel extends InsiteViewModel {
               Logger().i("getUser ${applicationAccess.role_name}");
               var applicationData = ApplicationSelectedDropDown(
                   accessData: data,
-                  applicationName: data.application!.tpaasAppName,
+                  applicationName: data.application?.tpaasAppName,
                   value: applicationAccess.role_name,
                   key: data.application!.appUID);
               applicationSelectedDropDownList.add(applicationData);
@@ -295,24 +252,19 @@ class AddNewUserViewModel extends InsiteViewModel {
           }
         }
         Logger().i("getUser ${applicationSelectedDropDownList.length}");
+        _isLoading = false;
+      } else {
+        _isLoading = false;
       }
-    } catch (e) {}
-    notifyListeners();
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      Logger().e(e.toString());
+      notifyListeners();
+    }
   }
 
-  getEditUserData(
-    firstName,
-    lastName,
-    email,
-    jobTitle,
-    phoneNumber,
-    jobType,
-    userType,
-    address,
-    state,
-    country,
-    zipcode,
-  ) async {
+  getEditUserData() async {
     if (!validate()) {
       return;
     }
@@ -336,20 +288,53 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (var role in roles) {
         Logger().d("role ${role.toJson()}");
       }
+      var data = UpdateUserData(
+          fname: firstNameController.text.isEmpty
+              ? null
+              : firstNameController.text,
+          lname:
+              lastNameController.text.isEmpty ? null : lastNameController.text,
+          email: emailController.text.isEmpty ? null : emailController.text,
+          // JobType: jobType,
+          phone: phoneNumberController.text.isEmpty
+              ? null
+              : phoneNumberController.text,
+          language: "en-US",
+          isAssetSecurityEnabled: true,
+          address: AddressData(
+              addressline1: addressController.text.isEmpty
+                  ? null
+                  : addressController.text,
+              state: stateController.text.isEmpty ? null : stateController.text,
+              addressline2: addressController.text.isEmpty
+                  ? null
+                  : addressController.text,
+              country: countryController.text.isEmpty
+                  ? null
+                  : countryController.text,
+              zipcode: pinCodeController.text.isEmpty
+                  ? null
+                  : pinCodeController.text),
+          roles: roles,
+          JobType: jobTypeValue == "Employee" ? 1 : 2,
+          details: Details(
+              job_title: jobTitleValue != null && jobTitleValue!.isNotEmpty
+                  ? jobTitleValue
+                  : null,
+              job_type: jobTypeValue != null && jobTypeValue!.isNotEmpty
+                  ? jobTypeValue
+                  : null,
+              user_type: "Standard"
+              // userType != null && userType.isNotEmpty
+              //     ? userType
+              //     : null
+              ));
+
       UpdateResponse? updateResponse = await _manageUserService.getSaveUserData(
-          firstName,
-          lastName,
-          email,
-          phoneNumber,
-          jobTitle,
-          jobType,
-          address,
-          state,
-          country,
-          zipcode,
-          userType,
-          roles,
-          user!.userUid);
+          data,
+          user?.userUid != null && user!.userUid!.isNotEmpty
+              ? user!.userUid
+              : null);
       hideLoadingDialog();
       if (updateResponse != null) {
         snackbarService!.showSnackbar(message: "Updated successfully");
@@ -357,6 +342,7 @@ class AddNewUserViewModel extends InsiteViewModel {
         snackbarService!.showSnackbar(message: "Updating user failed");
       }
     } catch (e) {
+      Logger().e(e.toString());
       hideLoadingDialog();
     }
   }
@@ -381,27 +367,14 @@ class AddNewUserViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getAddUserData(
-    firstName,
-    lastName,
-    email,
-    phoneNumber,
-    jobTitle,
-    jobType,
-    address,
-    state,
-    country,
-    zipcode,
-    userType,
-    sso_id,
-  ) async {
+  getAddUserData() async {
     try {
       if (!validate()) {
         return;
       }
       showLoadingDialog();
       List<Role> roles = [];
-      String doubleQuote = "\"";
+
       for (int i = 0; i < applicationSelectedDropDownList.length; i++) {
         var data = applicationSelectedDropDownList[i];
         RoleDataResponse? roleDataResponse =
@@ -411,8 +384,7 @@ class AddNewUserViewModel extends InsiteViewModel {
           if (data.value == roleData.role_name) {
             roles.add(Role(
                 role_id: roleData.role_id,
-                application_name:
-                    doubleQuote + data.applicationName! + doubleQuote));
+                application_name: data.applicationName!));
             break;
           }
         }
@@ -420,28 +392,54 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (var role in roles) {
         Logger().d("role ${role.toJson()}");
       }
-      AddUser? result = await _manageUserService.getAddUserData(
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          phoneNumber: phoneNumber,
-          jobTitle: jobTitle,
-          jobType: jobType == null
-              ? 0
-              : jobType == "Employee"
-                  ? 1
-                  : 2,
-          address: address,
-          state: state,
-          country: country,
-          zipcode: zipcode,
-          userType: userType,
-          sso_id: sso_id,
-          roles: roles);
+      var data = UpdateUserData(
+          fname: firstNameController.text.isEmpty
+              ? null
+              : firstNameController.text,
+          lname:
+              lastNameController.text.isEmpty ? null : lastNameController.text,
+          email: emailController.text.isEmpty ? null : emailController.text,
+          // JobType: jobType,
+          phone: phoneNumberController.text.isEmpty
+              ? null
+              : phoneNumberController.text,
+          language: "en-US",
+          isAssetSecurityEnabled: true,
+          address: AddressData(
+              addressline1: addressController.text.isEmpty
+                  ? null
+                  : addressController.text,
+              state: stateController.text.isEmpty ? null : stateController.text,
+              addressline2: addressController.text.isEmpty
+                  ? null
+                  : addressController.text,
+              country: countryController.text.isEmpty
+                  ? null
+                  : countryController.text,
+              zipcode: pinCodeController.text.isEmpty
+                  ? null
+                  : pinCodeController.text),
+          roles: roles,
+          JobType: jobTypeValue == "Employee" ? 1 : 2,
+          details: Details(
+              job_title: jobTitleValue != null && jobTitleValue!.isNotEmpty
+                  ? jobTitleValue
+                  : null,
+              job_type: jobTypeValue != null && jobTypeValue!.isNotEmpty
+                  ? jobTypeValue
+                  : null,
+              user_type: "Standard"
+              // userType != null && userType.isNotEmpty
+              //     ? userType
+              //     : null
+              ));
+
+      AddUser? result =
+          await _manageUserService.getAddUserData(payload: data, userId: null);
       if (result != null) {
         snackbarService!.showSnackbar(message: "Added successfully");
-         _navigatorService.clearTillFirstAndShowView(ManageUserView());
         reset();
+        navigationService!.navigateTo(manageUserViewRoute);
       } else {
         snackbarService!.showSnackbar(message: "Adding user failed");
       }
@@ -467,10 +465,16 @@ class AddNewUserViewModel extends InsiteViewModel {
       return false;
     }
 
-    // if (phoneNumberController.text.isEmpty) {
-    //   snackbarService?.showSnackbar(message: "Phone Number is Empty");
-    //   return false;
-    // }
+    if (phoneNumberController.text.isNotEmpty) {
+      if (validateMobile(phoneNumberController.text)) {
+        return true;
+      } else {
+        snackbarService?.showSnackbar(
+          message: "Please enter valid phone number",
+        );
+      }
+      return false;
+    }
 
     if (applicationSelectedDropDownList.isEmpty) {
       snackbarService?.showSnackbar(
@@ -522,12 +526,9 @@ class AddNewUserViewModel extends InsiteViewModel {
 
   bool validateMobile(String value) {
 // Indian Mobile number are of 10 digit only
-    if (value.startsWith("+")) {
-      if (value.length <= 7 || value.length == 15) {
-        return true;
-      }
+    if (value.length == 10)
       return true;
-    } else
+    else
       return false;
   }
 

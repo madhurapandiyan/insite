@@ -44,15 +44,15 @@ class ManageUserWidget extends StatelessWidget {
                   // SizedBox(
                   //   height: 20,
                   // ),
-                  // user!.isSelected
-                  //     ? Icon(
-                  //         Icons.check_box_rounded,
-                  //         color: Theme.of(context).buttonColor,
-                  //       )
-                  //     : Icon(
-                  //         Icons.check_box_outline_blank,
-                  //         color: Theme.of(context).textTheme.bodyText1!.color,
-                  //       ),
+                  user!.isSelected
+                      ? Icon(
+                          Icons.check_box_rounded,
+                          color: Theme.of(context).buttonColor,
+                        )
+                      : Icon(
+                          Icons.check_box_outline_blank,
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
                 ],
               ),
             ),

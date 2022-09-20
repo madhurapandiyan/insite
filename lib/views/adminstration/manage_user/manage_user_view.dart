@@ -195,7 +195,7 @@ class ManageUserView extends StatelessWidget {
                                           return ManageUserWidget(
                                             user: user,
                                             callback: () {
-                                             // viewModel.onItemSelected(index);
+                                              viewModel.onItemSelected(index);
                                             },
                                           );
                                         }),

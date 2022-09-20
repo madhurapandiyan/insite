@@ -2,6 +2,7 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/complete.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/edit_interval_response.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
 import 'package:insite/core/models/maintenance_asset_india_stack.dart';
@@ -419,7 +420,7 @@ class MaintenanceService extends BaseService {
     }
   }
 
-  Future<dynamic> updateMaintenanceIntervals(String? query) async {
+  Future<EditIntervalResponse?> updateMaintenanceIntervals(String? query) async {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
@@ -430,7 +431,7 @@ class MaintenanceService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
-        return data.data["updateMaintenanceIntervals"];
+        return EditIntervalResponse.fromJson(data.data);
       }
     } catch (e) {
       Logger().w(e.toString());

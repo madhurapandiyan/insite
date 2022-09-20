@@ -1,19 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'update_user_data.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class UpdateResponse {
-  final bool? isUpdated;
   final bool? isDeleted;
 
-  UpdateResponse({this.isUpdated, this.isDeleted});
+  UpdateResponse({this.isDeleted});
 
   factory UpdateResponse.fromJson(Map<String, dynamic> json) =>
       _$UpdateResponseFromJson(json);
   Map<String, dynamic> toJson() => _$UpdateResponseToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class DeleteUserData {
   List<String>? users;
   DeleteUserData({
@@ -25,7 +24,7 @@ class DeleteUserData {
   Map<String, dynamic> toJson() => _$DeleteUserDataToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class DeleteUserDataIndStack {
   List<String> users;
   String? customerUid;
@@ -36,7 +35,7 @@ class DeleteUserDataIndStack {
   Map<String, dynamic> toJson() => _$DeleteUserDataIndStackToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class AddUserData {
   AddUserData({
     this.fname,
@@ -72,7 +71,7 @@ class AddUserData {
   Map<String, dynamic> toJson() => _$AddUserDataToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class AddUserDataIndStack {
   AddUserDataIndStack(
       {this.fname,
@@ -106,7 +105,7 @@ class AddUserDataIndStack {
   Map<String, dynamic> toJson() => _$AddUserDataIndStackToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class UpdateUserData {
   UpdateUserData(
       {this.fname,
@@ -121,14 +120,13 @@ class UpdateUserData {
       this.src,
       this.company,
       this.language,
-      this.email,
-      this.isAssetSecurityEnabled,
       this.JobType,
-      this.customerUid});
+      this.customerUid,
+      this.email,
+      this.isAssetSecurityEnabled});
 
   String? fname;
   String? lname;
-  String? email;
   String? cwsEmail;
   String? phone;
   String? sso_id;
@@ -139,9 +137,13 @@ class UpdateUserData {
   String? src;
   String? company;
   String? language;
-  bool? isAssetSecurityEnabled;
-  int? JobType;
+
+  String? email;
+
   String? customerUid;
+
+  int? JobType;
+  bool? isAssetSecurityEnabled;
 
   factory UpdateUserData.fromJson(Map<String, dynamic> json) =>
       _$UpdateUserDataFromJson(json);
@@ -149,7 +151,7 @@ class UpdateUserData {
   Map<String, dynamic> toJson() => _$UpdateUserDataToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class AddressData {
   String? addressline1;
   String? addressline2;
@@ -169,7 +171,7 @@ class AddressData {
   Map<String, dynamic> toJson() => _$AddressDataToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class Details {
   Details({
     this.job_title,
@@ -186,7 +188,7 @@ class Details {
   Map<String, dynamic> toJson() => _$DetailsToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class Role {
   Role({
     this.role_id,
