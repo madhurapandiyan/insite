@@ -465,6 +465,56 @@ assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",c
 
     return data;
   }
+  deleteSms(int? userId,List? request){
+    var data="""mutation  {
+   deleteSMS(UserID: $userId, request: $request) {
+     fieldCount
+     affectedRows
+     insertId
+     serverStatus
+     warningCount
+     message
+     protocol41
+     changedRows
+   }
+ }""";
+    return data;
+  }
+  getSmsReportSummary(int? start,int? limit){
+    var data="""query {
+   getSMSSummaryReport(start: $start, limit: $limit) {
+     gpsDeviceId
+     id
+     language
+     name
+     number
+     serialNumber
+     startDate
+   }
+ }""";
+    return data;
+  }
+  getTranferHistory(int? start,int? limit){
+    var data="""query{
+  deviceTransfer(start:1,limit:100){
+    destinationCustomerType,
+    destinationName1,
+    destinationName2,
+    gpsDeviceID,
+    insertUTC,
+    oemName,
+    sourceCustomerType,
+    sourceName1,
+    sourceName2,
+    status,
+    fk_AssetId,
+    vin
+    __typename
+    
+  }
+}""";
+return data;
+  }
 
   getDeviceTransferDetails(String? value) {
     var data = """

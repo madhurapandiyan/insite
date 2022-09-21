@@ -24,6 +24,7 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
+import 'package:insite/views/subscription/transferhistory/model/tranfer_history.dart';
 import 'package:logger/logger.dart';
 
 class SubScriptionService extends BaseService {
@@ -466,7 +467,27 @@ class SubScriptionService extends BaseService {
       return null;
     }
   }
+Future<TranferHistory?> getDeviceTranferHistory(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlPlantData(
+          query: query,
+          // customerId: accountSelected?.CustomerUID,
+          // userId: (await _localService?.getLoggedInUser())?.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
+        );
 
+        TranferHistory? deviceDetails =
+            TranferHistory.fromJson(data.data);
+    return deviceDetails;
+      } else {}
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
   Future<SubscriptionDashboardDetailResult?> getTransferHistoryViewData({
     int? start,
     int? limit,

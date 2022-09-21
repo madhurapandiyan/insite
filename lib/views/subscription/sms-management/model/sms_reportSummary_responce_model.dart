@@ -17,25 +17,32 @@ class SmsReportSummaryModel {
 @JsonSerializable()
 class ReportSummaryModel {
   final int? count;
-  final int? ID;
-  final String? GPSDeviceID;
-  final String? SerialNumber;
-  final String? Name;
-  final String? Number;
-  final String? StartDate;
-  final String? Language;
+  @JsonKey(name: "ID")
+  final int? id;
+  @JsonKey(name: "GPSDeviceID")
+  final String? gpsDeviceId;
+  @JsonKey(name: "SerialNumber")
+  final String? serialNumber;
+  @JsonKey(name: "Name")
+  final String? name;
+  @JsonKey(name: "Number")
+  final String? number;
+  @JsonKey(name: "StartDate")
+  final String? startDate;
+  @JsonKey(name: "Language")
+  final String? language;
   bool? isSelected;
 
   ReportSummaryModel(
       {this.count,
-      this.ID,
-      this.GPSDeviceID,
-      this.SerialNumber,
-      this.Name,
-      this.Number,
-      this.StartDate,
+      this.id,
+      this.gpsDeviceId,
+      this.serialNumber,
+      this.name,
+      this.number,
+      this.startDate,
       this.isSelected=false,
-      this.Language});
+      this.language});
 
   factory ReportSummaryModel.fromJson(Map<String, dynamic> json) =>
       _$ReportSummaryModelFromJson(json);

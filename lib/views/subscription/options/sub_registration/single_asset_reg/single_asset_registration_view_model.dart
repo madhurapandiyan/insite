@@ -396,9 +396,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             _loadingMore = false;
             gpsDeviceId.clear();
             deviceIdChange!.result![1].forEach((element) {
-              if (gpsDeviceId.any((id) => id == element.GPSDeviceID)) {
+              if (gpsDeviceId.any((id) => id == element.gpsDeviceId)) {
               } else {
-                gpsDeviceId.add(element.GPSDeviceID);
+                gpsDeviceId.add(element.gpsDeviceId);
               }
             });
             notifyListeners();
@@ -548,9 +548,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   onSelectedDeviceId(String? value) {
     _detailResult.forEach((element) {
-      if (element.GPSDeviceID == value) {
-        deviceIdController.text = element.GPSDeviceID!;
-        serialNumberController.text = element.VIN!;
+      if (element.gpsDeviceId == value) {
+        deviceIdController.text = element.gpsDeviceId!;
+        serialNumberController.text = element.vin!;
         _gpsDeviceId.clear();
         notifyListeners();
       }

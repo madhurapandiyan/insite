@@ -1,6 +1,9 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
+import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
@@ -9,9 +12,25 @@ import 'package:insite/views/subscription/sms-management/model/saving_sms_model.
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_responce_model.dart';
+import 'package:insite/views/subscription/sms-management/model/sms_smmary.dart';
 import 'package:logger/logger.dart';
 
 class SmsManagementService extends BaseService {
+   LocalService? _localService = locator<LocalService>();
+    GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
+   Customer? accountSelected;
+  Customer? customerSelected;
+  SmsManagementService(){
+    setUp(); 
+  }
+   setUp() async {
+    try {
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
   Future<SingleAssetResponce?> postSingleAssetResponce(
       List<SingleAssetSmsSchedule> modelData) async {
     SingleAssetResponce? data;
@@ -39,7 +58,27 @@ class SmsManagementService extends BaseService {
       return data;
     }
   }
+Future<SmsSummaryModel?> getSmsSummaryReport(String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlPlantData(
+          query: query,
+          // customerId: accountSelected?.CustomerUID,
+          // userId: (await _localService?.getLoggedInUser())?.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
+        );
 
+        SmsSummaryModel? deviceDetails =
+            SmsSummaryModel.fromJson(data.data);
+    return deviceDetails;
+      } else {}
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
   Future<SmsReportSummaryModel?> getsmsReportSummaryModel(
       int startCount) async {
     SmsReportSummaryModel? data;
@@ -49,13 +88,15 @@ class SmsManagementService extends BaseService {
     queryMap["limit"] = "16";
     Logger().i(Urls.smsManagementScheduleReportSummary +
         FilterUtils.constructQueryFromMap(queryMap));
-    if (isVisionLink) {
-    } else {
+    
       data = await MyApi().getClientNine()!.gettingReportSummary(
           Urls.smsManagementScheduleReportSummary +
               FilterUtils.constructQueryFromMap(queryMap));
-    }
-    return data;
+    if(data==null){
+        Logger().d('no data found');
+}
+Logger().d(data);
+ return data;   
   }
 
   Future<SmsReportSummaryModel?> getScheduleReportData() async {
@@ -72,16 +113,27 @@ class SmsManagementService extends BaseService {
   }
 
   Future<dynamic> deleteSmsScheduleReport(
-      List<DeleteSmsReport> reportId) async {
+      List<DeleteSmsReport> reportId,int? userId,List? delete) async {
     Map<String, String?> queryMap = Map();
     queryMap["UserID"] = await locator<LocalService>().getUserId();
-    if (isVisionLink) {
-    } else {
+
+  if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: graphqlSchemaService!.deleteSms(userId,delete),
+         customerId: accountSelected?.CustomerUID,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub,
+           // payLoad: payload
+            );
+            Logger().i("data:$data");
+        return data;
+      } else{
       var data = await MyApi().getClientNine()!.deleteSmsSchedule(
           Urls.deleteSmsScheduleReport +
               FilterUtils.constructQueryFromMap(queryMap),
           reportId);
-      return data;
-    }
-  }
+   return data;
+  }}
 }

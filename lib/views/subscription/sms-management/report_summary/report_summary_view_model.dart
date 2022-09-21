@@ -9,6 +9,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/sms_management_service.dart';
 import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
+import 'package:insite/views/subscription/sms-management/model/sms_smmary.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -51,6 +52,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   int startLimit = 0;
   int? endLimit;
+   int totalCount = 0;
 
   int startCount = 0;
   final controller = new ScrollController();
@@ -59,8 +61,46 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   getReportSummaryData() async {
     try {
+       if (enableGraphQl) {
+          int start = 1;
+          int limit = 100;
+      SmsSummaryModel? smsSummaryModel = await _smsScheduleService!
+          . getSmsSummaryReport(
+              graphqlSchemaService!. getSmsReportSummary(start, limit));
+
+      if (smsSummaryModel != null) {
+        totalCount = smsSummaryModel.getSMSSummaryReport!.length;
+        Logger().wtf("totalCount:$totalCount");
+        if (smsSummaryModel.getSMSSummaryReport!= null) {
+          for (GetSMSSummaryReport element in smsSummaryModel.getSMSSummaryReport!) {
+            modelDataList.add(ReportSummaryModel(
+            id: element.id,
+            gpsDeviceId: element.gpsDeviceId,
+            serialNumber: element.serialNumber,
+            name: element.name,
+            number: element.number,
+            startDate: element.startDate,
+            language: element.language
+            ));
+          }
+          isLoading = false;
+          isLoadMore = false;
+          notifyListeners();
+        } else {
+          isLoading = false;
+          isLoadMore = false;
+          notifyListeners();
+        }
+      } else {
+        isLoading = false;
+        isLoadMore = false;
+        notifyListeners();
+      }
+    } else {
       _smsReportSummaryModel =
           await _smsScheduleService!.getsmsReportSummaryModel(startCount);
+           totalCount = smsReportSummaryModel!.result!.first.first.count!;
+        Logger().wtf("totalCount:$totalCount");
       for (var i = 0; i < _smsReportSummaryModel!.result!.length; i++) {
         if (i == 0) {
           isLoading = false;
@@ -80,7 +120,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
       }
       isLoading = false;
       notifyListeners();
-    } catch (e) {
+    } }catch (e) {
       isLoading = false;
       Logger().e(e.toString());
       notifyListeners();
@@ -91,9 +131,9 @@ class ReportSummaryViewModel extends InsiteViewModel {
     try {
       modelDataList[i].isSelected = !modelDataList[i].isSelected!;
       if (modelDataList[i].isSelected!) {
-        selectedId.add(modelDataList[i].ID);
+        selectedId.add(modelDataList[i].id);
       } else if (modelDataList[i].isSelected == false) {
-        selectedId.remove(modelDataList[i].ID);
+        selectedId.remove(modelDataList[i].id);
       }
       Logger().wtf(selectedId);
       setBool();
@@ -118,18 +158,20 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   onDeletingSmsSchedule() async {
     try {
+      int? userId=0;
+      List<DeleteSmsReport> deleteSMSRequest=[];
       DeleteSmsReport deleteData;
       selectedId.forEach((id) {
         deleteData = DeleteSmsReport(ID: id);
         deleteSmsReport.add(deleteData);
         var deletingData =
-            modelDataList.singleWhere((element) => element.ID == id);
+            modelDataList.singleWhere((element) => element.id == id);
         modelDataList.remove(deletingData);
         // selectedId.remove(id);
         notifyListeners();
       });
       var data =
-          await _smsScheduleService!.deleteSmsScheduleReport(deleteSmsReport);
+          await _smsScheduleService!.deleteSmsScheduleReport(deleteSmsReport,userId,deleteSMSRequest);
       Logger().w(selectedId.length);
       selectedId.clear();
       deleteSmsReport.clear();
@@ -184,15 +226,15 @@ class ReportSummaryViewModel extends InsiteViewModel {
         }
         int index = i + 1;
         sheetObj.updateCell(
-            CellIndex.indexByString("A$index"), data[i].GPSDeviceID);
+            CellIndex.indexByString("A$index"), data[i].gpsDeviceId);
         sheetObj.updateCell(
-            CellIndex.indexByString("B$index"), data[i].SerialNumber);
-        sheetObj.updateCell(CellIndex.indexByString("C$index"), data[i].Name);
-        sheetObj.updateCell(CellIndex.indexByString("D$index"), data[i].Number);
+            CellIndex.indexByString("B$index"), data[i].serialNumber);
+        sheetObj.updateCell(CellIndex.indexByString("C$index"), data[i].name);
+        sheetObj.updateCell(CellIndex.indexByString("D$index"), data[i].number);
         sheetObj.updateCell(
-            CellIndex.indexByString("E$index"), data[i].Language);
+            CellIndex.indexByString("E$index"), data[i].language);
         sheetObj.updateCell(
-            CellIndex.indexByString("F$index"), data[i].StartDate);
+            CellIndex.indexByString("F$index"), data[i].startDate);
       }
       Logger().e("excel sheet update");
       return excelSheet;

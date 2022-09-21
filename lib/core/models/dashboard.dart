@@ -54,8 +54,8 @@ List<Category>? showsCategoryBasedOnAccountSelection(bool isTataHitachi) {
       Category(8, "ADMINISTRATOR", "assets/images/adminisitratoricon.svg",
           ScreenType.ADMINISTRATION),
       // Category(9, "PLANT", "assets/images/plant.svg", ScreenType.PLANT),
-      // Category(
-      //     10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
+      Category(
+          10, "SUBSCRIPTION", "assets/images/sub.svg", ScreenType.SUBSCRIPTION),
       Category(11, "NOTIFICATIONS", "assets/images/noti.svg",
           ScreenType.NOTIFICATIONS)
     ];
