@@ -69,9 +69,22 @@ class AddGroupViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     _manageUserService!.setUp();
 
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 1), () async {
       getData();
-      getGroupListData();
+      await getGroupListData();
+      if (groups != null) {
+        nameController.text = groups.GroupName ?? "";
+        descriptionController.text = groups.Description ?? "";
+        if (assetIdresult?.assetDetailsRecords != null &&
+            assetIdresult!.assetDetailsRecords!.isNotEmpty) {
+          for (var asset in assetIdresult!.assetDetailsRecords!) {
+            if (groups.AssetUID!
+                .any((element) => element == asset.assetIdentifier)) {
+              selectedAsset!.add(asset);
+            }
+          }
+        }
+      }
     });
   }
   List<String> assetUidData = [];
@@ -84,27 +97,36 @@ class AddGroupViewModel extends InsiteViewModel {
         _snackBarservice!.showSnackbar(message: "Name should be specified");
         return;
       }
-
+      assetUidData.clear();
       selectedAsset?.forEach((element) {
         Logger().wtf(element.assetIdentifier);
         assetUidData.add(element.assetIdentifier!);
       });
 
       showLoadingDialog(tapDismiss: true);
-      AddGroupDataResponse? result = await _manageUserService!
-          .getAddGroupSaveData(
-              AddGroupPayLoad(
-                AssetUID: assetUidData,
-                Description: descriptionController.text,
-                GroupName: nameController.text,
-              ),
-              graphqlSchemaService?.createGroup(
-                  Utils.getStringListData(assetUidData),
-                  nameController.text,
-                  descriptionController.text));
+      AddGroupDataResponse? result =
+          await _manageUserService!.getAddGroupSaveData(
+            addGroupPayLoad: 
+        AddGroupPayLoad(
+          AssetUID: assetUidData,
+          Description: descriptionController.text,
+          GroupName: nameController.text,
+        ),
+        gqlPayload: 
+        {
+          "assetUID": assetUidData,
+          "description": descriptionController.text,
+          "groupName": nameController.text
+        },
+       query: graphqlSchemaService?.createGroup(),
+      );
       if (result != null) {
-        gotoManageGroupPage();
         _snackBarservice!.showSnackbar(message: "You have added a new group");
+        gotoManageGroupPage();
+        hideLoadingDialog();
+      } else {
+        _snackBarservice!
+            .showSnackbar(message: "Something wents wrong try again later");
         hideLoadingDialog();
       }
       Logger().i(result);
@@ -114,6 +136,12 @@ class AddGroupViewModel extends InsiteViewModel {
     }
     notifyListeners();
   }
+
+   onRemoving() {
+    selectedAsset!.clear();
+    notifyListeners();
+  }
+
 
   getEditGroupData() async {
     try {
@@ -160,6 +188,19 @@ class AddGroupViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  onAddingAllAsset(List<Asset>? allAsset) {
+    if (allAsset != null && allAsset.isNotEmpty) {
+      selectedAsset!.clear();
+      selectedAsset?.addAll(allAsset);
+    }
+    notifyListeners();
+  }
+
+  onRemove() {
+    selectedAsset!.clear();
+    notifyListeners();
+  }
+
   onDeletingAsset(int i) {
     try {
       if (selectedAsset != null) {
@@ -191,15 +232,29 @@ class AddGroupViewModel extends InsiteViewModel {
   getAddGroupEditData() async {
     try {
       Logger().i(dissociatedAssetId);
+      assetUidData.clear();
+      selectedAsset?.forEach((element) {
+        Logger().wtf(element.assetIdentifier);
+        assetUidData.add(element.assetIdentifier!);
+      });
       showLoadingDialog();
       UpdateResponse? result = await _manageUserService!.getAddGroupEditPayLoad(
-          EditGroupPayLoad(
-              GroupName: nameController.text,
-              GroupUid: groups!.GroupUid!,
-              CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
-              Description: descriptionController.text,
-              AssociatedAssetUID: associatedAssetId,
-              DissociatedAssetUID: dissociatedAssetId));
+        EditGroupPayLoad(
+            GroupName: nameController.text,
+            GroupUid: groups!.GroupUid!,
+            CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
+            Description: descriptionController.text,
+            AssociatedAssetUID: associatedAssetId,
+            DissociatedAssetUID: dissociatedAssetId),
+        graphqlSchemaService!.updateGroup(),
+        {
+          "assetUID": assetUidData,
+          "groupUid": groups!.GroupUid,
+          "description": descriptionController.text,
+          "groupName": nameController.text,
+          "dissociatedAssetUID": []
+        },
+      );
       if (result != null) {
         gotoManageGroupPage();
       }

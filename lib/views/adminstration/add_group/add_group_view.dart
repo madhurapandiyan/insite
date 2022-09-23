@@ -123,6 +123,12 @@ class _AddGroupViewState extends State<AddGroupView> {
                               Logger().e(value.pagination!.totalCount);
                             },
                             assetResult: viewModel.assetIdresult,
+                            addingAllAsset: ((allAsset) {
+                              viewModel.onAddingAllAsset(allAsset);
+                            }),
+                            onRemoving: () {
+                              viewModel.onRemoving();
+                            },
                           ),
                     SizedBox(
                       height: 20,
@@ -162,7 +168,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         InsiteButton(
-                          bgColor: chipBackgroundOne,
+                          //bgColor: chipBackgroundOne,
                           width: MediaQuery.of(context).size.width * 0.40,
                           height: MediaQuery.of(context).size.height * 0.06,
                           title: "Cancel",

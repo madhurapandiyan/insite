@@ -55,7 +55,7 @@ class _DateRangeViewState extends State<DateRangeView> {
         if (currentCustomDatePick == CustomDatePick.customToDate) {
           customToDate = _selectedDay;
           toDate = _selectedDay;
-
+             Logger().wtf(customToDate);
           if (fromDate == null) {
             Utils.showToast("Please select start date ");
           } else {

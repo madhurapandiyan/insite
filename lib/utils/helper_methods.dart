@@ -2021,8 +2021,9 @@ class Utils {
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };
-    Logger().wtf(data.values);
+   
     intervalList.add(data);
+     Logger().wtf(intervalList.length);
     return intervalList;
   }
 

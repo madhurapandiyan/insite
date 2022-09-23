@@ -305,17 +305,15 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                           viewModel
                                                               .onCustomiozablestateChange),
                                                       Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 20),
-                                                              child: showingSwitchableWidget(
-                                                                  viewModel
-                                                                      .customizableState,
-                                                                  viewModel
-                                                                      .checkingCustomizeableState),
-                                                            ),
-                                                       
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 20),
+                                                        child: showingSwitchableWidget(
+                                                            viewModel
+                                                                .customizableState,
+                                                            viewModel
+                                                                .checkingCustomizeableState),
+                                                      ),
                                                       SizedBox(
                                                         height: 10,
                                                       ),

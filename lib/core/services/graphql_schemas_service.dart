@@ -2564,15 +2564,34 @@ readStatus
     return data;
   }
 
-  createGroup(List assetUids, String groupName, String? description) {
+  createGroup() {
     var data = """
-mutation{
-  createGroups(
-    assetUID:$assetUids,
-    description:"$description",
-    groupName:"$groupName"
-  ){
-    groupUID
+mutation createGroups(\$assetUID: [String], \$description: String, \$groupName: String){
+  createGroups(assetUID: \$assetUID, description: \$description, groupName: \$groupName){
+ groupUID
+  }
+}
+""";
+    return data;
+  }
+
+  groupsGrid() {
+    var data = """
+query (\$pageNumber: Int, \$sort: String, \$searchKey: String, \$searchValue: String){
+  groupsGrid(pageNumber: \$pageNumber, sort: \$sort, searchKey: \$searchKey, searchValue: \$searchValue){
+        total{
+      items,
+      pages
+    },
+    groups{
+      groupUid,
+      groupName,
+      description,
+      isFavourite,
+      createdOnUTC,
+      createdByUserName,
+      assetUID
+    }
   }
 }""";
     return data;
@@ -3530,6 +3549,16 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
     invitation_id,
     count,
     isInvitationSent,
+    isUpdated
+  }
+}""";
+    return data;
+  }
+
+   updateGroup() {
+    var data = """
+mutation updateGroups(\$groupUid: String, \$groupName: String, \$description: String, \$customerUID: String, \$associatedAssetUID: [String], \$dissociatedAssetUID: [String]){
+  updateGroups(groupUid: \$groupUid, groupName: \$groupName, description: \$description, customerUID: \$customerUID, associatedAssetUID: \$associatedAssetUID, dissociatedAssetUID: \$dissociatedAssetUID){
     isUpdated
   }
 }""";
