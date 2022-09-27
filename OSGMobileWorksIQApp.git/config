@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = true
+	symlinks = false
+	ignorecase = true
+[remote "origin"]
+	url = https://trmb-osg@dev.azure.com/trmb-osg/OSG_IS/_git/OSGMobileWorksIQApp
+	fetch = +refs/*:refs/*
+	mirror = true
