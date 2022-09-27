@@ -392,7 +392,7 @@ class Utils {
 
   static String? maintenanceFromDateFormate(String date) {
     try {
-      DateTime parseDate = DateTime.parse(date);
+      DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
       var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
       var formatedStringData = data.toString();
       return formatedStringData.replaceRange(19, formatedStringData.length, "");
