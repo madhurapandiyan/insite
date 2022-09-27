@@ -103,7 +103,7 @@ class _MaintenanceAssetListItemState extends State<MaintenanceAssetListItem> {
                                 InsiteTableRowItem(
                                   title: "Current Hour Meter : ",
                                   content: widget.assetData!.currentHourMeter!
-                                      .toStringAsFixed(0),
+                                      .toStringAsFixed(1),
                                 ),
                               ]),
                             ],

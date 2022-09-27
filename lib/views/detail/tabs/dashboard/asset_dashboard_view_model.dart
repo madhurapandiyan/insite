@@ -170,12 +170,21 @@ class AssetDashboardViewModel extends InsiteViewModel {
   }
 
   getMaintenanceCountData() async {
+     var outputFormat = DateFormat('yyyy/MM/dd 18:29:59');
+    var todayEndDate = outputFormat.format(DateTime.now());
+    var date = DateTime.now();
+    var nextWeekEndDate = new DateTime(date.year, date.month, date.day + 6);
     try {
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
+            assetId: assetDetail!.assetUid,
         fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
         endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
-      ));
+        nextWeekEndDate:
+                  Utils.maintenanceToDateFormate(nextWeekEndDate.toString()),
+              todayEndDate: todayEndDate)
+            
+      );
       if (data?.maintenanceDashboard?.dashboardData != null &&
           data!.maintenanceDashboard!.dashboardData!.isNotEmpty) {
         data.maintenanceDashboard?.dashboardData!.forEach((element) {
