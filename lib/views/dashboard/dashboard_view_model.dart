@@ -6,6 +6,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/assetstatus_model.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/maintenance_dashboard_count.dart';
+import 'package:insite/core/models/notification.dart';
 import 'package:insite/core/models/utilization_summary.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_location_service.dart';
@@ -23,6 +24,8 @@ import 'package:insite/views/fleet/fleet_view.dart';
 import 'package:insite/views/health/health_view.dart';
 import 'package:insite/views/maintenance/main/main_view.dart';
 import 'package:insite/views/maintenance/maintenance_view.dart';
+import 'package:insite/views/notification/notification_view.dart';
+import 'package:insite/views/utilization/tabs/list/utilization_list_view.dart';
 import 'package:insite/views/utilization/utilization_view.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -91,6 +94,7 @@ class DashboardViewModel extends InsiteViewModel {
 
   AssetCount? _faultCountData;
   AssetCount? get faultCountData => _faultCountData;
+
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
@@ -99,6 +103,14 @@ class DashboardViewModel extends InsiteViewModel {
 
   bool _maintenanceLoading = true;
   bool get maintenanceLoading => _maintenanceLoading;
+
+  bool _notificationLoading = true;
+  bool get notificationLoading => _notificationLoading;
+
+  NotificationData? _notificationCountDatas;
+  NotificationData? get notificationCountDatas => _notificationCountDatas;
+
+  String? notificationFilterTitle;
 
   String _endDayRange = DateFormat('yyyy-MM-dd').format(DateTime.now());
   set endDayRange(String endDay) {
@@ -127,6 +139,7 @@ class DashboardViewModel extends InsiteViewModel {
     _assetLocationService!.setUp();
     _localStorageService!.setUp();
     _assetUtilizationService!.setUp();
+    _maintenanceService!.setUp();
     _dateRangeService!.setUp();
     setUp();
     Future.delayed(Duration(seconds: 1), () async {
@@ -200,9 +213,10 @@ class DashboardViewModel extends InsiteViewModel {
     getIdlingLevelData(false, null);
     getUtilizationSummary();
     getFaultCountData();
-    //getMaintenanceCountData();
+    getMaintenanceCountData();
+    getNotificationCountData();
     _refreshing = false;
-    // notifyListeners();
+    notifyListeners();
   }
 
   onRefereshClicked() {
@@ -344,14 +358,14 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFaultCountData() async {
-    Logger().i("get fault count data");
+    Logger().e("get fault count data");
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCount(
         Utils.getFaultDateFormatStartDate(
-            DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
-        Utils.getFaultDateFormatEndDate(
-            DateTime.now().subtract(Duration(days: 1))),
+            DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
+                .subtract(Duration(days: 1))),
+        Utils.getFaultDateFormatEndDate(DateTime.now()),
         graphqlSchemaService!.getFaultCountData(
           startDate: Utils.getFaultDateFormatStartDate(
               DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
@@ -369,32 +383,45 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getMaintenanceCountData() async {
+    var outputFormat = DateFormat('yyyy/MM/dd 18:29:59');
+    var todayEndDate = outputFormat.format(DateTime.now());
+    var date = DateTime.now();
+    var nextWeekEndDate = new DateTime(date.year, date.month, date.day + 6);
+
     try {
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
-        fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-        endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
-      ));
-      data?.maintenanceDashboard?.dashboardData!.forEach((element) {
-        if (element.displayName == "Overdue") {
-          element.maintenanceTotal = MAINTENANCETOTAL.OVERDUE;
-        }
-        if (element.displayName == "Upcoming") {
-          element.maintenanceTotal = MAINTENANCETOTAL.UPCOMING;
-        }
-        if (element.subCount != null) {
-          element.subCount!.forEach((dashboardData) {
-            if (dashboardData.displayName == "Next Week") {
-              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTWEEK;
-            }
-            if (dashboardData.displayName == "Next Month") {
-              dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
-            }
-          });
-        }
-      });
-      maintenanceDashboardCount = data;
-      _maintenanceLoading = false;
+              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+              endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+              nextWeekEndDate:
+                  Utils.maintenanceToDateFormate(nextWeekEndDate.toString()),
+              todayEndDate: todayEndDate));
+      if (data?.maintenanceDashboard?.dashboardData != null &&
+          data!.maintenanceDashboard!.dashboardData!.isNotEmpty) {
+        data.maintenanceDashboard?.dashboardData!.forEach((element) {
+          if (element.displayName == "Overdue") {
+            element.maintenanceTotal = MAINTENANCETOTAL.OVERDUE;
+          }
+          if (element.displayName == "Upcoming") {
+            element.maintenanceTotal = MAINTENANCETOTAL.UPCOMING;
+          }
+          if (element.subCount != null) {
+            element.subCount!.forEach((dashboardData) {
+              if (dashboardData.displayName == "Next Week") {
+                dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTWEEK;
+              }
+              if (dashboardData.displayName == "Next Month") {
+                dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
+              }
+            });
+          }
+        });
+        maintenanceDashboardCount = data;
+        _maintenanceLoading = false;
+      } else {
+        _maintenanceLoading = false;
+      }
+
       notifyListeners();
     } catch (e) {}
   }
@@ -432,11 +459,15 @@ class DashboardViewModel extends InsiteViewModel {
     try {
       maintenanceDashboardCount = null;
       notifyListeners();
+      Logger().w(maintenanceStartDate);
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
-              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-              endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
-              prodFamily: filterData.title));
+              fromDate: Utils.maintenanceFromDateFormateEndDate(maintenanceStartDate!),
+              endDate: Utils.maintenanceFromDateFormate(maintenanceEndDate!),
+              prodFamily: filterData.title,
+              todayEndDate: Utils.maintenanceFromDateFormate(maintenanceEndDate!),
+              nextWeekEndDate: Utils.maintenanceFromDateNextWeekEndDate(maintenanceEndDate!)
+              ));
       maintenanceDashboardCount = data;
       _maintenanceLoading = false;
       notifyListeners();
@@ -459,7 +490,7 @@ class DashboardViewModel extends InsiteViewModel {
       await addFilter(currentFilterSelected!);
     }
     await addFilter(data);
-    await _dateRangeService!.updateDateFilter(dateFilter);
+    //await _dateRangeService!.updateDateFilter(dateFilter);
   }
 
   gotoFaultPage() {
@@ -477,7 +508,7 @@ class DashboardViewModel extends InsiteViewModel {
   gotoUtilizationPage() {
     Logger().i("go to utilization page");
     _navigationService!
-        .navigateWithTransition(UtilLizationView(), transition: "rightToLeft");
+        .navigateWithTransition(UtilizationListView(), transition: "rightToLeft");
   }
 
   getUtilizationSummary() async {
@@ -569,12 +600,14 @@ class DashboardViewModel extends InsiteViewModel {
 
   getFilterDataApplied(FilterData filterData, bool isFromProdFamily) async {
     try {
+      notificationFilterTitle = filterData.title;
       this._isFilterApplied = true;
       this._currentFilterSelected = filterData;
       // await clearFilterOfTypeInDb(FilterType.PRODUCT_FAMILY);
       // await addFilter(filterData);
       _refreshing = true;
       _maintenanceLoading = true;
+      _notificationLoading = true;
       notifyListeners();
       // if (isFromProdFamily) {
       //   await getProductFamilyAssetCount();
@@ -588,6 +621,7 @@ class DashboardViewModel extends InsiteViewModel {
       await getIdlingLevelFilterData(filterData.title);
       await getFaultCountDataFilterData(filterData.title);
       await getMaintenanceCountDataWithFilter(filterData);
+      await getNotificationCountDataWithFilter(filterData);
       _refreshing = false;
       notifyListeners();
     } catch (e) {
@@ -650,6 +684,7 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getFaultCountDataFilterData(dropDownValue) async {
+    Logger().v(endDate);
     _faultCountloading = true;
     notifyListeners();
     AssetCount? count = await _assetService!.getFaultCountFilterApplied(
@@ -661,7 +696,7 @@ class DashboardViewModel extends InsiteViewModel {
             startDate: Utils.getFaultDateFormatStartDate(
                 DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
             endDate: Utils.getFaultDateFormatEndDate(
-                DateTime.now().subtract(Duration(days: 1)))));
+                DateTime.now())));
     if (count != null) {
       _faultCountData = count;
     }
@@ -683,5 +718,45 @@ class DashboardViewModel extends InsiteViewModel {
           _utilizationSummary!.averageMonth!.runtimeHours);
     }
     _assetUtilizationLoading = false;
+  }
+
+  getNotificationCountData() async {
+    try {
+      var data = await _assetService?.getNotificationDashboardCount(
+          query: await graphqlSchemaService!.notificationDashboardCount(),
+          payload: {"productFamily": ""});
+
+      if (data?.notifications != null) {
+        _notificationCountDatas = data;
+        _notificationLoading = false;
+      } else {
+        _notificationLoading = false;
+      }
+      notifyListeners();
+    } catch (e) {}
+  }
+
+  getNotificationCountDataWithFilter(FilterData filterData) async {
+    try {
+      var data = await _assetService?.getNotificationDashboardCount(
+          query: await graphqlSchemaService!.notificationDashboardCount(),
+          payload: {"productFamily": filterData.title});
+
+      if (data?.notifications != null) {
+        _notificationCountDatas = data;
+        _notificationLoading = false;
+      } else {
+        _notificationLoading = false;
+      }
+
+      notifyListeners();
+    } catch (e) {}
+  }
+
+  onNotificationFilterClicked(String value) {
+    _navigationService!.navigateToView(NotificationView(
+      filterValue: value,
+      productFamily: notificationFilterTitle,
+    ));
   }
 }

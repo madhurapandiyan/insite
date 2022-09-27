@@ -32,6 +32,18 @@ AddNotificationPayLoad _$AddNotificationPayLoadFromJson(
       numberOfOccurences: json['numberOfOccurences'] as int?,
       notificationDeliveryChannel:
           json['notificationDeliveryChannel'] as String?,
+      assetGroupUIDs: (json['assetGroupUIDs'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      geofenceUIDs: (json['geofenceUIDs'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      siteOperands: (json['siteOperands'] as List<dynamic>?)
+          ?.map((e) => Operand.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      zones: (json['zones'] as List<dynamic>?)
+          ?.map((e) => ZonePayload.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$AddNotificationPayLoadToJson(
@@ -50,6 +62,10 @@ Map<String, dynamic> _$AddNotificationPayLoadToJson(
       'notificationTypeId': instance.notificationTypeId,
       'numberOfOccurences': instance.numberOfOccurences,
       'notificationDeliveryChannel': instance.notificationDeliveryChannel,
+      'geofenceUIDs': instance.geofenceUIDs,
+      'assetGroupUIDs': instance.assetGroupUIDs,
+      'siteOperands': instance.siteOperands?.map((e) => e.toJson()).toList(),
+      'zones': instance.zones?.map((e) => e.toJson()).toList(),
     };
 
 NotificationSubscribers _$NotificationSubscribersFromJson(
@@ -92,4 +108,15 @@ Map<String, dynamic> _$OperandToJson(Operand instance) => <String, dynamic>{
       'operandID': instance.operandID,
       'operatorId': instance.operatorId,
       'value': instance.value,
+    };
+
+ZonePayload _$ZonePayloadFromJson(Map<String, dynamic> json) => ZonePayload(
+      isInclusion: json['isInclusion'] as bool?,
+      zoneUID: json['zoneUID'] as String?,
+    );
+
+Map<String, dynamic> _$ZonePayloadToJson(ZonePayload instance) =>
+    <String, dynamic>{
+      'isInclusion': instance.isInclusion,
+      'zoneUID': instance.zoneUID,
     };

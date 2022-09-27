@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
-import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:dio/dio.dart';
@@ -32,7 +31,7 @@ import 'package:stacked_services/stacked_services.dart';
 import '../../add_group/asset_selection_widget/asset_selection_widget_view.dart';
 import '../../add_group/model/add_group_model.dart';
 import './model/zone.dart';
-
+import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'model/fault_code_type_search.dart';
 
 class AddNewNotificationsViewModel extends InsiteViewModel {
@@ -49,6 +48,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
   TabController? controller;
   Customer? accountSelected;
+
+   NotificationExist? notificationExists ;
   @override
   void dispose() {
     super.dispose();
@@ -66,7 +67,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     setUp();
 
     Future.delayed(Duration(seconds: 1), () async {
-      showLoadingDialog();
+      showLoadingDialog(tapDismiss: false);
       await getNotificationTypesData();
       await onGettingFaultCodeData();
       hideLoadingDialog();
@@ -597,6 +598,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       "Site Exit",
       "Site Entry & Site Exit"
     ];
+
+    List<String> maintenance = ["Overdue", "Upcoming"];
     isEditing = true;
     notificationController.text = data.alertConfig!.notificationTitle!;
     notificationTypeGroupID = data.alertConfig!.notificationTypeGroupID!;
@@ -631,15 +634,34 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       _notificationSubTypes.clear();
       await getGeofenceData();
     } else {
-      _noticationTypes.clear();
-      _dropDownInitialValue = data.alertConfig!.notificationType!;
-      _noticationTypes.add(data.alertConfig!.notificationType!);
-      _notificationSubTypes.clear();
-      if (data.alertConfig!.operands!.isNotEmpty) {
-        data.alertConfig!.operands!.forEach((element) {
-          _dropDownSubInitialValue = element.condition!;
-          _notificationSubTypes = engineHourList;
-        });
+      Logger().w(data.alertConfig!.notificationType);
+      if (data.alertConfig!.notificationType == "Maintenance") {
+        _noticationTypes.clear();
+        _dropDownInitialValue = data.alertConfig!.notificationType!;
+        _noticationTypes.add(data.alertConfig!.notificationType!);
+        _notificationSubTypes.clear();
+        if (data.alertConfig!.operands!.isNotEmpty) {
+          data.alertConfig!.operands!.forEach((element) {
+            if (element.operandID == 1) {
+              _dropDownSubInitialValue = maintenance[0];
+            } else {
+              _dropDownSubInitialValue = maintenance[1];
+            }
+
+            _notificationSubTypes = maintenance;
+          });
+        }
+      } else {
+        _noticationTypes.clear();
+        _dropDownInitialValue = data.alertConfig!.notificationType!;
+        _noticationTypes.add(data.alertConfig!.notificationType!);
+        _notificationSubTypes.clear();
+        if (data.alertConfig!.operands!.isNotEmpty) {
+          data.alertConfig!.operands!.forEach((element) {
+            _dropDownSubInitialValue = element.condition!;
+            _notificationSubTypes = engineHourList;
+          });
+        }
       }
     }
 
@@ -803,6 +825,20 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  String geofenceDropDownValue() {
+    String data = "";
+    if (selectedList!.isNotEmpty) {
+      selectedList!.forEach((element) {
+        data = data + ", ${element.items!}";
+      });
+
+      return data.replaceFirst(",", "").padLeft(0);
+      ;
+    } else {
+      return "Select";
+    }
+  }
+
 // occurence textbox change
 
   // onChagingOccurenceBox(String value) {
@@ -833,8 +869,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     faultCodeType.forEach((element) {
       element.state = true;
     });
+
+   
+    
+  
     // customizableState.forEach((element) {
-    //   element.state = !element.state!;
+    //   element.state = true;
     // });
     notifyListeners();
   }
@@ -1318,8 +1358,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       geofenceData = await _geofenceservice!.getGeofenceData();
       if (geofenceData != null) {
         geofenceData!.geofences!.forEach((element) {
-          geoenceData.add(CheckBoxDropDown(
-              items: element.GeofenceName));
+          geoenceData.add(CheckBoxDropDown(items: element.GeofenceName));
         });
       }
       hideLoadingDialog();
@@ -1405,11 +1444,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           element!.contains("Odometer") ||
           element.contains("Switches") ||
           element.contains("Fluid Analysis") ||
-          element.contains("Maintenance") ||
+          //element.contains("Maintenance") ||
+          element.contains("Fuel") ||
+          element.contains("Fuel Loss") ||
           element.contains("Inspection") ||
           element.contains("Asset Security") ||
           element.contains("Fluid Analysis") ||
-          element.contains("Geofence") ||
+          //element.contains("Geofence") ||
           element.contains("Zone Inclusion/Exclusion") ||
           element.contains("Fluid Analysis") ||
           element.contains("Power Mode") ||
@@ -1425,16 +1466,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   checkIfNotificationNameExist(String? value) async {
     try {
-      if (value!.length >= 4) {
-        NotificationExist? notificationExists = await _notificationService!
+      if (value!.length >=3) {
+     notificationExists  = await _notificationService!
             .checkNotificationTitle(
                 value, graphqlSchemaService!.checkNotificationTitle(value));
         // isTitleExist = notificationExists!.alertTitleExists!;
 
-        if (notificationExists?.alertTitleExists == true) {
-          _snackBarservice!.showSnackbar(message: "Notification title exists");
-          notificationController.clear();
-        }
+       
         notifyListeners();
       } else {
         //isNotificationNameChange=true;
@@ -1498,27 +1536,45 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
-  cancel() {
-    _showZone = false;
-    nameController.clear();
-    notificationController.clear();
-    emailController.clear();
-    descriptionController.clear();
-    occurenceController.clear();
-    inclusionZoneName.clear();
-    exclusionZoneName.clear();
-    nameController.clear();
-    notificationController.clear();
-    emailController.clear();
-    descriptionController.clear();
-    occurenceController.clear();
-    assetStatusOccurenceController.clear();
-    selectedUser.clear();
-    selectedAsset?.clear();
-    scheduleDay.clear();
-    _dropDownInitialValue = "select";
-    _dropDownSubInitialValue = "Options";
-    notifyListeners();
+  cancel(BuildContext context) async {
+    bool? value = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            child: InsiteDialog(
+              title: "Confirm Cancellation",
+              message:
+                  "All the unsaved changes will be lost. Are you sure you want to cancel the operation?",
+              onPositiveActionClicked: () {
+                Navigator.pop(context, true);
+                _showZone = false;
+                nameController.clear();
+                notificationController.clear();
+                emailController.clear();
+                descriptionController.clear();
+                occurenceController.clear();
+                inclusionZoneName.clear();
+                exclusionZoneName.clear();
+                nameController.clear();
+                notificationController.clear();
+                emailController.clear();
+                descriptionController.clear();
+                occurenceController.clear();
+                assetStatusOccurenceController.clear();
+                selectedUser.clear();
+                selectedAsset?.clear();
+                scheduleDay.clear();
+                _dropDownInitialValue = "select";
+                _dropDownSubInitialValue = "Options";
+                notifyListeners();
+              },
+              onNegativeActionClicked: () {
+                Navigator.pop(context, false);
+              },
+            ));
+      },
+    );
   }
 
   getFaultCodeOperandsAndNotificationId() {
@@ -1714,6 +1770,27 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
+  getMaintenanceAndNotificationId() {
+    operandData.clear();
+    var notificationTypeGroups = alterTypes!.notificationTypeGroups!
+        .singleWhere(
+            (element) => element.notificationTypeGroupName == "Maintenance");
+    notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
+    notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
+        (element) => element.notificationTypeName == "Maintenance");
+    var OperandData = notificationType?.operands;
+    notificationTypeId = notificationType!.notificationTypeID!;
+    var fuelLossOperandData =
+        OperandData?.singleWhere((element) => element.operandName == "DueType");
+    // if (fuelLossOperandData!.operators!
+    //     .any((element) => element.name == _dropDownSubInitialValue)) {
+    operandData.add(Operand(
+        operandID: OperandData!.first.operandID,
+        operatorId: OperandData.first.operators!.first.operatorID,
+        value: assetStatusOccurenceController.text));
+    // }
+  }
+
   gettingNotificationIdandOperands() async {
     if (_dropDownInitialValue == "Fault Code") {
       await getFaultCodeOperandsAndNotificationId();
@@ -1752,6 +1829,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       });
     } else if (_dropDownInitialValue == "Fuel Loss") {
       await getFuelLossOperandAndNotificationId();
+      Logger().w("notificationGroupid ${notificationTypeGroupID}");
+      Logger().i("notificationTypeId ${notificationTypeId}");
+      operandData.forEach((element) {
+        Logger().wtf("OperandData ${element.toJson()}");
+      });
+    } else if (_dropDownInitialValue == "Maintenance") {
+      await getMaintenanceAndNotificationId();
       Logger().w("notificationGroupid ${notificationTypeGroupID}");
       Logger().i("notificationTypeId ${notificationTypeId}");
       operandData.forEach((element) {
@@ -1914,6 +1998,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       assetUidData.add(element.assetIdentifier!);
     });
 
+     if (notificationExists?.alertTitleExists == true) {
+          _snackBarservice!.showSnackbar(message: "Notification title exists");
+          // notificationController.clear();
+        }
+
     if (notificationController.text.isEmpty) {
       _snackBarservice!.showSnackbar(message: "Notification Name is required");
       return;
@@ -1953,7 +2042,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       await gettingNotificationIdandOperands();
       AddNotificationPayLoad? notificationPayLoad = AddNotificationPayLoad(
           alertCategoryID: 1,
-          alertGroupId: 1,
+          alertGroupId: dropDownInitialValue == "Geofence" ? 2 : 1,
           alertTitle: notificationController.text,
           allAssets: false,
           assetUIDs: assetUidData,
@@ -1970,35 +2059,19 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       Logger().w(notificationPayLoad.toJson());
 
       try {
-        NotificationAdded? response =
-            await _notificationService!.addNewNotification(
-                notificationPayLoad,
-                graphqlSchemaService!.createNotification(
-                  geofenceId: geofenceId,
-                  siteOperand: siteOperand,
-                  alertCategoryID: 1,
-                  alertGroupId: dropDownInitialValue == "Geofence" ? 2 : 1,
-                  alertTitle: notificationController.text,
-                  assetId: assetUidData,
-                  currentDate: DateFormat("MM/dd/yyyy").format(DateTime.now()),
-                  notificationDeliveryChannel: "email",
-                  notificationSubscribers: NotificationSubscribers(
-                      emailIds: emailIds, phoneNumbers: []),
-                  notificationTypeGroupID: notificationTypeGroupID,
-                  notificationTypeId: notificationTypeId,
-                  operand: operandData,
-                  numberOfOccurences: 1,
-                  schedule: scheduleDay,
-                ));
+        NotificationAdded? response = await _notificationService!
+            .addNewNotification(notificationPayLoad,
+                graphqlSchemaService!.createNotification());
 
         if (response != null) {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");
           hideLoadingDialog();
           gotoManageNotificationsPage();
-        } else {
-          _snackBarservice!
-              .showSnackbar(message: "Kindly recheck credentials added");
-        }
+        } 
+        // else {
+        //   _snackBarservice!
+        //       .showSnackbar(message: "Kindly recheck credentials added");
+        // }
         hideLoadingDialog();
         Logger().i(response!.toJson());
         notifyListeners();

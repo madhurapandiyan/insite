@@ -4,6 +4,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/fault_health_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -87,54 +88,67 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
             SizedBox(
               height: 10,
             ),
-            (widget.loading! || widget.isRefreshing!)
-                ? Expanded(child: InsiteProgressBar())
-                : Expanded(
-                    child: ListView.builder(
-                        itemCount: widget.countData!.length,
-                        shrinkWrap: true,
-                        padding: EdgeInsets.symmetric(horizontal: 4),
-                        physics: NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          Count countResponse = widget.countData![index];
-                          return FaultWidget(
-                            data: countResponse,
-                            showAssetCount: false,
-                            screenType: widget.screenType,
-                            onSelected: () {
-                              if (countResponse.faultCount! > 0) {
-                                widget.onFilterSelected!(
-                                    FilterData(
-                                        isSelected: true,
-                                        count:
-                                            countResponse.assetCount.toString(),
-                                        title: countResponse.countOf,
-                                        type: FilterType.SEVERITY),
-                                    Utils.onFilterIdleDate(
-                                        DateRangeType.lastSevenDays));
-                              }
-                            },
-                            buttonColor: buttonColor[index],
-                            level: Utils.getFaultLabel(countResponse.countOf!),
-                          );
-                        }),
-                  ),
-            Divider(
-              thickness: 1.0,
-              color: Theme.of(context).dividerColor,
-            ),
-            Container(
-              width: double.maxFinite,
-              height: MediaQuery.of(context).size.height * 0.05,
-              child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: InsiteTextAlign(
-                      text: "VIEWING DATA FOR 7 DAYS",
-                      textAlign: TextAlign.center,
-                      fontWeight: FontWeight.w900,
-                      size: 10.0)),
-            ),
+            widget.loading!
+                ? InsiteProgressBar()
+                : widget.countData!.isNotEmpty
+                    ? Expanded(
+                        child: ListView.builder(
+                            itemCount: widget.countData!.length,
+                            shrinkWrap: true,
+                            padding: EdgeInsets.symmetric(horizontal: 4),
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              Count countResponse = widget.countData![index];
+
+                              return FaultWidget(
+                                data: countResponse,
+                                showAssetCount: false,
+                                screenType: widget.screenType,
+                                onSelected: () {
+                                  if (countResponse.faultCount! > 0) {
+                                    widget.onFilterSelected!(
+                                        FilterData(
+                                            isSelected: true,
+                                            count: countResponse.assetCount
+                                                .toString(),
+                                            title: countResponse.countOf,
+                                            type: FilterType.SEVERITY),
+                                        Utils.onFilterIdleDate(
+                                            DateRangeType.lastSevenDays));
+                                  }
+                                },
+                                buttonColor: buttonColor[index],
+                                level:
+                                    Utils.getFaultLabel(countResponse.countOf!),
+                              );
+                            }),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: EmptyView(title: "No fault codes to display"),
+                      ),
+            (widget.countData!.isNotEmpty)
+                ? Column(
+                    children: [
+                      Divider(
+                        thickness: 1.0,
+                        color: Theme.of(context).dividerColor,
+                      ),
+                      Container(
+                        width: double.maxFinite,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: InsiteTextAlign(
+                                text: "VIEWING DATA FOR 7 DAYS",
+                                textAlign: TextAlign.center,
+                                fontWeight: FontWeight.w900,
+                                size: 10.0)),
+                      ),
+                    ],
+                  )
+                : SizedBox(),
           ],
         ),
       ),

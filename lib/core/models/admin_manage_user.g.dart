@@ -50,6 +50,7 @@ Map<String, dynamic> _$TotalToJson(Total instance) => <String, dynamic>{
 
 Users _$UsersFromJson(Map<String, dynamic> json) => Users(
       userUid: json['userUid'] as String?,
+      invitationUID: json['invitationUID'] as String?,
       first_name: json['first_name'] as String?,
       last_name: json['last_name'] as String?,
       loginId: json['loginId'] as String?,
@@ -71,6 +72,7 @@ Users _$UsersFromJson(Map<String, dynamic> json) => Users(
 
 Map<String, dynamic> _$UsersToJson(Users instance) => <String, dynamic>{
       'userUid': instance.userUid,
+      'invitationUID': instance.invitationUID,
       'first_name': instance.first_name,
       'last_name': instance.last_name,
       'loginId': instance.loginId,
@@ -90,12 +92,18 @@ Address _$AddressFromJson(Map<String, dynamic> json) => Address(
       country: json['country'] as String?,
       zipcode: json['zipcode'] as String?,
       city: json['city'] as String?,
+      addressline1: json['addressline1'] as String?,
+      addressline2: json['addressline2'] as String?,
+      state: json['state'] as String?,
     );
 
 Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'country': instance.country,
       'zipcode': instance.zipcode,
       'city': instance.city,
+      'state': instance.state,
+      'addressline1': instance.addressline1,
+      'addressline2': instance.addressline2,
     };
 
 ApplicationAccess _$ApplicationAccessFromJson(Map<String, dynamic> json) =>

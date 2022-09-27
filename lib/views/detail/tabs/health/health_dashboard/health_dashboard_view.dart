@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/note.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/asset_detail_health.dart';
@@ -8,6 +9,7 @@ import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
 import 'package:insite/widgets/smart_widgets/notes.dart';
 import 'package:insite/widgets/smart_widgets/ping_device.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'health_dashboard_view_model.dart';
 
@@ -132,16 +134,26 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
                     ),
-                    child: Notes(
-                      controller: notesController,
-                      notes: viewModel.assetNotes,
-                      onTap: () {
-                        if (notesController!.text.isNotEmpty) {
-                          viewModel.postNotes(notesController!.text);
-                          notesController!.text = "";
-                        }
-                      },
-                      isLoading: viewModel.postingNote,
+                    child: Column(
+                      children: [
+                        Notes(
+                         
+                          controller: notesController,
+                          notes: viewModel.assetNotes,
+                          onTap: () {
+                            if (notesController!.text.isNotEmpty) {
+                              
+                              viewModel.postNotes(notesController!.text);
+                              notesController!.text = "";
+                              Logger().wtf(notesController!.text);
+                              // viewModel.assetNotes.forEach((element) {
+                              //   element.userName;});
+                             
+                            }
+                          },
+                          isLoading: viewModel.postingNote,
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(

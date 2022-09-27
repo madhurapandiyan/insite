@@ -2,7 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'estimated_asset_setting.g.dart';
 
 @JsonSerializable()
-class EstimatedAssetSetting {
+class 
+EstimatedAssetSetting {
   List<AssetTargetSettings>? assetTargetSettings;
 
   EstimatedAssetSetting({this.assetTargetSettings});
@@ -32,13 +33,13 @@ class AssetTargetSettings {
 
 @JsonSerializable()
 class Runtime {
-  double? sunday;
-  double? monday;
-  double? tuesday;
-  double? wednesday;
-  double? thursday;
-  double? friday;
-  double? saturday;
+  dynamic sunday;
+  dynamic monday;
+  dynamic tuesday;
+  dynamic wednesday;
+  dynamic thursday;
+  dynamic friday;
+  dynamic saturday;
 
   Runtime(
       {this.sunday,
@@ -57,13 +58,13 @@ class Runtime {
 
 @JsonSerializable()
 class Idle {
-  double? sunday;
-  double? monday;
-  double? tuesday;
-  double? wednesday;
-  double? thursday;
-  double? friday;
-  double? saturday;
+  dynamic sunday;
+  dynamic monday;
+  dynamic tuesday;
+  dynamic wednesday;
+  dynamic thursday;
+  dynamic friday;
+  dynamic saturday;
 
   Idle(
       {this.sunday,

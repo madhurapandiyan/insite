@@ -39,12 +39,11 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                     SizedBox(
                       height: 40,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: InsiteText(
+                    FittedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InsiteText(
                             text: "manage asset configuration".toUpperCase() +
                                 " (" +
                                 viewModel.asset.length.toString() +
@@ -54,64 +53,93 @@ class _AssetSettingsViewState extends State<AssetSettingsView> {
                             fontWeight: FontWeight.w700,
                             size: 14,
                           ),
-                        ),
-                        // viewModel.showEdit
-                        //     ? ClipRRect(
-                        //         borderRadius: BorderRadius.only(
-                        //           topLeft: Radius.circular(10),
-                        //           topRight: Radius.circular(10),
-                        //           bottomRight: Radius.circular(10),
-                        //           bottomLeft: Radius.circular(10),
-                        //         ),
-                        //         child: InsiteButton(
-                        //             title: "",
-                        //             onTap: () {
-                        //               viewModel.onClickEditselected();
-                        //             },
-                        //             icon: Icon(
-                        //               Icons.edit,
-                        //               color: appbarcolor,
-                        //             )),
-                        //       )
-                        //     : SizedBox(),
-                        viewModel.showMenu
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: InsitePopMenuItemButton(
-                                    width: 40,
-                                    height: 40,
-                                    //icon: Icon(Icons.more_vert),
-                                    widget: onContextMenuSelected(viewModel),
+
+                          // viewModel.showEdit
+                          //     ? Padding(
+                          //       padding: const EdgeInsets.symmetric(horizontal: 5),
+                          //       child: ClipRRect(
+                          //           borderRadius: BorderRadius.only(
+                          //             topLeft: Radius.circular(10),
+                          //             topRight: Radius.circular(10),
+                          //             bottomRight: Radius.circular(10),
+                          //             bottomLeft: Radius.circular(10),
+                          //           ),
+                          //           child: InsiteButton(
+                          //               title: "",
+                          //               onTap: () {
+                          //                 viewModel.onClickEditselected();
+                          //               },
+                          //               icon: Icon(
+                          //                 Icons.edit,
+                          //                 color: appbarcolor,
+                          //               )),
+                          //         ),
+                          //     )
+                          //     : SizedBox(),
+
+                          // viewModel.showEdit
+                          //     ? Padding(
+                          //         padding:
+                          //             const EdgeInsets.symmetric(horizontal: 5),
+                          //         child: ClipRRect(
+                          //           borderRadius: BorderRadius.only(
+                          //             topLeft: Radius.circular(10),
+                          //             topRight: Radius.circular(10),
+                          //             bottomRight: Radius.circular(10),
+                          //             bottomLeft: Radius.circular(10),
+                          //           ),
+                          //           child: InsiteButton(
+                          //               title: "",
+                          //               onTap: () {
+                          //                 viewModel.onClickEditselected();
+                          //               },
+                          //               icon: Icon(
+                          //                 Icons.edit,
+                          //                 color: appbarcolor,
+                          //               )),
+                          //         ),
+                          //       )
+                          //     : SizedBox(),
+
+                          viewModel.showMenu
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
                                   ),
-                                ))
-                            : SizedBox(),
-                        // viewModel.showDeSelect
-                        //     ? ClipRRect(
-                        //         borderRadius: BorderRadius.only(
-                        //           topLeft: Radius.circular(10),
-                        //           topRight: Radius.circular(10),
-                        //           bottomRight: Radius.circular(10),
-                        //           bottomLeft: Radius.circular(10),
-                        //         ),
-                        //         child: InsiteButton(
-                        //             title: "",
-                        //             onTap: () {
-                        //               viewModel.onItemDeselect();
-                        //             },
-                        //             icon: Icon(
-                        //               Icons.close,
-                        //               color: appbarcolor,
-                        //             )),
-                        //       )
-                        //     : SizedBox()
-                      ],
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: InsitePopMenuItemButton(
+                                      width: 40,
+                                      height: 40,
+                                      //icon: Icon(Icons.more_vert),
+                                      widget: onContextMenuSelected(viewModel),
+                                    ),
+                                  ))
+                              : SizedBox(),
+                          // viewModel.showDeSelect
+                          //     ? ClipRRect(
+                          //         borderRadius: BorderRadius.only(
+                          //           topLeft: Radius.circular(10),
+                          //           topRight: Radius.circular(10),
+                          //           bottomRight: Radius.circular(10),
+                          //           bottomLeft: Radius.circular(10),
+                          //         ),
+                          //         child: InsiteButton(
+                          //             title: "",
+                          //             onTap: () {
+                          //               viewModel.onItemDeselect();
+                          //             },
+                          //             icon: Icon(
+                          //               Icons.close,
+                          //               color: appbarcolor,
+                          //             )),
+                          //       )
+                          //     : SizedBox()
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 10,

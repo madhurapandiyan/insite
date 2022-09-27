@@ -30,13 +30,21 @@ class MainViewState extends State<MainView> {
   List<String?>? dateRange = [];
   MainViewModel? model;
 
+  // @override
+  // initState() {
+  //   model = MainViewModel();
+  //   super.initState();
+  // }
+
   onFilterApplied() {
     model!.refresh();
+    
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
+      
       builder: (BuildContext context, MainViewModel viewModel, Widget? _) {
         model = viewModel;
         return Stack(

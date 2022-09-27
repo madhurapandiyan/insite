@@ -40,6 +40,8 @@ dependencies:
   geobase: ^0.1.1
   in_app_update: ^3.0.0
   jwt_decoder: ^2.0.1
+  flutter_typeahead: ^4.0.0
+
 
 
   hive: ^2.0.4
@@ -75,6 +77,7 @@ dependencies:
   firebase_crashlytics: ^2.7.3
   firebase_core: ^1.16.0
   horizontal_data_table: any
+  phone_number: ^1.0.0
   
   firebase_core_platform_interface: 4.4.0
 
@@ -187,6 +190,13 @@ flutter:
     - assets/images/model/TMX20.png
     - assets/images/maintenance.svg
     - assets/images/invert.svg
+    - assets/images/dashboardicon.svg
+    - assets/images/fleeticon.svg
+    - assets/images/utilizationicon.svg
+    - assets/images/maintenanceicon.svg
+    - assets/images/healthicon.svg
+    - assets/images/asset_operationicon.svg
+    - assets/images/adminisitratoricon.svg
     
   fonts:
     - family: Roboto

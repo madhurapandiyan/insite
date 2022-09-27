@@ -40,7 +40,7 @@ class GoogleMapDetailWidget extends StatefulWidget {
 }
 
 class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
-  String? _currentSelectedItem = "MAP";
+  String? _currentSelectedItem = 'SATELLITE';
   double zoomVal = 5.0;
   Completer<GoogleMapController> _controller = Completer();
   LatLng? _lastMapPosition;
@@ -133,9 +133,9 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                                             .bodyText1!
                                             .color),
                                     items: [
+                                      'SATELLITE',
                                       'MAP',
                                       'TERRAIN',
-                                      'SATELLITE',
                                       'HYBRID'
                                     ]
                                         .map((map) => DropdownMenuItem(
@@ -408,7 +408,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                   children: [
                     FittedBox(
                       child: InsiteText(
-                        text: widget.details?.assetSerialNumber??"-",
+                        text: widget.details?.assetSerialNumber ?? "-",
                         fontWeight: FontWeight.bold,
                         size: 14,
                       ),

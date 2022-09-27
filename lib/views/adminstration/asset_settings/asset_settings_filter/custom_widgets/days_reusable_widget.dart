@@ -9,10 +9,10 @@ class DaysReusableWidget extends StatefulWidget {
   final String? value;
   final Function(String)? onRuntimeValueChanged;
   final Function(String)? onIdleValueChanged;
-  final double? countRuntimeValue;
-  final double? countIdleValue;
+  final dynamic countRuntimeValue;
+  final dynamic countIdleValue;
 
-  final double? percentCountValue;
+  final dynamic? percentCountValue;
   final Function(String)? onPercentCountValueChange;
   final bool? isChangingState;
 

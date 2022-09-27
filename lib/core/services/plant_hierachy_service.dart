@@ -7,6 +7,7 @@ import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/plant_heirarchy.dart';
 
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/filter.dart';
@@ -34,25 +35,37 @@ class PlantHeirarchyAssetService extends BaseService {
     }
   }
 
-  Future<HierarchyAssets?> getResultsFromPlantHierchyApi() async {
+  Future<HierarchyAssets?> getResultsFromPlantHierchyApi(query) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlPlantData(
+          query: query,
+          customerId: "THC",
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        Logger().w(data.data["frameSubscription"]);
+        return HierarchyAssets.fromJson(data.data["frameSubscription"]);
+      } else {
+        HierarchyAssets heierarchyssetsResults =
+            await MyApi().getClientNine()!.getPlantHierarchyAssetsDetails(
+                  Urls.plantHierarchyAssetsResult +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                );
 
-      HierarchyAssets heierarchyssetsResults =
-          await MyApi().getClientNine()!.getPlantHierarchyAssetsDetails(
-                Urls.plantHierarchyAssetsResult +
-                    FilterUtils.constructQueryFromMap(queryMap),
-              );
+        if (heierarchyssetsResults == null) {
+          Logger().d('no data found');
+        }
 
-      if (heierarchyssetsResults == null) {
-        Logger().d('no data found');
+        Logger().d('hierarchy result: $heierarchyssetsResults');
+        return heierarchyssetsResults;
       }
-
-      Logger().d('hierarchy result: $heierarchyssetsResults');
-      return heierarchyssetsResults;
     } catch (e) {
       Logger().e(e.toString());
       return null;
@@ -60,16 +73,28 @@ class PlantHeirarchyAssetService extends BaseService {
   }
 
   Future<AssetCreationResponse?>? getAssetCreationData(
-      String machineSerialNumber) async {
+      String machineSerialNumber, query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["oemName"] = "THC";
       queryMap["machineSerialNumber"] = machineSerialNumber;
-      AssetCreationResponse assetCreationResponse = await MyApi()
-          .getClientSix()!
-          .getAssetCreationData(Urls.plantAssetCreationResult +
-              FilterUtils.constructQueryFromMap(queryMap));
-      return assetCreationResponse;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlPlantData(
+          query: query,
+          customerId: "THC",
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        return AssetCreationResponse.fromJson(data.data);
+      } else {
+        AssetCreationResponse assetCreationResponse = await MyApi()
+            .getClientSix()!
+            .getAssetCreationData(Urls.plantAssetCreationResult +
+                FilterUtils.constructQueryFromMap(queryMap));
+        return assetCreationResponse;
+      }
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -77,19 +102,30 @@ class PlantHeirarchyAssetService extends BaseService {
   }
 
   Future<AssetCreationResetData?> submitAssetCreationData(
-      AssetCreationPayLoad data) async {
+      AssetCreationPayLoad data, query) async {
     Map<String, String> queryMap = Map();
     queryMap["oemName"] = "THC";
-
-    if (isVisionLink) {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlPlantData(
+        query: query,
+        customerId: "THC",
+        userId: (await _localService!.getLoggedInUser())!.sub,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+      );
+      return AssetCreationResetData.fromJson(data.data);
     } else {
-      AssetCreationResetData assetCreationResetData = await MyApi()
-          .getClientSix()!
-          .submitAssetCreationData(
-              Urls.assetCreationResetdata +
-                  FilterUtils.constructQueryFromMap(queryMap),
-              data);
-      return assetCreationResetData;
+      if (isVisionLink) {
+      } else {
+        AssetCreationResetData assetCreationResetData = await MyApi()
+            .getClientSix()!
+            .submitAssetCreationData(
+                Urls.assetCreationResetdata +
+                    FilterUtils.constructQueryFromMap(queryMap),
+                data);
+        return assetCreationResetData;
+      }
     }
 
     return null;

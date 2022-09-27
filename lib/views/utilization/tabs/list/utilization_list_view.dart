@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/theme/colors.dart';
@@ -10,7 +11,9 @@ import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'utilization_list_view_model.dart';
 
@@ -24,134 +27,169 @@ class UtilizationListView extends StatefulWidget {
 class UtilizationListViewState extends State<UtilizationListView> {
   List<DateTime>? dateRange = [];
 
-  late var viewModelClass;
+  //  UtilizationListViewModel? viewModelClass;
 
-  @override
-  void initState() {
-    // viewModel = UtilizationListViewModel();
-    super.initState();
-  }
+  //  @override
+  // void didUpdateWidget(covariant UtilizationListView oldWidget) {
+  //  viewModelClass=UtilizationListViewModel();
+  //  //onFilterApplied();
+  //   super.didUpdateWidget(oldWidget);
+  // }
+   
 
-  @override
-  void dispose() {
-    viewModelClass.dispose();
-    super.dispose();
-  }
+  // @override
+  // void initState() {
+  //    viewModelClass = UtilizationListViewModel();
+  //   super.initState();
+  // }
+
+  // @override
+  // void dispose() {
+  //   viewModelClass.dispose();
+  //   super.dispose();
+  // }
 
   onFilterApplied() {
-    viewModelClass.refresh();
+    Logger().v("refresh");
+   
   }
 
   @override
   Widget build(BuildContext context) {
+    Logger().v("inside utilization listview item");
     return ViewModelBuilder<UtilizationListViewModel>.reactive(
         builder: (BuildContext context, UtilizationListViewModel viewModel,
             Widget? _) {
-          viewModelClass = viewModel;
-          return Padding(
-            padding: const EdgeInsets.only(top: 0),
-            child: Stack(
-              children: [
-                Column(
+      // viewModelClass=viewModel;
+          return InsiteInheritedDataProvider(
+            count: viewModel.appliedFilters!.length,
+            child: InsiteScaffold(
+               onFilterApplied: (){
+                viewModel.refresh();
+               },
+               onRefineApplied: (){
+                viewModel.refresh();
+               },
+               viewModel: viewModel,
+               screenType: ScreenType.UTILIZATION,
+              body: Padding(
+                padding: const EdgeInsets.only(top: 0),
+                child: Stack(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 24),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // InsiteText(
-                          //     text: Utils.getDateInFormatddMMyyyy(
-                          //             viewModel.startDate) +
-                          //         " - " +
-                          //         Utils.getDateInFormatddMMyyyy(
-                          //             viewModel.endDate),
-                          //     fontWeight: FontWeight.bold,
-                          //     size: 11),
-                          // SizedBox(
-                          //   width: 4,
-                          // ),
-                          InsiteButton(
-                            title: Utils.getDateInFormatddMMyyyy(
-                                    viewModel.startDate) +
-                                " - " +
-                                Utils.getDateInFormatddMMyyyy(
-                                    viewModel.endDate),
-                            //width: 90,
-                            //bgColor: Theme.of(context).backgroundColor,
-                            textColor: white,
-                            onTap: () async {
-                              dateRange = [];
-                              dateRange = await showDialog(
-                                context: context,
-                                builder: (BuildContext context) => Dialog(
-                                    backgroundColor: transparent,
-                                    child: DateRangeView(
-                                      filterType: FilterType.UTILIZATION_COUNT,
-                                    )),
-                              );
-                              if (dateRange != null && dateRange!.isNotEmpty) {
-                                viewModel.refresh();
-                              }
-                            },
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                         Padding(
+                           padding: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 16),
+                           child: InsiteTextOverFlow(
+                            text: Utils.getPageTitle(ScreenType.UTILIZATION),
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            overflow: TextOverflow.ellipsis,
+                            fontWeight: FontWeight.bold,
+                            size: 16,
+                        ),
+                         ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 24),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // InsiteText(
+                              //     text: Utils.getDateInFormatddMMyyyy(
+                              //             viewModel.startDate) +
+                              //         " - " +
+                              //         Utils.getDateInFormatddMMyyyy(
+                              //             viewModel.endDate),
+                              //     fontWeight: FontWeight.bold,
+                              //     size: 11),
+                              // SizedBox(
+                              //   width: 4,
+                              // ),
+                              InsiteButton(
+                                title: Utils.getDateInFormatddMMyyyy(
+                                        viewModel.startDate) +
+                                    " - " +
+                                    Utils.getDateInFormatddMMyyyy(
+                                        viewModel.endDate),
+                                //width: 90,
+                                //bgColor: Theme.of(context).backgroundColor,
+                                textColor: white,
+                                onTap: () async {
+                                  dateRange = [];
+                                  dateRange = await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) => Dialog(
+                                        backgroundColor: transparent,
+                                        child: DateRangeView(
+                                          //filterType: FilterType.UTILIZATION_COUNT,
+                                        )),
+                                  );
+                                  if (dateRange != null && dateRange!.isNotEmpty) {
+                                    viewModel.refresh();
+                                  }
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        PageHeader(
+                          isDashboard: false,
+                          total: viewModel.totalCount,
+                          screenType: ScreenType.UTILIZATION,
+                          count: viewModel.utilLizationListData.length,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 18.0, top: 8, bottom: 16, right: 16),
+                          child: InsiteText(
+                            text:
+                                'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
+                            size: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Expanded(
+                          child: viewModel.loading
+                              ? Container(child: InsiteProgressBar())
+                              : viewModel.utilLizationListData.isNotEmpty
+                                  ? ListView.builder(
+                                      controller: viewModel.scrollController,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount:
+                                          viewModel.utilLizationListData.length,
+                                      padding: EdgeInsets.only(left: 16, right: 16),
+                                      itemBuilder: (context, index) {
+                                        AssetResult utilizationData =
+                                            viewModel.utilLizationListData[index];
+                                        return UtilizationListItem(
+                                          utilizationData: utilizationData,
+                                          isShowingInDetailPage: false,
+                                          onCallback: () {
+                                            viewModel.onDetailPageSelected(
+                                                utilizationData);
+                                          },
+                                        );
+                                      })
+                                  : EmptyView(
+                                      title: "No Assets Found",
+                                    ),
+                        ),
+                        viewModel.loadingMore
+                            ? Padding(
+                                padding: EdgeInsets.all(8),
+                                child: InsiteProgressBar(),
+                              )
+                            : SizedBox(),
+                      ],
                     ),
-                    PageHeader(
-                      isDashboard: false,
-                      total: viewModel.totalCount,
-                      screenType: ScreenType.UTILIZATION,
-                      count: viewModel.utilLizationListData.length,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 18.0, top: 8, bottom: 16, right: 16),
-                      child: InsiteText(
-                        text:
-                            'Runtime Hours / Working Hours / Idle Hours: Value includes data occurring outside of selected date range.',
-                        size: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Expanded(
-                      child: viewModel.loading
-                          ? Container(child: InsiteProgressBar())
-                          : viewModel.utilLizationListData.isNotEmpty
-                              ? ListView.builder(
-                                  controller: viewModel.scrollController,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount:
-                                      viewModel.utilLizationListData.length,
-                                  padding: EdgeInsets.only(left: 16, right: 16),
-                                  itemBuilder: (context, index) {
-                                    AssetResult utilizationData =
-                                        viewModel.utilLizationListData[index];
-                                    return UtilizationListItem(
-                                      utilizationData: utilizationData,
-                                      isShowingInDetailPage: false,
-                                      onCallback: () {
-                                        viewModel.onDetailPageSelected(
-                                            utilizationData);
-                                      },
-                                    );
-                                  })
-                              : EmptyView(
-                                  title: "No Assets Found",
-                                ),
-                    ),
-                    viewModel.loadingMore
-                        ? Padding(
-                            padding: EdgeInsets.all(8),
-                            child: InsiteProgressBar(),
-                          )
-                        : SizedBox(),
+                    viewModel.refreshing ? InsiteProgressBar() : SizedBox()
                   ],
                 ),
-                viewModel.refreshing ? InsiteProgressBar() : SizedBox()
-              ],
+              ),
             ),
           );
         },

@@ -8,11 +8,13 @@ class MaintenanceViewModel extends InsiteViewModel {
 
   MaintenanceViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    refresh();
   }
 
-  bool isListSelected = true;
+  //bool isListSelected = true;
   void refresh() async {
+    Logger().w(appliedFilters!.length);
     await getSelectedFilterData();
-    notifyListeners();
+    //notifyListeners();
   }
 }

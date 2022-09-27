@@ -39,6 +39,7 @@ class _LocationSearchState extends State<LocationSearch> {
           ),
           children: [
             Container(
+            
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(8)),
                   color: Theme.of(context).backgroundColor,

@@ -111,6 +111,7 @@ class FleetViewModel extends InsiteViewModel {
         arguments: DetailArguments(
           fleet: fleet,
           index: 0,
+          
         ));
   }
 

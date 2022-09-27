@@ -376,6 +376,7 @@ class NotificationService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
+          payLoad: addNotificationPayLoad.toJson(),
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null

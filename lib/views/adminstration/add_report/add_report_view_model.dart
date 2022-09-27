@@ -25,7 +25,7 @@ class AddReportViewModel extends InsiteViewModel {
   Logger? log;
   AssetAdminManagerUserService? _manageUserService =
       locator<AssetAdminManagerUserService>();
-
+  AddReportPayLoad? addReportPayLoad;
   List<String>? reportFleetAssets = ["Select"];
   List<String>? reportServiceAssets = [];
   List<String>? reportProductivityAssets = [];
@@ -168,6 +168,14 @@ class AddReportViewModel extends InsiteViewModel {
         assetsDropDownValue = templateTitleValue;
       } else if (templateTitleValue == "Utilization Details") {
         assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Backhoe Loader Operation") {
+        assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Excavator Usage") {
+        assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Multi-Asset Backhoe Loader Operation") {
+        assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Multi-Asset Excavator Usage") {
+        assetsDropDownValue = templateTitleValue;
       }
 
       reportFleetAssets!
@@ -199,7 +207,11 @@ class AddReportViewModel extends InsiteViewModel {
                 assetItems.reportName == "FaultSummaryFaultsList" ||
                 assetItems.reportName == "FaultCodeAssetDetails" ||
                 assetItems.reportName == "FleetSummary" ||
-                assetItems.reportName == "AssetOperation") {
+                assetItems.reportName == "AssetOperation" ||
+                assetItems.reportName == "BackhoeLoaderOperation" ||
+                assetItems.reportName == "ExcavatorUsageReport" ||
+                assetItems.reportName == "MultiAssetBackhoeLoaderOperation" ||
+                assetItems.reportName == "MultiAssetExcavatorUsageReport") {
               reportFleetAssets!.add(assetItems.reportTypeName!);
             }
           }
@@ -271,6 +283,7 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   searchContacts(String searchValue) {
+    Logger().wtf(searchValue);
     if (emailController.text.length >= 4) {
       _searchKeyword = searchValue;
       isHideSearchList = true;
@@ -353,6 +366,15 @@ class AddReportViewModel extends InsiteViewModel {
             assetsDropDownValue = element.reportTypeName;
           }
         });
+        if (resultData.scheduledReport!.reportPeriod == 1) {
+          frequencyDropDownValue = "Daily";
+        }
+        if (resultData.scheduledReport!.reportPeriod == 2) {
+          frequencyDropDownValue = "Weekly";
+        }
+        if (resultData.scheduledReport!.reportPeriod == 3) {
+          frequencyDropDownValue = "Monthly";
+        }
         reportFleetAssets?.add(assetsDropDownValue!);
         nameController.text = resultData.scheduledReport!.reportTitle!;
         reportFormat = resultData.scheduledReport?.reportFormat;
@@ -554,53 +576,77 @@ class AddReportViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  addReportSaveData() async {
-    Logger().i(assetsDropDownValue!);
-    //List<Reports?> defaultColumn = [];
+  addPayload() {
+    List<String> reportColum = [];
+    String? reportType;
     associatedIdentifier!.clear();
     selectedAsset!.forEach((element) {
       associatedIdentifier?.add(element.assetIdentifier!);
     });
-    // result!.reports!.forEach((reports) {
-    //   defaultColumn.add(reports);
-    // });
-    //Logger().d(defaultColumn.length);
-    AddReportPayLoad addReportPayLoad;
-    // Logger().e(defaultColumn.length);
-    List<String> reportColum = [];
-
-    // for (var item in defaultColumn) {
-    //   if (item!.reportTypeName == assetsDropDownValue) {
-    //     Logger().wtf(item.defaultColumn);
-    //     var data = Utils.reportColumn(item.defaultColumn);
-    //     Logger().wtf(data.isEmpty);
-    //     if (data.first == "") {
-    //       reportColum = [
-    //         "assetName",
-    //         "serialNumber",
-    //         "make-model",
-    //         "locationEventLocalTime",
-    //         "hourmeter",
-    //         "location",
-    //         "assetStatus",
-    //         "fromDate",
-    //         "toDate",
-    //         "latitude",
-    //         "longitude"
-    //       ];
-    //     } else {
-    //       reportColum = data as List<String>;
-    //     }
-    //   }
-    // }
-    // Logger().e(reportColum.length);
-
-    String? reportType;
     result?.reports?.forEach((element) {
       if (element.reportTypeName == assetsDropDownValue) {
         reportType = element.reportName!;
       }
     });
+    addReportPayLoad = AddReportPayLoad(
+      assetFilterCategoryID: chooseByDropDownValue == "Assets"
+          ? 1
+          : chooseByDropDownValue == "Groups"
+              ? 2
+              : chooseByDropDownValue == "Geofences"
+                  ? 3
+                  : 0,
+      reportCategoryID: 0,
+      reportFormat: reportFormatDropDownValue == ".CSV"
+          ? 1
+          : reportFormatDropDownValue == ".XLSX"
+              ? 2
+              : reportFormatDropDownValue == ".PDF"
+                  ? 3
+                  : 0,
+      reportPeriod: frequencyDropDownValue == 'Daily'
+          ? 1
+          : frequencyDropDownValue == "Weekly"
+              ? 2
+              : frequencyDropDownValue == "Monthly"
+                  ? 3
+                  : 0,
+      reportTitle: nameController.text,
+      reportScheduledDate: Utils.getLastReportedDateFilterData(DateTime.now()),
+      reportStartDate: "",
+      reportEndDate: dateTimeController.text,
+      emailSubject: serviceDueController.text,
+      emailRecipients: emailIds,
+      svcMethod: assetsDropDownValue == "Utilization Details"
+          ? ""
+          : assetsDropDownValue == "Fault Code Asset Details"
+              ? "GET"
+              : "POST",
+      allAssets: false,
+      queryUrl: Utils.getQueryUrl(assetsDropDownValue!, associatedIdentifier),
+      reportType: reportType,
+      reportColumns: Utils.getReportColumn(assetsDropDownValue!),
+      svcbody: assetsDropDownValue == "Fault Summary Faults List" ||
+              assetsDropDownValue == "FaultSummaryFaultsList"
+          ? null
+          : Utils.reportSvcBody(assetsDropDownValue, associatedIdentifier),
+      svcbodyJson: assetsDropDownValue == "Fault Summary Faults List" ||
+              assetsDropDownValue == "FaultSummaryFaultsList"
+          ? SvcbodyResponse.fromJson({
+              "colFilters": [
+                "basic",
+                "details",
+                "dynamic",
+                "asset.basic",
+                "asset.details",
+                "asset.dynamic"
+              ],
+              "assetuids": associatedIdentifier
+            })
+          : null,
+      emailContent: emailContentController.text,
+    );
+
     if (isVisionLink) {
       addReportPayLoad = AddReportPayLoad(
           assetFilterCategoryID: chooseByDropDownValue == "Assets"
@@ -640,62 +686,12 @@ class AddReportViewModel extends InsiteViewModel {
               Utils.getLastReportedDateFilterData(DateTime.now()),
           queryUrl:
               "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid");
-    } else {
-      Logger().i(dropDownValue);
-      addReportPayLoad = AddReportPayLoad(
-          assetFilterCategoryID: chooseByDropDownValue == "Assets"
-              ? 1
-              : chooseByDropDownValue == "Groups"
-                  ? 2
-                  : chooseByDropDownValue == "Geofences"
-                      ? 3
-                      : 0,
-          allAssets: false,
-          reportColumns: reportColum,
-          svcbody:
-              Utils.reportSvcBody(assetsDropDownValue, associatedIdentifier),
-          // assetsDropDownValue=="Fault Summary Faults List"?
-          // {"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:
-          //              assetsDropDownValue=="Asset Operation"||assetsDropDownValue=="Fleet Summary"||
-          // assetsDropDownValue=="Multi-Asset Utilization"?
-          //   associatedIdentifier:
-          //   assetsDropDownValue=="Utilization Details"||assetsDropDownValue=="Fault Code Asset Details"?
-          //   null:
-          //   [],
-          reportTitle: nameController.text,
-          reportCategoryID: 0,
-          reportPeriod: frequencyDropDownValue == 'Daily'
-              ? 1
-              : frequencyDropDownValue == "Weekly"
-                  ? 2
-                  : frequencyDropDownValue == "Monthly"
-                      ? 3
-                      : 0,
-          emailContent: emailContentController.text,
-          emailRecipients: emailIds,
-          reportFormat: reportFormatDropDownValue == ".CSV"
-              ? 1
-              : reportFormatDropDownValue == ".XLSX"
-                  ? 2
-                  : reportFormatDropDownValue == ".PDF"
-                      ? 3
-                      : 0,
-          svcMethod: assetsDropDownValue == "Utilization Details"
-              ? ""
-              : assetsDropDownValue == "Fault Code Asset Details"
-                  ? "GET"
-                  : "POST",
-          emailSubject: serviceDueController.text,
-          reportEndDate: dateTimeController.text,
-          reportStartDate: "",
-          reportType: reportType,
-          reportScheduledDate:
-              Utils.getLastReportedDateFilterData(DateTime.now()),
-          queryUrl:
-              Utils.getQueryUrl(assetsDropDownValue!, associatedIdentifier));
     }
+  }
 
+  addReportSaveData() async {
     try {
+      await addPayload();
       if (nameController.text.isEmpty) {
         _snackBarservice!.showSnackbar(message: "Name should be specified");
         return;
@@ -714,54 +710,12 @@ class AddReportViewModel extends InsiteViewModel {
         _snackBarservice!.showSnackbar(message: "Please Select Report Type");
         return;
       }
-
       showLoadingDialog();
-      var data = Utils.reportSvcBody(assetsDropDownValue, associatedIdentifier);
-
-      Logger().i(data);
-
-      ManageReportResponse? result = await _manageUserService!
+      Logger().i(addReportPayLoad?.toJson());
+      ManageReportResponse? responce = await _manageUserService!
           .getAddReportSaveData(
-              addReportPayLoad,
-              graphqlSchemaService!.addReportPayLoad(
-                  reportCategoryID: 0,
-                  reportFormat: reportFormatDropDownValue == ".CSV"
-                      ? 1
-                      : reportFormatDropDownValue == ".XLSX"
-                          ? 2
-                          : reportFormatDropDownValue == ".PDF"
-                              ? 3
-                              : 0,
-                  reportTitle: nameController.text,
-                  reportEndDate: dateTimeController.text,
-                  reportScheduledDate:
-                      Utils.getLastReportedDateFilterData(DateTime.now())
-                          .toString(),
-                  emailSubject: serviceDueController.text,
-                  emailRecipients: Utils.getStringListData(emailIds!),
-                  emailContent: emailContentController.text,
-                  svcMethod: Utils.getSvcMethod(assetsDropDownValue),
-                  allAssets: false,
-                  assetsDropDownValue: assetsDropDownValue,
-                  svcBodyJson:
-                      assetsDropDownValue == "Fault Summary Faults List"
-                          ? data
-                          : null,
-                  svcbody: assetsDropDownValue == "Fault Summary Faults List"
-                      ? null
-                      : data != null
-                          ? Utils.getStringListData(data)
-                          : null,
-                  reportColumns: Utils.getReportColumn(assetsDropDownValue!),
-                  reportType: reportType!,
-                  //     assetsDropDownValue=="Fault Summary Faults List"?{"colFilters":["basic","details","dynamic","asset.basic","asset.details","asset.dynamic"],"assetuids":[]}:
-                  //              assetsDropDownValue=="Asset Operation"||assetsDropDownValue=="fleet summary"||
-                  // assetsDropDownValue=="Multi-Asset-Utilization"?
-                  //   Utils.getStringListData(associatedIdentifier!):"",
-                  queryUrl: Utils.getQueryUrl(
-                      assetsDropDownValue!, associatedIdentifier),
-                  reportStartDate: ""));
-      if (result != null) {
+              addReportPayLoad!, graphqlSchemaService!.addReportPayLoad());
+      if (responce != null) {
         _snackBarservice!.showSnackbar(message: "Report is added sucessfully");
         gotoScheduleReportPage();
       }
@@ -773,159 +727,108 @@ class AddReportViewModel extends InsiteViewModel {
     }
   }
 
+  editPayload() {
+    emailIds!.clear();
+    associatedIdentifier!.clear();
+
+    selectedUser.forEach((element) {
+      emailIds?.add(element.email!);
+    });
+
+    selectedAsset?.forEach((element) {
+      associatedIdentifier?.add(element.assetIdentifier!);
+    });
+
+    addReportPayLoad = AddReportPayLoad(
+      reportUid: scheduledReportsId!.reportUid ?? "",
+      assetFilterUIDs: associatedIdentifier,
+      reportPeriod: frequencyDropDownValue == 'Daily'
+          ? 1
+          : frequencyDropDownValue == "Weekly"
+              ? 2
+              : frequencyDropDownValue == "Monthly"
+                  ? 3
+                  : 0,
+      reportTitle: nameController.text,
+      emailSubject: serviceDueController.text,
+      emailContent: emailContentController.text,
+      emailRecipients: emailIds,
+      queryUrl: editQueryUrl,
+      assetFilterCategoryID: chooseByDropDownValue == "Assets"
+          ? 1
+          : chooseByDropDownValue == "Groups"
+              ? 2
+              : chooseByDropDownValue == "Geofences"
+                  ? 3
+                  : 0,
+      allAssets: false,
+      svcbody: associatedIdentifier,
+    );
+
+    if (isVisionLink) {
+      addReportPayLoad = AddReportPayLoad(
+          assetFilterCategoryID: chooseByDropDownValue == "Assets"
+              ? 1
+              : chooseByDropDownValue == "Groups"
+                  ? 2
+                  : chooseByDropDownValue == "Geofences"
+                      ? 3
+                      : 0,
+          allAssets: false,
+          //reportColumns: reportColum,
+          svcbody: associatedIdentifier,
+          reportTitle: nameController.text,
+          reportCategoryID: 0,
+          reportPeriod: frequencyDropDownValue == 'Daily'
+              ? 1
+              : frequencyDropDownValue == "Weekly"
+                  ? 2
+                  : frequencyDropDownValue == "Monthly"
+                      ? 3
+                      : 0,
+          emailContent: emailContentController.text,
+          emailRecipients: selectedContactItems!..sort(),
+          reportFormat: reportFormatDropDownValue == ".CSV"
+              ? 1
+              : reportFormatDropDownValue == ".XLSX"
+                  ? 2
+                  : reportFormatDropDownValue == ".PDF"
+                      ? 3
+                      : 0,
+          svcMethod: "POST",
+          emailSubject: serviceDueController.text,
+          reportEndDate: dateTimeController.text,
+          reportStartDate: "",
+          reportType: "AssetLocationHistory",
+          reportScheduledDate:
+              Utils.getLastReportedDateFilterData(DateTime.now()),
+          queryUrl:
+              "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid");
+    }
+  }
+
   getEditReportSaveData() async {
     try {
-      var addReportPayLoad;
       showLoadingDialog();
+      await editPayload();
+      Logger().i(addReportPayLoad!.toJson());
+      ManageReportResponse? result = await _manageUserService!
+          .getEditReportSaveData(
+              scheduledReportsId!.reportUid!,
+              addReportPayLoad!,
+              graphqlSchemaService!.getEditReportsaveData()!);
 
-      result?.reports?.forEach((element) {
-        if (element.reportTypeName == assetsDropDownValue) {
-          assetsDropDownValue = element.reportName;
-        }
-      });
-
-      selectedUser.forEach((element) {
-        emailIds?.add(element.email!);
-      });
-      associatedIdentifier!.clear();
-      selectedAsset?.forEach((element) {
-        associatedIdentifier?.add(element.assetIdentifier!);
-      });
-
-      String? reportType;
-      result?.reports?.forEach((element) {
-        if (element.reportTypeName == assetsDropDownValue) {
-          reportType = element.reportName!;
-        }
-      });
-
-      if (isVisionLink) {
-        addReportPayLoad = AddReportPayLoad(
-            assetFilterCategoryID: chooseByDropDownValue == "Assets"
-                ? 1
-                : chooseByDropDownValue == "Groups"
-                    ? 2
-                    : chooseByDropDownValue == "Geofences"
-                        ? 3
-                        : 0,
-            allAssets: false,
-            //reportColumns: reportColum,
-            svcbody: associatedIdentifier,
-            reportTitle: nameController.text,
-            reportCategoryID: 0,
-            reportPeriod: frequencyDropDownValue == 'Daily'
-                ? 1
-                : frequencyDropDownValue == "Weekly"
-                    ? 2
-                    : frequencyDropDownValue == "Monthly"
-                        ? 3
-                        : 0,
-            emailContent: emailContentController.text,
-            emailRecipients: selectedContactItems,
-            reportFormat: reportFormatDropDownValue == ".CSV"
-                ? 1
-                : reportFormatDropDownValue == ".XLSX"
-                    ? 2
-                    : reportFormatDropDownValue == ".PDF"
-                        ? 3
-                        : 0,
-            svcMethod: "POST",
-            emailSubject: serviceDueController.text,
-            reportEndDate: dateTimeController.text,
-            reportStartDate: "",
-            reportType: "AssetLocationHistory",
-            reportScheduledDate:
-                Utils.getLastReportedDateFilterData(DateTime.now()),
-            queryUrl:
-                "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/FleetSummary/v2?sort=assetid");
-      } else {
-        Logger().i(dropDownValue);
-        addReportPayLoad = AddReportPayLoad(
-            assetFilterCategoryID: chooseByDropDownValue == "Assets"
-                ? 1
-                : chooseByDropDownValue == "Groups"
-                    ? 2
-                    : chooseByDropDownValue == "Geofences"
-                        ? 3
-                        : 0,
-            allAssets: false,
-            reportColumns: editReportColumn,
-            svcbody: associatedIdentifier,
-            reportTitle: nameController.text,
-            reportCategoryID: 0,
-            reportPeriod: frequencyDropDownValue == 'Daily'
-                ? 1
-                : frequencyDropDownValue == "Weekly"
-                    ? 2
-                    : frequencyDropDownValue == "Monthly"
-                        ? 3
-                        : 0,
-            emailContent: emailContentController.text,
-            emailRecipients: emailIds,
-            reportFormat: reportFormatDropDownValue == ".CSV"
-                ? 1
-                : reportFormatDropDownValue == ".XLSX"
-                    ? 2
-                    : reportFormatDropDownValue == ".PDF"
-                        ? 3
-                        : 0,
-            svcMethod: "POST",
-            emailSubject: serviceDueController.text,
-            reportEndDate: dateTimeController.text,
-            reportStartDate: "",
-            reportType: reportType,
-            reportScheduledDate:
-                Utils.getLastReportedDateFilterData(DateTime.now()),
-            queryUrl: editQueryUrl);
+      if (result != null) {
+        _snackBarservice!
+            .showSnackbar(message: "Edit Report has been done successfully");
+        gotoScheduleReportPage();
       }
-      try {
-        associatedIdentifier?.clear();
-        selectedAsset?.forEach((element) {
-          associatedIdentifier?.add(element.assetIdentifier!);
-        });
-        var data =
-            Utils.reportSvcBody(assetsDropDownValue, associatedIdentifier);
-        Logger().w(data);
-
-        ManageReportResponse? result =
-            await _manageUserService!.getEditReportSaveData(
-                scheduledReportsId!.reportUid!,
-                addReportPayLoad,
-                graphqlSchemaService!.getEditReportsaveData(
-                  emailContent: emailContentController.text,
-                  emailRecipients: Utils.getStringListData(emailIds!),
-                  reportUid: scheduledReportsId!.reportUid ?? "",
-                  emailSubject: serviceDueController.text,
-                  queryUrl: Utils.getEditQueryUrl(
-                          assetsDropDownValue!, associatedIdentifier) ??
-                      "",
-                  reportEndDate: dateTimeController.text,
-                  assetsDropDownValue:
-                      Utils.getAssetDropdownValue(assetsDropDownValue!),
-                  reportTitle: nameController.text,
-                  svcbodyJson:
-                      Utils.getAssetDropdownValue(assetsDropDownValue!) ==
-                              "Fault Summary Faults List"
-                          ? data
-                          : "",
-                  svcbody: Utils.getAssetDropdownValue(assetsDropDownValue!) ==
-                          "Fault Summary Faults List"
-                      ? null
-                      : Utils.getStringListData(data) ?? "",
-                )!);
-        if (result != null) {
-          // Logger().d(result.metadata!.toJson());
-          _snackBarservice!
-              .showSnackbar(message: "Edit Report has been done successfully");
-          gotoScheduleReportPage();
-        }
-
-        hideLoadingDialog();
-        notifyListeners();
-      } catch (e) {
-        Logger().e(e.toString());
-      }
-    } catch (e) {}
+      hideLoadingDialog();
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+      hideLoadingDialog();
+    }
   }
 
   onAddingAllAsset(List<Asset>? allAsset) {

@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/edit_interval_response.dart';
 import 'package:insite/core/models/maintenance_checkList.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
@@ -35,6 +36,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
   MaintenanceIntervalData? maintenanceInterval;
   MaintenanceIntervals? maintenanceIntervalsData;
   List<SwitchState> switchState = [];
+  AddMaintenanceIntervalPayload? maitenanceCheckListData;
   Timer? deBounce;
   IntervalList? selectedIntervals;
   List<int> intervalId = [];
@@ -43,7 +45,6 @@ class AddIntervalsViewModel extends InsiteViewModel {
   bool isEditing = false;
   bool isValidating = false;
 
-  String doubleQuote = "\"";
   AddIntervalsViewModel({AssetDetail? assetDetail}) {
     this.log = getLogger(this.runtimeType.toString());
     singleAssetDetail = assetDetail;
@@ -135,7 +136,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
 
   onPartListAdded(int i) {
     var data = checkListData[i];
-    data.partListData!.add(PartListData(
+    data.partListData!.add(PartListDataClass(
         part: TextEditingController(),
         partName: TextEditingController(),
         quantity: TextEditingController()));
@@ -151,6 +152,11 @@ class AddIntervalsViewModel extends InsiteViewModel {
   onPartListDeleted(int checkListIndex, int partListIndex) {
     var data =
         checkListData[checkListIndex].partListData!.removeAt(partListIndex);
+    notifyListeners();
+  }
+
+  onPartUnitChanged(int checkListIndex, int partListIndex, String value) {
+    checkListData[checkListIndex].partListData![partListIndex].value = value;
     notifyListeners();
   }
 
@@ -171,7 +177,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
     if (frequencyController.text == "0") {
       return;
     }
-    if(frequencyController.text==""){
+    if (frequencyController.text == "") {
       return;
     }
     value = int.parse(
@@ -186,8 +192,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
         maintenanceCheckList.clear();
         for (var checkList in checkListData) {
           MaintenanceCheckList mainCheckList = MaintenanceCheckList(
-              checkName:
-                  doubleQuote + checkList.checkListName!.text + doubleQuote,
+              checkName: checkList.checkListName!.text,
               checkListId: checkList.checkListId,
               partList: []);
           print("checkList created");
@@ -196,8 +201,9 @@ class AddIntervalsViewModel extends InsiteViewModel {
             for (var partList in checkList.partListData!) {
               MaintenancePartList mainPartList = MaintenancePartList(
                   partId: partList.partId,
-                  partNo: doubleQuote + partList.part!.text + doubleQuote,
-                  partName: doubleQuote + partList.partName!.text + doubleQuote,
+                  units: partList.value,
+                  partNo: partList.part!.text,
+                  partName: partList.partName!.text,
                   quantiy: int.parse(partList.quantity!.text.isEmpty
                       ? "0"
                       : partList.quantity!.text));
@@ -213,21 +219,17 @@ class AddIntervalsViewModel extends InsiteViewModel {
       }
       maintenanceInterval = MaintenanceIntervalData(
           intervalDescription: selectedIntervals?.intervalDescription != null
-              ? (doubleQuote +
-                  selectedIntervals!.intervalDescription! +
-                  doubleQuote)
+              ? (selectedIntervals!.intervalDescription!)
               : "",
           intervalId: selectedIntervals?.intervalID ?? null,
-          assetId: doubleQuote + singleAssetDetail!.assetUid! + doubleQuote,
-          description: doubleQuote + descriptionController.text + doubleQuote,
+          assetId: singleAssetDetail!.assetUid!,
+          description: descriptionController.text,
           initialOccurence: int.parse(frequencyController.text),
-          intervalName: doubleQuote + namecontroller.text + doubleQuote,
-          make: doubleQuote + singleAssetDetail!.makeCode! + doubleQuote,
-          model: doubleQuote + singleAssetDetail!.model! + doubleQuote,
-          serialno:
-              doubleQuote + singleAssetDetail!.assetSerialNumber! + doubleQuote,
-          currentHrmeter:
-              singleAssetDetail?.hourMeter?.toDouble() ?? null,
+          intervalName: namecontroller.text,
+          make: singleAssetDetail!.makeCode!,
+          model: singleAssetDetail!.model!,
+          serialno: singleAssetDetail!.assetSerialNumber!,
+          currentHrmeter: singleAssetDetail?.hourMeter?.toDouble() ?? null,
           checkList: maintenanceCheckList);
     } catch (e) {
       Logger().e(e.toString());
@@ -281,16 +283,41 @@ class AddIntervalsViewModel extends InsiteViewModel {
       await gettingUserData();
       var data;
       Logger().w(maintenanceInterval!.intervalId);
+      maitenanceCheckListData = AddMaintenanceIntervalPayload(
+          assetId: maintenanceInterval!.assetId,
+          currentHourMeter: maintenanceInterval!.currentHrmeter,
+          description: maintenanceInterval!.description,
+          initialOccurence: maintenanceInterval!.initialOccurence,
+          intervalName: maintenanceInterval!.intervalName,
+          make: maintenanceInterval!.make,
+          model: maintenanceInterval!.model,
+          serialNumber: maintenanceInterval!.serialno,
+          checklist: maintenanceInterval!.checkList!.isEmpty
+              ? null
+              : maintenanceInterval!.checkList!
+                  .map((e) => MaitenanceCheckListDataPayLoad(
+                      checkListName: e.checkName,
+                      partList: e.partList!
+                          .map((part) => PartListDataPayLoad(
+                              partName: part.partName,
+                              partNo: part.partNo,
+                              quantity: part.quantiy,
+                              units: part.units!.toLowerCase()))
+                          .toList()))
+                  .toList());
+      Logger().w(maitenanceCheckListData!.toJson());
       if (isEditing) {
-        print(_graphqlSchemaService!
-            .updateMaintenanceIntervals(maintenanceInterval));
-        data = await _maintenanceService!.updateMaintenanceIntervals(
-            _graphqlSchemaService!
+        Logger().i(maintenanceInterval!.intervalName);
+        EditIntervalResponse? data = await _maintenanceService!
+            .updateMaintenanceIntervals(_graphqlSchemaService!
                 .updateMaintenanceIntervals(maintenanceInterval));
+        if (data != null) {
+          Logger().w(data.updateMaintenanceIntervals!.message);
+        }
       } else {
         data = await _maintenanceService!.addMaintenanceIntervals(
-            _graphqlSchemaService!
-                .addMaintenanceIntervals(maintenanceInterval));
+            _graphqlSchemaService!.addMaintenanceIntervals(),
+            maitenanceCheckListData);
       }
 
       snackbarService!.showSnackbar(message: data["message"]);
@@ -332,7 +359,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
             intervalId: selectedIntervals!.intervalID,
             expansionState: false);
         for (var partData in checkData.partList!) {
-          PartListData editedPartData = PartListData(
+          PartListDataClass editedPartData = PartListDataClass(
               part: TextEditingController(text: partData.partNo),
               partName: TextEditingController(text: partData.partName),
               partId: partData.partId,
@@ -385,9 +412,10 @@ class AddIntervalsViewModel extends InsiteViewModel {
 class CheckAndPartList {
   final TextEditingController? checkListName;
   bool? expansionState;
-  final List<PartListData>? partListData;
+  final List<PartListDataClass>? partListData;
   int? checkListId;
   int? intervalId;
+
   CheckAndPartList(
       {this.checkListName,
       this.partListData,
@@ -396,12 +424,21 @@ class CheckAndPartList {
       this.intervalId});
 }
 
-class PartListData {
+class PartListDataClass {
   final TextEditingController? partName;
   final TextEditingController? part;
   final TextEditingController? quantity;
+  List<String>? items;
+  String? value;
   int? partId;
-  PartListData({this.part, this.partName, this.quantity, this.partId});
+  PartListDataClass({
+    this.part,
+    this.partName,
+    this.quantity,
+    this.partId,
+    this.value,
+    this.items = const ["Kg", "Gallon", "None"],
+  });
 }
 
 class MaintenanceIntervalData {
@@ -452,3 +489,4 @@ class MaintenancePartList {
       this.units,
       this.partId});
 }
+

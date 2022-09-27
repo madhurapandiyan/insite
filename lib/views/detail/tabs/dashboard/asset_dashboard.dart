@@ -7,9 +7,12 @@ import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.da
 
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
 import 'package:insite/widgets/smart_widgets/fuel_level.dart';
+import 'package:insite/widgets/smart_widgets/maintenance_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/notes.dart';
+import 'package:insite/widgets/smart_widgets/notifications.dart';
 import 'package:insite/widgets/smart_widgets/ping_device.dart';
 import 'package:stacked/stacked.dart';
 
@@ -167,6 +170,25 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                   SizedBox(
                     height: 20,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: FaultHealthDashboard(
+                      screenType: ScreenType.DASHBOARD,
+                      countData: viewModel.faultCountDataList != null
+                          ? viewModel.faultCountDataList
+                          : [],
+                      onFilterSelected: (value, dateFilter) async {
+                        await viewModel.onDateAndFilterSelected(
+                            value, dateFilter);
+                        viewModel.gotoFaultPage();
+                      },
+                      loading: viewModel.faultCountloading,
+                      isRefreshing: viewModel.refreshing,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
                   viewModel.assetDetail != null
                       ? Padding(
                           padding: const EdgeInsets.symmetric(
@@ -216,8 +238,11 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
                     ),
-                    child: Notes(
+                    child:  Notes(
                       controller: notesController,
+                      onDelete: (value) {
+                        viewModel.deletNotes(value);
+                      },
                       notes: viewModel.assetNotes,
                       onTap: () {
                         if (notesController!.text.isNotEmpty) {
@@ -243,15 +268,31 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                   SizedBox(
                     height: 20,
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(
-                  //     horizontal: 16.0,
-                  //   ),
-                  //   child: Notifications(),
-                  // ),
-                  // SizedBox(
-                  //   height: 20.0,
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: NotificationWidget(
+                      count: 1,
+                      isLoading: viewModel.notificationLoading,
+                      notificationType: viewModel.notificationCountDatas,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: MaintenanceDashBoard(
+                      countData: viewModel.maintenanceDashboardCount,
+                      isLoading: viewModel.maintenanceLoading,
+                      onFilterSelected: (val, filterType, count) {
+                        // viewModel.onMaintenanceFilterClicked(
+                        //     val, filterType, count);
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  )
                 ],
               ),
             ),

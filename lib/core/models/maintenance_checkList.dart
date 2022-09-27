@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'maintenance_checkList.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class MaintenanceCheckListModel {
   final String? status;
   final String? serviceStatus;
@@ -21,7 +21,7 @@ class MaintenanceCheckListModel {
   Map<String, dynamic> toJson() => _$MaintenanceCheckListModelToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class MaintenanceCheckListModelPop {
   final String? status;
   final String? serviceStatus;
@@ -41,7 +41,7 @@ class MaintenanceCheckListModelPop {
   Map<String, dynamic> toJson() => _$MaintenanceCheckListModelPopToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class MaitenanceCheckListData {
   final String? checkListName;
   final int? checkListID;
@@ -61,7 +61,7 @@ class MaitenanceCheckListData {
   Map<String, dynamic> toJson() => _$MaitenanceCheckListDataToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class MaitenanceCheckListDataPop {
   final String? checkListName;
   final int? checkListID;
@@ -81,7 +81,7 @@ class MaitenanceCheckListDataPop {
   Map<String, dynamic> toJson() => _$MaitenanceCheckListDataPopToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class MaintenanceServiceList {
   final String? serviceName;
   final int? serviceId;
@@ -93,14 +93,15 @@ class MaintenanceServiceList {
   Map<String, dynamic> toJson() => _$MaintenanceServiceListToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class PartListData {
   final String? partName;
   final String? partNo;
-  final int? quantity;
-  final int? partId;
   final String? description;
   final String? units;
+  final int? quantity;
+  final int? partId;
+
   PartListData(
       {this.description,
       this.partName,
@@ -115,7 +116,7 @@ class PartListData {
   Map<String, dynamic> toJson() => _$PartListDataToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class PartListDataPop {
   final String? name;
   final String? partNo;
@@ -137,7 +138,7 @@ class PartListDataPop {
   Map<String, dynamic> toJson() => _$PartListDataPopToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class MaintenanceIntervals {
   final String? status;
   final int? totalCount;
@@ -150,7 +151,7 @@ class MaintenanceIntervals {
   Map<String, dynamic> toJson() => _$MaintenanceIntervalsToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class IntervalList {
   final int? intervalID;
   final String? intervalName;
@@ -170,4 +171,69 @@ class IntervalList {
       _$IntervalListFromJson(json);
 
   Map<String, dynamic> toJson() => _$IntervalListToJson(this);
+}
+
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
+class AddMaintenanceIntervalPayload {
+  String? intervalName;
+  int? initialOccurence;
+  String? description;
+  List<MaitenanceCheckListDataPayLoad>? checklist;
+  String? assetId;
+  String? serialNumber;
+  String? make;
+  String? model;
+  double? currentHourMeter;
+  String? units;
+  AddMaintenanceIntervalPayload(
+      {this.assetId,
+      this.checklist,
+      this.currentHourMeter,
+      this.description,
+      this.initialOccurence,
+      this.intervalName,
+      this.make,
+      this.model,
+      this.serialNumber,
+      this.units});
+  factory AddMaintenanceIntervalPayload.fromJson(Map<String, dynamic> json) =>
+      _$AddMaintenanceIntervalPayloadFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AddMaintenanceIntervalPayloadToJson(this);
+}
+
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
+class PartListDataPayLoad {
+  final String? partName;
+  final String? partNo;
+
+  final String? units;
+  final int? quantity;
+
+  PartListDataPayLoad({this.partName, this.partNo, this.quantity, this.units});
+
+  factory PartListDataPayLoad.fromJson(Map<String, dynamic> json) =>
+      _$PartListDataPayLoadFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PartListDataPayLoadToJson(this);
+}
+
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
+class MaitenanceCheckListDataPayLoad {
+  final String? checkListName;
+  final int? checkListID;
+  final bool? isChecked;
+  final List<PartListDataPayLoad>? partList;
+  final String? checkListDescription;
+  MaitenanceCheckListDataPayLoad(
+      {this.checkListID,
+      this.checkListName,
+      this.isChecked,
+      this.partList,
+      this.checkListDescription});
+
+  factory MaitenanceCheckListDataPayLoad.fromJson(Map<String, dynamic> json) =>
+      _$MaitenanceCheckListDataPayLoadFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MaitenanceCheckListDataPayLoadToJson(this);
 }

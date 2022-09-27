@@ -16,6 +16,9 @@ import 'package:stacked/stacked.dart';
 import 'notification_view_model.dart';
 
 class NotificationView extends StatefulWidget {
+  final String? filterValue;
+  final String ?productFamily;
+  NotificationView({this.filterValue,this.productFamily});
   @override
   State<NotificationView> createState() => _NotificationViewState();
 }
@@ -34,7 +37,7 @@ class _NotificationViewState extends State<NotificationView> {
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {
-                //viewModel.refresh();
+                viewModel.refresh();
               },
               onRefineApplied: () {
                 //viewModel.refresh();
@@ -98,6 +101,7 @@ class _NotificationViewState extends State<NotificationView> {
                                       //  bgColor: Theme.of(context).backgroundColor,
                                       textColor: white,
                                       onTap: () async {
+                                     
                                         dateRange = [];
                                         dateRange = await showDialog(
                                           context: context,
@@ -112,6 +116,7 @@ class _NotificationViewState extends State<NotificationView> {
                                             dateRange!.last.toString();
                                         viewModel.refresh();
                                       },
+                                      
                                     ),
                                   ],
                                 ),
@@ -273,7 +278,7 @@ class _NotificationViewState extends State<NotificationView> {
               )),
         );
       },
-      viewModelBuilder: () => NotificationViewModel(),
+      viewModelBuilder: () => NotificationViewModel(value: widget.filterValue,filterData: widget.productFamily),
     );
   }
 

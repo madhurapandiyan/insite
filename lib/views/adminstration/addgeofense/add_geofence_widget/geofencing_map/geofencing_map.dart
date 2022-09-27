@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 
 class GeofencingMap extends StatefulWidget {
@@ -14,19 +16,24 @@ class GeofencingMap extends StatefulWidget {
   final CameraPosition? camPosition;
   final Completer<GoogleMapController>? completer;
   final Function(CameraPosition)? onPan;
+  final Set<Marker>? markers;
 
-  GeofencingMap(
-      {this.mapType,
-      this.gettingData,
-      this.color,
-      this.initialValue,
-      this.circle,
-      this.polygon,
-      this.polyline,
-      this.isDrawing,
-      this.camPosition,
-      this.completer,
-      this.onPan});
+  final CustomInfoWindowController? customInfoWindowController;
+  GeofencingMap({
+    this.mapType,
+    this.gettingData,
+    this.color,
+    this.initialValue,
+    this.circle,
+    this.polygon,
+    this.polyline,
+    this.isDrawing,
+    this.camPosition,
+    this.completer,
+    this.onPan,
+    this.markers,
+    this.customInfoWindowController,
+  });
 
   @override
   _GeofencingMapState createState() => _GeofencingMapState();
@@ -41,6 +48,10 @@ class _GeofencingMapState extends State<GeofencingMap> {
       controller: GoogleMapsController(
           onMapCreated: (controller) {
             widget.completer!.complete(controller);
+            widget.customInfoWindowController!.googleMapController = controller;
+          },
+          onCameraMove: (position) {
+            widget.customInfoWindowController!.onCameraMove!();
           },
           zoomControlsEnabled: false,
           zoomGesturesEnabled: true,
@@ -58,6 +69,7 @@ class _GeofencingMapState extends State<GeofencingMap> {
           initialPolylines: widget.polyline!.isEmpty
               ? null
               : widget.polyline as Set<Polyline>?,
+          initialMarkers: widget.markers,
           onTap: widget.isDrawing!
               ? (latlng) {
                   widget.gettingData!(latlng);

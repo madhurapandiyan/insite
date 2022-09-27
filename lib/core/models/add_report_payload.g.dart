@@ -22,32 +22,92 @@ AddReportPayLoad _$AddReportPayLoadFromJson(Map<String, dynamic> json) =>
           .toList(),
       svcMethod: json['svcMethod'] as String?,
       allAssets: json['allAssets'] as bool?,
-      svcbody: json['svcbody'],
       queryUrl: json['queryUrl'] as String?,
       emailContent: json['emailContent'] as String?,
       reportType: json['reportType'] as String?,
       reportColumns: (json['reportColumns'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      Latitude: json['Latitude'] as String?,
+      Longitude: json['Longitude'] as String?,
+      assetFilterUIDs: (json['assetFilterUIDs'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      assetIDContains: json['assetIDContains'] as String?,
+      assetstatus: json['assetstatus'] as String?,
+      fuelLevelPercentLT: json['fuelLevelPercentLT'] as String?,
+      idleEfficiencyGT: json['idleEfficiencyGT'] as String?,
+      idleEfficiencyLTE: json['idleEfficiencyLTE'] as String?,
+      manufacturer: json['manufacturer'] as String?,
+      model: json['model'] as String?,
+      productfamily: json['productfamily'] as String?,
+      radiuskm: json['radiuskm'] as String?,
+      snContains: json['snContains'] as String?,
+      svcbody:
+          (json['svcbody'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      svcbodyJson: json['svcbodyJson'] == null
+          ? null
+          : SvcbodyResponse.fromJson(
+              json['svcbodyJson'] as Map<String, dynamic>),
+      reportUid: json['reportUid'] as String?,
     );
 
-Map<String, dynamic> _$AddReportPayLoadToJson(AddReportPayLoad instance) =>
+Map<String, dynamic> _$AddReportPayLoadToJson(AddReportPayLoad instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('assetFilterCategoryID', instance.assetFilterCategoryID);
+  writeNotNull('reportCategoryID', instance.reportCategoryID);
+  writeNotNull('reportFormat', instance.reportFormat);
+  writeNotNull('reportPeriod', instance.reportPeriod);
+  writeNotNull('reportTitle', instance.reportTitle);
+  writeNotNull('reportScheduledDate', instance.reportScheduledDate);
+  writeNotNull('reportStartDate', instance.reportStartDate);
+  writeNotNull('reportEndDate', instance.reportEndDate);
+  writeNotNull('emailSubject', instance.emailSubject);
+  writeNotNull('emailRecipients', instance.emailRecipients);
+  writeNotNull('svcMethod', instance.svcMethod);
+  writeNotNull('allAssets', instance.allAssets);
+  writeNotNull('emailContent', instance.emailContent);
+  writeNotNull('queryUrl', instance.queryUrl);
+  writeNotNull('reportType', instance.reportType);
+  writeNotNull('reportColumns', instance.reportColumns);
+  writeNotNull('svcbody', instance.svcbody);
+  writeNotNull('assetFilterUIDs', instance.assetFilterUIDs);
+  writeNotNull('productfamily', instance.productfamily);
+  writeNotNull('model', instance.model);
+  writeNotNull('assetstatus', instance.assetstatus);
+  writeNotNull('fuelLevelPercentLT', instance.fuelLevelPercentLT);
+  writeNotNull('idleEfficiencyGT', instance.idleEfficiencyGT);
+  writeNotNull('idleEfficiencyLTE', instance.idleEfficiencyLTE);
+  writeNotNull('assetIDContains', instance.assetIDContains);
+  writeNotNull('snContains', instance.snContains);
+  writeNotNull('Latitude', instance.Latitude);
+  writeNotNull('Longitude', instance.Longitude);
+  writeNotNull('radiuskm', instance.radiuskm);
+  writeNotNull('manufacturer', instance.manufacturer);
+  writeNotNull('svcbodyJson', instance.svcbodyJson);
+  writeNotNull('reportUid', instance.reportUid);
+  return val;
+}
+
+SvcbodyResponse _$SvcbodyResponseFromJson(Map<String, dynamic> json) =>
+    SvcbodyResponse(
+      assetuids: (json['assetuids'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      colFilters: (json['colFilters'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$SvcbodyResponseToJson(SvcbodyResponse instance) =>
     <String, dynamic>{
-      'assetFilterCategoryID': instance.assetFilterCategoryID,
-      'reportCategoryID': instance.reportCategoryID,
-      'reportFormat': instance.reportFormat,
-      'reportPeriod': instance.reportPeriod,
-      'reportTitle': instance.reportTitle,
-      'reportScheduledDate': instance.reportScheduledDate,
-      'reportStartDate': instance.reportStartDate,
-      'reportEndDate': instance.reportEndDate,
-      'emailSubject': instance.emailSubject,
-      'emailRecipients': instance.emailRecipients,
-      'svcMethod': instance.svcMethod,
-      'svcbody': instance.svcbody,
-      'allAssets': instance.allAssets,
-      'emailContent': instance.emailContent,
-      'queryUrl': instance.queryUrl,
-      'reportType': instance.reportType,
-      'reportColumns': instance.reportColumns,
+      'assetuids': instance.assetuids,
+      'colFilters': instance.colFilters,
     };

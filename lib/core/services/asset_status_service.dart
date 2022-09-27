@@ -6,6 +6,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/db/asset_count_data.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/notification.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/repository/db.dart';
 import 'package:insite/core/repository/network.dart';
@@ -947,6 +948,30 @@ class AssetStatusService extends DataBaseService {
       }
     } catch (e) {
       Logger().e(e.toString());
+    }
+  }
+
+  Future<NotificationData?> getNotificationDashboardCount(
+      {String? query, dynamic payload}) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          payLoad: payload,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        NotificationData countData =
+            NotificationData.fromJson(data.data["seeAllNotificationCount"]);
+
+        return countData;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
     }
   }
 

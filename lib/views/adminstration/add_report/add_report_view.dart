@@ -7,6 +7,7 @@ import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/adminstration/add_report/fault_code_model.dart';
 import 'package:insite/views/adminstration/add_report/reusable_widget/fault_code_reusable_widget.dart';
+import 'package:insite/views/subscription/options/sub_registration/reusable_autocomplete_search/reusable_autocomplete_search_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -632,6 +633,15 @@ class _AddReportViewState extends State<AddReportView> {
                         SizedBox(
                           height: 15,
                         ),
+                        // ReusableAutocompleteSearchView(
+                        //   reuseController: TextEditingController(),
+                        //   data: viewModel.searchContactListName!
+                        //       .map((e) => e.email!)
+                        //       .toList(),
+                        //       onChanged: (searchText) {
+                        //       viewModel.searchContacts(searchText);
+                        //     }
+                        // ),
                         CustomTextBox(
                             title: "Search Contact",
                             controller: viewModel.emailController,

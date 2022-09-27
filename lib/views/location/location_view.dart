@@ -2,16 +2,21 @@ import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/location_search.dart/location_search_widget.dart';
+import 'package:insite/views/location/location_search_box/location_search_box_view.dart';
 import 'package:insite/views/location/location_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
+import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -24,7 +29,7 @@ class LocationView extends StatefulWidget {
 }
 
 class _LocationViewState extends State<LocationView> {
-  String _currentSelectedItem = "MAP";
+  String _currentSelectedItem = "SATELLITE";
   double zoomVal = 5.0;
   MapType currentType = MapType.normal;
   List<DateTime>? dateRange;
@@ -157,35 +162,59 @@ class _LocationViewState extends State<LocationView> {
                                   zoomControlsEnabled: false,
                                   markers: viewModel.markers,
                                   initialCameraPosition: viewModel
-                                                  .assetLocation !=
-                                              null &&
-                                          viewModel.assetLocation!.mapRecords!
-                                              .isNotEmpty &&
-                                          viewModel.assetLocation!.mapRecords!
-                                                  .first !=
-                                              null &&
+                                          .isLocationSelected!
+                                      ? viewModel.centerPosition
+                                      : viewModel.assetLocation != null &&
+                                              viewModel.assetLocation!.mapRecords!
+                                                  .isNotEmpty &&
+                                              viewModel.assetLocation!.mapRecords!
+                                                      .first !=
+                                                  null &&
+                                              viewModel
+                                                      .assetLocation!
+                                                      .mapRecords!
+                                                      .first!
+                                                      .lastReportedLocationLatitude !=
+                                                  null
+                                          ? CameraPosition(
+                                              target: LatLng(
+                                                  viewModel
+                                                      .assetLocation!
+                                                      .mapRecords!
+                                                      .first!
+                                                      .lastReportedLocationLatitude!,
+                                                  viewModel
+                                                      .assetLocation!
+                                                      .mapRecords!
+                                                      .first!
+                                                      .lastReportedLocationLongitude!),
+                                              zoom: 5)
+                                          : viewModel.centerPosition != null
+                                              ? CameraPosition(
+                                                  target:
+                                                      LatLng(viewModel.centerPosition.target.latitude, viewModel.centerPosition.target.latitude))
+                                              : CameraPosition(target: LatLng(30.666, 76.8127), zoom: 4),
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(top: 7, left: 20),
+                                    child: LocationSearchBoxView(
+                                      searchBoxWidth: 0.6,
+                                      onSeletingSuggestion:
+                                          (value, isSerialNo) {
+                                        viewModel.customInfoWindowController
+                                            .hideInfoWindow!();
+                                        if (isSerialNo) {
                                           viewModel
-                                                  .assetLocation!
-                                                  .mapRecords!
-                                                  .first!
-                                                  .lastReportedLocationLatitude !=
-                                              null
-                                      ? CameraPosition(
-                                          target: LatLng(
-                                              viewModel
-                                                  .assetLocation!
-                                                  .mapRecords!
-                                                  .first!
-                                                  .lastReportedLocationLatitude!,
-                                              viewModel
-                                                  .assetLocation!
-                                                  .mapRecords!
-                                                  .first!
-                                                  .lastReportedLocationLongitude!),
-                                          zoom: 5)
-                                      : CameraPosition(
-                                          target: LatLng(30.666, 76.8127),
-                                          zoom: 4),
+                                              .onSeletingSuggestionSn(value);
+                                        } else {
+                                          viewModel.onSeletingSuggestion(value);
+                                        }
+                                      },
+                                    ),
+                                  ),
                                 ),
                                 CustomInfoWindow(
                                   controller:
@@ -197,10 +226,9 @@ class _LocationViewState extends State<LocationView> {
                                   offset: 1,
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 10, top: 10, bottom: 10),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Align(
-                                    alignment: Alignment.centerRight,
+                                    alignment: Alignment.topRight,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
@@ -245,9 +273,9 @@ class _LocationViewState extends State<LocationView> {
                                                       .backgroundColor),
                                             ),
                                             items: [
+                                              'SATELLITE',
                                               'MAP',
                                               'TERRAIN',
-                                              'SATELLITE',
                                               'HYBRID'
                                             ]
                                                 .map((map) => DropdownMenuItem(
@@ -426,18 +454,16 @@ class _LocationViewState extends State<LocationView> {
       case "MAP":
         Logger().i("map is in normal type ");
         return MapType.normal;
-        break;
+
       case "TERRAIN":
         Logger().i("map is in terrain type");
         return MapType.terrain;
-        break;
       case "SATELLITE":
         Logger().i("map is in satellite type ");
-        return MapType.satellite;
-        break;
+        return MapType.hybrid;
       case "HYBRID":
         Logger().i("map is in hybrid type ");
-        return MapType.hybrid;
+        return MapType.satellite;
       default:
         return MapType.normal;
     }

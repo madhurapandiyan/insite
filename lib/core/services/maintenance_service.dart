@@ -2,6 +2,7 @@ import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/complete.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/edit_interval_response.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_asset.dart';
 import 'package:insite/core/models/maintenance_asset_india_stack.dart';
@@ -78,7 +79,7 @@ class MaintenanceService extends BaseService {
       if (enableGraphQl) {
         // print(await _localService!.getToken());
         // Logger().i(await _localService!.getStaggedToken());
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -135,7 +136,7 @@ class MaintenanceService extends BaseService {
       String? query}) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -233,7 +234,7 @@ class MaintenanceService extends BaseService {
   Future<MaintenanceCheckListModelPop?> getMaintenanceServiceItemCheckList(
       {String? query}) async {
     if (enableGraphQl) {
-      var data = await Network().getStaggedGraphqlData(
+      var data = await Network().getGraphqlData(
         query: query,
         customerId: accountSelected?.CustomerUID,
         userId: (await _localService!.getLoggedInUser())!.sub,
@@ -326,7 +327,7 @@ class MaintenanceService extends BaseService {
 
   Future onCompletion(String? query) async {
     if (enableGraphQl) {
-      var maintenancepostData = await Network().getStaggedGraphqlData(
+      var maintenancepostData = await Network().getGraphqlData(
         query: query,
         customerId: accountSelected?.CustomerUID,
         userId: (await _localService!.getLoggedInUser())!.sub,
@@ -341,7 +342,7 @@ class MaintenanceService extends BaseService {
 
   Future<MaintenanceRefineData?> getRefineData({String? query}) async {
     if (enableGraphQl) {
-      var maintenancepostData = await Network().getStaggedGraphqlData(
+      var maintenancepostData = await Network().getGraphqlData(
         query: query,
         customerId: accountSelected?.CustomerUID,
         userId: (await _localService!.getLoggedInUser())!.sub,
@@ -359,7 +360,7 @@ class MaintenanceService extends BaseService {
       {String? query}) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -381,7 +382,7 @@ class MaintenanceService extends BaseService {
   Future<MaintenanceIntervals?> getMaintenanceIntervals(String query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -399,11 +400,13 @@ class MaintenanceService extends BaseService {
     }
   }
 
-  Future<dynamic> addMaintenanceIntervals(String? query) async {
+  Future<dynamic> addMaintenanceIntervals(
+      String? query, AddMaintenanceIntervalPayload? payLoad) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
+          payLoad: payLoad!.toJson(),
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
@@ -417,10 +420,10 @@ class MaintenanceService extends BaseService {
     }
   }
 
-  Future<dynamic> updateMaintenanceIntervals(String? query) async {
+  Future<EditIntervalResponse?> updateMaintenanceIntervals(String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
@@ -428,7 +431,7 @@ class MaintenanceService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
-        return data.data["updateMaintenanceIntervals"];
+        return EditIntervalResponse.fromJson(data.data);
       }
     } catch (e) {
       Logger().w(e.toString());
@@ -438,7 +441,7 @@ class MaintenanceService extends BaseService {
   Future<dynamic> deletMaintenanceIntervals(String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getStaggedGraphqlData(
+        var data = await Network().getGraphqlData(
           query: query,
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
