@@ -48,27 +48,41 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
     );
   }
 
-  Widget showingSwitchableWidget(
-      List<SwitchState> listData, Function checkingSwitchState) {
+  Widget showingSwitchableWidget(List<SwitchState> listData,
+      Function checkingSwitchState, AddNewNotificationsViewModel viewModel) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List.generate(
             listData.length,
             (i) => Column(
                   children: [
-                    TextButton.icon(
-                        onPressed: () {
-                          checkingSwitchState(i);
-                        },
-                        icon: Icon(
-                          Icons.crop_square,
-                          color: listData[i].state!
-                              ? Theme.of(context).buttonColor
-                              : Theme.of(context).cardColor,
-                        ),
-                        label: InsiteText(
-                          text: listData[i].text,
-                        )),
+                    listData[i].text == "Include" ||
+                            listData[i].text == "Exclude"
+                        ? TextButton.icon(
+                            onPressed: () {
+                              checkingSwitchState(i);
+                            },
+                            icon: Icon(Icons.crop_square,
+                                color: listData[i].state!
+                                    ? Theme.of(context).buttonColor
+                                    : Colors.black),
+                            label: InsiteText(
+                              text: listData[i].text,
+                              color: viewModel.customizable.first.state!
+                                  ? Colors.black
+                                  : Colors.black.withOpacity(0.3),
+                            ))
+                        : TextButton.icon(
+                            onPressed: () {
+                              checkingSwitchState(i);
+                            },
+                            icon: Icon(Icons.crop_square,
+                                color: listData[i].state!
+                                    ? Theme.of(context).buttonColor
+                                    : Colors.black),
+                            label: InsiteText(
+                              text: listData[i].text,
+                            )),
                   ],
                 )));
   }
@@ -271,7 +285,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                             viewModel
                                                                 .severityState,
                                                             viewModel
-                                                                .checkingSeverityState),
+                                                                .checkingSeverityState,
+                                                            viewModel),
                                                       ),
                                                       showingSwitchableWidgetWithTitle(
                                                         "Fault Code Type :",
@@ -279,7 +294,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                             viewModel
                                                                 .faultCodeType,
                                                             viewModel
-                                                                .checkingFaultCodeTypeState),
+                                                                .checkingFaultCodeTypeState,
+                                                            viewModel),
                                                       ),
                                                       SizedBox(
                                                         height: 10,
@@ -303,21 +319,19 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                           viewModel
                                                               .customizable,
                                                           viewModel
-                                                              .onCustomiozablestateChange),
-                                                      viewModel.customizable
-                                                              .first.state!
-                                                          ? Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 20),
-                                                              child: showingSwitchableWidget(
-                                                                  viewModel
-                                                                      .customizableState,
-                                                                  viewModel
-                                                                      .checkingCustomizeableState),
-                                                            )
-                                                          : SizedBox(),
+                                                              .onCustomiozablestateChange,
+                                                          viewModel),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 20),
+                                                        child: showingSwitchableWidget(
+                                                            viewModel
+                                                                .customizableState,
+                                                            viewModel
+                                                                .checkingCustomizeableState,
+                                                            viewModel),
+                                                      ),
                                                       SizedBox(
                                                         height: 10,
                                                       ),
@@ -442,7 +456,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                               viewModel
                                                                   .fluidAnalysisState,
                                                               viewModel
-                                                                  .checkingFluidAnalysisState)),
+                                                                  .checkingFluidAnalysisState,
+                                                              viewModel)),
                                                     )
                                                   : viewModel.dropDownInitialValue ==
                                                           "Inspection"
@@ -456,7 +471,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                   viewModel
                                                                       .inspectionState,
                                                                   viewModel
-                                                                      .checkingInspectionState)),
+                                                                      .checkingInspectionState,
+                                                                  viewModel)),
                                                         )
                                                       : viewModel.dropDownInitialValue ==
                                                               "Asset Security"
@@ -470,7 +486,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                       viewModel
                                                                           .assetSecurityState,
                                                                       viewModel
-                                                                          .checkingAssetSecurityState)),
+                                                                          .checkingAssetSecurityState,
+                                                                      viewModel)),
                                                             )
                                                           : viewModel.dropDownInitialValue ==
                                                                   "Zone Inclusion/Exclusion"
@@ -1308,4 +1325,12 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
       viewModelBuilder: () => AddNewNotificationsViewModel(widget.alertData),
     );
   }
+
+//  Color? getColors(SwitchState listData) {
+//     if(listData.text=="Customize"){
+//      if(listData.state==)
+
+//     }
+//     return null;
+//   }
 }

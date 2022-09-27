@@ -308,12 +308,12 @@ class AddIntervalsViewModel extends InsiteViewModel {
       Logger().w(maitenanceCheckListData!.toJson());
       if (isEditing) {
         Logger().i(maintenanceInterval!.intervalName);
-       EditIntervalResponse? data = await _maintenanceService!.updateMaintenanceIntervals(
-            _graphqlSchemaService!
+        EditIntervalResponse? data = await _maintenanceService!
+            .updateMaintenanceIntervals(_graphqlSchemaService!
                 .updateMaintenanceIntervals(maintenanceInterval));
-                if(data!=null){
-                  Logger().w(data.updateMaintenanceIntervals!.message);
-                }
+        if (data != null) {
+          Logger().w(data.updateMaintenanceIntervals!.message);
+        }
       } else {
         data = await _maintenanceService!.addMaintenanceIntervals(
             _graphqlSchemaService!.addMaintenanceIntervals(),
@@ -489,3 +489,4 @@ class MaintenancePartList {
       this.units,
       this.partId});
 }
+

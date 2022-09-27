@@ -135,7 +135,7 @@ class HomeViewModel extends InsiteViewModel {
                   }
                 : null,
             message:
-                "Update Available Vesion:-${updateInfo?.availableVersionCode.toString()}");
+                "Update Available Version:-${updateInfo?.availableVersionCode.toString()}");
       }
 
       // scaffoldKey.currentState!.showSnackBar(SnackBar(

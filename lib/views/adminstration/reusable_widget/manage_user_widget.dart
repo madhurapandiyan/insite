@@ -15,13 +15,17 @@ class ManageUserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     getRoleName(List<ApplicationAccess>? userDetail, moduleName) {
-      final index = userDetail!
-          .indexWhere((element) => element.applicationName == moduleName);
-      Logger().wtf(index);
-      if (index != -1) {
-        return userDetail[index].role_name;
+      if (userDetail != null) {
+        final index = userDetail
+            .indexWhere((element) => element.applicationName == moduleName);
+        Logger().wtf(index);
+        if (index != -1) {
+          return userDetail[index].role_name;
+        } else {
+          return '-';
+        }
       } else {
-        return '-';
+        return "-";
       }
     }
 

@@ -24,10 +24,6 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
         widget.callback!();
       },
       child: Card(
-      
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            side: BorderSide(color: cardcolor)),
         child: Row(
           children: [
             Container(
@@ -60,7 +56,8 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
                     },
                     child: Icon(
                       Icons.star,
-                      color: widget.groups!.groups!.IsFavourite!
+                      color: widget.groups!.groups!.IsFavourite != null &&
+                              widget.groups!.groups!.IsFavourite!
                           ? tango
                           : Colors.white,
                     ),

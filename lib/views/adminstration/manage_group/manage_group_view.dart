@@ -29,7 +29,7 @@ class ManageGroupView extends StatelessWidget {
                 Column(
                   children: [
                     SizedBox(
-                      height: 45,
+                      height: 25,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,34 +47,35 @@ class ManageGroupView extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        viewModel.showEdit
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: InsitePopMenuItemButton(
-                                    width: 40,
-                                    height: 40,
-                                    //icon: Icon(Icons.more_vert),
-                                    widget: onContextMenuSelected(
-                                        viewModel, context),
-                                  ),
-                                ))
-                            : Padding(
-                                padding: const EdgeInsets.only(right: 8),
-                                child: InsiteButton(
-                                  title: "Add Group",
-                                  fontSize: 14,
-                                  onTap: () {
-                                    viewModel.onClickAddGroupSelected();
-                                  },
-                                ),
-                              )
+                        // viewModel.showEdit
+                        //     ?
+                        ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: InsitePopMenuItemButton(
+                                width: 40,
+                                height: 40,
+                                //icon: Icon(Icons.more_vert),
+                                widget:
+                                    onContextMenuSelected(viewModel, context),
+                              ),
+                            ))
+                        // : Padding(
+                        //     padding: const EdgeInsets.only(right: 8),
+                        //     child: InsiteButton(
+                        //       title: "Add Group",
+                        //       fontSize: 14,
+                        //       onTap: () {
+                        //         viewModel.onClickAddGroupSelected();
+                        //       },
+                        //     ),
+                        //   )
                       ],
                     ),
                     SizedBox(
@@ -143,70 +144,79 @@ class ManageGroupView extends StatelessWidget {
       ManageGroupViewModel viewModel, BuildContext context) {
     return PopupMenuButton<String>(
       offset: Offset(30, 50),
-      itemBuilder: (context) => [
-        viewModel.showMenu
-            ? PopupMenuItem(
-                value: "New Group",
-                child: InsiteText(
-                  text: "New Group",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ))
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
-        viewModel.showEdit
-            ? PopupMenuItem(
-                value: "Edit Group",
-                child: InsiteText(
-                  text: "Edit Group",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              )
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
-        viewModel.showDelete
-            ? PopupMenuItem(
-                value: "Delete",
-                child: InsiteText(
-                  text: "Delete",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              )
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
-        viewModel.isFavorite
-            ? PopupMenuItem(
-                value: "UnFavorite",
-                child: InsiteText(
-                  text: "UnFavorite",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              )
-            : PopupMenuItem(
-                value: "Favorite",
-                child: InsiteText(
-                  text: "Favorite",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              ),
-        PopupMenuItem(
-            value: "Deselect All",
-            child: InsiteText(
-              text: "Deselect All",
-              fontWeight: FontWeight.w700,
-              size: 14,
-            )),
-      ],
+      itemBuilder: (context) => List.generate(
+          viewModel.popList!.length,
+          (i) => PopupMenuItem(
+              value: viewModel.popList![i],
+              child: InsiteText(
+                text: viewModel.popList![i],
+                fontWeight: FontWeight.w700,
+                size: 14,
+              ))),
+      // [
+      //   viewModel.showMenu
+      //       ? PopupMenuItem(
+      //           value: "New Group",
+      //           child: InsiteText(
+      //             text: "New Group",
+      //             fontWeight: FontWeight.w700,
+      //             size: 14,
+      //           ))
+      //       : PopupMenuItem(
+      //           child: SizedBox(),
+      //           height: 0,
+      //         ),
+      //   viewModel.showEdit
+      //       ? PopupMenuItem(
+      //           value: "Edit Group",
+      //           child: InsiteText(
+      //             text: "Edit Group",
+      //             fontWeight: FontWeight.w700,
+      //             size: 14,
+      //           ),
+      //         )
+      //       : PopupMenuItem(
+      //           child: SizedBox(),
+      //           height: 0,
+      //         ),
+      //   viewModel.showDelete
+      //       ? PopupMenuItem(
+      //           value: "Delete",
+      //           child: InsiteText(
+      //             text: "Delete",
+      //             fontWeight: FontWeight.w700,
+      //             size: 14,
+      //           ),
+      //         )
+      //       : PopupMenuItem(
+      //           child: SizedBox(),
+      //           height: 0,
+      //         ),
+      //   viewModel.isFavorite
+      //       ? PopupMenuItem(
+      //           value: "UnFavorite",
+      //           child: InsiteText(
+      //             text: "UnFavorite",
+      //             fontWeight: FontWeight.w700,
+      //             size: 14,
+      //           ),
+      //         )
+      //       : PopupMenuItem(
+      //           value: "Favorite",
+      //           child: InsiteText(
+      //             text: "Favorite",
+      //             fontWeight: FontWeight.w700,
+      //             size: 14,
+      //           ),
+      //         ),
+      //   PopupMenuItem(
+      //       value: "Deselect All",
+      //       child: InsiteText(
+      //         text: "Deselect All",
+      //         fontWeight: FontWeight.w700,
+      //         size: 14,
+      //       )),
+      // ],
       onSelected: (value) {
         Logger().i("value:$value");
         viewModel.onSelectedItemClicK(value, context);
