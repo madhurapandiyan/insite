@@ -869,8 +869,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     faultCodeType.forEach((element) {
       element.state = true;
     });
+
+   
+    
+  
     // customizableState.forEach((element) {
-    //   element.state = !element.state!;
+    //   element.state = true;
     // });
     notifyListeners();
   }

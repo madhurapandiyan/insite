@@ -1291,6 +1291,12 @@ class Utils {
       data =
           "Fuel Loss ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
       return data;
+    } else if (alert?.operands?.first.value == "1") {
+      data = "Maintenance Interval Overdue";
+      return data;
+    } else if (alert?.operands!.first.value == "2") {
+      data = "Maintenance Interval Upcoming";
+      return data;
     } else {
       return "${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
     }
@@ -2021,9 +2027,9 @@ class Utils {
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };
-   
+
     intervalList.add(data);
-     Logger().wtf(intervalList.length);
+    Logger().wtf(intervalList.length);
     return intervalList;
   }
 

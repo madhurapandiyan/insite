@@ -151,8 +151,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                 content: widget.fault!.asset != null &&
                                         widget.fault!.asset["dynamic"] != null
                                     ? (widget
-                                        .fault!.asset["dynamic"]["hourMeter"]
-                                        .toString())
+                                        .fault!.asset["dynamic"]["hourMeter"].
+                                        toStringAsFixed(3))
                                     : "-",
                               ),
                               InsiteTableRowItem(

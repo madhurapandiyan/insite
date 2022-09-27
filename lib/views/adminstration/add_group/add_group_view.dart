@@ -201,6 +201,7 @@ class _AddGroupViewState extends State<AddGroupView> {
             ));
       },
       viewModelBuilder: () => AddGroupViewModel(groups),
+      
     );
   }
 }
