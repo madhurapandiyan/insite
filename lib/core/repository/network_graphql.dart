@@ -90,6 +90,7 @@ class Network {
           "Accept": "application/json",
           "X-VisionLink-UserUid": userId!,
           "Authorization": "bearer " + await _localService!.getToken(),
+          "Auth": "bearer " + await _localService!.getToken(),
           "sub-customeruid": subId!
         },
       );

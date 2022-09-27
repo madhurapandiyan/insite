@@ -95,7 +95,7 @@ class HealthListItem extends StatelessWidget {
                           bgColor:
                               Utils.getFaultColor(faultElement!.severityLabel),
                           title: faultElement!.severityLabel,
-                          textColor: textcolor,
+                         // textColor: textcolor,
                         )
                       ],
                     )
