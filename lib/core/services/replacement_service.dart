@@ -7,7 +7,6 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:insite/views/subscription/replacement/model/device_replacement_details.dart';
-import 'package:insite/views/subscription/replacement/model/device_replacement_details_graphql.dart';
 import 'package:insite/views/subscription/replacement/model/device_replacement_status_model.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model_response.dart';
@@ -124,41 +123,31 @@ class ReplacementService extends BaseService {
     }
   }
 
-  Future<ReplacementData?> getReplacementDataDetails(String? query) async {
-    try {
-      if (enableGraphQl) {
-        var data = await Network().getGraphqlPlantData(
-          query: query,
-         
-        );
-
-        ReplacementData? deviceDetails = ReplacementData.fromJson(data.data);
-
-        Logger().wtf("dashboard:${deviceDetails.toJson()}");
-
-        return deviceDetails;
-      }
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
-
   Future<TotalDeviceReplacementStatusModel?>
-      getTotalDeviceReplacementStatusModel(int startCount) async {
+      getTotalDeviceReplacementStatusModel(int startCount, String query) async {
     TotalDeviceReplacementStatusModel? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
     queryMap["start"] = startCount.toString();
     queryMap["limit"] = "16";
-    if (isVisionLink) {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlPlantData(
+        query: query,
+      );
+
+      TotalDeviceReplacementStatusModel? deviceDetails =
+          TotalDeviceReplacementStatusModel.fromJson(data.data);
+
+      Logger().wtf("response:$data");
+
+      return deviceDetails;
     } else {
       data = await MyApi().getClientNine()!.getRepalcementDeviceStatus(
           Urls.getReportOfReplacement +
               FilterUtils.constructQueryFromMap(queryMap));
+      Logger().wtf("data:$data");
       return data;
     }
-    return data;
   }
 
   Future<ReplacementDeviceIdDownload?> getReplacementDeviceIdDownload() async {

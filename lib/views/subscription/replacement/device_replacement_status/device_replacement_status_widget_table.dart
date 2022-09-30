@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/base/base_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
-import 'package:insite/views/subscription/replacement/model/device_replacement_details_graphql.dart';
 import 'package:insite/views/subscription/replacement/model/device_replacement_status_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class ReplacementStatusTableWidget extends StatelessWidget {
-  ReplacementHistory? modelData;
+ final DeviceReplacementStatusModel? modelData;
   ReplacementStatusTableWidget({this.modelData});
   @override
   Widget build(BuildContext context) {
@@ -102,12 +100,12 @@ class ReplacementStatusTableWidget extends StatelessWidget {
                           TableRow(children: [
                             InsiteTableRowItem(
                               title: "User Email :",
-                              content: modelData!.emailID ?? "-",
+                              content: modelData!.emailId ?? "-",
                             ),
                             InsiteTableRowItem(
                               title: "Request Time : ",
                               content: Utils.getLastReportedDateFilterData(
-                                      DateTime.parse(modelData!.insertUTC!)) ??
+                                      DateTime.parse(modelData!.insertUtc!)) ??
                                   "-",
                             ),
                           ]),

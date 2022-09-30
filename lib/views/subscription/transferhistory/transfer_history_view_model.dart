@@ -4,7 +4,6 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/services/subscription_service.dart';
-import 'package:insite/views/subscription/transferhistory/model/tranfer_history.dart';
 import 'package:logger/logger.dart';
 
 class TransferHistoryViewModel extends InsiteViewModel {
@@ -52,14 +51,18 @@ class TransferHistoryViewModel extends InsiteViewModel {
     int startCount = 1;
     int endLimit = 100;
     if (enableGraphQl) {
-      TranferHistory? transferHistory = await _subscriptionService!
-          .getDeviceTranferHistory(
-              graphqlSchemaService!.getTranferHistory(startCount, endLimit));
+       SubscriptionDashboardDetailResult? tranferCount = await _subscriptionService!
+          .getTransferHistoryViewData(start: 0,limit: 0,query:graphqlSchemaService!.getTransferHistoryCount(start:0,limit: 1));
+              if(tranferCount!=null){
+             totalCount = int.parse(tranferCount.deviceTransferCount!.count as String);
+        Logger().wtf("totalCount:$totalCount");
+              }
+      SubscriptionDashboardDetailResult? transferHistory = await _subscriptionService!
+          .getTransferHistoryViewData(start: 0,limit: 0,query:graphqlSchemaService!.getTranferHistory(startCount, endLimit));
 
       if (transferHistory != null) {
-        totalCount = transferHistory.deviceTransfer!.length;
-        Logger().wtf("totalCount:$totalCount");
-        if (transferHistory.deviceTransfer != null) {
+      
+        if (transferHistory.deviceTransfer!= null) {
           for (DeviceTransfer element in transferHistory.deviceTransfer!) {
             devices.add(DetailResult(
               gpsDeviceId: element.gpsDeviceId,
@@ -95,7 +98,7 @@ class TransferHistoryViewModel extends InsiteViewModel {
           subscriptionDashboardDetailResultresult =
           await _subscriptionService!.getTransferHistoryViewData(
         start: start == 0 ? start : start + 1,
-        limit: limit,
+        limit: limit,query:"" 
       );
 
       if (subscriptionDashboardDetailResultresult != null) {
@@ -115,8 +118,7 @@ class TransferHistoryViewModel extends InsiteViewModel {
           _shouldLoadmore = false;
           notifyListeners();
         }
-        Logger().i("getTransferHistoryViewData length ${devices.length}");
-        _loading = false;
+         _loading = false;
         _loadingMore = false;
         notifyListeners();
       }

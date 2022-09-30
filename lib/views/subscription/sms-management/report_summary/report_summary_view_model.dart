@@ -9,7 +9,6 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/sms_management_service.dart';
 import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
-import 'package:insite/views/subscription/sms-management/model/sms_smmary.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -52,7 +51,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   int startLimit = 0;
   int? endLimit;
-   int totalCount = 0;
+  int totalCount = 0;
 
   int startCount = 0;
   final controller = new ScrollController();
@@ -61,66 +60,66 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   getReportSummaryData() async {
     try {
-       if (enableGraphQl) {
-          int start = 1;
-          int limit = 100;
-      SmsSummaryModel? smsSummaryModel = await _smsScheduleService!
-          . getSmsSummaryReport(
-              graphqlSchemaService!. getSmsReportSummary(start, limit));
+      if (enableGraphQl) {
+        int start = 1;
+        int limit = 100;
+        SmsReportSummaryModel? smsSummaryModel = await _smsScheduleService!
+            .getsmsReportSummaryModel(
+                0, graphqlSchemaService!.getSmsReportSummary(start, limit));
 
-      if (smsSummaryModel != null) {
-        totalCount = smsSummaryModel.getSMSSummaryReport!.length;
-        Logger().wtf("totalCount:$totalCount");
-        if (smsSummaryModel.getSMSSummaryReport!= null) {
-          for (GetSMSSummaryReport element in smsSummaryModel.getSMSSummaryReport!) {
-            modelDataList.add(ReportSummaryModel(
-            id: element.id,
-            gpsDeviceId: element.gpsDeviceId,
-            serialNumber: element.serialNumber,
-            name: element.name,
-            number: element.number,
-            startDate: element.startDate,
-            language: element.language
-            ));
+        if (smsSummaryModel != null) {
+          // totalCount = smsSummaryModel.getSMSSummaryReport!.length;
+          Logger().wtf("totalCount:$totalCount");
+          if (smsSummaryModel.getSMSSummaryReport != null) {
+            for (GetSmsSummaryReport element
+                in smsSummaryModel.getSMSSummaryReport!) {
+              modelDataList.add(ReportSummaryModel(
+                  id: element.id,
+                  gpsDeviceId: element.gpsDeviceId,
+                  serialNumber: element.serialNumber,
+                  name: element.name,
+                  number: element.number,
+                  startDate: element.startDate,
+                  language: element.language));
+            }
+            isLoading = false;
+            isLoadMore = false;
+            notifyListeners();
+          } else {
+            isLoading = false;
+            isLoadMore = false;
+            notifyListeners();
           }
-          isLoading = false;
-          isLoadMore = false;
-          notifyListeners();
         } else {
           isLoading = false;
           isLoadMore = false;
           notifyListeners();
         }
       } else {
+        _smsReportSummaryModel =
+            await _smsScheduleService!.getsmsReportSummaryModel(startCount, "");
+        totalCount = smsReportSummaryModel!.result!.first.first.count!;
+        Logger().wtf("totalCount:$totalCount");
+        for (var i = 0; i < _smsReportSummaryModel!.result!.length; i++) {
+          if (i == 0) {
+            isLoading = false;
+            notifyListeners();
+          } else {
+            _smsReportSummaryModel!.result![1].forEach((element) {
+              modelDataList.add(element);
+            });
+            for (var i = 0; i < modelDataList.length; i++) {
+              modelDataList[i].isSelected = false;
+            }
+            isLoading = false;
+            isLoadMore = false;
+            notifyListeners();
+          }
+        }
         isLoading = false;
-        isLoadMore = false;
         notifyListeners();
       }
-    } else {
-      _smsReportSummaryModel =
-          await _smsScheduleService!.getsmsReportSummaryModel(startCount);
-           totalCount = smsReportSummaryModel!.result!.first.first.count!;
-        Logger().wtf("totalCount:$totalCount");
-      for (var i = 0; i < _smsReportSummaryModel!.result!.length; i++) {
-        if (i == 0) {
-          isLoading = false;
-          notifyListeners();
-        } else {
-          _smsReportSummaryModel!.result![1].forEach((element) {
-            modelDataList.add(element);
-          });
-          for (var i = 0; i < modelDataList.length; i++) {
-          //  modelDataList.sort((a, b) => b.StartDate!.compareTo(a.StartDate!));
-            modelDataList[i].isSelected = false;
-          }
-          isLoading = false;
-          isLoadMore = false;
-          notifyListeners();
-        }
-      }
-      isLoading = false;
-      notifyListeners();
-    } }catch (e) {
+    } catch (e) {
       isLoading = false;
       Logger().e(e.toString());
       notifyListeners();
@@ -158,8 +157,8 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   onDeletingSmsSchedule() async {
     try {
-      int? userId=0;
-      List<DeleteSmsReport> deleteSMSRequest=[];
+      int? userId = 0;
+      List<DeleteSmsReport> deleteSms = [];
       DeleteSmsReport deleteData;
       selectedId.forEach((id) {
         deleteData = DeleteSmsReport(ID: id);
@@ -167,11 +166,10 @@ class ReportSummaryViewModel extends InsiteViewModel {
         var deletingData =
             modelDataList.singleWhere((element) => element.id == id);
         modelDataList.remove(deletingData);
-        // selectedId.remove(id);
         notifyListeners();
       });
-      var data =
-          await _smsScheduleService!.deleteSmsScheduleReport(deleteSmsReport,userId,deleteSMSRequest);
+      var data = await _smsScheduleService!
+          .deleteSmsScheduleReport(deleteSmsReport, userId, deleteSms);
       Logger().w(selectedId.length);
       selectedId.clear();
       deleteSmsReport.clear();

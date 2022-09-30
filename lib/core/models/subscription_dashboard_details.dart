@@ -3,13 +3,18 @@ part 'subscription_dashboard_details.g.dart';
 
 @JsonSerializable()
 class SubscriptionDashboardDetailResult {
+   DeviceTransferCount? deviceTransferCount ;
+  List<DeviceTransfer>? deviceTransfer;
   List<List<DetailResult>>? result;
   SubscriptionFleetList? subscriptionFleetList;
   List<AssetOrHierarchyByTypeAndId>? assetOrHierarchyByTypeAndId;
   SubscriptionDashboardDetailResult(
       {this.result,
       this.subscriptionFleetList,
-      this.assetOrHierarchyByTypeAndId});
+      this.assetOrHierarchyByTypeAndId,
+      this.deviceTransfer,
+      this.deviceTransferCount,
+      });
   factory SubscriptionDashboardDetailResult.fromJson(
           Map<String, dynamic> json) =>
       _$SubscriptionDashboardDetailResultFromJson(json);
@@ -264,3 +269,54 @@ class DetailResult {
 //       _$ProvisioningInfoFromJson(json);
 //   Map<String, dynamic> toJson() => _$ProvisioningInfoToJson(this);
 // }
+@JsonSerializable()
+class DeviceTransfer {
+  @JsonKey(name: "gpsDeviceID")
+  String? gpsDeviceId;
+  String? oemName;
+  String? status;
+  String? destinationCustomerType;
+  String? sourceCustomerType;
+  String? destinationName1;
+  String? destinationName2;
+  @JsonKey(name: "fk_AssetId")
+  int? fkAssetId;
+  @JsonKey(name: "insertUTC")
+  String? insertUtc;
+  String? sourceName1;
+  String? sourceName2;
+  String? vin;
+  String? sTypename;
+
+  DeviceTransfer(
+      {this.gpsDeviceId,
+      this.oemName,
+      this.status,
+      this.destinationCustomerType,
+      this.destinationName1,
+      this.destinationName2,
+      this.fkAssetId,
+      this.insertUtc,
+      this.sourceName1,
+      this.sourceName2,
+      this.sourceCustomerType,
+      this.vin,
+      this.sTypename
+      });
+
+  factory DeviceTransfer.fromJson(Map<String, dynamic> json) =>
+      _$DeviceTransferFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DeviceTransferToJson(this);
+}
+@JsonSerializable()
+class DeviceTransferCount{
+  String? count ;
+
+  DeviceTransferCount({this.count});
+
+  factory DeviceTransferCount.fromJson(Map<String, dynamic> json) =>
+      _$DeviceTransferCountFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DeviceTransferCountToJson(this);
+}

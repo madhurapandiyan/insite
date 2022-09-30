@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:insite/core/base/base_service.dart';
-import 'package:insite/utils/enums.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:stacked/stacked.dart';
 import 'device_replacement_status_view_model.dart';
 import 'device_replacement_status_widget_table.dart';
@@ -34,7 +32,7 @@ class DeviceReplacementStatusView extends StatelessWidget {
                              InsiteText(
                                     fontWeight: FontWeight.bold,
                                     text:
-                                        "REPLACEMENT STATUS ( ${viewModel.deviceReplacementStatusModelList.length} of ${viewModel.totalDeviceReplacementStatusModel} )",
+                                        "REPLACEMENT STATUS ( ${viewModel.dataList.length} of ${viewModel.totalCount} )",
                                   ),
                             // InsiteButton(
                             //     height: MediaQuery.of(context).size.height *
@@ -53,12 +51,22 @@ class DeviceReplacementStatusView extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
+                        viewModel.dataList.isEmpty
+                            ? Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 250),
+                              child: Center(
+                                child: EmptyView(
+                                  title: "No Record Found",
+                                ),
+                              ),
+                            )
+                            :
                         Column(
                           children: List.generate(
-                              viewModel.deviceReplacementStatusModelList.length,
+                              viewModel.dataList.length,
                               (i) {
                             final dataList =
-                                viewModel.deviceReplacementStatusModelList;
+                                viewModel.dataList;
                             return ReplacementStatusTableWidget(
                               modelData: dataList[i],
                             );

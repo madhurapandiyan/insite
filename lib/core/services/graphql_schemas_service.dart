@@ -332,7 +332,15 @@ query{
 }""";
     return data;
   }
-
+getReplacementHistoryCount({int?start,int? limit,bool? count}){
+  var data="""query{
+  replacementHistory(start:$start,limit:$limit,sortColumn:"",sortMethod:"", count:$count) {
+  count 
+__typename
+  }
+  }""";
+  return data;
+}
   getReplacementDetails({int? start, int? limit}) {
     var data = """query{
   replacementHistory(start:$start,limit:$limit) {
@@ -346,7 +354,7 @@ query{
     lastName
     state
     description
-    count
+    __typename
   }
   }
 """;
@@ -494,9 +502,20 @@ assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",c
  }""";
     return data;
   }
+  getTransferHistoryCount({int? start,int? limit}){
+    var data="""
+query{
+  deviceTransferCount(start:$start,limit:$limit){
+    count,
+    
+    
+  }
+}""";
+return data;
+  }
   getTranferHistory(int? start,int? limit){
     var data="""query{
-  deviceTransfer(start:1,limit:100){
+  deviceTransfer(start:$start,limit:$limit){
     destinationCustomerType,
     destinationName1,
     destinationName2,

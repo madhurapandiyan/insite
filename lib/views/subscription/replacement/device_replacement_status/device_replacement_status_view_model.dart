@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
-import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/replacement_service.dart';
 import 'package:insite/utils/helper_methods.dart';
-import 'package:insite/views/subscription/replacement/model/device_replacement_details_graphql.dart';
 import 'package:insite/views/subscription/replacement/model/device_replacement_status_model.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
@@ -38,56 +36,76 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
   bool isLoadMore = false;
   int totalCount = 0;
 
-  List<ReplacementHistory> deviceReplacementStatusModelList = [];
-
-  ReplacementData? totalDeviceReplacementStatusModel;
+  
 
   List<DeviceReplacementStatusModel> dataList = [];
-
-  TotalDeviceReplacementStatusModel? totalDeviceReplacementStatusModelData;
+  
   int startCount = 0;
   final controller = new ScrollController();
 
   getTotalDeviceReplacementStatusModel() async {
     try {
       if (enableGraphQl) {
-        totalDeviceReplacementStatusModel = await replacementService!
-            .getReplacementDataDetails(graphqlSchemaService!
+        TotalDeviceReplacementStatusModel? replacementCount= await replacementService!
+            .getTotalDeviceReplacementStatusModel(0,graphqlSchemaService!
+                .getReplacementHistoryCount(start: 0, limit: 1,count: true));
+                if(replacementCount!=null){
+            totalCount= int.parse(replacementCount.replacementHistory!.first.count as String);
+            Logger().wtf("totalCount:$totalCount");
+      }
+   TotalDeviceReplacementStatusModel?  totalDeviceReplacementStatusModel = await replacementService!
+            .getTotalDeviceReplacementStatusModel(0,graphqlSchemaService!
                 .getReplacementDetails(start: 1, limit: 100));
-
-        // totalDeviceReplacementStatusModel!.replacementHistory
-        //     .forEach((element) {
-        //   deviceReplacementStatusModelList.add(element);
-        // });
-        if (totalDeviceReplacementStatusModel!.replacementHistory != null) {
-          for (var element
-              in totalDeviceReplacementStatusModel!.replacementHistory!) {
-            deviceReplacementStatusModelList.add(element);
+        if(totalDeviceReplacementStatusModel!=null){
+        
+        if (totalDeviceReplacementStatusModel.replacementHistory != null) {
+          for (ReplacementHistory element
+              in totalDeviceReplacementStatusModel.replacementHistory!) {
+            dataList.add(DeviceReplacementStatusModel(
+              oldDeviceId: element.oldDeviceId,
+              newDeviceId: element.newDeviceId,
+              reason: element.reason,
+              vin: element.vin,
+              insertUtc: element.insertUtc,
+              emailId: element.emailId,
+              firstName: element.firstName,
+              lastName: element.lastName,
+              state: element.state,
+              description: element.description,
+              
+              ));
           }
-          Logger().v(deviceReplacementStatusModelList.length);
+          Logger().v(" dataList: ${dataList.length}");
           isLoading = false;
           isLoadMore = false;
           notifyListeners();
+        }else {
+          isLoading = false;
+          isLoadMore = false;
+          notifyListeners();
+        }
         } else {
           isLoading = false;
           isLoadMore = false;
           notifyListeners();
         }
       } else {
-        totalDeviceReplacementStatusModelData = await replacementService!
-            .getTotalDeviceReplacementStatusModel(startCount);
-        Logger().wtf(totalDeviceReplacementStatusModel);
-        Logger().d(deviceReplacementStatusModelList);
-        totalDeviceReplacementStatusModelData!.result![1].forEach((element) {
+    TotalDeviceReplacementStatusModel? totalDeviceReplacementStatusModelData = await replacementService!
+            .getTotalDeviceReplacementStatusModel(startCount,"");
+         Logger().wtf("totalDeviceReplacementStatusModelData:$totalDeviceReplacementStatusModelData");
+        totalCount =
+             totalDeviceReplacementStatusModelData!.result!.first.first.count!;
+
+        Logger().wtf("totalCount:$totalCount");
+         if(totalDeviceReplacementStatusModelData.result!=null){
+       totalDeviceReplacementStatusModelData.result![1].forEach((element) {
           dataList.add(element);
         });
-        for (var i = 0; i < deviceReplacementStatusModelList.length; i++) {
-          dataList.sort((a, b) => b.InsertUTC!.compareTo(a.InsertUTC!));
-        }
         isLoading = false;
         isLoadMore = false;
         notifyListeners();
-      }
+       }
+    }
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -118,27 +136,27 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
         }
         int index = i + 1;
         sheetObj.updateCell(
-            CellIndex.indexByString("A$index"), excelDataInsert[i].OldDeviceId);
+            CellIndex.indexByString("A$index"), excelDataInsert[i].oldDeviceId);
         sheetObj.updateCell(
-            CellIndex.indexByString("B$index"), excelDataInsert[i].VIN);
+            CellIndex.indexByString("B$index"), excelDataInsert[i].vin);
         sheetObj.updateCell(
-            CellIndex.indexByString("C$index"), excelDataInsert[i].NewDeviceId);
+            CellIndex.indexByString("C$index"), excelDataInsert[i].newDeviceId);
         sheetObj.updateCell(
-            CellIndex.indexByString("D$index"), excelDataInsert[i].Reason);
+            CellIndex.indexByString("D$index"), excelDataInsert[i].reason);
         sheetObj.updateCell(
-            CellIndex.indexByString("E$index"), excelDataInsert[i].State);
+            CellIndex.indexByString("E$index"), excelDataInsert[i].state);
         sheetObj.updateCell(
-            CellIndex.indexByString("F$index"), excelDataInsert[i].Description);
+            CellIndex.indexByString("F$index"), excelDataInsert[i].description);
         sheetObj.updateCell(
-            CellIndex.indexByString("G$index"), excelDataInsert[i].FirstName);
+            CellIndex.indexByString("G$index"), excelDataInsert[i].firstName);
         sheetObj.updateCell(
-            CellIndex.indexByString("H$index"), excelDataInsert[i].LastName);
+            CellIndex.indexByString("H$index"), excelDataInsert[i].lastName);
         sheetObj.updateCell(
-            CellIndex.indexByString("I$index"), excelDataInsert[i].EmailID);
+            CellIndex.indexByString("I$index"), excelDataInsert[i].emailId);
         sheetObj.updateCell(
             CellIndex.indexByString("J$index"),
             Utils.getLastReportedDateFilterData(
-                DateTime.parse(excelDataInsert[i].InsertUTC!)));
+                DateTime.parse(excelDataInsert[i].insertUtc!)));
       }
       var savefile = excelSheet.save();
       File("${path!.path}/Device_Replacement_Report.xlsx")
