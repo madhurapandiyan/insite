@@ -25,6 +25,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 
 import 'package:insite/views/health/health_view.dart';
+import 'package:insite/views/maintenance/maintenance_view.dart';
 
 import 'package:intl/intl.dart';
 import 'package:load/load.dart';
@@ -264,5 +265,8 @@ class AssetDashboardViewModel extends InsiteViewModel {
     }
     _faultCountloading = false;
     notifyListeners();
+  }
+  goToMaintainenceView(){
+     _navigationService!.navigateToView(MaintenanceView());
   }
 }

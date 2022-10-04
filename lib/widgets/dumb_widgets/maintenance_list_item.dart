@@ -87,7 +87,7 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                           },
                         ),
                         InsiteTableRowItem(
-                          title: "Devie Id :",
+                          title: "Device Id :",
                           content: widget.summaryData!.telematicDeviceId ?? "-",
                         ),
                       ]),

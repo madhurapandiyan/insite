@@ -50,7 +50,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: Text(
             viewModel.selected != null
-                ? viewModel.selected!.value!.DisplayName!
+                ? viewModel.selected!.value!.Name!
                 : widget.selectionType == AccountType.ACCOUNT
                     ? "Select"
                     : "Search and Select",
@@ -97,10 +97,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                         Expanded(
                           child: ListView.builder(
                             itemCount: viewModel.displayList!.length,
-                            controller:
-                                widget.selectionType == AccountType.ACCOUNT
-                                    ? null
-                                    : viewModel.scrollController,
+                            controller: viewModel.scrollController,
                             // shrinkWrap: true,
                             // physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
@@ -129,7 +126,7 @@ class _AccountSearchViewState extends State<AccountSearchView> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          data.value!.DisplayName!,
+                                          data.value!.Name!,
                                           //overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                               color: viewModel
@@ -214,8 +211,8 @@ class _AccountSearchViewState extends State<AccountSearchView> {
           ],
         );
       },
-      viewModelBuilder: () =>
-          AccountSearchViewModel(widget.selected, widget.list),
+      viewModelBuilder: () => AccountSearchViewModel(
+          widget.selected, widget.list, widget.selectionType),
     );
   }
 }

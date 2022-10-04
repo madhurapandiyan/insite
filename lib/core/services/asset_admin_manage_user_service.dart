@@ -1047,7 +1047,7 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
- Future<ManageGroupSummaryResponse?> getManageGroupSummaryResponseListData(
+  Future<ManageGroupSummaryResponse?> getManageGroupSummaryResponseListData(
       pageNumber, payload, searckKey) async {
     try {
       Map<String, dynamic> queryMap = Map();
@@ -1324,7 +1324,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<AssetGroupSummaryResponse?> getAccountSelectionData(
-      int pageNumber, int pageSize, String productFamilyKey) async {
+      int pageNumber, int pageSize, String productFamilyKey,String ? query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["pageNumber"] = pageNumber.toString();
@@ -1335,23 +1335,37 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
         Logger().wtf(customerSelected!.CustomerUID);
       }
-      if (isVisionLink) {
-        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
-            .getClientSeven()!
-            .getAdminProductFamilyFilterData(
-                Urls.getGroupListDataVL +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
+      if (enableGraphQl) {
+          var data = await Network().getGraphqlData(
+            query: query,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        AssetGroupSummaryResponse groupSummaryResponse =
+            AssetGroupSummaryResponse.fromJson(
+                data.data["notificationAssetList"]);
         return groupSummaryResponse;
       } else {
-        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
-            .getClient()!
-            .getGroupListData(
-                Urls.groupListData +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                "in-vfleet-uf-map-api",
-                accountSelected!.CustomerUID);
-        return groupSummaryResponse;
+        if (isVisionLink) {
+          AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+              .getClientSeven()!
+              .getAdminProductFamilyFilterData(
+                  Urls.getGroupListDataVL +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return groupSummaryResponse;
+        } else {
+          AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+              .getClient()!
+              .getGroupListData(
+                  Urls.groupListData +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  "in-vfleet-uf-map-api",
+                  accountSelected!.CustomerUID);
+          return groupSummaryResponse;
+        }
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -1359,8 +1373,8 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AddGroupDataResponse?> getAddGroupSaveData({
-      AddGroupPayLoad? addGroupPayLoad, gqlPayload, String ?query}) async {
+  Future<AddGroupDataResponse?> getAddGroupSaveData(
+      {AddGroupPayLoad? addGroupPayLoad, gqlPayload, String? query}) async {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
@@ -1438,7 +1452,6 @@ class AssetAdminManagerUserService extends BaseService {
     }
     return null;
   }
-
 
   Future<ManageReportResponse?> getManageReportListData(int page, int limit,
       String searchKeyword, List<FilterData?>? appliedFilters, query) async {
@@ -1713,7 +1726,8 @@ class AssetAdminManagerUserService extends BaseService {
       Logger().e(e.toString());
     }
   }
-   Future<bool?> resendInvitation(String id) async {
+
+  Future<bool?> resendInvitation(String id) async {
     if (enableGraphQl) {
       var data = await Network().getGraphqlData(
           query: graphqlSchemaService!.resentInvitation(),

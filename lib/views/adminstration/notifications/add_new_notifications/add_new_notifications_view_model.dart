@@ -49,7 +49,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   TabController? controller;
   Customer? accountSelected;
 
-   NotificationExist? notificationExists ;
+  NotificationExist? notificationExists;
   @override
   void dispose() {
     super.dispose();
@@ -114,9 +114,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<String?> _notificationSubTypes = ["Options"];
   List<String?> get notificationSubTypes => _notificationSubTypes;
 
-  List<String> _choiseData = [
-    "Assets",
-  ];
+  List<String> _choiseData = ["Assets", "Geofences", "Groups"];
   List<String> get choiseData => _choiseData;
 
   bool _loading = true;
@@ -152,6 +150,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   bool isHideSearchList = false;
 
   String? alertConfigUid;
+  String? assetSelectionValue;
 
   String _searchKeyword = '';
   set searchKeyword(String keyword) {
@@ -537,8 +536,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         snackbarService!.showSnackbar(message: "Asset Alerady Selected");
       } else {
         Logger().i(assetIdresult?.assetDetailsRecords?.length);
-        assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
-            element.assetIdentifier == selectedData.assetIdentifier);
+        // assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
+        //     element.assetIdentifier == selectedData.assetIdentifier);
         selectedAsset?.add(selectedData);
         Logger().d(assetIdresult?.assetDetailsRecords?.length);
       }
@@ -870,9 +869,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       element.state = true;
     });
 
-   
-    
-  
     // customizableState.forEach((element) {
     //   element.state = true;
     // });
@@ -1177,6 +1173,46 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     getNotificationSubTypes();
   }
 
+  updateModelValueChooseBy(String value) async {
+    if (value == assetSelectionValue) {
+      return;
+    }
+    showLoadingDialog();
+    assetSelectionValue = value;
+    if (value == choiseData[1]) {
+      var geofenceData = await _geofenceservice!.getGeofenceData();
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: geofenceData!.geofences!
+              .map((e) => Asset(
+                    assetIdentifier: e.GeofenceUID,
+                    assetSerialNumber: e.GeofenceName,
+                  ))
+              .toList());
+    } else if (value == choiseData[2]) {
+      var groupResult =
+          await _manageUserService!.getManageGroupSummaryResponseListData(
+              1,
+              {
+                "pageNumber": 1,
+                "searchKey": "GroupName",
+                "searchValue": _searchKeyword,
+                "sort": ""
+              },
+              _searchKeyword);
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: groupResult!.groups!
+              .map((e) => Asset(
+                    assetIdentifier: e.GroupUid,
+                    assetSerialNumber: e.GroupName,
+                  ))
+              .toList());
+    } else {
+      await getGroupListData();
+    }
+    hideLoadingDialog();
+    notifyListeners();
+  }
+
   updateSubModelValue(String value) {
     _dropDownSubInitialValue = value;
     notifyListeners();
@@ -1466,13 +1502,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   checkIfNotificationNameExist(String? value) async {
     try {
-      if (value!.length >=3) {
-     notificationExists  = await _notificationService!
-            .checkNotificationTitle(
-                value, graphqlSchemaService!.checkNotificationTitle(value));
+      if (value!.length >= 3) {
+        notificationExists = await _notificationService!.checkNotificationTitle(
+            value, graphqlSchemaService!.checkNotificationTitle(value));
         // isTitleExist = notificationExists!.alertTitleExists!;
 
-       
         notifyListeners();
       } else {
         //isNotificationNameChange=true;
@@ -1998,10 +2032,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       assetUidData.add(element.assetIdentifier!);
     });
 
-     if (notificationExists?.alertTitleExists == true) {
-          _snackBarservice!.showSnackbar(message: "Notification title exists");
-          // notificationController.clear();
-        }
+    if (notificationExists?.alertTitleExists == true) {
+      _snackBarservice!.showSnackbar(message: "Notification title exists");
+      // notificationController.clear();
+    }
 
     if (notificationController.text.isEmpty) {
       _snackBarservice!.showSnackbar(message: "Notification Name is required");
@@ -2067,7 +2101,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");
           hideLoadingDialog();
           gotoManageNotificationsPage();
-        } 
+        }
         // else {
         //   _snackBarservice!
         //       .showSnackbar(message: "Kindly recheck credentials added");

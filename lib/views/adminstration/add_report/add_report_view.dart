@@ -434,24 +434,32 @@ class _AddReportViewState extends State<AddReportView> {
                                 fontWeight: FontWeight.w700,
                               )
                             : Container(),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.05,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(width: 1, color: black),
-                            shape: BoxShape.rectangle,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: InsiteText(
+                            text: "Choose by : ",
+                            size: 14,
+                            fontWeight: FontWeight.bold,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: CustomDropDownWidget(
-                              items: ["Assets"],
-                              value: viewModel.chooseByDropDownValue,
-                              onChanged: (String? value) {
-                                viewModel.chooseByDropDownValue = value!;
-
-                                setState(() {});
-                              },
-                            ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color!,
+                              ),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: CustomDropDownWidget(
+                            value: viewModel.assetSelectionValue,
+                            items: viewModel.choiseData,
+                            enableHint: true,
+                            onChanged: (String? value) {
+                              viewModel.updateModelValueChooseBy(value!);
+                            },
                           ),
                         ),
                         SizedBox(
@@ -479,6 +487,9 @@ class _AddReportViewState extends State<AddReportView> {
                                           ),
                                         )
                                       : AssetSelectionWidgetView(
+                                        
+                                          dropdownValue:
+                                              viewModel.assetSelectionValue,
                                           isAddingAllAsset: viewModel
                                                           .assetsDropDownValue ==
                                                       "Utilization Details" ||
@@ -504,6 +515,8 @@ class _AddReportViewState extends State<AddReportView> {
                                     height: 20,
                                   ),
                                   SelectedAsset(
+                                    selectedDropDownValue:
+                                        viewModel.assetSelectionValue,
                                     isLoading: viewModel.isAssetLoading,
                                     dropDownList: viewModel.dropDownList,
                                     initialValue: viewModel.initialValue,
