@@ -33,7 +33,8 @@ class LocationSearchBoxView extends StatelessWidget {
                 return Row(
                   children: [
                     Container(
-                      width: constrain.maxWidth * 0.25,
+                      //width: constrain.maxWidth * 0.28,
+                   
                       decoration: new BoxDecoration(
                           color: Colors.white,
                           borderRadius:
@@ -70,6 +71,7 @@ class LocationSearchBoxView extends StatelessWidget {
                     // ),
                     Expanded(
                       child: Container(
+                  
                         decoration: new BoxDecoration(
                             color: Colors.white,
                             borderRadius:
@@ -130,7 +132,7 @@ class LocationSearchBoxView extends StatelessWidget {
                             ),
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
-                                    left: 16, top: 12, bottom: 12),
+                                    left: 8, top: 12, bottom: 10),
                                 isDense: true,
                                 border: InputBorder.none,
                                 focusedBorder: InputBorder.none,

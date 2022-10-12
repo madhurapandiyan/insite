@@ -413,7 +413,7 @@ class UtilizationListItem extends StatelessWidget {
                                   },
                                 ),
                                 InsiteTableRowItem(
-                                  title: "Working Time Hours",
+                                  title: "Working Hours",
                                   content: utilizationData?.workingHours
                                               .toString() ==
                                           "null"

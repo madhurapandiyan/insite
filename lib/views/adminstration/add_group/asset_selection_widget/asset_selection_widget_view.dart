@@ -548,7 +548,8 @@ class _SelectedAssetState extends State<SelectedAsset> {
     var mediaQuery = MediaQuery.of(context);
     var theme = Theme.of(context);
     return widget.selectedDropDownValue == "Geofences" ||
-            widget.selectedDropDownValue == "Groups"
+            widget.selectedDropDownValue == "Groups"||
+            widget.selectedDropDownValue=="Assets"
         ? Padding(
             padding: const EdgeInsets.all(10),
             child: Column(

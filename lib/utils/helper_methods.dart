@@ -1294,7 +1294,7 @@ class Utils {
     } else if (alert?.operands?.first.value == "1") {
       data = "Maintenance Interval Overdue";
       return data;
-    } else if (alert?.operands!.first.value == "2") {
+    } else if (alert?.operands?.first.value == "2") {
       data = "Maintenance Interval Upcoming";
       return data;
     } else {

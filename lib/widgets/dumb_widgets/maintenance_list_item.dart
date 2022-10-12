@@ -93,6 +93,7 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                       ]),
                       TableRow(children: [
                         InsiteTableRowItemWithRowButton(
+                          
                           title: "Service Status : ",
                           buttonColor: Utils.getMaintenanceColor(
                               widget.summaryData!.dueInfo!.serviceStatus),

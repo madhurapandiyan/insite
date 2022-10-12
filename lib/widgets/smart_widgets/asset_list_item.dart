@@ -93,7 +93,7 @@ class AssetOperationListItem extends StatelessWidget {
                             },
                           ),
                           InsiteTableRowItem(
-                            title: "Distance Travelled Kilometers",
+                            title: "Distance Travelled",
                             content: asset != null &&
                                     asset!.distanceTravelledKilometers != null
                                 ? asset!.distanceTravelledKilometers!

@@ -293,7 +293,7 @@ class AddGroupViewModel extends InsiteViewModel {
         EditGroupPayLoad(
             GroupName: nameController.text,
             GroupUid: groups!.GroupUid!,
-            CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
+            CustomerUID: accountSelected!.CustomerUID!,
             Description: descriptionController.text,
             AssociatedAssetUID: associatedAssetId,
             DissociatedAssetUID: dissociatedAssetId),

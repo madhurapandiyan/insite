@@ -204,6 +204,9 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
           ),
           content!.isNotEmpty
               ? InsiteButton(
+                  textColor: content == "HIGH"
+                      ? white
+                      : Theme.of(context).textTheme.bodyText1!.color,
                   bgColor: buttonColor != null ? buttonColor : buttonColorFive,
                   title: content,
                   padding: EdgeInsets.all(0),
@@ -249,6 +252,7 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
           ),
           content!.isNotEmpty
               ? InsiteButton(
+                  textColor: content=="Overdue"?white:Theme.of(context).textTheme.bodyText1!.color,
                   bgColor: buttonColor != null ? buttonColor : buttonColorFive,
                   title: content,
                   padding: EdgeInsets.all(0),
