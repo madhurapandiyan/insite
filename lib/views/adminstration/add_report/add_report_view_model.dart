@@ -10,6 +10,7 @@ import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/core/models/search_contact_report_list_response.dart';
 import 'package:insite/core/models/template_response.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_report/fault_code_model.dart';
@@ -30,6 +31,11 @@ class AddReportViewModel extends InsiteViewModel {
   List<String>? reportServiceAssets = [];
   List<String>? reportProductivityAssets = [];
   List<String>? reportStandartAssets = [];
+  String? assetSelectionValue;
+  final Geofenceservice? _geofenceservice = locator<Geofenceservice>();
+
+  List<String> _choiseData = ["Assets", "Geofences", "Groups"];
+  List<String> get choiseData => _choiseData;
 
   List<User>? searchContactListName = [];
   List<String>? associatedIdentifier = [];
@@ -123,6 +129,47 @@ class AddReportViewModel extends InsiteViewModel {
 
   getListViewState() {
     isListViewState = true;
+    notifyListeners();
+  }
+
+  updateModelValueChooseBy(String value) async {
+    if (value == assetSelectionValue) {
+      return;
+    }
+    showLoadingDialog();
+    assetSelectionValue = value;
+    if (value == choiseData[1]) {
+      var geofenceData = await _geofenceservice!.getGeofenceData();
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: geofenceData!.geofences!
+              .map((e) => Asset(
+                    assetIdentifier: e.GeofenceUID,
+                    assetSerialNumber: e.GeofenceName,
+                  ))
+              .toList());
+      Logger().w(assetIdresult!.assetDetailsRecords!.first.toJson());
+    } else if (value == choiseData[2]) {
+      var groupResult =
+          await _manageUserService!.getManageGroupSummaryResponseListData(
+              1,
+              {
+                "pageNumber": 1,
+                "searchKey": "GroupName",
+                "searchValue": _searchKeyword,
+                "sort": ""
+              },
+              _searchKeyword);
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: groupResult!.groups!
+              .map((e) => Asset(
+                    assetIdentifier: e.GroupUid,
+                    assetSerialNumber: e.GroupName,
+                  ))
+              .toList());
+    } else {
+      await getGroupListData();
+    }
+    hideLoadingDialog();
     notifyListeners();
   }
 

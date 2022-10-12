@@ -88,3 +88,6 @@ storeFile=<location of the key store file, such as /Users/<user name>/upload-key
 
 for more info #see https://flutter.dev/docs/deployment/android#reference-the-keystore-from-the-app
 
+for using azure:
+Add --mirror flag after git command and want to mention git clone repository url
+

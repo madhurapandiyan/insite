@@ -30,6 +30,7 @@ class AccountSearchViewModel extends InsiteViewModel {
   AccountData? selected;
   List<AccountData>? list = [];
   List<AccountData>? displayList = [];
+  AccountType? selectionType;
 
   deSelect() {
     for (var i = 0; i < displayList!.length; i++) {
@@ -42,18 +43,38 @@ class AccountSearchViewModel extends InsiteViewModel {
   int limit = 99;
 
   AccountSearchViewModel(
-      AccountData? accountSelected, List<AccountData>? data) {
+      AccountData? accountSelected, List<AccountData>? data, selectionType) {
+    selectionType = selectionType;
     selected = accountSelected != null ? accountSelected : null;
     list!.clear();
     list = data;
-    displayList = list;
     Logger().i("total list length ${list!.length}");
     if (selected != null) {
-      Logger().i(selected!.value!.DisplayName);
+      Logger().i(selected!.value!.Name);
     }
     // textEditingController.addListener(() {
     //   onSearchTextChanged(textEditingController.text);
     // });
+    list?.sort((a, b) {
+      return a.value!.Name
+          .toString()
+          .toLowerCase()
+          .compareTo(b.value!.Name.toString().toLowerCase());
+    });
+    selectionType == AccountType.CUSTOMER
+        ? list?.insert(
+            0,
+            AccountData(
+                isSelected: false,
+                selectionType: AccountType.ACCOUNT,
+                value: Customer(
+                    CustomerUID: "",
+                    Name: "ALL ACCOUNTS",
+                    CustomerType: "ALL",
+                    DisplayName: "ALL ACCOUNTS",
+                    Children: [])))
+        : null;
+    displayList = list;
 
     Future.delayed(Duration(seconds: 2), () {
       notifyListeners();
@@ -64,7 +85,8 @@ class AccountSearchViewModel extends InsiteViewModel {
           scrollController!.position.maxScrollExtent) {
         limit = limit + 100;
         start = start + 100;
-        loadMoreAccount();
+        notifyListeners();
+        // loadMoreAccount();
       }
     });
   }
@@ -113,20 +135,18 @@ class AccountSearchViewModel extends InsiteViewModel {
             : textEditingController.text,
         customerId: accountSelected?.CustomerUID ?? "",
         isFromPagination: true);
+    result?.sort((a, b) {
+      return a.Name.toString()
+          .toLowerCase()
+          .compareTo(b.Name.toString().toLowerCase());
+    });
     if (result!.isNotEmpty) {
-      Logger().w("sub account");
       result.forEach((element) {
-
         displayList!.add(AccountData(
             isSelected: false,
             selectionType: AccountType.CUSTOMER,
             value: element));
       });
-      if(displayList!.isNotEmpty){
-        Logger().v("inside sorting");
-        displayList!.sort((a, b) => a.value!.DisplayName!.compareTo(b.value!.DisplayName!),);
-      }
-      
     }
 
     notifyListeners();
@@ -168,7 +188,11 @@ class AccountSearchViewModel extends InsiteViewModel {
             isFromPagination: textEditingController.text.isEmpty ? false : true,
             customerId: accountSelected!.CustomerUID);
         searchList.clear();
-
+        result?.sort((a, b) {
+          return a.Name.toString()
+              .toLowerCase()
+              .compareTo(b.Name.toString().toLowerCase());
+        });
         result!.forEach((element) {
           searchList.add(AccountData(
               isSelected: false,
@@ -209,9 +233,8 @@ class AccountSearchViewModel extends InsiteViewModel {
         List<AccountData> tempList = [];
         tempList.clear();
         list!.forEach((item) {
-          if (item.value!.DisplayName!
-              .toLowerCase()
-              .contains(text.toLowerCase())) tempList.add(item);
+          if (item.value!.Name!.toLowerCase().contains(text.toLowerCase()))
+            tempList.add(item);
         });
         displayList = tempList;
         Logger().i("total list size " + list!.length.toString());
