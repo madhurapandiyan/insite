@@ -247,6 +247,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                     color: appbarcolor,
                                                   )),
                                               LocationSearchBoxView(
+                                                 searchBoxWidth: 0.33,
                                                   onSeletingSuggestion:
                                                       (value, isSerialNo) {
                                                     if (!isSerialNo) {
@@ -259,7 +260,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                               value);
                                                     }
                                                   },
-                                                  searchBoxWidth: 0.5),
+                                                  ),
                                               Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment

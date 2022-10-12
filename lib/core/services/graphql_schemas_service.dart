@@ -2342,7 +2342,8 @@ query{
       String? manufacturer,
       int? pageNo,
       int? pageSize,
-      String? deviceType}) {
+      String? deviceType,
+      String? customerIdentifier}) {
     var data = """
 query{
   notificationAssetList(
@@ -2353,6 +2354,7 @@ productfamily: ${productfamily == null ? "\"\"" : "${"\"" + productfamily + "\""
 model: ${model == null ? "\"\"" : "${"\"" + model + "\""}"}
 manufacturer: ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer + "\""}"}
 deviceType: ${deviceType == null ? "\"\"" : "${"\"" + deviceType + "\""}"}
+customerIdentifier:${customerIdentifier == null ? "\"\"" : "${"\"" + customerIdentifier + "\""}"}
 ){
 assetDetailsRecords{
       assetIdentifier,
@@ -3555,7 +3557,7 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
     return data;
   }
 
-   updateGroup() {
+  updateGroup() {
     var data = """
 mutation updateGroups(\$groupUid: String, \$groupName: String, \$description: String, \$customerUID: String, \$associatedAssetUID: [String], \$dissociatedAssetUID: [String]){
   updateGroups(groupUid: \$groupUid, groupName: \$groupName, description: \$description, customerUID: \$customerUID, associatedAssetUID: \$associatedAssetUID, dissociatedAssetUID: \$dissociatedAssetUID){

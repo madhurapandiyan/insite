@@ -3,6 +3,7 @@ import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
+import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -103,6 +104,33 @@ class _AddGroupViewState extends State<AddGroupView> {
                     SizedBox(
                       height: 15,
                     ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: InsiteText(
+                        text: "Choose by : ",
+                        size: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color!,
+                          ),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: CustomDropDownWidget(
+                        value: viewModel.assetSelectionValue,
+                        items: viewModel.choiseData,
+                        enableHint: true,
+                        onChanged: (String? value) {
+                          viewModel.updateModelValueChooseBy(value!);
+                        },
+                      ),
+                    ),
+
                     viewModel.isLoading
                         ? Center(
                             child: Container(
@@ -116,6 +144,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                             ),
                           )
                         : AssetSelectionWidgetView(
+                            dropdownValue: viewModel.assetSelectionValue,
                             onAddingAsset: (i, value) {
                               viewModel.onAddingAsset(i, value);
                             },
@@ -134,6 +163,7 @@ class _AddGroupViewState extends State<AddGroupView> {
                       height: 20,
                     ),
                     SelectedAsset(
+                      selectedDropDownValue: viewModel.assetSelectionValue,
                       dropDownList: viewModel.dropDownList,
                       initialValue: viewModel.initialValue,
                       onChange: (value) {
@@ -201,7 +231,6 @@ class _AddGroupViewState extends State<AddGroupView> {
             ));
       },
       viewModelBuilder: () => AddGroupViewModel(groups),
-      
     );
   }
 }

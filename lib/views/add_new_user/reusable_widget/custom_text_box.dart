@@ -24,6 +24,7 @@ class CustomTextBox extends StatelessWidget {
   final Function? onTap;
   bool isShowingBorderColor;
   int? maxLength;
+  final bool ? showTextColour;
 
   CustomTextBox(
       {this.title,
@@ -46,7 +47,8 @@ class CustomTextBox extends StatelessWidget {
       this.isShowingBorderColor = false,
       this.helperText,
       this.contentPadding,
-      this.maxLength});
+      this.maxLength,
+      this.showTextColour=false});
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +69,9 @@ class CustomTextBox extends StatelessWidget {
           fontWeight: FontWeight.w700,
           fontSize: 14,
           fontStyle: FontStyle.normal,
-          color: isShowingBorderColor
-              ? Theme.of(context).backgroundColor
+          
+          color: showTextColour!?
+               Colors.black.withOpacity(0.3)
               : Theme.of(context).textTheme.bodyText1!.color!,
         ),
         enabled: isenabled,

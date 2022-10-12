@@ -60,6 +60,7 @@ class Geofenceservice extends BaseService {
     } catch (e) {
       Logger().e(e.toString());
     }
+    return null;
   }
 
   Future<Materialmodel> getMaterialModelData() async {

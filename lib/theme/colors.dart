@@ -43,6 +43,7 @@ const Color periwinkleGrey = Color(0xFFB7BEE3);
 const Color olivine = Color(0xFF8EB685);
 const Color persianIndigo = Color(0xFF53168F);
 final kNeumorphicColors = [emerald, concrete, mustard, burntSienna];
+var defColor = Color(0xFF5A6EFA);
 
 //chip background
 const Color chipBackgroundOne = Color(0xff303238);
