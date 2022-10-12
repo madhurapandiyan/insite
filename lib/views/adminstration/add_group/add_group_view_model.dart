@@ -12,6 +12,7 @@ import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
@@ -34,11 +35,22 @@ class AddGroupViewModel extends InsiteViewModel {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  final Geofenceservice? _geofenceservice = locator<Geofenceservice>();
 
   Groups? groups;
   List<AddGroupModel>? selectedAssetDisplayList = [];
 
+  String? assetSelectionValue;
+
+  String _searchKeyword = '';
+  set searchKeyword(String keyword) {
+    this._searchKeyword = keyword;
+  }
+
   TextEditingController selectedItemController = TextEditingController();
+
+  List<String> _choiseData = ["Assets", "Geofences", "Groups"];
+  List<String> get choiseData => _choiseData;
 
   Customer? accountSelected;
 
@@ -87,6 +99,48 @@ class AddGroupViewModel extends InsiteViewModel {
       }
     });
   }
+
+  updateModelValueChooseBy(String value) async {
+    if (value == assetSelectionValue) {
+      return;
+    }
+    showLoadingDialog();
+    assetSelectionValue = value;
+    if (value == choiseData[1]) {
+      var geofenceData = await _geofenceservice!.getGeofenceData();
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: geofenceData!.geofences!
+              .map((e) => Asset(
+                    assetIdentifier: e.GeofenceUID,
+                    assetSerialNumber: e.GeofenceName,
+                  ))
+              .toList());
+              Logger().w(assetIdresult!.assetDetailsRecords!.first.toJson());
+    } else if (value == choiseData[2]) {
+      var groupResult =
+          await _manageUserService!.getManageGroupSummaryResponseListData(
+              1,
+              {
+                "pageNumber": 1,
+                "searchKey": "GroupName",
+                "searchValue": _searchKeyword,
+                "sort": ""
+              },
+              _searchKeyword);
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: groupResult!.groups!
+              .map((e) => Asset(
+                    assetIdentifier: e.GroupUid,
+                    assetSerialNumber: e.GroupName,
+                  ))
+              .toList());
+    } else {
+      await getGroupListData();
+    }
+    hideLoadingDialog();
+    notifyListeners();
+  }
+
   List<String> assetUidData = [];
 
   // AssetGroupSummaryResponse? assetIdresult;
@@ -106,19 +160,17 @@ class AddGroupViewModel extends InsiteViewModel {
       showLoadingDialog(tapDismiss: true);
       AddGroupDataResponse? result =
           await _manageUserService!.getAddGroupSaveData(
-            addGroupPayLoad: 
-        AddGroupPayLoad(
+        addGroupPayLoad: AddGroupPayLoad(
           AssetUID: assetUidData,
           Description: descriptionController.text,
           GroupName: nameController.text,
         ),
-        gqlPayload: 
-        {
+        gqlPayload: {
           "assetUID": assetUidData,
           "description": descriptionController.text,
           "groupName": nameController.text
         },
-       query: graphqlSchemaService?.createGroup(),
+        query: graphqlSchemaService?.createGroup(),
       );
       if (result != null) {
         _snackBarservice!.showSnackbar(message: "You have added a new group");
@@ -137,11 +189,10 @@ class AddGroupViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-   onRemoving() {
+  onRemoving() {
     selectedAsset!.clear();
     notifyListeners();
   }
-
 
   getEditGroupData() async {
     try {
@@ -180,7 +231,7 @@ class AddGroupViewModel extends InsiteViewModel {
     }
   }
 
-  onAddingAsset(int i, Asset? selectedData) {
+  onAddingAsset(int i, dynamic selectedData) {
     if (selectedData != null) {
       assetIdresult?.assetDetailsRecords?.remove(selectedData);
       selectedAsset?.add(selectedData);
@@ -242,7 +293,7 @@ class AddGroupViewModel extends InsiteViewModel {
         EditGroupPayLoad(
             GroupName: nameController.text,
             GroupUid: groups!.GroupUid!,
-            CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
+            CustomerUID: accountSelected!.CustomerUID!,
             Description: descriptionController.text,
             AssociatedAssetUID: associatedAssetId,
             DissociatedAssetUID: dissociatedAssetId),

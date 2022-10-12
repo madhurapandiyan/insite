@@ -87,12 +87,13 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                           },
                         ),
                         InsiteTableRowItem(
-                          title: "Devie Id :",
+                          title: "Device Id :",
                           content: widget.summaryData!.telematicDeviceId ?? "-",
                         ),
                       ]),
                       TableRow(children: [
                         InsiteTableRowItemWithRowButton(
+                          
                           title: "Service Status : ",
                           buttonColor: Utils.getMaintenanceColor(
                               widget.summaryData!.dueInfo!.serviceStatus),

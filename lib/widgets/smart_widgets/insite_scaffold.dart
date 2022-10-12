@@ -22,12 +22,14 @@ class InsiteScaffold extends StatefulWidget {
   final InsiteViewModel? viewModel;
   final VoidCallback? onFilterApplied;
   final VoidCallback? onRefineApplied;
+  final Widget? floatingActionButton;
   InsiteScaffold(
       {this.screenType,
       this.body,
       this.onRefineApplied,
       this.viewModel,
-      this.onFilterApplied});
+      this.onFilterApplied,
+      this.floatingActionButton});
 
   @override
   _InsiteScaffoldState createState() => _InsiteScaffoldState();
@@ -52,6 +54,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
         return onBackPressed();
       },
       child: Scaffold(
+        floatingActionButton: widget.floatingActionButton,
         resizeToAvoidBottomInset: true,
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: InsiteAppBar(

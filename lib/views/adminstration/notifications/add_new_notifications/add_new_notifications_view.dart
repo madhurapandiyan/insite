@@ -966,11 +966,11 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     ),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: CustomDropDownWidget(
-                                  value: "Assets",
+                                  value: viewModel.assetSelectionValue,
                                   items: viewModel.choiseData,
                                   enableHint: true,
                                   onChanged: (String? value) {
-                                    // viewModel.updateModelValue(value!);
+                                    viewModel.updateModelValueChooseBy(value!);
                                   },
                                 ),
                               ),
@@ -1007,6 +1007,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                         },
                                         assetData: (value) {},
                                         assetResult: viewModel.assetIdresult,
+                                        dropdownValue:
+                                            viewModel.assetSelectionValue,
                                       ),
                                     ),
                               SizedBox(
@@ -1025,6 +1027,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                 onDeletingSelectedAsset: (i) {
                                   viewModel.onDeletingAsset(i);
                                 },
+                                selectedDropDownValue:
+                                    viewModel.assetSelectionValue,
                                 displayList: viewModel.isSearching
                                     ? viewModel.searchAsset
                                     : viewModel.selectedAsset,
