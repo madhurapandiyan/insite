@@ -3,13 +3,18 @@ part 'subscription_dashboard_details.g.dart';
 
 @JsonSerializable()
 class SubscriptionDashboardDetailResult {
+   DeviceTransferCount? deviceTransferCount ;
+  List<DeviceTransfer>? deviceTransfer;
   List<List<DetailResult>>? result;
   SubscriptionFleetList? subscriptionFleetList;
   List<AssetOrHierarchyByTypeAndId>? assetOrHierarchyByTypeAndId;
   SubscriptionDashboardDetailResult(
       {this.result,
       this.subscriptionFleetList,
-      this.assetOrHierarchyByTypeAndId});
+      this.assetOrHierarchyByTypeAndId,
+      this.deviceTransfer,
+      this.deviceTransferCount,
+      });
   factory SubscriptionDashboardDetailResult.fromJson(
           Map<String, dynamic> json) =>
       _$SubscriptionDashboardDetailResultFromJson(json);
@@ -100,143 +105,138 @@ class DetailResult {
   double? totalDevice;
 
   @JsonKey(name: "GPSDeviceID")
-  String? GPSDeviceID;
+  String? gpsDeviceId;
 
-  @JsonKey(name: "VIN")
-  String? VIN;
-
-  @JsonKey(name: "Model")
-  String? Model;
-
-  @JsonKey(name: "ActualStartDate")
-  String? ActualStartDate;
-
-  @JsonKey(name: "SubscriptionStartDate")
-  String? SubscriptionStartDate;
-
-  @JsonKey(name: "SubscriptionEndDate")
-  String? SubscriptionEndDate;
-
-  @JsonKey(name: "ProductFamily")
-  String? ProductFamily;
-
-  @JsonKey(name: "CustomerName")
-  String? CustomerName;
-
-  @JsonKey(name: "CustomerCode")
-  String? CustomerCode;
-
-  @JsonKey(name: "DealerName")
-  String? DealerName;
-
-  @JsonKey(name: "DealerCode")
-  String? DealerCode;
-
-  @JsonKey(name: "NetworkProvider")
-  String? NetworkProvider;
-
-  @JsonKey(name: "CommissioningDate")
-  String? CommissioningDate;
-
-  @JsonKey(name: "SecondaryIndustry")
-  String? SecondaryIndustry;
-
-  @JsonKey(name: "PrimaryIndustry")
-  String? PrimaryIndustry;
-
-  @JsonKey(name: "OEMName")
-  String? OEMName;
-
-  @JsonKey(name: "ID")
-  int? ID;
-
-  @JsonKey(name: "Name")
-  String? Name;
-
-  @JsonKey(name: "UserName")
-  String? UserName;
-
-  @JsonKey(name: "Email")
-  String? Email;
-
-  @JsonKey(name: "Code")
-  String? Code;
-
-  @JsonKey(name: "vin")
   String? vin;
 
-  @JsonKey(name: "fk_AssetId")
-  int? fk_AssetId;
+  @JsonKey(name: "Model")
+  String? model;
+
+  @JsonKey(name: "ActualStartDate")
+  String? actualStartDate;
+
+  @JsonKey(name: "SubscriptionStartDate")
+  String? subscriptionStartDate;
+
+  @JsonKey(name: "SubscriptionEndDate")
+  String? subscriptionEndDate;
+
+  @JsonKey(name: "ProductFamily")
+  String? productFamily;
+
+  @JsonKey(name: "CustomerName")
+  String? customerName;
+
+  @JsonKey(name: "CustomerCode")
+  String? customerCode;
+
+  @JsonKey(name: "DealerName")
+  String? dealerName;
+
+  @JsonKey(name: "DealerCode")
+  String? dealerCode;
+
+  @JsonKey(name: "NetworkProvider")
+  String? networkProvider;
+
+  @JsonKey(name: "CommissioningDate")
+  String? commissioningDate;
+
+  @JsonKey(name: "SecondaryIndustry")
+  String? secondaryIndustry;
+
+  @JsonKey(name: "PrimaryIndustry")
+  String? primaryIndustry;
+
+  @JsonKey(name: "OEMName")
+  String? oemName;
+
+  @JsonKey(name: "ID")
+  int? id;
+
+  @JsonKey(name: "Name")
+  String? name;
+
+  @JsonKey(name: "UserName")
+  String? userName;
+
+  @JsonKey(name: "Email")
+  String? email;
+
+  @JsonKey(name: "Code")
+  String? code;
+
+ @JsonKey(name: "fk_AssetId")
+  int? fkAssetId;
 
   @JsonKey(name: "fk_State")
-  int? fk_State;
+  int? fkState;
 
   @JsonKey(name: "SourceName1")
-  String? SourceName1;
+  String? sourceName1;
 
   @JsonKey(name: "SourceName2")
-  String? SourceName2;
+  String? sourceName2;
 
   @JsonKey(name: "DestinationName1")
-  String? DestinationName1;
+  String? destinationName1;
 
   @JsonKey(name: "DestinationName2")
-  String? DestinationName2;
+  String? destinationName2;
 
   @JsonKey(name: "SourceCustomerType")
-  String? SourceCustomerType;
+  String? sourceCustomerType;
 
   @JsonKey(name: "DestinationCustomerType")
-  String? DestinationCustomerType;
+  String? destinationCustomerType;
 
   @JsonKey(name: "Status")
-  String? Status;
+  String? status;
 
   @JsonKey(name: "Description")
-  String? Description;
+  String? description;
 
   @JsonKey(name: "InsertUTC")
-  String? InsertUTC;
+  String? insertUtc;
 
   @JsonKey(name: "count")
   int? count;
 
   DetailResult(
       {this.totalDevice,
-      this.ActualStartDate,
-      this.CustomerCode,
-      this.CustomerName,
-      this.DealerCode,
-      this.Code,
-      this.Email,
-      this.ID,
-      this.Name,
-      this.UserName,
-      this.OEMName,
-      this.DealerName,
-      this.CommissioningDate,
-      this.PrimaryIndustry,
-      this.SecondaryIndustry,
-      this.GPSDeviceID,
-      this.Model,
-      this.SubscriptionEndDate,
-      this.SubscriptionStartDate,
-      this.VIN,
-      this.NetworkProvider,
-      this.ProductFamily,
-      this.fk_AssetId,
-      this.SourceName1,
-      this.SourceName2,
-      this.DestinationName1,
-      this.DestinationName2,
-      this.DestinationCustomerType,
-      this.InsertUTC,
-      this.SourceCustomerType,
-      this.Status,
-      this.count,
-      this.Description,
+      this.actualStartDate,
+      this.customerCode,
+      this.customerName,
+      this.dealerCode,
+      this.code,
+      this.email,
+      this.id,
+      this.name,
+      this.userName,
+      this.oemName,
+      this.dealerName,
+      this.commissioningDate,
+      this.primaryIndustry,
+      this.secondaryIndustry,
+      this.gpsDeviceId,
+      this.model,
+      this.subscriptionEndDate,
+      this.subscriptionStartDate,
       this.vin,
-      this.fk_State});
+      this.networkProvider,
+      this.productFamily,
+      this.fkAssetId,
+      this.sourceName1,
+      this.sourceName2,
+      this.destinationName1,
+      this.destinationName2,
+      this.destinationCustomerType,
+      this.insertUtc,
+      this.sourceCustomerType,
+      this.status,
+      this.count,
+      this.description,
+      this.fkState});
 
   factory DetailResult.fromJson(Map<String, dynamic> json) =>
       _$DetailResultFromJson(json);
@@ -269,3 +269,54 @@ class DetailResult {
 //       _$ProvisioningInfoFromJson(json);
 //   Map<String, dynamic> toJson() => _$ProvisioningInfoToJson(this);
 // }
+@JsonSerializable()
+class DeviceTransfer {
+  @JsonKey(name: "gpsDeviceID")
+  String? gpsDeviceId;
+  String? oemName;
+  String? status;
+  String? destinationCustomerType;
+  String? sourceCustomerType;
+  String? destinationName1;
+  String? destinationName2;
+  @JsonKey(name: "fk_AssetId")
+  int? fkAssetId;
+  @JsonKey(name: "insertUTC")
+  String? insertUtc;
+  String? sourceName1;
+  String? sourceName2;
+  String? vin;
+  String? sTypename;
+
+  DeviceTransfer(
+      {this.gpsDeviceId,
+      this.oemName,
+      this.status,
+      this.destinationCustomerType,
+      this.destinationName1,
+      this.destinationName2,
+      this.fkAssetId,
+      this.insertUtc,
+      this.sourceName1,
+      this.sourceName2,
+      this.sourceCustomerType,
+      this.vin,
+      this.sTypename
+      });
+
+  factory DeviceTransfer.fromJson(Map<String, dynamic> json) =>
+      _$DeviceTransferFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DeviceTransferToJson(this);
+}
+@JsonSerializable()
+class DeviceTransferCount{
+  String? count ;
+
+  DeviceTransferCount({this.count});
+
+  factory DeviceTransferCount.fromJson(Map<String, dynamic> json) =>
+      _$DeviceTransferCountFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DeviceTransferCountToJson(this);
+}

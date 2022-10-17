@@ -107,8 +107,6 @@ class SubScriptionService extends BaseService {
         Logger().d('subscription result: ${dashboardResult.toJson()}');
         return dashboardResult;
       }
-
-    
     } catch (e) {
       print(e.toString());
       return null;
@@ -470,6 +468,7 @@ class SubScriptionService extends BaseService {
   Future<SubscriptionDashboardDetailResult?> getTransferHistoryViewData({
     int? start,
     int? limit,
+    String? query,
   }) async {
     try {
       Map<String, String> queryMap = Map();
@@ -482,16 +481,26 @@ class SubScriptionService extends BaseService {
       if (limit != null) {
         queryMap["limit"] = limit.toString();
       }
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlPlantData(
+          query: query,
+        );
 
-      SubscriptionDashboardDetailResult dashboardResult = await MyApi()
-          .getClientNine()!
-          .getFleetStatusData(Urls.transferHistoryResult +
-              FilterUtils.constructQueryFromMap(queryMap));
-      if (dashboardResult == null) {
-        Logger().d('no data found');
+        SubscriptionDashboardDetailResult? deviceDetails =
+            SubscriptionDashboardDetailResult.fromJson(data.data);
+        Logger().wtf("response:$data");
+        return deviceDetails;
+      } else {
+        SubscriptionDashboardDetailResult dashboardResult = await MyApi()
+            .getClientNine()!
+            .getFleetStatusData(Urls.transferHistoryResult +
+                FilterUtils.constructQueryFromMap(queryMap));
+        if (dashboardResult == null) {
+          Logger().d('no data found');
+        }
+        Logger().d('subscription result: $dashboardResult');
+        return dashboardResult;
       }
-      Logger().d('subscription result: $dashboardResult');
-      return dashboardResult;
     } catch (e) {
       print(e.toString());
       return null;

@@ -123,10 +123,10 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
         for (int i = 0; i < result!.assetOrHierarchyByTypeAndId!.length; i++) {
           var items = result!.assetOrHierarchyByTypeAndId![i];
           DetailResult fleetListData = DetailResult(
-            Name: items.name,
-            UserName: items.userName,
-            Code: items.code,
-            Email: items.email,
+            name: items.name,
+            userName: items.userName,
+            code: items.code,
+            email: items.email,
           );
           devices.add(fleetListData);
         }
@@ -147,20 +147,20 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
                 i++) {
               var items = result!.subscriptionFleetList!.provisioningInfo![i];
               DetailResult fleetListData = DetailResult(
-                  GPSDeviceID: items.gpsDeviceID,
-                  VIN: items.vin,
-                  Model: items.model,
-                  ProductFamily: items.productFamily,
-                  NetworkProvider: items.networkProvider,
-                  DealerName: items.dealerName,
-                  DealerCode: items.dealerCode,
-                  CustomerName: items.customerName,
-                  CustomerCode: items.customerCode,
-                  Status: items.status,
-                  Description: items.description,
-                  ActualStartDate: items.actualStartDate,
-                  SubscriptionEndDate: items.subscriptionEndDate,
-                  SubscriptionStartDate: items.subscriptionStartDate);
+                  gpsDeviceId: items.gpsDeviceID,
+                  vin: items.vin,
+                  model: items.model,
+                  productFamily: items.productFamily,
+                  networkProvider: items.networkProvider,
+                  dealerName: items.dealerName,
+                  dealerCode: items.dealerCode,
+                  customerName: items.customerName,
+                  customerCode: items.customerCode,
+                  status: items.status,
+                  description: items.description,
+                  actualStartDate: items.actualStartDate,
+                  subscriptionEndDate: items.subscriptionEndDate,
+                  subscriptionStartDate: items.subscriptionStartDate);
               devices.add(fleetListData);
             }
             _loading = false;
@@ -183,17 +183,17 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
                 i++) {
               var items = result!.subscriptionFleetList!.provisioningInfo![i];
               DetailResult fleetListData = DetailResult(
-                  GPSDeviceID: items.gpsDeviceID,
-                  VIN: items.vin,
-                  Model: items.model,
-                  ProductFamily: items.productFamily,
-                  NetworkProvider: items.networkProvider,
-                  DealerName: items.dealerName,
-                  DealerCode: items.dealerCode,
-                  CustomerName: items.customerName,
-                  CustomerCode: items.customerCode,
-                  Status: items.status,
-                  Description: items.description);
+                  gpsDeviceId: items.gpsDeviceID,
+                  vin: items.vin,
+                  model: items.model,
+                  productFamily: items.productFamily,
+                  networkProvider: items.networkProvider,
+                  dealerName: items.dealerName,
+                  dealerCode: items.dealerCode,
+                  customerName: items.customerName,
+                  customerCode: items.customerCode,
+                  status: items.status,
+                  description: items.description);
               devices.add(fleetListData);
             }
             _loading = false;

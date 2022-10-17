@@ -52,13 +52,13 @@ class TransferHistoryListItem extends StatelessWidget {
                     TableRow(
                       children: [
                         InsiteTableRowItemWithImage(
-                          title: detailResult!.GPSDeviceID != null
-                              ? "Device ID : " + "\n" + detailResult!.GPSDeviceID!
+                          title: detailResult!.gpsDeviceId != null
+                              ? "Device ID : " + "\n" + detailResult!.gpsDeviceId!
                               : "Device ID : " + "\n",
-                          path: detailResult == null || detailResult!.Model == null
+                          path: detailResult == null || detailResult!.model == null
                               ? "assets/images/EX210.png"
-                              : detailResult!.Model != null
-                                  ? Utils().imageData(detailResult!.Model!)
+                              : detailResult!.model != null
+                                  ? Utils().imageData(detailResult!.model!)
                                   : "",
                         ),
                         // Table(
@@ -71,8 +71,8 @@ class TransferHistoryListItem extends StatelessWidget {
                         // ),
                         InsiteTableRowItem(
                           title: "Source Name 1 :",
-                          content: detailResult!.SourceName1 != null
-                              ? detailResult!.SourceName1
+                          content: detailResult!.sourceName1 != null
+                              ? detailResult!.sourceName1
                               : "",
                         ),
                         // ],
@@ -93,8 +93,8 @@ class TransferHistoryListItem extends StatelessWidget {
                         ),
                         InsiteTableRowItem(
                           title: "Source Name 2 :",
-                          content: detailResult!.SourceName2 != null
-                              ? detailResult!.SourceName2
+                          content: detailResult!.sourceName2 != null
+                              ? detailResult!.sourceName2
                               : "",
                         ),
                       ],
@@ -109,14 +109,14 @@ class TransferHistoryListItem extends StatelessWidget {
                         children: [
                           InsiteTableRowItem(
                             title: "Destination Name 1 :",
-                            content: detailResult!.DestinationName1 != null
-                                ? detailResult!.DestinationName1
+                            content: detailResult!.destinationName1 != null
+                                ? detailResult!.destinationName1
                                 : "",
                           ),
                           InsiteTableRowItem(
                             title: "Destination Name 2 : ",
-                            content: detailResult!.DestinationName2 != null
-                                ? detailResult!.DestinationName2
+                            content: detailResult!.destinationName2 != null
+                                ? detailResult!.destinationName2
                                 : "",
                           ),
                         ],
@@ -125,14 +125,14 @@ class TransferHistoryListItem extends StatelessWidget {
                         children: [
                           InsiteTableRowItem(
                             title: "Source Type :",
-                            content: detailResult!.SourceCustomerType != null
-                                ? detailResult!.SourceCustomerType
+                            content: detailResult!.sourceCustomerType != null
+                                ? detailResult!.sourceCustomerType
                                 : "",
                           ),
                           InsiteTableRowItem(
                             title: "Destination Type :",
-                            content: detailResult!.DestinationCustomerType != null
-                                ? detailResult!.DestinationCustomerType
+                            content: detailResult!.destinationCustomerType != null
+                                ? detailResult!.destinationCustomerType
                                 : "",
                           ),
                         ],
@@ -141,17 +141,17 @@ class TransferHistoryListItem extends StatelessWidget {
                         children: [
                           InsiteTableRowItem(
                             title: "Transfer Status :",
-                            content: detailResult!.Status != null
-                                ? detailResult!.Status
-                                : detailResult!.Status != null
-                                    ? detailResult!.Status
+                            content: detailResult!.status != null
+                                ? detailResult!.status
+                                : detailResult!.status != null
+                                    ? detailResult!.status
                                     : "",
                           ),
                           InsiteTableRowItem(
                             title: "Transferered Time :",
-                            content: detailResult!.InsertUTC != null
+                            content: detailResult!.insertUtc != null
                                 ? Utils.getLastReportedDate(
-                                    detailResult!.InsertUTC)
+                                    detailResult!.insertUtc)
                                 : "",
                           ),
                         ],

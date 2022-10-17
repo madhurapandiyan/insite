@@ -9,6 +9,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
 import 'package:insite/views/adminstration/asset_settings_configure/model/configure_grid_view_model.dart';
+import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -1294,6 +1295,17 @@ class Utils {
     } else {
       return "${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
     }
+  }
+
+  static List?  getDeleteSmsData(List<DeleteSmsReport> smsData){
+   List<Map<String, dynamic>> newMap=[];
+   smsData.forEach((element) {
+     Map<String,dynamic>smsMap={
+      "id":element.ID
+     };
+     newMap.add(smsMap);
+    });
+    return newMap;
   }
 
   static List<String>? getReportColumn(String value) {

@@ -9,6 +9,7 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
 import 'package:insite/views/plant/plant_asset_creation/asset_creation_model.dart';
+import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:logger/logger.dart';
 
 import '../logger.dart';
@@ -333,6 +334,16 @@ query{
     return data;
   }
 
+  getReplacementHistoryCount({int? start, int? limit, bool? count}) {
+    var data = """query{
+  replacementHistory(start:$start,limit:$limit,sortColumn:"",sortMethod:"", count:$count) {
+  count 
+__typename
+  }
+  }""";
+    return data;
+  }
+
   getReplacementDetails({int? start, int? limit}) {
     var data = """query{
   replacementHistory(start:$start,limit:$limit) {
@@ -346,9 +357,23 @@ query{
     lastName
     state
     description
-    count
+    __typename
   }
   }
+""";
+    return data;
+  }
+
+  register({int? id, String? gnacc, dynamic request}) {
+    var data =
+        """mutation deviceProvisionTransfer(\$id: Int!, \$gnacc: String!, \$request: AssetOperationInput!) {
+  assetOperation(id: $id, gnacc: $gnacc, request: $request) {
+    code
+    status
+    requestID
+    __typename
+  }
+}
 """;
     return data;
   }
@@ -367,11 +392,11 @@ query{
     return data;
   }
 
-  getDeviceIdReplacement(String? text, String? status) {
+  getDeviceIdReplacement(String? text, String? status, int? limit) {
     var data = """
 query  {
   frameSubscription {
-    subscriptionFleetList(status:"$status", model: "", start: 0, limit: 20, search: {
+    subscriptionFleetList(status:"$status", model: "", start: 0, limit: $limit, search: {
       gpsDeviceID: "$text"
     })
     {
@@ -463,6 +488,76 @@ assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",c
 
 """;
 
+    return data;
+  }
+
+  deleteSms(int? userId, List<DeleteSmsReport> reportId) {
+    var data = """mutation  {
+   deleteSMS(UserID: $userId, request: ${Utils.getDeleteSmsData(reportId)}) {
+     fieldCount
+     affectedRows
+     insertId
+     serverStatus
+     warningCount
+     message
+     protocol41
+     changedRows
+   }
+ }""";
+    return data;
+  }
+
+  getSmsReportSummary(int? start, int? limit) {
+    var data = """query {
+   getSMSSummaryReport(start: $start, limit: $limit) {
+     result
+{
+gpsDeviceId
+          id
+             language
+             name
+            number
+             serialNumber
+             startDate
+         }
+        count
+   }
+ 
+ }""";
+    return data;
+  }
+
+  getTransferHistoryCount({int? start, int? limit}) {
+    var data = """
+query{
+  deviceTransferCount(start:$start,limit:$limit){
+    count,
+    
+    
+  }
+}""";
+    return data;
+  }
+
+  getTranferHistory(int? start, int? limit) {
+    var data = """query{
+  deviceTransfer(start:$start,limit:$limit){
+    destinationCustomerType,
+    destinationName1,
+    destinationName2,
+    gpsDeviceID,
+    insertUTC,
+    oemName,
+    sourceCustomerType,
+    sourceName1,
+    sourceName2,
+    status,
+    fk_AssetId,
+    vin
+    __typename
+    
+  }
+}""";
     return data;
   }
 
@@ -3471,7 +3566,7 @@ maintenanceIntervals(
     return data;
   }
 
-   String getPlantDashboardAndHierarchyListData(
+  String getPlantDashboardAndHierarchyListData(
       {int? limit,
       int? start,
       String? status,
