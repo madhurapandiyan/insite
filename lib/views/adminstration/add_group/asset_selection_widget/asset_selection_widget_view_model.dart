@@ -407,12 +407,9 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
       Logger().wtf(result.first.toJson());
       accountNameData!.clear();
       for (int i = 0; i < result.length; i++) {
-        var data = result[i].Children;
-        for (int j = 0; j < data!.length; j++) {
-          var childData = data[j];
-          _accountNameData!.add(AccountSelectedData(
-              name: childData.Name, customerUid: childData.CustomerUID));
-        }
+        var data = result[i];
+        _accountNameData!.add(AccountSelectedData(
+              name: data.Name, customerUid: data.CustomerUID));
       }
       hideLoadingDialog();
 

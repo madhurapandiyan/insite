@@ -6,6 +6,7 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_report_payload.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/edit_report_response.dart';
+import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/core/models/search_contact_report_list_response.dart';
 import 'package:insite/core/models/template_response.dart';
@@ -14,6 +15,7 @@ import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_report/fault_code_model.dart';
+import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/manage_report/manage_report_view.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
@@ -61,6 +63,10 @@ class AddReportViewModel extends InsiteViewModel {
 
   bool isListViewState = false;
 
+  Geofence? geofenceData;
+
+  ManageGroupSummaryResponse? groupResult;
+
   bool isLoading = true;
   bool isAssetLoading = true;
   int? reportFormat;
@@ -103,6 +109,7 @@ class AddReportViewModel extends InsiteViewModel {
 
   AddReportViewModel(ScheduledReports? scheduledReports, bool? isEdit,
       String? dropdownValue, String? templateTitleValue) {
+    _geofenceservice!.setUp();
     (_manageUserService!.setUp() as Future).then((_) {
       this.scheduledReportsId = scheduledReports;
       this.log = getLogger(this.runtimeType.toString());
@@ -139,7 +146,7 @@ class AddReportViewModel extends InsiteViewModel {
     showLoadingDialog();
     assetSelectionValue = value;
     if (value == choiseData[1]) {
-      var geofenceData = await _geofenceservice!.getGeofenceData();
+      geofenceData = await _geofenceservice!.getGeofenceData();
       assetIdresult = AssetGroupSummaryResponse(
           assetDetailsRecords: geofenceData!.geofences!
               .map((e) => Asset(
@@ -149,7 +156,7 @@ class AddReportViewModel extends InsiteViewModel {
               .toList());
       Logger().w(assetIdresult!.assetDetailsRecords!.first.toJson());
     } else if (value == choiseData[2]) {
-      var groupResult =
+      groupResult =
           await _manageUserService!.getManageGroupSummaryResponseListData(
               1,
               {
@@ -781,10 +788,25 @@ class AddReportViewModel extends InsiteViewModel {
     selectedUser.forEach((element) {
       emailIds?.add(element.email!);
     });
-
-    selectedAsset?.forEach((element) {
-      associatedIdentifier?.add(element.assetIdentifier!);
-    });
+    if (assetSelectionValue == "Geofences") {
+      geofenceData!.geofences!.forEach((data) {
+        if (selectedAsset!
+            .any((element) => element.assetIdentifier == data.GeofenceUID)) {
+          associatedIdentifier!.add(data.GeofenceUID!);
+        }
+      });
+    } else if (assetSelectionValue == "Groups") {
+      groupResult!.groups!.forEach((group) {
+        if (selectedAsset!
+            .any((element) => element.assetIdentifier == group.GroupUid)) {
+          associatedIdentifier!.add(group.GroupUid!);
+        }
+      });
+    } else {
+      selectedAsset?.forEach((element) {
+        associatedIdentifier?.add(element.assetIdentifier!);
+      });
+    }
 
     addReportPayLoad = AddReportPayLoad(
       reportUid: scheduledReportsId!.reportUid ?? "",
