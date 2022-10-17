@@ -17,9 +17,10 @@ SmsReportSummaryModel _$SmsReportSummaryModelFromJson(
                   (e) => ReportSummaryModel.fromJson(e as Map<String, dynamic>))
               .toList())
           .toList(),
-      getSMSSummaryReport: (json['getSMSSummaryReport'] as List<dynamic>?)
-          ?.map((e) => GetSmsSummaryReport.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      getSMSSummaryReport: json['getSMSSummaryReport'] == null
+          ? null
+          : GetSMSSummaryReport.fromJson(
+              json['getSMSSummaryReport'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SmsReportSummaryModelToJson(
@@ -57,8 +58,22 @@ Map<String, dynamic> _$ReportSummaryModelToJson(ReportSummaryModel instance) =>
       'isSelected': instance.isSelected,
     };
 
-GetSmsSummaryReport _$GetSmsSummaryReportFromJson(Map<String, dynamic> json) =>
-    GetSmsSummaryReport(
+GetSMSSummaryReport _$GetSMSSummaryReportFromJson(Map<String, dynamic> json) =>
+    GetSMSSummaryReport(
+      result: (json['result'] as List<dynamic>?)
+          ?.map((e) => Result.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      count: json['count'] as String?,
+    );
+
+Map<String, dynamic> _$GetSMSSummaryReportToJson(
+        GetSMSSummaryReport instance) =>
+    <String, dynamic>{
+      'count': instance.count,
+      'result': instance.result,
+    };
+
+Result _$ResultFromJson(Map<String, dynamic> json) => Result(
       id: json['id'] as int?,
       gpsDeviceId: json['gpsDeviceId'] as String?,
       serialNumber: json['serialNumber'] as String?,
@@ -68,9 +83,7 @@ GetSmsSummaryReport _$GetSmsSummaryReportFromJson(Map<String, dynamic> json) =>
       language: json['language'] as String?,
     );
 
-Map<String, dynamic> _$GetSmsSummaryReportToJson(
-        GetSmsSummaryReport instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
       'id': instance.id,
       'gpsDeviceId': instance.gpsDeviceId,
       'serialNumber': instance.serialNumber,

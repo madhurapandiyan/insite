@@ -5,7 +5,7 @@ part 'sms_reportSummary_responce_model.g.dart';
 class SmsReportSummaryModel {
   final String? code;
   final String? status;
-  List<GetSmsSummaryReport>? getSMSSummaryReport;
+  GetSMSSummaryReport? getSMSSummaryReport;
   final List<List<ReportSummaryModel>>? result;
 
   SmsReportSummaryModel(
@@ -52,17 +52,30 @@ class ReportSummaryModel {
   Map<String, dynamic> toJson() => _$ReportSummaryModelToJson(this);
 }
 
-@JsonSerializable()
-class GetSmsSummaryReport {
-  int? id;
-  String? gpsDeviceId;
-  String? serialNumber;
-  String? name;
-  String? number;
-  String? startDate;
-  String? language;
 
-  GetSmsSummaryReport(
+@JsonSerializable()
+class GetSMSSummaryReport {
+  String? count;
+  List<Result>? result;
+  GetSMSSummaryReport({this.result,this.count});
+
+  factory GetSMSSummaryReport.fromJson(Map<String, dynamic> json) =>
+      _$GetSMSSummaryReportFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GetSMSSummaryReportToJson(this);
+}
+
+@JsonSerializable()
+class Result {
+   int? id;
+   String? gpsDeviceId;
+   String? serialNumber;
+   String? name;
+   String? number;
+   String? startDate;
+   String? language;
+
+  Result(
       {this.id,
       this.gpsDeviceId,
       this.serialNumber,
@@ -71,8 +84,8 @@ class GetSmsSummaryReport {
       this.startDate,
       this.language});
 
-  factory GetSmsSummaryReport.fromJson(Map<String, dynamic> json) =>
-      _$GetSmsSummaryReportFromJson(json);
+  factory Result.fromJson(Map<String, dynamic> json) =>
+      _$ResultFromJson(json);
 
-  Map<String, dynamic> toJson() => _$GetSmsSummaryReportToJson(this);
+  Map<String, dynamic> toJson() => _$ResultToJson(this);
 }

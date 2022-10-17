@@ -109,14 +109,9 @@ class SmsManagementService extends BaseService {
     queryMap["UserID"] = await locator<LocalService>().getUserId();
 
     if (enableGraphQl) {
-      var data = await Network().getGraphqlData(
+      var data = await Network().getGraphqlPlantData(
         query: graphqlSchemaService!.deleteSms(userId, delete),
-        customerId: accountSelected?.CustomerUID,
-        subId: customerSelected?.CustomerUID == null
-            ? ""
-            : customerSelected?.CustomerUID,
-        userId: (await _localService!.getLoggedInUser())!.sub,
-        
+         
       );
       Logger().i("data:$data");
       return data;

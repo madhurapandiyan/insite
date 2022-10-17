@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/sms_management_service.dart';
 import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
@@ -20,7 +21,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   final SmsManagementService? _smsScheduleService =
       locator<SmsManagementService>();
-
+LocalService? _localService = locator<LocalService>();
   ReportSummaryViewModel() {
     this.log = getLogger(this.runtimeType.toString());
 
@@ -68,11 +69,11 @@ class ReportSummaryViewModel extends InsiteViewModel {
                 0, graphqlSchemaService!.getSmsReportSummary(start, limit));
 
         if (smsSummaryModel != null) {
-          // totalCount = smsSummaryModel.getSMSSummaryReport!.length;
+           totalCount = int.parse(smsSummaryModel.getSMSSummaryReport!.count!);
           Logger().wtf("totalCount:$totalCount");
           if (smsSummaryModel.getSMSSummaryReport != null) {
-            for (GetSmsSummaryReport element
-                in smsSummaryModel.getSMSSummaryReport!) {
+            if(smsSummaryModel.getSMSSummaryReport!.result!=null){
+            for (var element in smsSummaryModel.getSMSSummaryReport!.result!) {
               modelDataList.add(ReportSummaryModel(
                   id: element.id,
                   gpsDeviceId: element.gpsDeviceId,
@@ -85,6 +86,11 @@ class ReportSummaryViewModel extends InsiteViewModel {
             isLoading = false;
             isLoadMore = false;
             notifyListeners();
+          } else {
+            isLoading = false;
+            isLoadMore = false;
+            notifyListeners();
+          }
           } else {
             isLoading = false;
             isLoadMore = false;
@@ -157,19 +163,24 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   onDeletingSmsSchedule() async {
     try {
-      int? userId = 0;
-      List<DeleteSmsReport> deleteSms = [];
+       var userId = await _localService!.getUserId();
+       var id=int.parse(userId as String);
+      List deleteSms = [];
       DeleteSmsReport deleteData;
       selectedId.forEach((id) {
         deleteData = DeleteSmsReport(ID: id);
-        deleteSmsReport.add(deleteData);
+       
+        var deleteSMSRequest={"id":id};
+        deleteSms.add(deleteSMSRequest);
+        
+         deleteSmsReport.add(deleteData);
         var deletingData =
             modelDataList.singleWhere((element) => element.id == id);
         modelDataList.remove(deletingData);
         notifyListeners();
       });
       var data = await _smsScheduleService!
-          .deleteSmsScheduleReport(deleteSmsReport, userId, deleteSms);
+          .deleteSmsScheduleReport(deleteSmsReport, id, deleteSms);
       Logger().w(selectedId.length);
       selectedId.clear();
       deleteSmsReport.clear();

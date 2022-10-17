@@ -361,6 +361,20 @@ __typename
     return data;
   }
 
+register({int? id, String? gnacc,dynamic request}){
+ 
+ var data="""mutation deviceProvisionTransfer(\$id: Int!, \$gnacc: String!, \$request: AssetOperationInput!) {
+  assetOperation(id: $id, gnacc: $gnacc, request: $request) {
+    code
+    status
+    requestID
+    __typename
+  }
+}
+""";
+ return data;
+}
+
   getModelNameBySerialNumber(String? serialNumber) {
     var data = """  query {
  assetModelByMachineSerialNumber(machineSerialNumber:"$serialNumber") {
@@ -375,11 +389,11 @@ __typename
     return data;
   }
 
-  getDeviceIdReplacement(String? text, String? status) {
+  getDeviceIdReplacement(String? text, String? status,int? limit) {
     var data = """
 query  {
   frameSubscription {
-    subscriptionFleetList(status:"$status", model: "", start: 0, limit: 20, search: {
+    subscriptionFleetList(status:"$status", model: "", start: 0, limit: $limit, search: {
       gpsDeviceID: "$text"
     })
     {
@@ -491,14 +505,19 @@ assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",c
   getSmsReportSummary(int? start,int? limit){
     var data="""query {
    getSMSSummaryReport(start: $start, limit: $limit) {
-     gpsDeviceId
-     id
-     language
-     name
-     number
-     serialNumber
-     startDate
+     result
+{
+gpsDeviceId
+          id
+             language
+             name
+            number
+             serialNumber
+             startDate
+         }
+        count
    }
+ 
  }""";
     return data;
   }
