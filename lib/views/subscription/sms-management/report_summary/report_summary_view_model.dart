@@ -21,7 +21,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   final SmsManagementService? _smsScheduleService =
       locator<SmsManagementService>();
-LocalService? _localService = locator<LocalService>();
+  LocalService? _localService = locator<LocalService>();
   ReportSummaryViewModel() {
     this.log = getLogger(this.runtimeType.toString());
 
@@ -69,28 +69,29 @@ LocalService? _localService = locator<LocalService>();
                 0, graphqlSchemaService!.getSmsReportSummary(start, limit));
 
         if (smsSummaryModel != null) {
-           totalCount = int.parse(smsSummaryModel.getSMSSummaryReport!.count!);
+          totalCount = int.parse(smsSummaryModel.getSMSSummaryReport!.count!);
           Logger().wtf("totalCount:$totalCount");
           if (smsSummaryModel.getSMSSummaryReport != null) {
-            if(smsSummaryModel.getSMSSummaryReport!.result!=null){
-            for (var element in smsSummaryModel.getSMSSummaryReport!.result!) {
-              modelDataList.add(ReportSummaryModel(
-                  id: element.id,
-                  gpsDeviceId: element.gpsDeviceId,
-                  serialNumber: element.serialNumber,
-                  name: element.name,
-                  number: element.number,
-                  startDate: element.startDate,
-                  language: element.language));
+            if (smsSummaryModel.getSMSSummaryReport!.result != null) {
+              for (var element
+                  in smsSummaryModel.getSMSSummaryReport!.result!) {
+                modelDataList.add(ReportSummaryModel(
+                    id: element.id,
+                    gpsDeviceId: element.gpsDeviceId,
+                    serialNumber: element.serialNumber,
+                    name: element.name,
+                    number: element.number,
+                    startDate: element.startDate,
+                    language: element.language));
+              }
+              isLoading = false;
+              isLoadMore = false;
+              notifyListeners();
+            } else {
+              isLoading = false;
+              isLoadMore = false;
+              notifyListeners();
             }
-            isLoading = false;
-            isLoadMore = false;
-            notifyListeners();
-          } else {
-            isLoading = false;
-            isLoadMore = false;
-            notifyListeners();
-          }
           } else {
             isLoading = false;
             isLoadMore = false;
@@ -163,24 +164,26 @@ LocalService? _localService = locator<LocalService>();
 
   onDeletingSmsSchedule() async {
     try {
-       var userId = await _localService!.getUserId();
-       var id=int.parse(userId as String);
-      List deleteSms = [];
+      var userId = await _localService!.getUserId();
+      var id = int.parse(userId as String);
+      //List deleteSms = [];
       DeleteSmsReport deleteData;
       selectedId.forEach((id) {
         deleteData = DeleteSmsReport(ID: id);
-       
-        var deleteSMSRequest={"id":id};
-        deleteSms.add(deleteSMSRequest);
-        
-         deleteSmsReport.add(deleteData);
+
+        // var deleteSMSRequest={"id":id};
+        // deleteSms.add(deleteSMSRequest);
+
+        Logger().w(deleteData.ID);
+
+        deleteSmsReport.add(deleteData);
         var deletingData =
             modelDataList.singleWhere((element) => element.id == id);
         modelDataList.remove(deletingData);
         notifyListeners();
       });
       var data = await _smsScheduleService!
-          .deleteSmsScheduleReport(deleteSmsReport, id, deleteSms);
+          .deleteSmsScheduleReport(deleteSmsReport, id);
       Logger().w(selectedId.length);
       selectedId.clear();
       deleteSmsReport.clear();

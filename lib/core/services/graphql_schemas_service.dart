@@ -9,6 +9,7 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
 import 'package:insite/views/plant/plant_asset_creation/asset_creation_model.dart';
+import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:logger/logger.dart';
 
 import '../logger.dart';
@@ -332,15 +333,17 @@ query{
 }""";
     return data;
   }
-getReplacementHistoryCount({int?start,int? limit,bool? count}){
-  var data="""query{
+
+  getReplacementHistoryCount({int? start, int? limit, bool? count}) {
+    var data = """query{
   replacementHistory(start:$start,limit:$limit,sortColumn:"",sortMethod:"", count:$count) {
   count 
 __typename
   }
   }""";
-  return data;
-}
+    return data;
+  }
+
   getReplacementDetails({int? start, int? limit}) {
     var data = """query{
   replacementHistory(start:$start,limit:$limit) {
@@ -361,9 +364,9 @@ __typename
     return data;
   }
 
-register({int? id, String? gnacc,dynamic request}){
- 
- var data="""mutation deviceProvisionTransfer(\$id: Int!, \$gnacc: String!, \$request: AssetOperationInput!) {
+  register({int? id, String? gnacc, dynamic request}) {
+    var data =
+        """mutation deviceProvisionTransfer(\$id: Int!, \$gnacc: String!, \$request: AssetOperationInput!) {
   assetOperation(id: $id, gnacc: $gnacc, request: $request) {
     code
     status
@@ -372,8 +375,8 @@ register({int? id, String? gnacc,dynamic request}){
   }
 }
 """;
- return data;
-}
+    return data;
+  }
 
   getModelNameBySerialNumber(String? serialNumber) {
     var data = """  query {
@@ -389,7 +392,7 @@ register({int? id, String? gnacc,dynamic request}){
     return data;
   }
 
-  getDeviceIdReplacement(String? text, String? status,int? limit) {
+  getDeviceIdReplacement(String? text, String? status, int? limit) {
     var data = """
 query  {
   frameSubscription {
@@ -487,9 +490,10 @@ assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",c
 
     return data;
   }
-  deleteSms(int? userId,List? request){
-    var data="""mutation  {
-   deleteSMS(UserID: $userId, request: $request) {
+
+  deleteSms(int? userId, List<DeleteSmsReport> reportId) {
+    var data = """mutation  {
+   deleteSMS(UserID: $userId, request: ${Utils.getDeleteSmsData(reportId)}) {
      fieldCount
      affectedRows
      insertId
@@ -502,8 +506,9 @@ assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",c
  }""";
     return data;
   }
-  getSmsReportSummary(int? start,int? limit){
-    var data="""query {
+
+  getSmsReportSummary(int? start, int? limit) {
+    var data = """query {
    getSMSSummaryReport(start: $start, limit: $limit) {
      result
 {
@@ -521,8 +526,9 @@ gpsDeviceId
  }""";
     return data;
   }
-  getTransferHistoryCount({int? start,int? limit}){
-    var data="""
+
+  getTransferHistoryCount({int? start, int? limit}) {
+    var data = """
 query{
   deviceTransferCount(start:$start,limit:$limit){
     count,
@@ -530,10 +536,11 @@ query{
     
   }
 }""";
-return data;
+    return data;
   }
-  getTranferHistory(int? start,int? limit){
-    var data="""query{
+
+  getTranferHistory(int? start, int? limit) {
+    var data = """query{
   deviceTransfer(start:$start,limit:$limit){
     destinationCustomerType,
     destinationName1,
@@ -551,7 +558,7 @@ return data;
     
   }
 }""";
-return data;
+    return data;
   }
 
   getDeviceTransferDetails(String? value) {
@@ -3559,7 +3566,7 @@ maintenanceIntervals(
     return data;
   }
 
-   String getPlantDashboardAndHierarchyListData(
+  String getPlantDashboardAndHierarchyListData(
       {int? limit,
       int? start,
       String? status,

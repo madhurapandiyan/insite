@@ -104,13 +104,13 @@ class SmsManagementService extends BaseService {
   }
 
   Future<dynamic> deleteSmsScheduleReport(
-      List<DeleteSmsReport> reportId, int? userId, List? delete) async {
+      List<DeleteSmsReport> reportId, int? userId) async {
     Map<String, String?> queryMap = Map();
     queryMap["UserID"] = await locator<LocalService>().getUserId();
 
     if (enableGraphQl) {
       var data = await Network().getGraphqlPlantData(
-        query: graphqlSchemaService!.deleteSms(userId, delete),
+        query: graphqlSchemaService!.deleteSms(userId, reportId),
          
       );
       Logger().i("data:$data");
