@@ -33,7 +33,7 @@ class AddReportViewModel extends InsiteViewModel {
   List<String>? reportServiceAssets = [];
   List<String>? reportProductivityAssets = [];
   List<String>? reportStandartAssets = [];
-  String? assetSelectionValue;
+  String? assetSelectionValue = "Assets";
   final Geofenceservice? _geofenceservice = locator<Geofenceservice>();
 
   List<String> _choiseData = ["Assets", "Geofences", "Groups"];
@@ -499,7 +499,15 @@ class AddReportViewModel extends InsiteViewModel {
         } else {
           if (selectedAsset!.any((element) =>
               element.assetIdentifier == selectedData?.assetIdentifier)) {
-            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+            if (assetSelectionValue == "Assets") {
+              snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+            }
+            else if(assetSelectionValue=="Geofences"){
+              snackbarService!.showSnackbar(message: "Geofence Alerady Selected");
+            }
+            else{
+               snackbarService!.showSnackbar(message: "Group Alerady Selected");
+            }
           } else {
             assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
                 element.assetIdentifier == selectedData?.assetIdentifier);

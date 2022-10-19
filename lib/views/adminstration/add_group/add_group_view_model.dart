@@ -115,7 +115,7 @@ class AddGroupViewModel extends InsiteViewModel {
                     assetSerialNumber: e.GeofenceName,
                   ))
               .toList());
-              Logger().w(assetIdresult!.assetDetailsRecords!.first.toJson());
+      Logger().w(assetIdresult!.assetDetailsRecords!.first.toJson());
     } else if (value == choiseData[2]) {
       var groupResult =
           await _manageUserService!.getManageGroupSummaryResponseListData(
@@ -282,12 +282,25 @@ class AddGroupViewModel extends InsiteViewModel {
 
   getAddGroupEditData() async {
     try {
-      Logger().i(dissociatedAssetId);
-      assetUidData.clear();
+     
+     // assetUidData.clear();
       selectedAsset?.forEach((element) {
         Logger().wtf(element.assetIdentifier);
         assetUidData.add(element.assetIdentifier!);
       });
+
+      if (assetUidData.isNotEmpty) {
+        
+        for (var i = 0; i < assetUidData.length; i++) {
+          var data = assetUidData[i];
+          if (data.isNotEmpty) {
+            associatedAssetId.add(data);
+          } else {
+            dissociatedAssetId.add(data);
+          }
+        }
+      }
+
       showLoadingDialog();
       UpdateResponse? result = await _manageUserService!.getAddGroupEditPayLoad(
         EditGroupPayLoad(
@@ -303,9 +316,11 @@ class AddGroupViewModel extends InsiteViewModel {
           "groupUid": groups!.GroupUid,
           "description": descriptionController.text,
           "groupName": nameController.text,
-          "dissociatedAssetUID": []
+          "dissociatedAssetUID": [],
+          "associatedAssetUID":["fba953c3-b251-11eb-82db-0ae8ba8d3970"]
         },
       );
+      
       if (result != null) {
         gotoManageGroupPage();
       }

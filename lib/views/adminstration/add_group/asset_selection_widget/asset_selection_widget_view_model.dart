@@ -133,8 +133,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   ];
 
   List<AssetSelectionCategory> assetSelectionCategoryIn = [
-    AssetSelectionCategory(
-        name: "Asset Id", assetCategoryType: AssetCategoryType.ASSETID),
+    // AssetSelectionCategory(
+    //     name: "Asset Id", assetCategoryType: AssetCategoryType.ASSETID),
     AssetSelectionCategory(
         name: "Serial Number", assetCategoryType: AssetCategoryType.SERIALNO),
     AssetSelectionCategory(
@@ -405,11 +405,20 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         isFromPagination: true);
     if (result != null) {
       Logger().wtf(result.first.toJson());
-      accountNameData!.clear();
+
       for (int i = 0; i < result.length; i++) {
         var data = result[i];
-        _accountNameData!.add(AccountSelectedData(
+        if (data.CustomerUID=="6ea359eb-ada5-11eb-82ce-0ae8ba8d3970") {
+          for (int j = 0; j < data.Children!.length; j++) {
+            var tataHitachiNameData = data.Children![j];
+            _accountNameData!.add(AccountSelectedData(
+                name: tataHitachiNameData.Name,
+                customerUid: tataHitachiNameData.CustomerUID));
+          }
+        } else {
+          _accountNameData!.add(AccountSelectedData(
               name: data.Name, customerUid: data.CustomerUID));
+        }
       }
       hideLoadingDialog();
 
@@ -516,7 +525,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     if (type == AssetCategoryType.ASSETID) {
       pageController!.animateToPage(1,
           duration: Duration(microseconds: 200), curve: Curves.easeInOut);
-    } else if (type == AssetCategoryType.SERIALNO) {
+    } 
+    else if (type == AssetCategoryType.SERIALNO) {
       pageController!.animateToPage(2,
           duration: Duration(microseconds: 200), curve: Curves.easeInOut);
     } else if (type == AssetCategoryType.PRODUCTFAMILY) {
