@@ -2247,45 +2247,29 @@ mutation createNotification(\$alertCategoryID: Int, \$notificationSubscribers: n
   }
 
   String updateNotification(
-      {int? alertCategoryID,
-      String? currentDate,
-      String? alertTitle,
-      int? alertGroupId,
-      int? notificationTypeGroupID,
-      int? notificationTypeId,
-      int? numberOfOccurences,
-      String? notificationDeliveryChannel,
-      List<Operand>? operand,
-      List<Schedule>? schedule,
-      List<String>? assetId,
-      NotificationSubscribers? notificationSubscribers,
-      String? alertId}) {
-    var data = """
-mutation{
-  updateNotification(
-    alertCategoryID: $alertCategoryID
-assetUIDs: ${Utils.getStringListData(assetId!)}
-notificationSubscribers:${Utils.getNotificationSubscribers(notificationSubscribers!)}
-allAssets: false
-currentDate: "$currentDate"
-schedule: ${Utils.getNotificationSchedule(schedule!)}
-alertTitle: "$alertTitle"
-alertGroupId: $alertGroupId
-notificationTypeGroupID: $notificationTypeGroupID
-operands:${Utils.getOperand(operand)}
-notificationTypeId: $notificationTypeId
-numberOfOccurences: $numberOfOccurences
-notificationDeliveryChannel:"$notificationDeliveryChannel"
-geofenceUIDs: null
-assetGroupUIDs: null
-siteOperands: null
-switchOperand: null
-zones: null
-notificationUid:"$alertId"
-  ){
-    isUpdated
-  }
-}""";
+      // {int? alertCategoryID,
+      // String? currentDate,
+      // String? alertTitle,
+      // int? alertGroupId,
+      // int? notificationTypeGroupID,
+      // int? notificationTypeId,
+      // int? numberOfOccurences,
+      // String? notificationDeliveryChannel,
+      // List<Operand>? operand,
+      // List<Schedule>? schedule,
+      // List<String>? assetId,
+      // NotificationSubscribers? notificationSubscribers,
+      // String? alertId,
+      // List<String>? groupId}
+      ) {
+    var data ="""
+       mutation updateNotification(\$notificationUid: String, \$alertCategoryID: Int, \$notificationSubscribers: notificationSubscribersObj, \$allAssets: Boolean, \$currentDate: String, \$schedule: [scheduleObj], \$alertTitle: String, \$alertGroupId: Int, \$notificationTypeGroupID: Int, \$assetUIDs: [String], \$operands: [createNotificationOperandsObj], \$notificationTypeId: Int, \$numberOfOccurences: Int, \$notificationDeliveryChannel: String, \$geofenceUIDs: [String], \$assetGroupUIDs: [String], \$siteOperands: [siteOperandsObj], \$zones: [zoneObj]) {
+          updateNotification(notificationUid: \$notificationUid, geofenceUIDs: \$geofenceUIDs, assetGroupUIDs: \$assetGroupUIDs, siteOperands: \$siteOperands, alertCategoryID: \$alertCategoryID, allAssets: \$allAssets, currentDate:\$currentDate, schedule: \$schedule, alertTitle:\$alertTitle, alertGroupId: \$alertGroupId, notificationTypeGroupID: \$notificationTypeGroupID, assetUIDs: \$assetUIDs, operands: \$operands, notificationTypeId: \$notificationTypeId, numberOfOccurences: \$numberOfOccurences, notificationDeliveryChannel: \$notificationDeliveryChannel, notificationSubscribers: \$notificationSubscribers, zones: \$zones) {    isUpdated  }
+       }
+       
+
+  
+""";
     return data;
   }
 
