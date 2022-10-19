@@ -367,6 +367,7 @@ class _TabPageState extends State<AssetDetailView> {
                                                   alignment: Alignment.topRight,
                                                   children: [
                                                     MaintenanceTabView(
+                                                      
                                                       summaryData: SummaryData(
                                                           assetID: viewModel.assetDetail!.assetUid,
                                                           assetSerialNumber:viewModel.assetDetail!.assetSerialNumber),
@@ -381,6 +382,7 @@ class _TabPageState extends State<AssetDetailView> {
                                                           assetDataValue:
                                                               assetDataValue,
                                                         );
+
                                                       },
                                                     ),
                                                     Container(

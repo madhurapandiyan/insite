@@ -1,9 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'add_notification_payload.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(includeIfNull: false)
 class AddNotificationPayLoad {
   int? alertCategoryID;
+  String? notificationUid;
   List<String>? assetUIDs;
   NotificationSubscribers? notificationSubscribers;
   bool? allAssets;
@@ -16,12 +17,15 @@ class AddNotificationPayLoad {
   int? notificationTypeId;
   int? numberOfOccurences;
   String? notificationDeliveryChannel;
+
   List<String>? geofenceUIDs;
+
   List<String>? assetGroupUIDs;
   List<Operand>? siteOperands;
   List<ZonePayload>? zones;
   AddNotificationPayLoad(
       {this.alertCategoryID,
+      this.notificationUid,
       this.assetUIDs,
       this.notificationSubscribers,
       this.allAssets,
@@ -77,7 +81,6 @@ class Operand {
   int? operandID;
   int? operatorId;
   String? value;
-  
 
   Operand({this.operandID, this.operatorId, this.value});
 

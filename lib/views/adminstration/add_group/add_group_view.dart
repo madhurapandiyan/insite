@@ -104,32 +104,32 @@ class _AddGroupViewState extends State<AddGroupView> {
                     SizedBox(
                       height: 15,
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: InsiteText(
-                        text: "Choose by : ",
-                        size: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: InsiteText(
+                    //     text: "Choose by : ",
+                    //     size: 14,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
                     SizedBox(height: 10),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color:
-                                Theme.of(context).textTheme.bodyText1!.color!,
-                          ),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: CustomDropDownWidget(
-                        value: viewModel.assetSelectionValue,
-                        items: viewModel.choiseData,
-                        enableHint: true,
-                        onChanged: (String? value) {
-                          viewModel.updateModelValueChooseBy(value!);
-                        },
-                      ),
-                    ),
+                    // Container(
+                    //   width: double.infinity,
+                    //   decoration: BoxDecoration(
+                    //       border: Border.all(
+                    //         color:
+                    //             Theme.of(context).textTheme.bodyText1!.color!,
+                    //       ),
+                    //       borderRadius: BorderRadius.circular(10)),
+                    //   child: CustomDropDownWidget(
+                    //     value: viewModel.assetSelectionValue,
+                    //     items: viewModel.choiseData,
+                    //     enableHint: true,
+                    //     onChanged: (String? value) {
+                    //       viewModel.updateModelValueChooseBy(value!);
+                    //     },
+                    //   ),
+                    // ),
 
                     viewModel.isLoading
                         ? Center(
