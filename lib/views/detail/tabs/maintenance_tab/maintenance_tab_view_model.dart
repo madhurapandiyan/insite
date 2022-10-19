@@ -52,9 +52,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
 
   List<MaintenanceList>? historyData = [];
 
-  SummaryData? _summaryData;
-  SummaryData? get summaryData => _summaryData;
-
+  String ?assetId;
   bool dataNotFound = false;
 
   bool isToggled = true;
@@ -64,8 +62,8 @@ class MaintenanceTabViewModel extends InsiteViewModel {
   late ScrollController scrollController;
 
   MaintenanceTabViewModel(SummaryData? summaryData) {
-   this. _summaryData = summaryData;
-    Logger().i( summaryData!.assetID);
+    assetId = summaryData!.assetID;
+    //Logger().i(summaryData!.assetID);
     setUp();
 
     _maintenanceService!.setUp();
@@ -79,6 +77,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
 
     Future.delayed(Duration(seconds: 2), () {
       getMaintenanceListItemData();
+      getHistoryMaintenanceListItem();
       _loading = false;
     });
   }
@@ -97,6 +96,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
   }
 
   getHistoryMaintenanceListItem({bool? isRefreshing}) async {
+    Logger().v(assetId);
     if (isRefreshing == true) {
       isHistoryDataOptained = true;
       historyData?.clear();
@@ -111,7 +111,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
             limit: pageSize,
             page: pageNumber,
             query: await graphqlSchemaService!.getMaintenanceListData(
-                assetId: summaryData!.assetUID,
+                assetId: assetId,
                 histroy: true,
                 startDate:
                     Utils.maintenanceFromDateFormate(maintenanceStartDate!),
@@ -141,15 +141,12 @@ class MaintenanceTabViewModel extends InsiteViewModel {
     if (isVisionLink) {
       MaintenanceListService? result =
           await _maintenanceService?.getMaintenanceServiceList(
-              _summaryData!.assetUID,
-              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-              pageSize,
-              pageNumber,
-              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-
-
-               
-              );
+       assetId,
+        Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+        pageSize,
+        pageNumber,
+        Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+      );
 
       _loading = false;
 
@@ -180,10 +177,9 @@ class MaintenanceTabViewModel extends InsiteViewModel {
                   Utils.maintenanceFromDateFormate(maintenanceStartDate!),
               endTime: Utils.maintenanceToDateFormate(maintenanceEndDate!),
               limit: pageSize,
-              
               page: pageNumber,
               query: await graphqlSchemaService!.getMaintenanceListData(
-                  assetId: summaryData!.assetID,
+                  assetId:assetId,
                   startDate:
                       Utils.maintenanceFromDateFormate(maintenanceStartDate!),
                   endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),

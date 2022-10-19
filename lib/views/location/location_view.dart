@@ -202,7 +202,7 @@ class _LocationViewState extends State<LocationView> {
                                         const EdgeInsets.only(top: 7, left: 20),
                                     child: LocationSearchBoxView(
                                       
-                                      searchBoxWidth: 0.33,
+                                      searchBoxWidth: 0.6,
                                       onSeletingSuggestion:
                                           (value, isSerialNo) {
                                         viewModel.customInfoWindowController
@@ -223,7 +223,7 @@ class _LocationViewState extends State<LocationView> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.42,
                                   height:
-                                      MediaQuery.of(context).size.height * 0.36,
+                                      MediaQuery.of(context).size.height * 0.30,
                                   offset: 1,
                                 ),
                                 Padding(
