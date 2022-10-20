@@ -155,7 +155,8 @@ class AddReportViewModel extends InsiteViewModel {
                   ))
               .toList());
       Logger().w(assetIdresult!.assetDetailsRecords!.first.toJson());
-    } else if (value == choiseData[2]) {
+    } 
+    else if (value == choiseData[2]) {
       groupResult =
           await _manageUserService!.getManageGroupSummaryResponseListData(
               1,

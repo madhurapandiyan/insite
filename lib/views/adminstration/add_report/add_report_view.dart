@@ -434,34 +434,34 @@ class _AddReportViewState extends State<AddReportView> {
                                 fontWeight: FontWeight.w700,
                               )
                             : Container(),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: InsiteText(
-                            text: "Choose by : ",
-                            size: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color!,
-                              ),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: CustomDropDownWidget(
-                            value: viewModel.assetSelectionValue,
-                            items: viewModel.choiseData,
-                            enableHint: true,
-                            onChanged: (String? value) {
-                              viewModel.updateModelValueChooseBy(value!);
-                            },
-                          ),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: InsiteText(
+                        //     text: "Choose by : ",
+                        //     size: 14,
+                        //     fontWeight: FontWeight.bold,
+                        //   ),
+                        // ),
+                        //SizedBox(height: 10),
+                        // Container(
+                        //   width: double.infinity,
+                        //   decoration: BoxDecoration(
+                        //       border: Border.all(
+                        //         color: Theme.of(context)
+                        //             .textTheme
+                        //             .bodyText1!
+                        //             .color!,
+                        //       ),
+                        //       borderRadius: BorderRadius.circular(10)),
+                        //   child: CustomDropDownWidget(
+                        //     value: viewModel.assetSelectionValue,
+                        //     items: viewModel.choiseData,
+                        //     enableHint: true,
+                        //     onChanged: (String? value) {
+                        //       viewModel.updateModelValueChooseBy(value!);
+                        //     },
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 15,
                         ),
