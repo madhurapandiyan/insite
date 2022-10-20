@@ -60,8 +60,9 @@ class BarWidget extends StatelessWidget {
                           100),
               decoration: BoxDecoration(
                 color: color,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(6),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(6),
+                  topRight: Radius.circular(6)
                 ),
               ),
             ),
