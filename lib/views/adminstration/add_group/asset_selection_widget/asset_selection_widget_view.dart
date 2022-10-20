@@ -73,7 +73,6 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                       width: mediaQuery.size.width * 0.85,
                       child: Card(
                         child: SelectionAssetWidget(
-                        
                           isToShowBack: false,
                           onAddingAsset: (i, value) {
                             widget.onAddingAsset!(i, value);
@@ -131,7 +130,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                                         ),
                                       ))),
                           SelectionAssetWidget(
-                           
+                            isAccountShow: false,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
                               // viewModel.onDeletingSelectedAsset(i, value.type!);
@@ -144,7 +143,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Asset Id",
                           ),
                           SelectionAssetWidget(
-                           
+                             isAccountShow: false,
                             onAddingAsset: (i, value) {
                               Logger().e(value.toJson());
                               widget.onAddingAsset!(i, value);
@@ -164,6 +163,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Serial Number",
                           ),
                           SelectionAssetCountWidget(
+                          
                             showCount: false,
                             onBackPressed: () {
                               viewModel.onAssetIdBackPressed();
@@ -176,7 +176,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Product Family",
                           ),
                           SelectionAssetWidget(
-                           
+                            isAccountShow: false,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
                               //viewModel.onDeletingSelectedAsset(i, value.type!);
@@ -206,7 +206,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Manufacture",
                           ),
                           SelectionAssetWidget(
-                          
+                             isAccountShow: false,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
                               // viewModel.onDeletingSelectedAsset(i, value.type!);
@@ -230,7 +230,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Model",
                           ),
                           SelectionAssetWidget(
-                            
+                             isAccountShow: false,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
                               //viewModel.onDeletingSelectedAsset(i, value.type!);
@@ -254,7 +254,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Device Type",
                           ),
                           SelectionAssetWidget(
-                           
+                             isAccountShow: false,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
                               //  viewModel.onDeletingSelectedAsset(i, value.type!);
@@ -279,8 +279,10 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             displayList: viewModel.accountNameData,
                             title: "Account",
                           ),
+
                           SelectionAssetWidget(
                            
+                            isAccountShow: viewModel.isAccountShow,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
                               //  viewModel.onDeletingSelectedAsset(i, value.type!);
@@ -345,16 +347,18 @@ class SelectionAssetWidget extends StatelessWidget {
   final Function(String)? onChange;
   final Function(int i, Asset assetData)? onAddingAsset;
   final bool? isToShowBack;
-  SelectionAssetWidget({
-    this.displayList,
-    this.onBackPressed,
-    this.isToShowBack,
-    this.title,
-    this.onAddingAsset,
-    this.onChange,
-  });
+  final bool? isAccountShow;
+  SelectionAssetWidget(
+      {this.displayList,
+      this.onBackPressed,
+      this.isToShowBack,
+      this.title,
+      this.onAddingAsset,
+      this.onChange,
+      this.isAccountShow=false});
   @override
   Widget build(BuildContext context) {
+    
     var theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
     return Column(
@@ -395,46 +399,54 @@ class SelectionAssetWidget extends StatelessWidget {
         //           },
         //         ))
         //     : SizedBox(),
-        displayList!.isNotEmpty
+        isAccountShow!
             ? Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: displayList!.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    var list;
-
-                    list = displayList as List<Asset>;
-
-                    return ListTile(
-                      leading: InsiteText(
-                        text: list[i].assetSerialNumber,
-                      ),
-                      trailing: InsiteButton(
-                        title: "add".toUpperCase(),
-                        fontSize: 14,
-                        onTap: () {
-                          onAddingAsset!(i, list[i]);
-                        },
-                        width: 77,
-                        height: 32,
-                        textColor: Colors.white,
-                      ),
-                    );
-                  },
-                ),
-              )
-            : Expanded(
                 child: EmptyView(
                   bg: theme.cardColor,
-                  title: "No Asset Found",
+                  title: "No data Found",
                 ),
-              ),
+              )
+            : displayList!.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: displayList!.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        var list;
+
+                        list = displayList as List<Asset>;
+
+                        return ListTile(
+                          leading: InsiteText(
+                            text: list[i].assetSerialNumber,
+                          ),
+                          trailing: InsiteButton(
+                            title: "add".toUpperCase(),
+                            fontSize: 14,
+                            onTap: () {
+                              onAddingAsset!(i, list[i]);
+                            },
+                            width: 77,
+                            height: 32,
+                            textColor: Colors.white,
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : Expanded(
+                    child: EmptyView(
+                      bg: theme.cardColor,
+                      title: "No Asset Found",
+                    ),
+                  )
       ],
     );
   }
 }
 
 class SelectionAssetCountWidget extends StatelessWidget {
+
   final bool? showCount;
   final Function? onBackPressed;
   final String? title;
@@ -548,8 +560,8 @@ class _SelectedAssetState extends State<SelectedAsset> {
     var mediaQuery = MediaQuery.of(context);
     var theme = Theme.of(context);
     return widget.selectedDropDownValue == "Geofences" ||
-            widget.selectedDropDownValue == "Groups"||
-            widget.selectedDropDownValue=="Assets"
+            widget.selectedDropDownValue == "Groups" ||
+            widget.selectedDropDownValue == "Assets"
         ? Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
