@@ -1426,7 +1426,7 @@ class AssetAdminManagerUserService extends BaseService {
       Map<String, dynamic> gqlPayload) async {
     try {
       if (enableGraphQl) {
-       
+       Logger().w(gqlPayload);
         gqlPayload["customerUID"] = accountSelected!.CustomerUID;
         var data = await Network().getGraphqlData(
             query: query,

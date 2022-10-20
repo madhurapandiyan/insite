@@ -82,8 +82,10 @@ class AddGroupViewModel extends InsiteViewModel {
     _manageUserService!.setUp();
 
     Future.delayed(Duration(seconds: 1), () async {
-      getData();
+    
+      _manageUserService!.setUp();
       await getGroupListData();
+      
       if (groups != null) {
         nameController.text = groups.GroupName ?? "";
         descriptionController.text = groups.Description ?? "";
@@ -259,6 +261,8 @@ class AddGroupViewModel extends InsiteViewModel {
         var data = selectedAsset?.elementAt(i);
         assetIdresult?.assetDetailsRecords?.add(data!);
         selectedAsset?.removeAt(i);
+
+        dissociatedAssetId.add(data!.assetIdentifier!);
         Logger().e(selectedAsset?.length);
         notifyListeners();
       }
@@ -272,55 +276,54 @@ class AddGroupViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  void getData() {
-    if (groups != null) {
-      getEditGroupData();
-    } else {}
-    hideLoadingDialog();
-    notifyListeners();
-  }
+  // void getData() {
+  //   if (groups != null) {
+  //     getEditGroupData();
+  //   } else {}
+  //   hideLoadingDialog();
+  //   notifyListeners();
+  // }
 
-  getAddGroupEditData() async {
+   getAddGroupEditData() async {
     try {
-     
-     // assetUidData.clear();
+      assetUidData.clear();
       selectedAsset?.forEach((element) {
         Logger().wtf(element.assetIdentifier);
         assetUidData.add(element.assetIdentifier!);
       });
-
-      if (assetUidData.isNotEmpty) {
-        
-        for (var i = 0; i < assetUidData.length; i++) {
-          var data = assetUidData[i];
-          if (data.isNotEmpty) {
-            associatedAssetId.add(data);
-          } else {
-            dissociatedAssetId.add(data);
-          }
+      dissociatedAssetId.removeWhere((element) {
+        if (assetUidData.any((newId) => element == newId)) {
+          return true;
+        } else {
+          return false;
         }
-      }
-
+      });
+      dissociatedAssetId.removeWhere((element) {
+        if (element == null) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      dissociatedAssetId = dissociatedAssetId.toSet().toList();
       showLoadingDialog();
       UpdateResponse? result = await _manageUserService!.getAddGroupEditPayLoad(
         EditGroupPayLoad(
             GroupName: nameController.text,
             GroupUid: groups!.GroupUid!,
-            CustomerUID: accountSelected!.CustomerUID!,
+            CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
             Description: descriptionController.text,
             AssociatedAssetUID: associatedAssetId,
             DissociatedAssetUID: dissociatedAssetId),
         graphqlSchemaService!.updateGroup(),
         {
-          "assetUID": assetUidData,
+          "associatedAssetUID": assetUidData,
           "groupUid": groups!.GroupUid,
           "description": descriptionController.text,
           "groupName": nameController.text,
-          "dissociatedAssetUID": [],
-          "associatedAssetUID":["fba953c3-b251-11eb-82db-0ae8ba8d3970"]
+          "dissociatedAssetUID": dissociatedAssetId
         },
       );
-      
       if (result != null) {
         gotoManageGroupPage();
       }

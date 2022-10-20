@@ -392,8 +392,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getEditingSeverityState(AlertConfigEdit? data) {
+  getEditingSeverityState(AlertConfigEdit? data) async {
     if (data?.alertConfig != null) {
+      Logger().v(data?.alertConfig!.operands!.length);
+      await getEditOperandData(data?.alertConfig?.operands);
       severityState = [
         SwitchState(state: false, text: "High"),
         SwitchState(state: false, text: "Medium"),
@@ -861,9 +863,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       if (severityData.isNotEmpty) {
         if (severityData.any((element) => element.value == "1")) {
           severityState[0].state = true;
-        } else if (severityData.any((element) => element.value == "2")) {
+        }
+        if (severityData.any((element) => element.value == "2")) {
           severityState[1].state = true;
-        } else if (severityData.any((element) => element.value == "3")) {
+        }
+        if (severityData.any((element) => element.value == "3")) {
           severityState[2].state = true;
         }
       } else {
@@ -871,7 +875,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           if (faultCodeData.any((element) => element.value == "1")) {
             faultCodeType[0].state = true;
           }
-          if (faultCodeData.any((element) => element.value == "1")) {
+          if (faultCodeData.any((element) => element.value == "2")) {
             faultCodeType[1].state = true;
           }
         }

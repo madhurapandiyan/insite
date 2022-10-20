@@ -41,7 +41,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InsiteText(
-          text: "Severity :",
+          text: title,
         ),
         child,
       ],
