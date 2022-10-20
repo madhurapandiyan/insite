@@ -52,6 +52,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 9999;
 
+  bool? isAccountShow = false;
+
   bool _isloading = true;
   bool get isloading => _isloading;
 
@@ -365,32 +367,44 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
 
   getAccountFilterData(String? customIdentifier) async {
     try {
-      showLoadingDialog();
-      assetIdresult = await _manageUserService!.getAccountSelectionData(
-          pageNumber,
-          pageSize,
-          customIdentifier!,
-          graphqlSchemaService!.getNotificationAssetList(
-              customerIdentifier: customIdentifier,
-              pageNo: pageNumber,
-              pageSize: pageSize));
-      if (assetIdresult != null) {
-        for (var serialNumber in assetIdresult!.assetDetailsRecords!) {
-          accountAssetSerialNumberList!.add(Asset(
-              assetIcon: serialNumber.assetIcon,
-              assetId: serialNumber.assetId,
-              assetIdentifier: serialNumber.assetIdentifier,
-              makeCode: serialNumber.makeCode,
-              model: serialNumber.model,
-              type: AssetCategoryType.ACCOUNT,
-              assetSerialNumber: serialNumber.assetSerialNumber));
-        }
-        pageController!.animateToPage(12,
+      if (customIdentifier == "0ba12330-cffb-11eb-82e0-0ae8ba8d3970" ||
+          customIdentifier == "4f372aa8-aefb-11eb-82ce-0ae8ba8d3970" ||
+          customIdentifier == "adc197bc-9c2b-11eb-a8b3-0242ac130003" ||
+          customIdentifier == "79d3dff3-ace0-11eb-82ce-0ae8ba8d3970") {
+        isAccountShow = true;
+        pageController!.animateToPage(13,
             duration: Duration(microseconds: 200), curve: Curves.easeInOut);
-        hideLoadingDialog();
-        Logger().v(accountAssetSerialNumberList!.length);
         notifyListeners();
+      } else {
+        showLoadingDialog();
+        assetIdresult = await _manageUserService!.getAccountSelectionData(
+            pageNumber,
+            pageSize,
+            customIdentifier!,
+            graphqlSchemaService!.getNotificationAssetList(
+                customerIdentifier: customIdentifier,
+                pageNo: pageNumber,
+                pageSize: pageSize));
+        if (assetIdresult != null) {
+          for (var serialNumber in assetIdresult!.assetDetailsRecords!) {
+            accountAssetSerialNumberList!.add(Asset(
+                assetIcon: serialNumber.assetIcon,
+                assetId: serialNumber.assetId,
+                assetIdentifier: serialNumber.assetIdentifier,
+                makeCode: serialNumber.makeCode,
+                model: serialNumber.model,
+                type: AssetCategoryType.ACCOUNT,
+                assetSerialNumber: serialNumber.assetSerialNumber));
+          }
+          isAccountShow = false;
+
+          pageController!.animateToPage(12,
+              duration: Duration(microseconds: 200), curve: Curves.easeInOut);
+          hideLoadingDialog();
+        }
       }
+
+      notifyListeners();
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -408,7 +422,7 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
 
       for (int i = 0; i < result.length; i++) {
         var data = result[i];
-        if (data.CustomerUID=="6ea359eb-ada5-11eb-82ce-0ae8ba8d3970") {
+        if (data.CustomerUID == "6ea359eb-ada5-11eb-82ce-0ae8ba8d3970") {
           for (int j = 0; j < data.Children!.length; j++) {
             var tataHitachiNameData = data.Children![j];
             _accountNameData!.add(AccountSelectedData(
@@ -525,8 +539,7 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     if (type == AssetCategoryType.ASSETID) {
       pageController!.animateToPage(1,
           duration: Duration(microseconds: 200), curve: Curves.easeInOut);
-    } 
-    else if (type == AssetCategoryType.SERIALNO) {
+    } else if (type == AssetCategoryType.SERIALNO) {
       pageController!.animateToPage(2,
           duration: Duration(microseconds: 200), curve: Curves.easeInOut);
     } else if (type == AssetCategoryType.PRODUCTFAMILY) {

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/filter_data.dart';
@@ -16,12 +15,11 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
 import 'package:insite/widgets/smart_widgets/page_header.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
-
 import '../../theme/colors.dart';
+import 'package:location/location.dart';
 
 class LocationView extends StatefulWidget {
   @override
@@ -29,14 +27,23 @@ class LocationView extends StatefulWidget {
 }
 
 class _LocationViewState extends State<LocationView> {
-  String _currentSelectedItem = "SATELLITE";
+  String _currentSelectedItem = "HYBRID";
   double zoomVal = 5.0;
   MapType currentType = MapType.normal;
   List<DateTime>? dateRange;
-
+  Location currentLocation = Location();
+  double? latitude;
+  double? longitude;
   @override
   void initState() {
     super.initState();
+    currentLocation.onLocationChanged.listen((LocationData loc) {
+     
+      setState(() {
+        latitude = loc.latitude;
+        longitude = loc.longitude;
+      });
+    });
   }
 
   @override
@@ -46,6 +53,7 @@ class _LocationViewState extends State<LocationView> {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuerry = MediaQuery.of(context);
     return ViewModelBuilder<LocationViewModel>.reactive(
       builder: (BuildContext context, LocationViewModel viewModel, Widget? _) {
         return InsiteInheritedDataProvider(
@@ -130,6 +138,12 @@ class _LocationViewState extends State<LocationView> {
                             child: Stack(
                               children: [
                                 GoogleMap(
+                                  myLocationEnabled: false,
+                                  myLocationButtonEnabled: false,
+                                  padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context).size.height *
+                                        0.09,
+                                  ),
                                   zoomGesturesEnabled: true,
                                   onCameraMove: (position) {
                                     viewModel.customInfoWindowController
@@ -201,7 +215,6 @@ class _LocationViewState extends State<LocationView> {
                                     padding:
                                         const EdgeInsets.only(top: 7, left: 20),
                                     child: LocationSearchBoxView(
-                                      
                                       searchBoxWidth: 0.6,
                                       onSeletingSuggestion:
                                           (value, isSerialNo) {
@@ -223,7 +236,7 @@ class _LocationViewState extends State<LocationView> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.42,
                                   height:
-                                      MediaQuery.of(context).size.height * 0.30,
+                                      MediaQuery.of(context).size.height * 0.36,
                                   offset: 1,
                                 ),
                                 Padding(
@@ -237,6 +250,8 @@ class _LocationViewState extends State<LocationView> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Container(
+                                          height:
+                                              mediaQuerry.size.height * 0.064,
                                           color:
                                               Theme.of(context).backgroundColor,
 
@@ -309,6 +324,30 @@ class _LocationViewState extends State<LocationView> {
                                           children: [
                                             GestureDetector(
                                               onTap: () {
+                                                _zoomToCurrentLocation(
+                                                    viewModel);
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.only(
+                                                    right: 10, bottom: 10),
+                                                width: 30,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .backgroundColor,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(100)),
+                                                ),
+                                                child: Icon(
+                                                  Icons.gps_fixed_outlined,
+                                                  color: Colors.black,
+                                                  size: 30,
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
                                                 zoomVal++;
                                                 _plus(
                                                     zoomVal,
@@ -326,6 +365,8 @@ class _LocationViewState extends State<LocationView> {
                                                     viewModel);
                                               },
                                               child: Container(
+                                                margin:
+                                                    EdgeInsets.only(right: 10),
                                                 width: 27.47,
                                                 height: 26.97,
                                                 decoration: BoxDecoration(
@@ -381,6 +422,8 @@ class _LocationViewState extends State<LocationView> {
                                                       viewModel);
                                                 },
                                                 child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 10, right: 10),
                                                   width: 27.47,
                                                   height: 26.97,
                                                   decoration: BoxDecoration(
@@ -450,6 +493,13 @@ class _LocationViewState extends State<LocationView> {
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
+  Future<void> _zoomToCurrentLocation(LocationViewModel viewModel) async {
+    Logger().i(latitude);
+    final GoogleMapController mapController = await viewModel.controller.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(latitude ?? 0.0, longitude ?? 0.0), zoom: 13)));
+  }
+
   MapType _changemap() {
     switch (_currentSelectedItem) {
       case "MAP":
@@ -459,12 +509,14 @@ class _LocationViewState extends State<LocationView> {
       case "TERRAIN":
         Logger().i("map is in terrain type");
         return MapType.terrain;
+
       case "SATELLITE":
         Logger().i("map is in satellite type ");
-        return MapType.hybrid;
+        return MapType.satellite;
+
       case "HYBRID":
         Logger().i("map is in hybrid type ");
-        return MapType.satellite;
+        return MapType.hybrid;
       default:
         return MapType.normal;
     }
