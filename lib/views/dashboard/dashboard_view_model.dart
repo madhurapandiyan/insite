@@ -369,7 +369,7 @@ class DashboardViewModel extends InsiteViewModel {
         graphqlSchemaService!.getFaultCountData(
           startDate: Utils.getFaultDateFormatStartDate(
               DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
-                  .subtract(Duration(days: 1))),
+                ),
 
           //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
           //     startDate),
@@ -484,13 +484,15 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   onDateAndFilterSelected(FilterData data, FilterData dateFilter) async {
+    
     Logger().d("onFilterSelected ${data.title}");
     await clearFilterDb();
     if (currentFilterSelected != null) {
       await addFilter(currentFilterSelected!);
+       
     }
     await addFilter(data);
-    //await _dateRangeService!.updateDateFilter(dateFilter);
+    await _dateRangeService!.updateDateFilter(dateFilter);
   }
 
   gotoFaultPage() {

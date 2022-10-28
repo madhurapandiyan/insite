@@ -451,6 +451,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         ),
                                         Expanded(
                                           child: CustomTextBox(
+                                            
                                             showTextColour: widget.user!=null?true:false,
                                             title: "Pin code",
                                             isenabled: widget.isEdit == null ||

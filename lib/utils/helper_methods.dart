@@ -1764,9 +1764,9 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 18, seconds: 00, minutes: 30));
+          .add(Duration(hours: 00, seconds: 00, minutes: 00));
       //.subtract(Duration(days: 1));
-
+      Logger().e(inputDate);
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -1780,7 +1780,7 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 18, seconds: 59, minutes: 29));
+          .add(Duration(hours: 23, seconds: 59, minutes: 59));
       //.subtract(Duration(days: 1))
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

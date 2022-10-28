@@ -1,34 +1,79 @@
 {
   "project_info": {
-    "project_number": "734540076067",
-    "project_id": "insite-34981",
-    "storage_bucket": "insite-34981.appspot.com"
+    "project_number": "476711137331",
+    "project_id": "osgmobileapp",
+    "storage_bucket": "osgmobileapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:734540076067:android:12195b592df37d985c4d96",
+        "mobilesdk_app_id": "1:476711137331:android:76c78fc69b8f0f46413346",
         "android_client_info": {
-          "package_name": "com.trimble.insite.indiastack"
+          "package_name": "com.trimble.insite"
         }
       },
       "oauth_client": [
         {
-          "client_id": "734540076067-dapl7akk29ceongiqtqe191rasbbb74g.apps.googleusercontent.com",
+          "client_id": "476711137331-s5jqeetskci4q0vllkruf9o8pelden0l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA_oTanE_7aJJ4nqm5fYumKyhQ7whc8TVk"
+          "current_key": "AIzaSyAiH7NBPSfbwCE4aDtK9ZSVp3LOqvGJCWk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "734540076067-dapl7akk29ceongiqtqe191rasbbb74g.apps.googleusercontent.com",
+              "client_id": "476711137331-s5jqeetskci4q0vllkruf9o8pelden0l.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "476711137331-32mdoguh4nul6nkl7b54ltn5mg0fg1kg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trimble.weilerwatch",
+                "app_store_id": "1588249999"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476711137331:android:ad0b1f5d578e2efe413346",
+        "android_client_info": {
+          "package_name": "com.trimble.weiler_watch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476711137331-s5jqeetskci4q0vllkruf9o8pelden0l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiH7NBPSfbwCE4aDtK9ZSVp3LOqvGJCWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476711137331-s5jqeetskci4q0vllkruf9o8pelden0l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "476711137331-32mdoguh4nul6nkl7b54ltn5mg0fg1kg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trimble.weilerwatch",
+                "app_store_id": "1588249999"
+              }
             }
           ]
         }
