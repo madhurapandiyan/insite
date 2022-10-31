@@ -16,7 +16,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'core/setup_snackbar_ui.dart';
 
 void main() async {
-  Logger().d("main trimble");
+  Logger().d("main  worksiq");
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await FlutterDownloader.initialize(debug: true);
@@ -27,8 +27,8 @@ void main() async {
   Hive.registerAdapter<FilterSubType?>(FilterSubTypeAdapter());
   AppConfig(
       baseUrl: "https://cloud.api.trimble.com" + Urls.nameSpace,
-      iconPath: "assets/images/ic_trimble_logo.png",
-      productFlavor: "trimble",
+      iconPath: "assets/images/worksiq.png",
+      productFlavor: "worksiq",
       enableLogin: true,
       isProd: false,
       enableGraphql: true,
