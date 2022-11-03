@@ -98,6 +98,11 @@ android {
             applicationIdSuffix ".worksiq"
             versionNameSuffix "-worksiq"
         }
+        cummins{
+             dimension "flavors"
+            applicationIdSuffix ".cummins"
+            versionNameSuffix "-cummins"
+        }
     }
 }
 

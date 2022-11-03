@@ -254,19 +254,23 @@ class AssetDashboardViewModel extends InsiteViewModel {
                   .subtract(Duration(days: 1))),
           endDate: Utils.getFaultDateFormatEndDate(DateTime.now())),
     );
-    Logger().v(
-        assetDashboardFaultData!.summaryData!.first.countData!.first.countOf);
+    if (assetDashboardFaultData != null) {
+      Logger().v(
+          assetDashboardFaultData!.summaryData!.first.countData!.first.countOf);
 
-    for (var i = 0; i < assetDashboardFaultData.summaryData!.length; i++) {
-      var data = assetDashboardFaultData.summaryData![i];
-      for (var j = 0; j < data.countData!.length; j++) {
-        faultCountDataList!.add(data.countData![j]);
+      for (var i = 0; i < assetDashboardFaultData.summaryData!.length; i++) {
+        var data = assetDashboardFaultData.summaryData![i];
+        for (var j = 0; j < data.countData!.length; j++) {
+          faultCountDataList!.add(data.countData![j]);
+        }
       }
+      _faultCountloading = false;
     }
-    _faultCountloading = false;
+
     notifyListeners();
   }
-  goToMaintainenceView(){
-     _navigationService!.navigateToView(MaintenanceView());
+
+  goToMaintainenceView() {
+    _navigationService!.navigateToView(MaintenanceView());
   }
 }

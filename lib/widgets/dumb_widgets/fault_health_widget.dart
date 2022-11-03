@@ -33,7 +33,10 @@ class _FaultWidgetState extends State<FaultWidget> {
     return Column(children: [
       GestureDetector(
         onTap: () {
-          widget.onSelected!();
+          if (widget.screenType == ScreenType.DASHBOARD) {
+            widget.onSelected!();
+          }
+          else{}
         },
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),

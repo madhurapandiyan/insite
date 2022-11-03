@@ -88,10 +88,11 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
             SizedBox(
               height: 10,
             ),
+            widget.countData!.isNotEmpty?
             widget.loading!
                 ? InsiteProgressBar()
-                : widget.countData!.isNotEmpty
-                    ? Expanded(
+                :
+                     Expanded(
                         child: ListView.builder(
                             itemCount: widget.countData!.length,
                             shrinkWrap: true,
@@ -106,6 +107,7 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                                 showAssetCount: false,
                                 screenType: widget.screenType,
                                 onSelected: () {
+                                
                                   if (countResponse.faultCount! > 0) {
                                     widget.onFilterSelected!(
                                         FilterData(
@@ -123,11 +125,12 @@ class _FaultHealthDashboardState extends State<FaultHealthDashboard> {
                                     Utils.getFaultLabel(countResponse.countOf!),
                               );
                             }),
-                      )
-                    : Padding(
+                     ): Padding(
                         padding: const EdgeInsets.only(top: 30),
                         child: EmptyView(title: "No fault codes to display"),
                       ),
+                      
+                    
             (widget.countData!.isNotEmpty)
                 ? Column(
                     children: [

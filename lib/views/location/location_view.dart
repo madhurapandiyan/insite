@@ -3,6 +3,7 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/utils/enums.dart';
@@ -37,13 +38,15 @@ class _LocationViewState extends State<LocationView> {
   @override
   void initState() {
     super.initState();
-    currentLocation.onLocationChanged.listen((LocationData loc) {
-     
-      setState(() {
-        latitude = loc.latitude;
-        longitude = loc.longitude;
+    if (AppConfig.instance!.productFlavor == "worksiq") {
+    } else {
+      currentLocation.onLocationChanged.listen((LocationData loc) {
+        setState(() {
+          latitude = loc.latitude;
+          longitude = loc.longitude;
+        });
       });
-    });
+    }
   }
 
   @override
@@ -322,30 +325,36 @@ class _LocationViewState extends State<LocationView> {
                                         ),
                                         Column(
                                           children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                _zoomToCurrentLocation(
-                                                    viewModel);
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                    right: 10, bottom: 10),
-                                                width: 30,
-                                                height: 30,
-                                                decoration: BoxDecoration(
-                                                  color: Theme.of(context)
-                                                      .backgroundColor,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(100)),
-                                                ),
-                                                child: Icon(
-                                                  Icons.gps_fixed_outlined,
-                                                  color: Colors.black,
-                                                  size: 30,
-                                                ),
-                                              ),
-                                            ),
+                                            AppConfig.instance!.productFlavor ==
+                                                    "worksiq"
+                                                ? SizedBox()
+                                                : GestureDetector(
+                                                    onTap: () {
+                                                      _zoomToCurrentLocation(
+                                                          viewModel);
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 10,
+                                                          bottom: 10),
+                                                      width: 30,
+                                                      height: 30,
+                                                      decoration: BoxDecoration(
+                                                        color: Theme.of(context)
+                                                            .backgroundColor,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    100)),
+                                                      ),
+                                                      child: Icon(
+                                                        Icons
+                                                            .gps_fixed_outlined,
+                                                        color: Colors.black,
+                                                        size: 30,
+                                                      ),
+                                                    ),
+                                                  ),
                                             GestureDetector(
                                               onTap: () {
                                                 zoomVal++;

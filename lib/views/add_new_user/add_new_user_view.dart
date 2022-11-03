@@ -210,6 +210,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                                 viewModel.assetsData[index];
                                             return Center(
                                               child: AppAvatar(
+                                                index: index,
                                                   onSelect: () {
                                                     viewModel
                                                         .onApplicationAccessSelection(

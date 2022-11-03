@@ -124,6 +124,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                           })
                       : SizedBox(),
                   InsiteImage(
+                    
                     height: 65,
                     width: 65,
                     path: AppConfig.instance!.iconPath,

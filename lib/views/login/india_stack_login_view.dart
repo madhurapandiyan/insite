@@ -234,6 +234,7 @@ class _IndiaStackLoginViewState extends State<IndiaStackLoginView> {
       }
     });
   }
+  
 
   gotoSplashview() {
     Logger().i("IndiaStackLoginView gotoSplashview");

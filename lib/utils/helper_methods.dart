@@ -429,9 +429,9 @@ class Utils {
   static String getDateInFormatMMddyyyy(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
-      var inputDate = DateTime.parse(parseDate.toString())
-          .subtract(Duration(days: 1))
-          .add(Duration(hours: 18, minutes: 30));
+      var inputDate = DateTime.parse(parseDate.toString());
+          // .subtract(Duration(days: 1))
+          // .add(Duration(hours: 18, minutes: 30));
       var outputFormat = DateFormat("MM/dd/yyyy");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
