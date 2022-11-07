@@ -81,9 +81,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:476711137331:android:7f55b306ae27ea73413346",
+        "mobilesdk_app_id": "1:476711137331:android:235daebb3010b103413346",
         "android_client_info": {
-          "package_name": "com.trimble.insite.worksiq"
+          "package_name": "com.trimble.insite.trimble"
         }
       },
       "oauth_client": [

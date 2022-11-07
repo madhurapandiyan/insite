@@ -2262,7 +2262,7 @@ mutation createNotification(\$alertCategoryID: Int, \$notificationSubscribers: n
       // String? alertId,
       // List<String>? groupId}
       ) {
-    var data ="""
+    var data = """
        mutation updateNotification(\$notificationUid: String, \$alertCategoryID: Int, \$notificationSubscribers: notificationSubscribersObj, \$allAssets: Boolean, \$currentDate: String, \$schedule: [scheduleObj], \$alertTitle: String, \$alertGroupId: Int, \$notificationTypeGroupID: Int, \$assetUIDs: [String], \$operands: [createNotificationOperandsObj], \$notificationTypeId: Int, \$numberOfOccurences: Int, \$notificationDeliveryChannel: String, \$geofenceUIDs: [String], \$assetGroupUIDs: [String], \$siteOperands: [siteOperandsObj], \$zones: [zoneObj]) {
           updateNotification(notificationUid: \$notificationUid, geofenceUIDs: \$geofenceUIDs, assetGroupUIDs: \$assetGroupUIDs, siteOperands: \$siteOperands, alertCategoryID: \$alertCategoryID, allAssets: \$allAssets, currentDate:\$currentDate, schedule: \$schedule, alertTitle:\$alertTitle, alertGroupId: \$alertGroupId, notificationTypeGroupID: \$notificationTypeGroupID, assetUIDs: \$assetUIDs, operands: \$operands, notificationTypeId: \$notificationTypeId, numberOfOccurences: \$numberOfOccurences, notificationDeliveryChannel: \$notificationDeliveryChannel, notificationSubscribers: \$notificationSubscribers, zones: \$zones) {    isUpdated  }
        }
@@ -2579,6 +2579,15 @@ query (\$pageNumber: Int, \$sort: String, \$searchKey: String, \$searchValue: St
       assetUID
     }
   }
+}""";
+    return data;
+  }
+
+  getGroupDeleteData(String? groupId) {
+    var data = """mutation{
+    deleteGroup(GroupUID:"$groupId"){
+        isDeleted
+    }
 }""";
     return data;
   }

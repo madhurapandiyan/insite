@@ -38,7 +38,7 @@ class _LocationViewState extends State<LocationView> {
   @override
   void initState() {
     super.initState();
-    if (AppConfig.instance!.productFlavor == "worksiq") {
+    if (AppConfig.instance!.productFlavor == "worksiq"|| AppConfig.instance!.productFlavor=="cummins") {
     } else {
       currentLocation.onLocationChanged.listen((LocationData loc) {
         setState(() {
@@ -329,7 +329,7 @@ class _LocationViewState extends State<LocationView> {
                                           children: [
 
                                             AppConfig.instance!.productFlavor ==
-                                                    "worksiq"
+                                                    "worksiq"|| AppConfig.instance!.productFlavor=="cummins"
                                                 ? SizedBox()
                                                 : Align(
                                                   alignment: Alignment.centerRight,

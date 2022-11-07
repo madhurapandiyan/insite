@@ -10,17 +10,11 @@ class InsiteImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppConfig.instance!.productFlavor == "worksiq"
-        ? SvgPicture.asset(
-            path!,
-            width: 30,
-            height: 30,
-            color: Theme.of(context).buttonColor,
-          )
-        : Image(
-            image: new ExactAssetImage(path!),
-            height: height,
-            width: width,
-            alignment: FractionalOffset.center);
+    return Image(
+        image: new ExactAssetImage(path!),
+        
+        height: height,
+        width: width,
+        alignment: FractionalOffset.center);
   }
 }

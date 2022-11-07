@@ -204,6 +204,9 @@ flutter:
     - assets/images/health_icon.png
     - assets/images/ic_admin-setting-icon.png
     - assets/images/worksiq.svg
+    - assets/images/worksiq.png
+    - assets/images/cummins-logo.png
+    
   fonts:
     - family: Roboto
       fonts:

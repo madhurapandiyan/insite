@@ -20,21 +20,26 @@ samples, guidance on mobile development, and a full API reference.
 For Vision Link - flutter run --flavor visionlink -t lib/main_visionlink.dart
 For India Stack - flutter run --flavor indiastack -t lib/main_indiastack.dart
 For WorksIQ - flutter run --flavor worksiq -t lib/main_worksiq.dart
+For Cummins- flutter run --flavor cummins -t lib/main_cummins.dart
 
 For Vision Link Release - flutter build apk --flavor visionlink -t lib/main_visionlink.dart
 For India Stack Release - flutter build apk --flavor indiastack -t lib/main_indiastack.dart
 For WorksIQ Release - flutter build apk --flavor worksiq -t lib/main_worksiq.dart
+For Cummins Release- flutter build apk --flavor cummins -t lib/main_cummins.dart
 
 IOS:
 For Vision Link Release - flutter build ios --flavor visionlink -t lib/main_visionlink.dart
 For India Stack Release - flutter build ios --flavor indiastack -t lib/main_indiastack.dart
 For WorksIQ Release - flutter build ios --flavor worksiq -t lib/main_worksiq.dart
+For Cummins Release- flutter build ios --flavor cummins -t lib/main_cummins.dart
+
 
 ## Build app_bundle commands
 
 For Vision Link app_bundle - flutter build appbundle --flavor visionlink -t lib/main_visionlink.dart
 For India Stack app_bundle - flutter build appbundle --flavor indiastack -t lib/main_indiastack.dart
 For WorksIQ app_bundle - flutter build appbundle --flavor worksiq -t lib/main_worksiq.dart
+For Cummins app_bundle- flutter build appbundle --flavor cummins -t lib/main_cummins.dart
 
 For Vision Link Split Release:
 flutter build apk --flavor visionlink -t lib/main_visionlink.dart --target-platform android-arm,android-arm64,android-x64 --split-per-abi

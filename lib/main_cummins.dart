@@ -27,7 +27,7 @@ void main() async {
   Hive.registerAdapter<FilterSubType?>(FilterSubTypeAdapter());
   AppConfig(
       baseUrl: "https://cloud.api.trimble.com" + Urls.nameSpace,
-      iconPath: "assets/images/worksiq.png",
+      iconPath: "assets/images/cummins-logo.png",
       productFlavor: "cummins",
       enableLogin: true,
       isProd: false,
@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: locator<NavigationService>().navigatorKey,
       onGenerateRoute: router.Router.generateRoute,
       initialRoute: indiaStackSplashViewRoute,
-      theme: indiaStackBlueWhite,
+      theme: indiaStackRedBlack,
     );
   }
 }

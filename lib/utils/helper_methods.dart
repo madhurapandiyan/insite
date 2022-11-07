@@ -940,6 +940,7 @@ class Utils {
         var data = tatahitachi
             .singleWhere((element) => element.assetIconKey == iconKey);
         if (data != null) {
+          Logger().v("data");
           return data.image;
         } else {
           return "assets/images/0.png";

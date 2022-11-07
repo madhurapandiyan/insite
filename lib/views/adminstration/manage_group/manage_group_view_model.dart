@@ -356,7 +356,7 @@ class ManageGroupViewModel extends InsiteViewModel {
   }
 
   void deleteSelectedGroup() async {
-    Logger().i("deleteSelectedUsers");
+    Logger().i("deleteSelectedGroups");
     if (showDelete) {
       String? groupId;
       for (int i = 0; i < assets.length; i++) {
@@ -365,6 +365,7 @@ class ManageGroupViewModel extends InsiteViewModel {
           groupId = data.groups!.GroupUid;
         }
       }
+      Logger().v(groupId);
       if (groupId != null) {
         showLoadingDialog();
         var result = await _manageUserService!.getDeleteFavoriteData(groupId);

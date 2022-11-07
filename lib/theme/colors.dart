@@ -86,6 +86,7 @@ const iconColor2 = Color(0XFF000000);
 const textSelectedColor2 = Color(0XFFFFFFFF);
 const buttonColor21 = Color(0xffF37021);
 const buttonColor22 = Color(0XFF000000);
+const buttonColor23=Color(0xffda291c);
 const buttonSelectedColor2 = Color(0xffF37021);
 const dividerColor2 = Color(0XFF000000);
 const upperCardColor2 = Color(0xFF414042);
@@ -158,9 +159,9 @@ var indiaStackRedBlack = ThemeData(
     cardColor: cardBackgroundColor2,
     backgroundColor: backgroundColor3,
     fontFamily: 'Roboto',
-    buttonColor: buttonColor21,
+    buttonColor: buttonColor23,
     dividerColor: dividerColor2,
-    indicatorColor: upperCardColor2,
+    indicatorColor: buttonColor23,
     canvasColor: Colors.white,
     iconTheme: IconThemeData(
       color: iconColor2,
@@ -174,7 +175,7 @@ var indiaStackRedBlack = ThemeData(
             borderRadius: BorderRadius.circular(10),
             side: BorderSide(color: cardBackgroundColor2, width: 1))),
     buttonTheme: ButtonThemeData(
-      buttonColor: buttonColor21,
+      buttonColor: buttonColor23,
     ),
     accentTextTheme: TextTheme(bodyText1: TextStyle(color: textColor2)),
     primaryTextTheme: TextTheme(bodyText1: TextStyle(color: textColor2)),

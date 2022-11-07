@@ -285,7 +285,7 @@ class ManageUserViewModel extends InsiteViewModel {
       for (int i = 0; i < assets.length; i++) {
         var data = assets[i];
         if (data.isSelected) {
-          userIds.add(doubleQuote + data.user!.userUid! + doubleQuote);
+          userIds.add( data.user!.userUid!);
         }
       }
       if (userIds.isNotEmpty) {
