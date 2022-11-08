@@ -99,6 +99,7 @@ class NotificationViewModel extends InsiteViewModel {
     });
     Future.delayed(Duration(seconds: 1), () async {
       await getNotificationData(false);
+   
     });
   }
   onItemDeselect() {

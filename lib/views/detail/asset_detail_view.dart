@@ -331,6 +331,7 @@ class _TabPageState extends State<AssetDetailView> {
                                   },
                                 )
                               : AssetDashbaord(
+                                screenType: ScreenType.DASHBOARD,
                                   detail: viewModel.assetDetail,
                                   switchTab: (index) {
                                     setState(() {

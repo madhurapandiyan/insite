@@ -93,10 +93,15 @@ android {
             applicationIdSuffix ".indiastack"
             versionNameSuffix "-indiastack"
         }
-        trimble {
+        worksiq {
             dimension "flavors"
-            applicationIdSuffix ".trimble"
-            versionNameSuffix "-trimble"
+            applicationIdSuffix ".worksiq"
+            versionNameSuffix "-worksiq"
+        }
+        cummins{
+             dimension "flavors"
+            applicationIdSuffix ".cummins"
+            versionNameSuffix "-cummins"
         }
     }
 }
