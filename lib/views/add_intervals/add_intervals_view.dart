@@ -155,8 +155,7 @@ Widget onSelectedIntervalsDetails(
           SizedBox(
             width: 10,
           ),
-          data.editable == true
-              ? Expanded(
+          Expanded(
                   child: InsiteButton(
                     height: 40,
                     onTap: () {
@@ -166,7 +165,7 @@ Widget onSelectedIntervalsDetails(
                     title: "Edit",
                   ),
                 )
-              : SizedBox(),
+             
         ])
       ],
     ),
