@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.1.3+3
+version: 2.1.4+4
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
@@ -199,6 +199,13 @@ flutter:
     - assets/images/healthicon.svg
     - assets/images/asset_operationicon.svg
     - assets/images/adminisitratoricon.svg
+    - assets/images/worksiq.png
+    - assets/images/ic_fleet.png
+    - assets/images/health_icon.png
+    - assets/images/ic_admin-setting-icon.png
+    - assets/images/worksiq.svg
+    - assets/images/worksiq.png
+    - assets/images/cummins-logo.png
     
   fonts:
     - family: Roboto

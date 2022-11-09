@@ -25,6 +25,7 @@ void main() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     await FlutterDownloader.initialize(debug: true);
     await Hive.initFlutter();
+    //FirebaseCrashlytics.instance.crash();
     Hive.registerAdapter<FilterData>(FilterDataAdapter());
     Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
     Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());

@@ -3,8 +3,9 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/insite_data_provider.dart';
-import 'package:insite/core/models/filter_data.dart';
+
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/location_search.dart/location_search_widget.dart';
@@ -37,17 +38,20 @@ class _LocationViewState extends State<LocationView> {
   @override
   void initState() {
     super.initState();
-    currentLocation.onLocationChanged.listen((LocationData loc) {
-     
-      setState(() {
-        latitude = loc.latitude;
-        longitude = loc.longitude;
+    if (AppConfig.instance!.productFlavor == "worksiq"|| AppConfig.instance!.productFlavor=="cummins") {
+    } else {
+      currentLocation.onLocationChanged.listen((LocationData loc) {
+        setState(() {
+          latitude = loc.latitude;
+          longitude = loc.longitude;
+        });
       });
-    });
+    }
   }
 
   @override
   void dispose() {
+    
     super.dispose();
   }
 
@@ -321,92 +325,48 @@ class _LocationViewState extends State<LocationView> {
                                           ),
                                         ),
                                         Column(
+                                        
                                           children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                _zoomToCurrentLocation(
-                                                    viewModel);
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                    right: 10, bottom: 10),
-                                                width: 30,
-                                                height: 30,
-                                                decoration: BoxDecoration(
-                                                  color: Theme.of(context)
-                                                      .backgroundColor,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(100)),
-                                                ),
-                                                child: Icon(
-                                                  Icons.gps_fixed_outlined,
-                                                  color: Colors.black,
-                                                  size: 30,
-                                                ),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                zoomVal++;
-                                                _plus(
-                                                    zoomVal,
-                                                    LatLng(
-                                                        viewModel
-                                                            .assetLocation!
-                                                            .mapRecords!
-                                                            .first!
-                                                            .lastReportedLocationLatitude!,
-                                                        viewModel
-                                                            .assetLocation!
-                                                            .mapRecords!
-                                                            .first!
-                                                            .lastReportedLocationLongitude!),
-                                                    viewModel);
-                                              },
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 10),
-                                                width: 27.47,
-                                                height: 26.97,
-                                                decoration: BoxDecoration(
-                                                  color: Theme.of(context)
-                                                      .backgroundColor,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(5.0)),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      blurRadius: 1.0,
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1!
-                                                          .color!,
+
+                                            AppConfig.instance!.productFlavor ==
+                                                    "worksiq"|| AppConfig.instance!.productFlavor=="cummins"
+                                                ? SizedBox()
+                                                : Align(
+                                                  alignment: Alignment.centerRight,
+                                                  child: GestureDetector(
+                                                      onTap: () {
+                                                        _zoomToCurrentLocation(
+                                                            viewModel);
+                                                      },
+                                                      child: Container(
+                                                        margin: EdgeInsets.only(
+                                                            right: 10,
+                                                            bottom: 10),
+                                                        width: 30,
+                                                        height: 30,
+                                                        decoration: BoxDecoration(
+                                                          color: Theme.of(context)
+                                                              .backgroundColor,
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      100)),
+                                                        ),
+                                                        child: Icon(
+                                                          Icons
+                                                              .gps_fixed_outlined,
+                                                          color: Colors.black,
+                                                          size: 30,
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ],
-                                                  border: Border.all(
-                                                      width: 1.0,
-                                                      color: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyText1!
-                                                          .color!),
-                                                  shape: BoxShape.rectangle,
                                                 ),
-                                                child: SvgPicture.asset(
-                                                  "assets/images/plus.svg",
-                                                  color: Theme.of(context)
-                                                      .iconTheme
-                                                      .color,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            GestureDetector(
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: GestureDetector(
                                                 onTap: () {
-                                                  zoomVal--;
-                                                  _minus(
+                                                  zoomVal++;
+                                                  _plus(
                                                       zoomVal,
                                                       LatLng(
                                                           viewModel
@@ -422,8 +382,8 @@ class _LocationViewState extends State<LocationView> {
                                                       viewModel);
                                                 },
                                                 child: Container(
-                                                  margin: EdgeInsets.only(
-                                                      bottom: 10, right: 10),
+                                                  margin:
+                                                      EdgeInsets.only(right: 10),
                                                   width: 27.47,
                                                   height: 26.97,
                                                   decoration: BoxDecoration(
@@ -431,8 +391,7 @@ class _LocationViewState extends State<LocationView> {
                                                         .backgroundColor,
                                                     borderRadius:
                                                         BorderRadius.all(
-                                                            Radius.circular(
-                                                                5.0)),
+                                                            Radius.circular(5.0)),
                                                     boxShadow: [
                                                       BoxShadow(
                                                         blurRadius: 1.0,
@@ -451,12 +410,74 @@ class _LocationViewState extends State<LocationView> {
                                                     shape: BoxShape.rectangle,
                                                   ),
                                                   child: SvgPicture.asset(
-                                                    "assets/images/minus.svg",
+                                                    "assets/images/plus.svg",
                                                     color: Theme.of(context)
                                                         .iconTheme
                                                         .color,
                                                   ),
-                                                )),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: GestureDetector(
+                                                  onTap: () {
+                                                    zoomVal--;
+                                                    _minus(
+                                                        zoomVal,
+                                                        LatLng(
+                                                            viewModel
+                                                                .assetLocation!
+                                                                .mapRecords!
+                                                                .first!
+                                                                .lastReportedLocationLatitude!,
+                                                            viewModel
+                                                                .assetLocation!
+                                                                .mapRecords!
+                                                                .first!
+                                                                .lastReportedLocationLongitude!),
+                                                        viewModel);
+                                                  },
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 10, right: 10),
+                                                    width: 27.47,
+                                                    height: 26.97,
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(context)
+                                                          .backgroundColor,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5.0)),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          blurRadius: 1.0,
+                                                          color: Theme.of(context)
+                                                              .textTheme
+                                                              .bodyText1!
+                                                              .color!,
+                                                        ),
+                                                      ],
+                                                      border: Border.all(
+                                                          width: 1.0,
+                                                          color: Theme.of(context)
+                                                              .textTheme
+                                                              .bodyText1!
+                                                              .color!),
+                                                      shape: BoxShape.rectangle,
+                                                    ),
+                                                    child: SvgPicture.asset(
+                                                      "assets/images/minus.svg",
+                                                      color: Theme.of(context)
+                                                          .iconTheme
+                                                          .color,
+                                                    ),
+                                                  )),
+                                            ),
                                           ],
                                         ),
                                       ],

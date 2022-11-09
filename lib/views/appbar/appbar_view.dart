@@ -123,11 +123,24 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                             viewModel.onHomePressed();
                           })
                       : SizedBox(),
-                  InsiteImage(
-                    height: 65,
-                    width: 65,
-                    path: AppConfig.instance!.iconPath,
-                  ),
+
+                  AppConfig.instance!.productFlavor == "cummins"
+                      ? Image.asset(AppConfig.instance!.iconPath,
+                          width: 50, height: 50, color: Colors.black)
+                      : AppConfig.instance!.productFlavor == "worksiq"
+                          ? Image.asset(AppConfig.instance!.iconPath,
+                              width: 85, height: 85)
+                          : Image.asset(
+                              AppConfig.instance!.iconPath,
+                              width: 65,
+                              height: 65,
+                            ),
+                  // InsiteImage(
+
+                  //   height: 65,
+                  //   width: 65,
+                  //   path: AppConfig.instance!.iconPath,
+                  // ),
                   SizedBox(
                     width: 20,
                   ),
