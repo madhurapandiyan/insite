@@ -1,9 +1,12 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/utils/urls.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'splash_view_model.dart';
@@ -155,12 +158,11 @@ class _SplashViewState extends State<SplashView> {
                     ? WebviewScaffold(
                         url: Urls.administratorloginUrl,
                       )
-                    :
-                Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                ),
+                    : Center(
+                        child: InsiteProgressBar(
+                          
+                        )
+                      ),
               ],
             ),
           ),

@@ -429,9 +429,9 @@ class Utils {
   static String getDateInFormatMMddyyyy(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
-      var inputDate = DateTime.parse(parseDate.toString())
-          .subtract(Duration(days: 1))
-          .add(Duration(hours: 18, minutes: 30));
+      var inputDate = DateTime.parse(parseDate.toString());
+          // .subtract(Duration(days: 1))
+          // .add(Duration(hours: 18, minutes: 30));
       var outputFormat = DateFormat("MM/dd/yyyy");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -940,6 +940,7 @@ class Utils {
         var data = tatahitachi
             .singleWhere((element) => element.assetIconKey == iconKey);
         if (data != null) {
+          Logger().v("data");
           return data.image;
         } else {
           return "assets/images/0.png";
@@ -1764,9 +1765,9 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 18, seconds: 00, minutes: 30));
+          .add(Duration(hours: 00, seconds: 00, minutes: 00));
       //.subtract(Duration(days: 1));
-
+      Logger().e(inputDate);
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -1780,7 +1781,7 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 18, seconds: 59, minutes: 29));
+          .add(Duration(hours: 23, seconds: 59, minutes: 59));
       //.subtract(Duration(days: 1))
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

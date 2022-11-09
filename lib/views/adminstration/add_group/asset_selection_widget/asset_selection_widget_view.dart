@@ -57,6 +57,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
 
   @override
   Widget build(BuildContext context) {
+  
     var mediaQuery = MediaQuery.of(context);
     var theme = Theme.of(context);
     return ViewModelBuilder<AssetSelectionWidgetViewModel>.reactive(
@@ -143,7 +144,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Asset Id",
                           ),
                           SelectionAssetWidget(
-                             isAccountShow: false,
+                            isAccountShow: false,
                             onAddingAsset: (i, value) {
                               Logger().e(value.toJson());
                               widget.onAddingAsset!(i, value);
@@ -163,7 +164,6 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Serial Number",
                           ),
                           SelectionAssetCountWidget(
-                          
                             showCount: false,
                             onBackPressed: () {
                               viewModel.onAssetIdBackPressed();
@@ -206,7 +206,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Manufacture",
                           ),
                           SelectionAssetWidget(
-                             isAccountShow: false,
+                            isAccountShow: false,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
                               // viewModel.onDeletingSelectedAsset(i, value.type!);
@@ -230,7 +230,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Model",
                           ),
                           SelectionAssetWidget(
-                             isAccountShow: false,
+                            isAccountShow: false,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
                               //viewModel.onDeletingSelectedAsset(i, value.type!);
@@ -254,7 +254,7 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                             title: "Device Type",
                           ),
                           SelectionAssetWidget(
-                             isAccountShow: false,
+                            isAccountShow: false,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
                               //  viewModel.onDeletingSelectedAsset(i, value.type!);
@@ -281,7 +281,6 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
                           ),
 
                           SelectionAssetWidget(
-                           
                             isAccountShow: viewModel.isAccountShow,
                             onAddingAsset: (i, value) {
                               widget.onAddingAsset!(i, value);
@@ -355,10 +354,9 @@ class SelectionAssetWidget extends StatelessWidget {
       this.title,
       this.onAddingAsset,
       this.onChange,
-      this.isAccountShow=false});
+      this.isAccountShow = false});
   @override
   Widget build(BuildContext context) {
-    
     var theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
     return Column(
@@ -446,7 +444,6 @@ class SelectionAssetWidget extends StatelessWidget {
 }
 
 class SelectionAssetCountWidget extends StatelessWidget {
-
   final bool? showCount;
   final Function? onBackPressed;
   final String? title;

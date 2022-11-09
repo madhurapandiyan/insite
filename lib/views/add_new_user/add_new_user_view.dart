@@ -210,6 +210,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                                 viewModel.assetsData[index];
                                             return Center(
                                               child: AppAvatar(
+                                                index: index,
                                                   onSelect: () {
                                                     viewModel
                                                         .onApplicationAccessSelection(
@@ -451,6 +452,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         ),
                                         Expanded(
                                           child: CustomTextBox(
+                                            
                                             showTextColour: widget.user!=null?true:false,
                                             title: "Pin code",
                                             isenabled: widget.isEdit == null ||

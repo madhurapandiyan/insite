@@ -71,7 +71,8 @@ class FilterViewModel extends InsiteViewModel {
         screenType == ScreenType.UTILIZATION ||
         screenType == ScreenType.ASSET_OPERATION ||
         screenType == ScreenType.HEALTH ||
-        screenType == ScreenType.MAINTENANCE) {
+        screenType == ScreenType.MAINTENANCE||
+        screenType==ScreenType.NOTIFICATIONS) {
       AssetCount? resultModel = await _assetService!.getAssetCount(
           "model",
           FilterType.MODEL,

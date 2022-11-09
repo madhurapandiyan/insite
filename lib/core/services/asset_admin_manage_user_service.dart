@@ -1108,14 +1108,25 @@ class AssetAdminManagerUserService extends BaseService {
     try {
       Map<String, String> queryMap = Map();
       queryMap["GroupUID"] = groupId;
-      if (isVisionLink) {
-        UpdateResponse updateResponse = await MyApi()
-            .getClientSeven()!
-            .getDeleteFavoriteData(
-                Urls.getManageGroupData +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
-        return updateResponse;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!.getGroupDeleteData(groupId),
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        return UpdateResponse.fromJson(data.data);
+      } else {
+        if (isVisionLink) {
+          UpdateResponse updateResponse = await MyApi()
+              .getClientSeven()!
+              .getDeleteFavoriteData(
+                  Urls.getManageGroupData +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return updateResponse;
+        }
       }
     } catch (e) {}
     return null;
@@ -1323,8 +1334,8 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AssetGroupSummaryResponse?> getAccountSelectionData(
-      int pageNumber, int pageSize, String productFamilyKey,String ? query) async {
+  Future<AssetGroupSummaryResponse?> getAccountSelectionData(int pageNumber,
+      int pageSize, String productFamilyKey, String? query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["pageNumber"] = pageNumber.toString();
@@ -1336,7 +1347,7 @@ class AssetAdminManagerUserService extends BaseService {
         Logger().wtf(customerSelected!.CustomerUID);
       }
       if (enableGraphQl) {
-          var data = await Network().getGraphqlData(
+        var data = await Network().getGraphqlData(
             query: query,
             subId: customerSelected?.CustomerUID == null
                 ? ""
@@ -1426,7 +1437,7 @@ class AssetAdminManagerUserService extends BaseService {
       Map<String, dynamic> gqlPayload) async {
     try {
       if (enableGraphQl) {
-       Logger().w(gqlPayload);
+        Logger().w(gqlPayload);
         gqlPayload["customerUID"] = accountSelected!.CustomerUID;
         var data = await Network().getGraphqlData(
             query: query,

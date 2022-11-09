@@ -140,7 +140,9 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                       onFilterSelected(DateRangeType.today);
                                     },
                                     idleValue: Utils.checkNull(widget
-                                        .assetUtilization!.averageDay!.idleHours),
+                                        .assetUtilization!
+                                        .averageDay!
+                                        .idleHours),
                                     runningValue: Utils.checkNull(widget
                                         .assetUtilization!
                                         .averageDay!
@@ -182,12 +184,13 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                     totalGreatestNumber:
                                         widget.totalGreatestNumber,
                                     shouldShowLabel: shouldShowLabel,
-                                    workingValue: widget.assetUtilization != null
-                                        ? Utils.checkNull(widget
-                                            .assetUtilization!
-                                            .averageWeek!
-                                            .workingHours)
-                                        : 0,
+                                    workingValue:
+                                        widget.assetUtilization != null
+                                            ? Utils.checkNull(widget
+                                                .assetUtilization!
+                                                .averageWeek!
+                                                .workingHours)
+                                            : 0,
                                     idleValue: widget.assetUtilization != null
                                         ? Utils.checkNull(widget
                                             .assetUtilization!
@@ -213,8 +216,7 @@ class _AssetUtilizationWidgetState extends State<AssetUtilizationWidget> {
                                     totalGreatestNumber:
                                         widget.totalGreatestNumber,
                                     shouldShowLabel: shouldShowLabel,
-                                    workingValue:
-                                        widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization!.totalWeek!.workingHours) : 0,
+                                    workingValue: widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization!.totalWeek!.workingHours) : 0,
                                     idleValue: widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization!.totalWeek!.idleHours) : 0,
                                     runningValue: widget.assetUtilization != null ? Utils.checkNull(widget.assetUtilization!.totalWeek!.runtimeHours) : 0),
                             isAverageButtonSelected &&

@@ -67,8 +67,8 @@ class DateRangeViewModel extends InsiteViewModel {
     if (appliedFilters != null && appliedFilters.isNotEmpty) {
       startDate = appliedFilters[0];
       endDate = appliedFilters[1];
-      Logger().d("start ", startDate);
-      Logger().d("start ", endDate);
+      Logger().d("start ", appliedFilters[0]);
+      Logger().d("start ", appliedFilters[1]);
       Logger().d("label ", appliedFilters[2]);
       _selectedDateRange = getType(appliedFilters[2]);
       notifyListeners();

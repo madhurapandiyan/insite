@@ -124,7 +124,9 @@ class AssetOperationListItem extends StatelessWidget {
   }
 
   List<SliderData> getSliderData() {
+    
     List<SliderData> list = [];
+   
     for (DateTime time in days!) {
       String day = DateFormat('EEE').format(time);
       SliderData data = SliderData(

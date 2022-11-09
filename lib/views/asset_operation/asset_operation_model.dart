@@ -56,6 +56,8 @@ class AssetOperationViewModel extends InsiteViewModel {
 
   updateDateRangeList() {
     try {
+      Logger().w(startDate);
+      Logger().i(endDate);
       DateTime startTime = DateFormat("yyyy-MM-dd").parse(startDate!);
       DateTime endTime = DateFormat("yyyy-MM-dd").parse(endDate!);
       final daysToGenerate = endTime.difference(startTime).inDays + 1;
