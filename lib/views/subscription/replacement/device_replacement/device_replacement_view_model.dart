@@ -102,7 +102,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
           SubscriptionDeviceFleetList? deviceFleetList =
               await replacementService!.getSearchedDeviceDetails(
                   graphqlSchemaService!
-                      .getDeviceIdReplacement(searchedWord, "active",50));
+                      .getDeviceIdReplacement(searchedWord, "active",20));
 
           _searchList = deviceFleetList!.provisioningInfo!;
 
@@ -220,7 +220,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         if (enableGraphQl) {
           _replaceDeviceModelData = await replacementService!
               .getSearchedDeviceDetails(graphqlSchemaService!
-                  .getDeviceIdReplacement(searchWord, "inactive",50));
+                  .getDeviceIdReplacement(searchWord, "inactive",20));
 
           if (_replaceDeviceModelData!.provisioningInfo!.isEmpty) {
             Fluttertoast.showToast(msg: "Device Not Found");

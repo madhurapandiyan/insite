@@ -23,6 +23,7 @@ HierarchyFleetSearch _$HierarchyFleetSearchFromJson(
     HierarchyFleetSearch(
       vin: json['vin'] as String?,
       gpsDeviceID: json['gpsDeviceID'] as String?,
+      typeName: json['__typename'] as String?,
     );
 
 Map<String, dynamic> _$HierarchyFleetSearchToJson(
@@ -30,4 +31,5 @@ Map<String, dynamic> _$HierarchyFleetSearchToJson(
     <String, dynamic>{
       'vin': instance.vin,
       'gpsDeviceID': instance.gpsDeviceID,
+      '__typename': instance.typeName,
     };

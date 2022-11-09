@@ -17,8 +17,10 @@ class DeviceIdValues {
 class HierarchyFleetSearch {
   String? vin;
   String? gpsDeviceID;
+  @JsonKey(name: "__typename")
+  String? typeName;
 
-  HierarchyFleetSearch({this.vin, this.gpsDeviceID});
+  HierarchyFleetSearch({this.vin, this.gpsDeviceID,this.typeName});
   factory HierarchyFleetSearch.fromJson(Map<String, dynamic> json) =>
       _$HierarchyFleetSearchFromJson(json);
 
