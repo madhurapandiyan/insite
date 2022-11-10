@@ -930,26 +930,27 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         name: "",
         code: value,
       )));
-      _devices.forEach((element) {
+      selectedDealerCode!.assetOrHierarchyByTypeAndId!.forEach((element) async{
         if (element.code == value) {
           dealerNameController.text = element.name!;
-          dealerCodeController.text = element.code!;
-          dealerEmailController.text = element.email ?? "";
-          _dealerCode.clear();
-          notifyListeners();
-        }
-      });
-      if (dealerNameController.text.isNotEmpty) {
+          if (dealerNameController.text.isNotEmpty) {
         var data = await (_subscriptionService!
             .getSubscriptionDevicesFromGraphQl(
                 graphqlSchemaService!.getDeviceCodeAndName(
-          start: pageNumber,
+          start: 0,
           limit: 50,
           type: "DEALER",
           name: dealerNameController.text,
           code: "",
         )));
       }
+          dealerCodeController.text = element.code!;
+          dealerEmailController.text = element.email ?? "";
+          _dealerCode.clear();
+          notifyListeners();
+        }
+      });
+      
       transDealerCodeChange=false;
       transDealerNameChange=false;
      
@@ -1591,8 +1592,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
               code: code == null ? " " : code.toString(),
             )));
             Logger().wtf(deviceValues);
-             _devices.clear();
-               _dealerCode.clear();
+              _devices.clear();
+                dealerCode.clear();
             if (deviceValues!.assetOrHierarchyByTypeAndId!.isNotEmpty) {
               deviceValues.assetOrHierarchyByTypeAndId!.forEach((element) {
                 _devices.add(element);
