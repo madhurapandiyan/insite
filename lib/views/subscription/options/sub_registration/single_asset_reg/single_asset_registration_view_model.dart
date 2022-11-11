@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_it/get_it.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
@@ -15,7 +13,6 @@ import 'package:insite/core/models/subscription_serial_number_results.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
-import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -505,14 +502,19 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
                 _devices.clear();
                 detailResult.clear();
                 gpsDeviceId.clear();
-                notifyListeners();
+               
                 _loading = false;
                 _loadingMore = false;
                 _shouldLoadmore = false;
+                 notifyListeners();
               }
               _loading = false;
               _loadingMore = false;
             }
+          }
+          if(deviceIdController.text.isEmpty){
+            count=-1;
+            notifyListeners();
           }
         } else {
           deviceIdChange = await _subscriptionService!
@@ -851,6 +853,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       });
       regDealerNameChange = false;
       regDealerCodeChange = false;
+      notifyListeners();
     } else {
       _devices.forEach((element) {
         if (element.Name == value) {
@@ -863,6 +866,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       });
       regDealerNameChange = false;
       regDealerCodeChange = false;
+      notifyListeners();
     }
   }
 
@@ -871,7 +875,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       var selectedDealerCode =
           await (_subscriptionService!.getSubscriptionDevicesListData(
         query: graphqlSchemaService!.getDeviceCodeAndName(
-            start: 0, limit: 50, name: value, code: "", type: "DEALER"),
+            start: 0, limit: 50, name: "", code: value, type: "DEALER"),
       ));
       selectedDealerCode!.assetOrHierarchyByTypeAndId!.forEach((element) async {
         if (element.code == value) {
@@ -896,6 +900,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
       regDealerCodeChange = false;
       regDealerNameChange = false;
+      notifyListeners();
     } else {
       _devices.forEach((element) {
         if (element.Code == value) {
@@ -943,6 +948,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       });
       regCustomerCodeChange = false;
       regCustomerNameChange = false;
+      notifyListeners();
     } else {
       _devices.forEach((element) {
         Logger().wtf(value);
@@ -979,7 +985,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
                   start: 0,
                   limit: 50,
                   name: name,
-                  code: code == null ? " " : code.toString(),
+                  code: "",
                   type: type),
             ));
             if (customerNameChange!.assetOrHierarchyByTypeAndId != null) {
@@ -1031,6 +1037,10 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             }
           }
         }
+        if(customerNameController.text.isEmpty){
+      regCustomerNameChange=false;
+      notifyListeners();  
+      }
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
@@ -1058,7 +1068,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
                   start: 0,
                   limit: 50,
                   name: name,
-                  code: code == null ? " " : code.toString(),
+                  code: "",
                   type: type),
             ));
 
@@ -1114,6 +1124,10 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             }
           }
         }
+        if(deviceNameController.text.isEmpty){
+          regDealerNameChange=false;
+          notifyListeners();
+        }
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
@@ -1141,8 +1155,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
               query: graphqlSchemaService!.getDeviceCodeAndName(
                   start: 0,
                   limit: 50,
-                  name: name,
-                  code: code == null ? " " : code.toString(),
+                  name: "",
+                  code: code == null ? "" : code.toString(),
                   type: type),
             ));
 
@@ -1161,6 +1175,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
                 });
               } else {
                 regDealerCodeChange = true;
+                notifyListeners();
               }
             } else {
               //Fluttertoast.showToast(msg: "New Dealer Code");
@@ -1197,6 +1212,10 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             }
           }
         }
+      if(deviceCodeController.text.isEmpty){
+      regDealerCodeChange=false;
+      notifyListeners();  
+      }
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
@@ -1224,19 +1243,17 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
               query: graphqlSchemaService!.getDeviceCodeAndName(
                   start: 0,
                   limit: 50,
-                  name: name??"",
+                  name: "",
                   code: code == null ? " " : code.toString(),
                   type: type),
             );
 
             Logger().w(customerCodeChange!.assetOrHierarchyByTypeAndId!.length);
             if (customerCodeChange!.assetOrHierarchyByTypeAndId!.isEmpty) {
+                regCustomerCodeChange = true;
               _customerCode.clear();
               _devices.clear();
               detailResult.clear();
-
-              regCustomerCodeChange = true;
-
               notifyListeners();
             } else {
               //  regCustomerCodeChange=true;
@@ -1272,8 +1289,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
                 _customerCode.clear();
                 snackbarService!.showSnackbar(
                   message: "No Data Found",
-                  duration: Duration(seconds: 1),
+                  duration: Duration(milliseconds: 200),
                 );
+                 regCustomerCodeChange=true;
                 notifyListeners();
               } else {
                 if (customerCodeChange!.result![1].isNotEmpty) {
@@ -1294,6 +1312,10 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             }
           }
         }
+      if(customerCodeController.text.isEmpty){
+      regCustomerCodeChange=false;
+      notifyListeners();  
+      }
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);

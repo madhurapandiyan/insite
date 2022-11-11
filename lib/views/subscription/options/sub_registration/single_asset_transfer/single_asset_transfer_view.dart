@@ -321,7 +321,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                       .onSelectedDealerNameTile(
                                                           value!);
                                                 },
-                                                items: viewModel.dealerId,
+                                                items: viewModel.dealerId.toSet().toList(),
                                                 textBoxTitle: 'Dealer Name:',
                                                 onChange: (value) {
                                                   viewModel.onDealerNameChanges(
@@ -533,7 +533,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                   viewModel.onSelectedNameTile(
                                                       value!);
                                                 },
-                                                items: viewModel.customerId,
+                                                items: viewModel.customerId.toSet().toList(),
                                                 textBoxTitle: "Customer Name",
                                                 onChange: (value) {
                                                   viewModel

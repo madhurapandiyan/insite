@@ -16,7 +16,6 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/date_picker_custom_widget.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'single_asset_registration_view_model.dart';
 
@@ -391,7 +390,7 @@ class _SingleAssetRegistrationViewState
                                                 isShowingBorderColor: false,
                                                 isShowingHelperText: 
                                                 viewModel.regDealerNameChange==true,
-                                                //viewModel.dealerNameChange!=null? viewModel.dealerNameChange!.assetOrHierarchyByTypeAndId!.isEmpty:false,
+                                                
                                                 //  viewModel
                                                 //         .dealerNameChange
                                                 //         ?.result?[0]
@@ -580,8 +579,8 @@ class _SingleAssetRegistrationViewState
                                                 onChange: (value) {
                                                   viewModel
                                                       .onCustomerCodeChanges(
-                                                          code:
-                                                              int.parse(value),
+                                                          code:value,
+                                                             // int.parse(value),
                                                           type: "CUSTOMER");
                                                 },
                                               ),

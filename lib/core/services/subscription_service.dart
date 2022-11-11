@@ -242,13 +242,13 @@ class SubScriptionService extends BaseService {
       String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(
+        var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: accountSelected?.CustomerUID,
-          userId: (await _localService?.getLoggedInUser())?.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+          // customerId: accountSelected?.CustomerUID,
+          // userId: (await _localService?.getLoggedInUser())?.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
         );
 
         DeviceDataValues? deviceDetails = DeviceDataValues.fromJson(data.data);
@@ -302,13 +302,13 @@ class SubScriptionService extends BaseService {
         queryMap["limit"] = limit.toString();
       }
 if(enableGraphQl){
-  var data = await Network().getGraphqlData(
+  var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: accountSelected?.CustomerUID,
-          userId: (await _localService?.getLoggedInUser())?.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+          // customerId: accountSelected?.CustomerUID,
+          // userId: (await _localService?.getLoggedInUser())?.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
         );
         SingleAssetRegistrationSearchModel? deviceDetails =
             SingleAssetRegistrationSearchModel.fromJson(data.data);
@@ -623,13 +623,13 @@ Future<DealerToDealerDetail?> getDealerToDealerDetail(String? query) async {
   Future<DeviceIdValues?> getAssetTransferDeviceIds(String? query) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(
+        var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: accountSelected?.CustomerUID,
-          userId: (await _localService?.getLoggedInUser())?.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+          // customerId: accountSelected?.CustomerUID,
+          // userId: (await _localService?.getLoggedInUser())?.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
         );
 
         DeviceIdValues? deviceDetails = DeviceIdValues.fromJson(data.data);
