@@ -560,13 +560,13 @@ if(enableGraphQl){
 
   Future<SelectedDevice?> getDeviceDetailsbyIdGraphql(String? query) async {
     try {
-      var data = await Network().getGraphqlData(
+      var data = await Network().getGraphqlPlantData(
         query: query,
-        customerId: accountSelected?.CustomerUID,
-        userId: (await _localService?.getLoggedInUser())?.sub,
-        subId: customerSelected?.CustomerUID == null
-            ? ""
-            : customerSelected?.CustomerUID,
+        // customerId: accountSelected?.CustomerUID,
+        // userId: (await _localService?.getLoggedInUser())?.sub,
+        // subId: customerSelected?.CustomerUID == null
+        //     ? ""
+        //     : customerSelected?.CustomerUID,
       );
       SelectedDevice? deviceDetails = SelectedDevice.fromJson(data.data);
 

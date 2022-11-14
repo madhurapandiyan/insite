@@ -634,28 +634,8 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   getSubscriptionModelData() async {
     try {
       Logger().i("getApplicationAccessData");
-      SubscriptionDashboardResult? result = await _subscriptionService!
-          .getResultsFromSubscriptionApi(
-              graphqlSchemaService!.getModelFleetList());
-
-
-      if (result == null) {
-        Logger().d('no results found');
-
-        _loading = false;
-        return "no results found";
-      } else {
-        //model names
-
-        if (enableGraphQl) {
-        //   var modelList =
-        //       result.frameSubscription!.plantDispatchSummary!.modelFleetList;
-        //   if (modelList != null) {
-        //     for (var i = 0; i < modelList.length; i++) {
-        //       _modelNames.add(modelList[i].modelName);
-        //     }
-        //   }
-
+      if(enableGraphQl){
+      
           var modelList=[
     "None",
     "EX70",
@@ -678,19 +658,29 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
             _modelNames.add(element);
             
           }
-        } else {
-          if (result.result != null) {
-            for (var i = 0; i < result.result!.elementAt(2).length; i++) {
-              if (i == 0) {
-              } else {
-                _modelNames.add(result.result!.elementAt(2)[i].modelName);
-              }
-            }
+            notifyListeners();
+      }else{
+         SubscriptionDashboardResult? result =
+          await _subscriptionService!.getResultsFromSubscriptionApi("");
+      if (result == null) {
+        Logger().d('no results found');
+
+        _loading = false;
+        return "no results found";
+      } else {
+        //model names
+        for (var i = 0; i < result.result!.elementAt(2).length; i++) {
+          if (i == 0) {
+          } else {
+            _modelNames.add(result.result!.elementAt(2)[i].modelName);
           }
         }
+
         _loading = false;
       }
-      notifyListeners();
+        notifyListeners();
+      }
+     
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
       Fluttertoast.showToast(msg: error.message!);
