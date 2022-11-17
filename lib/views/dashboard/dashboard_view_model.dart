@@ -367,6 +367,8 @@ class DashboardViewModel extends InsiteViewModel {
                 .subtract(Duration(days: 1))),
         Utils.getFaultDateFormatEndDate(DateTime.now()),
         graphqlSchemaService!.getFaultCountData(
+          
+
           startDate: Utils.getFaultDateFormatStartDate(
               DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
                 ),
