@@ -860,25 +860,21 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       var faultCodeData =
           data.where((element) => element.operandName == "FaultCode Type");
 
-      if (severityData.isNotEmpty) {
-        if (severityData.any((element) => element.value == "1")) {
-          severityState[0].state = true;
-        }
-        if (severityData.any((element) => element.value == "2")) {
-          severityState[1].state = true;
-        }
-        if (severityData.any((element) => element.value == "3")) {
-          severityState[2].state = true;
-        }
-      } else {
-        if (faultCodeData.isNotEmpty) {
-          if (faultCodeData.any((element) => element.value == "1")) {
-            faultCodeType[0].state = true;
-          }
-          if (faultCodeData.any((element) => element.value == "2")) {
-            faultCodeType[1].state = true;
-          }
-        }
+      if (severityData.any((element) => element.value == "1")) {
+        severityState[0].state = true;
+      }
+      if (severityData.any((element) => element.value == "2")) {
+        severityState[1].state = true;
+      }
+      if (severityData.any((element) => element.value == "3")) {
+        severityState[2].state = true;
+      }
+
+      if (faultCodeData.any((element) => element.value == "1")) {
+        faultCodeType[0].state = true;
+      }
+      if (faultCodeData.any((element) => element.value == "2")) {
+        faultCodeType[1].state = true;
       }
     }
     data!.forEach((element) {

@@ -11,7 +11,7 @@ class DateUtil {
         return (DateTime.now()
             .subtract(Duration(days: DateTime.now().weekday - 1)));
       case DateRangeType.lastSevenDays:
-        return (DateTime.now().subtract(Duration(days: 7)));
+        return (DateTime.now().subtract(Duration(days: 6)));
       case DateRangeType.lastThirtyDays:
         return (DateTime.now().subtract(Duration(days: 29)));
       case DateRangeType.currentMonth:

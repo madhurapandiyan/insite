@@ -1998,7 +1998,9 @@ mutation (\$assetFilterCategoryID: Int, \$assetFilterUIDs: [String], \$reportCat
          method
       },
       reportTitle,
-      reportPeriod
+      reportPeriod,
+      assetFilterCategoryID,
+      assetFilterUIDs
     }
   }
 }""";
