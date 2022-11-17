@@ -38,20 +38,20 @@ class _LocationViewState extends State<LocationView> {
   @override
   void initState() {
     super.initState();
-    if (AppConfig.instance!.productFlavor == "worksiq"|| AppConfig.instance!.productFlavor=="cummins") {
+    if (AppConfig.instance!.productFlavor == "worksiq" ||
+        AppConfig.instance!.productFlavor == "cummins") {
     } else {
       currentLocation.onLocationChanged.listen((LocationData loc) {
-        setState(() {
+        
           latitude = loc.latitude;
           longitude = loc.longitude;
-        });
+        
       });
     }
   }
 
   @override
   void dispose() {
-    
     super.dispose();
   }
 
@@ -219,6 +219,7 @@ class _LocationViewState extends State<LocationView> {
                                     padding:
                                         const EdgeInsets.only(top: 7, left: 20),
                                     child: LocationSearchBoxView(
+                                      screenType: ScreenType.LOCATION,
                                       searchBoxWidth: 0.6,
                                       onSeletingSuggestion:
                                           (value, isSerialNo) {
@@ -325,15 +326,17 @@ class _LocationViewState extends State<LocationView> {
                                           ),
                                         ),
                                         Column(
-                                        
                                           children: [
-
                                             AppConfig.instance!.productFlavor ==
-                                                    "worksiq"|| AppConfig.instance!.productFlavor=="cummins"
+                                                        "worksiq" ||
+                                                    AppConfig.instance!
+                                                            .productFlavor ==
+                                                        "cummins"
                                                 ? SizedBox()
                                                 : Align(
-                                                  alignment: Alignment.centerRight,
-                                                  child: GestureDetector(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: GestureDetector(
                                                       onTap: () {
                                                         _zoomToCurrentLocation(
                                                             viewModel);
@@ -344,13 +347,16 @@ class _LocationViewState extends State<LocationView> {
                                                             bottom: 10),
                                                         width: 30,
                                                         height: 30,
-                                                        decoration: BoxDecoration(
-                                                          color: Theme.of(context)
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Theme.of(
+                                                                  context)
                                                               .backgroundColor,
                                                           borderRadius:
                                                               BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      100)),
+                                                                  Radius
+                                                                      .circular(
+                                                                          100)),
                                                         ),
                                                         child: Icon(
                                                           Icons
@@ -360,7 +366,7 @@ class _LocationViewState extends State<LocationView> {
                                                         ),
                                                       ),
                                                     ),
-                                                ),
+                                                  ),
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: GestureDetector(
@@ -382,8 +388,8 @@ class _LocationViewState extends State<LocationView> {
                                                       viewModel);
                                                 },
                                                 child: Container(
-                                                  margin:
-                                                      EdgeInsets.only(right: 10),
+                                                  margin: EdgeInsets.only(
+                                                      right: 10),
                                                   width: 27.47,
                                                   height: 26.97,
                                                   decoration: BoxDecoration(
@@ -391,7 +397,8 @@ class _LocationViewState extends State<LocationView> {
                                                         .backgroundColor,
                                                     borderRadius:
                                                         BorderRadius.all(
-                                                            Radius.circular(5.0)),
+                                                            Radius.circular(
+                                                                5.0)),
                                                     boxShadow: [
                                                       BoxShadow(
                                                         blurRadius: 1.0,
@@ -456,18 +463,20 @@ class _LocationViewState extends State<LocationView> {
                                                       boxShadow: [
                                                         BoxShadow(
                                                           blurRadius: 1.0,
-                                                          color: Theme.of(context)
-                                                              .textTheme
-                                                              .bodyText1!
-                                                              .color!,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyText1!
+                                                                  .color!,
                                                         ),
                                                       ],
                                                       border: Border.all(
                                                           width: 1.0,
-                                                          color: Theme.of(context)
-                                                              .textTheme
-                                                              .bodyText1!
-                                                              .color!),
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyText1!
+                                                                  .color!),
                                                       shape: BoxShape.rectangle,
                                                     ),
                                                     child: SvgPicture.asset(

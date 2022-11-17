@@ -8,6 +8,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/search_location_geofence.dart';
 import 'package:insite/core/services/asset_location_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 
@@ -15,14 +16,17 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
   var _assetLocationService = locator<AssetLocationService>();
 
   List<String> dropDownList = ['S/N', 'Location'];
+  List<String> assetDropDownList = ['Location'];
 
   String? searchDropDownValue = "S/N";
+
+  String? searchLocationDropDownValue = "Location";
 
   TextEditingController searchController = TextEditingController();
 
   List<LocationKey>? list = [];
 
-AssetLocationSearch ? result;
+  AssetLocationSearch? result;
 
   searchLocation(query) async {
     SearchLocationGeofence? result =
@@ -64,9 +68,13 @@ AssetLocationSearch ? result;
     }
   }
 
-  onSearchTextChanged(String? value) async {
+  onSearchTextChanged(String? value,ScreenType screenType) async {
     try {
-      if (value!.isNotEmpty && value.length > 2) {
+      if(screenType==ScreenType.ASSET_DETAIL){
+        await searchLocation(value!);
+      }
+      else{
+        if (value!.isNotEmpty && value.length > 2) {
         if (searchDropDownValue == "S/N") {
           await searchLocationSeralNumber(value);
         } else {
@@ -75,6 +83,8 @@ AssetLocationSearch ? result;
       } else {
         list!.clear();
       }
+      }
+      
       notifyListeners();
     } catch (e) {}
   }
@@ -102,6 +112,11 @@ AssetLocationSearch ? result;
 
   onSelect(String value) {
     searchController.text = value;
+    notifyListeners();
+  }
+
+  onChangeDropDownValueTwo(String value) {
+    searchLocationDropDownValue = value;
     notifyListeners();
   }
 
