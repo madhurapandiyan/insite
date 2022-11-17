@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:clippy_flutter/triangle.dart';
 import 'package:custom_info_window/custom_info_window.dart';
+import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
@@ -31,11 +33,19 @@ class AssetLocationViewModel extends InsiteViewModel {
   CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
 
+  GoogleMapController ? controller; 
+
+  // Completer<GoogleMapController> controller = Completer();
+
+  CameraPosition? centerPosition;
+
   HealthListResponse? _healthListResponse;
   HealthListResponse? get healthListResponse => _healthListResponse;
 
   bool _loading = true;
   bool get loading => _loading;
+
+  bool? isLocationSelected = false;
 
   bool dataNotFound = false;
 
@@ -78,7 +88,6 @@ class AssetLocationViewModel extends InsiteViewModel {
             Utils.fleetLocationSingleAssetEndDateFormate(endDate),
             assetDetail!.assetUid);
     if (result != null) {
-      
       _assetLocationHistory = result;
       updateMarkers();
     } else {
@@ -137,6 +146,19 @@ class AssetLocationViewModel extends InsiteViewModel {
     print("markers length ${markers.length}");
   }
 
+  onSeletingSuggestion(LatLng value) async {
+    controller!.animateCamera(CameraUpdate.newLatLngZoom(value, 10));
+
+        
+        // GoogleMapController control = await controller.future;
+        // control.animateCamera(CameraUpdate.newLatLngZoom(value, 10));
+
+        // centerPosition = CameraPosition(target: value, zoom: 1);
+        // Logger().v(value.latitude);
+
+        notifyListeners();
+  }
+
   getFaultAssetLocationHistoryResult() async {
     await getDateRangeFilterData();
     await getSelectedFilterData();
@@ -149,13 +171,12 @@ class AssetLocationViewModel extends InsiteViewModel {
             5000,
             appliedFilters,
             graphqlSchemaService!.getSingleAssetData(
-             assetUid: assetDetail!.assetUid,
-             startDateTime:  Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-             endDateTime:   Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-             limit: 5000,
-             page: 1
-            )
-            );
+                assetUid: assetDetail!.assetUid,
+                startDateTime:
+                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                endDateTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                limit: 5000,
+                page: 1));
     if (result != null) {
       Logger().i("asset location");
       _healthListResponse = result;

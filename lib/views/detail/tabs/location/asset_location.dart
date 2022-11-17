@@ -30,10 +30,10 @@ class AssetLocationView extends StatefulWidget {
 class _AssetLocationViewState extends State<AssetLocationView> {
   String _currentSelectedItem = "SATELLITE";
   double zoomVal = 5.0;
-  Completer<GoogleMapController> _controller = Completer();
+
   MapType currentType = MapType.normal;
   List<DateTime>? dateRange;
-  late GoogleMapController mapController;
+  //late GoogleMapController mapController;
   BitmapDescriptor? mapMarker;
 
   @override
@@ -54,6 +54,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                   title: "No Data Found",
                 )
               : Container(
+                  height: 600,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     border: Border.all(
@@ -132,51 +133,75 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                           alignment: Alignment.bottomRight,
                           children: [
                             GoogleMap(
-                              onTap: (position) {
-                                viewModel.customInfoWindowController
-                                    .hideInfoWindow!();
-                              },
-                              onCameraMove: (position) {
-                                viewModel
-                                    .customInfoWindowController.onCameraMove!();
-                              },
-                              onMapCreated: (GoogleMapController controller) {
-                                mapController = controller;
-                                _controller.complete(controller);
-                                viewModel.customInfoWindowController
-                                    .googleMapController = controller;
-                                Future.delayed(Duration(seconds: 1), () {
-                                  mapController.animateCamera(
-                                      CameraUpdate.newLatLngBounds(
-                                          viewModel.getBound(), 0));
-                                });
-                              },
-                              mapType: _changemap(),
-                              compassEnabled: true,
-                              zoomControlsEnabled: false,
-                              markers: viewModel.markers,
-                              polylines: viewModel.polyline,
-                              initialCameraPosition:
-                                  viewModel.assetLocationHistory != null &&
-                                          viewModel.assetLocationHistory!
-                                              .assetLocation!.isNotEmpty
-                                      ? CameraPosition(
-                                          target: LatLng(
-                                              viewModel.assetLocationHistory!
-                                                  .assetLocation![0].latitude!,
-                                              viewModel
-                                                  .assetLocationHistory!
-                                                  .assetLocation![0]
-                                                  .longitude!),
-                                          zoom: 18)
-                                      : CameraPosition(
-                                          target: LatLng(30.666, 76.8127),
-                                          zoom: 4),
+                                onTap: (position) {
+                                  viewModel.customInfoWindowController
+                                      .hideInfoWindow!();
+                                },
+                                onCameraMove: (position) {
+                                  viewModel.customInfoWindowController
+                                      .onCameraMove!();
+                                },
+                                onMapCreated: (GoogleMapController controller) {
+                                 // mapController = controller;
+                                  viewModel.controller = controller;
+                                  viewModel.customInfoWindowController
+                                      .googleMapController = controller;
+                                  Future.delayed(Duration(seconds: 1), () {
+                                    viewModel.controller!.animateCamera(
+                                        CameraUpdate.newLatLngBounds(
+                                            viewModel.getBound(), 0));
+                                  });
+                                },
+                                mapType: _changemap(),
+                                compassEnabled: true,
+                                zoomControlsEnabled: false,
+                                markers: viewModel.markers,
+                                polylines: viewModel.polyline,
+                                initialCameraPosition:
+                                    viewModel.assetLocationHistory != null &&
+                                            viewModel.assetLocationHistory!
+                                                .assetLocation!.isNotEmpty
+                                        ? CameraPosition(
+                                            target: LatLng(
+                                                viewModel
+                                                    .assetLocationHistory!
+                                                    .assetLocation![0]
+                                                    .latitude!,
+                                                viewModel
+                                                    .assetLocationHistory!
+                                                    .assetLocation![0]
+                                                    .longitude!),
+                                            zoom: 5)
+                                        : viewModel.centerPosition != null
+                                            ? CameraPosition(
+                                                target: LatLng(
+                                                viewModel.centerPosition!.target
+                                                    .latitude,
+                                                viewModel.centerPosition!.target
+                                                    .latitude,
+                                              ))
+                                            : CameraPosition(
+                                                target: LatLng(30.666, 76.8127),
+                                                zoom: 4)),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 7, left: 20),
+                                child: LocationSearchBoxView(
+                                  screenType: ScreenType.ASSET_DETAIL,
+                                  searchBoxWidth: 0.6,
+                                  onSeletingSuggestion: (value, isSerialNo) {
+                                    viewModel.customInfoWindowController
+                                        .hideInfoWindow!();
+                                    if (isSerialNo) {
+                                    } else {
+                                      viewModel.onSeletingSuggestion(value);
+                                    }
+                                  },
+                                ),
+                              ),
                             ),
-                            // Align(
-                            //   alignment: Alignment.topLeft,
-                            //   child: LocationSearchBoxView(),
-                            // ),
                             CustomInfoWindow(
                               controller: viewModel.customInfoWindowController,
                               height: widget.screenType == ScreenType.HEALTH
@@ -226,17 +251,17 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                               null) {
                                             zoomVal++;
                                             _plus(
-                                              zoomVal,
-                                              LatLng(
-                                                  viewModel
-                                                      .assetLocationHistory!
-                                                      .assetLocation![0]
-                                                      .latitude!,
-                                                  viewModel
-                                                      .assetLocationHistory!
-                                                      .assetLocation![0]
-                                                      .longitude!),
-                                            );
+                                                zoomVal,
+                                                LatLng(
+                                                    viewModel
+                                                        .assetLocationHistory!
+                                                        .assetLocation![0]
+                                                        .latitude!,
+                                                    viewModel
+                                                        .assetLocationHistory!
+                                                        .assetLocation![0]
+                                                        .longitude!),
+                                                viewModel);
                                           }
                                         },
                                         child: Container(
@@ -283,17 +308,17 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                                 null) {
                                               zoomVal--;
                                               _minus(
-                                                zoomVal,
-                                                LatLng(
-                                                    viewModel
-                                                        .assetLocationHistory!
-                                                        .assetLocation![0]
-                                                        .latitude!,
-                                                    viewModel
-                                                        .assetLocationHistory!
-                                                        .assetLocation![0]
-                                                        .longitude!),
-                                              );
+                                                  zoomVal,
+                                                  LatLng(
+                                                      viewModel
+                                                          .assetLocationHistory!
+                                                          .assetLocation![0]
+                                                          .latitude!,
+                                                      viewModel
+                                                          .assetLocationHistory!
+                                                          .assetLocation![0]
+                                                          .longitude!),
+                                                  viewModel);
                                             }
                                           },
                                           child: Container(
@@ -400,16 +425,18 @@ class _AssetLocationViewState extends State<AssetLocationView> {
     );
   }
 
-  Future<void> _minus(double zoomVal, LatLng targetPosition) async {
+  Future<void> _minus(double zoomVal, LatLng targetPosition,
+      AssetLocationViewModel assetLocationViewModel) async {
     Logger().d("zoom minus value " + zoomVal.toString());
-    final GoogleMapController controller = await _controller.future;
+    final GoogleMapController controller = assetLocationViewModel.controller!;
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
-  Future<void> _plus(double zoomVal, LatLng targetPosition) async {
+  Future<void> _plus(double zoomVal, LatLng targetPosition,
+      AssetLocationViewModel assetLocationViewModel) async {
     Logger().d("zoom plus value " + zoomVal.toString());
-    final GoogleMapController controller = await _controller.future;
+    final GoogleMapController controller = assetLocationViewModel.controller!;
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }

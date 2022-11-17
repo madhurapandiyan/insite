@@ -158,11 +158,7 @@ class _SplashViewState extends State<SplashView> {
                     ? WebviewScaffold(
                         url: Urls.administratorloginUrl,
                       )
-                    : Center(
-                        child: InsiteProgressBar(
-                          
-                        )
-                      ),
+                    : Center(child: InsiteProgressBar()),
               ],
             ),
           ),

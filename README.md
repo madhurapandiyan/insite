@@ -57,15 +57,18 @@ flutter build apk --flavor indiastack --target-platform android-arm,android-arm6
 For Vision Link - fvm flutter run --flavor visionlink -t lib/main_visionlink.dart
 For India Stack - fvm flutter run --flavor indiastack -t lib/main_indiastack.dart
 For WorksIq - fvm flutter run --flavor worksiq -t lib/main_worksiq.dart
+for Cummins-fvm flutter run --flavor cummins -t lib/main_cummins.dart
 
 For Vision Link Release - fvm flutter build apk --flavor visionlink -t lib/main_visionlink.dart
 For India Stack Release - fvm flutter build apk --flavor indiastack -t lib/main_indiastack.dart
 For WorksIq Release - fvm flutter build apk --flavor worksiq -t lib/main_worksiq.dart
+For Cummins Release-fvm flutter build apk --flavor cummins -t lib/main_cummins.dart
 
 IOS:
 For Vision Link Release - fvm flutter build ios --flavor visionlink -t lib/main_visionlink.dart
 For India Stack Release - fvm flutter build ios --flavor indiastack -t lib/main_indiastack.dart
 For WorksIq Release - fvm flutter build ios --flavor worksiq -t lib/main_worksiq.dart
+For Cummins Release-fvm flutter build apk --flavor cummins -t lib/main_cummins.dart
 
 For Vision Link Split Release:
 fvm flutter build apk --flavor visionlink -t lib/main_visionlink.dart --target-platform android-arm,android-arm64,android-x64 --split-per-abi
