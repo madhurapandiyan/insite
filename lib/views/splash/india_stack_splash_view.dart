@@ -36,7 +36,6 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
 
   @override
   void dispose() {
-    
     Logger().i("IndiaStackSplashView dispose state");
     _onDestroy!.cancel();
     _onUrlChanged!.cancel();
@@ -52,12 +51,12 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   String state = randomAlphaNumeric(43);
   String? codeChallenge;
 
-   Future<bool> _onWillPop(BuildContext context) async {
+  Future<bool> _onWillPop(BuildContext context) async {
     print("onwillpop");
     if (await flutterWebviewPlugin.canGoBack()) {
-     flutterWebviewPlugin.goBack();
+      flutterWebviewPlugin.goBack();
     } else {
-     exit(0);
+      exit(0);
     }
     return Future.value(false);
   }
@@ -246,8 +245,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       builder: (BuildContext context, SplashViewModel viewModel, Widget? _) {
         // setupListeners();
         return WillPopScope(
-
-          onWillPop: () =>_onWillPop(context),
+          onWillPop: () => _onWillPop(context),
           child: Scaffold(
             backgroundColor:
                 widget.showingSnackbar ? white : Theme.of(context).buttonColor,
