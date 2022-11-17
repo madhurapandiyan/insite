@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_search_box/location_search_box_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
@@ -11,10 +12,11 @@ import 'package:stacked/stacked.dart';
 
 class LocationSearchBoxView extends StatelessWidget {
   final Function(dynamic, bool isSerialNo)? onSeletingSuggestion;
-
+  final ScreenType? screenType;
   final double? searchBoxWidth;
 
-  LocationSearchBoxView({this.onSeletingSuggestion, this.searchBoxWidth});
+  LocationSearchBoxView(
+      {this.onSeletingSuggestion, this.searchBoxWidth, this.screenType});
   @override
   Widget build(BuildContext context) {
     var mediaQuerry = MediaQuery.of(context);
@@ -34,33 +36,56 @@ class LocationSearchBoxView extends StatelessWidget {
                   children: [
                     Container(
                       //width: constrain.maxWidth * 0.28,
-                   
+
                       decoration: new BoxDecoration(
                           color: Colors.white,
                           borderRadius:
                               new BorderRadius.all(new Radius.circular(8))),
-                      child: DropdownButton<String>(
-                        isExpanded: false,
-                        elevation: 0,
-                        underline: Container(),
-                        isDense: true,
-                        iconSize: 0.0,
-                        items: viewModel.dropDownList
-                            .map((map) => DropdownMenuItem(
-                                  value: map,
-                                  child: InsiteTextOverFlow(
-                                    text: map,
-                                    size: 11.0,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ))
-                            .toList(),
-                        value: viewModel.searchDropDownValue,
-                        onChanged: (String? value) {
-                          viewModel.onChangeDropDown(value!);
-                        },
-                      ),
+                      child: screenType == ScreenType.ASSET_DETAIL
+                          ? DropdownButton<String>(
+                              isExpanded: false,
+                              elevation: 0,
+                              underline: Container(),
+                              isDense: true,
+                              iconSize: 0.0,
+                              items: viewModel.assetDropDownList
+                                  .map((map) => DropdownMenuItem(
+                                        value: map,
+                                        child: InsiteTextOverFlow(
+                                          text: map,
+                                          size: 11.0,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ))
+                                  .toList(),
+                              value: viewModel.searchLocationDropDownValue,
+                              onChanged: (String? value) {
+                                viewModel.onChangeDropDownValueTwo(value!);
+                              },
+                            )
+                          : DropdownButton<String>(
+                              isExpanded: false,
+                              elevation: 0,
+                              underline: Container(),
+                              isDense: true,
+                              iconSize: 0.0,
+                              items: viewModel.dropDownList
+                                  .map((map) => DropdownMenuItem(
+                                        value: map,
+                                        child: InsiteTextOverFlow(
+                                          text: map,
+                                          size: 11.0,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ))
+                                  .toList(),
+                              value: viewModel.searchDropDownValue,
+                              onChanged: (String? value) {
+                                viewModel.onChangeDropDown(value!);
+                              },
+                            ),
                     ),
                     // Expanded(
                     //   child: CustomDropDownWidget(
@@ -71,7 +96,6 @@ class LocationSearchBoxView extends StatelessWidget {
                     // ),
                     Expanded(
                       child: Container(
-                  
                         decoration: new BoxDecoration(
                             color: Colors.white,
                             borderRadius:
@@ -84,7 +108,7 @@ class LocationSearchBoxView extends StatelessWidget {
                             Completer<List<LocationKey>> completer =
                                 new Completer();
                             if (pattern.isNotEmpty) {
-                              await viewModel.onSearchTextChanged(pattern);
+                              await viewModel.onSearchTextChanged(pattern,screenType!);
                               completer.complete(viewModel.list);
                               return completer.future;
                             } else {
@@ -104,19 +128,26 @@ class LocationSearchBoxView extends StatelessWidget {
                           onSuggestionSelected: (suggestion) {
                             if ((suggestion as LocationKey?) != null) {
                               viewModel.onSelect(suggestion!.value as String);
-                              if (viewModel.searchDropDownValue == "S/N") {
-                                var data = viewModel
-                                    .result!.assetLocation!.mapRecords!
-                                    .singleWhere((element) =>
-                                        element!.assetSerialNumber ==
-                                        suggestion.value);
-                                Logger().w(data!.toJson());
-                                onSeletingSuggestion!(data, true);
-                              } else {
+                              if (screenType == ScreenType.ASSET_DETAIL) {
                                 onSeletingSuggestion!(
                                     LatLng(suggestion.latitude!,
                                         suggestion.longitude!),
                                     false);
+                              } else {
+                                if (viewModel.searchDropDownValue == "S/N") {
+                                  var data = viewModel
+                                      .result!.assetLocation!.mapRecords!
+                                      .singleWhere((element) =>
+                                          element!.assetSerialNumber ==
+                                          suggestion.value);
+                                  Logger().w(data!.toJson());
+                                  onSeletingSuggestion!(data, true);
+                                } else {
+                                  onSeletingSuggestion!(
+                                      LatLng(suggestion.latitude!,
+                                          suggestion.longitude!),
+                                      false);
+                                }
                               }
                             }
                           },

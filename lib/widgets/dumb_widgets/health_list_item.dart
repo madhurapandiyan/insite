@@ -90,12 +90,13 @@ class HealthListItem extends StatelessWidget {
                           height: 5,
                         ),
                         InsiteButton(
+                          
                           width: 70,
                           height: 30,
                           bgColor:
                               Utils.getFaultColor(faultElement!.severityLabel),
                           title: faultElement!.severityLabel,
-                         // textColor: textcolor,
+                          textColor:  Utils.getFaultColor(faultElement!.severityLabel),
                         )
                       ],
                     )
