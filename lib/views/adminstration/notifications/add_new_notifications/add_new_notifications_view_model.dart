@@ -1590,10 +1590,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   checkIfNotificationNameExist(String? value) async {
     try {
-      if (value!.length >= 3) {
+      if (value!.length >= 2) {
         notificationExists = await _notificationService!.checkNotificationTitle(
             value, graphqlSchemaService!.checkNotificationTitle(value));
-        // isTitleExist = notificationExists!.alertTitleExists!;
+         //isTitleExist = notificationExists!.alertTitleExists!;
 
         notifyListeners();
       } else {
@@ -2171,6 +2171,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
 
     if (notificationExists?.alertTitleExists == true) {
+      Logger().v("show title");
       _snackBarservice!.showSnackbar(message: "Notification title exists");
       // notificationController.clear();
     }
