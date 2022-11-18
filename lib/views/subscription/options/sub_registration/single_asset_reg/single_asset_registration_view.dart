@@ -16,7 +16,6 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/date_picker_custom_widget.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
-import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'single_asset_registration_view_model.dart';
 
@@ -91,12 +90,13 @@ class _SingleAssetRegistrationViewState
                                           CustomAutoCompleteWidget(
                                             isShowingBorderColor: false,
                                             helperText: "No Devices Found",
-                                            isShowingHelperText: viewModel
-                                                    .deviceIdChange
-                                                    ?.result![0]
-                                                    .first
-                                                    .count ==
-                                                0,
+                                            isShowingHelperText: viewModel.count==0||viewModel.count==null,
+                                            // viewModel
+                                            //         .deviceIdChange
+                                            //         ?.result?[0]
+                                            //         .first
+                                            //         .count ==
+                                            //     0,
                                             isShowing:
                                                 viewModel.gpsDeviceId.isEmpty,
                                             onChange: (value) {
@@ -110,7 +110,7 @@ class _SingleAssetRegistrationViewState
                                             items: viewModel.gpsDeviceId,
                                             onSelect: (selectedString) {
                                               viewModel.onSelectedDeviceId(
-                                                  selectedString);
+                                                  selectedString!);
                                             },
                                             controller:
                                                 viewModel.deviceIdController,
@@ -190,8 +190,9 @@ class _SingleAssetRegistrationViewState
                                                   value: viewModel.assetModel ==
                                                           null
                                                       ? " "
-                                                      : viewModel.assetModel,
-                                                  items: viewModel.modelNames,
+                                                      : 
+                                                      viewModel.assetModel,
+                                                  items: viewModel.modelNames.toSet().toList(),
                                                   // enableHint: false,
                                                   onChanged: (String? value) {
                                                     viewModel.updateModelValue(
@@ -387,12 +388,15 @@ class _SingleAssetRegistrationViewState
                                             children: [
                                               CustomAutoCompleteWidget(
                                                 isShowingBorderColor: false,
-                                                isShowingHelperText: viewModel
-                                                        .dealerNameChange
-                                                        ?.result![0]
-                                                        .first
-                                                        .count ==
-                                                    0,
+                                                isShowingHelperText: 
+                                                viewModel.regDealerNameChange==true,
+                                                
+                                                //  viewModel
+                                                //         .dealerNameChange
+                                                //         ?.result?[0]
+                                                //         .first
+                                                //         .count ==
+                                                //     0,
                                                 helperText: "New Dealer Name",
                                                 isShowing:
                                                     viewModel.dealerId.isEmpty,
@@ -416,12 +420,14 @@ class _SingleAssetRegistrationViewState
                                               ),
                                               CustomAutoCompleteWidget(
                                                 isShowingBorderColor: false,
-                                                isShowingHelperText: viewModel
-                                                        .dealerCodeChange
-                                                        ?.result?[0]
-                                                        .first
-                                                        .count ==
-                                                    0,
+                                                isShowingHelperText:
+                                                 viewModel.regDealerCodeChange==true,
+                                                //  viewModel
+                                                //         .dealerCodeChange
+                                                //         ?.result?[0]
+                                                //         .first
+                                                //         .count ==
+                                                //     0,
                                                 helperText: "New Dealer Code",
                                                 isShowing: viewModel
                                                     .dealerCode.isEmpty,
@@ -518,12 +524,13 @@ class _SingleAssetRegistrationViewState
                                             children: [
                                               CustomAutoCompleteWidget(
                                                 isShowingBorderColor: false,
-                                                isShowingHelperText: viewModel
-                                                        .customerNameChange
-                                                        ?.result![0]
-                                                        .first
-                                                        .count ==
-                                                    0,
+                                                isShowingHelperText: viewModel.regCustomerNameChange==true,
+                                                // viewModel
+                                                //         .customerNameChange
+                                                //         ?.result?[0]
+                                                //         .first
+                                                //         .count ==
+                                                //     0,
                                                 helperText: "New Customer Name",
                                                 isShowing: viewModel
                                                     .customerId.isEmpty,
@@ -548,12 +555,13 @@ class _SingleAssetRegistrationViewState
                                               ),
                                               CustomAutoCompleteWidget(
                                                 isShowingBorderColor: false,
-                                                isShowingHelperText: viewModel
-                                                        .customerCodeChange
-                                                        ?.result![0]
-                                                        .first
-                                                        .count ==
-                                                    0,
+                                                isShowingHelperText: viewModel.regCustomerCodeChange==true,
+                                                // viewModel
+                                                //         .customerCodeChange
+                                                //         ?.result?[0]
+                                                //         .first
+                                                //         .count ==
+                                                //     0,
                                                 helperText: "New Customer Code",
                                                 isShowing: viewModel
                                                     .customerCode.isEmpty,
@@ -571,8 +579,8 @@ class _SingleAssetRegistrationViewState
                                                 onChange: (value) {
                                                   viewModel
                                                       .onCustomerCodeChanges(
-                                                          code:
-                                                              int.parse(value),
+                                                          code:value,
+                                                             // int.parse(value),
                                                           type: "CUSTOMER");
                                                 },
                                               ),
@@ -702,8 +710,8 @@ class _SingleAssetRegistrationViewState
                                                   final result = await viewModel
                                                       .subscriptionAssetRegistration();
                                                   if (result != null) {
-                                                    viewModel
-                                                        .onRegistrationSuccess();
+                                                    // viewModel
+                                                    //     .onRegistrationSuccess();
                                                     viewModel.onPop();
                                                     Utils.showToast(Utils
                                                         .suceessRegistration);

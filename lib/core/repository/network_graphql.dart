@@ -44,7 +44,7 @@ class Network {
       ));
     client.clear();
   }
-  getGraphqlPlantData({String? query}) async {
+  getGraphqlPlantData({String? query,dynamic payLoad}) async {
     try {
       final Link link = DioLink(
         graphqlEndpoint,
@@ -59,6 +59,7 @@ class Network {
       );
       final res = await link
           .request(Request(
+            variables:  payLoad == null ? {} : payLoad ,
             operation: Operation(document: gql.parseString(query!)),
           ))
           .first;

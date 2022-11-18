@@ -1,9 +1,7 @@
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_it/get_it.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
@@ -12,9 +10,9 @@ import 'package:insite/core/models/preview_data.dart';
 import 'package:insite/core/models/subscription_dashboard.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_serial_number_results.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
-import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -24,7 +22,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   Logger? log;
 
   SubScriptionService? _subscriptionService = locator<SubScriptionService>();
-
+  LocalService? _localService = locator<LocalService>();
   String? _filter;
   String? get filter => _filter;
 
@@ -33,6 +31,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   bool _loading = true;
   bool get loading => _loading;
+  int? count = -1;
 
   bool isSerialNoisValid = false;
 
@@ -71,6 +70,11 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   bool deviceNametype = true;
   bool customerCodetype = true;
   bool customerNameType = true;
+
+  bool regDealerCodeChange = false;
+  bool regDealerNameChange = false;
+  bool regCustomerCodeChange = false;
+  bool regCustomerNameChange = false;
 
   bool isSerialNoSelected = false;
   List<HierarchyModel> _devices = [];
@@ -137,6 +141,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   List<String> _finalDeviceDetails = [];
   List<String> get finalDeviceDetails => _finalDeviceDetails;
 
+  List<Asset> _totalAsset = [];
+  List<Asset> get totalAsset => _totalAsset;
+
   List<AssetValues> _totalAssetValues = [];
   List<AssetValues> get totalAssetValues => _totalAssetValues;
 
@@ -176,7 +183,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       notifyListeners();
     } else {
       _assetModel = newValue;
-      serialNumberController.clear();
+      //serialNumberController.clear();
       notifyListeners();
     }
   }
@@ -312,6 +319,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     try {
       Logger().e(previewDeviceDetails[3].value!);
       AssetValues deviceAssetValues;
+      Asset deviceAsset;
       deviceAssetValues = AssetValues(
         deviceId: previewDeviceDetails[0].value,
         machineSlNo: previewDeviceDetails[1].value,
@@ -347,11 +355,76 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         primaryIndustry: null,
         secondaryIndustry: null,
       );
+      deviceAsset = Asset(
+        deviceId: previewDeviceDetails[0].value,
+        machineSlNo: previewDeviceDetails[1].value,
+        machineModel: previewDeviceDetails[2].value,
+        hmrDate: previewDeviceDetails[4].value,
+        hmr: previewDeviceDetails[3].value == ""
+            ? 0
+            : double.parse(previewDeviceDetails[3].value!).toInt(),
+        plantName: generalPlantDetails[0].value == ""
+            ? null
+            : generalPlantDetails[0].value,
+        plantCode: generalPlantDetails[1].value,
+        plantEmailId: generalPlantDetails[2].value,
+        customerName: generalCustomerDetails[0].value!.isEmpty
+            ? null
+            : generalCustomerDetails[0].value,
+        customerCode: generalCustomerDetails[1].value!.isEmpty
+            ? null
+            : generalCustomerDetails[1].value,
+        customerEmailId: generalCustomerDetails[2].value!.isEmpty
+            ? null
+            : generalCustomerDetails[2].value,
+        dealerName: generalDealerDetails[0].value!.isEmpty
+            ? null
+            : generalDealerDetails[0].value,
+        dealerCode: generalDealerDetails[1].value!.isEmpty
+            ? null
+            : generalDealerDetails[1].value,
+        dealerEmailId: generalDealerDetails[2].value!.isEmpty
+            ? null
+            : generalDealerDetails[2].value,
+        commissioningDate: null,
+        primaryIndustry: null,
+        secondaryIndustry: null,
+      );
       _totalAssetValues.add(deviceAssetValues);
-      var result = await _subscriptionService!
-          .postSingleAssetRegistration(data: _totalAssetValues);
+      Logger().wtf("${deviceAsset.toJson()}");
+      _totalAsset.clear();
+      _totalAsset.add(deviceAsset);
+      Logger().wtf(_totalAsset);
+      _totalAsset.forEach((element) {
+        Logger().d("_totalAsset:${element.toJson()}");
+      });
+
+      var userId = await _localService!.getUserId();
+      var id = int.parse(userId!);
+      AssetOperationInput request = AssetOperationInput(
+        source: "THC",
+        userId: id,
+        version: "2.0",
+        asset: _totalAsset,
+      );
+      Logger().w("request: ${request.toJson()}");
+      var result;
+      if (enableGraphQl) {
+        String? gnacc = "";
+        result = await _subscriptionService!.postSingleAssetRegistrationGraphql(
+            query: graphqlSchemaService!.register(),
+            payLoad: {"id": id, "gnacc": gnacc, "request": request.toJson()});
+      } else {
+        result = await _subscriptionService!
+            .postSingleAssetRegistration(data: _totalAssetValues);
+      }
+      //  result = await _subscriptionService!
+      //       .postSingleAssetRegistration(data: _totalAssetValues,query: graphqlSchemaService!.register(id: id,gnacc: gnacc,request: bod));
       _totalAssetValues.clear();
+      _totalAsset.clear();
       onRegistrationSuccess();
+      
+      count = -1;
       return result;
     } catch (e) {
       Logger().e(e.toString());
@@ -370,8 +443,15 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     deviceNameController.clear();
     deviceIdController.clear();
     customerNameController.clear();
-    _assetModel = "Select Asset Model";
-    await getSubscriptionModelData();
+    regDealerCodeChange = false;
+    regDealerNameChange = false;
+    regCustomerCodeChange = false;
+    regCustomerNameChange = false;
+     _assetModel = "Select Asset Model";
+      modelNames.insert(0, _assetModel);
+      modelNames.toSet().toList();
+   // await getSubscriptionModelData();
+    
     notifyListeners();
   }
 
@@ -381,42 +461,100 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
       _detailResult.clear();
       _gpsDeviceId.clear();
       if (name.length >= 3) {
-        deviceIdChange = await _subscriptionService!
-            .getSubscriptionDeviceListData(
-                filterType: filterType,
-                filter: filter,
-                name: name,
-                start: pageNumber,
-                limit: pageSize);
+        if (enableGraphQl) {
+          deviceIdChange = await _subscriptionService!
+              .getSubscriptionDeviceListData(
+                  filter: filter,
+                  query: graphqlSchemaService!
+                      .getDeviceIdReplacement(name, "inactive", 50));
 
-        if (deviceIdChange != null) {
-          if (deviceIdChange!.result![1].isNotEmpty) {
-            _detailResult.addAll(deviceIdChange!.result![1]);
-            _loading = false;
-            _loadingMore = false;
-            gpsDeviceId.clear();
-            deviceIdChange!.result![1].forEach((element) {
-              if (gpsDeviceId.any((id) => id == element.gpsDeviceId)) {
+          if (deviceIdChange != null) {
+            if (deviceIdChange!.subscriptionFleetList != null) {
+              count = deviceIdChange!.subscriptionFleetList!.count ?? null;
+              if (deviceIdChange!.subscriptionFleetList!.provisioningInfo !=
+                  null) {
+                for (var element in deviceIdChange!
+                    .subscriptionFleetList!.provisioningInfo!) {
+                  _detailResult.add(DetailResult(
+                    vin: element.vin,
+                    gpsDeviceId: element.gpsDeviceID,
+                    model: element.model,
+                    subscriptionStartDate: element.subscriptionStartDate,
+                  ));
+                }
+
+                _loading = false;
+                _loadingMore = false;
+                gpsDeviceId.clear();
+                deviceIdChange!.subscriptionFleetList!.provisioningInfo!
+                    .forEach((element) {
+                  if (gpsDeviceId.any((id) => id == element.gpsDeviceID)) {
+                  } else {
+                    gpsDeviceId.add(element.gpsDeviceID);
+                  }
+                });
+                notifyListeners();
+                // _detailResult.forEach((element) {
+                //   gpsDeviceId.add(element.GPSDeviceID);
+                // });
               } else {
-                gpsDeviceId.add(element.gpsDeviceId);
+                //Fluttertoast.showToast(msg: "No Data Found");
+                _devices.clear();
+                detailResult.clear();
+                gpsDeviceId.clear();
+               
+                _loading = false;
+                _loadingMore = false;
+                _shouldLoadmore = false;
+                 notifyListeners();
               }
-            });
+              _loading = false;
+              _loadingMore = false;
+            }
+          }
+          if(deviceIdController.text.isEmpty){
+            count=-1;
             notifyListeners();
-            // _detailResult.forEach((element) {
-            //   gpsDeviceId.add(element.GPSDeviceID);
-            // });
-          } else {
-            //Fluttertoast.showToast(msg: "No Data Found");
-            _devices.clear();
-            detailResult.clear();
-            gpsDeviceId.clear();
-            notifyListeners();
+          }
+        } else {
+          deviceIdChange = await _subscriptionService!
+              .getSubscriptionDeviceListData(
+                  filterType: filterType,
+                  filter: filter,
+                  name: name,
+                  start: pageNumber,
+                  limit: pageSize);
+
+          if (deviceIdChange != null) {
+            count = deviceIdChange?.result?[0].first.count;
+            if (deviceIdChange!.result![1].isNotEmpty) {
+              _detailResult.addAll(deviceIdChange!.result![1]);
+              _loading = false;
+              _loadingMore = false;
+              gpsDeviceId.clear();
+              deviceIdChange!.result![1].forEach((element) {
+                if (gpsDeviceId.any((id) => id == element.gpsDeviceId)) {
+                } else {
+                  gpsDeviceId.add(element.gpsDeviceId);
+                }
+              });
+              notifyListeners();
+              // _detailResult.forEach((element) {
+              //   gpsDeviceId.add(element.GPSDeviceID);
+              // });
+            } else {
+              //Fluttertoast.showToast(msg: "No Data Found");
+              _devices.clear();
+              detailResult.clear();
+              gpsDeviceId.clear();
+              notifyListeners();
+              _loading = false;
+              _loadingMore = false;
+              _shouldLoadmore = false;
+            }
             _loading = false;
             _loadingMore = false;
-            _shouldLoadmore = false;
           }
-          _loading = false;
-          _loadingMore = false;
         }
       }
     } on DioError catch (e) {
@@ -427,32 +565,59 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
   getModelNamebySerialNumber(String value) async {
     try {
-      if (value.length >= 7) {
-        SerialNumberResults? results = await _subscriptionService!
-            .getDeviceModelNameBySerialNumber(serialNumber: value);
-        if (results != null) {
-          String? assetModelName = results.result!.modelName;
-          if (results.status == "success") {
-            if (_assetModel != assetModelName) {
-              _assetModel = assetModelName;
-              modelNames.replace(0, _assetModel, modelNames);
-              Logger().wtf(modelNames.length);
-              isSerialNoisValid = false;
+      SerialNumberResults? results;
+      if (enableGraphQl) {
+        if (value.length >= 3) {
+          results = await _subscriptionService!
+              .getDeviceModelNameBySerialNumber(
+                  query:
+                      graphqlSchemaService!.getModelNameBySerialNumber(value));
+          if (results != null) {
+            if (results.assetModelByMachineSerialNumber != null) {
+              String? assetModelName =
+                  results.assetModelByMachineSerialNumber!.modelName;
+
+              if (_assetModel != assetModelName) {
+                _assetModel = assetModelName;
+                modelNames.replace(0, _assetModel, modelNames);
+                Logger().wtf(modelNames.length);
+                isSerialNoisValid = false;
+              }
             }
           } else {
-            _assetModel = "Select Asset Model";
-            serialNumberController.clear();
-            isSerialNoisValid = true;
-            notifyListeners();
+            return 'no results found';
           }
-        } else {
-          return 'no results found';
+          notifyListeners();
         }
-        notifyListeners();
       } else {
-        isSerialNoisValid = false;
-        notifyListeners();
-        return;
+        if (value.length >= 7) {
+          SerialNumberResults? results = await _subscriptionService!
+              .getDeviceModelNameBySerialNumber(serialNumber: value);
+          if (results != null) {
+            String? assetModelName = results.result!.modelName;
+            if (results.status == "success") {
+              if (_assetModel != assetModelName) {
+                _assetModel = assetModelName;
+                modelNames.replace(0, _assetModel, modelNames);
+                Logger().wtf(modelNames.length);
+                isSerialNoisValid = false;
+              }
+            }
+            // else {
+            //   _assetModel = "Select Asset Model";
+            //  // serialNumberController.clear();
+            //   isSerialNoisValid = true;
+            //   notifyListeners();
+            // }
+          } else {
+            return 'no results found';
+          }
+          notifyListeners();
+        } else {
+          isSerialNoisValid = false;
+          notifyListeners();
+          return;
+        }
       }
     } on DioError catch (e) {
       serialNumberController.clear();
@@ -469,7 +634,33 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
   getSubscriptionModelData() async {
     try {
       Logger().i("getApplicationAccessData");
-      SubscriptionDashboardResult? result =
+      if(enableGraphQl){
+      
+          var modelList=[
+    "None",
+    "EX70",
+    "EX70 SUPER PLUS",
+    "EX110",
+    "EX130 SUPER PLUS",
+    "EX200LC",
+    "EX200LC SUPER PLUS",
+    "EX210LC",
+    "EX210 SUPER",
+    "EX210LC SUPER PLUS",
+    "EX215 SUPER PLUS",
+    "SHINRAI - BX80",
+    "SHINRAI-BX80-BSIV",
+    "TH76",
+    "TH86",
+    "TL340H"
+          ];
+          for (var element in modelList) {
+            _modelNames.add(element);
+            
+          }
+            notifyListeners();
+      }else{
+         SubscriptionDashboardResult? result =
           await _subscriptionService!.getResultsFromSubscriptionApi("");
       if (result == null) {
         Logger().d('no results found');
@@ -487,7 +678,9 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
 
         _loading = false;
       }
-      notifyListeners();
+        notifyListeners();
+      }
+     
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
       Fluttertoast.showToast(msg: error.message!);
@@ -546,66 +739,220 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     }
   }
 
-  onSelectedDeviceId(String? value) {
-    _detailResult.forEach((element) {
-      if (element.gpsDeviceId == value) {
-        deviceIdController.text = element.gpsDeviceId!;
-        serialNumberController.text = element.vin!;
-        _gpsDeviceId.clear();
-        notifyListeners();
-      }
-    });
+  onSelectedDeviceId(String? value) async {
+    if (enableGraphQl) {
+      var selectedDeviceId = await _subscriptionService!
+          .getSubscriptionDeviceListData(
+              filter: filter,
+              query: graphqlSchemaService!
+                  .getDeviceIdReplacement(value, "inactive", 50));
+      selectedDeviceId!.subscriptionFleetList!.provisioningInfo!
+          .forEach((element) {
+        if (element.gpsDeviceID == value) {
+          deviceIdController.text = element.gpsDeviceID!;
+          // serialNumberController.text = element.vin!;
+          _gpsDeviceId.clear();
+          notifyListeners();
+        }
+      });
+    } else {
+      _detailResult.forEach((element) {
+        if (element.gpsDeviceId == value) {
+          deviceIdController.text = element.gpsDeviceId!;
+          // serialNumberController.text = element.vin!;
+          _gpsDeviceId.clear();
+          notifyListeners();
+        }
+      });
+    }
   }
 
-  onSelectedNameTile(String value) {
-    _devices.forEach((element) {
-      if (element.Name == value) {
-        customerNameController.text = element.Name!;
-        customerCodeController.text = element.Code!;
-        customerEmailController.text = element.Email!;
-        customerId.clear();
-      }
-    });
-    notifyListeners();
+  onSelectedNameTile(String value) async {
+    if (enableGraphQl) {
+      var selectedCustomerName =
+          await (_subscriptionService!.getSubscriptionDevicesListData(
+        query: graphqlSchemaService!.getDeviceCodeAndName(
+            start: 0, limit: 50, name: value, code: "", type: "CUSTOMER"),
+      ));
+      selectedCustomerName!.assetOrHierarchyByTypeAndId!
+          .forEach((element) async {
+        if (element.name == value) {
+          customerNameController.text = element.name!;
+          customerCodeController.text = element.code!;
+          if (customerCodeController.text.isNotEmpty) {
+            var data =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              query: graphqlSchemaService!.getDeviceCodeAndName(
+                  start: 0,
+                  limit: 50,
+                  name: "",
+                  code: customerCodeController.text,
+                  type: "CUSTOMER"),
+            ));
+          }
+          customerEmailController.text = element.email!;
+          customerId.clear();
+        }
+      });
+      regCustomerNameChange = false;
+      regCustomerCodeChange = false;
+      notifyListeners();
+    } else {
+      _devices.forEach((element) {
+        if (element.Name == value) {
+          customerNameController.text = element.Name!;
+          customerCodeController.text = element.Code!;
+          customerEmailController.text = element.Email!;
+          customerId.clear();
+        }
+      });
+      regCustomerNameChange = false;
+      regCustomerCodeChange = false;
+      notifyListeners();
+    }
   }
 
-  onSelectedDealerNameTile(String value) {
+  onSelectedDealerNameTile(String value) async {
     Logger().e(_devices.length);
-    _devices.forEach((element) {
-      if (element.Name == value) {
-        deviceNameController.text = element.Name!;
-        deviceCodeController.text = element.Code!;
-        deviceEmailController.text = element.Email ?? "";
-        _dealerId.clear();
-        notifyListeners();
-      }
-    });
+    if (enableGraphQl) {
+      var selectedDealerName =
+          await (_subscriptionService!.getSubscriptionDevicesListData(
+        query: graphqlSchemaService!.getDeviceCodeAndName(
+            start: 0, limit: 50, name: value, code: "", type: "DEALER"),
+      ));
+
+      selectedDealerName!.assetOrHierarchyByTypeAndId!.forEach((element) async {
+        if (element.name == value) {
+          deviceNameController.text = element.name!;
+          deviceCodeController.text = element.code!;
+          if (deviceCodeController.text.isNotEmpty) {
+            var data =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              query: graphqlSchemaService!.getDeviceCodeAndName(
+                  start: 0,
+                  limit: 50,
+                  name: "",
+                  code: deviceCodeController.text,
+                  type: "DEALER"),
+            ));
+          }
+          deviceEmailController.text = element.email ?? "";
+          _dealerId.clear();
+          notifyListeners();
+        }
+      });
+      regDealerNameChange = false;
+      regDealerCodeChange = false;
+      notifyListeners();
+    } else {
+      _devices.forEach((element) {
+        if (element.Name == value) {
+          deviceNameController.text = element.Name!;
+          deviceCodeController.text = element.Code!;
+          deviceEmailController.text = element.Email ?? "";
+          _dealerId.clear();
+          notifyListeners();
+        }
+      });
+      regDealerNameChange = false;
+      regDealerCodeChange = false;
+      notifyListeners();
+    }
   }
 
-  onSelectedDealerCodeTile(String value) {
-    _devices.forEach((element) {
-      if (element.Code == value) {
-        deviceNameController.text = element.Name!;
-        deviceCodeController.text = element.Code!;
-        deviceEmailController.text = element.Email!;
-        _dealerCode.clear();
-        notifyListeners();
-      }
-    });
+  onSelectedDealerCodeTile(String value) async {
+    if (enableGraphQl) {
+      var selectedDealerCode =
+          await (_subscriptionService!.getSubscriptionDevicesListData(
+        query: graphqlSchemaService!.getDeviceCodeAndName(
+            start: 0, limit: 50, name: "", code: value, type: "DEALER"),
+      ));
+      selectedDealerCode!.assetOrHierarchyByTypeAndId!.forEach((element) async {
+        if (element.code == value) {
+          deviceNameController.text = element.name!;
+          if (deviceNameController.text.isNotEmpty) {
+            var data =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              query: graphqlSchemaService!.getDeviceCodeAndName(
+                  start: 0,
+                  limit: 50,
+                  name: deviceNameController.text,
+                  code: "",
+                  type: "DEALER"),
+            ));
+          }
+          deviceCodeController.text = element.code!;
+          deviceEmailController.text = element.email!;
+          _dealerCode.clear();
+          notifyListeners();
+        }
+      });
+
+      regDealerCodeChange = false;
+      regDealerNameChange = false;
+      notifyListeners();
+    } else {
+      _devices.forEach((element) {
+        if (element.Code == value) {
+          deviceNameController.text = element.Name!;
+          deviceCodeController.text = element.Code!;
+          deviceEmailController.text = element.Email!;
+          _dealerCode.clear();
+          notifyListeners();
+        }
+      });
+      regDealerCodeChange = false;
+      regDealerNameChange = false;
+    }
   }
 
-  onSelectedCodeTile(String value) {
+  onSelectedCodeTile(String value) async {
     Logger().e(value);
-    _devices.forEach((element) {
-      Logger().wtf(value);
-      if (element.Code == value) {
-        customerNameController.text = element.Name!;
-        customerCodeController.text = element.Code!;
-        customerEmailController.text = element.Email!;
-        customerCode.clear();
-        notifyListeners();
-      }
-    });
+    if (enableGraphQl) {
+      var selectedCustomerCode =
+          await _subscriptionService!.getSubscriptionDevicesListData(
+        query: graphqlSchemaService!.getDeviceCodeAndName(
+            start: 0, limit: 50, name: "", code: value, type: "CUSTOMER"),
+      );
+      selectedCustomerCode!.assetOrHierarchyByTypeAndId!
+          .forEach((element) async {
+        Logger().wtf(value);
+        if (element.code == value) {
+          customerNameController.text = element.name!;
+          if (customerNameController.text.isNotEmpty) {
+            var data =
+                await _subscriptionService!.getSubscriptionDevicesListData(
+              query: graphqlSchemaService!.getDeviceCodeAndName(
+                  start: 0,
+                  limit: 50,
+                  name: customerNameController.text,
+                  code: "",
+                  type: "CUSTOMER"),
+            );
+          }
+          customerCodeController.text = element.code!;
+          customerEmailController.text = element.email!;
+          customerCode.clear();
+          notifyListeners();
+        }
+      });
+      regCustomerCodeChange = false;
+      regCustomerNameChange = false;
+      notifyListeners();
+    } else {
+      _devices.forEach((element) {
+        Logger().wtf(value);
+        if (element.Code == value) {
+          customerNameController.text = element.Name!;
+          customerCodeController.text = element.Code!;
+          customerEmailController.text = element.Email!;
+          customerCode.clear();
+          notifyListeners();
+        }
+      });
+      regCustomerCodeChange = false;
+      regCustomerNameChange = false;
+    }
   }
 
   onCustomerNameChanges({String? name, String? type, int? code}) async {
@@ -621,29 +968,69 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _customerCode.clear();
         _devices.clear();
         if (name.length >= 3) {
-          customerNameChange =
-              await (_subscriptionService!.getSubscriptionDevicesListData(
-            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-            start: pageNumber,
-            name: name,
-            code: code,
-            fitler: type,
-            limit: pageSize,
-          ));
-          if (customerNameChange!.result![1].isNotEmpty) {
-            customerNameChange!.result![1].forEach((element) {
-              _devices.add(element);
-              _customerId.add(element.Name);
+          if (enableGraphQl) {
+            customerNameChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              query: graphqlSchemaService!.getDeviceCodeAndName(
+                  start: 0,
+                  limit: 50,
+                  name: name,
+                  code: "",
+                  type: type),
+            ));
+            if (customerNameChange!.assetOrHierarchyByTypeAndId != null) {
+              if (customerNameChange!.assetOrHierarchyByTypeAndId!.isNotEmpty) {
+                customerNameChange!.assetOrHierarchyByTypeAndId!
+                    .forEach((element) {
+                  _devices.add(HierarchyModel(
+                      Code: element.code,
+                      Email: element.email,
+                      Name: element.name,
+                      UserName: element.userName));
+                  _customerId.add(element.name);
+                  notifyListeners();
+                });
+              } else {
+                regCustomerNameChange = true;
+              }
+            } else {
+              //Fluttertoast.showToast(msg: "No Data Found");
+              _devices.clear();
+              detailResult.clear();
+              _customerId.clear();
               notifyListeners();
-            });
+            }
           } else {
-            //Fluttertoast.showToast(msg: "No Data Found");
-            _devices.clear();
-            detailResult.clear();
-            _customerId.clear();
-            notifyListeners();
+            customerNameChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+              start: pageNumber,
+              name: name,
+              code: code,
+              fitler: type,
+              limit: pageSize,
+            ));
+
+            if (customerNameChange!.result![1].isNotEmpty) {
+              customerNameChange!.result![1].forEach((element) {
+                _devices.add(element);
+                _customerId.add(element.Name);
+                notifyListeners();
+              });
+            } else {
+              regCustomerNameChange = true;
+              //Fluttertoast.showToast(msg: "No Data Found");
+              _devices.clear();
+              detailResult.clear();
+              _customerId.clear();
+              notifyListeners();
+            }
           }
         }
+        if(customerNameController.text.isEmpty){
+      regCustomerNameChange=false;
+      notifyListeners();  
+      }
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
@@ -664,28 +1051,72 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _dealerId.clear();
         _dealerCode.clear();
         if (name.length >= 3) {
-          dealerNameChange =
-              await (_subscriptionService!.getSubscriptionDevicesListData(
-            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-            start: pageNumber,
-            name: name,
-            code: code,
-            fitler: type,
-            limit: pageSize,
-          ));
-          if (dealerNameChange!.result![1].isNotEmpty) {
-            dealerNameChange!.result![1].forEach((element) {
-              _devices.add(element);
-              _dealerId.add(element.Name);
-              notifyListeners();
-            });
+          if (enableGraphQl) {
+            dealerNameChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              query: graphqlSchemaService!.getDeviceCodeAndName(
+                  start: 0,
+                  limit: 50,
+                  name: name,
+                  code: "",
+                  type: type),
+            ));
+
+            if (dealerNameChange != null) {
+              if (dealerNameChange!.assetOrHierarchyByTypeAndId != null) {
+                if (dealerNameChange!.assetOrHierarchyByTypeAndId!.isNotEmpty) {
+                  dealerNameChange!.assetOrHierarchyByTypeAndId!
+                      .forEach((element) {
+                    _devices.add(HierarchyModel(
+                      Code: element.code,
+                      Email: element.email,
+                      Name: element.name,
+                      UserName: element.userName,
+                    ));
+                    _dealerId.add(element.name);
+                    notifyListeners();
+                  });
+                } else {
+                  regDealerNameChange = true;
+                }
+              } else {
+                _isShowingHelper = true;
+                _devices.clear();
+                detailResult.clear();
+                _dealerId.clear();
+                notifyListeners();
+              }
+            }
           } else {
-            _isShowingHelper = true;
-            _devices.clear();
-            detailResult.clear();
-            _dealerId.clear();
-            notifyListeners();
+            dealerNameChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+              start: pageNumber,
+              name: name,
+              code: code,
+              fitler: type,
+              limit: pageSize,
+            ));
+
+            if (dealerNameChange!.result![1].isNotEmpty) {
+              dealerNameChange!.result![1].forEach((element) {
+                _devices.add(element);
+                _dealerId.add(element.Name);
+                notifyListeners();
+              });
+            } else {
+              regDealerNameChange = true;
+              _isShowingHelper = true;
+              _devices.clear();
+              detailResult.clear();
+              _dealerId.clear();
+              notifyListeners();
+            }
           }
+        }
+        if(deviceNameController.text.isEmpty){
+          regDealerNameChange=false;
+          notifyListeners();
         }
       }
     } on DioError catch (e) {
@@ -708,29 +1139,73 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
         _dealerId.clear();
 
         if (code.toString().length >= 3) {
-          dealerCodeChange =
-              await (_subscriptionService!.getSubscriptionDevicesListData(
-            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-            start: pageNumber,
-            name: name,
-            code: code,
-            fitler: type,
-            limit: pageSize,
-          ));
-          if (dealerCodeChange!.result![1].isNotEmpty) {
-            dealerCodeChange!.result![1].forEach((element) {
-              _devices.add(element);
-              _dealerCode.add(element.Code);
+          if (enableGraphQl) {
+            dealerCodeChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              query: graphqlSchemaService!.getDeviceCodeAndName(
+                  start: 0,
+                  limit: 50,
+                  name: "",
+                  code: code == null ? "" : code.toString(),
+                  type: type),
+            ));
+
+            if (dealerCodeChange!.assetOrHierarchyByTypeAndId != null) {
+              if (dealerCodeChange!.assetOrHierarchyByTypeAndId!.isNotEmpty) {
+                dealerCodeChange!.assetOrHierarchyByTypeAndId!
+                    .forEach((element) {
+                  _devices.add(HierarchyModel(
+                    Code: element.code,
+                    Email: element.email,
+                    Name: element.name,
+                    UserName: element.userName,
+                  ));
+                  _dealerCode.add(element.code);
+                  notifyListeners();
+                });
+              } else {
+                regDealerCodeChange = true;
+                notifyListeners();
+              }
+            } else {
+              //Fluttertoast.showToast(msg: "New Dealer Code");
+              _devices.clear();
+              _dealerCode.clear();
+              detailResult.clear();
               notifyListeners();
-            });
+            }
           } else {
-            //Fluttertoast.showToast(msg: "New Dealer Code");
-            _devices.clear();
-            _dealerCode.clear();
-            detailResult.clear();
-            notifyListeners();
+            dealerCodeChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+              start: pageNumber,
+              name: name,
+              code: code,
+              fitler: type,
+              limit: pageSize,
+            ));
+
+            if (dealerCodeChange!.result![1].isNotEmpty) {
+              dealerCodeChange!.result![1].forEach((element) {
+                _devices.add(element);
+                _dealerCode.add(element.Code);
+                notifyListeners();
+              });
+            } else {
+              //Fluttertoast.showToast(msg: "New Dealer Code");
+
+              regDealerCodeChange = true;
+              _devices.clear();
+              _dealerCode.clear();
+              detailResult.clear();
+              notifyListeners();
+            }
           }
         }
+      if(deviceCodeController.text.isEmpty){
+      regDealerCodeChange=false;
+      notifyListeners();  
+      }
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
@@ -738,55 +1213,99 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     }
   }
 
-  onCustomerCodeChanges({String? name, String? type, int? code}) async {
+  onCustomerCodeChanges({String? name, String? type, dynamic code}) async {
     try {
       detailResultList.clear();
       if (code == null) {
-        Logger().e("if");
+        
         Future.delayed(Duration(seconds: 3), () {
           _customerCode.clear();
           notifyListeners();
         });
       } else {
+        _customerId.clear();
         _customerCode.clear();
         _devices.clear();
         if (code.toString().length >= 3) {
-          customerCodeChange =
-              await _subscriptionService!.getSubscriptionDevicesListData(
-            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-            start: pageNumber,
-            name: name,
-            code: code,
-            fitler: type,
-            limit: pageSize,
-          );
-          if (code == null) {
-            return;
-          } else {
-            if (customerCodeChange!.result![1].isEmpty) {
+          if (enableGraphQl) {
+            customerCodeChange =
+                await _subscriptionService!.getSubscriptionDevicesListData(
+              query: graphqlSchemaService!.getDeviceCodeAndName(
+                  start: 0,
+                  limit: 50,
+                  name: "",
+                  code: code == null ? " " : code.toString(),
+                  type: type),
+            );
+
+            Logger().w(customerCodeChange!.assetOrHierarchyByTypeAndId!.length);
+            if (customerCodeChange!.assetOrHierarchyByTypeAndId!.isEmpty) {
+                regCustomerCodeChange = true;
               _customerCode.clear();
-              snackbarService!.showSnackbar(
-                message: "No Data Found",
-                duration: Duration(seconds: 1),
-              );
+              _devices.clear();
+              detailResult.clear();
               notifyListeners();
             } else {
-              if (customerCodeChange!.result![1].isNotEmpty) {
-                customerCodeChange!.result![1].forEach((element) {
-                  _devices.add(element);
-                  _customerCode.add(element.Code);
-                  notifyListeners();
-                });
-              } else {
-                //Fluttertoast.showToast(msg: "No Data Found");
-                _devices.clear();
-                detailResult.clear();
-                customerCode.clear();
+              //  regCustomerCodeChange=true;
+               _devices.clear();
+               _customerCode.clear();
+              customerCodeChange!.assetOrHierarchyByTypeAndId!
+                  .forEach((element) {
+                _devices.add(HierarchyModel(
+                  Code: element.code,
+                  Email: element.email,
+                  Name: element.name,
+                  UserName: element.userName,
+                ));
+                _customerCode.add(element.code);
                 notifyListeners();
+              });
+            }
+          } else {
+            customerCodeChange =
+                await _subscriptionService!.getSubscriptionDevicesListData(
+              filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+              start: pageNumber,
+              name: name,
+              code: code,
+              fitler: type,
+              limit: pageSize,
+            );
+
+            if (code == null) {
+              return;
+            } else {
+              if (customerCodeChange!.result![1].isEmpty) {
+                _customerCode.clear();
+                snackbarService!.showSnackbar(
+                  message: "No Data Found",
+                  duration: Duration(milliseconds: 200),
+                );
+                 regCustomerCodeChange=true;
+                notifyListeners();
+              } else {
+                if (customerCodeChange!.result![1].isNotEmpty) {
+                  customerCodeChange!.result![1].forEach((element) {
+                    _devices.add(element);
+                    _customerCode.add(element.Code);
+                    notifyListeners();
+                  });
+                } else {
+                  regCustomerCodeChange = true;
+                  //Fluttertoast.showToast(msg: "No Data Found");
+                  _devices.clear();
+                  detailResult.clear();
+                  customerCode.clear();
+                  notifyListeners();
+                }
               }
             }
           }
         }
+      if(customerCodeController.text.isEmpty){
+      regCustomerCodeChange=false;
+      notifyListeners();  
+      }
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);

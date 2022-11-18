@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/base_service.dart';
+
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/manage_notifications.dart';
@@ -13,8 +14,8 @@ import 'package:insite/views/subscription/sms-management/model/delete_sms_manage
 import 'package:logger/logger.dart';
 
 import '../logger.dart';
+import '../models/add_asset_registration.dart';
 import '../models/add_notification_payload.dart';
-import '../models/asset_creation_payload.dart';
 
 class GraphqlSchemaService extends BaseService {
   GraphqlSchemaService._internal() {
@@ -294,6 +295,23 @@ query faultDataSummary{
  }
 """;
 
+getModelFleetList(){
+  var data="""{
+  frameSubscription {
+    plantDispatchSummary {
+      modelFleetList {
+        ModelCount
+        ModelName
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+}
+""";
+return data;
+}
   getSubscriptionDashboardResult() {
     var data = """query{
   frameSubscription{
@@ -364,17 +382,20 @@ __typename
     return data;
   }
 
-  register({int? id, String? gnacc, dynamic request}) {
-    var data =
-        """mutation deviceProvisionTransfer(\$id: Int!, \$gnacc: String!, \$request: AssetOperationInput!) {
-  assetOperation(id: $id, gnacc: $gnacc, request: $request) {
+ 
+
+  register() {
+    var data = """ mutation deviceProvisionTransfer(\$id: Int!, \$gnacc: String!, \$request: AssetOperationInput!) {
+  assetOperation(id: \$id, gnacc: \$gnacc, request: \$request) {
     code
     status
     requestID
     __typename
   }
 }
+
 """;
+Logger().wtf("data:$data");
     return data;
   }
 
@@ -561,11 +582,11 @@ query{
     return data;
   }
 
-  getDeviceTransferDetails(String? value) {
+  getDeviceTransferDetails({String? searchKey, String? searchValue}) {
     var data = """
 query{
-singleFleetDetails(searchKey: "GPSDeviceID",
-    searchValue: "$value",
+singleFleetDetails(searchKey:"$searchKey",
+    searchValue: "$searchValue",
     oem: "VEhD") {
   vin
   gpsDeviceID
@@ -592,6 +613,33 @@ singleFleetDetails(searchKey: "GPSDeviceID",
     return data;
   }
 
+  getDealerToDealerTransfer({String? searchValue}) {
+    var data = """query  {
+  dealerToDealerTransfer(oem:"THC", searchValue: "$searchValue") {
+    vin
+    gpsDeviceID
+    commissioningDate
+    customerDetails {
+      name
+      code
+      email
+      __typename
+    }
+    dealerDetails {
+      name
+      code
+      email
+      __typename
+    }
+    secondaryIndustry
+    primaryIndustry
+    __typename
+  }
+}
+""";
+    return data;
+  }
+
   getDeviceIdTransfer(
       {int? limit,
       String? oem,
@@ -609,6 +657,7 @@ start: $start,
 userUID: "$userId") {
     vin
     gpsDeviceID
+    __typename
   }
 }
  

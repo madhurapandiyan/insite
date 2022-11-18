@@ -55,34 +55,34 @@ int? totalcount;
         SubscriptionDashboardResult? result = await _subscriptionService!
             .getResultsFromSubscriptionApi(
                 graphqlSchemaService!.getPlantDashboardandCalendarData());
-        totalcount = result!.plantDispatchSummary!.subscriptionEnded! +
-            result.plantDispatchSummary!.yetToBeActivated! +
-            result.plantDispatchSummary!.activeSubscription!;
+        totalcount = result!.frameSubscription!.plantDispatchSummary!.subscriptionEnded! +
+            result.frameSubscription!.plantDispatchSummary!.yetToBeActivated! +
+            result.frameSubscription!.plantDispatchSummary!.activeSubscription!;
         statusChartData.clear();
         statusChartData.add(ChartSampleData(
             x: names[1],
-            y: (result.plantDispatchSummary!.activeSubscription),
+            y: (result.frameSubscription!.plantDispatchSummary!.activeSubscription),
             z: "active"));
         statusChartData.add(ChartSampleData(
             x: names[2],
-            y: (result.plantDispatchSummary!.yetToBeActivated),
+            y: (result.frameSubscription!.plantDispatchSummary!.yetToBeActivated),
             z: "inactive"));
         statusChartData.add(ChartSampleData(
             x: names[3],
-            y: (result.plantDispatchSummary!.yetToBeActivated),
+            y: (result.frameSubscription!.plantDispatchSummary!.yetToBeActivated),
             z: "subscriptionendasset"));
         activatedChartData.clear();
         activatedChartData.add(ChartSampleData(
             x: "Today",
-            y: (result.plantDispatchSummary!.assetActivationByDay),
+            y: (result.frameSubscription!.plantDispatchSummary!.assetActivationByDay),
             z: "day"));
         activatedChartData.add(ChartSampleData(
             x: "Week",
-            y: (result.plantDispatchSummary!.assetActivationByWeek),
+            y: (result.frameSubscription!.plantDispatchSummary!.assetActivationByWeek),
             z: "week"));
         activatedChartData.add(ChartSampleData(
             x: "Month",
-            y: (result.plantDispatchSummary!.assetActivationByMonth),
+            y: (result.frameSubscription!.plantDispatchSummary!.assetActivationByMonth),
             z: "month"));
         Logger().i("activatedChartData $activatedChartData}");
       } else {

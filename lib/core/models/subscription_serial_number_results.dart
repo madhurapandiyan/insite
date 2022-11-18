@@ -4,11 +4,12 @@ part 'subscription_serial_number_results.g.dart';
 
 @JsonSerializable()
 class SerialNumberResults {
+  AssetModelByMachineSerialNumber? assetModelByMachineSerialNumber;
   ModelResult? result;
   String? status;
   String? message;
 
-  SerialNumberResults({this.result, this.status, this.message});
+  SerialNumberResults({this.result, this.status, this.message,this.assetModelByMachineSerialNumber});
   factory SerialNumberResults.fromJson(Map<String, dynamic> json) =>
       _$SerialNumberResultsFromJson(json);
   Map<String, dynamic> toJson() => _$SerialNumberResultsToJson(this);
@@ -33,4 +34,24 @@ class ModelResult {
       _$ModelResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$ModelResultToJson(this);
+}
+@JsonSerializable()
+class AssetModelByMachineSerialNumber {
+  String? startsWith;
+  int? startRange;
+  int? endRange;
+  int? groupClusterId;
+  String? modelName;
+
+  AssetModelByMachineSerialNumber(
+      {this.startsWith,
+      this.startRange,
+      this.endRange,
+      this.groupClusterId,
+      this.modelName});
+
+  factory AssetModelByMachineSerialNumber.fromJson(Map<String, dynamic> json) =>
+      _$AssetModelByMachineSerialNumberFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AssetModelByMachineSerialNumberToJson(this);
 }

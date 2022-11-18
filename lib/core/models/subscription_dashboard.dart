@@ -6,9 +6,9 @@ part 'subscription_dashboard.g.dart';
 class SubscriptionDashboardResult {
 
   List<List<ResultSubscription>>? result;
-  SubscriptionDashboardResult({this.result,this.plantDispatchSummary});
+  SubscriptionDashboardResult({this.result,this.frameSubscription});
   //List<List<Result>>? result;
-  PlantDispatchSummary? plantDispatchSummary;
+  FrameSubscription? frameSubscription;
   //SubscriptionDashboardResult({this.result, this.plantDispatchSummary});
 
   factory SubscriptionDashboardResult.fromJson(Map<String, dynamic> json) =>
@@ -80,9 +80,7 @@ class FrameSubscription{
 }
 
 
-@JsonSerializable(
-  
-)
+@JsonSerializable()
 class PlantDispatchSummary {
   int ? activeSubscription;
   int ? yetToBeActivated;
@@ -90,10 +88,24 @@ class PlantDispatchSummary {
   dynamic assetActivationByDay;
   int ? assetActivationByWeek;
   int ?  assetActivationByMonth;
-
+  List<ModelFleetList>? modelFleetList;
   PlantDispatchSummary({this.activeSubscription,this.yetToBeActivated,this.subscriptionEnded,this.assetActivationByDay,this.assetActivationByWeek,this.assetActivationByMonth});
 
   factory PlantDispatchSummary.fromJson(Map<String, dynamic> json)=>_$PlantDispatchSummaryFromJson(json);
 
   Map<String, dynamic> toJson()=>_$PlantDispatchSummaryToJson(this); 
+}
+
+@JsonSerializable()
+class ModelFleetList{
+  @JsonKey(name: "ModelCount")
+  int? modelCount;
+  @JsonKey(name: "ModelName")
+  String? modelName;
+  @JsonKey(name: "__typename")
+  String? typename;
+
+  ModelFleetList({this.modelCount,this.modelName,this.typename});
+   factory ModelFleetList.fromJson(Map<String, dynamic> json)=>_$ModelFleetListFromJson(json);
+  Map<String, dynamic> toJson()=>_$ModelFleetListToJson(this); 
 }
