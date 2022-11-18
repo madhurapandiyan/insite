@@ -43,7 +43,7 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                     columnWidths: {
                       0: FlexColumnWidth(3),
                       1: FlexColumnWidth(2),
-                      2: FlexColumnWidth(2.5),
+                      //2: FlexColumnWidth(2.5),
                     },
                     children: [
                       TableRow(
@@ -92,15 +92,16 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                           content: widget.summaryData!.telematicDeviceId ?? "-",
                         ),
                       ]),
-                      TableRow(children: [
-                        InsiteTableRowItemWithRowButton(
+                      TableRow(
+                        
+                        children: [
                           
+                        InsiteTableRowItemWithRowButton(
                           title: "Service Status : ",
                           buttonColor: Utils.getMaintenanceColor(
                               widget.summaryData!.dueInfo!.serviceStatus),
                           content: widget.summaryData!.dueInfo != null
-                              ?
-                                  widget.summaryData!.dueInfo!.serviceStatus!
+                              ? widget.summaryData!.dueInfo!.serviceStatus!
                               : "",
                         ),
                         InsiteRichText(
@@ -127,7 +128,6 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                           content: widget.summaryData!.dueInfo!.dueAt!
                               .toStringAsFixed(0),
                         ),
-                        
                       ]),
                     ]),
                     Table(
@@ -167,7 +167,7 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                       border: TableBorder.all(),
                       children: [
                         TableRow(children: [
-                        InsiteTableRowItem(
+                          InsiteTableRowItem(
                             title: "Due Date :",
                             content: Utils.getDateInFormatddMMyyyy(
                                 widget.summaryData!.dueInfo!.dueDate),
