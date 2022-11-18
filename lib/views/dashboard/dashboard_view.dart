@@ -288,8 +288,8 @@ class _DashboardViewState extends State<DashboardView> {
                         countData: viewModel.maintenanceDashboardCount,
                         isLoading: viewModel.maintenanceLoading,
                         onFilterSelected: (val, filterType, count) {
-                          viewModel.onMaintenanceFilterClicked(
-                              val, filterType, count);
+                          // viewModel.onMaintenanceFilterClicked(
+                          //     val, filterType, count);
                         },
                       ),
                     ),

@@ -92,7 +92,6 @@ class MainViewModel extends InsiteViewModel {
     if (isVisionLink) {
       MaintenanceViewData? result =
           await _maintenanceService!.getMaintenanceData(
-          
         startTime:
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(maintenanceStartDate),
         endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(maintenanceEndDate),
@@ -201,9 +200,9 @@ class MainViewModel extends InsiteViewModel {
     _loading = true;
     notifyListeners();
     _maintenanceList.clear();
-     await getSelectedFilterData();
+    await getSelectedFilterData();
     await getMaintenanceViewList();
-    
+
     // await getSelectedFilterData();
     // await getDateRangeFilterData();
     // pageNumber = 1;

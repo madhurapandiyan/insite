@@ -29,152 +29,160 @@ class LocationSearchBoxView extends StatelessWidget {
           decoration: new BoxDecoration(
               color: Colors.white,
               borderRadius: new BorderRadius.all(new Radius.circular(8))),
-          child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: LayoutBuilder(builder: (ctx, constrain) {
-                return Row(
-                  children: [
-                    Container(
-                      //width: constrain.maxWidth * 0.28,
+          child: LayoutBuilder(builder: (ctx, constrain) {
+            return Row(
+              children: [
+                Container(
+                  //width: constrain.maxWidth * 0.28,
 
-                      decoration: new BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              new BorderRadius.all(new Radius.circular(8))),
-                      child: screenType == ScreenType.ASSET_DETAIL
-                          ? DropdownButton<String>(
-                              isExpanded: false,
-                              elevation: 0,
-                              underline: Container(),
-                              isDense: true,
-                              iconSize: 0.0,
-                              items: viewModel.assetDropDownList
-                                  .map((map) => DropdownMenuItem(
-                                        value: map,
-                                        child: InsiteTextOverFlow(
-                                          text: map,
-                                          size: 11.0,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ))
-                                  .toList(),
-                              value: viewModel.searchLocationDropDownValue,
-                              onChanged: (String? value) {
-                                viewModel.onChangeDropDownValueTwo(value!);
-                              },
-                            )
-                          : DropdownButton<String>(
-                              isExpanded: false,
-                              elevation: 0,
-                              underline: Container(),
-                              isDense: true,
-                              iconSize: 0.0,
-                              items: viewModel.dropDownList
-                                  .map((map) => DropdownMenuItem(
-                                        value: map,
-                                        child: InsiteTextOverFlow(
-                                          text: map,
-                                          size: 11.0,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ))
-                                  .toList(),
-                              value: viewModel.searchDropDownValue,
-                              onChanged: (String? value) {
-                                viewModel.onChangeDropDown(value!);
-                              },
-                            ),
-                    ),
-                    // Expanded(
-                    //   child: CustomDropDownWidget(
-                    //     items: viewModel.dropDownList,
-                    //     value: viewModel.searchDropDownValue,
-                    //     onChanged: (_) {},
-                    //   ),
-                    // ),
-                    Expanded(
-                      child: Container(
-                        decoration: new BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                new BorderRadius.all(new Radius.circular(8))),
-                        child: TypeAheadField(
-                          noItemsFoundBuilder: (_) {
-                            return SizedBox();
-                          },
-                          suggestionsCallback: (pattern) async {
-                            Completer<List<LocationKey>> completer =
-                                new Completer();
-                            if (pattern.isNotEmpty) {
-                              await viewModel.onSearchTextChanged(pattern,screenType!);
-                              completer.complete(viewModel.list);
-                              return completer.future;
+                  decoration: new BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          new BorderRadius.all(new Radius.circular(8))),
+                  child: screenType == ScreenType.ASSET_DETAIL
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: DropdownButton<String>(
+                            isExpanded: false,
+                            elevation: 0,
+                            underline: Container(),
+                            isDense: true,
+                            iconSize: 0.0,
+                            items: viewModel.assetDropDownList
+                                .map((map) => DropdownMenuItem(
+                                      value: map,
+                                      child: InsiteTextOverFlow(
+                                        text: map,
+                                        size: 15.0,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ))
+                                .toList(),
+                            value: viewModel.searchLocationDropDownValue,
+                            onChanged: (String? value) {
+                              viewModel.onChangeDropDownValueTwo(value!);
+                            },
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: DropdownButton<String>(
+                            isExpanded: false,
+                            elevation: 0,
+                            underline: Container(),
+                            isDense: true,
+                            iconSize: 0.0,
+                            items: viewModel.dropDownList
+                                .map((map) => DropdownMenuItem(
+                                      value: map,
+                                      child: InsiteTextOverFlow(
+                                        text: map,
+                                        size: 15.0,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ))
+                                .toList(),
+                            value: viewModel.searchDropDownValue,
+                            onChanged: (String? value) {
+                              viewModel.onChangeDropDown(value!);
+                            },
+                          ),
+                        ),
+                ),
+                // Expanded(
+                //   child: CustomDropDownWidget(
+                //     items: viewModel.dropDownList,
+                //     value: viewModel.searchDropDownValue,
+                //     onChanged: (_) {},
+                //   ),
+                // ),
+                Expanded(
+                  child: Container(
+                    decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            new BorderRadius.all(new Radius.circular(8))),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: TypeAheadField(
+                        noItemsFoundBuilder: (_) {
+                          return SizedBox();
+                        },
+                        suggestionsCallback: (pattern) async {
+                          Completer<List<LocationKey>> completer =
+                              new Completer();
+                          if (pattern.isNotEmpty) {
+                            await viewModel.onSearchTextChanged(
+                                pattern, screenType!);
+                            completer.complete(viewModel.list);
+                            return completer.future;
+                          } else {
+                            return [];
+                          }
+                        },
+                        itemBuilder: (context, suggestion) {
+                          var data = suggestion as LocationKey;
+                          return Text(
+                            data.value!,
+                            style: TextStyle(fontSize: 17),
+                          );
+                        },
+                        hideOnEmpty: true,
+                        hideSuggestionsOnKeyboardHide: false,
+                        keepSuggestionsOnSuggestionSelected: false,
+                        getImmediateSuggestions: true,
+                        onSuggestionSelected: (suggestion) {
+                          if ((suggestion as LocationKey?) != null) {
+                            viewModel.onSelect(suggestion!.value as String);
+                            if (screenType == ScreenType.ASSET_DETAIL) {
+                              onSeletingSuggestion!(
+                                  LatLng(suggestion.latitude!,
+                                      suggestion.longitude!),
+                                  false);
                             } else {
-                              return [];
-                            }
-                          },
-                          itemBuilder: (context, suggestion) {
-                            var data = suggestion as LocationKey;
-                            return ListTile(
-                              title: Text(data.value!),
-                            );
-                          },
-                          hideOnEmpty: true,
-                          hideSuggestionsOnKeyboardHide: false,
-                          keepSuggestionsOnSuggestionSelected: false,
-                          getImmediateSuggestions: true,
-                          onSuggestionSelected: (suggestion) {
-                            if ((suggestion as LocationKey?) != null) {
-                              viewModel.onSelect(suggestion!.value as String);
-                              if (screenType == ScreenType.ASSET_DETAIL) {
+                              if (viewModel.searchDropDownValue == "S/N") {
+                                var data = viewModel
+                                    .result!.assetLocation!.mapRecords!
+                                    .singleWhere((element) =>
+                                        element!.assetSerialNumber ==
+                                        suggestion.value);
+                                Logger().w(data!.toJson());
+                                onSeletingSuggestion!(data, true);
+                              } else {
                                 onSeletingSuggestion!(
                                     LatLng(suggestion.latitude!,
                                         suggestion.longitude!),
                                     false);
-                              } else {
-                                if (viewModel.searchDropDownValue == "S/N") {
-                                  var data = viewModel
-                                      .result!.assetLocation!.mapRecords!
-                                      .singleWhere((element) =>
-                                          element!.assetSerialNumber ==
-                                          suggestion.value);
-                                  Logger().w(data!.toJson());
-                                  onSeletingSuggestion!(data, true);
-                                } else {
-                                  onSeletingSuggestion!(
-                                      LatLng(suggestion.latitude!,
-                                          suggestion.longitude!),
-                                      false);
-                                }
                               }
                             }
-                          },
-                          textFieldConfiguration: TextFieldConfiguration(
-                            cursorColor: addUserBgColor,
-                            controller: viewModel.searchController,
-                            maxLines: 1,
-                            style: TextStyle(
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14,
-                            ),
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    left: 8, top: 12, bottom: 10),
-                                isDense: true,
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                fillColor: white),
+                          }
+                        },
+                        textFieldConfiguration: TextFieldConfiguration(
+                          cursorColor: addUserBgColor,
+                          controller: viewModel.searchController,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
                           ),
+                          decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.only(left: 8, top: 12, bottom: 10),
+                              isDense: true,
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              fillColor: white),
                         ),
                       ),
-                    )
-                  ],
-                );
-              })),
+                    ),
+                  ),
+                )
+              ],
+            );
+          }),
         );
       },
       viewModelBuilder: () => LocationSearchBoxViewModel(),

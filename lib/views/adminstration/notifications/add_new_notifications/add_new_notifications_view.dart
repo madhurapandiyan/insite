@@ -58,31 +58,93 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                   children: [
                     listData[i].text == "Include" ||
                             listData[i].text == "Exclude"
-                        ? TextButton.icon(
-                            onPressed: () {
+                        ? 
+                        ListTile(
+                            onTap: () {
+                              viewModel.customizable.first.state!
+                                  ? checkingSwitchState(i)
+                                  : null;
+                            },
+                            dense: true,
+                            visualDensity: VisualDensity(vertical: -2),
+                            leading: Container(
+                              height: 17,
+                              width: 17,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: tango, width: 2),
+                                borderRadius: BorderRadius.circular(3),
+                                color: listData[i].state! ? tango : null,
+                              ),
+                              child: listData[i].state!
+                                  ? Icon(
+                                      Icons.check,
+                                      size: 13,
+                                      color: white,
+                                    )
+                                  : null,
+                            ),
+                            title: InsiteText(
+                                text: listData[i].text,
+                                size: 15,
+                                fontWeight: FontWeight.w400,
+                                color: viewModel.customizable.first.state!
+                                    ? black
+                                    : Colors.grey),
+                          )
+                        // TextButton.icon(
+                        //     onPressed: () {
+                        //       checkingSwitchState(i);
+                        //     },
+                        //     icon: Icon(Icons.crop_square,
+                        //         color: listData[i].state!
+                        //             ? Theme.of(context).buttonColor
+                        //             : Colors.black),
+                        //     label: InsiteText(
+                        //       text: listData[i].text,
+                        //       color: viewModel.customizable.first.state!
+                        //           ? Colors.black
+                        //           : Colors.black.withOpacity(0.3),
+                        //     ))
+                        : 
+                        ListTile(
+                            onTap: () {
                               checkingSwitchState(i);
                             },
-                            icon: Icon(Icons.crop_square,
-                                color: listData[i].state!
-                                    ? Theme.of(context).buttonColor
-                                    : Colors.black),
-                            label: InsiteText(
+                            dense: true,
+                            visualDensity: VisualDensity(vertical: -2),
+                            leading: Container(
+                              height: 17,
+                              width: 17,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: tango, width: 2),
+                                borderRadius: BorderRadius.circular(3),
+                                color: listData[i].state! ? tango : null,
+                              ),
+                              child: listData[i].state!
+                                  ? Icon(
+                                      Icons.check,
+                                      size: 13,
+                                      color: white,
+                                    )
+                                  : null,
+                            ),
+                            title: InsiteText(
                               text: listData[i].text,
-                              color: viewModel.customizable.first.state!
-                                  ? Colors.black
-                                  : Colors.black.withOpacity(0.3),
-                            ))
-                        : TextButton.icon(
-                            onPressed: () {
-                              checkingSwitchState(i);
-                            },
-                            icon: Icon(Icons.crop_square,
-                                color: listData[i].state!
-                                    ? Theme.of(context).buttonColor
-                                    : Colors.black),
-                            label: InsiteText(
-                              text: listData[i].text,
-                            )),
+                              size: 15,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                        // TextButton.icon(
+                        //     onPressed: () {
+                        //       checkingSwitchState(i);
+                        //     },
+                        //     icon: Icon(Icons.crop_square,
+                        //         color: listData[i].state!
+                        //             ? Theme.of(context).buttonColor
+                        //             : Colors.black),
+                        //     label: InsiteText(
+                        //       text: listData[i].text,
+                        //     )),
                   ],
                 )));
   }

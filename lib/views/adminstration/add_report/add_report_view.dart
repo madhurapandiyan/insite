@@ -487,7 +487,6 @@ class _AddReportViewState extends State<AddReportView> {
                                           ),
                                         )
                                       : AssetSelectionWidgetView(
-                                        
                                           dropdownValue:
                                               viewModel.assetSelectionValue,
                                           isAddingAllAsset: viewModel

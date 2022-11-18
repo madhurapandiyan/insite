@@ -132,7 +132,8 @@ class CustomTextBox extends StatelessWidget {
               fontWeight: FontWeight.w700,
               fontSize: 14,
               fontStyle: FontStyle.normal,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Colors.grey,
+              //Theme.of(context).textTheme.bodyText1!.color
             )),
       ),
     );
