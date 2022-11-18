@@ -243,7 +243,7 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
       padding: EdgeInsets.all(8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           InsiteText(
             text: title,
