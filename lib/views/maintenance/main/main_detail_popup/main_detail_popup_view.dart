@@ -410,9 +410,9 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                                             InsiteTextWithPadding(
                                               padding: EdgeInsets.all(8),
                                               text: part.partNo
-                                                  ?.replaceRange(4,
-                                                      part.partNo!.length, "")
-                                                  .trimRight(),
+                                                  // ?.replaceRange(4,
+                                                  //     part.partNo!.length, "")
+                                                  // .trimRight(),
                                               //  size: 12,
                                             ),
                                             InsiteTextWithPadding(
