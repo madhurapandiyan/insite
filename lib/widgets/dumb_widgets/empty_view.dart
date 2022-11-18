@@ -4,19 +4,26 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 class EmptyView extends StatelessWidget {
   final String? title;
   final Color? bg;
-  const EmptyView({this.title, this.bg});
+  final Widget? widget;
+  const EmptyView({this.title, this.bg, this.widget});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: bg != null ? bg : Theme.of(context).backgroundColor,
       alignment: Alignment.center,
-      child: Center(
-          child: InsiteTextAlign(
+      child: Column(
+        children: [
+          widget!,
+          Spacer(),
+          InsiteTextAlign(
               text: title,
               textAlign: TextAlign.center,
               fontWeight: FontWeight.bold,
-              size: 18)),
+              size: 18),
+              Spacer()
+        ],
+      ),
     );
   }
 }

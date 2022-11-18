@@ -36,6 +36,7 @@ class CustomDropDownWidget extends StatelessWidget {
             onTap!();
           }
         },
+        
         focusNode: onFocus,
         isExpanded: true,
         dropdownColor: Theme.of(context).backgroundColor,
@@ -48,6 +49,9 @@ class CustomDropDownWidget extends StatelessWidget {
                 text: "  Select",
                 size: 14,
                 fontWeight: FontWeight.w700,
+                color: textColorChange
+                    ? Colors.grey
+                    : Theme.of(context).textTheme.bodyText1!.color!,
               )
             : SizedBox(),
         items: items!.map<DropdownMenuItem<String>>((String? value) {
@@ -58,8 +62,9 @@ class CustomDropDownWidget extends StatelessWidget {
                 text: "  " + value!,
                 size: 14,
                 fontWeight: FontWeight.w700,
+                // Theme.of(context).backgroundColor
                 color: textColorChange
-                    ? Theme.of(context).backgroundColor
+                    ? Colors.grey
                     : Theme.of(context).textTheme.bodyText1!.color!,
               ),
             ),

@@ -430,8 +430,8 @@ class Utils {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var inputDate = DateTime.parse(parseDate.toString());
-          // .subtract(Duration(days: 1))
-          // .add(Duration(hours: 18, minutes: 30));
+      // .subtract(Duration(days: 1))
+      // .add(Duration(hours: 18, minutes: 30));
       var outputFormat = DateFormat("MM/dd/yyyy");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -2031,6 +2031,11 @@ class Utils {
 
     intervalList.add(data);
     Logger().wtf(intervalList.length);
+    Logger().wtf(mainInterval.intervalId);
+    Logger().wtf(mainInterval.intervalId);
+    Logger().wtf(mainInterval.intervalName);
+    Logger().wtf("testing");
+
     return intervalList;
   }
 
@@ -2055,7 +2060,7 @@ class Utils {
           }
           checkList.add(checkData);
         }
-        Logger().w(checkList);
+        Logger().wtf(checkList);
         return checkList;
       } else {
         return null;

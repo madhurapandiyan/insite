@@ -243,7 +243,8 @@ class MaintenanceService extends BaseService {
             : customerSelected?.CustomerUID,
       );
       MaintenanceCheckListModelPop mainListData =
-          MaintenanceCheckListModelPop.fromJson(data.data["maintenanceCheckList"]);
+          MaintenanceCheckListModelPop.fromJson(
+              data.data["maintenanceCheckList"]);
       Logger().w(mainListData.toJson());
       return mainListData;
     }
@@ -420,7 +421,8 @@ class MaintenanceService extends BaseService {
     }
   }
 
-  Future<EditIntervalResponse?> updateMaintenanceIntervals(String? query) async {
+  Future<EditIntervalResponse?> updateMaintenanceIntervals(
+      String? query) async {
     try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
@@ -431,7 +433,8 @@ class MaintenanceService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
-        return EditIntervalResponse.fromJson(data.data);
+        return EditIntervalResponse.fromJson(
+            data.data["updateMaintenanceIntervals"]);
       }
     } catch (e) {
       Logger().w(e.toString());

@@ -9,6 +9,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'add_intervals_view_model.dart';
 
@@ -156,16 +157,15 @@ Widget onSelectedIntervalsDetails(
             width: 10,
           ),
           Expanded(
-                  child: InsiteButton(
-                    height: 40,
-                    onTap: () {
-                      onEditIntervals!();
-                    },
-                    textColor: backgroundColor1,
-                    title: "Edit",
-                  ),
-                )
-             
+            child: InsiteButton(
+              height: 40,
+              onTap: () {
+                onEditIntervals!();
+              },
+              textColor: backgroundColor1,
+              title: "Edit",
+            ),
+          )
         ])
       ],
     ),
@@ -392,11 +392,9 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                     color: Theme.of(ctx).backgroundColor,
                   ),
                   title: "",
-                
                   onTap: () {
                     onPartListDelete!();
                   },
-                 
                   textColor: Theme.of(ctx).backgroundColor,
                 ),
               ],
@@ -476,7 +474,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
               onTap: () {
                 onPartListDeleted!();
               },
-             
+
               textColor: Theme.of(ctx).backgroundColor,
               title: "",
             ),
@@ -770,6 +768,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                   textColor: white,
                   onTap: () {
                     widget.viewModel!.onIntervalSaved();
+                    Logger().wtf('save');
                   },
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width * 0.4,

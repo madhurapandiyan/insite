@@ -41,11 +41,12 @@ class AddressCustomTextBox extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(color: black)),
           hintStyle: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
-            fontStyle: FontStyle.normal,
-            color: Theme.of(context).textTheme.bodyText1!.color,
-          )),
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              fontStyle: FontStyle.normal,
+              color: Colors.grey
+              //Theme.of(context).textTheme.bodyText1!.color
+              )),
     );
   }
 }

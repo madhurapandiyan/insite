@@ -43,6 +43,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuerry = MediaQuery.of(context);
     return ViewModelBuilder<AssetLocationViewModel>.reactive(
       builder:
           (BuildContext context, AssetLocationViewModel viewModel, Widget? _) {
@@ -52,6 +53,40 @@ class _AssetLocationViewState extends State<AssetLocationView> {
           return viewModel.dataNotFound
               ? EmptyView(
                   title: "No Data Found",
+                  widget: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: InsiteButton(
+                          title: Utils.getDateInFormatddMMyyyy(
+                                  viewModel.startDate) +
+                              " - " +
+                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                          // width: 90,
+                          //bgColor: Theme.of(context).backgroundColor,
+                          textColor:
+                              Theme.of(context).textTheme.bodyText1!.color,
+                          onTap: () async {
+                            dateRange = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) => Dialog(
+                                  backgroundColor: transparent,
+                                  child: DateRangeView()),
+                            );
+                            if (dateRange != null && dateRange!.isNotEmpty) {
+                              setState(() {
+                                dateRange = dateRange;
+                              });
+                              viewModel
+                                  .customInfoWindowController.hideInfoWindow!();
+                              viewModel.refresh();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               : Container(
                   height: 600,
@@ -142,7 +177,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                       .onCameraMove!();
                                 },
                                 onMapCreated: (GoogleMapController controller) {
-                                 // mapController = controller;
+                                  // mapController = controller;
                                   viewModel.controller = controller;
                                   viewModel.customInfoWindowController
                                       .googleMapController = controller;
@@ -187,7 +222,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               alignment: Alignment.topLeft,
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 7, left: 20),
+                                    const EdgeInsets.only(top: 10, left: 20),
                                 child: LocationSearchBoxView(
                                   screenType: ScreenType.ASSET_DETAIL,
                                   searchBoxWidth: 0.6,
@@ -219,7 +254,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 children: [
                                   Container(
                                     width: 100,
-                                    height: 30,
+                                    height: mediaQuerry.size.height * 0.065,
                                     margin: EdgeInsets.only(left: 20, top: 10),
                                     decoration: BoxDecoration(
                                         // border: Border.all(
