@@ -222,7 +222,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               alignment: Alignment.topLeft,
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 10, left: 20),
+                                    const EdgeInsets.only(top: 5, left: 20),
                                 child: LocationSearchBoxView(
                                   screenType: ScreenType.ASSET_DETAIL,
                                   searchBoxWidth: 0.6,
