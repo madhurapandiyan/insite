@@ -43,17 +43,19 @@ class LocationSearchBoxView extends StatelessWidget {
                               new BorderRadius.all(new Radius.circular(8))),
                       child: screenType == ScreenType.ASSET_DETAIL
                           ? DropdownButton<String>(
+                            
                               isExpanded: false,
                               elevation: 0,
                               underline: Container(),
                               isDense: true,
                               iconSize: 0.0,
+
                               items: viewModel.assetDropDownList
                                   .map((map) => DropdownMenuItem(
                                         value: map,
                                         child: InsiteTextOverFlow(
                                           text: map,
-                                          size: 11.0,
+                                          size: 10.0,
                                           overflow: TextOverflow.ellipsis,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -96,6 +98,7 @@ class LocationSearchBoxView extends StatelessWidget {
                     // ),
                     Expanded(
                       child: Container(
+                        padding: EdgeInsets.only(bottom: 4),
                         decoration: new BoxDecoration(
                             color: Colors.white,
                             borderRadius:
@@ -108,7 +111,8 @@ class LocationSearchBoxView extends StatelessWidget {
                             Completer<List<LocationKey>> completer =
                                 new Completer();
                             if (pattern.isNotEmpty) {
-                              await viewModel.onSearchTextChanged(pattern,screenType!);
+                              await viewModel.onSearchTextChanged(
+                                  pattern, screenType!);
                               completer.complete(viewModel.list);
                               return completer.future;
                             } else {

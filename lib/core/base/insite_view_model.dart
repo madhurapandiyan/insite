@@ -102,7 +102,7 @@ abstract class InsiteViewModel extends BaseViewModel {
   }
 
   String? _maintenanceEndDate =
-      DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 30)));
+      DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 29)));
   String? get maintenanceEndDate => _maintenanceEndDate;
   set maintenanceEndDate(String? maintenanceEndDate) {
     this._maintenanceEndDate = maintenanceEndDate;
@@ -140,7 +140,7 @@ abstract class InsiteViewModel extends BaseViewModel {
       appliedFilters = await _filterService!.getSelectedFilters();
       Logger().d("getSelectedFilterData ${appliedFilters!.length.toString()}");
       notifyListeners();
-       //return appliedFilters;
+      //return appliedFilters;
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -244,7 +244,7 @@ abstract class InsiteViewModel extends BaseViewModel {
     _maintenanceStartDate = _localService?.getMaintenanceFromDate() ??
         DateFormat("yyyy-MM-dd").format(DateTime.now());
     _maintenanceEndDate = _localService?.getMaintenanceEndDate() ??
-        DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 30)));
+        DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 29)));
   }
 
   clearSpecificFilterType({FilterType? type}) {
