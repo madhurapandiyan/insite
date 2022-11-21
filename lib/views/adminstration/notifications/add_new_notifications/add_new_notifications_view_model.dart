@@ -107,6 +107,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   bool isEditing = false;
 
+  bool isEditLoader=true;
+
   List<String?> _noticationTypes = ["select"];
   List<String?> get notificationTypes => _noticationTypes;
 
@@ -849,6 +851,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         assetUidData.add(element.assetUID!);
       });
     }
+    isEditLoader=false;
 
     notifyListeners();
   }

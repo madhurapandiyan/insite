@@ -119,7 +119,7 @@ class _TabPageState extends State<AssetDetailView> {
     Category(
       2,
       "LOCATION",
-      "assets/images/locationIcon.png",
+      "assets/images/locationIcon.svg",
       ScreenType.LOCATION,
     ),
   ];
