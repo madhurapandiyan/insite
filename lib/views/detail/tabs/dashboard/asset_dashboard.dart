@@ -175,6 +175,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child:
                      FaultHealthDashboard(
+                      
                       screenType: ScreenType.ASSET_DETAIL,
                       countData: viewModel.faultCountDataList != null
                           ? viewModel.faultCountDataList

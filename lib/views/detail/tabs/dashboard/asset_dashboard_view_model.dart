@@ -255,8 +255,8 @@ class AssetDashboardViewModel extends InsiteViewModel {
           endDate: Utils.getFaultDateFormatEndDate(DateTime.now())),
     );
     if (assetDashboardFaultData != null) {
-      Logger().v(
-          assetDashboardFaultData!.summaryData!.first.countData!.first.countOf);
+      // Logger().v(
+      //     assetDashboardFaultData.summaryData!.first.countData!.first.countOf);
 
       for (var i = 0; i < assetDashboardFaultData.summaryData!.length; i++) {
         var data = assetDashboardFaultData.summaryData![i];
