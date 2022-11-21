@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/insite_view_model.dart';
@@ -308,7 +307,9 @@ class AddIntervalsViewModel extends InsiteViewModel {
       Logger().w(maitenanceCheckListData!.toJson());
       if (isEditing) {
         Logger().i(maintenanceInterval!.intervalName);
-        EditIntervalResponse? data = await _maintenanceService!
+        Logger().i("isediting");
+
+        EditIntervalResponse? data =await _maintenanceService!
             .updateMaintenanceIntervals(_graphqlSchemaService!
                 .updateMaintenanceIntervals(maintenanceInterval));
         if (data != null) {
@@ -331,6 +332,8 @@ class AddIntervalsViewModel extends InsiteViewModel {
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());
+      // Logger().w(maitenanceCheckListData!.toJson());
+
     }
   }
 
@@ -489,4 +492,3 @@ class MaintenancePartList {
       this.units,
       this.partId});
 }
-

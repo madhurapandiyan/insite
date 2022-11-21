@@ -43,92 +43,92 @@ class _AssetLocationViewState extends State<AssetLocationView> {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuerry = MediaQuery.of(context);
     return ViewModelBuilder<AssetLocationViewModel>.reactive(
       builder:
           (BuildContext context, AssetLocationViewModel viewModel, Widget? _) {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
-          return viewModel.dataNotFound
-              ? EmptyView(
-                  title: "No Data Found",
-                )
-              : Container(
-                  height: 600,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                        width: 1,
-                        color: Theme.of(context).textTheme.bodyText1!.color!),
-                    shape: BoxShape.rectangle,
-                  ),
-                  child: Column(
+          return Container(
+            height: 600,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(
+                  width: 1,
+                  color: Theme.of(context).textTheme.bodyText1!.color!),
+              shape: BoxShape.rectangle,
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InsiteButton(
-                              title: "Refresh",
-                              width: 90,
-                              height: 30,
-                              //bgColor: Theme.of(context).backgroundColor,
-                              textColor:
-                                  Theme.of(context).textTheme.bodyText1!.color,
-                              onTap: () async {
-                                viewModel.customInfoWindowController
-                                    .hideInfoWindow!();
-                                if (widget.screenType == ScreenType.HEALTH) {
-                                  viewModel.refreshForAssetView();
-                                } else {
-                                  viewModel.refresh();
-                                }
-                              },
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            // InsiteText(
-                            //     text: Utils.getDateInFormatddMMyyyy(
-                            //             viewModel.startDate) +
-                            //         " - " +
-                            //         Utils.getDateInFormatddMMyyyy(
-                            //             viewModel.endDate),
-                            //     fontWeight: FontWeight.bold,
-                            //     size: 12),
-                            InsiteButton(
-                              title: Utils.getDateInFormatddMMyyyy(
-                                      viewModel.startDate) +
-                                  " - " +
-                                  Utils.getDateInFormatddMMyyyy(
-                                      viewModel.endDate),
-                              // width: 90,
-                              //bgColor: Theme.of(context).backgroundColor,
-                              textColor:
-                                  Theme.of(context).textTheme.bodyText1!.color,
-                              onTap: () async {
-                                dateRange = await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => Dialog(
-                                      backgroundColor: transparent,
-                                      child: DateRangeView()),
-                                );
-                                if (dateRange != null &&
-                                    dateRange!.isNotEmpty) {
-                                  setState(() {
-                                    dateRange = dateRange;
-                                  });
-                                  viewModel.customInfoWindowController
-                                      .hideInfoWindow!();
-                                  viewModel.refresh();
-                                }
-                              },
-                            ),
-                          ],
-                        ),
+                      InsiteButton(
+                        title: "Refresh",
+                        width: 90,
+                        height: 30,
+                        //bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        onTap: () async {
+                          viewModel
+                              .customInfoWindowController.hideInfoWindow!();
+                          if (widget.screenType == ScreenType.HEALTH) {
+                            viewModel.refreshForAssetView();
+                          } else {
+                            viewModel.refresh();
+                          }
+                        },
                       ),
-                      Expanded(
+                      SizedBox(
+                        width: 20,
+                      ),
+                      // InsiteText(
+                      //     text: Utils.getDateInFormatddMMyyyy(
+                      //             viewModel.startDate) +
+                      //         " - " +
+                      //         Utils.getDateInFormatddMMyyyy(
+                      //             viewModel.endDate),
+                      //     fontWeight: FontWeight.bold,
+                      //     size: 12),
+                      InsiteButton(
+                        title: Utils.getDateInFormatddMMyyyy(
+                                viewModel.startDate) +
+                            " - " +
+                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                        // width: 90,
+                        //bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        onTap: () async {
+                          dateRange = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                backgroundColor: transparent,
+                                child: DateRangeView()),
+                          );
+                          if (dateRange != null && dateRange!.isNotEmpty) {
+                            setState(() {
+                              dateRange = dateRange;
+                            });
+                            viewModel
+                                .customInfoWindowController.hideInfoWindow!();
+                            viewModel.refresh();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                viewModel.dataNotFound
+                    ? Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: EmptyView(
+                          title: "No Data Found",
+                        ),
+                    )
+                    : Expanded(
                         child: Stack(
                           alignment: Alignment.bottomRight,
                           children: [
@@ -142,7 +142,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                       .onCameraMove!();
                                 },
                                 onMapCreated: (GoogleMapController controller) {
-                                 // mapController = controller;
+                                  // mapController = controller;
                                   viewModel.controller = controller;
                                   viewModel.customInfoWindowController
                                       .googleMapController = controller;
@@ -187,7 +187,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               alignment: Alignment.topLeft,
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 7, left: 20),
+                                    const EdgeInsets.only(top: 5, left: 20),
                                 child: LocationSearchBoxView(
                                   screenType: ScreenType.ASSET_DETAIL,
                                   searchBoxWidth: 0.6,
@@ -219,7 +219,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 children: [
                                   Container(
                                     width: 100,
-                                    height: 30,
+                                    height: mediaQuerry.size.height * 0.065,
                                     margin: EdgeInsets.only(left: 20, top: 10),
                                     decoration: BoxDecoration(
                                         // border: Border.all(
@@ -415,9 +415,9 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                           ],
                         ),
                       )
-                    ],
-                  ),
-                );
+              ],
+            ),
+          );
         }
       },
       viewModelBuilder: () =>

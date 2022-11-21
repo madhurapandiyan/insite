@@ -58,35 +58,39 @@ class _TabPageState extends State<AssetDetailView> {
     super.initState();
   }
 
+//"assets/images/clock.svg"
+//"assets/images/supportmanager.svg",
+//"assets/images/location.svg",
+//"assets/images/health.svg"
   List<Category> typeOne = [
     Category(
       0,
       "DASHBOARD",
-      "assets/images/clock.svg",
+      "assets/images/dashboardicon.svg",
       ScreenType.DASHBOARD,
     ),
     Category(
       1,
       "UTILIZATION",
-      "assets/images/supportmanager.svg",
+      "assets/images/utilisationIcon.svg",
       ScreenType.UTILIZATION,
     ),
     Category(
       2,
       "ASSET OPERATION",
-      "assets/images/assetmanager.svg",
+      "assets/images/assetOperationIcon.svg",
       ScreenType.ASSET_OPERATION,
     ),
     Category(
       3,
       "LOCATION",
-      "assets/images/location.svg",
+      "assets/images/locationIcon.svg",
       ScreenType.LOCATION,
     ),
     Category(
       4,
       "HEALTH",
-      "assets/images/health.svg",
+      "assets/images/healthicon.svg",
       ScreenType.HEALTH,
     ),
     Category(
@@ -96,24 +100,26 @@ class _TabPageState extends State<AssetDetailView> {
       ScreenType.HEALTH,
     ),
   ];
-
+//"assets/images/clock.svg"
+//"assets/images/health.svg"
+//"assets/images/location.svg"
   List<Category> typeTwo = [
     Category(
       0,
       "DASHBOARD",
-      "assets/images/clock.svg",
+      "assets/images/dashboardicon.svg",
       ScreenType.DASHBOARD,
     ),
     Category(
       1,
       "HEALTH",
-      "assets/images/health.svg",
+      "assets/images/healthicon.svg",
       ScreenType.HEALTH,
     ),
     Category(
       2,
       "LOCATION",
-      "assets/images/location.svg",
+      "assets/images/locationIcon.svg",
       ScreenType.LOCATION,
     ),
   ];
@@ -331,7 +337,7 @@ class _TabPageState extends State<AssetDetailView> {
                                   },
                                 )
                               : AssetDashbaord(
-                                screenType: ScreenType.DASHBOARD,
+                                  screenType: ScreenType.DASHBOARD,
                                   detail: viewModel.assetDetail,
                                   switchTab: (index) {
                                     setState(() {
@@ -368,10 +374,14 @@ class _TabPageState extends State<AssetDetailView> {
                                                   alignment: Alignment.topRight,
                                                   children: [
                                                     MaintenanceTabView(
-                                                      
                                                       summaryData: SummaryData(
-                                                          assetID: viewModel.assetDetail!.assetUid,
-                                                          assetSerialNumber:viewModel.assetDetail!.assetSerialNumber),
+                                                          assetID: viewModel
+                                                              .assetDetail!
+                                                              .assetUid,
+                                                          assetSerialNumber:
+                                                              viewModel
+                                                                  .assetDetail!
+                                                                  .assetSerialNumber),
                                                       serviceCalBack: (value,
                                                           assetDataValue,
                                                           services,
@@ -383,7 +393,6 @@ class _TabPageState extends State<AssetDetailView> {
                                                           assetDataValue:
                                                               assetDataValue,
                                                         );
-
                                                       },
                                                     ),
                                                     Container(

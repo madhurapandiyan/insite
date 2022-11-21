@@ -298,7 +298,10 @@ class AddReportViewModel extends InsiteViewModel {
                     assetItems.reportName == "FaultSummaryFaultsList" ||
                     assetItems.reportName == "FaultCodeAssetDetails" ||
                     assetItems.reportName == "FleetSummary" ||
-                    assetItems.reportName == "Asset Location History"
+                    assetItems.reportName == "Asset Location History" ||
+                    assetItems.reportName == "MaintenanceAssetDetails" ||
+                    assetItems.reportName == "MaintenanceHistory"
+
                 //assetItems.reportName == "Engine Idle" ||
                 //assetItems.reportName == "Engine Idle" ||
                 //assetItems.reportName == "Asset Event Count" ||
@@ -331,7 +334,7 @@ class AddReportViewModel extends InsiteViewModel {
                 templateAssets.reportName == "EngineIdle" ||
                 // templateAssets.reportName == "BackhoeLoaderOperation" ||
                 templateAssets.reportName == "AssetEventCountReport") {
-              reportFleetAssets!.add(templateAssets.reportTypeName!);
+              //reportFleetAssets!.add(templateAssets.reportTypeName!);
             }
           }
         }

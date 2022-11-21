@@ -3375,11 +3375,25 @@ maintenanceIntervals(
     return data;
   }
 
+//   updateMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
+//     var data = """
+// mutation{
+//   updateMaintenanceIntervals(
+//     intervalList:${Utils.updateMaintenanceIntervals(mainInterval)}
+//     checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
+//     status,
+//      message
+//   }
+// }""";
+//     return data;
+//   }
+
+  
   updateMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
     var data = """
 mutation{
   updateMaintenanceIntervals(
-    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)}
+    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)},
     checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
     status,
      message
