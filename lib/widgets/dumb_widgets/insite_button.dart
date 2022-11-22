@@ -15,6 +15,7 @@ class InsiteButton extends StatelessWidget {
   final String? content;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
+   final bool? isToShowBorder;
 
   final bool isSelectable;
   const InsiteButton(
@@ -29,7 +30,8 @@ class InsiteButton extends StatelessWidget {
       this.height,
       this.fontSize,
       this.icon,
-      this.textColor});
+      this.textColor,
+      this.isToShowBorder});
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +43,12 @@ class InsiteButton extends StatelessWidget {
         margin: margin != null ? margin : EdgeInsets.all(0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          border:
-              Border.all(color: Theme.of(context).textTheme.bodyText1!.color!),
+        
+              border: isToShowBorder == null || isToShowBorder == true
+              ? Border.all(color: Theme.of(context).textTheme.bodyText1!.color!)
+              : null,
           color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
+          
         ),
         alignment: Alignment.center,
         height: height != null ? height : null,

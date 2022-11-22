@@ -1132,6 +1132,14 @@ class Utils {
         : buttonColorFive;
   }
 
+   static Color defColors(double? defValues) {
+    if (defValues! > 20) {
+      return Color(0xFF5A6EFA);
+    } else {
+      return Colors.red;
+    }
+  }
+
   static Color getMaintenanceColor(text) {
     return text != null && text != null
         ? text.toLowerCase() == "Overdue" || text.toLowerCase() == "Overdue"
