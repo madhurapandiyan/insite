@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:logger/logger.dart';
 
 class InsiteButton extends StatelessWidget {
   final String? title;
@@ -11,14 +12,14 @@ class InsiteButton extends StatelessWidget {
   final double? width;
   final double? height;
   final Icon? icon;
-  final String ?content;
+  final String? content;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
- 
+
   final bool isSelectable;
   const InsiteButton(
       {this.title,
-     this.content,
+      this.content,
       this.width,
       this.onTap,
       this.isSelectable = false,
@@ -32,6 +33,7 @@ class InsiteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -57,10 +59,11 @@ class InsiteButton extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: fontSize != null ? fontSize : 12.0,
-                  color:  content == "HIGH"||content=="Overdue"
+                  color: content == "HIGH" ||
+                          content == "Overdue" ||
+                          content == "High"
                       ? white
                       : Theme.of(context).textTheme.bodyText1!.color,
-                     
                   fontWeight: FontWeight.w700),
             ),
             icon != null ? icon! : SizedBox()

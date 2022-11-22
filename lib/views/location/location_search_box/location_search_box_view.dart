@@ -25,7 +25,7 @@ class LocationSearchBoxView extends StatelessWidget {
           Widget? _) {
         return Container(
           width: mediaQuerry.size.width * searchBoxWidth!,
-          height: mediaQuerry.size.height * 0.065,
+          height: mediaQuerry.size.height * 0.070,
           decoration: new BoxDecoration(
               color: Colors.white,
               borderRadius: new BorderRadius.all(new Radius.circular(8))),
@@ -35,21 +35,18 @@ class LocationSearchBoxView extends StatelessWidget {
                 return Row(
                   children: [
                     Container(
-                      //width: constrain.maxWidth * 0.28,
-
+                      width: constrain.maxWidth * 0.28,
                       decoration: new BoxDecoration(
                           color: Colors.white,
                           borderRadius:
                               new BorderRadius.all(new Radius.circular(8))),
                       child: screenType == ScreenType.ASSET_DETAIL
                           ? DropdownButton<String>(
-                            
                               isExpanded: false,
                               elevation: 0,
                               underline: Container(),
                               isDense: true,
                               iconSize: 0.0,
-
                               items: viewModel.assetDropDownList
                                   .map((map) => DropdownMenuItem(
                                         value: map,
@@ -98,7 +95,7 @@ class LocationSearchBoxView extends StatelessWidget {
                     // ),
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.only(bottom: 4),
+                       // padding: EdgeInsets.only(right: 6),
                         decoration: new BoxDecoration(
                             color: Colors.white,
                             borderRadius:
@@ -167,7 +164,7 @@ class LocationSearchBoxView extends StatelessWidget {
                             ),
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(
-                                    left: 8, top: 12, bottom: 10),
+                                    left: 2, top: 10, bottom: 10),
                                 isDense: true,
                                 border: InputBorder.none,
                                 focusedBorder: InputBorder.none,

@@ -697,9 +697,9 @@ class DashboardViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         graphqlSchemaService!.getFaultCountData(
             prodFamily: dropDownValue,
-            startDate: Utils.getFaultDateFormatStartDate(
+            startDate: Utils.getFaultDateFilterFormatStartDate(
                 DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
-            endDate: Utils.getFaultDateFormatEndDate(
+            endDate: Utils.getFaultDateFilterFormatEndDate(
                 DateTime.now())));
     if (count != null) {
       _faultCountData = count;
