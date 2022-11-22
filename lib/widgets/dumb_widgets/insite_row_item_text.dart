@@ -205,7 +205,7 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
           ),
           content!.isNotEmpty
               ? InsiteButton(
-                 content: content,
+                  content: content,
                   bgColor: buttonColor != null ? buttonColor : buttonColorFive,
                   title: content,
                   padding: EdgeInsets.all(0),
@@ -252,7 +252,7 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
           ),
           content!.isNotEmpty
               ? InsiteButton(
-                 content: content,
+                  content: content,
                   bgColor: buttonColor != null ? buttonColor : buttonColorFive,
                   title: content,
                   padding: EdgeInsets.all(0),
@@ -268,7 +268,6 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
                   color: athenGrey,
                   size: 14,
                   fontWeight: FontWeight.bold,
-                  
                 ),
         ],
       ),
@@ -309,6 +308,7 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 4.0, horizontal: 4),
                           child: InsiteButton(
+                            content: text.countOf,
                             bgColor: Utils.getFaultColor(text.countOf),
                             title: text.count.toString(),
                             padding: EdgeInsets.all(0),

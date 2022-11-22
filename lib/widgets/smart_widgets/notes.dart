@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/note.dart';
+
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -10,6 +11,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 class Notes extends StatelessWidget {
   Notes(
       {Key? key,
+     
       required this.controller,
       required this.onTap,
       required this.isLoading,
@@ -21,6 +23,7 @@ class Notes extends StatelessWidget {
   final Function onTap;
   final bool isLoading;
   final List<Note> notes;
+  
   Function(String)? onDelete;
   @override
   Widget build(BuildContext context) {
@@ -59,7 +62,7 @@ class Notes extends StatelessWidget {
                   alignment: AlignmentDirectional.bottomEnd,
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.19,
                       child: Material(
                         elevation: 5.0,
                         borderRadius: BorderRadius.all(
@@ -115,59 +118,91 @@ class Notes extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.2,
                       child: SingleChildScrollView(
                           child: Column(
-                        children: List.generate(
-                            notes.length,
-                            (index) => Container(
-                                  width: double.infinity,
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (ctx) => AlertDialog(
-                                                        title: InsiteText(
-                                                            text: "Notes"),
-                                                        content: InsiteText(
-                                                          text: notes[index]
-                                                              .assetUserNote,
-                                                        ),
-                                                        // onOkClicked: () {
-                                                        //   Navigator.of(context)
-                                                        //       .pop();
-                                                        // },
-                                                      ));
-                                            },
-                                            icon: Icon(Icons.remove_red_eye)),
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.3,
-                                          child: InsiteTableRowItem(
-                                            title: notes[index].userName,
-                                            overFlow: TextOverflow.ellipsis,
-                                            content:
-                                                Utils.getLastReportedDateOneUTC(
-                                                    notes[index]
-                                                        .lastModifiedUTC),
-                                          ),
+                        children: [
+                          Row(
+                            children: [
+                              InsiteButton(
+                                title: "NOTES",
+                                textColor: white,
+                                isToShowBorder: false,
+                                onTap: () {},
+                              ),
+                              Expanded(
+                                child: InsiteButton(
+                                  title: "AUTHOR & POSTED ON",
+                                  textColor: white,
+                                  isToShowBorder: false,
+                                  onTap: () {},
+                                ),
+                              ),
+                              InsiteButton(
+                                title: "DELETE",
+                                textColor: white,
+                                isToShowBorder: false,
+                                onTap: () {},
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: List.generate(
+                                notes.length,
+                                (index) => Container(
+                                      width: double.infinity,
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                                onPressed: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (ctx) =>
+                                                          AlertDialog(
+                                                            title: InsiteText(
+                                                                text: "Notes"),
+                                                            content: InsiteText(
+                                                              text: notes[index]
+                                                                  .assetUserNote,
+                                                                  maxLines: 10,
+                                                            ),
+                                                            // onOkClicked: () {
+                                                            //   Navigator.of(context)
+                                                            //       .pop();
+                                                            // },
+                                                          ));
+                                                },
+                                                icon:
+                                                    Icon(Icons.remove_red_eye)),
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.3,
+                                              child: InsiteTableRowItem(
+                                                title: notes[index].userName,
+                                                overFlow: TextOverflow.ellipsis,
+                                                content:
+                                                   
+                                                        notes[index]
+                                                            .lastModifiedUTC,
+                                                       
+                                              ),
+                                            ),
+                                            // InsiteText(
+                                            //     text:
+                                            //     size: 12),
+                                            IconButton(
+                                                onPressed: () {
+                                                  onDelete!(notes[index]
+                                                      .userAssetNoteUID!);
+                                                },
+                                                icon: Icon(Icons.delete)),
+                                          ],
                                         ),
-                                        // InsiteText(
-                                        //     text:
-                                        //     size: 12),
-                                        IconButton(
-                                            onPressed: () {
-                                              onDelete!(notes[index]
-                                                  .userAssetNoteUID!);
-                                            },
-                                            icon: Icon(Icons.delete)),
-                                      ],
-                                    ),
-                                  ),
-                                )),
+                                      ),
+                                    )),
+                          )
+                        ],
                       )),
                     )
                   : SizedBox(),
