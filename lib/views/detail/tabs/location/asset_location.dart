@@ -51,7 +51,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
           return InsiteProgressBar();
         } else {
           return Container(
-            height: 600,
+            // height: 400,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               border: Border.all(
@@ -123,11 +123,11 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                 ),
                 viewModel.dataNotFound
                     ? Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: EmptyView(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: EmptyView(
                           title: "No Data Found",
                         ),
-                    )
+                      )
                     : Expanded(
                         child: Stack(
                           alignment: Alignment.bottomRight,
@@ -187,7 +187,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                               alignment: Alignment.topLeft,
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 5, left: 20),
+                                    const EdgeInsets.only(top: 9, left: 15),
                                 child: LocationSearchBoxView(
                                   screenType: ScreenType.ASSET_DETAIL,
                                   searchBoxWidth: 0.6,

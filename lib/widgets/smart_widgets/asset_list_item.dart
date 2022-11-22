@@ -93,12 +93,14 @@ class AssetOperationListItem extends StatelessWidget {
                             },
                           ),
                           InsiteTableRowItem(
-                            title: "Distance Traveled",
+                            title: "Distance Travelled",
                             content: asset != null &&
                                     asset!.distanceTravelledKilometers != null
                                 ? asset!.distanceTravelledKilometers!
-                                    .round()
-                                    .toString() +" " +"km"
+                                        .round()
+                                        .toString() +
+                                    " " +
+                                    "km"
                                 : "-",
                           ),
                         ],
@@ -124,9 +126,8 @@ class AssetOperationListItem extends StatelessWidget {
   }
 
   List<SliderData> getSliderData() {
-    
     List<SliderData> list = [];
-   
+
     for (DateTime time in days!) {
       String day = DateFormat('EEE').format(time);
       SliderData data = SliderData(

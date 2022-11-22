@@ -940,7 +940,7 @@ class Utils {
         var data = tatahitachi
             .singleWhere((element) => element.assetIconKey == iconKey);
         if (data != null) {
-          Logger().v("data");
+         
           return data.image;
         } else {
           return "assets/images/0.png";
@@ -1130,6 +1130,14 @@ class Utils {
                     ? Colors.yellow
                     : buttonColorFive
         : buttonColorFive;
+  }
+
+   static Color defColors(double? defValues) {
+    if (defValues! > 20) {
+      return Color(0xFF5A6EFA);
+    } else {
+      return Colors.red;
+    }
   }
 
   static Color getMaintenanceColor(text) {
@@ -1775,6 +1783,21 @@ class Utils {
       return "";
     }
   }
+  static getFaultDateFilterFormatStartDate(DateTime? value) {
+    try {
+      var parseDate = DateFormat("yyyy-MM-dd").format(value!);
+
+      var inputDate = DateTime.parse(parseDate)
+          .add(Duration(hours: 00, seconds: 00, minutes: 00));
+      //.add(Duration(days: 1));
+      Logger().e(inputDate);
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
 
   static getFaultDateFormatEndDate(DateTime? value) {
     try {
@@ -1783,6 +1806,21 @@ class Utils {
       var inputDate = DateTime.parse(parseDate)
           .add(Duration(hours: 15, seconds: 59, minutes: 59))
       .add(Duration(days: 1));
+
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+  static getFaultDateFilterFormatEndDate(DateTime? value) {
+    try {
+      var parseDate = DateFormat("yyyy-MM-dd").format(value!);
+
+      var inputDate = DateTime.parse(parseDate)
+          .add(Duration(hours: 23, seconds: 59, minutes: 59));
+      //.add(Duration(days: 1));
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
