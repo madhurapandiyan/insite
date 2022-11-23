@@ -292,7 +292,8 @@ class _TabPageState extends State<AssetDetailView> {
                               children: [
                                 Wrap(
                                   direction: Axis.horizontal,
-                                  spacing: 15,
+                                  // spacing: 15,
+                                  alignment: WrapAlignment.spaceBetween,
                                   children:
                                       List.generate(typeTwo.length, (index) {
                                     Category category = typeTwo[index];
@@ -310,8 +311,9 @@ class _TabPageState extends State<AssetDetailView> {
                               children: [
                                 Expanded(
                                   child: Wrap(
+                                    alignment: WrapAlignment.spaceBetween,
                                     direction: Axis.horizontal,
-                                    spacing: 15,
+                                    // spacing: 15,
                                     children:
                                         List.generate(typeOne.length, (index) {
                                       Category category = typeOne[index];
@@ -400,6 +402,8 @@ class _TabPageState extends State<AssetDetailView> {
                                                           top: 5),
                                                       child: PopupMenuButton(
                                                         iconSize: 35,
+                                                        icon: Icon(
+                                                            Icons.more_vert),
                                                         itemBuilder: (ctx) {
                                                           return List.generate(
                                                               viewModel

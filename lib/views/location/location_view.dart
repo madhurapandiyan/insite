@@ -42,10 +42,8 @@ class _LocationViewState extends State<LocationView> {
         AppConfig.instance!.productFlavor == "cummins") {
     } else {
       currentLocation.onLocationChanged.listen((LocationData loc) {
-        
-          latitude = loc.latitude;
-          longitude = loc.longitude;
-        
+        latitude = loc.latitude;
+        longitude = loc.longitude;
       });
     }
   }
@@ -142,6 +140,7 @@ class _LocationViewState extends State<LocationView> {
                             child: Stack(
                               children: [
                                 GoogleMap(
+                                  mapToolbarEnabled: false,
                                   myLocationEnabled: false,
                                   myLocationButtonEnabled: false,
                                   padding: EdgeInsets.only(

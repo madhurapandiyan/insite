@@ -185,7 +185,7 @@ class LocalService extends BaseService {
     return preferences!.getString(MAINTENANCE_STARTDATE);
   }
 
-  void clearAll() async {
+  clearAll() async {
     await preferences!.remove("codeVerifierInfo");
     await preferences!.remove(CUSTOMER_INFO);
     await preferences!.remove(TOKEN_INFO);

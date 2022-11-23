@@ -46,6 +46,7 @@ class _GeofencingMapState extends State<GeofencingMap> {
   Widget build(BuildContext context) {
     return GoogleMaps(
       controller: GoogleMapsController(
+          mapToolbarEnabled: false,
           onMapCreated: (controller) {
             widget.completer!.complete(controller);
             widget.customInfoWindowController!.googleMapController = controller;

@@ -244,6 +244,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
             mapType: _changemap(),
             compassEnabled: true,
             zoomControlsEnabled: false,
+            mapToolbarEnabled: false,
             markers: _markers,
             gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
               new Factory<OneSequenceGestureRecognizer>(
