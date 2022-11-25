@@ -5,11 +5,13 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/asset.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_service.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/services/asset_status_service.dart';
+import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -24,7 +26,7 @@ class AssetOperationViewModel extends InsiteViewModel {
   service.NavigationService? _navigationService =
       locator<service.NavigationService>();
   AssetStatusService? _assetStatusService = locator<AssetStatusService>();
-
+  DateRangeService? _dateRangeService = locator<DateRangeService>();
   List<Asset> _assets = [];
   List<Asset> get assets => _assets;
 
@@ -224,6 +226,14 @@ class AssetOperationViewModel extends InsiteViewModel {
       }
       Logger().d("result ${assetCount.toJson()}");
     }
+    notifyListeners();
+  }
+
+  updateDateRangeLandingPage(FilterData? date) async {
+    await clearFilterDb();
+
+    await addFilter(date!);
+    await _dateRangeService!.updateDateFilter(date);
     notifyListeners();
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/date_slider.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 import 'insite_expansion_tile.dart';
 
@@ -12,7 +14,7 @@ class AssetOperationListItem extends StatelessWidget {
   final Asset? asset;
   final List<DateTime>? days;
   final VoidCallback? onCallback;
-  final VoidCallback? sliderCallBack;
+  final Function(FilterData date)? sliderCallBack;
   const AssetOperationListItem(
       {this.asset, this.onCallback, this.days, this.sliderCallBack});
 
@@ -110,8 +112,8 @@ class AssetOperationListItem extends StatelessWidget {
                   tilePadding: EdgeInsets.all(0),
                   children: [
                     DateSlider(
-                      sliderCallBack: () {
-                        sliderCallBack!();
+                      sliderCallBack: (FilterData? date) {
+                        sliderCallBack!(date!);
                       },
                       list: getSliderData(),
                     )
@@ -130,7 +132,9 @@ class AssetOperationListItem extends StatelessWidget {
 
     for (DateTime time in days!) {
       String day = DateFormat('EEE').format(time);
+     
       SliderData data = SliderData(
+          dateTime: time,
           day: day,
           date: time.day.toString(),
           value: getMatchingDate(time) != null

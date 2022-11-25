@@ -426,6 +426,8 @@ class Utils {
     }
   }
 
+  
+
   static String getDateInFormatMMddyyyy(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
@@ -940,7 +942,6 @@ class Utils {
         var data = tatahitachi
             .singleWhere((element) => element.assetIconKey == iconKey);
         if (data != null) {
-         
           return data.image;
         } else {
           return "assets/images/0.png";
@@ -1132,7 +1133,8 @@ class Utils {
         : buttonColorFive;
   }
 
-   static Color defColors(double? defValues) {
+  static Color defColors(double? defValues) {
+    Logger().w(defValues);
     if (defValues! > 20) {
       return Color(0xFF5A6EFA);
     } else {
@@ -1783,6 +1785,7 @@ class Utils {
       return "";
     }
   }
+
   static getFaultDateFilterFormatStartDate(DateTime? value) {
     try {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
@@ -1805,7 +1808,7 @@ class Utils {
 
       var inputDate = DateTime.parse(parseDate)
           .add(Duration(hours: 15, seconds: 59, minutes: 59))
-      .add(Duration(days: 1));
+          .add(Duration(days: 1));
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
@@ -1814,6 +1817,7 @@ class Utils {
       return "";
     }
   }
+
   static getFaultDateFilterFormatEndDate(DateTime? value) {
     try {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);

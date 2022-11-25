@@ -166,8 +166,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
               //viewModel.refresh();
             },
             body: SingleChildScrollView(
-              child:
-               Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(

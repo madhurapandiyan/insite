@@ -119,7 +119,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   Timer? deBounce;
   onChange() {
     Logger().w(searchController.text);
-    if (searchController.text.length >= 4) {
+    if (searchController.text.length >= 4||searchController.text.length==1) {
       if (deBounce?.isActive ?? false) {
         deBounce!.cancel();
       }

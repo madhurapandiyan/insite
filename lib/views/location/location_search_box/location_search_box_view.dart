@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/location/location_search_box/location_search_box_view_model.dart';
+import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -95,7 +96,7 @@ class LocationSearchBoxView extends StatelessWidget {
                     // ),
                     Expanded(
                       child: Container(
-                       // padding: EdgeInsets.only(right: 6),
+                        // padding: EdgeInsets.only(right: 6),
                         decoration: new BoxDecoration(
                             color: Colors.white,
                             borderRadius:
@@ -172,7 +173,13 @@ class LocationSearchBoxView extends StatelessWidget {
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    Container(
+                        width: 20,
+                        height: 20,
+                        child: viewModel.isSerching!
+                            ? InsiteProgressBar()
+                            : SizedBox())
                   ],
                 );
               })),

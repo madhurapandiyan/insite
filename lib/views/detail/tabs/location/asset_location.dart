@@ -133,6 +133,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                           alignment: Alignment.bottomRight,
                           children: [
                             GoogleMap(
+                                mapToolbarEnabled: false,
                                 onTap: (position) {
                                   viewModel.customInfoWindowController
                                       .hideInfoWindow!();

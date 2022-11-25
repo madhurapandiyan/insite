@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/insite_data_provider.dart';
-
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/addgeofense/add_geofence_widget/location_search.dart/location_search_widget.dart';
@@ -42,10 +41,8 @@ class _LocationViewState extends State<LocationView> {
         AppConfig.instance!.productFlavor == "cummins") {
     } else {
       currentLocation.onLocationChanged.listen((LocationData loc) {
-        
-          latitude = loc.latitude;
-          longitude = loc.longitude;
-        
+        latitude = loc.latitude;
+        longitude = loc.longitude;
       });
     }
   }
@@ -142,6 +139,7 @@ class _LocationViewState extends State<LocationView> {
                             child: Stack(
                               children: [
                                 GoogleMap(
+                                  mapToolbarEnabled: false,
                                   myLocationEnabled: false,
                                   myLocationButtonEnabled: false,
                                   padding: EdgeInsets.only(

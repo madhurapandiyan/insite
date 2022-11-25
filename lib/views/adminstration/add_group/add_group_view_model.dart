@@ -233,10 +233,17 @@ class AddGroupViewModel extends InsiteViewModel {
     }
   }
 
-  onAddingAsset(int i, dynamic selectedData) {
+  onAddingAsset(int i, Asset? selectedData) {
     if (selectedData != null) {
-      assetIdresult?.assetDetailsRecords?.remove(selectedData);
-      selectedAsset?.add(selectedData);
+      if (selectedAsset!.any((element) =>
+          element.assetIdentifier == selectedData.assetIdentifier)) {
+        snackbarService!.showSnackbar(message: "Asset Already Selected");
+      } else {
+        assetIdresult?.assetDetailsRecords?.remove(selectedData);
+        // assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
+        //     element.assetIdentifier == selectedData.assetIdentifier);
+        selectedAsset?.add(selectedData);
+      }
     }
     notifyListeners();
   }
