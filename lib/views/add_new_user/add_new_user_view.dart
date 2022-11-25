@@ -165,7 +165,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                           widget.user != null ? true : false,
                                       controller:
                                           viewModel.phoneNumberController,
-                                      title: "Phone number: (Optional)",
+                                      title: "Phone number:(Optional)",
                                       isenabled: widget.isEdit == null ||
                                               widget.isEdit == false
                                           ? true
@@ -174,6 +174,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         if (value!.isEmpty) {
                                           return null;
                                         }
+                                        // else if (int.parse(value) <= 7) {
+                                        //   return "Enter Valid Phone Number";
+                                        // }
                                         String pattern =
                                             "^(?:[+0]9)?[0-9]{7,15}\$";
                                         RegExp regex = new RegExp(pattern);
@@ -356,7 +359,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                           padding:
                                               const EdgeInsets.only(left: 10.0),
                                           child: CustomDropDownWidget(
-                                            textColorChange:widget.user != null ? true : false,
+                                            textColorChange: widget.user != null
+                                                ? true
+                                                : false,
                                             items: viewModel.jobTypeList,
                                             onChanged: (String? value) {
                                               unfocus();

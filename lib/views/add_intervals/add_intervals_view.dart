@@ -768,8 +768,13 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                 InsiteButton(
                   textColor: white,
                   onTap: () {
-                    widget.viewModel!.onIntervalSaved();
-                    Logger().wtf('save');
+                    if (widget.viewModel!.isEditing) {
+                      widget.viewModel!.editInterval();
+                    } else {
+                      widget.viewModel!.onIntervalSaved();
+                    }
+
+                    //widget.viewModel!.onIntervalSaved();
                   },
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width * 0.4,
