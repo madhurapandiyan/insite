@@ -20,6 +20,8 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
 
   String? searchDropDownValue = "S/N";
 
+  bool? isSerching=false;
+
   String? searchLocationDropDownValue = "Location";
 
   TextEditingController searchController = TextEditingController();
@@ -29,7 +31,9 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
   AssetLocationSearch? result;
 
   searchLocation(query) async {
-    SearchLocationGeofence? result =
+    if(query!=null){
+      isSerching=true;
+ SearchLocationGeofence? result =
         await _assetLocationService.getGeofenceSerachLocationData(
             graphqlSchemaService!.searchLocationData(10, query));
     if (result?.geofenceSearchLoaction?.locations != null &&
@@ -44,6 +48,10 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
         list!.add(data);
       });
     }
+    }
+    isSerching=false;
+    notifyListeners();
+   
   }
 
   onChangedDropDownValue(String? value) {
@@ -52,7 +60,9 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
   }
 
   searchLocationSeralNumber(String value) async {
-    result = await _assetLocationService.getAssetLocationsearch(
+    if(value!=null){
+      isSerching=true;
+result = await _assetLocationService.getAssetLocationsearch(
         graphqlSchemaService!.searchLocationSerialNumberData(
             query: value, pageNumber: 1, pageSize: 1000));
 
@@ -66,6 +76,12 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
         list!.add(data);
       });
     }
+    
+    }
+    isSerching=false;
+    notifyListeners();
+    
+
   }
 
   onSearchTextChanged(String? value,ScreenType screenType) async {

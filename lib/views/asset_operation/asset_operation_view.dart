@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/asset.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -179,7 +180,9 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                                             viewModel
                                                 .onDetailPageSelected(asset);
                                           },
-                                          sliderCallBack: (){
+                                          sliderCallBack: (FilterData? date){
+                                            Logger().e(date);
+                                            viewModel.updateDateRangeLandingPage(date);
                                             viewModel
                                                 .onDetailPageSelected(asset);
                                           },

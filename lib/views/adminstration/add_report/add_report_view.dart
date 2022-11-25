@@ -105,6 +105,20 @@ class _AddReportViewState extends State<AddReportView> {
                                   value: viewModel.assetsDropDownValue,
                                   onChanged: (String? value) {
                                     viewModel.assetsDropDownValue = value;
+                                    if (viewModel.assetsDropDownValue ==
+                                            "Backhoe Loader Operation" ||
+                                        viewModel.assetsDropDownValue ==
+                                            "Utilization Details" ||
+                                        viewModel.assetsDropDownValue ==
+                                            "Excavator Usage") {
+                                      viewModel.choiseData = ["Assets"];
+                                    } else {
+                                      viewModel.choiseData = [
+                                        "Assets",
+                                        "Groups",
+                                        "Geofences",
+                                      ];
+                                    }
                                     setState(() {});
                                   },
                                   items: viewModel.reportFleetAssets,
@@ -434,107 +448,95 @@ class _AddReportViewState extends State<AddReportView> {
                                 fontWeight: FontWeight.w700,
                               )
                             : Container(),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: InsiteText(
-                            text: "Choose by : ",
-                            size: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
                         Container(
-                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.05,
                           decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color!,
-                              ),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: CustomDropDownWidget(
-                            value: viewModel.assetSelectionValue,
-                            items: viewModel.choiseData,
-                            enableHint: true,
-                            onChanged: (String? value) {
-                              viewModel.updateModelValueChooseBy(value!);
-                            },
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(width: 1, color: black),
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: CustomDropDownWidget(
+                              items: viewModel.choiseData,
+                              value: viewModel.assetSelectionValue,
+                              onChanged: (String? value) {
+                                viewModel.updateModelValue(value!);
+                              },
+                            ),
                           ),
                         ),
                         SizedBox(
                           height: 15,
                         ),
-                        viewModel.chooseByDropDownValue == "Assets"
-                            ? Column(
-                                children: [
-                                  viewModel.isAssetLoading
-                                      ? Center(
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.45,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.85,
-                                            child: Card(
-                                              child: Center(
-                                                child: InsiteProgressBar(),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : AssetSelectionWidgetView(
-                                          dropdownValue:
-                                              viewModel.assetSelectionValue,
-                                          isAddingAllAsset: viewModel
-                                                          .assetsDropDownValue ==
-                                                      "Utilization Details" ||
-                                                  viewModel
-                                                          .assetsDropDownValue ==
-                                                      "Fault Code Asset Details"
-                                              ? false
-                                              : true,
-                                          onRemoving: () {
-                                            viewModel.onRemoving();
-                                          },
-                                          key: viewModel.assetSelectionState,
-                                          addingAllAsset: (data) {
-                                            viewModel.onAddingAllAsset(data);
-                                          },
-                                          onAddingAsset: (i, value) {
-                                            viewModel.onAddingAsset(i, value);
-                                          },
-                                          assetData: (value) {},
-                                          assetResult: viewModel.assetIdresult,
+                        // viewModel.chooseByDropDownValue == "Assets"
+                        //     ?
+                        Column(
+                          children: [
+                            viewModel.isAssetLoading
+                                ? Center(
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.45,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.85,
+                                      child: Card(
+                                        child: Center(
+                                          child: InsiteProgressBar(),
                                         ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  SelectedAsset(
-                                    selectedDropDownValue:
+                                      ),
+                                    ),
+                                  )
+                                : AssetSelectionWidgetView(
+                                    isAddingAllAsset:
+                                        viewModel.assetsDropDownValue ==
+                                                    "Utilization Details" ||
+                                                viewModel.assetsDropDownValue ==
+                                                    "Fault Code Asset Details"
+                                            ? false
+                                            : true,
+                                    dropdownValue:
                                         viewModel.assetSelectionValue,
-                                    isLoading: viewModel.isAssetLoading,
-                                    dropDownList: viewModel.dropDownList,
-                                    initialValue: viewModel.initialValue,
-                                    onChangeSearchBox: (value) {
-                                      viewModel.onChangingSelectedAsset(value);
+                                    onRemoving: () {
+                                      viewModel.onRemoving();
                                     },
-                                    onChange: (value) {
-                                      viewModel.onChangingInitialValue(value);
+                                    key: viewModel.assetSelectionState,
+                                    addingAllAsset: (data) {
+                                      viewModel.onAddingAllAsset(data);
                                     },
-                                    onDeletingSelectedAsset: (i) {
-                                      viewModel.onDeletingAsset(i);
+                                    onAddingAsset: (i, value) {
+                                      viewModel.onAddingAsset(i, value);
                                     },
-                                    displayList: viewModel.isSearching
-                                        ? viewModel.searchAsset
-                                        : viewModel.selectedAsset,
+                                    assetData: (value) {},
+                                    assetResult: viewModel.assetIdresult,
                                   ),
-                                ],
-                              )
-                            : Container(),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            SelectedAsset(
+                              selectedDropDownValue:
+                                  viewModel.assetSelectionValue,
+                              isLoading: viewModel.isAssetLoading,
+                              dropDownList: viewModel.dropDownList,
+                              initialValue: viewModel.initialValue,
+                              onChangeSearchBox: (value) {
+                                viewModel.onChangingSelectedAsset(value);
+                              },
+                              onChange: (value) {
+                                viewModel.onChangingInitialValue(value);
+                              },
+                              onDeletingSelectedAsset: (i) {
+                                viewModel.onDeletingAsset(i);
+                              },
+                              displayList: viewModel.isSearching
+                                  ? viewModel.searchAsset
+                                  : viewModel.selectedAsset,
+                            ),
+                          ],
+                        ),
+                        //: ,
+                        //  Container(),
                         SizedBox(
                           height: 30,
                         ),

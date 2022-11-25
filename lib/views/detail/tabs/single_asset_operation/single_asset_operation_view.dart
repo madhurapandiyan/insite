@@ -261,11 +261,11 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                             .bodyText1!
                                             .color),
                                   ),
-                                  minDate:
-                                      DateTime.tryParse(viewModel.startDate!),
-                                  maxDate:
-                                      DateTime.tryParse(viewModel.endDate!)!
-                                          .add(Duration(days: 1)),
+                                  // minDate:
+                                  //     DateTime.tryParse(viewModel.startDate!),
+                                  // maxDate:
+                                  //     DateTime.tryParse(viewModel.endDate!)!
+                                  //         .add(Duration(days: 1)),
                                   onViewChanged: onViewChanged,
                                   viewHeaderStyle: ViewHeaderStyle(
                                     dayTextStyle: TextStyle(
