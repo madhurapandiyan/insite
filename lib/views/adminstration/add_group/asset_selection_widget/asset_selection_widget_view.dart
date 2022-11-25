@@ -57,7 +57,6 @@ class AssetSelectionWidgetViewState extends State<AssetSelectionWidgetView> {
 
   @override
   Widget build(BuildContext context) {
-  
     var mediaQuery = MediaQuery.of(context);
     var theme = Theme.of(context);
     return ViewModelBuilder<AssetSelectionWidgetViewModel>.reactive(

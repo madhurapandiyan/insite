@@ -165,14 +165,15 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                           widget.user != null ? true : false,
                                       controller:
                                           viewModel.phoneNumberController,
-                                      title: "Phone number: (Optional)",
+                                      // :(Optional)
+                                      title: "Phone number",
                                       isenabled: widget.isEdit == null ||
                                               widget.isEdit == false
                                           ? true
                                           : false,
                                       validator: (value) {
                                         if (value!.isEmpty) {
-                                          return null;
+                                          return 'Enter Valid Phone Number';
                                         }
                                         String pattern =
                                             "^(?:[+0]9)?[0-9]{7,15}\$";
@@ -356,7 +357,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                           padding:
                                               const EdgeInsets.only(left: 10.0),
                                           child: CustomDropDownWidget(
-                                            textColorChange:widget.user != null ? true : false,
+                                            textColorChange: widget.user != null
+                                                ? true
+                                                : false,
                                             items: viewModel.jobTypeList,
                                             onChanged: (String? value) {
                                               unfocus();

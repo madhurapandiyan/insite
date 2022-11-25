@@ -210,6 +210,10 @@ class AddReportViewModel extends InsiteViewModel {
         assetsDropDownValue = templateTitleValue;
       } else if (templateTitleValue == "Multi-Asset Excavator Usage") {
         assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Maintenance Asset Details") {
+        assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Maintenance History") {
+        assetsDropDownValue = templateTitleValue;
       }
 
       reportFleetAssets!
