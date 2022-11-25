@@ -6,7 +6,6 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_report_payload.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/edit_report_response.dart';
-import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/core/models/search_contact_report_list_response.dart';
 import 'package:insite/core/models/template_response.dart';
@@ -15,12 +14,12 @@ import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/add_report/fault_code_model.dart';
-import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/manage_report/manage_report_view.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:intl/intl.dart';
 
 import '../add_group/asset_selection_widget/asset_selection_widget_view.dart';
 
@@ -28,24 +27,18 @@ class AddReportViewModel extends InsiteViewModel {
   Logger? log;
   AssetAdminManagerUserService? _manageUserService =
       locator<AssetAdminManagerUserService>();
+  final Geofenceservice? _geofenceservice = locator<Geofenceservice>();
   AddReportPayLoad? addReportPayLoad;
   List<String>? reportFleetAssets = ["Select"];
   List<String>? reportServiceAssets = [];
   List<String>? reportProductivityAssets = [];
   List<String>? reportStandartAssets = [];
-  String? assetSelectionValue = "Assets";
-  final Geofenceservice? _geofenceservice = locator<Geofenceservice>();
-
-  List<String> _choiseData = ["Assets", "Geofences", "Groups"];
-  List<String> get choiseData => _choiseData;
 
   List<User>? searchContactListName = [];
   List<String>? associatedIdentifier = [];
 
   List<String>? svcBody = [];
   List<AddGroupModel>? selectedItemAssets = [];
-
-  EditReportResponse? resultData;
 
   final SnackbarService? _snackBarservice = locator<SnackbarService>();
 
@@ -65,10 +58,6 @@ class AddReportViewModel extends InsiteViewModel {
 
   bool isListViewState = false;
 
-  Geofence? geofenceData;
-
-  ManageGroupSummaryResponse? groupResult;
-
   bool isLoading = true;
   bool isAssetLoading = true;
   int? reportFormat;
@@ -77,6 +66,15 @@ class AddReportViewModel extends InsiteViewModel {
 
   List<String>? selectedContactItems = [];
   List<User> selectedUser = [];
+
+  List<String> choiseData = [
+    "Assets",
+    "Groups",
+    "Geofences",
+  ];
+  // List<String> _choiseData = ["Assets"];
+  //List<String> get choiseData => _choiseData;
+  String? assetSelectionValue;
 
   String? assetsDropDownValue = "Select";
 
@@ -106,92 +104,59 @@ class AddReportViewModel extends InsiteViewModel {
     ".XLSX",
     //".PDF"
   ];
+
+  final reportType1 = [
+    'Asset Operation',
+    'Fleet Summary',
+    'Multi Asset Utilization',
+    'Asset Usage Summary',
+    'Engine Idle',
+    // 'Backhoe Loader Operation',
+    'Asset Usage - Single Asset',
+    // 'Excavator Usage',
+    'Fleet Fuel',
+    'Fleet Status',
+    'Fleet Utilization',
+    'Fleet Summary',
+    'Fault Code',
+    'Multi-Asset Utilization',
+    'Multi-Asset Backhoe Loader Operation',
+    'Multi-Asset Excavator Usage',
+    'Maintenance Summary'
+  ];
   final GlobalKey<AssetSelectionWidgetViewState> assetSelectionState =
       new GlobalKey();
 
   AddReportViewModel(ScheduledReports? scheduledReports, bool? isEdit,
       String? dropdownValue, String? templateTitleValue) {
-    _geofenceservice!.setUp();
-    (_manageUserService!.setUp() as Future).then((_) {
-      this.scheduledReportsId = scheduledReports;
-      this.log = getLogger(this.runtimeType.toString());
-      if (isEdit == true) {
-        isEditing = isEdit!;
-        getEditReportData();
-      } else if (isEdit == false) {
-        Future.delayed(Duration.zero, () async {
-          await getTemplateReportAssetData();
-          await getGroupListData();
-        });
-      }
-      if (isEdit == null) {
-        Future.delayed(Duration.zero, () async {
-          getGroupListData();
-          getTemplateReportAssetData().then((_) {
-            getTemplateTitleValue(templateTitleValue!);
-            getDropDownValue(dropdownValue!);
+    
+      (_manageUserService!.setUp() as Future).then((_) {
+        this.scheduledReportsId = scheduledReports;
+        this.log = getLogger(this.runtimeType.toString());
+        _geofenceservice?.setUp();
+        if (isEdit == true) {
+          isEditing = isEdit!;
+          getEditReportData();
+        } else if (isEdit == false) {
+          Future.delayed(Duration.zero, () async {
+            await getTemplateReportAssetData();
+            await getGroupListData();
           });
-        });
-      }
-    });
+        }
+        if (isEdit == null) {
+          Future.delayed(Duration.zero, () async {
+            getGroupListData();
+            getTemplateReportAssetData().then((_) {
+              getTemplateTitleValue(templateTitleValue!);
+              getDropDownValue(dropdownValue!);
+            });
+          });
+        }
+      });
   }
 
   getListViewState() {
     isListViewState = true;
-    notifyListeners();
-  }
-
-  updateModelValueChooseBy(String value) async {
-    if (value == assetSelectionValue) {
-      return;
-    }
-    showLoadingDialog();
-    assetSelectionValue = value;
-    if (value == choiseData[1]) {
-      await getGeofenceListData();
-    } else if (value == choiseData[2]) {
-      await getGroupsListData();
-    } else {
-      await getGroupListData();
-    }
-    hideLoadingDialog();
-    notifyListeners();
-  }
-
-  getGeofenceListData() async {
-    geofenceData = await _geofenceservice!.getGeofenceData();
-    assetIdresult = AssetGroupSummaryResponse(
-        assetDetailsRecords: geofenceData!.geofences!
-            .map((e) => Asset(
-                  assetIdentifier: e.GeofenceUID,
-                  assetSerialNumber: e.GeofenceName,
-                ))
-            .toList());
-
-    isAssetLoading = false;
-    notifyListeners();
-  }
-
-  getGroupsListData() async {
-    groupResult =
-        await _manageUserService!.getManageGroupSummaryResponseListData(
-            1,
-            {
-              "pageNumber": 1,
-              "searchKey": "GroupName",
-              "searchValue": _searchKeyword,
-              "sort": ""
-            },
-            _searchKeyword);
-    assetIdresult = AssetGroupSummaryResponse(
-        assetDetailsRecords: groupResult!.groups!
-            .map((e) => Asset(
-                  assetIdentifier: e.GroupUid,
-                  assetSerialNumber: e.GroupName,
-                ))
-            .toList());
-
-    isAssetLoading = false;
     notifyListeners();
   }
 
@@ -280,7 +245,9 @@ class AddReportViewModel extends InsiteViewModel {
                 assetItems.reportName == "BackhoeLoaderOperation" ||
                 assetItems.reportName == "ExcavatorUsageReport" ||
                 assetItems.reportName == "MultiAssetBackhoeLoaderOperation" ||
-                assetItems.reportName == "MultiAssetExcavatorUsageReport") {
+                assetItems.reportName == "MultiAssetExcavatorUsageReport" ||
+                assetItems.reportName == "MaintenanceAssetDetails" ||
+                assetItems.reportName == "MaintenanceHistory") {
               reportFleetAssets!.add(assetItems.reportTypeName!);
             }
           }
@@ -298,10 +265,7 @@ class AddReportViewModel extends InsiteViewModel {
                     assetItems.reportName == "FaultSummaryFaultsList" ||
                     assetItems.reportName == "FaultCodeAssetDetails" ||
                     assetItems.reportName == "FleetSummary" ||
-                    assetItems.reportName == "Asset Location History" ||
-                    assetItems.reportName == "MaintenanceAssetDetails" ||
-                    assetItems.reportName == "MaintenanceHistory"
-
+                    assetItems.reportName == "Asset Location History"
                 //assetItems.reportName == "Engine Idle" ||
                 //assetItems.reportName == "Engine Idle" ||
                 //assetItems.reportName == "Asset Event Count" ||
@@ -334,7 +298,7 @@ class AddReportViewModel extends InsiteViewModel {
                 templateAssets.reportName == "EngineIdle" ||
                 // templateAssets.reportName == "BackhoeLoaderOperation" ||
                 templateAssets.reportName == "AssetEventCountReport") {
-              //reportFleetAssets!.add(templateAssets.reportTypeName!);
+              reportFleetAssets!.add(templateAssets.reportTypeName!);
             }
           }
         }
@@ -420,107 +384,110 @@ class AddReportViewModel extends InsiteViewModel {
   getEditReportData() async {
     try {
       //showLoadingDialog();
+      isAssetLoading = true;
       await getTemplateReportAssetData();
       reportFleetAssets!.clear();
       Logger().w(scheduledReportsId!.reportUid!);
-      resultData = await _manageUserService!.getEditReportData(
-          scheduledReportsId!.reportUid!,
-          graphqlSchemaService!
-              .getEditReportData(scheduledReportsId!.reportUid!));
+      EditReportResponse? resultData = await _manageUserService!
+          .getEditReportData(
+              scheduledReportsId!.reportUid!,
+              graphqlSchemaService!
+                  .getEditReportData(scheduledReportsId!.reportUid!));
       if (result != null) {
         Logger().w(resultData!.scheduledReport!.toJson());
-        editQueryUrl = resultData!.scheduledReport!.queryUrl;
+        editQueryUrl = resultData.scheduledReport!.queryUrl;
         result?.reports?.forEach((element) {
-          if (element.reportName == resultData!.scheduledReport!.reportType) {
+          if (element.reportName == resultData.scheduledReport!.reportType) {
             Logger().wtf(element.reportTypeName);
             Logger().wtf(element.reportName);
             assetsDropDownValue = element.reportTypeName;
           }
         });
-        if (resultData!.scheduledReport!.reportPeriod == 1) {
+        Logger().wtf(resultData.scheduledReport?.assetFilterCategoryID);
+        switch (resultData.scheduledReport?.assetFilterCategoryID) {
+          case 1:
+            assetSelectionValue = 'Assets';
+            break;
+          case 2:
+            assetSelectionValue = 'Groups';
+            svsBodyFormated = resultData.scheduledReport?.assetFilterUIDs;
+            Logger().wtf(svsBodyFormated!.toList());
+            getGroupListData();
+            break;
+          case 3:
+            assetSelectionValue = 'Geofences';
+            svsBodyFormated = resultData.scheduledReport?.assetFilterUIDs;
+            Logger().wtf(svsBodyFormated!.toList());
+            getGroupListData();
+            break;
+          default:
+        }
+        notifyListeners();
+        if (resultData.scheduledReport!.reportPeriod == 1) {
           frequencyDropDownValue = "Daily";
         }
-        if (resultData!.scheduledReport!.reportPeriod == 2) {
+        if (resultData.scheduledReport!.reportPeriod == 2) {
           frequencyDropDownValue = "Weekly";
         }
-        if (resultData!.scheduledReport!.reportPeriod == 3) {
+        if (resultData.scheduledReport!.reportPeriod == 3) {
           frequencyDropDownValue = "Monthly";
         }
         reportFleetAssets?.add(assetsDropDownValue!);
-        nameController.text = resultData!.scheduledReport!.reportTitle!;
-        reportFormat = resultData!.scheduledReport?.reportFormat;
+        nameController.text = resultData.scheduledReport!.reportTitle!;
+        reportFormat = resultData.scheduledReport?.reportFormat;
 
         // dateTimeController.text = DateFormat("yyyy-MM-dd").format(
         //     DateFormat("yyyy-MM-dd")
-        //         .parse(result.scheduledReport!.scheduleEndDate ?? ""));
+        //         .parse(resultData.scheduledReport?.scheduleEndDate ?? ""));
         emailIds!.clear();
         selectedUser.clear();
-        resultData!.scheduledReport!.emailRecipients!.forEach((element) {
+        resultData.scheduledReport!.emailRecipients!.forEach((element) {
           isShowingSelectedContact = true;
           emailIds!.add(element.email!);
           selectedUser
               .add(User(email: element.email, isVLUser: element.isVLUser));
         });
-
         serviceDueController.text =
-            resultData!.scheduledReport!.emailSubject ?? "-";
+            resultData.scheduledReport!.emailSubject ?? "-";
         emailContentController.text =
-            resultData!.scheduledReport!.emailContent ?? "-";
+            resultData.scheduledReport!.emailContent ?? "-";
 
         isLoading = false;
         notifyListeners();
-        if (resultData!.scheduledReport!.assetFilterCategoryID == 2) {
-          assetSelectionValue = "Groups";
-          await getGroupsListData();
-          groupResult!.groups!.forEach((element) {
-            if (resultData!.scheduledReport!.assetFilterUIDs!
-                .any((groupId) => groupId == element.GroupUid)) {
-              selectedAsset!.add(Asset(
-                assetIdentifier: element.GroupUid,
-                assetSerialNumber: element.GroupName,
-              ));
-            }
-          });
-        }
-       else if (resultData!.scheduledReport!.assetFilterCategoryID == 3) {
-          await getGeofenceListData();
-          assetSelectionValue = "Geofences";
-          geofenceData!.geofences!.forEach((element) {
-            if (resultData!.scheduledReport!.assetFilterUIDs!
-                .any((geofenceId) => geofenceId == element.GeofenceUID)) {
-              selectedAsset!.add(Asset(
-                assetIdentifier: element.GeofenceUID,
-                assetSerialNumber: element.GeofenceName,
-              ));
-            }
-          });
-        } else {
-          if (assetsDropDownValue == "Utilization Details" ||
-              assetsDropDownValue == "Fault Code Asset Details") {
-            var data = Utils.getAssetIdentifierFromUrl(editQueryUrl);
-            svsBodyFormated?.add(data!);
+        if (assetsDropDownValue == "Utilization Details" ||
+            assetsDropDownValue == "Fault Code Asset Details") {
+          var data = Utils.getAssetIdentifierFromUrl(editQueryUrl);
+          svsBodyFormated?.add(data!);
+          await getGroupListData();
+        } else if (assetsDropDownValue == "Fault Summary Faults List") {
+          svcBody = resultData.scheduledReport!.svcBody;
+          if (svcBody!.first.contains("assetuids")) {
+            svsBodyFormated =
+                Utils.getAssetIdentifierForFaultSummaryType(svcBody?.first);
+            svcBody?.clear();
             await getGroupListData();
-          } else if (assetsDropDownValue == "Fault Summary Faults List") {
-            svcBody = resultData!.scheduledReport!.svcBody;
-            if (svcBody!.first.contains("assetuids")) {
-              svsBodyFormated =
-                  Utils.getAssetIdentifierForFaultSummaryType(svcBody?.first);
-              svcBody?.clear();
-              await getGroupListData();
-            } else {
-              svsBodyFormated = Utils.getAssetIdentifier(svcBody?.first ?? "");
-              Logger().wtf(svsBodyFormated);
-              await getGroupListData();
-            }
           } else {
-            svcBody = resultData!.scheduledReport!.svcBody;
+            svsBodyFormated = Utils.getAssetIdentifier(svcBody?.first ?? "");
+            Logger().wtf(svsBodyFormated);
+            await getGroupListData();
+          }
+        } else {
+          if (resultData.scheduledReport?.assetFilterCategoryID == 1) {
+            svcBody = resultData.scheduledReport!.svcBody;
 
             svsBodyFormated = Utils.getAssetIdentifier(svcBody?.first ?? "");
+            Logger().e(svsBodyFormated?.toList());
             await getGroupListData();
+          } else {
+            // svcBody = resultData.scheduledReport!.assetFilterUIDs;
+
+            // svsBodyFormated = resultData.scheduledReport!.assetFilterUIDs;
+
+            // await getGroupListData();
           }
         }
 
-        editReportColumn = resultData!.scheduledReport!.reportColumns;
+        editReportColumn = resultData.scheduledReport!.reportColumns;
         hideLoadingDialog();
         notifyListeners();
       }
@@ -543,16 +510,8 @@ class AddReportViewModel extends InsiteViewModel {
         } else {
           if (selectedAsset!.any((element) =>
               element.assetIdentifier == selectedData?.assetIdentifier)) {
-            if (assetSelectionValue == "Assets") {
-              snackbarService!.showSnackbar(message: "Asset Alerady Selected");
-            }  else if (assetSelectionValue == "Geofences") {
-              snackbarService!
-                  .showSnackbar(message: "Geofence Alerady Selected");
-            } else {
-              snackbarService!.showSnackbar(message: "Group Alerady Selected");
-            }
+            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
           } else {
-          
             assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
                 element.assetIdentifier == selectedData?.assetIdentifier);
             selectedAsset?.add(selectedData!);
@@ -578,7 +537,6 @@ class AddReportViewModel extends InsiteViewModel {
       if (selectedAsset != null) {
         Logger().e(selectedAsset?.length);
         var data = selectedAsset?.elementAt(i);
-       
         assetIdresult?.assetDetailsRecords?.add(data!);
         selectedAsset?.removeAt(i);
         Logger().e(selectedAsset?.length);
@@ -612,30 +570,110 @@ class AddReportViewModel extends InsiteViewModel {
 
   Future getGroupListData() async {
     try {
-      assetIdresult = await _manageUserService!.getGroupListData(false);
-      if (isEditing) {
-        if (svsBodyFormated == null) {
-          return;
-        } else {
-          var allAsset = await _manageUserService!.getGroupListData(true);
-          for (var item in allAsset!.assetDetailsRecords!) {
-            if (svsBodyFormated!
-                .any((editData) => editData == item.assetIdentifier)) {
-              selectedAsset!.add(Asset(
-                  assetIcon: item.assetIcon,
-                  assetId: item.assetId,
-                  assetIdentifier: item.assetIdentifier,
-                  assetSerialNumber: item.assetSerialNumber,
-                  makeCode: item.makeCode,
-                  model: item.model));
+      Logger().wtf(isEditing);
+      Logger().w(assetSelectionValue);
+      isAssetLoading = true;
+      if (isEditing && svsBodyFormated != null) {
+        if (assetSelectionValue == 'Groups' && svsBodyFormated != null) {
+          var groupResult =
+              await _manageUserService!.getManageGroupSummaryResponseListData(
+                  1,
+                  {
+                    "pageNumber": 1,
+                    "searchKey": "GroupName",
+                    "searchValue": _searchKeyword,
+                    "sort": ""
+                  },
+                  _searchKeyword);
+          Logger().wtf(groupResult?.toJson());
+          assetIdresult = AssetGroupSummaryResponse(
+              assetDetailsRecords: groupResult?.groups!
+                  .map((e) => Asset(
+                        assetIdentifier: e.GroupUid,
+                        assetSerialNumber: e.GroupName,
+                      ))
+                  .toList());
+          if (this.svsBodyFormated!.isNotEmpty && groupResult != null) {
+            for (var item in groupResult.groups!) {
+              if (svsBodyFormated!
+                  .any((editData) => editData == item.GroupUid)) {
+                selectedAsset!.add(Asset(
+                  assetIdentifier: item.GroupUid,
+                  assetSerialNumber: item.GroupName,
+                ));
+                assetIdresult!.assetDetailsRecords = assetIdresult!
+                    .assetDetailsRecords!
+                    .where((o) => o.assetIdentifier != item.GroupUid)
+                    .toList();
+              }
             }
+            selectedAsset = selectedAsset?.toSet().toList();
           }
+          isAssetLoading = false;
+        } else if (assetSelectionValue == 'Geofences' &&
+            svsBodyFormated != null) {
+          Logger().wtf('getttinggggg geofencesss dataaaaa');
+
+          var geofenceData = await _geofenceservice!.getGeofenceData();
+          assetIdresult = AssetGroupSummaryResponse(
+              assetDetailsRecords: geofenceData!.geofences!
+                  .map((e) => Asset(
+                        assetIdentifier: e.GeofenceUID,
+                        assetSerialNumber: e.GeofenceName,
+                      ))
+                  .toList());
+          Logger().wtf(geofenceData.toJson());
+          if (this.svsBodyFormated!.isNotEmpty && geofenceData != null) {
+            for (var item in geofenceData.geofences!) {
+              if (svsBodyFormated!
+                  .any((editData) => editData == item.GeofenceUID)) {
+                selectedAsset!.add(Asset(
+                  assetIdentifier: item.GeofenceUID,
+                  assetSerialNumber: item.GeofenceName,
+                ));
+                assetIdresult!.assetDetailsRecords = assetIdresult!
+                    .assetDetailsRecords!
+                    .where((o) => o.assetIdentifier != item.GeofenceUID)
+                    .toList();
+              }
+            }
+            selectedAsset = selectedAsset?.toSet().toList();
+          }
+          isAssetLoading = false;
+        } else if (assetSelectionValue == 'Assets' && svsBodyFormated != null) {
+          assetIdresult = await _manageUserService!.getGroupListData(false);
+          if (this.svsBodyFormated!.isNotEmpty &&
+              assetIdresult!.assetDetailsRecords != null) {
+            for (var item in assetIdresult!.assetDetailsRecords!) {
+              if (svsBodyFormated!
+                  .any((editData) => editData == item.assetIdentifier)) {
+                selectedAsset!.add(Asset(
+                    assetId: item.assetId,
+                    assetSerialNumber: item.assetSerialNumber,
+                    assetIcon: item.assetIcon,
+                    assetIdentifier: item.assetIdentifier,
+                    makeCode: item.makeCode,
+                    model: item.model));
+                assetIdresult!.assetDetailsRecords = assetIdresult!
+                    .assetDetailsRecords!
+                    .where((o) => o.assetIdentifier != item.assetId)
+                    .toList();
+              }
+            }
+            Logger().wtf(svsBodyFormated!.toList());
+            Logger().wtf(selectedAsset!.toList());
+            selectedAsset = selectedAsset?.toSet().toList();
+          }
+          isAssetLoading = false;
         }
+      } else {
+        assetIdresult = await _manageUserService!.getGroupListData(false);
+        isAssetLoading = false;
+        Logger().wtf(assetIdresult?.assetDetailsRecords!.toList());
+        Logger().wtf('ELSEEEEEEEEEEEEEEEE');
       }
-      isAssetLoading = false;
       notifyListeners();
     } catch (e) {
-      isAssetLoading = false;
       hideLoadingDialog();
       notifyListeners();
       Logger().e(e.toString());
@@ -695,7 +733,10 @@ class AddReportViewModel extends InsiteViewModel {
         reportType = element.reportName!;
       }
     });
+    Logger().wtf(assetsDropDownValue);
+    Logger().wtf(associatedIdentifier?.toList());
     addReportPayLoad = AddReportPayLoad(
+      assetFilterUIDs: associatedIdentifier,
       assetFilterCategoryID: chooseByDropDownValue == "Assets"
           ? 1
           : chooseByDropDownValue == "Groups"
@@ -733,10 +774,6 @@ class AddReportViewModel extends InsiteViewModel {
       queryUrl: Utils.getQueryUrl(assetsDropDownValue!, associatedIdentifier),
       reportType: reportType,
       reportColumns: Utils.getReportColumn(assetsDropDownValue!),
-      svcbody: assetsDropDownValue == "Fault Summary Faults List" ||
-              assetsDropDownValue == "FaultSummaryFaultsList"
-          ? null
-          : Utils.reportSvcBody(assetsDropDownValue, associatedIdentifier),
       svcbodyJson: assetsDropDownValue == "Fault Summary Faults List" ||
               assetsDropDownValue == "FaultSummaryFaultsList"
           ? SvcbodyResponse.fromJson({
@@ -751,8 +788,14 @@ class AddReportViewModel extends InsiteViewModel {
               "assetuids": associatedIdentifier
             })
           : null,
+      svcbody: chooseByDropDownValue != "Groups" &&
+              chooseByDropDownValue != "Geofences"
+          ? associatedIdentifier
+          : [],
       emailContent: emailContentController.text,
     );
+    Logger().e(chooseByDropDownValue);
+    Logger().wtf(addReportPayLoad?.toJson());
 
     if (isVisionLink) {
       addReportPayLoad = AddReportPayLoad(
@@ -818,7 +861,6 @@ class AddReportViewModel extends InsiteViewModel {
         return;
       }
       showLoadingDialog();
-      Logger().i(addReportPayLoad?.toJson());
       ManageReportResponse? responce = await _manageUserService!
           .getAddReportSaveData(
               addReportPayLoad!, graphqlSchemaService!.addReportPayLoad());
@@ -837,33 +879,18 @@ class AddReportViewModel extends InsiteViewModel {
   editPayload() {
     emailIds!.clear();
     associatedIdentifier!.clear();
-
     selectedUser.forEach((element) {
       emailIds?.add(element.email!);
     });
-    if (assetSelectionValue == "Geofences") {
-      geofenceData!.geofences!.forEach((data) {
-        if (selectedAsset!
-            .any((element) => element.assetIdentifier == data.GeofenceUID)) {
-          associatedIdentifier!.add(data.GeofenceUID!);
-        }
-      });
-    } else if (assetSelectionValue == "Groups") {
-      groupResult!.groups!.forEach((group) {
-        if (selectedAsset!
-            .any((element) => element.assetIdentifier == group.GroupUid)) {
-          associatedIdentifier!.add(group.GroupUid!);
-        }
-      });
-    } else {
-      selectedAsset?.forEach((element) {
-        associatedIdentifier?.add(element.assetIdentifier!);
-      });
-    }
-
+    selectedAsset?.forEach((element) {
+      associatedIdentifier?.add(element.assetIdentifier!);
+    });
     addReportPayLoad = AddReportPayLoad(
       reportUid: scheduledReportsId!.reportUid ?? "",
-      assetFilterUIDs: associatedIdentifier,
+      assetFilterUIDs: chooseByDropDownValue == "Groups" ||
+              chooseByDropDownValue == "Geofences"
+          ? associatedIdentifier
+          : null,
       reportPeriod: frequencyDropDownValue == 'Daily'
           ? 1
           : frequencyDropDownValue == "Weekly"
@@ -874,6 +901,7 @@ class AddReportViewModel extends InsiteViewModel {
       reportTitle: nameController.text,
       emailSubject: serviceDueController.text,
       emailContent: emailContentController.text,
+      reportEndDate: dateTimeController.text,
       emailRecipients: emailIds,
       queryUrl: editQueryUrl,
       assetFilterCategoryID: chooseByDropDownValue == "Assets"
@@ -884,7 +912,7 @@ class AddReportViewModel extends InsiteViewModel {
                   ? 3
                   : 0,
       allAssets: false,
-      svcbody: associatedIdentifier,
+      svcbody: chooseByDropDownValue == "Assets" ? associatedIdentifier : [],
     );
 
     if (isVisionLink) {
@@ -934,6 +962,7 @@ class AddReportViewModel extends InsiteViewModel {
       showLoadingDialog();
       await editPayload();
       Logger().i(addReportPayLoad!.toJson());
+      Logger().wtf(addReportPayLoad?.toJson());
       ManageReportResponse? result = await _manageUserService!
           .getEditReportSaveData(
               scheduledReportsId!.reportUid!,
@@ -980,5 +1009,50 @@ class AddReportViewModel extends InsiteViewModel {
 
   gotoScheduleReportPage() {
     _navigationService!.clearTillFirstAndShowView(ManageReportView());
+  }
+
+  updateModelValue(String value) async {
+    chooseByDropDownValue = value;
+    if (value == assetSelectionValue) {
+      return;
+    }
+    showLoadingDialog();
+    assetSelectionValue = value;
+
+    if (value == choiseData[2]) {
+      var geofenceData = await _geofenceservice!.getGeofenceData();
+      Logger().wtf(geofenceData?.toJson());
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: geofenceData!.geofences!
+              .map((e) => Asset(
+                    assetIdentifier: e.GeofenceUID,
+                    assetSerialNumber: e.GeofenceName,
+                  ))
+              .toList());
+    } else if (value == choiseData[1]) {
+      Logger().wtf('UPDATE MODULEEEEEE');
+      Logger().wtf(svsBodyFormated?.toList());
+      var groupResult =
+          await _manageUserService!.getManageGroupSummaryResponseListData(
+              1,
+              {
+                "pageNumber": 1,
+                "searchKey": "GroupName",
+                "searchValue": _searchKeyword,
+                "sort": ""
+              },
+              _searchKeyword);
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: groupResult!.groups!
+              .map((e) => Asset(
+                    assetIdentifier: e.GroupUid,
+                    assetSerialNumber: e.GroupName,
+                  ))
+              .toList());
+    } else {
+      await getGroupListData();
+    }
+    hideLoadingDialog();
+    notifyListeners();
   }
 }

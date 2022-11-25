@@ -65,6 +65,7 @@ Widget onSelectedIntervalsDetails(
         SizedBox(
           height: 10,
         ),
+        
         InsiteText(
             text: "CHECK LIST AND PART LIST",
             size: 16,

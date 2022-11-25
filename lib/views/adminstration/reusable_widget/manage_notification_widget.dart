@@ -40,7 +40,7 @@ class ManageNotificationWidget extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                     color: Theme.of(context).buttonColor,
+                    color: Theme.of(context).buttonColor,
                     onPressed: onDelete,
                     icon: Icon(
                       Icons.delete,
@@ -68,12 +68,26 @@ class ManageNotificationWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InsiteText(
-                text: "${alerts?.numberOfAssets} " +
-                    "${alerts?.numberOfAssets == 1 ? "Asset" : "Assets"}",
-                size: 15,
-                fontWeight: FontWeight.bold,
-              ),
+              alerts?.numberOfAssets != 0 && alerts?.numberOfAssetGroups == 0
+                  ? InsiteText(
+                      text: "${alerts?.numberOfAssets} " +
+                          "${alerts?.numberOfAssets == 1 ? "Asset" : "Assets"}",
+                      size: 15,
+                      fontWeight: FontWeight.bold,
+                    )
+                  : alerts?.numberOfAssetGroups != 0
+                      ? InsiteText(
+                          text: "${alerts?.numberOfAssetGroups} " +
+                              "${alerts?.numberOfAssetGroups == 1 ? "Group" : "Groups"}",
+                          size: 15,
+                          fontWeight: FontWeight.bold,
+                        )
+                      : InsiteText(
+                          text: "${alerts?.numberOfGeofences} " +
+                              "${alerts?.numberOfGeofences == 1 ? "Geofence" : "Geofences"}",
+                          size: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
               InsiteText(
                 text: alerts?.createdDate != null
                     ? Utils.getLastReportedDateOneUTC(alerts?.createdDate)

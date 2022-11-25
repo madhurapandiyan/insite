@@ -70,6 +70,7 @@ class DateRangeViewModel extends InsiteViewModel {
       Logger().d("start ", appliedFilters[0]);
       Logger().d("start ", appliedFilters[1]);
       Logger().d("label ", appliedFilters[2]);
+      
       _selectedDateRange = getType(appliedFilters[2]);
       notifyListeners();
     } else {

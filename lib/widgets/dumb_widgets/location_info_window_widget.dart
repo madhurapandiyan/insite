@@ -72,18 +72,18 @@ class LocationInfoWindowWidget extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              InsiteButton(
-                  width: MediaQuery.of(context).size.width * 0.30,
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  fontSize: 12,
-                  bgColor: Theme.of(context).buttonColor,
-                  title: assetCount! > 1
-                      ? type == ScreenType.DASHBOARD
-                          ? "  Fleet List  "
-                          : "  Fleet List  "
-                      : "Dashboard",
-                  textColor: appbarcolor,
-                  onTap: onFleetPageSelectedTap),
+              // InsiteButton(
+              //     width: MediaQuery.of(context).size.width * 0.30,
+              //     height: MediaQuery.of(context).size.height * 0.06,
+              //     fontSize: 12,
+              //     bgColor: Theme.of(context).buttonColor,
+              //     title: assetCount! > 1
+              //         ? type == ScreenType.DASHBOARD
+              //             ? "  Fleet List  "
+              //             : "  Fleet List  "
+              //         : "Dashboard",
+              //     textColor: appbarcolor,
+              //     onTap: onFleetPageSelectedTap),
               SizedBox(
                 height: 10,
               ),
