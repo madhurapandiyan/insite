@@ -551,6 +551,7 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
+            Logger().e("Session Expired Please Login Again");
             Logger().e(error.response!.data.toString());
             var data = await _dialogService!.showDialog(
                 title: "Session Expired Please Login Again",

@@ -76,8 +76,8 @@ class AppbarViewModel extends InsiteViewModel {
     // Logger()
     //     .w(Urls.getV4LogoutUrl(response!.id_token, Urls.tataHitachiLogoutUrl));
     // return;
-    _localService.clearAll();
-    _localStorageService.clearAll();
+    await _localService.clearAll();
+    await _localStorageService.clearAll();
     Future.delayed(Duration(seconds: 2), () async {
       // if normal api login is used below set of lines should be called on logout
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {

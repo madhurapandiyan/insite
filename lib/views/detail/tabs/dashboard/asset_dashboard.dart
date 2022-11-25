@@ -135,7 +135,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     ),
                     child: FuelLevel(
                         liquidColor:widget.detail!.percentDEFRemaining != null? Utils.defColors(double.parse(
-                            widget.detail!.percentDEFRemaining.toString())): Color(0xFF5A6EFA),
+                            widget.detail!.percentDEFRemaining.toString())):Colors.red,
                         value: widget.detail != null && widget.detail!.percentDEFRemaining != null
                             ? double.parse(
                                 widget.detail!.percentDEFRemaining!.toString())

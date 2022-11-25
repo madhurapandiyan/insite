@@ -28,6 +28,7 @@ class _DateRangeViewState extends State<DateRangeView> {
   bool isCalenderVisible = false;
   bool customCalenderIndex = false;
   CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateFormat dateFormat = DateFormat("dd-MM-yyyy");
 
   showFromToDatePicker(
       {CustomDatePick? currentCustomDatePick,
@@ -55,7 +56,7 @@ class _DateRangeViewState extends State<DateRangeView> {
         if (currentCustomDatePick == CustomDatePick.customToDate) {
           customToDate = _selectedDay;
           toDate = _selectedDay;
-             Logger().wtf(customToDate);
+          Logger().wtf(customToDate);
           if (fromDate == null) {
             Utils.showToast("Please select start date ");
           } else {
@@ -262,41 +263,59 @@ class _DateRangeViewState extends State<DateRangeView> {
                             SizedBox(
                               height: 10,
                             ),
-                            InsiteButton(
-                              width: double.infinity,
-                              height: 40,
-                              textColor: white,
-                              // bgColor:
-                              //     widget.screenType == ScreenType.MAINTENANCE
-                              //         ? Theme.of(context)
-                              //             .buttonColor
-                              //             .withOpacity(0.5)
-                              //         : null,
-                              onTap: () {
-                                Logger().wtf(viewModel.startDate!);
-                                showFromToDatePicker(
-                                    ctx: context,
-                                    currentCustomDatePick:
-                                        CustomDatePick.customFromDate,
-                                    endDate: DateTime.parse(viewModel.endDate!),
-                                    startDate:
-                                        DateTime.parse(viewModel.startDate!));
+                            viewModel.startDate == null
+                                ? InsiteButton(
+                                    width: double.infinity,
+                                    height: 40,
+                                    textColor: white,
+                                    // bgColor:
+                                    //     widget.screenType == ScreenType.MAINTENANCE
+                                    //         ? Theme.of(context)
+                                    //             .buttonColor
+                                    //             .withOpacity(0.5)
+                                    //         : null,
+                                    onTap: () {
+                                      Logger().wtf(viewModel.startDate!);
+                                      showFromToDatePicker(
+                                          ctx: context,
+                                          currentCustomDatePick:
+                                              CustomDatePick.customFromDate,
+                                          endDate: DateTime.parse(
+                                              viewModel.endDate!),
+                                          startDate: DateTime.parse(
+                                              viewModel.startDate!));
 
-                                // setState(() {
-                                //   fromDate = null;
-                                //   isCalenderVisible = true;
-                                //   viewModel.selectedDateRange =
-                                //       DateRangeType.custom;
-                                //   _selectedDay = null;
-                                //   currentCustomDatePick =
-                                //       CustomDatePick.customFromDate;
-                                // });
-                              },
-                              title: customFromDate == null
-                                  ? 'dd-mm-yyyy'.toUpperCase()
-                                  : DateFormat("dd-MM-yyyy")
-                                      .format(customFromDate!),
-                            ),
+                                      // setState(() {
+                                      //   fromDate = null;
+                                      //   isCalenderVisible = true;
+                                      //   viewModel.selectedDateRange =
+                                      //       DateRangeType.custom;
+                                      //   _selectedDay = null;
+                                      //   currentCustomDatePick =
+                                      //       CustomDatePick.customFromDate;
+                                      // });
+                                    },
+                                    title: customFromDate == null
+                                        ? 'dd-mm-yyyy'.toUpperCase()
+                                        : DateFormat("dd-MM-yyyy")
+                                            .format(customFromDate!),
+                                  )
+                                : InsiteButton(
+                                    title: customFromDate == null
+                                        ? Utils.getDateInFormatddMMyyyy(
+                                            viewModel.startDate)
+                                        : dateFormat.format(customFromDate!),
+                                    fontSize: 12,
+                                    onTap: () {
+                                      showFromToDatePicker(
+                                          ctx: context,
+                                          currentCustomDatePick:
+                                              CustomDatePick.customFromDate,
+                                          endDate: DateTime.parse(
+                                              viewModel.endDate!),
+                                          startDate: DateTime.parse(
+                                              viewModel.startDate!));
+                                    })
                           ],
                         ),
                       ),
@@ -320,24 +339,44 @@ class _DateRangeViewState extends State<DateRangeView> {
                             SizedBox(
                               height: 10,
                             ),
-                            InsiteButton(
-                              width: double.infinity,
-                              height: 40,
-                              textColor: white,
-                              onTap: () {
-                                showFromToDatePicker(
-                                    ctx: context,
-                                    currentCustomDatePick:
-                                        CustomDatePick.customToDate,
-                                    endDate: DateTime.parse(viewModel.endDate!),
-                                    startDate:
-                                        DateTime.parse(viewModel.startDate!));
-                              },
-                              title: customToDate == null
-                                  ? 'dd-mm-yyyy'.toUpperCase()
-                                  : DateFormat("dd-MM-yyyy")
-                                      .format(customToDate!),
-                            ),
+                            viewModel.endDate == null
+                                ? InsiteButton(
+                                    width: double.infinity,
+                                    height: 40,
+                                    textColor: white,
+                                    onTap: () {
+                                      showFromToDatePicker(
+                                          ctx: context,
+                                          currentCustomDatePick:
+                                              CustomDatePick.customToDate,
+                                          endDate: DateTime.parse(
+                                              viewModel.endDate!),
+                                          startDate: DateTime.parse(
+                                              viewModel.startDate!));
+                                    },
+                                    title: customToDate == null
+                                        ? 'dd-mm-yyyy'.toUpperCase()
+                                        : DateFormat("dd-MM-yyyy")
+                                            .format(customToDate!),
+                                  )
+                                : InsiteButton(
+                                    title: customToDate == null
+                                        ? Utils.getDateInFormatddMMyyyy(
+                                            viewModel.endDate)
+                                        : dateFormat.format(customToDate!),
+                                    fontSize: 12,
+                                  
+                                    onTap: () {
+                                      showFromToDatePicker(
+                                          ctx: context,
+                                          currentCustomDatePick:
+                                              CustomDatePick.customToDate,
+                                          endDate: DateTime.parse(
+                                              viewModel.endDate!),
+                                          startDate: DateTime.parse(
+                                              viewModel.startDate!));
+                                    },
+                                  )
                           ],
                         ),
                       ),
