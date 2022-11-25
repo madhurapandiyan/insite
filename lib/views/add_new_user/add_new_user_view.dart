@@ -165,16 +165,18 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                           widget.user != null ? true : false,
                                       controller:
                                           viewModel.phoneNumberController,
-                                      // :(Optional)
-                                      title: "Phone number",
+                                      title: "Phone number:(Optional)",
                                       isenabled: widget.isEdit == null ||
                                               widget.isEdit == false
                                           ? true
                                           : false,
                                       validator: (value) {
                                         if (value!.isEmpty) {
-                                          return 'Enter Valid Phone Number';
+                                          return null;
                                         }
+                                        // else if (int.parse(value) <= 7) {
+                                        //   return "Enter Valid Phone Number";
+                                        // }
                                         String pattern =
                                             "^(?:[+0]9)?[0-9]{7,15}\$";
                                         RegExp regex = new RegExp(pattern);
