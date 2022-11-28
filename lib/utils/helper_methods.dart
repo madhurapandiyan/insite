@@ -382,9 +382,9 @@ class Utils {
   static String? maintenanceToDateFormate(String date) {
     try {
       DateTime parseDate = DateTime.parse(date);
-      var data = parseDate.add(Duration(hours: 18, minutes: 29, seconds: 59));
-      var formatedStringData = data.toString();
-      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
+      var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
+      return formatedStringData;
     } catch (e) {
       return null;
     }
@@ -392,10 +392,11 @@ class Utils {
 
   static String? maintenanceFromDateFormate(String date) {
     try {
-      DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
-      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
-      var formatedStringData = data.toString();
-      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+      DateTime parseDate = DateTime.parse(date);
+      var data = parseDate.add(Duration(hours: 00, minutes: 00, seconds: 00));
+      var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
+      ;
+      return formatedStringData;
     } catch (e) {
       Logger().e(e.toString());
       return null;
@@ -425,8 +426,6 @@ class Utils {
       return null;
     }
   }
-
-  
 
   static String getDateInFormatMMddyyyy(date) {
     try {
@@ -938,7 +937,7 @@ class Utils {
     }
     if (tatahitachi.any((element) => element.modelName == model)) {
       if (tatahitachi.any((element) => element.assetIconKey == iconKey)) {
-        Logger().i("icon key found");
+        //Logger().i("icon key found");
         var data = tatahitachi
             .singleWhere((element) => element.assetIconKey == iconKey);
         if (data != null) {
@@ -2175,4 +2174,6 @@ class Utils {
       return "";
     }
   }
+
+ 
 }

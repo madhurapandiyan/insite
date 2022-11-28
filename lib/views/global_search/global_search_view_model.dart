@@ -34,7 +34,11 @@ class GlobalSearchViewModel extends InsiteViewModel {
     SearchData? result =
         await _searchService!.getSearchResult(_searchKeyword, type);
     if (result != null) {
-      _searchData = result;
+      if (result.topMatches != null) {
+        _searchData = result;
+      } else {
+        _searchData = null;
+      }
     } else {
       _searchData = null;
     }

@@ -100,7 +100,7 @@ class Network {
               variables: payLoad == null ? {} : payLoad))
           .first;
 
-      Logger().wtf(payLoad);
+      // Logger().wtf(payLoad);
 
       return res;
     } catch (e) {

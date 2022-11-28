@@ -269,13 +269,13 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                     child: InsiteTextOverFlow(
                       text: viewModel.accountSelected != null &&
                               viewModel.customerSelected != null
-                          ? viewModel.customerSelected!.DisplayName != null
-                              ? viewModel.customerSelected!.DisplayName
-                              : viewModel.accountSelected!.DisplayName != null
+                          ? viewModel.customerSelected!.Name != null
+                              ? viewModel.customerSelected!.Name
+                              : viewModel.accountSelected!.Name != null
                                   ? viewModel.accountSelected!.Name
                                   : ""
                           : viewModel.accountSelected != null &&
-                                  viewModel.accountSelected!.DisplayName != null
+                                  viewModel.accountSelected!.Name != null
                               ? viewModel.accountSelected!.Name
                               : "",
                       overflow: TextOverflow.ellipsis,

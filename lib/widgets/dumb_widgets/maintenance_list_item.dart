@@ -26,7 +26,7 @@ class MaintenanceListItem extends StatefulWidget {
 class _MaintenanceListItemState extends State<MaintenanceListItem> {
   @override
   Widget build(BuildContext context) {
-    Logger().wtf(widget.summaryData!.dueInfo!.serviceStatus);
+    
     return GestureDetector(
       onTap: () {
         widget.onCallback!();
