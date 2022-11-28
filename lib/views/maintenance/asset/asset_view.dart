@@ -74,9 +74,10 @@ class AssetMaintenanceViewState extends State<AssetMaintenanceView> {
                 ),
                 PageHeader(
                   isDashboard: false,
-                  total: viewModel.totalCount,
+                  total: viewModel.totalCount!.toInt(),
                   screenType: ScreenType.ASSET_OPERATION,
-                  count: viewModel.assetData.length,
+                  count:  viewModel.assetData.length
+                      
                 ),
                 Expanded(
                   child: viewModel.loading

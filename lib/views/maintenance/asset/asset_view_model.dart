@@ -25,13 +25,14 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
   NavigationService? _navigationService = locator<NavigationService>();
   int page = 1;
 
-  int limit = 20;
+  int limit = 50;
 
   int? _totalCount = 0;
   int? get totalCount => _totalCount;
 
   bool _loaded = false;
   bool get loaded => _loaded;
+  AssetCentricData? singleAssetData;
 
   bool _loading = true;
   bool get loading => _loading;
@@ -136,9 +137,8 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
 
       if (maintenanceListData != null) {
         _totalCount = maintenanceListData.count;
-        _assetData.clear();
+        // _assetData.clear();
         if (maintenanceListData.assetMaintenanceList!.isNotEmpty) {
-          AssetCentricData singleAssetData;
           for (var item in maintenanceListData.assetMaintenanceList!) {
             singleAssetData = AssetCentricData(
               assetID: item.assetId,
@@ -156,17 +156,16 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
               ),
             );
 
-            _assetData.add(singleAssetData);
+            _assetData.add(singleAssetData!);
           }
-          _maintenanceListData
-              .addAll(maintenanceListData.assetMaintenanceList!);
+          // _maintenanceListData
+          //     .addAll(maintenanceListData.assetMaintenanceList!);
 
           _loading = false;
           _loadingMore = false;
           notifyListeners();
         } else {
-          _maintenanceListData
-              .addAll(maintenanceListData.assetMaintenanceList!);
+          _assetData.add(singleAssetData!);
           _loading = false;
           _loadingMore = false;
           _shouldLoadmore = false;

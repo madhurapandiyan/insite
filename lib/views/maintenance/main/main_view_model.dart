@@ -6,9 +6,11 @@ import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_checkList.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
+
 import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -26,6 +28,7 @@ class MainViewModel extends InsiteViewModel {
   MaintenanceService? _maintenanceService = locator<MaintenanceService>();
   NavigationService? _navigationService = locator<NavigationService>();
   GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
+  final LocalService? _localService = locator<LocalService>();
 
   int pageNumber = 1;
   int pageSize = 50;
@@ -135,6 +138,7 @@ class MainViewModel extends InsiteViewModel {
                   pageNo: pageNumber));
 
       if (maintenanceListData != null) {
+        Logger().v(maintenanceListData.maintenanceList!.length);
         _totalCount = maintenanceListData.count;
         SummaryData singleSummaryData;
         if (maintenanceListData.maintenanceList!.isNotEmpty) {
@@ -196,13 +200,10 @@ class MainViewModel extends InsiteViewModel {
   }
 
   refresh() async {
-    Logger().v("main");
     _loading = true;
     notifyListeners();
     _maintenanceList.clear();
-    await getSelectedFilterData();
     await getMaintenanceViewList();
-
     // await getSelectedFilterData();
     // await getDateRangeFilterData();
     // pageNumber = 1;

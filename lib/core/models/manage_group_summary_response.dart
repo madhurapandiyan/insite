@@ -50,9 +50,9 @@ class Groups {
   @JsonKey(name: "isFavourite")
   bool? IsFavourite;
   String? createdOnUTC;
-  String? CreatedByUserName;
+  String? createdByUserName;
   @JsonKey(name: "assetUID")
-  List<String>? AssetUID;
+  List<String>? assetUID;
 
   Groups(
       {this.GroupUid,
@@ -60,8 +60,8 @@ class Groups {
       this.Description,
       this.IsFavourite,
       this.createdOnUTC,
-      this.CreatedByUserName,
-      this.AssetUID});
+      this.createdByUserName,
+      this.assetUID});
 
   factory Groups.fromJson(Map<String, dynamic> json) => _$GroupsFromJson(json);
   Map<String, dynamic> toJson() => _$GroupsToJson(this);
