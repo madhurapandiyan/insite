@@ -233,6 +233,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                                 size: 12,
                                               ),
                                               InsiteButton(
+                                                content:"" ,
                                                 title:
                                                     fault.severityLabel ?? "",
                                                 padding: EdgeInsets.all(8),

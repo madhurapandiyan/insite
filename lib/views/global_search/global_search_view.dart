@@ -115,11 +115,15 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                       ),
                       viewModel.searchData == null
                           ? Container()
-                          : Expanded(
+                          : viewModel.searchData!.topMatches==null?
+                          InsiteText(text: "No Results Found",
+                          size: 14,
+                          fontWeight: FontWeight.w700,):
+                          Expanded(
                               child: ListView.builder(
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    TopMatch match = viewModel
+                                    TopMatch? match = viewModel
                                         .searchData!.topMatches![index];
                                     return GestureDetector(
                                       onTap: () {
@@ -153,7 +157,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                                     );
                                   },
                                   itemCount:
-                                      viewModel.searchData!.topMatches!.length),
+                                      viewModel.searchData!.topMatches?.length),
                             ),
                       viewModel.searchData == null
                           ? Container()
@@ -162,7 +166,7 @@ class _GlobalSearchViewState extends State<GlobalSearchView> {
                               children: [
                                 InsiteText(
                                     text:
-                                        'Showing ${viewModel.searchData!.topMatches!.length} out of ${viewModel.searchData!.totalCount} Assets',
+                                        'Showing ${viewModel.searchData!.topMatches?.length} out of ${viewModel.searchData!.totalCount} Assets',
                                     color: white,
                                     size: 12),
                                 // TextButton(

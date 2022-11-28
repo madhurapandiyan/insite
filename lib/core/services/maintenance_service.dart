@@ -421,20 +421,24 @@ class MaintenanceService extends BaseService {
     }
   }
 
-  Future<EditIntervalResponse?> updateMaintenanceIntervals(
-      String? query) async {
+  Future<dynamic> updateMaintenanceIntervals(
+      String? query, Map<String, dynamic> updateInterval) async {
     try {
+      Logger().w(query);
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-          query: query,
-          customerId: accountSelected?.CustomerUID,
-          userId: (await _localService!.getLoggedInUser())!.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
-        );
-        return EditIntervalResponse.fromJson(
-            data.data["updateMaintenanceIntervals"]);
+            query: query,
+            payLoad: updateInterval,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        EditIntervalResponse editIntervalResponse =
+            EditIntervalResponse.fromJson(
+                data.data["updateMaintenanceIntervals"]);
+
+        return editIntervalResponse;
       }
     } catch (e) {
       Logger().w(e.toString());

@@ -65,6 +65,7 @@ dependencies:
   location: ^4.4.0
   
   
+  
 
   google_maps_controller: ^1.1.0
   flutter_colorpicker: ^1.0.2
@@ -82,6 +83,7 @@ dependencies:
   phone_number: ^1.0.0
   
   firebase_core_platform_interface: 4.4.0
+ 
 
   
 

@@ -84,14 +84,14 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
                     ),
                     InsiteTableRowItem(
                       title: '# of Assets',
-                      content: widget.groups!.groups!.AssetUID != null
-                          ? widget.groups!.groups!.AssetUID!.length.toString()
+                      content: widget.groups!.groups!.assetUID != null
+                          ? widget.groups!.groups!.assetUID!.length.toString()
                           : "-",
                     ),
                     InsiteTableRowItem(
                       title: 'Created by :',
-                      content: widget.groups!.groups!.CreatedByUserName != null
-                          ? widget.groups!.groups!.CreatedByUserName
+                      content: widget.groups!.groups!.createdByUserName != null
+                          ? widget.groups!.groups!.createdByUserName
                           : "-",
                     ),
                   ]),

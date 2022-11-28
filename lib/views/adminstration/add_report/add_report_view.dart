@@ -356,6 +356,7 @@ class _AddReportViewState extends State<AddReportView> {
                         SizedBox(
                           height: 15,
                         ),
+
                         Container(
                           height: MediaQuery.of(context).size.height * 0.05,
                           decoration: BoxDecoration(
@@ -375,10 +376,15 @@ class _AddReportViewState extends State<AddReportView> {
                             ),
                           ),
                         ),
-
                         SizedBox(
                           height: 15,
                         ),
+                        InsiteText(
+                          text: "Choose by : ",
+                          size: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+
                         viewModel.dropDownValue == "Cost Analysis - Fleet" ||
                                 viewModel.dropDownValue ==
                                     "Cost Analysis - Single Asset"

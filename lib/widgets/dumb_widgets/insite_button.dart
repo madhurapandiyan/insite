@@ -15,7 +15,7 @@ class InsiteButton extends StatelessWidget {
   final String? content;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
-   final bool? isToShowBorder;
+  final bool? isToShowBorder;
 
   final bool isSelectable;
   const InsiteButton(
@@ -35,7 +35,6 @@ class InsiteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -43,12 +42,10 @@ class InsiteButton extends StatelessWidget {
         margin: margin != null ? margin : EdgeInsets.all(0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-        
-              border: isToShowBorder == null || isToShowBorder == true
+          border: isToShowBorder == null || isToShowBorder == true
               ? Border.all(color: Theme.of(context).textTheme.bodyText1!.color!)
               : null,
           color: bgColor != null ? bgColor : Theme.of(context).buttonColor,
-          
         ),
         alignment: Alignment.center,
         height: height != null ? height : null,
@@ -64,9 +61,7 @@ class InsiteButton extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: fontSize != null ? fontSize : 12.0,
-                  color: content == "HIGH" ||
-                          content == "Overdue" ||
-                          content == "High"
+                  color: content != null
                       ? white
                       : Theme.of(context).textTheme.bodyText1!.color,
                   fontWeight: FontWeight.w700),

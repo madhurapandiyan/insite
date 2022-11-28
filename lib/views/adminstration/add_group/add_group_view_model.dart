@@ -92,7 +92,7 @@ class AddGroupViewModel extends InsiteViewModel {
         if (assetIdresult?.assetDetailsRecords != null &&
             assetIdresult!.assetDetailsRecords!.isNotEmpty) {
           for (var asset in assetIdresult!.assetDetailsRecords!) {
-            if (groups.AssetUID!
+            if (groups.assetUID!
                 .any((element) => element == asset.assetIdentifier)) {
               selectedAsset!.add(asset);
             }

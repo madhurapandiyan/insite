@@ -37,7 +37,8 @@ class Asset {
       this.makeCode,
       this.model,
       this.assetIcon,
-      this.assetId,this.type});
+      this.assetId,
+      this.type});
 
   factory Asset.fromJson(Map<String, dynamic> json) => _$AssetFromJson(json);
 

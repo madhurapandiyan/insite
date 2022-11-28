@@ -54,8 +54,8 @@ Groups _$GroupsFromJson(Map<String, dynamic> json) => Groups(
       Description: json['description'] as String?,
       IsFavourite: json['isFavourite'] as bool?,
       createdOnUTC: json['createdOnUTC'] as String?,
-      CreatedByUserName: json['CreatedByUserName'] as String?,
-      AssetUID: (json['assetUID'] as List<dynamic>?)
+      createdByUserName: json['createdByUserName'] as String?,
+      assetUID: (json['assetUID'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
     );
@@ -66,6 +66,6 @@ Map<String, dynamic> _$GroupsToJson(Groups instance) => <String, dynamic>{
       'description': instance.Description,
       'isFavourite': instance.IsFavourite,
       'createdOnUTC': instance.createdOnUTC,
-      'CreatedByUserName': instance.CreatedByUserName,
-      'assetUID': instance.AssetUID,
+      'createdByUserName': instance.createdByUserName,
+      'assetUID': instance.assetUID,
     };
