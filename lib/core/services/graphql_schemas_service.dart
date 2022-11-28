@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/maintenance_checkList.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -3397,25 +3398,27 @@ maintenanceIntervals(
 // mutation{
 //   updateMaintenanceIntervals(
 //     intervalList:${Utils.updateMaintenanceIntervals(mainInterval)}
-//     checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
+//     checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList) ?? []}){
 //     status,
 //      message
 //   }
 // }""";
 //     return data;
 //   }
+////////
 
-  
-  updateMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
+
+  updateMaintenanceIntervals() {
     var data = """
-mutation{
-  updateMaintenanceIntervals(
-    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)},
-    checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
-    status,
-     message
+mutation updateMaintenanceIntervals(\$intervalList: [intervalListObj], \$checkList: [checkListObj]) {
+  updateMaintenanceIntervals(intervalList: \$intervalList, checkList: \$checkList) {
+    status
+    message
   }
-}""";
+}
+
+
+ """;
     return data;
   }
 

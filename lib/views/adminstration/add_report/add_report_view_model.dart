@@ -129,30 +129,29 @@ class AddReportViewModel extends InsiteViewModel {
 
   AddReportViewModel(ScheduledReports? scheduledReports, bool? isEdit,
       String? dropdownValue, String? templateTitleValue) {
-    
-      (_manageUserService!.setUp() as Future).then((_) {
-        this.scheduledReportsId = scheduledReports;
-        this.log = getLogger(this.runtimeType.toString());
-        _geofenceservice?.setUp();
-        if (isEdit == true) {
-          isEditing = isEdit!;
-          getEditReportData();
-        } else if (isEdit == false) {
-          Future.delayed(Duration.zero, () async {
-            await getTemplateReportAssetData();
-            await getGroupListData();
+    (_manageUserService!.setUp() as Future).then((_) {
+      this.scheduledReportsId = scheduledReports;
+      this.log = getLogger(this.runtimeType.toString());
+      _geofenceservice?.setUp();
+      if (isEdit == true) {
+        isEditing = isEdit!;
+        getEditReportData();
+      } else if (isEdit == false) {
+        Future.delayed(Duration.zero, () async {
+          await getTemplateReportAssetData();
+          await getGroupListData();
+        });
+      }
+      if (isEdit == null) {
+        Future.delayed(Duration.zero, () async {
+          getGroupListData();
+          getTemplateReportAssetData().then((_) {
+            getTemplateTitleValue(templateTitleValue!);
+            getDropDownValue(dropdownValue!);
           });
-        }
-        if (isEdit == null) {
-          Future.delayed(Duration.zero, () async {
-            getGroupListData();
-            getTemplateReportAssetData().then((_) {
-              getTemplateTitleValue(templateTitleValue!);
-              getDropDownValue(dropdownValue!);
-            });
-          });
-        }
-      });
+        });
+      }
+    });
   }
 
   getListViewState() {
@@ -210,6 +209,11 @@ class AddReportViewModel extends InsiteViewModel {
         assetsDropDownValue = templateTitleValue;
       } else if (templateTitleValue == "Multi-Asset Excavator Usage") {
         assetsDropDownValue = templateTitleValue;
+      }else if (templateTitleValue == "Maintenance Asset Details") {
+        assetsDropDownValue = templateTitleValue;
+      }
+      else if (templateTitleValue == "Maintenance History") {
+        assetsDropDownValue = templateTitleValue;
       }
 
       reportFleetAssets!
@@ -265,7 +269,10 @@ class AddReportViewModel extends InsiteViewModel {
                     assetItems.reportName == "FaultSummaryFaultsList" ||
                     assetItems.reportName == "FaultCodeAssetDetails" ||
                     assetItems.reportName == "FleetSummary" ||
-                    assetItems.reportName == "Asset Location History"
+                    assetItems.reportName == "Asset Location History" ||
+                    assetItems.reportName == "MaintenanceAssetDetails" ||
+                    assetItems.reportName == "MaintenanceHistory"
+
                 //assetItems.reportName == "Engine Idle" ||
                 //assetItems.reportName == "Engine Idle" ||
                 //assetItems.reportName == "Asset Event Count" ||

@@ -238,7 +238,7 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger().v(content);
+   
     return Container(
       padding: EdgeInsets.all(8),
       child: Row(

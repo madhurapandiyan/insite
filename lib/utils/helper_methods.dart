@@ -382,9 +382,9 @@ class Utils {
   static String? maintenanceToDateFormate(String date) {
     try {
       DateTime parseDate = DateTime.parse(date);
-      var data = parseDate.add(Duration(hours: 18, minutes: 29, seconds: 59));
-      var formatedStringData = data.toString();
-      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
+      var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
+      return formatedStringData;
     } catch (e) {
       return null;
     }
@@ -392,10 +392,11 @@ class Utils {
 
   static String? maintenanceFromDateFormate(String date) {
     try {
-      DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
-      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
-      var formatedStringData = data.toString();
-      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+      DateTime parseDate = DateTime.parse(date);
+      var data = parseDate.add(Duration(hours: 00, minutes: 00, seconds: 00));
+      var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
+      ;
+      return formatedStringData;
     } catch (e) {
       Logger().e(e.toString());
       return null;
@@ -425,8 +426,6 @@ class Utils {
       return null;
     }
   }
-
-  
 
   static String getDateInFormatMMddyyyy(date) {
     try {
@@ -938,7 +937,7 @@ class Utils {
     }
     if (tatahitachi.any((element) => element.modelName == model)) {
       if (tatahitachi.any((element) => element.assetIconKey == iconKey)) {
-        Logger().i("icon key found");
+        //Logger().i("icon key found");
         var data = tatahitachi
             .singleWhere((element) => element.assetIconKey == iconKey);
         if (data != null) {
@@ -1497,6 +1496,39 @@ class Utils {
         "autoIdleRuntimeHours",
       ];
       return list;
+    } else if (value == "Maintenance History") {
+      list = [
+        "serviceName",
+        "serviceMeter",
+        "currentHourMeter",
+        "serviceDate",
+        "performedBy",
+        "workOrder",
+        "serviceNotes"
+      ];
+      return list;
+    } else if (value == "Maintenance Asset Details") {
+      list = [
+        "assetSerialNumber",
+        "model",
+        "productFamily",
+        "currentHourMeter",
+        "service",
+        "serviceStatus",
+        "dueAt",
+        "dueBy",
+        "dueDate",
+        "assetStatus",
+        "address",
+        "lastReportedDate",
+        "fuelPercentage",
+        "fuelLastReportedTime",
+        "deviceType",
+        "dealerName",
+        "customerName",
+        "telematicsDeviceId"
+      ];
+      return list;
     }
     return null;
   }
@@ -1546,6 +1578,14 @@ class Utils {
       case "Multi-Asset Excavator Usage":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
+      case "Maintenance Asset Details":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=";
+        return querUrl;
+      case "Maintenance History":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
         return querUrl;
     }
   }
@@ -1597,6 +1637,14 @@ class Utils {
       case "Multi-AssetExcavatorUsage":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
+      case "Maintenance Asset Details":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=";
+        return querUrl;
+      case "Maintenance History":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
         return querUrl;
     }
   }
@@ -2031,33 +2079,33 @@ class Utils {
     return maintenanceTotal;
   }
 
-  static List<Map<String, dynamic>>? addMaintenanceIntervals(
-      List<MaintenanceCheckList> data) {
-    try {
-      List<Map<String, dynamic>> checkList = [];
+  // static List<Map<String, dynamic>>? addMaintenanceIntervals(
+  //     List<MaintenanceCheckList> data) {
+  //   try {
+  //     List<Map<String, dynamic>> checkList = [];
 
-      for (var check in data) {
-        Map<String, dynamic> checkData = {
-          "checkListName": check.checkName,
-          "partList": []
-        };
-        for (var part in check.partList!) {
-          Map<String, dynamic> partsData = {
-            "partName": part.partName,
-            "partNo": part.partNo,
-            "quantity": part.quantiy
-          };
-          var partList = checkData["partList"] as List<dynamic>;
-          partList.add(partsData);
-        }
-        checkList.add(checkData);
-      }
-      Logger().w(checkList);
-      return checkList;
-    } catch (e) {
-      Logger().e(e.toString());
-    }
-  }
+  //     for (var check in data) {
+  //       Map<String, dynamic> checkData = {
+  //         "checkListName": check.checkName,
+  //         "partList": []
+  //       };
+  //       for (var part in check.partList!) {
+  //         Map<String, dynamic> partsData = {
+  //           "partName": part.partName,
+  //           "partNo": part.partNo,
+  //           "quantity": part.quantiy
+  //         };
+  //         var partList = checkData["partList"] as List<dynamic>;
+  //         partList.add(partsData);
+  //       }
+  //       checkList.add(checkData);
+  //     }
+  //     Logger().w(checkList);
+  //     return checkList;
+  //   } catch (e) {
+  //     Logger().e(e.toString());
+  //   }
+  // }
 
   static List<Map<String, dynamic>>? updateMaintenanceIntervals(
       MaintenanceIntervalData? mainInterval) {
@@ -2074,28 +2122,29 @@ class Utils {
     intervalList.add(data);
     Logger().wtf(intervalList.length);
     Logger().wtf(mainInterval.intervalId);
-    Logger().wtf(mainInterval.intervalId);
-    Logger().wtf(mainInterval.intervalName);
-    Logger().wtf("testing");
 
     return intervalList;
   }
 
   static List<Map<String, dynamic>>? updateMaintenanceCheckList(
-      List<MaintenanceCheckList>? data, int intervalId) {
+      List<MaintenanceCheckList>? data) {
+    //, int intervalId
     try {
       List<Map<String, dynamic>> checkList = [];
       if (data != null && data.isNotEmpty) {
         for (var check in data) {
           Map<String, dynamic> checkData = {
             "ChecklistName": check.checkName,
+            "checkListId": check.checkListId,
             "partList": []
           };
           for (var part in check.partList!) {
             Map<String, dynamic> partsData = {
+              "partId": part.partId,
               "partName": part.partName,
               "partNo": part.partNo,
               "quantity": part.quantiy,
+              "units": part.units
             };
             var partList = checkData["partList"] as List<dynamic>;
             partList.add(partsData);
@@ -2125,4 +2174,6 @@ class Utils {
       return "";
     }
   }
+
+ 
 }

@@ -306,15 +306,12 @@ class AddIntervalsViewModel extends InsiteViewModel {
                   .toList());
       Logger().w(maitenanceCheckListData!.toJson());
       if (isEditing) {
-        Logger().i(maintenanceInterval!.intervalName);
-        Logger().i("isediting");
-
-        EditIntervalResponse? data =await _maintenanceService!
-            .updateMaintenanceIntervals(_graphqlSchemaService!
-                .updateMaintenanceIntervals(maintenanceInterval));
-        if (data != null) {
-          Logger().w(data.updateMaintenanceIntervals!.message);
-        }
+        // EditIntervalResponse? data = await _maintenanceService!
+        //     .updateMaintenanceIntervals(_graphqlSchemaService!
+        //         .updateMaintenanceIntervals(maintenanceInterval));
+        // if (data != null) {
+        //   Logger().w(data.updateMaintenanceIntervals!.message);
+        // }
       } else {
         data = await _maintenanceService!.addMaintenanceIntervals(
             _graphqlSchemaService!.addMaintenanceIntervals(),
@@ -332,8 +329,32 @@ class AddIntervalsViewModel extends InsiteViewModel {
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());
-      // Logger().w(maitenanceCheckListData!.toJson());
+    }
+  }
 
+  editInterval() async {
+    try {
+      showLoadingDialog();
+      await gettingUserData();
+      Map<String, dynamic> updateInterval = {
+        "intervalList": Utils.updateMaintenanceIntervals(maintenanceInterval),
+        "checkList":
+            Utils.updateMaintenanceCheckList(maintenanceInterval!.checkList)
+      };
+      //EditIntervalResponse?
+      EditIntervalResponse intervalData = await _maintenanceService!
+          .updateMaintenanceIntervals(
+              _graphqlSchemaService!.updateMaintenanceIntervals(), updateInterval);
+      if (intervalData != null) {
+        // Logger().wtf(intervalData.updateMaintenanceIntervals!.message);
+        snackbarService!.showSnackbar(
+            message: "Interval/Checklist/Partlist Updated Successfully!!!");
+        hideLoadingDialog();
+        goToManage();
+      }
+    } catch (e) {
+      hideLoadingDialog();
+      Logger().e(e.toString());
     }
   }
 
@@ -456,6 +477,7 @@ class MaintenanceIntervalData {
   int? intervalId;
   String? intervalDescription;
   List<MaintenanceCheckList>? checkList;
+  List<MaintenanceIntervalList>? intervalList;
   MaintenanceIntervalData(
       {this.assetId,
       this.checkList,
@@ -475,6 +497,18 @@ class MaintenanceCheckList {
   int? checkListId;
   List<MaintenancePartList>? partList;
   MaintenanceCheckList({this.checkName, this.partList, this.checkListId});
+}
+
+class MaintenanceIntervalList {
+  String? intervalName;
+  int? intervalID;
+  int? firstOccurences;
+  String? intervalDescription;
+  MaintenanceIntervalList(
+      {this.firstOccurences,
+      this.intervalDescription,
+      this.intervalID,
+      this.intervalName});
 }
 
 class MaintenancePartList {
