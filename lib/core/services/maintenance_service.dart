@@ -89,6 +89,7 @@ class MaintenanceService extends BaseService {
         );
         MaintenanceListData mainListData =
             MaintenanceListData.fromJson(data.data["maintenanceList"]);
+            //Logger().w(data.data["maintenanceList"]);
         return mainListData;
       }
       if (!isVisionLink) {
