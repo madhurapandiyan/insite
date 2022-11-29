@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
@@ -107,9 +109,14 @@ class AppbarViewModel extends InsiteViewModel {
           _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
               arguments: LoginArguments(response: response));
         } else {
-          _navigationService.clearTillFirstAndShow(
-            indiaStack.indiaStackSplashViewRoute,
-          );
+          if (Platform.isIOS) {
+            _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
+                arguments: LoginArguments(response: response));
+          } else {
+            _navigationService.clearTillFirstAndShow(
+              indiaStack.indiaStackSplashViewRoute,
+            );
+          }
         }
       }
     });

@@ -75,7 +75,8 @@ class MainViewModel extends InsiteViewModel {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        if (_maintenanceList.length != _totalCount) {
+        if (_maintenanceList.length >= totalCount!) {
+        } else {
           _loadMore();
         }
       }
@@ -138,7 +139,6 @@ class MainViewModel extends InsiteViewModel {
                   pageNo: pageNumber));
 
       if (maintenanceListData != null) {
-        Logger().v(maintenanceListData.maintenanceList!.length);
         _totalCount = maintenanceListData.count;
         SummaryData singleSummaryData;
         if (maintenanceListData.maintenanceList!.isNotEmpty) {

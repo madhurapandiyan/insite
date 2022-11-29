@@ -3,6 +3,7 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -15,6 +16,7 @@ import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:location/location.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
@@ -30,11 +32,26 @@ class AssetLocationView extends StatefulWidget {
 class _AssetLocationViewState extends State<AssetLocationView> {
   String _currentSelectedItem = "SATELLITE";
   double zoomVal = 5.0;
+  double? latitude;
+  double? longitude;
+  Location currentLocation = Location();
 
   MapType currentType = MapType.normal;
   List<DateTime>? dateRange;
   //late GoogleMapController mapController;
   BitmapDescriptor? mapMarker;
+  @override
+  void initState() {
+    super.initState();
+    if (AppConfig.instance!.productFlavor == "worksiq" ||
+        AppConfig.instance!.productFlavor == "cummins") {
+    } else {
+      currentLocation.onLocationChanged.listen((LocationData loc) {
+        latitude = loc.latitude;
+        longitude = loc.longitude;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -145,6 +162,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 onMapCreated: (GoogleMapController controller) {
                                   // mapController = controller;
                                   viewModel.controller = controller;
+                                  viewModel.mapcontroller.complete(controller);
                                   viewModel.customInfoWindowController
                                       .googleMapController = controller;
                                   Future.delayed(Duration(seconds: 1), () {
@@ -246,69 +264,49 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                   ),
                                   Column(
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (viewModel.assetLocationHistory !=
-                                              null) {
-                                            zoomVal++;
-                                            _plus(
-                                                zoomVal,
-                                                LatLng(
-                                                    viewModel
-                                                        .assetLocationHistory!
-                                                        .assetLocation![0]
-                                                        .latitude!,
-                                                    viewModel
-                                                        .assetLocationHistory!
-                                                        .assetLocation![0]
-                                                        .longitude!),
-                                                viewModel);
-                                          }
-                                        },
-                                        child: Container(
-                                          width: 27.47,
-                                          height: 26.97,
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .backgroundColor,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5.0)),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                blurRadius: 1.0,
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1!
-                                                    .color!,
+                                      AppConfig.instance!.productFlavor ==
+                                                  "worksiq" ||
+                                              AppConfig.instance!
+                                                      .productFlavor ==
+                                                  "cummins"
+                                          ? SizedBox()
+                                          : Align(
+                                              alignment: Alignment.centerRight,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  _zoomToCurrentLocation(
+                                                      viewModel);
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      right: 10, bottom: 10),
+                                                  width: 30,
+                                                  height: 30,
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
+                                                        .backgroundColor,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                100)),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.gps_fixed_outlined,
+                                                    color: Colors.black,
+                                                    size: 30,
+                                                  ),
+                                                ),
                                               ),
-                                            ],
-                                            border: Border.all(
-                                              width: 1.0,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .color!,
                                             ),
-                                            shape: BoxShape.rectangle,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            "assets/images/plus.svg",
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      GestureDetector(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: GestureDetector(
                                           onTap: () {
                                             if (viewModel
                                                     .assetLocationHistory !=
                                                 null) {
-                                              zoomVal--;
-                                              _minus(
+                                              zoomVal++;
+                                              _plus(
                                                   zoomVal,
                                                   LatLng(
                                                       viewModel
@@ -349,12 +347,73 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                               shape: BoxShape.rectangle,
                                             ),
                                             child: SvgPicture.asset(
-                                              "assets/images/minus.svg",
+                                              "assets/images/plus.svg",
                                               color: Theme.of(context)
                                                   .iconTheme
                                                   .color,
                                             ),
-                                          )),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              if (viewModel
+                                                      .assetLocationHistory !=
+                                                  null) {
+                                                zoomVal--;
+                                                _minus(
+                                                    zoomVal,
+                                                    LatLng(
+                                                        viewModel
+                                                            .assetLocationHistory!
+                                                            .assetLocation![0]
+                                                            .latitude!,
+                                                        viewModel
+                                                            .assetLocationHistory!
+                                                            .assetLocation![0]
+                                                            .longitude!),
+                                                    viewModel);
+                                              }
+                                            },
+                                            child: Container(
+                                              width: 27.47,
+                                              height: 26.97,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .backgroundColor,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(5.0)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    blurRadius: 1.0,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .color!,
+                                                  ),
+                                                ],
+                                                border: Border.all(
+                                                  width: 1.0,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .color!,
+                                                ),
+                                                shape: BoxShape.rectangle,
+                                              ),
+                                              child: SvgPicture.asset(
+                                                "assets/images/minus.svg",
+                                                color: Theme.of(context)
+                                                    .iconTheme
+                                                    .color,
+                                              ),
+                                            )),
+                                      ),
                                     ],
                                   )
                                 ],
@@ -440,6 +499,14 @@ class _AssetLocationViewState extends State<AssetLocationView> {
     final GoogleMapController controller = assetLocationViewModel.controller!;
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
+  }
+
+  Future<void> _zoomToCurrentLocation(AssetLocationViewModel viewModel) async {
+     Logger().i(latitude);
+    final GoogleMapController mapController =
+        await viewModel.mapcontroller.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(latitude ?? 0.0, longitude ?? 0.0), zoom: 13)));
   }
 
   MapType _changemap() {
