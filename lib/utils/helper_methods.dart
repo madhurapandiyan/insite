@@ -382,7 +382,7 @@ class Utils {
   static String? maintenanceToDateFormate(String date) {
     try {
       DateTime parseDate = DateTime.parse(date);
-      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
+      var data = parseDate.add(Duration(hours: 18, minutes: 59, seconds: 59));
       var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
       return formatedStringData;
     } catch (e) {
@@ -393,7 +393,7 @@ class Utils {
   static String? maintenanceFromDateFormate(String date) {
     try {
       DateTime parseDate = DateTime.parse(date);
-      var data = parseDate.add(Duration(hours: 00, minutes: 00, seconds: 00));
+      var data = parseDate.add(Duration(hours: 19, minutes: 00, seconds: 00));
       var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
       ;
       return formatedStringData;

@@ -32,6 +32,7 @@ class AssetLocationViewModel extends InsiteViewModel {
   AssetLocationHistory? get assetLocationHistory => _assetLocationHistory;
   CustomInfoWindowController customInfoWindowController =
       CustomInfoWindowController();
+      Completer<GoogleMapController> mapcontroller = Completer();
 
   GoogleMapController ? controller; 
 

@@ -47,7 +47,9 @@ class FaultViewModel extends InsiteViewModel {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        _loadMore();
+        if (faults.length != totalCount) {
+          _loadMore();
+        }
       }
     });
     Future.delayed(Duration(seconds: 2), () async {
