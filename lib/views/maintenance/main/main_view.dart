@@ -86,7 +86,10 @@ class MainViewState extends State<MainView> {
                   isDashboard: false,
                   total: viewModel.totalCount!.toInt(),
                   screenType: ScreenType.MAINTENANCE,
-                  count: viewModel.maintenanceList.length,
+                  count: viewModel.maintenanceList.length <
+                          viewModel.totalCount!.toInt()
+                      ? viewModel.maintenanceList.length
+                      : viewModel.totalCount!.toInt(),
                 ),
                 Expanded(
                   child: viewModel.loading

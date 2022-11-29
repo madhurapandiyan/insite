@@ -248,8 +248,8 @@ class NotificationViewModel extends InsiteViewModel {
                 notificationUserStatus: 0,
                 notificationStatus: 0,
                 productFamily: productFamilyFilterData,
-                startDate: isFirst ? startDate : null,
-                endDate: isFirst ? endDate : null));
+                startDate: "",
+                endDate: ""));
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;
@@ -326,16 +326,16 @@ class NotificationViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  _loadMore() async {
+  _loadMore() {
     if (_shouldLoadmore && !_loadingMore) {
       pageNumber++;
       _loadingMore = true;
 
       notifyListeners();
-      await getSelectedFilterData();
-      await getDateRangeFilterData();
+      // await getSelectedFilterData();
+      // await getDateRangeFilterData();
 
-      await getNotificationData(true);
+      getNotificationData(true);
     }
   }
 

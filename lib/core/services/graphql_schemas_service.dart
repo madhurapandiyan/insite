@@ -2533,6 +2533,7 @@ query{
     notificationUserStatus:$notificationUserStatus,
     fromDate:"${startDate != null ? startDate : ""}",
     toDate:"${endDate != null ? endDate : ""}",
+    
   
      notificationType:${Utils.getStringListData(notificationType ?? [])}
      productFamily:"${productFamily != null ? productFamily : ""}"
