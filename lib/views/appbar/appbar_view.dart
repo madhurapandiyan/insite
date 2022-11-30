@@ -261,6 +261,14 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                           showLogoutPrompt(viewModel, context);
                         })
                     : SizedBox(),
+                shouldShowAccount!
+                    ? IconButton(
+                        onPressed: () {
+                          viewModel.onPreferencePressed();
+                        },
+                        color: Theme.of(context).buttonColor,
+                        icon: Icon(Icons.settings))
+                    : SizedBox()
               ],
             ),
             shouldShowTitle

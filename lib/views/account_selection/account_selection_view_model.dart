@@ -9,6 +9,7 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/local_storage_service.dart';
 import 'package:insite/core/services/login_service.dart';
+import 'package:insite/core/services/preference_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -16,6 +17,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 class AccountSelectionViewModel extends InsiteViewModel {
   LocalService? _localService = locator<LocalService>();
+  PreferenceService? _preferenceService = locator<PreferenceService>();
   LoginService? _loginService = locator<LoginService>();
   NavigationService? _navigationService = locator<NavigationService>();
   LocalStorageService? _localStorageService = locator<LocalStorageService>();
@@ -266,7 +268,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
     } else {}
   }
 
-  setSubAccountSelected(Customer value) {
+  setSubAccountSelected(Customer value) async {
     Logger().d("setSubAccountSelected " + value.CustomerUID!);
     // value = Customer(
     //     CustomerUID: "",
@@ -281,6 +283,7 @@ class AccountSelectionViewModel extends InsiteViewModel {
     } else {
       _localService!.saveCustomerInfo(null);
     }
+    await _preferenceService!.getPreferenceDataLocal();
     Future.delayed(Duration(seconds: 2), () {
       notifyListeners();
     });
@@ -351,5 +354,12 @@ class AccountSelectionViewModel extends InsiteViewModel {
     } catch (e) {
       Logger().e(e.toString());
     }
+  }
+
+  onGetUserPreference() async {
+    Logger().wtf("calling GetUserPreference");
+
+    var data = await _preferenceService!.getPreferenceDataLocal();
+    //var user= await  _preferenceService!.getPreferenceData();
   }
 }

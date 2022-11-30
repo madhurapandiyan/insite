@@ -82,6 +82,8 @@ dependencies:
   firebase_core: ^1.16.0
   horizontal_data_table: any
   phone_number: ^1.0.0
+  timezone: ^0.8.0
+  easy_localization: ^3.0.0
   
   firebase_core_platform_interface: 4.4.0
  

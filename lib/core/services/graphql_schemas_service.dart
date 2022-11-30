@@ -2249,7 +2249,7 @@ mutation createNotification(\$alertCategoryID: Int, \$notificationSubscribers: n
     return data;
   }
 
-   String updateNotification(
+  String updateNotification(
       {int? alertCategoryID,
       String? currentDate,
       String? alertTitle,
@@ -2293,6 +2293,7 @@ mutation{
   }""";
     return data;
   }
+
   String checkNotificationTitle(String title) {
     var data = """
 query{
@@ -2432,7 +2433,7 @@ siteOperands{
     return data;
   }
 
-String editSingleNotification(String? id, String? pageNo) {
+  String editSingleNotification(String? id, String? pageNo) {
     var data = """
 query{
   getNotificationAlertConfigData(
@@ -3408,7 +3409,6 @@ maintenanceIntervals(
 //   }
 ////////
 
-
   updateMaintenanceIntervals() {
     var data = """
 mutation updateMaintenanceIntervals(\$intervalList: [intervalListObj], \$checkList: [checkListObj]) {
@@ -3593,6 +3593,27 @@ mutation updateGroups(\$groupUid: String, \$groupName: String, \$description: St
   updateGroups(groupUid: \$groupUid, groupName: \$groupName, description: \$description, customerUID: \$customerUID, associatedAssetUID: \$associatedAssetUID, dissociatedAssetUID: \$dissociatedAssetUID){
     isUpdated
   }
+}""";
+    return data;
+  }
+
+  getPreferenceData(String? keyName) {
+    var data = """query{
+    getUserPreference(keyName:"$keyName"){
+        preferenceJson,
+        preferenceKeyName,
+        preferenceKeyUID,
+    schemaVersion
+  }
+}
+""";
+    return data;
+  }
+
+  createUpdateUserPreference({String? userPreference, String? time}) {
+    var data = """
+mutation createUpdateUserPreference(\$userPreferenceInput: UserPreferenceInput!, \$isCreate: Boolean!){
+  createUpdateUserPreference(userPreferenceInput: \$userPreferenceInput, isCreate: \$isCreate)
 }""";
     return data;
   }

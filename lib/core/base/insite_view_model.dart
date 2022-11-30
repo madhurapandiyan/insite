@@ -4,6 +4,7 @@ import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/login_response.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/date_range_service.dart';
@@ -14,12 +15,15 @@ import 'package:insite/core/services/login_service.dart';
 import 'package:insite/core/services/notification_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:logger/logger.dart';
 import 'package:random_string/random_string.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+
+import '../../views/preference/preference_view_model.dart';
 
 abstract class InsiteViewModel extends BaseViewModel {
   bool _is401 = false;
@@ -28,11 +32,14 @@ abstract class InsiteViewModel extends BaseViewModel {
     _is401 = value;
   }
 
+  UserPreference? userPref;
+  UserPreferedData? zone;
   bool isVisionLink = false;
   bool enableGraphQl = false;
 
   InsiteViewModel() {
     try {
+      getUserPreference();
       if (AppConfig.instance!.apiFlavor == "visionlink") {
         isVisionLink = true;
       }
@@ -46,6 +53,15 @@ abstract class InsiteViewModel extends BaseViewModel {
       //     });
     } catch (e) {
       Logger().e(e);
+    }
+  }
+
+  getUserPreference() async {
+    userPref = await _localService!.getUserPreferenceData();
+    if (userPref?.timezone != null) {
+      var timezone = timeZoneDropdownListData
+          .singleWhere((element) => element.value == userPref!.timezone);
+      zone = UserPreferedData(zone: timezone);
     }
   }
 
