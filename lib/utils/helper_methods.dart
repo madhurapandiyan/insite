@@ -2175,5 +2175,15 @@ class Utils {
     }
   }
 
+  static String ?removeVersionName(String ? title){
+    final versionString;
+    if(title!.contains("indiastack")){
+      versionString=title.split("-indiastack");
+      Logger().e(versionString[0]);
+      return versionString[0];
+    }
+    return null;
+  }
+
  
 }
