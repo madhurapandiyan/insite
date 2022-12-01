@@ -209,10 +209,12 @@ class AddReportViewModel extends InsiteViewModel {
         assetsDropDownValue = templateTitleValue;
       } else if (templateTitleValue == "Multi-Asset Excavator Usage") {
         assetsDropDownValue = templateTitleValue;
-      }else if (templateTitleValue == "Maintenance Asset Details") {
+      } else if (templateTitleValue == "Maintenance Asset Details") {
         assetsDropDownValue = templateTitleValue;
-      }
-      else if (templateTitleValue == "Maintenance History") {
+      } else if (templateTitleValue == "Maintenance History") {
+        assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue ==
+          "Multi-Asset Geofence EntryExit Report") {
         assetsDropDownValue = templateTitleValue;
       }
 
@@ -251,7 +253,8 @@ class AddReportViewModel extends InsiteViewModel {
                 assetItems.reportName == "MultiAssetBackhoeLoaderOperation" ||
                 assetItems.reportName == "MultiAssetExcavatorUsageReport" ||
                 assetItems.reportName == "MaintenanceAssetDetails" ||
-                assetItems.reportName == "MaintenanceHistory") {
+                assetItems.reportName == "MaintenanceHistory" ||
+                assetItems.reportName == "AssetGeofenceEntryExitReport") {
               reportFleetAssets!.add(assetItems.reportTypeName!);
             }
           }
@@ -271,7 +274,8 @@ class AddReportViewModel extends InsiteViewModel {
                     assetItems.reportName == "FleetSummary" ||
                     assetItems.reportName == "Asset Location History" ||
                     assetItems.reportName == "MaintenanceAssetDetails" ||
-                    assetItems.reportName == "MaintenanceHistory"
+                    assetItems.reportName == "MaintenanceHistory" ||
+                    assetItems.reportName == "AssetGeofenceEntryExitReport"
 
                 //assetItems.reportName == "Engine Idle" ||
                 //assetItems.reportName == "Engine Idle" ||
@@ -676,8 +680,8 @@ class AddReportViewModel extends InsiteViewModel {
       } else {
         assetIdresult = await _manageUserService!.getGroupListData(false);
         isAssetLoading = false;
-        Logger().wtf(assetIdresult?.assetDetailsRecords!.toList());
-        Logger().wtf('ELSEEEEEEEEEEEEEEEE');
+        // Logger().wtf(assetIdresult?.assetDetailsRecords!.toList());
+        // Logger().wtf('ELSEEEEEEEEEEEEEEEE');
       }
       notifyListeners();
     } catch (e) {

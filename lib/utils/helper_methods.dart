@@ -1529,6 +1529,21 @@ class Utils {
         "telematicsDeviceId"
       ];
       return list;
+    } else if (value == "Multi-Asset Geofence EntryExit Report") {
+      list = [
+        "assetSerialNumber",
+        "makeCode",
+        "model",
+        "ReportedDateTime",
+        "geofenceName",
+        "EventType",
+        "Lat/Long",
+        "location",
+        "state",
+        "pincode",
+        "country",
+      ];
+      return list;
     }
     return null;
   }
@@ -1586,6 +1601,10 @@ class Utils {
       case "Maintenance History":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
+        return querUrl;
+      case "Multi-Asset Geofence EntryExit Report":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
     }
   }
@@ -1645,6 +1664,10 @@ class Utils {
       case "Maintenance History":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
+        return querUrl;
+      case "Multi-Asset Geofence EntryExit Report":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
     }
   }
@@ -2175,15 +2198,13 @@ class Utils {
     }
   }
 
-  static String ?removeVersionName(String ? title){
+  static String? removeVersionName(String? title) {
     final versionString;
-    if(title!.contains("indiastack")){
-      versionString=title.split("-indiastack");
+    if (title!.contains("indiastack")) {
+      versionString = title.split("-indiastack");
       Logger().e(versionString[0]);
       return versionString[0];
     }
     return null;
   }
-
- 
 }
