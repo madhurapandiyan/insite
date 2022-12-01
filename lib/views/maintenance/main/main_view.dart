@@ -105,6 +105,8 @@ class MainViewState extends State<MainView> {
                                 SummaryData? summaryData =
                                     viewModel.maintenanceList[index];
                                 return MaintenanceListItem(
+                                  dateFormat: viewModel.userPref,
+                                  timeZone: viewModel.zone,
                                   summaryData: summaryData,
                                   onCallback: () {
                                     viewModel.onDetailPageSelected(summaryData);

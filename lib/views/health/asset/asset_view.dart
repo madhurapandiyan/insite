@@ -104,6 +104,8 @@ class AssetViewState extends State<AssetView> {
                                 itemBuilder: (context, index) {
                                   Fault? fault = viewModel.faults[index];
                                   return HealthAssetListItem(
+                                    dateFormat: viewModel.userPref,
+                                    timeZone: viewModel.zone,
                                     key: UniqueKey(),
                                     fault: fault,
                                     onCallback: () {

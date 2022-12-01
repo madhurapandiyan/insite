@@ -10,6 +10,7 @@ import 'package:geodesy/geodesy.dart' as geodesy;
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/models/marker.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:latlong2/latlong.dart' as latlng;
 import 'package:geocore/geocore.dart' as Geo;
 import 'package:insite/core/base/insite_view_model.dart';
@@ -113,7 +114,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   List<m.Material> materialModelList = [];
   DateTime? backFillDate;
-  DateTime? endingDate;
+  String? endingDate;
   DateTime actionUTC = DateTime.now();
   //String geofenceType = "Generic";
   String? materialUID;
@@ -164,7 +165,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onEndDatePicked(DateTime value) {
-    endingDate = value;
+    endingDate = Utils.getManualDateFormat(value.toString()) ;
+
     notifyListeners();
   }
 
@@ -587,7 +589,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
                 ? null
                 : descriptionController.text,
             GeofenceName: titleController.text,
-            EndDate: endingDate == null ? null : endingDate!.toIso8601String(),
+            EndDate: endingDate == null ? null : endingDate!,
             GeometryWKT: finalPolygonWKTstring,
             GeofenceType: initialValue,
             IsTransparent: false,
@@ -601,7 +603,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
                 ? null
                 : descriptionController.text,
             GeofenceName: titleController.text,
-            EndDate: endingDate == null ? null : endingDate!.toIso8601String(),
+            EndDate: endingDate == null ? null : endingDate!,
             GeometryWKT: finalPolygonWKTstring,
             GeofenceType: initialValue,
             IsTransparent: false,
@@ -682,7 +684,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
                   actionUTC: DateTime.now().toIso8601String(),
                   description: descriptionController.text,
                   endDate:
-                      endingDate == null ? null : endingDate!.toIso8601String(),
+                      endingDate == null ? null : endingDate!,
                   geofenceName: titleController.text,
                   geometryWKT: finalPolygonWKTstring,
                   geofenceType: initialValue,
@@ -696,7 +698,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
                   actionUTC: DateTime.now().toIso8601String(),
                   description: descriptionController.text,
                   endDate:
-                      endingDate == null ? null : endingDate!.toIso8601String(),
+                      endingDate == null ? null : endingDate!,
                   geofenceName: titleController.text,
                   geometryWKT: finalPolygonWKTstring,
                   geofenceType: initialValue,
@@ -715,7 +717,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
                   actionUTC: DateTime.now().toIso8601String(),
                   description: descriptionController.text,
                   endDate:
-                      endingDate == null ? null : endingDate!.toIso8601String(),
+                      endingDate == null ? null : endingDate!,
                   geofenceName: titleController.text,
                   geometryWKT: finalPolygonWKTstring,
                   geofenceType: initialValue,
@@ -729,7 +731,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
                   actionUTC: DateTime.now().toIso8601String(),
                   description: descriptionController.text,
                   endDate:
-                      endingDate == null ? null : endingDate!.toIso8601String(),
+                      endingDate == null ? null : endingDate!,
                   geofenceName: titleController.text,
                   geometryWKT: finalPolygonWKTstring,
                   geofenceType: initialValue,
@@ -812,7 +814,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
         titleController.text = data.GeofenceName.toString();
         descriptionController.text = data.Description.toString();
         if (data.EndDate != null) {
-          endingDate = DateTime.parse(data.EndDate!);
+          endingDate = data.EndDate;
           isNoendDate = false;
         }
 

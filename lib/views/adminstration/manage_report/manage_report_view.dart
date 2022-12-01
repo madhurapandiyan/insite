@@ -114,6 +114,8 @@ class ManageReportView extends StatelessWidget {
                                         ScheduledReportsRow scheduledReport =
                                             viewModel.assets[index];
                                         return ManageReportCardWidget(
+                                          dateFormat: viewModel.userPref,
+                                          timeZone: viewModel.zone,
                                           voidCallback: () {
                                             viewModel.onItemSelected(index);
                                           },

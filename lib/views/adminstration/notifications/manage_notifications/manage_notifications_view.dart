@@ -90,6 +90,8 @@ class ManageNotificationsView extends StatelessWidget {
                                                       viewModel
                                                           .notifications[index];
                                                   return ManageNotificationWidget(
+                                                    dateFormat: viewModel.userPref,
+                                                    timeZone: viewModel.zone,
                                                     alerts: alerts,
                                                     onDelete: () {
                                                       viewModel.onDeleteClicked(

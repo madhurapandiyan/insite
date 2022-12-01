@@ -214,8 +214,8 @@ class _DetailPopupViewState extends State<DetailPopupView>
                                       ),
                                       InsiteTableRowItem(
                                         title: "Due Date :",
-                                        content: Utils.getDateInFormatddMMyyyy(
-                                            viewModel.dueDate),
+                                        content: Utils.getPreferenceDate(
+                                            viewModel.dueDate,viewModel.userPref,viewModel.zone),
                                       )
                                     ],
                                   ),

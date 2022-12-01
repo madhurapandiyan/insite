@@ -140,14 +140,14 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                                 .assetLastReceivedEvent!
                                                 .lastReceivedEventTimeLocal !=
                                             null
-                                        ? Utils.getLastReportedDateOneLocalUTC(
+                                        ? Utils.getDateUTC(
                                             viewModel
                                                 .singleAssetOperation!
                                                 .assetOperations!
                                                 .assets!
                                                 .first
                                                 .assetLastReceivedEvent!
-                                                .lastReceivedEventTimeLocal)
+                                                .lastReceivedEventTimeLocal,viewModel.userPref,viewModel.zone)
                                         : "-",
                                   ),
                                   InsiteTableRowItem(
@@ -177,8 +177,8 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                   // ),
                                   InsiteTableRowItem(
                                     title: 'This data was last refreshed on',
-                                    content: Utils.formatCurrentSystemTime(
-                                        DateTime.now().toString()),
+                                    content: Utils.getDateUTC(
+                                        DateTime.now().toString(),viewModel.userPref,viewModel.zone),
                                   ),
                                   InsiteTableRowItem(
                                     title: 'Total Duration ',

@@ -2139,12 +2139,14 @@ mutation {
     geofenceName: "$geofenceName", 
    actionUTC: "$actionUTC", 
     endDate: ${endDate == null ? null : "\"" + "$endDate" + "\""},
-     description: "$description",  
+    
     fillColor: 658170, 
-    isTransparent: false
+    isTransparent: false,
+     description: "$description",  
     )
 }
 """;
+Logger().w(data);
     return data;
   }
 

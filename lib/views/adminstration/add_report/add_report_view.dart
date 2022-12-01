@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/address_custom_text_box.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_date_picker.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
@@ -584,7 +585,7 @@ class _AddReportViewState extends State<AddReportView> {
                           child: Padding(
                               padding: const EdgeInsets.only(left: 10, top: 3),
                               child: CustomDatePicker(
-                                initialText: "YYYY/MM/DD",
+                                initialText: "MM/dd/yyyy",
                                 controller: viewModel.dateTimeController,
                                 voidCallback: () {
                                   getDatePicker(viewModel);
@@ -911,7 +912,8 @@ class _AddReportViewState extends State<AddReportView> {
 
     if (pickedStartDate != null) {
       print(pickedStartDate);
-      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedStartDate);
+      String formattedDate =Utils.getManualDateFormat(pickedStartDate.toString());
+      // DateFormat('MM/dd/yyyy').format(pickedStartDate);
 
       print(formattedDate);
       viewModel.getDatPickerData(formattedDate);

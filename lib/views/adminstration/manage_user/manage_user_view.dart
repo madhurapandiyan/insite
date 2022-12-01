@@ -193,6 +193,8 @@ class ManageUserView extends StatelessWidget {
                                           UserRow user =
                                               viewModel.assets[index];
                                           return ManageUserWidget(
+                                            dateFormat: viewModel.userPref,
+                                            timeZone: viewModel.zone,
                                             user: user,
                                             callback: () {
                                               viewModel.onItemSelected(index);

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/health_list_response.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class HealthListItem extends StatelessWidget {
+  final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final Fault? faultElement;
-  HealthListItem({this.faultElement});
+  HealthListItem({this.faultElement, this.dateFormat, this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +80,7 @@ class HealthListItem extends StatelessWidget {
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: 'Fault Reported Time :',
-                      content: Utils.getLastReportedDateOneUTC(faultElement!.lastReportedTimeUTC)
+                      content: Utils.getDateUTC(faultElement!.lastReportedTimeUTC,dateFormat,timeZone)
                       
                     ),
                     Column(

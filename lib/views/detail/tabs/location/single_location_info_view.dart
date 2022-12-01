@@ -2,11 +2,15 @@ import 'package:clippy_flutter/triangle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_location_history.dart';
+import 'package:insite/core/models/user_preference.dart';
+import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class SingleInfoView extends StatelessWidget {
+   final UserPreference?dateFormat;
   final AssetLocation? assetLocation;
-  const SingleInfoView({Key? key, this.assetLocation}) : super(key: key);
+  const SingleInfoView({Key? key, this.assetLocation, this.dateFormat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,41 +42,42 @@ class SingleInfoView extends StatelessWidget {
                             fontWeight: FontWeight.w900,
                             size: 10.0),
                         InsiteText(
-                            text: assetLocation!.locationEventLocalTime
-                                    .toString()
-                                    .split('T')
-                                    .first
-                                    .split('-')[2]
-                                    .split(' ')
-                                    .first +
-                                '/' +
-                                assetLocation!.locationEventLocalTime
-                                    .toString()
-                                    .split('T')
-                                    .first
-                                    .split('-')[1] +
-                                '/' +
-                                assetLocation!.locationEventLocalTime
-                                    .toString()
-                                    .split('T')
-                                    .first
-                                    .split('-')[0] +
-                                ' ' +
-                                assetLocation!.locationEventLocalTime
-                                    .toString()
-                                    .split('T')
-                                    .last
-                                    .split(':')[0]
-                                    .split(' ')
-                                    .last +
-                                ':' +
-                                assetLocation!.locationEventLocalTime
-                                    .toString()
-                                    .split('T')
-                                    .last
-                                    .split(':')[1] +
-                                ' ' +
-                                assetLocation!.locationEventLocalTimeZoneAbbrev!,
+                            text:Utils.getDateTimeFromString(assetLocation!.locationEventLocalTime!.toString(),dateFormat)+" ${assetLocation!.locationEventLocalTimeZoneAbbrev}",
+                            // assetLocation!.locationEventLocalTime
+                            //         .toString()
+                            //         .split('T')
+                            //         .first
+                            //         .split('-')[2]
+                            //         .split(' ')
+                            //         .first +
+                            //     '/' +
+                            //     assetLocation!.locationEventLocalTime
+                            //         .toString()
+                            //         .split('T')
+                            //         .first
+                            //         .split('-')[1] +
+                            //     '/' +
+                            //     assetLocation!.locationEventLocalTime
+                            //         .toString()
+                            //         .split('T')
+                            //         .first
+                            //         .split('-')[0] +
+                            //     ' ' +
+                            //     assetLocation!.locationEventLocalTime
+                            //         .toString()
+                            //         .split('T')
+                            //         .last
+                            //         .split(':')[0]
+                            //         .split(' ')
+                            //         .last +
+                            //     ':' +
+                            //     assetLocation!.locationEventLocalTime
+                            //         .toString()
+                            //         .split('T')
+                            //         .last
+                            //         .split(':')[1] +
+                            //     ' ' +
+                            //     assetLocation!.locationEventLocalTimeZoneAbbrev!,
                             size: 8.0),
                       ],
                     ),

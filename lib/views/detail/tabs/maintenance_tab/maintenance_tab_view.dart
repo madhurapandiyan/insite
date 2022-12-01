@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
@@ -136,6 +138,8 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                             child: InsiteProgressBar(),
                           )
                         : MaintenanceTabListData(
+                          dateFormat: viewModel.userPref,
+                          timeZone: viewModel.zone,
                             assetData: viewModel.assetDataValue,
                             servicesData: viewModel.services,
                             serviceCalBack:
@@ -149,6 +153,8 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                             child: InsiteProgressBar(),
                           )
                         : HistoryListData(
+                          dateFormat: viewModel.userPref,
+                          timeZone: viewModel.zone,
                             listData: viewModel.historyData,
                           )
               ],
@@ -313,12 +319,14 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
 }
 
 class MaintenanceTabListData extends StatelessWidget {
+   final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final List<Services?>? servicesData;
   final AssetData? assetData;
   final Function(int? value, AssetData? assetDataValue,
       List<Services?>? serviceNames, String? service)? serviceCalBack;
   MaintenanceTabListData(
-      {this.servicesData, this.serviceCalBack, this.assetData});
+      {this.servicesData, this.serviceCalBack, this.assetData, this.dateFormat, this.timeZone,});
 
   @override
   Widget build(BuildContext context) {
@@ -402,8 +410,8 @@ class MaintenanceTabListData extends StatelessWidget {
                             TableRow(children: [
                               InsiteTableRowItem(
                                 title: "Due Date : ",
-                                content: Utils.getDateInFormatddMMyyyy(
-                                    services.dueInfo!.dueDate),
+                                content: Utils.getPreferenceDate(
+                                    services.dueInfo!.dueDate,dateFormat,timeZone),
                               ),
 
                               // InsiteTableRowItem(
@@ -424,8 +432,10 @@ class MaintenanceTabListData extends StatelessWidget {
 }
 
 class HistoryListData extends StatelessWidget {
+   final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final List<MaintenanceList>? listData;
-  HistoryListData({this.listData});
+  HistoryListData({this.listData, this.dateFormat, this.timeZone});
   @override
   Widget build(BuildContext context) {
     return listData!.isEmpty || listData == null
@@ -498,8 +508,8 @@ class HistoryListData extends StatelessWidget {
                               title: "Hour Meter",
                             ),
                             InsiteTableRowItem(
-                              content: Utils.getDateInFormatddMMyyyy(
-                                  data.serviceDate),
+                              content: Utils.getPreferenceDate(
+                                  data.serviceDate,dateFormat,timeZone),
                               title: "Service Completion Date",
                             ),
                             InsiteTableRowItem(

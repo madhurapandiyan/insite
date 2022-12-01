@@ -2192,6 +2192,10 @@ class Utils {
   static String getDateUTC(
       String? date, UserPreference? formate, UserPreferedData? timeZone) {
     try {
+       if(date==null||date.toString().isEmpty){
+        return "-";
+      }
+     
       Logger().w("date to be formate $date");
       tz.initializeTimeZones();
       var detroit = tzo.getLocation(timeZone!.zone!.momentTimezone);
@@ -2217,6 +2221,11 @@ class Utils {
   static String getPreferenceDate(
       date, UserPreference? format, UserPreferedData? timeZone) {
     try {
+        if(date==null||date.toString().isEmpty){
+        return "-";
+      }
+      Logger().e(date);
+     
       tz.initializeTimeZones();
       var detroit = tzo.getLocation(timeZone!.zone!.momentTimezone);
       DateTime parseDate = DateTime.parse(date!);
@@ -2231,4 +2240,43 @@ class Utils {
       return "";
     }
   }
+
+static String getManualDateFormat(date) {
+    try {
+       if(date==null||date.toString().isEmpty){
+        return "-";
+      }
+       Logger().e(date);
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('MM/dd/yyyy');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+ static String getDateTimeFromString(
+      String? date,UserPreference? dateFormat) {
+    try {
+       if(date==null||date.toString().isEmpty){
+        return "-";
+      }
+      
+      Logger().w("date to be formate $date");
+      
+      DateTime parseDate = DateTime.parse(date);
+     
+      Logger().v(parseDate.toString());
+           var outputFormat =
+          DateFormat("${dateFormat?.dateFormat} h:mm a");
+      var outputDate = outputFormat.format(parseDate);
+      Logger().i("date formated $outputDate");
+      return outputDate;
+    } catch (e) {
+      Logger().e(e.toString());
+      return "";
+    }
+  }
+
 }

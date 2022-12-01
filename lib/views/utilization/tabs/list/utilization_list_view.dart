@@ -166,6 +166,8 @@ class UtilizationListViewState extends State<UtilizationListView> {
                                         AssetResult utilizationData =
                                             viewModel.utilLizationListData[index];
                                         return UtilizationListItem(
+                                          dateFormat: viewModel.userPref,
+                                          timeZone: viewModel.zone,
                                           utilizationData: utilizationData,
                                           isShowingInDetailPage: false,
                                           onCallback: () {

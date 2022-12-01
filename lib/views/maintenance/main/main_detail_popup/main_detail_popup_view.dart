@@ -216,8 +216,8 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                                           ),
                                     InsiteTableRowItem(
                                       title: "Due Date :",
-                                      content: Utils.getDateInFormatddMMyyyy(
-                                          viewModel.mainPopViewData!.dueDate),
+                                      content: Utils.getPreferenceDate(
+                                          viewModel.mainPopViewData!.dueDate,viewModel.userPref,viewModel.zone),
                                     )
                                   ],
                                 ),
@@ -507,6 +507,7 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                     ),
                     borderRadius: BorderRadius.circular(10)),
                 child: CustomDatePicker(
+                  initialText:'MM/dd/yyyy' ,
                   controller: viewModel.hourMeterDateController,
                   voidCallback: () => showDatePicker(
                     context: context,

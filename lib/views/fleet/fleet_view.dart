@@ -115,6 +115,8 @@ class _FleetViewState extends State<FleetView> {
                                       itemBuilder: (context, index) {
                                         Fleet fleet = viewModel.assets[index];
                                         return FleetListItem(
+                                          dateFormat: viewModel.userPref,
+                                          timeZone: viewModel.zone,
                                           fleet: fleet,
                                           onCallback: () {
                                             viewModel

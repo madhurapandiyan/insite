@@ -122,11 +122,11 @@ class _PreferencesViewState extends State<PreferencesView> {
                           thickness: 1,
                           color: Colors.grey[300],
                         ),
-                        /*
+                        
                         Padding(
                           padding: const EdgeInsets.only(top: 10),
                           child: InsiteText(
-                            text: "locationandlanguage",
+                            text: "location",
                             fontWeight: FontWeight.w700,
                             size: 15,
                           ),
@@ -157,41 +157,41 @@ class _PreferencesViewState extends State<PreferencesView> {
                           text: "language",
                           size: 12,
                         ),
-                        */
+                        
 
-                        InsiteText(
-                          text: "language".tr() + " " + ":",
-                          fontWeight: FontWeight.w700,
-                          size: 14,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        // InsiteText(
+                        //   text: "language".tr() + " " + ":",
+                        //   fontWeight: FontWeight.w700,
+                        //   size: 14,
+                        // ),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
 
-                        Padding(
-                          padding: const EdgeInsets.only(left: 55, top: 20),
-                          child: InsiteDropDownButton(
-                            value: viewModel.selectedLang,
-                            onChanged: (newValue) {
-                              viewModel.changedropDownLanguageValue(newValue);
-                            },
-                            items: viewModel.languageList
-                                .map<DropdownMenuItem<Language>>(
-                                    (Language value) {
-                              return DropdownMenuItem<Language>(
-                                value: value,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: InsiteText(
-                                    text: value.langName,
-                                    size: 14,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: 55, top: 20),
+                        //   child: InsiteDropDownButton(
+                        //     value: viewModel.selectedLang,
+                        //     onChanged: (newValue) {
+                        //       viewModel.changedropDownLanguageValue(newValue);
+                        //     },
+                        //     items: viewModel.languageList
+                        //         .map<DropdownMenuItem<Language>>(
+                        //             (Language value) {
+                        //       return DropdownMenuItem<Language>(
+                        //         value: value,
+                        //         child: Padding(
+                        //           padding: const EdgeInsets.all(8.0),
+                        //           child: InsiteText(
+                        //             text: value.langName,
+                        //             size: 14,
+                        //             fontWeight: FontWeight.w700,
+                        //           ),
+                        //         ),
+                        //       );
+                        //     }).toList(),
+                        //   ),
+                        // ),
                         // Padding(
                         //   padding: const EdgeInsets.all(8.0),
                         //   child: Container(

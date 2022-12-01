@@ -110,6 +110,8 @@ class ManageGroupView extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       GroupRow groups = viewModel.assets[index];
                                       return ManageGroupCardWidget(
+                                        dateFormat: viewModel.userPref,
+                                        timeZone: viewModel.zone,
                                         groups: groups,
                                         callback: () {
                                           viewModel.onItemSelected(index);

@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/core/models/utilization.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:logger/logger.dart';
 
 class UtilizationListItem extends StatelessWidget {
+   final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final AssetResult? utilizationData;
   final bool? isShowingInDetailPage;
   final VoidCallback? onCallback;
   UtilizationListItem(
-      {this.utilizationData, this.isShowingInDetailPage, this.onCallback});
+      {this.utilizationData, this.isShowingInDetailPage, this.onCallback, this.dateFormat, this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -45,16 +49,16 @@ class UtilizationListItem extends StatelessWidget {
                                   assetIconKey: utilizationData!.assetIcon,
                                 ),
                                 title: utilizationData!.lastReportedTime != null
-                                    ? Utils.getLastReportedDateTwo(
-                                        utilizationData!.lastReportedTime)
+                                    ? Utils.getPreferenceDate(
+                                        utilizationData!.lastReportedTime,dateFormat,timeZone)
                                     : "-",
                               ),
                               InsiteTableRowItem(
                                 title: "Last Reported Time ",
                                 content:
                                     utilizationData!.lastReportedTime != null
-                                        ? Utils.getLastReportedDateOne(
-                                            utilizationData!.lastReportedTime)
+                                        ? Utils.getDateUTC(
+                                            utilizationData!.lastReportedTime,dateFormat,timeZone)
                                         : "-",
                               ),
                               InsiteTableRowItem(
@@ -429,8 +433,8 @@ class UtilizationListItem extends StatelessWidget {
                                   title: "Last Utilization Report",
                                   content:
                                       utilizationData!.lastReportedTime != null
-                                          ? Utils.getLastReportedDateOne(
-                                              utilizationData!.lastReportedTime)
+                                          ? Utils.getDateUTC(
+                                              utilizationData!.lastReportedTime,dateFormat,timeZone)
                                           : '-',
                                 ),
                                 InsiteTableRowItem(

@@ -129,6 +129,7 @@ class AssetLocationViewModel extends InsiteViewModel {
           onTap: () {
             customInfoWindowController.addInfoWindow!(
               SingleInfoView(
+                dateFormat: userPref,
                 assetLocation: assetLocation,
               ),
               LatLng(assetLocation.latitude!, assetLocation.longitude!),
@@ -258,8 +259,8 @@ class AssetLocationViewModel extends InsiteViewModel {
                                   ),
                                   Text(
                                     assetLocation.lastReportedTimeUTC != null
-                                        ? Utils.getLastReportedDateOne(
-                                            assetLocation.lastReportedTimeUTC)
+                                        ? Utils.getDateUTC(
+                                            assetLocation.lastReportedTimeUTC,userPref,zone)
                                         : "",
                                     style: TextStyle(
                                         fontFamily: 'Roboto',

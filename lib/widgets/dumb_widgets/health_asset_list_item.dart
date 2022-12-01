@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/health/fault_list_item_view_model.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:stacked/stacked.dart';
@@ -10,10 +12,12 @@ import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
 class HealthAssetListItem extends StatefulWidget {
+  final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final Fault? fault;
   final VoidCallback? onCallback;
   final Key? key;
-  const HealthAssetListItem({this.key, this.fault, this.onCallback})
+  const HealthAssetListItem({this.key, this.fault, this.onCallback, this.dateFormat, this.timeZone})
       : super(key: key);
 
   @override
@@ -131,9 +135,9 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                 title: "Last Reported Time : ",
                                 content: widget.fault!.asset != null &&
                                         widget.fault!.asset["dynamic"] != null
-                                    ? Utils.getLastReportedDateOneUTC(
+                                    ? Utils.getDateUTC(
                                         widget.fault!.asset["dynamic"]
-                                            ["locationReportedTimeUTC"])
+                                            ["locationReportedTimeUTC"],widget.dateFormat,widget.timeZone)
                                     : "-",
                               ),
                               InsiteTableRowItem(
@@ -228,8 +232,8 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                               InsiteTextWithPadding(
                                                 padding: EdgeInsets.all(8),
                                                 text: Utils
-                                                    .getLastReportedDateOneUTC(
-                                                        fault.faultOccuredUTC),
+                                                    .getDateUTC(
+                                                        fault.faultOccuredUTC,widget.dateFormat,widget.timeZone),
                                                 size: 12,
                                               ),
                                               InsiteButton(

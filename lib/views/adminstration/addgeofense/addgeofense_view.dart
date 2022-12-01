@@ -686,7 +686,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                               children: [
                                                 InsiteText(
                                                   text:
-                                                      "${viewModel.backFillDate == null || viewModel.isNoendDate ? "choose date" : DateFormat.yMMMd().format(viewModel.backFillDate!)}",
+                                                      "${viewModel.backFillDate == null || viewModel.isNoendDate ? "choose date" : DateFormat("MM/dd/yyyy").format(viewModel.backFillDate!)}",
                                                 ),
                                                 Icon(Icons
                                                     .calendar_today_outlined)
@@ -734,7 +734,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                         children: [
                                           InsiteText(
                                             text:
-                                                "${viewModel.endingDate == null ? "choose date" : DateFormat.yMMMd().format(viewModel.endingDate!)}",
+                                                "${viewModel.endingDate == null ? "choose date" : viewModel.endingDate!}",
                                           ),
                                           Icon(Icons.calendar_today_outlined)
                                         ],

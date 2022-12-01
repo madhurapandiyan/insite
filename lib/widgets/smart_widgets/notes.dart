@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/note.dart';
+import 'package:insite/core/models/user_preference.dart';
 
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
@@ -16,14 +18,15 @@ class Notes extends StatelessWidget {
       required this.onTap,
       required this.isLoading,
       required this.notes,
-      this.onDelete})
+      this.onDelete, this.dateFormat, this.timeZone})
       : super(key: key);
 
   final TextEditingController? controller;
   final Function onTap;
   final bool isLoading;
   final List<Note> notes;
-  
+  final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   Function(String)? onDelete;
   @override
   Widget build(BuildContext context) {
@@ -181,10 +184,11 @@ class Notes extends StatelessWidget {
                                               child: InsiteTableRowItem(
                                                 title: notes[index].userName,
                                                 overFlow: TextOverflow.ellipsis,
-                                                content:
+                                                content:Utils.getDateUTC(notes[index]
+                                                            .lastModifiedUTC, dateFormat, timeZone)
                                                    
-                                                        notes[index]
-                                                            .lastModifiedUTC,
+                                                        // notes[index]
+                                                        //     .lastModifiedUTC,
                                                        
                                               ),
                                             ),

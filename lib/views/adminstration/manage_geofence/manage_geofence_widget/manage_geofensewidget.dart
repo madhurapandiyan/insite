@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/manage_geofence/static_map.dart/staticmapapi.dart';
@@ -11,6 +12,7 @@ import 'package:logger/logger.dart';
 class ManageGeofenceWidget extends StatefulWidget {
   //const ({ Key? key }) : super(key: key);
   final Function(dynamic, dynamic)? ondeleting;
+  final UserPreference? dateFormat;
   final bool? isFav;
   final String? geofenceName;
   final String? geofenceDate;
@@ -30,7 +32,7 @@ class ManageGeofenceWidget extends StatefulWidget {
       this.geofenceUID,
       this.onNavigation,
       this.onFavourite,
-      this.color});
+      this.color, this.dateFormat});
   @override
   State<ManageGeofenceWidget> createState() => _ManageGeofenceWidgetState();
 }
@@ -127,7 +129,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                   ),
                   InsiteText(
                     text:
-                        "End Date : ${widget.geofenceDate == null ? "No End Date" : Utils.dateFormat(widget.geofenceDate!)}",
+                        "End Date : ${widget.geofenceDate == null ? "No End Date" : Utils.getDateTimeFromString(widget.geofenceDate!,widget.dateFormat)}",
                     fontWeight: FontWeight.w700,
                   )
                 ],

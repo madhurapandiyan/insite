@@ -248,6 +248,8 @@ class _NotificationViewState extends State<NotificationView> {
                                               notifications =
                                               viewModel.assets[index];
                                           return NotificationItem(
+                                            dateFormat: viewModel.userPref,
+                                            timeZone: viewModel.zone,
                                             notifications: notifications,
                                             onCallback: () {
                                               viewModel.onItemSelected(index);

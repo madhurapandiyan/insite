@@ -72,6 +72,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       horizontal: 16.0,
                     ),
                     child: AssetDetailWidgt(
+                      dateFormat: viewModel.userPref,
+                      timeZone: viewModel.zone,
                       detail: widget.detail,
                     ),
                   ),
@@ -101,8 +103,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             : null,
                         lastReported: widget.detail!.fuelReportedTimeUtc != null
                             ? "Last Reported Time: ".toUpperCase() +
-                                Utils.getLastReportedDateOneUTC(
-                                    widget.detail!.fuelReportedTimeUtc)
+                                Utils.getDateUTC(
+                                    widget.detail!.fuelReportedTimeUtc,viewModel.userPref,viewModel.zone)
                             : "No Data Received"),
                   ),
                   SizedBox(
@@ -164,8 +166,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                     .detail!.lastPercentDEFRemainingUTC !=
                                 null
                             ? "Last Reported Time: ".toUpperCase() +
-                                Utils.getLastReportedDateOneUTC(
-                                    widget.detail!.lastPercentDEFRemainingUTC)
+                                Utils.getDateUTC(
+                                    widget.detail!.lastPercentDEFRemainingUTC,viewModel.userPref,viewModel.zone)
                             : "No Data Received"),
                   ),
                   SizedBox(
@@ -213,8 +215,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                   screenType: ScreenType.ASSET_DETAIL,
                                   status: widget.detail!.lastLocationUpdateUtc != null
                                       ? "Last Reported Time: ".toUpperCase() +
-                                          Utils.getLastReportedDateOneUTC(widget
-                                              .detail!.lastLocationUpdateUtc)
+                                          Utils.getDateUTC(widget
+                                              .detail!.lastLocationUpdateUtc,viewModel.userPref,viewModel.zone)
                                       : "No Data Received",
                                   onMarkerTap: () {
                                     widget.switchTab!(3);
@@ -244,6 +246,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       horizontal: 16.0,
                     ),
                     child: Notes(
+                      dateFormat: viewModel.userPref,
+                      timeZone: viewModel.zone,
                       controller: notesController,
                       onDelete: (value) {
                         viewModel.deletNotes(value);

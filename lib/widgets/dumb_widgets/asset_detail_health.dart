@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/service_plan.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class AssetDetailHealth extends StatelessWidget {
+  final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final AssetDetail? detail;
-  const AssetDetailHealth({this.detail});
+  const AssetDetailHealth({this.detail, this.dateFormat, this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +99,8 @@ class AssetDetailHealth extends StatelessWidget {
                   InsiteTableRowItem(
                     title: "Last Reported time",
                     content: detail!.lastReportedTimeUtc != null
-                        ? Utils.getLastReportedDateOneUTC(
-                            detail!.lastReportedTimeUtc)
+                        ? Utils.getDateUTC(
+                            detail!.lastReportedTimeUtc,dateFormat,timeZone)
                         : "-",
                   )
                 ]),

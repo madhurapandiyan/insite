@@ -198,12 +198,16 @@ class _SingleAssetUtilizationListViewState
                                                     utilizationData,
                                               )
                                             : UtilizationListItem(
+                                              dateFormat: viewModel.userPref,
+                                              timeZone: viewModel.zone,
                                                 utilizationData:
                                                     utilizationData,
                                                 isShowingInDetailPage: true,
                                                 onCallback: () {},
                                               )
                                     : UtilizationListItem(
+                                       dateFormat: viewModel.userPref,
+                                       timeZone: viewModel.zone,
                                         utilizationData: utilizationData,
                                         isShowingInDetailPage: true,
                                         onCallback: () {},

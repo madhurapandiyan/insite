@@ -108,6 +108,8 @@ class FaultViewState extends State<FaultView> {
                                 itemBuilder: (context, index) {
                                   Fault? fault = viewModel.faults[index];
                                   return FaultListItem(
+                                    dateFormat: viewModel.userPref,
+                                    timeZone: viewModel.zone,
                                     fault: fault,
                                     onCallback: () {
                                       viewModel.onDetailPageSelected(fault);

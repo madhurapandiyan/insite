@@ -64,6 +64,8 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                       horizontal: 16.0,
                     ),
                     child: AssetDetailHealth(
+                      dateFormat: viewModel.userPref,
+                      timeZone: viewModel.zone,
                       detail: widget.detail,
                     ),
                   ),
@@ -107,8 +109,8 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                               status: widget.detail!.lastLocationUpdateUtc !=
                                       null
                                   ? "Last Reported Time: ".toUpperCase() +
-                                      Utils.getLastReportedDateOneUTC(
-                                          widget.detail!.lastLocationUpdateUtc)
+                                      Utils.getDateUTC(
+                                          widget.detail!.lastLocationUpdateUtc,viewModel.userPref,viewModel.zone)
                                   : "No Data Received",
                               onMarkerTap: () {
                                 widget.switchTab!(3);
@@ -137,7 +139,8 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                     child: Column(
                       children: [
                         Notes(
-                         
+                         dateFormat: viewModel.userPref,
+                         timeZone: viewModel.zone,
                           controller: notesController,
                           notes: viewModel.assetNotes,
                           onTap: () {
