@@ -348,9 +348,6 @@ class AddIntervalsViewModel extends InsiteViewModel {
               _graphqlSchemaService!.updateMaintenanceIntervals(),
               updateInterval);
 
-      Logger().wtf(Utils.updateMaintenanceIntervals(maintenanceInterval));
-      Logger().wtf(
-          Utils.updateMaintenanceCheckList(maintenanceInterval!.checkList));
       if (intervalData != null) {
         // Logger().wtf(intervalData.updateMaintenanceIntervals!.message);
         snackbarService!.showSnackbar(

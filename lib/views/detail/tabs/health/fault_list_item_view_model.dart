@@ -79,14 +79,15 @@ class FaultListItemViewModel extends InsiteViewModel {
                 pageSize: pageNumber));
     if (result != null && result.faults != null) {
       Logger().i("faults");
-     // totalCount =result.faults.first.countData! ;
+      // totalCount =result.faults.first.countData! ;
       if (result.faults!.isNotEmpty) {
         _faults.addAll(result.faults!);
+
         _refreshing = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _faults.addAll(result.faults!);
+       _faults.addAll(result.faults!);
         _refreshing = false;
         _loadingMore = false;
         _shouldLoadmore = false;

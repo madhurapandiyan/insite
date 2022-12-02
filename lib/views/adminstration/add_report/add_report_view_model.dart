@@ -213,8 +213,7 @@ class AddReportViewModel extends InsiteViewModel {
         assetsDropDownValue = templateTitleValue;
       } else if (templateTitleValue == "Maintenance History") {
         assetsDropDownValue = templateTitleValue;
-      } else if (templateTitleValue ==
-          "Multi-Asset Geofence EntryExit Report") {
+      } else if (templateTitleValue == "Site Entry and Exit Report") {
         assetsDropDownValue = templateTitleValue;
       }
 
@@ -253,8 +252,7 @@ class AddReportViewModel extends InsiteViewModel {
                 assetItems.reportName == "MultiAssetBackhoeLoaderOperation" ||
                 assetItems.reportName == "MultiAssetExcavatorUsageReport" ||
                 assetItems.reportName == "MaintenanceAssetDetails" ||
-                assetItems.reportName == "MaintenanceHistory" ||
-                assetItems.reportName == "AssetGeofenceEntryExitReport") {
+                assetItems.reportName == "MaintenanceHistory") {
               reportFleetAssets!.add(assetItems.reportTypeName!);
             }
           }
@@ -274,8 +272,7 @@ class AddReportViewModel extends InsiteViewModel {
                     assetItems.reportName == "FleetSummary" ||
                     assetItems.reportName == "Asset Location History" ||
                     assetItems.reportName == "MaintenanceAssetDetails" ||
-                    assetItems.reportName == "MaintenanceHistory" ||
-                    assetItems.reportName == "AssetGeofenceEntryExitReport"
+                    assetItems.reportName == "MaintenanceHistory"
 
                 //assetItems.reportName == "Engine Idle" ||
                 //assetItems.reportName == "Engine Idle" ||
@@ -284,6 +281,16 @@ class AddReportViewModel extends InsiteViewModel {
                 ) {
               reportFleetAssets!.add(assetItems.reportTypeName!);
             }
+          }
+        }
+      }
+
+      ///hotcode
+      for (var assetItems in result!.reports!) {
+        if (assetItems.sourceAppName == "UNIFIEDFLEET" &&
+            assetItems.defaultColumn != "") {
+          if (assetItems.reportName == "AssetGeofenceEntryExitReport") {
+            reportFleetAssets!.add("Site Entry and Exit Report");
           }
         }
       }
@@ -719,6 +726,13 @@ class AddReportViewModel extends InsiteViewModel {
 
   addContact() {
     Logger().w(emailController.text);
+    emailIds!.forEach((element) {
+      if (selectedUser.any((emailIds) => emailIds.email == element)) {
+        selectedUser.clear();
+        snackbarService!
+            .showSnackbar(message: "Not to add Email Report Recipients");
+      }
+    });
     if (emailController.text.contains("@")) {
       isShowingSelectedContact = true;
       selectedUser.add(User(
@@ -742,6 +756,8 @@ class AddReportViewModel extends InsiteViewModel {
     result?.reports?.forEach((element) {
       if (element.reportTypeName == assetsDropDownValue) {
         reportType = element.reportName!;
+      } else if (assetsDropDownValue == "Site Entry and Exit Report") {
+        reportType = "AssetGeofenceEntryExitReport";
       }
     });
     Logger().wtf(assetsDropDownValue);

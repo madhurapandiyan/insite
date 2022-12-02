@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.1.4+4
+version: 2.1.4+214
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:

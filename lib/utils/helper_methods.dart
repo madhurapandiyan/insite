@@ -1227,6 +1227,7 @@ class Utils {
         //  }
         filterDetails =
             "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+        
       }
       filterDetails!.trimLeft();
 
@@ -1529,7 +1530,7 @@ class Utils {
         "telematicsDeviceId"
       ];
       return list;
-    } else if (value == "Multi-Asset Geofence EntryExit Report") {
+    } else if (value == "Site Entry and Exit Report") {
       list = [
         "assetSerialNumber",
         "makeCode",
@@ -1602,7 +1603,7 @@ class Utils {
         querUrl =
             "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
         return querUrl;
-      case "Multi-Asset Geofence EntryExit Report":
+      case "Site Entry and Exit Report":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
@@ -1665,7 +1666,7 @@ class Utils {
         querUrl =
             "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
         return querUrl;
-      case "Multi-Asset Geofence EntryExit Report":
+      case "Site Entry and Exit Report":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
@@ -2137,7 +2138,7 @@ class Utils {
       "intervalID": mainInterval!.intervalId,
       "intervalDescription": mainInterval.intervalDescription!.isEmpty
           ? "\"" + "\""
-          : mainInterval.intervalDescription,
+          : mainInterval.description,
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };

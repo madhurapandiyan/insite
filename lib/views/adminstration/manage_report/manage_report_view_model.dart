@@ -203,7 +203,7 @@ class ManageReportViewModel extends InsiteViewModel {
     TemplateDetails(
         title: "State Mileage",
         description:
-            "The State Mileage report gives an overview of the distance travelled by each asset in the United States and Canada.")
+            "The State Mileage report gives an overview of the distance travelled by each asset in the United States and Canada."),
   ];
 
   List<TemplateDetails> templateDetail = [
@@ -261,15 +261,27 @@ class ManageReportViewModel extends InsiteViewModel {
     TemplateDetails(
         title: "Multi-Asset Backhoe Loader Operation",
         description:
-            "The Multi-Asset Backhoe Loader Operation is a Multi asset report that provides the split in hours of machine’s operation in the Backhoe Mode and Loader Mode. This report is exclusive of Backhoe Loader Product Families"),
+            "The Multi-Asset Backhoe Loader Operation is a Multi asset report that provides the split in hours of machine’s operation in the Backhoe Mode and Loader Mode. This report is exclusive of Backhoe Loader Product Families."),
     TemplateDetails(
         title: "Multi-Asset Excavator Usage",
         description:
-            "The Multi-Asset Excavator Usage report is a Multi asset report that provides the split in hours of Excavator’s operation in Power Mode, Economy Mode, Auto-Idle Mode, Front & Swing and Travel. This report is exclusive of Excavator Product Families.")
+            "The Multi-Asset Excavator Usage report is a Multi asset report that provides the split in hours of Excavator’s operation in Power Mode, Economy Mode, Auto-Idle Mode, Front & Swing and Travel. This report is exclusive of Excavator Product Families."),
+    TemplateDetails(
+        title: "Maintenance Asset Details",
+        description:
+            "The Maintenance Asset Details report provides the detailed information about the service intervals for the selected Assets."),
+    TemplateDetails(
+        title: "Maintenance History",
+        description:
+            "The Maintenance History report provides the completed interval details for the selected Assets."),
+    TemplateDetails(
+        title: "Site Entry and Exit Report",
+        description:
+            "The Site Entry and Exit Report provides the complete details of Asset(s) traveling in and out of a Geofence..")
   ];
 
   searchReports(String searchValue) async {
-    if (searchValue.length >= 3) {
+    if (searchValue.length >= 3||searchValue.length>0) {
       Logger().d("search Reports $searchValue");
       pageNumber = 1;
       _isSearching = true;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/manage_report_response.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/adminstration/add_report/add_report_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:logger/logger.dart';
@@ -12,6 +13,7 @@ class ManageReportCardWidget extends StatelessWidget {
 
   ManageReportCardWidget({this.scheduledReportsRow, this.voidCallback});
 
+  AddReportViewModel? assetDropDown;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -110,11 +112,12 @@ class ManageReportCardWidget extends StatelessWidget {
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: 'Report Type :',
-                      content: scheduledReportsRow!
-                                  .scheduledReports!.reportType !=
-                              null
-                          ? scheduledReportsRow!.scheduledReports!.reportType
-                          : "-",
+                      content:
+                          scheduledReportsRow!.scheduledReports!.reportType !=
+                                  null
+                              ? scheduledReportsRow!
+                                  .scheduledReports!.reportTypeName
+                              : "-",
                     ),
                     InsiteTableRowItem(
                         title: 'Recipients',
