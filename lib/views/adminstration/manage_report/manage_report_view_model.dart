@@ -269,7 +269,7 @@ class ManageReportViewModel extends InsiteViewModel {
   ];
 
   searchReports(String searchValue) async {
-    if (searchValue.length >= 3) {
+    if (searchValue.length >= 3||searchValue.length>0) {
       Logger().d("search Reports $searchValue");
       pageNumber = 1;
       _isSearching = true;
