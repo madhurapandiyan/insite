@@ -140,8 +140,10 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                         TableRow(children: [
                           InsiteTableRowItem(
                               title: "Location :",
-                              content:
-                                  "${widget.summaryData!.location!.streetAddress} , ${widget.summaryData!.location!.city} , ${widget.summaryData!.location!.state}"),
+                              content:Utils.getLocationDisplay(widget.dateFormat?.locationDisplay)?
+                                  "${widget.summaryData!.location!.streetAddress} , ${widget.summaryData!.location!.city} , ${widget.summaryData!.location!.state}"
+                                  :"${widget.summaryData!.geoLocation?.latitude??"-"}/${widget.summaryData!.geoLocation!.longitude??"-"}"
+                                  ),
                           InsiteTableRowItem(
                             title: "Current Hour Meter :",
                             content: widget.summaryData!.currentHourMeter!

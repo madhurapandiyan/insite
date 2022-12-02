@@ -2320,5 +2320,12 @@ static String unitConversion(unitValue, noUnit, prefData) {
       return "";
     }
   }
+static bool getLocationDisplay(String? location){
+  if(location=="Address"){
+    return true;
+  }else{
+    return false;
+  }
+}
 
 }

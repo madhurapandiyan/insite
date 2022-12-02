@@ -112,9 +112,10 @@ class FleetListItem extends StatelessWidget {
                                   //         .toString() +
                                   //     "/" +
                                   //     fleet.lastReportedLocationLongitude.toString(),
-                                  content: fleet!.lastReportedLocation != null
+                                  content: Utils.getLocationDisplay(dateFormat?.locationDisplay)?
+                                  fleet!.lastReportedLocation != null
                                       ? fleet!.lastReportedLocation
-                                      : "-",
+                                      : "-":"${fleet!.lastReportedLocationLatitude}/${fleet!.lastReportedLocationLongitude}",
                                 ),
                                 InsiteTableRowItem(
                                   title: "Location - Last Reported",

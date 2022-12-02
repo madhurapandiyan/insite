@@ -62,7 +62,8 @@ class HealthListItem extends StatelessWidget {
                     ),
                     InsiteTableRowItem(
                       title: 'Location :',
-                      content: faultElement!.lastReportedLocation??"-",
+                      content: Utils.getLocationDisplay(dateFormat?.locationDisplay)?
+                      faultElement!.lastReportedLocation??"-":"${faultElement!.lastReportedLocationLatitude}/${faultElement!.lastReportedLocationLongitude}",
                     ),
                   ]),
                   TableRow(children: [

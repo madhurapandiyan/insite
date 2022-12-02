@@ -569,6 +569,7 @@ locationReportedTimeUTC
       dealerName
       fuelLevelLastReported
       lastReportedLocationLatitude
+      lastReportedLocationLongitude
       universalCustomerIdentifier
       universalCustomerName
       hourMeter

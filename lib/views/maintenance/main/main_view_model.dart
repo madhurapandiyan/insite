@@ -170,6 +170,7 @@ class MainViewModel extends InsiteViewModel {
                 serviceId: item.serviceNumber,
                 dealerName: item.dealerName,
                 deviceType: item.deviceType,
+                geoLocation:GeoLocation(latitude: item.latitude,longitude: item.longitude) ,
                 location: Location(
                     city: item.city,
                     country: item.country,

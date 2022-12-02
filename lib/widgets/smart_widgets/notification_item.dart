@@ -150,7 +150,8 @@ class NotificationItem extends StatelessWidget {
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Location",
-                          content: notifications!.location,
+                          content: Utils.getLocationDisplay(dateFormat?.locationDisplay)?
+                           notifications!.location:"${notifications!.latitude}/${notifications!.longitude}",
                         ),
                       ]),
                     ])

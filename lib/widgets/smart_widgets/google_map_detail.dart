@@ -466,7 +466,8 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                       ),
                       InsiteTableRowItem(
                         title: "Location",
-                        content: widget.details?.lastReportedLocation,
+                        content:Utils.getLocationDisplay(widget.userPreference?.locationDisplay)?
+                         widget.details?.lastReportedLocation:"${ widget.details?.lastReportedLocationLatitude}/${ widget.details?.lastReportedLocationLongitude}",
                       ),
                     ],
                   ),

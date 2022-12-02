@@ -97,9 +97,10 @@ class SingleInfoView extends StatelessWidget {
                             fontWeight: FontWeight.w900,
                             size: 10.0),
                         InsiteText(
-                            text: assetLocation!.address != null
+                            text:Utils.getLocationDisplay(dateFormat?.locationDisplay)?
+                             assetLocation!.address != null
                                 ? getAddressText(assetLocation!.address!)
-                                : "",
+                                : "":"${assetLocation!.latitude}/${assetLocation!.longitude}",
                             size: 8.0),
                       ],
                     ),

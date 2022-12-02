@@ -151,9 +151,12 @@ List<InsiteRadio> dateFormateButton = [
   }
 
   onLocationDisplayChange(int i) {
-    locationDisplayButton.forEach((element) {
-      element.isSelected = false;
-    });
+    for (var element in locationDisplayButton) {
+        element.isSelected = false;
+    }
+    // locationDisplayButton.forEach((element) {
+    //   element.isSelected = false;
+    // });
     locationDisplayButton[i].isSelected = true;
 
     notifyListeners();

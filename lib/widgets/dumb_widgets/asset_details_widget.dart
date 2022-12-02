@@ -118,9 +118,10 @@ class AssetDetailWidgt extends StatelessWidget {
                     //         "/" +
                     //         detail.lastReportedLocationLongitude.toString()
                     //     : "-",
-                    content: detail!.lastReportedLocation != null
+                    content:Utils.getLocationDisplay(dateFormat?.locationDisplay)?
+                     detail!.lastReportedLocation != null
                         ? detail!.lastReportedLocation
-                        : "-",
+                        : "-":"${detail!.lastReportedLocationLatitude}/${detail!.lastReportedLocationLongitude}",
                   ),
                 ])
               ],
