@@ -7,14 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/models/asset_detail.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class GoogleMapDetailWidget extends StatefulWidget {
+  final UserPreference? userPreference;
+  final UserPreferedData?userPreferedData;
   final double? latitude;
   final double? longitude;
   final LatLng? initLocation;
@@ -33,7 +38,7 @@ class GoogleMapDetailWidget extends StatefulWidget {
       this.location,
       this.isLoading,
       this.initLocation,
-      this.details});
+      this.details, this.userPreference, this.userPreferedData});
 
   @override
   _GoogleMapDetailWidgetState createState() => _GoogleMapDetailWidgetState();
@@ -453,7 +458,7 @@ class _GoogleMapDetailWidgetState extends State<GoogleMapDetailWidget> {
                           content: widget.details?.hourMeter ?? "-"),
                       InsiteTableRowItem(
                         title: "Last Reported Time",
-                        content: widget.details?.lastReportedTimeUtc ?? "-",
+                        content: Utils.getDateUTC(widget.details?.lastReportedTimeUtc ?? "-", widget.userPreference, widget.userPreferedData),
                       ),
                       InsiteTableRowItem(
                         title: "Fuel % Remaining",

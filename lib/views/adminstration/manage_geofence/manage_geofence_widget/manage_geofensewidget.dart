@@ -4,6 +4,7 @@ import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/manage_geofence/static_map.dart/staticmapapi.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +13,8 @@ import 'package:logger/logger.dart';
 class ManageGeofenceWidget extends StatefulWidget {
   //const ({ Key? key }) : super(key: key);
   final Function(dynamic, dynamic)? ondeleting;
-  final UserPreference? dateFormat;
+  final UserPreferedData? userPreferedData;
+  final UserPreference? userPreference;
   final bool? isFav;
   final String? geofenceName;
   final String? geofenceDate;
@@ -32,7 +34,9 @@ class ManageGeofenceWidget extends StatefulWidget {
       this.geofenceUID,
       this.onNavigation,
       this.onFavourite,
-      this.color, this.dateFormat});
+      this.color,
+      this.userPreference,
+      this.userPreferedData});
   @override
   State<ManageGeofenceWidget> createState() => _ManageGeofenceWidgetState();
 }
@@ -129,7 +133,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                   ),
                   InsiteText(
                     text:
-                        "End Date : ${widget.geofenceDate == null ? "No End Date" : Utils.getDateTimeFromString(widget.geofenceDate!,widget.dateFormat)}",
+                        "End Date : ${widget.geofenceDate == null ? "No End Date" : Utils.getPreferenceDate(widget.geofenceDate!, widget.userPreference, widget.userPreferedData)}",
                     fontWeight: FontWeight.w700,
                   )
                 ],

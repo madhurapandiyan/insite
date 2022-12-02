@@ -2307,5 +2307,18 @@ static String unitConversion(unitValue, noUnit, prefData) {
       return '-';
     }
   }
+ static String getDateTimeWithOutTimeZone(date, UserPreference? format) {
+    try {
+     
+      var inputDate = DateTime.parse(date);
+      // .subtract(Duration(days: 1))
+      // .add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("${format!.dateFormat} ${format.timeFormat}");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
 
 }

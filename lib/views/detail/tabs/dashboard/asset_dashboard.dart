@@ -196,6 +196,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                           child: Column(
                             children: [
                               GoogleMapDetailWidget(
+                                userPreference: viewModel.userPref,
+                                userPreferedData: viewModel.zone,
                                   isLoading: false,
                                   details: viewModel.assetDetail,
                                   latitude: viewModel.assetDetail!

@@ -257,24 +257,25 @@ class _PreferencesViewState extends State<PreferencesView> {
                           size: 12,
                         ),
                         Column(
-                          children: viewModel.unitsOfMeasurementButton.map((e) {
-                            return InsiteRadioButton(
-                                text: e.title,
-                                isSelected: e.isSelected,
-                                onChanged: () {
-                                  // viewModel.onUnitsOfMeasurementChange(index);
-                                });
-                          }).toList(),
-                          // List.generate(
-                          //     viewModel.unitsOfMeasurementButton.length,
-                          //     (index) => InsiteRadioButton(
-                          //         text: viewModel
-                          //             .unitsOfMeasurementButton[index].title!,
-                          //         isSelected: viewModel
-                          //             .unitsOfMeasurementButton[index].isSelected,
-                          //         onChanged: () {
-                          //           viewModel.onUnitsOfMeasurementChange(index);
-                          //         })),
+                          children: 
+                          // viewModel.unitsOfMeasurementButton.map((e) {
+                          //   return InsiteRadioButton(
+                          //       text: e.title,
+                          //       isSelected: e.isSelected,
+                          //       onChanged: () {
+                          //         // viewModel.onUnitsOfMeasurementChange(index);
+                          //       });
+                          // }).toList(),
+                          List.generate(
+                              viewModel.unitsOfMeasurementButton.length,
+                              (index) => InsiteRadioButton(
+                                  text: viewModel
+                                      .unitsOfMeasurementButton[index].title!,
+                                  isSelected: viewModel
+                                      .unitsOfMeasurementButton[index].isSelected,
+                                  onChanged: () {
+                                    viewModel.onUnitsOfMeasurementChange(index);
+                                  })),
                         ),
                         SizedBox(
                           height: 30,

@@ -97,6 +97,8 @@ class _HealthDashboardViewState extends State<HealthDashboardView> {
                             horizontal: 16.0,
                           ),
                           child: GoogleMapDetailWidget(
+                            userPreference: viewModel.userPref,
+                            userPreferedData: viewModel.zone,
                               details: viewModel.assetDetail,
                               isLoading: false,
                               latitude: viewModel.assetDetail!
