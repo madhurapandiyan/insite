@@ -27,34 +27,31 @@ class PreferencesViewModel extends InsiteViewModel {
   LoginService? _loginService = locator<LoginService>();
   UserPreference? userPreference;
 
-  List<InsiteRadio> dateFormateButton = [
-    InsiteRadio(
-        title: "PREF_MMDDYY".tr(), key: "MM/dd/yy", formateValue: "MM/dd/yyyy"),
-    InsiteRadio(
-        title: "PREF_DDMMYY".tr(), key: "dd/MM/yy", formateValue: "dd/MM/yyyy"),
+List<InsiteRadio> dateFormateButton = [
+    InsiteRadio(title: "MM/DD/YY", key: "MM/dd/yy", formateValue: "MM/dd/yyyy"),
+    InsiteRadio(title: "DD/MM/YY", key: "dd/MM/yy", formateValue: "dd/MM/yyyy"),
   ];
   List<InsiteRadio> timeFormateButton = [
-    InsiteRadio(
-        title: "PREF_HHMM_PMAM".tr(), key: "hh:mm a", formateValue: "hh:mm a"),
-    InsiteRadio(title: "PREF_HHMM".tr(), key: "HH:mm", formateValue: "HH:mm"),
+    InsiteRadio(title: "HH:MM AM/PM", key: "hh:mm a", formateValue: "hh:mm a"),
+    InsiteRadio(title: "HH:MM (24hr)", key: "HH:mm", formateValue: "HH:mm"),
   ];
   List<InsiteRadio> locationDisplayButton = [
-    InsiteRadio(title: "PREF_LAT_LON".tr(), key: "Lat/Lon"),
-    InsiteRadio(title: "PREF_ADDRESS".tr(), key: "Address"),
+    InsiteRadio(title: "Lat/Long", key: "Lat/Lon"),
+    InsiteRadio(title: "Address", key: "Address"),
   ];
   List<InsiteRadio> unitsOfMeasurementButton = [
-    InsiteRadio(title: "PREF_US_STANDARD".tr(), key: "US Standard"),
-    InsiteRadio(title: "PREF_IMPERIAL".tr(), key: "Imperial"),
-    InsiteRadio(title: "PREF_METRIC".tr(), key: "Metric"),
+    InsiteRadio(title: "US Standard", key: "US Standard"),
+    InsiteRadio(title: "Imperial", key: "Imperial"),
+    InsiteRadio(title: "Metric", key: "Metric"),
   ];
   List<InsiteRadio> pressureUnitButton = [
-    InsiteRadio(title: "PREF_PSI".tr(), key: "PSI"),
-    InsiteRadio(title: "PREF_KPA".tr(), key: "kPa"),
-    InsiteRadio(title: "PREF_BAR".tr(), key: "BAR"),
+    InsiteRadio(title: "PSI", key: "PSI"),
+    InsiteRadio(title: "kPa", key: "kPa"),
+    InsiteRadio(title: "BAR", key: "BAR"),
   ];
   List<InsiteRadio> temperatureUnitButton = [
-    InsiteRadio(title: "PREF_CELSIUS".tr(), key: "Celsius"),
-    InsiteRadio(title: "PREF_FAHRENHEIT".tr(), key: "Fahrenheit"),
+    InsiteRadio(title: "Celsius", key: "Celsius"),
+    InsiteRadio(title: "Fahrenheit", key: "Fahrenheit"),
   ];
 
   List<Language> languageList = [
@@ -63,8 +60,9 @@ class PreferencesViewModel extends InsiteViewModel {
     Language(langName: 'Japanese', locale: const Locale('ja'), key: "ja-JP"),
     Language(langName: 'German', locale: const Locale('de'), key: "de-DE"),
     Language(langName: 'Korean', locale: const Locale('ko'), key: "ko-KR"),
-     Language(langName: 'Español', locale: const Locale('es'), key: "es-AR"),
   ];
+  
+  
   TimeZone? selectTimeZone;
   Language? selectedLang;
 

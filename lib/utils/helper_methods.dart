@@ -2278,5 +2278,34 @@ static String getManualDateFormat(date) {
       return "";
     }
   }
+static String unitConversion(unitValue, noUnit, prefData) {
+    try {
+      if (prefData.units == 'Metric') {
+        return "$unitValue ${noUnit ? '' : 'km'}";
+      } else if (prefData.units == 'US Standard' ||
+          prefData.units == 'Imperial') {
+        return "${num.parse((unitValue * 0.621371)).toStringAsFixed(1)}  ${noUnit ? '' : 'mi'}";
+      } else {
+        return "";
+      }
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static String convertLitersToGal(l2GValue, noUnit, prefData, {precision}) {
+    if (l2GValue == null || l2GValue == '_') {
+      return '-';
+    }
+    if (prefData.units == 'Metric') {
+      return "${num.parse(l2GValue.toString()).toStringAsFixed(precision != null ? precision : 1)} ${noUnit ? '' : 'Liters'}";
+    } else if (prefData.units == 'US Standard') {
+      return "${(num.parse(l2GValue.toString()) * 0.264172).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+    } else if (prefData.units == 'Imperial') {
+      return "${(num.parse(l2GValue.toString()) * 0.219969).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+    } else {
+      return '-';
+    }
+  }
 
 }

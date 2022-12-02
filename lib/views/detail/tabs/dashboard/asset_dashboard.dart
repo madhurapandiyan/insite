@@ -94,8 +94,9 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             : null,
                         lifeTimeFuel: widget.detail?.lifetimeFuel != null
                             ? "lifetime fuel :\n" +
-                                (widget.detail!.lifetimeFuel!.toString()) +
-                                " liters"
+                            Utils.convertLitersToGal(widget.detail?.lifetimeFuel, false, viewModel.userPref,
+                                    precision: 0)+
+                               " liters"
                             : "lifetime fuel -",
                         percentage: widget.detail != null &&
                                 widget.detail!.fuelLevelLastReported != null
@@ -143,21 +144,12 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                 widget.detail!.percentDEFRemaining!.toString())
                             : 0,
                         title: "Diesel Exhaust Fluid (DEF) Level ",
-                        lifeTimeFuel: widget.detail!.lifetimeDEFLiters != null
-                            ? widget.detail!.lifetimeDEFLiters.runtimeType ==
-                                    String
-                                ? "Lifetime DEF :\n" +
-                                    double.parse(
-                                            widget.detail!.lifetimeDEFLiters!)
-                                        .round()
-                                        .toString() +
-                                    " liters"
-                                : "Lifetime DEF :\n" +
-                                    widget.detail!.lifetimeDEFLiters!
-                                        .round()
-                                        .toString() +
-                                    " liters"
-                            : "Lifetime DEF :",
+                        lifeTimeFuel: widget.detail?.lifetimeDEFLiters != null
+                            ? Utils.convertLitersToGal(
+                                widget.detail?.lifetimeDEFLiters.toString(),
+                                false,
+                                viewModel.userPref)
+                            : "",
                         percentage: widget.detail != null &&
                                 widget.detail!.percentDEFRemaining != null
                             ? widget.detail!.percentDEFRemaining.toString()

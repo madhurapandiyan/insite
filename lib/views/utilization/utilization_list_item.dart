@@ -166,28 +166,32 @@ class UtilizationListItem extends StatelessWidget {
                                           content: "-",
                                         ),
                                         InsiteTableRowItem(
-                                          title: "Fuel Burned (Litres)",
-                                          content: utilizationData!
-                                                      .runtimeFuelConsumedLiters !=
-                                                  null
-                                              ? utilizationData!
-                                                  .runtimeFuelConsumedLiters!
-                                                  .toStringAsFixed(1)
-                                              : "-",
-                                        ),
+                                            title: "Fuel Burned",
+                                            content: utilizationData!
+                                                        .runtimeFuelConsumedLiters !=
+                                                    null
+                                                ? Utils.convertLitersToGal(
+                                                    utilizationData!
+                                                        .runtimeFuelConsumedLiters!,
+                                                    false,
+                                                    dateFormat)
+                                                : "-",
+                                          ),
                                       ],
                                     ),
                                     TableRow(children: [
-                                      InsiteTableRowItem(
-                                        title: "Burn Rate (Litres/hr)",
-                                        content: utilizationData!
-                                                    .runtimeFuelConsumptionRate !=
-                                                null
-                                            ? utilizationData!
-                                                .runtimeFuelConsumptionRate!
-                                                .toStringAsFixed(2)
-                                            : "-",
-                                      ),
+                                     InsiteTableRowItem(
+                                          title: "Burn Rate (Litres/hr)",
+                                          content: utilizationData!
+                                                      .runtimeFuelConsumptionRate !=
+                                                  null
+                                              ? Utils.convertLitersToGal(
+                                                  utilizationData!
+                                                      .runtimeFuelConsumptionRate!,
+                                                  false,
+                                                  dateFormat)
+                                              : "-",
+                                        ),
                                       InsiteTableRowItem(
                                         title: "",
                                         content: "",
@@ -251,34 +255,45 @@ class UtilizationListItem extends StatelessWidget {
                                   TableRow(
                                     children: [
                                       InsiteTableRowItem(
-                                        title: "Lifetime Fuel (Litres)",
-                                        content: utilizationData
-                                                ?.lastIdleFuelConsumptionLitersMeter ??
-                                            "-",
-                                      ),
-                                      InsiteTableRowItem(
-                                        title: "Fuel Burned (Litres)",
-                                        content: utilizationData!
-                                                    .idleFuelConsumedLiters !=
-                                                null
-                                            ? utilizationData!
-                                                .idleFuelConsumedLiters!
-                                                .toStringAsFixed(1)
-                                            : "-",
-                                      ),
+                                          title: "Lifetime Fuel",
+                                          content: utilizationData
+                                                      ?.lastIdleFuelConsumptionLitersMeter !=
+                                                  null
+                                              ? Utils.convertLitersToGal(
+                                                  utilizationData
+                                                      ?.lastIdleFuelConsumptionLitersMeter
+                                                      .toString(),
+                                                  false,
+                                                  dateFormat)
+                                              : "-",
+                                        ),
+                                     InsiteTableRowItem(
+                                          title: "Fuel Burned",
+                                          content: utilizationData!
+                                                      .idleFuelConsumedLiters !=
+                                                  null
+                                              ? Utils.convertLitersToGal(
+                                                  utilizationData!
+                                                      .idleFuelConsumedLiters!,
+                                                  false,
+                                                  dateFormat)
+                                              : "-",
+                                        ),
                                     ],
                                   ),
                                   TableRow(children: [
                                     InsiteTableRowItem(
-                                      title: "Burn Rate (Litres/hr)",
-                                      content: utilizationData!
-                                                  .idleFuelConsumptionRate !=
-                                              null
-                                          ? utilizationData!
-                                              .idleFuelConsumptionRate!
-                                              .toStringAsFixed(2)
-                                          : "-",
-                                    ),
+                                          title: "Burn Rate (Litres/hr)",
+                                          content: utilizationData!
+                                                      .runtimeFuelConsumptionRate !=
+                                                  null
+                                              ? Utils.convertLitersToGal(
+                                                  utilizationData!
+                                                      .runtimeFuelConsumptionRate!,
+                                                  false,
+                                                  dateFormat)
+                                              : "-",
+                                        ),
                                     InsiteTableRowItem(
                                       title: "",
                                       content: "",
@@ -540,14 +555,16 @@ class UtilizationListItem extends StatelessWidget {
                                                       " %"
                                                   : "",
                                             ),
-                                            InsiteTableRowItem(
-                                              title: "Fuel Burned (Litres)",
+                                           InsiteTableRowItem(
+                                              title: "Fuel Burned",
                                               content: utilizationData!
                                                           .runtimeFuelConsumedLiters !=
                                                       null
-                                                  ? utilizationData!
-                                                      .runtimeFuelConsumedLiters!
-                                                      .toStringAsFixed(1)
+                                                  ? Utils.convertLitersToGal(
+                                                      utilizationData!
+                                                          .runtimeFuelConsumedLiters,
+                                                      false,
+                                                      dateFormat)
                                                   : "-",
                                             )
                                           ]),

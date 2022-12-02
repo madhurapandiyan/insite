@@ -151,16 +151,25 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                         : "-",
                                   ),
                                   InsiteTableRowItem(
-                                    title: 'Distance Travelled',
-                                    content: viewModel
-                                                .singleAssetOperation!
-                                                .assetOperations!
-                                                .assets!
-                                                .first
-                                                .distanceTravelledKilometers ==
-                                            null
-                                        ? '-'
-                                        : '${viewModel.singleAssetOperation!.assetOperations!.assets!.first.distanceTravelledKilometers!.round()} km',
+                                    title: 'Distance Traveled (km)',
+                                      content: viewModel
+                                                  .singleAssetOperation!
+                                                  .assetOperations!
+                                                  .assets!
+                                                  .first
+                                                  .distanceTravelledKilometers ==
+                                              null
+                                          ? '-'
+                                          : Utils.unitConversion(
+                                              viewModel
+                                                  .singleAssetOperation!
+                                                  .assetOperations!
+                                                  .assets!
+                                                  .first
+                                                  .distanceTravelledKilometers,
+                                              false,
+                                              viewModel.userPref)
+
                                   ),
                                 ],
                               ),
