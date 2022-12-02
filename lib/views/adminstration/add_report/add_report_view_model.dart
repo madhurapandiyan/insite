@@ -209,10 +209,9 @@ class AddReportViewModel extends InsiteViewModel {
         assetsDropDownValue = templateTitleValue;
       } else if (templateTitleValue == "Multi-Asset Excavator Usage") {
         assetsDropDownValue = templateTitleValue;
-      }else if (templateTitleValue == "Maintenance Asset Details") {
+      } else if (templateTitleValue == "Maintenance Asset Details") {
         assetsDropDownValue = templateTitleValue;
-      }
-      else if (templateTitleValue == "Maintenance History") {
+      } else if (templateTitleValue == "Maintenance History") {
         assetsDropDownValue = templateTitleValue;
       }
 
@@ -715,6 +714,13 @@ class AddReportViewModel extends InsiteViewModel {
 
   addContact() {
     Logger().w(emailController.text);
+    emailIds!.forEach((element) {
+      if (selectedUser.any((emailIds) => emailIds.email == element)) {
+        selectedUser.clear();
+        snackbarService!
+            .showSnackbar(message: "Not to add Email Report Recipients");
+      }
+    });
     if (emailController.text.contains("@")) {
       isShowingSelectedContact = true;
       selectedUser.add(User(
