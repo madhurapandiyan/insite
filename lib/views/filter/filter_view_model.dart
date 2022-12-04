@@ -386,6 +386,7 @@ class FilterViewModel extends InsiteViewModel {
     } else {
       Logger().wtf("type");
       Logger().e(type);
+
       if (type == FilterType.FUEL_LEVEL) {
         updateFilter(list.first);
       } else {
