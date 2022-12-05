@@ -75,6 +75,8 @@ class _ManageGeofenceViewState extends State<ManageGeofenceView> {
                                 return Column(
                                   children: [
                                     ManageGeofenceWidget(
+                                      userPreferedData: viewModel.zone,
+                                      userPreference: viewModel.userPref,
                                       encodedPolyline:
                                           viewModel.listOfEncoded[i],
                                       isFav: model[i].IsFavorite,

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:insite/core/models/fleet.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class FleetListItem extends StatelessWidget {
+  final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final Fleet? fleet;
   final VoidCallback? onCallback;
-  const FleetListItem({this.fleet, this.onCallback});
+  const FleetListItem({this.fleet, this.onCallback, this.dateFormat, this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +88,8 @@ class FleetListItem extends StatelessWidget {
                           InsiteTableRowItem(
                             title: "Last Reported Time      ",
                             content: fleet!.lastReportedUTC != null
-                                ? Utils.getLastReportedDateOneUTC(
-                                    fleet!.lastReportedUTC)
+                                ? Utils.getDateUTC(
+                                    fleet!.lastReportedUTC,dateFormat,timeZone)
                                 : "",
                           ),
                         ],
@@ -108,15 +112,16 @@ class FleetListItem extends StatelessWidget {
                                   //         .toString() +
                                   //     "/" +
                                   //     fleet.lastReportedLocationLongitude.toString(),
-                                  content: fleet!.lastReportedLocation != null
+                                  content: Utils.getLocationDisplay(dateFormat?.locationDisplay)?
+                                  fleet!.lastReportedLocation != null
                                       ? fleet!.lastReportedLocation
-                                      : "-",
+                                      : "-":"${fleet!.lastReportedLocationLatitude}/${fleet!.lastReportedLocationLongitude}",
                                 ),
                                 InsiteTableRowItem(
                                   title: "Location - Last Reported",
                                   content: fleet!.lastReportedUTC != null
-                                      ? Utils.getLastReportedDateOneUTC(
-                                          fleet!.lastReportedUTC)
+                                      ? Utils.getDateUTC(
+                                          fleet!.lastReportedUTC,dateFormat,timeZone)
                                       : "-",
                                 ),
                                 // InsiteTableRowItem(
@@ -145,8 +150,8 @@ class FleetListItem extends StatelessWidget {
                                 title: "Fuel - Last Reported     ",
                                 content:
                                     fleet!.lastPercentFuelRemainingUTC != null
-                                        ? Utils.getLastReportedDateOneUTC(
-                                            fleet!.lastPercentFuelRemainingUTC)
+                                        ? Utils.getDateUTC(
+                                            fleet!.lastPercentFuelRemainingUTC,dateFormat,timeZone)
                                         : "-",
                               ),
                             ]),

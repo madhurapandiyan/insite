@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/manage_report_response.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:logger/logger.dart';
 
 class ManageReportCardWidget extends StatelessWidget {
+   final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final ScheduledReportsRow? scheduledReportsRow;
   final VoidCallback? voidCallback;
 
-  ManageReportCardWidget({this.scheduledReportsRow, this.voidCallback});
+  ManageReportCardWidget({this.scheduledReportsRow, this.voidCallback, this.dateFormat, this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -163,9 +167,9 @@ class ManageReportCardWidget extends StatelessWidget {
                         content: scheduledReportsRow!
                                     .scheduledReports!.reportCreationDate !=
                                 null
-                            ? Utils.getDateInFormatReportCardDate(
+                            ? Utils.getDateUTC(
                                 scheduledReportsRow!
-                                    .scheduledReports!.reportCreationDate)
+                                    .scheduledReports!.reportCreationDate,dateFormat,timeZone)
                             : "-",
                       ),
                       InsiteTableRowItem(
@@ -173,8 +177,8 @@ class ManageReportCardWidget extends StatelessWidget {
                         content: scheduledReportsRow!
                                     .scheduledReports!.scheduleEndDate !=
                                 null
-                            ? Utils.getDateInFormatddMMyyyy(scheduledReportsRow!
-                                .scheduledReports!.scheduleEndDate)
+                            ? Utils.getPreferenceDate(scheduledReportsRow!
+                                .scheduledReports!.scheduleEndDate,dateFormat,timeZone)
                             : "-",
                       )
                     ])

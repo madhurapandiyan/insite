@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/manage_notifications.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class ManageNotificationWidget extends StatelessWidget {
   final ConfiguredAlerts? alerts;
-
+   final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final VoidCallback? onDelete;
   final VoidCallback? onEdit;
 
-  ManageNotificationWidget({this.alerts, this.onDelete, this.onEdit});
+  ManageNotificationWidget({this.alerts, this.onDelete, this.onEdit, this.dateFormat, this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +93,7 @@ class ManageNotificationWidget extends StatelessWidget {
                         ),
               InsiteText(
                 text: alerts?.createdDate != null
-                    ? Utils.getLastReportedDateOneUTC(alerts?.createdDate)
+                    ? Utils.getDateUTC(alerts?.createdDate,dateFormat,timeZone)
                     : "",
                 size: 15,
                 fontWeight: FontWeight.bold,

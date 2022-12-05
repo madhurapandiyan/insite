@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/main_notification.dart' as notification;
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
@@ -12,12 +14,13 @@ import 'package:logger/logger.dart';
 
 class NotificationItem extends StatelessWidget {
   final notification.Notification? notifications;
-
+  final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final VoidCallback? onCallback;
   final VoidCallback? showDetails;
 
   const NotificationItem(
-      {this.notifications, this.onCallback, this.showDetails});
+      {this.notifications, this.onCallback, this.showDetails, this.dateFormat, this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +130,8 @@ class NotificationItem extends StatelessWidget {
                             InsiteTableRowItem(
                               title: "Date & Time",
                               content: notifications!.occurUTC != null
-                                  ? Utils.getLastReportedDateOneUTC(
-                                      notifications!.occurUTC)
+                                  ? Utils.getDateUTC(
+                                      notifications!.occurUTC,dateFormat,timeZone)
                                   : "",
                             ),
                             // InsiteTableRowItem(
@@ -147,7 +150,8 @@ class NotificationItem extends StatelessWidget {
                       TableRow(children: [
                         InsiteTableRowItem(
                           title: "Location",
-                          content: notifications!.location,
+                          content: Utils.getLocationDisplay(dateFormat?.locationDisplay)?
+                           notifications!.location:"${notifications!.latitude}/${notifications!.longitude}",
                         ),
                       ]),
                     ])

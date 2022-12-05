@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/maintenance/main/main_view_model.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
@@ -13,10 +15,12 @@ import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
 class MaintenanceListItem extends StatefulWidget {
+   final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final SummaryData? summaryData;
   final VoidCallback? onCallback;
   const MaintenanceListItem(
-      {this.summaryData, this.onCallback, this.serviceCalBack});
+      {this.summaryData, this.onCallback, this.serviceCalBack, this.dateFormat, this.timeZone});
   final Function? serviceCalBack;
 
   @override
@@ -136,8 +140,10 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                         TableRow(children: [
                           InsiteTableRowItem(
                               title: "Location :",
-                              content:
-                                  "${widget.summaryData!.location!.streetAddress} , ${widget.summaryData!.location!.city} , ${widget.summaryData!.location!.state}"),
+                              content:Utils.getLocationDisplay(widget.dateFormat?.locationDisplay)?
+                                  "${widget.summaryData!.location!.streetAddress} , ${widget.summaryData!.location!.city} , ${widget.summaryData!.location!.state}"
+                                  :"${widget.summaryData!.geoLocation?.latitude??"-"}/${widget.summaryData!.geoLocation!.longitude??"-"}"
+                                  ),
                           InsiteTableRowItem(
                             title: "Current Hour Meter :",
                             content: widget.summaryData!.currentHourMeter!
@@ -158,7 +164,7 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                           InsiteTableRowItem(
                             title: "Last Reported Fuel Time :",
                             content:
-                                widget.summaryData!.fuelReportedTime ?? "-",
+                               Utils.getDateUTC( widget.summaryData!.fuelReportedTime ?? "-", widget.dateFormat, widget.timeZone),
                           ),
                         ]),
                       ],
@@ -169,8 +175,8 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                         TableRow(children: [
                           InsiteTableRowItem(
                             title: "Due Date :",
-                            content: Utils.getDateInFormatddMMyyyy(
-                                widget.summaryData!.dueInfo!.dueDate),
+                            content: Utils.getPreferenceDate(
+                                widget.summaryData!.dueInfo!.dueDate,widget.dateFormat,widget.timeZone),
                           ),
                           InsiteTableRowItem(
                             title: "Device Type :",

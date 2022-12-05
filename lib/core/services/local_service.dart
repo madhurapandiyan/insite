@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/login_response.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/core/repository/Retrofit.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,6 +25,7 @@ class LocalService extends BaseService {
   static const String STAGGED_TOKEN = "staged_token";
   static const String MAINTENANCE_STARTDATE = "maintenance_startdate";
   static const String MAINTENANCE_ENDDATE = "maintenance_enddate";
+  static const String PREFERENCE_DATA_LOCAL = "preference_data_local";
 
   Future setIsloggedIn(bool isLoggedIn) async {
     return await preferences!.setBool(IS_LOGGEDIN, isLoggedIn);
@@ -183,6 +185,19 @@ class LocalService extends BaseService {
 
   String? getMaintenanceFromDate() {
     return preferences!.getString(MAINTENANCE_STARTDATE);
+  }
+
+  Future<bool> setUserPreferenceData(UserPreference? getUserPreference) async {
+    return await preferences!
+        .setString(PREFERENCE_DATA_LOCAL, jsonEncode(getUserPreference));
+  }
+
+  Future<UserPreference?> getUserPreferenceData() async {
+    String? data = preferences!.getString(PREFERENCE_DATA_LOCAL);
+    if (data == null) {
+      return null;
+    }
+    return UserPreference.fromJson(jsonDecode(data));
   }
 
   clearAll() async {

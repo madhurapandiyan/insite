@@ -95,6 +95,8 @@ class _HealthListViewState extends State<HealthListView> {
                                 itemBuilder: (context, index) {
                                   Fault faultElement = viewModel.faults[index];
                                   return HealthListItem(
+                                    dateFormat: viewModel.userPref,
+                                    timeZone: viewModel.zone,
                                     faultElement: faultElement,
                                   );
                                 },

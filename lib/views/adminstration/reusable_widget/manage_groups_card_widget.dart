@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 
 class ManageGroupCardWidget extends StatefulWidget {
+   final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final GroupRow? groups;
   final VoidCallback? callback;
   final VoidCallback? favoriteCallBack;
   const ManageGroupCardWidget(
-      {this.groups, this.callback, this.favoriteCallBack});
+      {this.groups, this.callback, this.favoriteCallBack, this.dateFormat, this.timeZone});
 
   @override
   _ManageGroupCardWidgetState createState() => _ManageGroupCardWidgetState();
@@ -104,8 +108,8 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
                     InsiteTableRowItem(
                       title: 'Created:',
                       content: widget.groups!.groups!.createdOnUTC != null
-                          ? Utils.getLastReportedDateOneUTC(
-                              widget.groups!.groups!.createdOnUTC)
+                          ? Utils.getDateUTC(
+                              widget.groups!.groups!.createdOnUTC,widget.dateFormat,widget.timeZone)
                           : "-",
                     ),
                     InsiteTableRowItem(

@@ -72,6 +72,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       horizontal: 16.0,
                     ),
                     child: AssetDetailWidgt(
+                      dateFormat: viewModel.userPref,
+                      timeZone: viewModel.zone,
                       detail: widget.detail,
                     ),
                   ),
@@ -92,8 +94,9 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             : null,
                         lifeTimeFuel: widget.detail?.lifetimeFuel != null
                             ? "lifetime fuel :\n" +
-                                (widget.detail!.lifetimeFuel!.toString()) +
-                                " liters"
+                            Utils.convertLitersToGal(widget.detail?.lifetimeFuel, false, viewModel.userPref,
+                                    precision: 0)+
+                               " liters"
                             : "lifetime fuel -",
                         percentage: widget.detail != null &&
                                 widget.detail!.fuelLevelLastReported != null
@@ -101,8 +104,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                             : null,
                         lastReported: widget.detail!.fuelReportedTimeUtc != null
                             ? "Last Reported Time: ".toUpperCase() +
-                                Utils.getLastReportedDateOneUTC(
-                                    widget.detail!.fuelReportedTimeUtc)
+                                Utils.getDateUTC(
+                                    widget.detail!.fuelReportedTimeUtc,viewModel.userPref,viewModel.zone)
                             : "No Data Received"),
                   ),
                   SizedBox(
@@ -141,21 +144,12 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                 widget.detail!.percentDEFRemaining!.toString())
                             : 0,
                         title: "Diesel Exhaust Fluid (DEF) Level ",
-                        lifeTimeFuel: widget.detail!.lifetimeDEFLiters != null
-                            ? widget.detail!.lifetimeDEFLiters.runtimeType ==
-                                    String
-                                ? "Lifetime DEF :\n" +
-                                    double.parse(
-                                            widget.detail!.lifetimeDEFLiters!)
-                                        .round()
-                                        .toString() +
-                                    " liters"
-                                : "Lifetime DEF :\n" +
-                                    widget.detail!.lifetimeDEFLiters!
-                                        .round()
-                                        .toString() +
-                                    " liters"
-                            : "Lifetime DEF :",
+                        lifeTimeFuel: widget.detail?.lifetimeDEFLiters != null
+                            ? Utils.convertLitersToGal(
+                                widget.detail?.lifetimeDEFLiters.toString(),
+                                false,
+                                viewModel.userPref)
+                            : "",
                         percentage: widget.detail != null &&
                                 widget.detail!.percentDEFRemaining != null
                             ? widget.detail!.percentDEFRemaining.toString()
@@ -164,8 +158,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                     .detail!.lastPercentDEFRemainingUTC !=
                                 null
                             ? "Last Reported Time: ".toUpperCase() +
-                                Utils.getLastReportedDateOneUTC(
-                                    widget.detail!.lastPercentDEFRemainingUTC)
+                                Utils.getDateUTC(
+                                    widget.detail!.lastPercentDEFRemainingUTC,viewModel.userPref,viewModel.zone)
                             : "No Data Received"),
                   ),
                   SizedBox(
@@ -202,6 +196,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                           child: Column(
                             children: [
                               GoogleMapDetailWidget(
+                                userPreference: viewModel.userPref,
+                                userPreferedData: viewModel.zone,
                                   isLoading: false,
                                   details: viewModel.assetDetail,
                                   latitude: viewModel.assetDetail!
@@ -213,8 +209,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                                   screenType: ScreenType.ASSET_DETAIL,
                                   status: widget.detail!.lastLocationUpdateUtc != null
                                       ? "Last Reported Time: ".toUpperCase() +
-                                          Utils.getLastReportedDateOneUTC(widget
-                                              .detail!.lastLocationUpdateUtc)
+                                          Utils.getDateUTC(widget
+                                              .detail!.lastLocationUpdateUtc,viewModel.userPref,viewModel.zone)
                                       : "No Data Received",
                                   onMarkerTap: () {
                                     widget.switchTab!(3);
@@ -244,6 +240,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       horizontal: 16.0,
                     ),
                     child: Notes(
+                      dateFormat: viewModel.userPref,
+                      timeZone: viewModel.zone,
                       controller: notesController,
                       onDelete: (value) {
                         viewModel.deletNotes(value);

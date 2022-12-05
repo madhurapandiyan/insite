@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:logger/logger.dart';
 
 class ManageUserWidget extends StatelessWidget {
+   final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final UserRow? user;
   final VoidCallback? callback;
 
-  const ManageUserWidget({this.user, this.callback});
+  const ManageUserWidget({this.user, this.callback, this.dateFormat, this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +103,8 @@ class ManageUserWidget extends StatelessWidget {
                               ),
                               InsiteTableRowItem(
                                 title: "Created At",
-                                content: Utils.getDateInFormatddMMyyyy(
-                                    user!.user!.createdOn),
+                                content: Utils.getDateUTC(
+                                    user!.user!.createdOn,dateFormat,timeZone),
                               ),
                             ]),
                             TableRow(children: [
@@ -118,8 +122,8 @@ class ManageUserWidget extends StatelessWidget {
                                 title: "Last login",
                                 content: user!.user!.lastLoginDate == null
                                     ? "-"
-                                    : Utils.getDateInFormatddMMyyyy(
-                                        user!.user!.lastLoginDate),
+                                    : Utils.getDateUTC(
+                                        user!.user!.lastLoginDate,dateFormat,timeZone),
                               )
                             ])
                           ],

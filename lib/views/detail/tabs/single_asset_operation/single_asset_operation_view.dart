@@ -140,27 +140,36 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                                 .assetLastReceivedEvent!
                                                 .lastReceivedEventTimeLocal !=
                                             null
-                                        ? Utils.getLastReportedDateOneLocalUTC(
+                                        ? Utils.getDateTimeWithOutTimeZone(
                                             viewModel
                                                 .singleAssetOperation!
                                                 .assetOperations!
                                                 .assets!
                                                 .first
                                                 .assetLastReceivedEvent!
-                                                .lastReceivedEventTimeLocal)
+                                                .lastReceivedEventTimeLocal,viewModel.userPref)
                                         : "-",
                                   ),
                                   InsiteTableRowItem(
-                                    title: 'Distance Travelled',
-                                    content: viewModel
-                                                .singleAssetOperation!
-                                                .assetOperations!
-                                                .assets!
-                                                .first
-                                                .distanceTravelledKilometers ==
-                                            null
-                                        ? '-'
-                                        : '${viewModel.singleAssetOperation!.assetOperations!.assets!.first.distanceTravelledKilometers!.round()} km',
+                                    title: 'Distance Traveled (km)',
+                                      content: viewModel
+                                                  .singleAssetOperation!
+                                                  .assetOperations!
+                                                  .assets!
+                                                  .first
+                                                  .distanceTravelledKilometers ==
+                                              null
+                                          ? '-'
+                                          : Utils.unitConversion(
+                                              viewModel
+                                                  .singleAssetOperation!
+                                                  .assetOperations!
+                                                  .assets!
+                                                  .first
+                                                  .distanceTravelledKilometers,
+                                              false,
+                                              viewModel.userPref)
+
                                   ),
                                 ],
                               ),
@@ -177,8 +186,8 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                   // ),
                                   InsiteTableRowItem(
                                     title: 'This data was last refreshed on',
-                                    content: Utils.formatCurrentSystemTime(
-                                        DateTime.now().toString()),
+                                    content: Utils.getDateTimeWithOutTimeZone(
+                                        DateTime.now().toString(),viewModel.userPref),
                                   ),
                                   InsiteTableRowItem(
                                     title: 'Total Duration ',

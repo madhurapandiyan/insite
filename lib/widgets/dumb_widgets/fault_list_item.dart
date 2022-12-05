@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
 import 'package:logger/logger.dart';
 import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
 class FaultListItem extends StatelessWidget {
+   final UserPreference?dateFormat;
+  final UserPreferedData?timeZone;
   final Fault? fault;
   final VoidCallback? onCallback;
-  const FaultListItem({this.fault, this.onCallback});
+  const FaultListItem({this.fault, this.onCallback, this.dateFormat, this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +74,8 @@ class FaultListItem extends StatelessWidget {
                             title: "Fault Reported Time :",
                             content: fault!.basic != null &&
                                     fault!.basic!.faultOccuredUTC != null
-                                ? Utils.getLastReportedDateOneUTC(
-                                    fault!.basic!.faultOccuredUTC)
+                                ? Utils.getDateUTC(
+                                    fault!.basic!.faultOccuredUTC,dateFormat,timeZone)
                                 : "-",
                           )
                         ],

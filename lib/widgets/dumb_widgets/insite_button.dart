@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
+import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 
 class InsiteButton extends StatelessWidget {
@@ -246,6 +247,93 @@ class InsiteButtonWithLoader extends StatelessWidget {
             icon != null ? icon! : SizedBox()
           ],
         ),
+      ),
+    );
+  }
+}
+
+class InsiteRadioButton extends StatelessWidget {
+  final String? text;
+  final bool? isSelected;
+
+  void Function()? onChanged;
+
+  InsiteRadioButton({
+    Key? key,
+    this.onChanged,
+    this.text,
+    this.isSelected,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        onChanged!();
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 80,
+          top: 15,
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+                radius: 10,
+                backgroundColor: isSelected!
+                    ? Theme.of(context).buttonColor
+                    : Theme.of(context).buttonColor.withOpacity(0.1)),
+            SizedBox(
+              width: 10,
+            ),
+            InsiteText(
+              text: text,
+              size: 15,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class InsiteDropDownButton extends StatelessWidget {
+  final Object? value;
+  final void Function(Object?)? onChanged;
+  final List<DropdownMenuItem<Object>>? items;
+  InsiteDropDownButton({
+    Key? key,
+    this.value,
+    this.onChanged,
+    this.items,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.60,
+      //height: MediaQuery.of(context).size.height * 0.05,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(width: 1, color: black),
+        shape: BoxShape.rectangle,
+      ),
+      child: DropdownButton(
+        isExpanded: true,
+        iconSize: 25,
+        elevation: 16,
+        style: TextStyle(
+            overflow: TextOverflow.fade,
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w700),
+        value: value,
+        dropdownColor: Theme.of(context).backgroundColor,
+        underline: Container(
+          padding: const EdgeInsets.only(left: 4, right: 4),
+        ),
+        onChanged: onChanged,
+        items: items,
       ),
     );
   }

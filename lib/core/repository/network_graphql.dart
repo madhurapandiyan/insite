@@ -264,6 +264,61 @@ class Network {
     }
   }
 
+  getGraphqUserPreferenceData({
+    String? query,
+    String? userId,
+  }) async {
+    Logger().i(userId);
+
+    try {
+      final Link link = DioLink(
+        graphqlEndpoint,
+        client: client,
+        defaultHeaders: {
+          "content-type": "application/json",
+          "Accept": "application/json",
+          "Auth": "bearer " + await _localService!.getToken(),
+          "Authorization": "bearer " + await _localService!.getToken(),
+          "X-VisionLink-UserUid": userId!
+        },
+      );
+      final res = await link
+          .request(Request(
+            operation: Operation(document: gql.parseString(query!)),
+          ))
+          .first;
+
+      return res;
+    } catch (e) {
+      Logger().e(e.toString());
+      // if (e is DioLinkServerException) {
+      //   var error = e;
+      //   if (error.response.statusCode == 401) {
+      //     var refreshLoginResponce = await refreshToken();
+      //     if (refreshLoginResponce != null) {
+      //       await _localService!.saveTokenInfo(refreshLoginResponce);
+      //       await _localService!.saveToken(refreshLoginResponce.access_token);
+      //       await _localService!
+      //           .saveRefreshToken(refreshLoginResponce.refresh_token);
+      //       var tokenTime =
+      //           Utils.tokenExpiresTime(refreshLoginResponce.expires_in!);
+      //       await _localService!.saveExpiryTime(tokenTime);
+      //       var data = await getGraphqlData(
+      //           query: query,
+      //           customerId: customerId,
+      //           userId: userId,
+      //           subId: subId);
+      //       return data;
+      //     }
+      //   } else {
+      //     throw e;
+      //   }
+      // } else {
+      //   throw e;
+      // }
+    }
+  }
+
   static final Network _singleton = Network._internal();
 
   factory Network() => _singleton;

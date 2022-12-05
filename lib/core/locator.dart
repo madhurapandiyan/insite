@@ -18,6 +18,7 @@ import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/core/services/notification_service.dart';
 import 'package:insite/core/services/native_service.dart';
 import 'package:insite/core/services/plant_hierachy_service.dart';
+import 'package:insite/core/services/preference_service.dart';
 import 'package:insite/core/services/replacement_service.dart';
 import 'package:insite/core/services/search_service.dart';
 import 'package:insite/core/services/single_asset_operation_service.dart';
@@ -96,5 +97,7 @@ class LocatorInjector {
     locator.registerLazySingleton(() => NotificationService());
     log.d("Registering Maintenance Service ");
     locator.registerLazySingleton(() => MaintenanceService());
+    log.d("Registering Preference Service ");
+    locator.registerLazySingleton(() => PreferenceService());
   }
 }

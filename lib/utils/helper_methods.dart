@@ -9,6 +9,7 @@ import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
 import 'package:insite/views/adminstration/asset_settings_configure/model/configure_grid_view_model.dart';
+import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -18,8 +19,11 @@ import '../core/models/add_notification_payload.dart' as add;
 import '../core/models/add_notification_payload.dart';
 import '../core/models/maintenance_asset_india_stack.dart';
 import '../core/models/manage_notifications.dart';
+import '../core/models/user_preference.dart';
 import '../widgets/dumb_widgets/maintenance_asset_list_item.dart';
 import 'date.dart';
+import 'package:timezone/timezone.dart' as tzo;
+import 'package:timezone/data/latest_all.dart' as tz;
 
 class Utils {
   var tatahitachi = [
@@ -2175,15 +2179,153 @@ class Utils {
     }
   }
 
-  static String ?removeVersionName(String ? title){
+  static String? removeVersionName(String? title) {
     final versionString;
-    if(title!.contains("indiastack")){
-      versionString=title.split("-indiastack");
+    if (title!.contains("indiastack")) {
+      versionString = title.split("-indiastack");
       Logger().e(versionString[0]);
       return versionString[0];
     }
     return null;
   }
 
- 
+  static String getDateUTC(
+      String? date, UserPreference? formate, UserPreferedData? timeZone) {
+    try {
+       if(date==null||date.toString().isEmpty){
+        return "-";
+      }
+     
+      Logger().w("date to be formate $date");
+      tz.initializeTimeZones();
+      var detroit = tzo.getLocation(timeZone!.zone!.momentTimezone);
+      tzo.setLocalLocation(detroit);
+      Logger().w(detroit.name);
+      DateTime parseDate = DateTime.parse(date!);
+      // final laTime = tzo.TZDateTime(detroit, parseDate.year, parseDate.month,
+      //     parseDate.day, parseDate.hour, parseDate.minute, parseDate.second);
+      Logger().v(parseDate.toString());
+      var timeZoneDate = tzo.TZDateTime.from(parseDate, detroit);
+
+      var outputFormat =
+          DateFormat("${formate!.dateFormat} ${formate.timeFormat}");
+      var outputDate = outputFormat.format(timeZoneDate);
+      Logger().i("date formated $outputDate");
+      return outputDate;
+    } catch (e) {
+      Logger().e(e.toString());
+      return "";
+    }
+  }
+
+  static String getPreferenceDate(
+      date, UserPreference? format, UserPreferedData? timeZone) {
+    try {
+        if(date==null||date.toString().isEmpty){
+        return "-";
+      }
+      Logger().e(date);
+     
+      tz.initializeTimeZones();
+      var detroit = tzo.getLocation(timeZone!.zone!.momentTimezone);
+      DateTime parseDate = DateTime.parse(date!);
+      var timeZoneDate = tzo.TZDateTime.from(parseDate, detroit);
+      Logger().wtf(timeZoneDate);
+      var outputFormat = DateFormat("${format!.dateFormat}");
+      var outputDate = outputFormat.format(timeZoneDate);
+      Logger().w(outputDate);
+      return outputDate;
+    } catch (e) {
+      Logger().e(e.toString());
+      return "";
+    }
+  }
+
+static String getManualDateFormat(date) {
+    try {
+       if(date==null||date.toString().isEmpty){
+        return "-";
+      }
+       Logger().e(date);
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('MM/dd/yyyy');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+ static String getDateTimeFromString(
+      String? date,UserPreference? dateFormat) {
+    try {
+       if(date==null||date.toString().isEmpty){
+        return "-";
+      }
+      
+      Logger().w("date to be formate $date");
+      
+      DateTime parseDate = DateTime.parse(date);
+     
+      Logger().v(parseDate.toString());
+           var outputFormat =
+          DateFormat("${dateFormat?.dateFormat} h:mm a");
+      var outputDate = outputFormat.format(parseDate);
+      Logger().i("date formated $outputDate");
+      return outputDate;
+    } catch (e) {
+      Logger().e(e.toString());
+      return "";
+    }
+  }
+static String unitConversion(unitValue, noUnit, prefData) {
+    try {
+      if (prefData.units == 'Metric') {
+        return "$unitValue ${noUnit ? '' : 'km'}";
+      } else if (prefData.units == 'US Standard' ||
+          prefData.units == 'Imperial') {
+        return "${num.parse((unitValue * 0.621371)).toStringAsFixed(1)}  ${noUnit ? '' : 'mi'}";
+      } else {
+        return "";
+      }
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static String convertLitersToGal(l2GValue, noUnit, prefData, {precision}) {
+    if (l2GValue == null || l2GValue == '_') {
+      return '-';
+    }
+    if (prefData.units == 'Metric') {
+      return "${num.parse(l2GValue.toString()).toStringAsFixed(precision != null ? precision : 1)} ${noUnit ? '' : 'Liters'}";
+    } else if (prefData.units == 'US Standard') {
+      return "${(num.parse(l2GValue.toString()) * 0.264172).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+    } else if (prefData.units == 'Imperial') {
+      return "${(num.parse(l2GValue.toString()) * 0.219969).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+    } else {
+      return '-';
+    }
+  }
+ static String getDateTimeWithOutTimeZone(date, UserPreference? format) {
+    try {
+     
+      var inputDate = DateTime.parse(date);
+      // .subtract(Duration(days: 1))
+      // .add(Duration(hours: 18, minutes: 30));
+      var outputFormat = DateFormat("${format!.dateFormat} ${format.timeFormat}");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+static bool getLocationDisplay(String? location){
+  if(location=="Address"){
+    return true;
+  }else{
+    return false;
+  }
+}
+
 }
