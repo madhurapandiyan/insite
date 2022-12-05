@@ -112,12 +112,15 @@ class ManageReportCardWidget extends StatelessWidget {
                   TableRow(children: [
                     InsiteTableRowItem(
                       title: 'Report Type :',
-                      content:
-                          scheduledReportsRow!.scheduledReports!.reportType !=
-                                  null
-                              ? scheduledReportsRow!
+                      content: scheduledReportsRow!
+                                  .scheduledReports!.reportType !=
+                              null
+                          ? scheduledReportsRow!.scheduledReports!.reportType ==
+                                  "AssetGeofenceEntryExitReport"
+                              ? "Site Entry and Exit Report"
+                              : scheduledReportsRow!
                                   .scheduledReports!.reportTypeName
-                              : "-",
+                          : "-",
                     ),
                     InsiteTableRowItem(
                         title: 'Recipients',

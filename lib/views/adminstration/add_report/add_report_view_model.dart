@@ -416,9 +416,14 @@ class AddReportViewModel extends InsiteViewModel {
         editQueryUrl = resultData.scheduledReport!.queryUrl;
         result?.reports?.forEach((element) {
           if (element.reportName == resultData.scheduledReport!.reportType) {
-            Logger().wtf(element.reportTypeName);
-            Logger().wtf(element.reportName);
-            assetsDropDownValue = element.reportTypeName;
+            if ("AssetGeofenceEntryExitReport" ==
+                resultData.scheduledReport!.reportType) {
+              assetsDropDownValue = "Site Entry and Exit Report";
+            } else {
+              Logger().wtf(element.reportTypeName);
+              Logger().wtf(element.reportName);
+              assetsDropDownValue = element.reportTypeName;
+            }
           }
         });
         Logger().wtf(resultData.scheduledReport?.assetFilterCategoryID);
