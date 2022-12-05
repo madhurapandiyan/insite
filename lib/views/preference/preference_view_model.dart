@@ -22,6 +22,7 @@ class PreferencesViewModel extends InsiteViewModel {
   NavigationService? _navigationService = locator<NavigationService>();
   PreferenceService? _preferenceService = locator<PreferenceService>();
   LocalService _localService = locator<LocalService>();
+   SnackbarService _snackBarService = locator<SnackbarService>();
   bool isLoading = false;
   int? isSelectedDate;
   LoginService? _loginService = locator<LoginService>();
@@ -67,6 +68,7 @@ List<InsiteRadio> dateFormateButton = [
   Language? selectedLang;
 
   PreferencesViewModel() {
+
     this.log = getLogger(this.runtimeType.toString());
 
     getUserPreference();
@@ -234,10 +236,13 @@ List<InsiteRadio> dateFormateButton = [
       Logger().w(jsonEncode(userData));
       var data = await _preferenceService?.createPreferenceData(
           userPrefernce: jsonEncode(userData), time: DateTime.now().toString());
-
+          if(data!=null){
+              hideLoadingDialog();
+        _snackBarService.showSnackbar(message: "Your preferences have been saved.");
+          }
       await getPreferenceData();
 isLoading=false;
-      hideLoadingDialog();
+    
     } catch (e) {
       Logger().e(e.toString());
       hideLoadingDialog();
