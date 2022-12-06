@@ -267,7 +267,7 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                           viewModel.onPreferencePressed();
                         },
                         color: Theme.of(context).buttonColor,
-                        icon: Icon(Icons.settings))
+                        icon: Icon(Icons.psychology_outlined))
                     : SizedBox()
               ],
             ),

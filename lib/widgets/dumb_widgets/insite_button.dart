@@ -301,18 +301,24 @@ class InsiteDropDownButton extends StatelessWidget {
   final Object? value;
   final void Function(Object?)? onChanged;
   final List<DropdownMenuItem<Object>>? items;
-  InsiteDropDownButton({
-    Key? key,
-    this.value,
-    this.onChanged,
-    this.items,
-  }) : super(key: key);
+  final double? width;
+  final double? height;
+
+  InsiteDropDownButton(
+      {Key? key,
+      this.value,
+      this.onChanged,
+      this.items,
+      this.width,
+      this.height})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.60,
-      //height: MediaQuery.of(context).size.height * 0.05,
+      width: width == null ? MediaQuery.of(context).size.width * 0.60 : width,
+      height:
+          height == null ? MediaQuery.of(context).size.height * 0.05 : height,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         border: Border.all(width: 1, color: black),

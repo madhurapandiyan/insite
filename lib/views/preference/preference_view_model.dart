@@ -22,13 +22,13 @@ class PreferencesViewModel extends InsiteViewModel {
   NavigationService? _navigationService = locator<NavigationService>();
   PreferenceService? _preferenceService = locator<PreferenceService>();
   LocalService _localService = locator<LocalService>();
-   SnackbarService _snackBarService = locator<SnackbarService>();
+  SnackbarService _snackBarService = locator<SnackbarService>();
   bool isLoading = false;
   int? isSelectedDate;
   LoginService? _loginService = locator<LoginService>();
   UserPreference? userPreference;
 
-List<InsiteRadio> dateFormateButton = [
+  List<InsiteRadio> dateFormateButton = [
     InsiteRadio(title: "MM/DD/YY", key: "MM/dd/yy", formateValue: "MM/dd/yyyy"),
     InsiteRadio(title: "DD/MM/YY", key: "dd/MM/yy", formateValue: "dd/MM/yyyy"),
   ];
@@ -62,13 +62,11 @@ List<InsiteRadio> dateFormateButton = [
     Language(langName: 'German', locale: const Locale('de'), key: "de-DE"),
     Language(langName: 'Korean', locale: const Locale('ko'), key: "ko-KR"),
   ];
-  
-  
+
   TimeZone? selectTimeZone;
   Language? selectedLang;
 
   PreferencesViewModel() {
-
     this.log = getLogger(this.runtimeType.toString());
 
     getUserPreference();
@@ -131,6 +129,7 @@ List<InsiteRadio> dateFormateButton = [
         },
       );
     }
+
     notifyListeners();
   }
 
@@ -154,7 +153,7 @@ List<InsiteRadio> dateFormateButton = [
 
   onLocationDisplayChange(int i) {
     for (var element in locationDisplayButton) {
-        element.isSelected = false;
+      element.isSelected = false;
     }
     // locationDisplayButton.forEach((element) {
     //   element.isSelected = false;
@@ -205,8 +204,8 @@ List<InsiteRadio> dateFormateButton = [
     try {
       showLoadingDialog();
       UserPreference userData = UserPreference(
-          timezone: selectTimeZone!.value,
-          language: selectedLang!.key,
+          timezone: selectTimeZone?.value,
+          language: selectedLang?.key,
           units: unitsOfMeasurementButton
               .singleWhere((element) => element.isSelected == true)
               .key,
@@ -216,33 +215,33 @@ List<InsiteRadio> dateFormateButton = [
           timeFormat: timeFormateButton
               .singleWhere((element) => element.isSelected == true)
               .key,
-          assetLabelDisplay: userPreference!.assetLabelDisplay,
-          meterLabelDisplay: userPreference!.meterLabelDisplay,
+          assetLabelDisplay: userPreference?.assetLabelDisplay,
+          meterLabelDisplay: userPreference?.meterLabelDisplay,
           locationDisplay: locationDisplayButton
               .singleWhere((element) => element.isSelected == true)
               .key,
-          currencySymbol: userPreference!.currencySymbol,
+          currencySymbol: userPreference?.currencySymbol,
           pressureUnit: pressureUnitButton
               .singleWhere((element) => element.isSelected == true)
               .key,
-          decimalPrecision: userPreference!.decimalPrecision,
+          decimalPrecision: userPreference?.decimalPrecision,
           temperatureUnit: temperatureUnitButton
               .singleWhere((element) => element.isSelected == true)
               .key,
-          decimalSeparator: userPreference!.decimalSeparator,
-          browserRefresh: userPreference!.browserRefresh,
-          mapProvider: userPreference!.mapProvider,
-          thousandsSeparator: userPreference!.thousandsSeparator);
+          decimalSeparator: userPreference?.decimalSeparator,
+          browserRefresh: userPreference?.browserRefresh,
+          mapProvider: userPreference?.mapProvider,
+          thousandsSeparator: userPreference?.thousandsSeparator);
       Logger().w(jsonEncode(userData));
       var data = await _preferenceService?.createPreferenceData(
           userPrefernce: jsonEncode(userData), time: DateTime.now().toString());
-          if(data!=null){
-              hideLoadingDialog();
-        _snackBarService.showSnackbar(message: "Your preferences have been saved.");
-          }
+      if (data != null) {
+        hideLoadingDialog();
+        _snackBarService.showSnackbar(
+            message: "Your preferences have been saved.");
+      }
       await getPreferenceData();
-isLoading=false;
-    
+      isLoading = false;
     } catch (e) {
       Logger().e(e.toString());
       hideLoadingDialog();

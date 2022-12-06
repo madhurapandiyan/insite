@@ -14,7 +14,7 @@ class UserPreference {
   String? browserRefresh;
   String? thousandsSeparator;
   String? decimalSeparator;
-  int? decimalPrecision;
+  dynamic? decimalPrecision;
 
   UserPreference(
       {this.timezone,
