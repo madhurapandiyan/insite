@@ -142,6 +142,7 @@ class Network {
           "Accept": "application/json",
           "X-VisionLink-UserUid": userId!,
           "Authorization": "bearer " + await _localService!.getToken(),
+          "Auth": "bearer " + await _localService!.getToken(),
           "sub-customeruid": subId!
         },
       );
@@ -151,9 +152,12 @@ class Network {
               variables: payLoad == null ? {} : payLoad))
           .first;
 
+      // Logger().wtf(payLoad);
+
       return res;
     } catch (e) {
       Logger().e(e.toString());
+      Logger().wtf(query);
       if (e is DioLinkServerException) {
         var error = e;
         if (error.response.statusCode == 401) {

@@ -24,10 +24,6 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
         widget.callback!();
       },
       child: Card(
-      
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            side: BorderSide(color: cardcolor)),
         child: Row(
           children: [
             Container(
@@ -36,23 +32,34 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   // Padding(
-                  //   padding: const EdgeInsets.only(bottom: 20.0),
-                  //   child: Icon(Icons.arrow_drop_down, color: Colors.white),
+                  //   padding: const EdgeInsets.only(bottom: 18.0),
+                  //   child: Container(
+                  //       decoration: BoxDecoration(
+                  //           color: widget.groups!.isSelected!
+                  //               ? Theme.of(context).buttonColor
+                  //               : Theme.of(context).backgroundColor,
+                  //           borderRadius: BorderRadius.all(Radius.circular(4))),
+                  //       child: Icon(
+                  //         Icons.crop_square,
+                  //         color: widget.groups!.isSelected!
+                  //             ? Theme.of(context).buttonColor
+                  //             : Colors.black,
+                  //       )),
                   // ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 18.0),
                     child: Container(
-                        decoration: BoxDecoration(
-                            color: widget.groups!.isSelected!
-                                ? Theme.of(context).buttonColor
-                                : Theme.of(context).backgroundColor,
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
-                        child: Icon(
-                          Icons.crop_square,
-                          color: widget.groups!.isSelected!
-                              ? Theme.of(context).buttonColor
-                              : Colors.black,
-                        )),
+                      child: widget.groups!.isSelected!
+                          ? Icon(
+                              Icons.check_box_rounded,
+                              color: Theme.of(context).buttonColor,
+                            )
+                          : Icon(
+                              Icons.check_box_outline_blank,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color,
+                            ),
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -60,7 +67,8 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
                     },
                     child: Icon(
                       Icons.star,
-                      color: widget.groups!.groups!.IsFavourite!
+                      color: widget.groups!.groups!.IsFavourite != null &&
+                              widget.groups!.groups!.IsFavourite!
                           ? tango
                           : Colors.white,
                     ),
@@ -87,14 +95,14 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
                     ),
                     InsiteTableRowItem(
                       title: '# of Assets',
-                      content: widget.groups!.groups!.AssetUID != null
-                          ? widget.groups!.groups!.AssetUID!.length.toString()
+                      content: widget.groups!.groups!.assetUID != null
+                          ? widget.groups!.groups!.assetUID!.length.toString()
                           : "-",
                     ),
                     InsiteTableRowItem(
                       title: 'Created by :',
-                      content: widget.groups!.groups!.CreatedByUserName != null
-                          ? widget.groups!.groups!.CreatedByUserName
+                      content: widget.groups!.groups!.createdByUserName != null
+                          ? widget.groups!.groups!.createdByUserName
                           : "-",
                     ),
                   ]),

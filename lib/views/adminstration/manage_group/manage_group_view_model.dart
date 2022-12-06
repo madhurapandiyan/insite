@@ -68,6 +68,8 @@ class ManageGroupViewModel extends InsiteViewModel {
     this._searchKeyword = keyword;
   }
 
+  List<String>? popList = ["New Group"];
+
   TextEditingController searchcontroller = TextEditingController();
 
   ManageGroupViewModel() {
@@ -96,8 +98,16 @@ class ManageGroupViewModel extends InsiteViewModel {
 
   getGroupListData() async {
     Logger().i("getManagerUserAssetList");
-    ManageGroupSummaryResponse? result = await _manageUserService!
-        .getManageGroupSummaryResponseListData(pageNumber, _searchKeyword);
+    ManageGroupSummaryResponse? result =
+        await _manageUserService!.getManageGroupSummaryResponseListData(
+            pageNumber,
+            {
+              "pageNumber": pageNumber,
+              "searchKey": "GroupName",
+              "searchValue": _searchKeyword,
+              "sort": ""
+            },
+            _searchKeyword);
     if (result != null) {
       if (result.total != null) {
         _totalCount = result.total!.items!;
@@ -158,13 +168,23 @@ class ManageGroupViewModel extends InsiteViewModel {
   onItemSelected(index) {
     try {
       _assets[index].isSelected = !_assets[index].isSelected!;
+      popList!.clear();
+      var selecetedAsset =
+          _assets.where((element) => element.isSelected!).toList();
+      if (selecetedAsset.length == 1) {
+        popList!.addAll(["New Group", "Edit Group", "Delete"]);
+      } else if (selecetedAsset.length > 1) {
+        popList!.add("New Group");
+      } else {
+        popList!.add("New Group");
+      }
+      _isFavorite = _assets[index].groups!.IsFavourite!;
+      Logger().i(_isFavorite);
+      notifyListeners();
+      checkEditAndDeleteVisibility();
     } catch (e) {
       Logger().e(e);
     }
-    _isFavorite = _assets[index].groups!.IsFavourite!;
-    Logger().i(_isFavorite);
-    notifyListeners();
-    checkEditAndDeleteVisibility();
   }
 
   onFavoriteItemSelected(index) {
@@ -336,7 +356,7 @@ class ManageGroupViewModel extends InsiteViewModel {
   }
 
   void deleteSelectedGroup() async {
-    Logger().i("deleteSelectedUsers");
+    Logger().i("deleteSelectedGroups");
     if (showDelete) {
       String? groupId;
       for (int i = 0; i < assets.length; i++) {
@@ -345,6 +365,7 @@ class ManageGroupViewModel extends InsiteViewModel {
           groupId = data.groups!.GroupUid;
         }
       }
+      Logger().v(groupId);
       if (groupId != null) {
         showLoadingDialog();
         var result = await _manageUserService!.getDeleteFavoriteData(groupId);

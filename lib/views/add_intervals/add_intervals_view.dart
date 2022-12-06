@@ -9,6 +9,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_search_box.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'add_intervals_view_model.dart';
 
@@ -64,6 +65,7 @@ Widget onSelectedIntervalsDetails(
         SizedBox(
           height: 10,
         ),
+        
         InsiteText(
             text: "CHECK LIST AND PART LIST",
             size: 16,
@@ -155,18 +157,16 @@ Widget onSelectedIntervalsDetails(
           SizedBox(
             width: 10,
           ),
-          data.editable == true
-              ? Expanded(
-                  child: InsiteButton(
-                    height: 40,
-                    onTap: () {
-                      onEditIntervals!();
-                    },
-                    textColor: backgroundColor1,
-                    title: "Edit",
-                  ),
-                )
-              : SizedBox(),
+          Expanded(
+            child: InsiteButton(
+              height: 40,
+              onTap: () {
+                onEditIntervals!();
+              },
+              textColor: backgroundColor1,
+              title: "Edit",
+            ),
+          )
         ])
       ],
     ),
@@ -393,11 +393,9 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                     color: Theme.of(ctx).backgroundColor,
                   ),
                   title: "",
-                
                   onTap: () {
                     onPartListDelete!();
                   },
-                 
                   textColor: Theme.of(ctx).backgroundColor,
                 ),
               ],
@@ -477,7 +475,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
               onTap: () {
                 onPartListDeleted!();
               },
-             
+
               textColor: Theme.of(ctx).backgroundColor,
               title: "",
             ),
@@ -770,7 +768,13 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                 InsiteButton(
                   textColor: white,
                   onTap: () {
-                    widget.viewModel!.onIntervalSaved();
+                    if (widget.viewModel!.isEditing) {
+                      widget.viewModel!.editInterval();
+                    } else {
+                      widget.viewModel!.onIntervalSaved();
+                    }
+
+                    //widget.viewModel!.onIntervalSaved();
                   },
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width * 0.4,

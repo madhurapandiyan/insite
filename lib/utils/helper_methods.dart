@@ -383,9 +383,9 @@ class Utils {
   static String? maintenanceToDateFormate(String date) {
     try {
       DateTime parseDate = DateTime.parse(date);
-      var data = parseDate.add(Duration(hours: 18, minutes: 29, seconds: 59));
-      var formatedStringData = data.toString();
-      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+      var data = parseDate.add(Duration(hours: 18, minutes: 59, seconds: 59));
+      var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
+      return formatedStringData;
     } catch (e) {
       return null;
     }
@@ -394,9 +394,10 @@ class Utils {
   static String? maintenanceFromDateFormate(String date) {
     try {
       DateTime parseDate = DateTime.parse(date);
-      var data = parseDate.add(Duration(hours: 23, minutes: 59, seconds: 59));
-      var formatedStringData = data.toString();
-      return formatedStringData.replaceRange(19, formatedStringData.length, "");
+      var data = parseDate.add(Duration(hours: 19, minutes: 00, seconds: 00));
+      var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
+      ;
+      return formatedStringData;
     } catch (e) {
       Logger().e(e.toString());
       return null;
@@ -430,9 +431,9 @@ class Utils {
   static String getDateInFormatMMddyyyy(date) {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
-      var inputDate = DateTime.parse(parseDate.toString())
-          .subtract(Duration(days: 1))
-          .add(Duration(hours: 18, minutes: 30));
+      var inputDate = DateTime.parse(parseDate.toString());
+      // .subtract(Duration(days: 1))
+      // .add(Duration(hours: 18, minutes: 30));
       var outputFormat = DateFormat("MM/dd/yyyy");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -937,7 +938,7 @@ class Utils {
     }
     if (tatahitachi.any((element) => element.modelName == model)) {
       if (tatahitachi.any((element) => element.assetIconKey == iconKey)) {
-        Logger().i("icon key found");
+        //Logger().i("icon key found");
         var data = tatahitachi
             .singleWhere((element) => element.assetIconKey == iconKey);
         if (data != null) {
@@ -1132,6 +1133,15 @@ class Utils {
         : buttonColorFive;
   }
 
+  static Color defColors(double? defValues) {
+    Logger().w(defValues);
+    if (defValues! > 20) {
+      return Color(0xFF5A6EFA);
+    } else {
+      return Colors.red;
+    }
+  }
+
   static Color getMaintenanceColor(text) {
     return text != null && text != null
         ? text.toLowerCase() == "Overdue" || text.toLowerCase() == "Overdue"
@@ -1218,6 +1228,7 @@ class Utils {
         //  }
         filterDetails =
             "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+        
       }
       filterDetails!.trimLeft();
 
@@ -1291,6 +1302,12 @@ class Utils {
     } else if (alert?.notificationTypeGroupID == 15) {
       data =
           "Fuel Loss ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
+      return data;
+    } else if (alert?.operands?.first.value == "1") {
+      data = "Maintenance Interval Overdue";
+      return data;
+    } else if (alert?.operands?.first.value == "2") {
+      data = "Maintenance Interval Upcoming";
       return data;
     } else {
       return "${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
@@ -1492,6 +1509,54 @@ class Utils {
         "autoIdleRuntimeHours",
       ];
       return list;
+    } else if (value == "Maintenance History") {
+      list = [
+        "serviceName",
+        "serviceMeter",
+        "currentHourMeter",
+        "serviceDate",
+        "performedBy",
+        "workOrder",
+        "serviceNotes"
+      ];
+      return list;
+    } else if (value == "Maintenance Asset Details") {
+      list = [
+        "assetSerialNumber",
+        "model",
+        "productFamily",
+        "currentHourMeter",
+        "service",
+        "serviceStatus",
+        "dueAt",
+        "dueBy",
+        "dueDate",
+        "assetStatus",
+        "address",
+        "lastReportedDate",
+        "fuelPercentage",
+        "fuelLastReportedTime",
+        "deviceType",
+        "dealerName",
+        "customerName",
+        "telematicsDeviceId"
+      ];
+      return list;
+    } else if (value == "Site Entry and Exit Report") {
+      list = [
+        "assetSerialNumber",
+        "makeCode",
+        "model",
+        "ReportedDateTime",
+        "geofenceName",
+        "EventType",
+        "Lat/Long",
+        "location",
+        "state",
+        "pincode",
+        "country",
+      ];
+      return list;
     }
     return null;
   }
@@ -1541,6 +1606,18 @@ class Utils {
       case "Multi-Asset Excavator Usage":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
+      case "Maintenance Asset Details":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=";
+        return querUrl;
+      case "Maintenance History":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
+        return querUrl;
+      case "Site Entry and Exit Report":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
     }
   }
@@ -1592,6 +1669,18 @@ class Utils {
       case "Multi-AssetExcavatorUsage":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/frame-fleet/1.0/UnifiedFleet/UtilizationOperation/v5?startDate=&endDate=&sort=-RuntimeHours";
+        return querUrl;
+      case "Maintenance Asset Details":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=";
+        return querUrl;
+      case "Maintenance History":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
+        return querUrl;
+      case "Site Entry and Exit Report":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
     }
   }
@@ -1770,9 +1859,25 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 18, seconds: 00, minutes: 30));
-      //.subtract(Duration(days: 1));
+          .add(Duration(hours: 08, seconds: 00, minutes: 00));
+      //.add(Duration(days: 1));
+      Logger().e(inputDate);
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
 
+  static getFaultDateFilterFormatStartDate(DateTime? value) {
+    try {
+      var parseDate = DateFormat("yyyy-MM-dd").format(value!);
+
+      var inputDate = DateTime.parse(parseDate)
+          .add(Duration(hours: 00, seconds: 00, minutes: 00));
+      //.add(Duration(days: 1));
+      Logger().e(inputDate);
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
@@ -1786,8 +1891,24 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 18, seconds: 59, minutes: 29));
-      //.subtract(Duration(days: 1))
+          .add(Duration(hours: 15, seconds: 59, minutes: 59))
+          .add(Duration(days: 1));
+
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  static getFaultDateFilterFormatEndDate(DateTime? value) {
+    try {
+      var parseDate = DateFormat("yyyy-MM-dd").format(value!);
+
+      var inputDate = DateTime.parse(parseDate)
+          .add(Duration(hours: 23, seconds: 59, minutes: 59));
+      //.add(Duration(days: 1));
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
@@ -1994,33 +2115,33 @@ class Utils {
     return maintenanceTotal;
   }
 
-  static List<Map<String, dynamic>>? addMaintenanceIntervals(
-      List<MaintenanceCheckList> data) {
-    try {
-      List<Map<String, dynamic>> checkList = [];
+  // static List<Map<String, dynamic>>? addMaintenanceIntervals(
+  //     List<MaintenanceCheckList> data) {
+  //   try {
+  //     List<Map<String, dynamic>> checkList = [];
 
-      for (var check in data) {
-        Map<String, dynamic> checkData = {
-          "checkListName": check.checkName,
-          "partList": []
-        };
-        for (var part in check.partList!) {
-          Map<String, dynamic> partsData = {
-            "partName": part.partName,
-            "partNo": part.partNo,
-            "quantity": part.quantiy
-          };
-          var partList = checkData["partList"] as List<dynamic>;
-          partList.add(partsData);
-        }
-        checkList.add(checkData);
-      }
-      Logger().w(checkList);
-      return checkList;
-    } catch (e) {
-      Logger().e(e.toString());
-    }
-  }
+  //     for (var check in data) {
+  //       Map<String, dynamic> checkData = {
+  //         "checkListName": check.checkName,
+  //         "partList": []
+  //       };
+  //       for (var part in check.partList!) {
+  //         Map<String, dynamic> partsData = {
+  //           "partName": part.partName,
+  //           "partNo": part.partNo,
+  //           "quantity": part.quantiy
+  //         };
+  //         var partList = checkData["partList"] as List<dynamic>;
+  //         partList.add(partsData);
+  //       }
+  //       checkList.add(checkData);
+  //     }
+  //     Logger().w(checkList);
+  //     return checkList;
+  //   } catch (e) {
+  //     Logger().e(e.toString());
+  //   }
+  // }
 
   static List<Map<String, dynamic>>? updateMaintenanceIntervals(
       MaintenanceIntervalData? mainInterval) {
@@ -2029,37 +2150,44 @@ class Utils {
       "intervalID": mainInterval!.intervalId,
       "intervalDescription": mainInterval.intervalDescription!.isEmpty
           ? "\"" + "\""
-          : mainInterval.intervalDescription,
+          : mainInterval.description,
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };
-    Logger().wtf(data.values);
+
     intervalList.add(data);
+    Logger().wtf(intervalList.length);
+    Logger().wtf(mainInterval.intervalId);
+
     return intervalList;
   }
 
   static List<Map<String, dynamic>>? updateMaintenanceCheckList(
-      List<MaintenanceCheckList>? data, int intervalId) {
+      List<MaintenanceCheckList>? data) {
+    //, int intervalId
     try {
       List<Map<String, dynamic>> checkList = [];
       if (data != null && data.isNotEmpty) {
         for (var check in data) {
           Map<String, dynamic> checkData = {
             "ChecklistName": check.checkName,
+            "checkListId": check.checkListId,
             "partList": []
           };
           for (var part in check.partList!) {
             Map<String, dynamic> partsData = {
+              "partId": part.partId,
               "partName": part.partName,
               "partNo": part.partNo,
               "quantity": part.quantiy,
+              "units": part.units
             };
             var partList = checkData["partList"] as List<dynamic>;
             partList.add(partsData);
           }
           checkList.add(checkData);
         }
-        Logger().w(checkList);
+        Logger().wtf(checkList);
         return checkList;
       } else {
         return null;
@@ -2081,5 +2209,15 @@ class Utils {
     } else {
       return "";
     }
+  }
+
+  static String? removeVersionName(String? title) {
+    final versionString;
+    if (title!.contains("indiastack")) {
+      versionString = title.split("-indiastack");
+      Logger().e(versionString[0]);
+      return versionString[0];
+    }
+    return null;
   }
 }

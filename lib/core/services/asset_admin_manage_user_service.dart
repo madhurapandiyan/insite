@@ -1048,20 +1048,34 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ManageGroupSummaryResponse?> getManageGroupSummaryResponseListData(
-      pageNumber, searckKey) async {
+      pageNumber, payload, searckKey) async {
     try {
-      Map<String, String?> queryMap = Map();
+      Map<String, dynamic> queryMap = Map();
       queryMap["pageNumber"] = pageNumber.toString();
       queryMap["Sort"] = "";
       queryMap["SearchKey"] = "GroupName";
       queryMap["SearchValue"] = searckKey.toString();
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!.groupsGrid(),
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            payLoad: payload,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        ManageGroupSummaryResponse groupSummaryResponse =
+            ManageGroupSummaryResponse.fromJson(data.data["groupsGrid"]);
+        return groupSummaryResponse;
+      }
 
       if (isVisionLink) {
         ManageGroupSummaryResponse manageGroupSummaryResponse = await MyApi()
             .getClientSeven()!
             .getManageGroupSummaryListData(
                 Urls.getManageGroupData +
-                    FilterUtils.constructQueryFromMap(queryMap),
+                    FilterUtils.constructQueryFromMap(
+                        queryMap as Map<String, String?>),
                 accountSelected!.CustomerUID);
         return manageGroupSummaryResponse;
       }
@@ -1094,14 +1108,25 @@ class AssetAdminManagerUserService extends BaseService {
     try {
       Map<String, String> queryMap = Map();
       queryMap["GroupUID"] = groupId;
-      if (isVisionLink) {
-        UpdateResponse updateResponse = await MyApi()
-            .getClientSeven()!
-            .getDeleteFavoriteData(
-                Urls.getManageGroupData +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
-        return updateResponse;
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!.getGroupDeleteData(groupId),
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        return UpdateResponse.fromJson(data.data);
+      } else {
+        if (isVisionLink) {
+          UpdateResponse updateResponse = await MyApi()
+              .getClientSeven()!
+              .getDeleteFavoriteData(
+                  Urls.getManageGroupData +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return updateResponse;
+        }
       }
     } catch (e) {}
     return null;
@@ -1309,8 +1334,8 @@ class AssetAdminManagerUserService extends BaseService {
     return null;
   }
 
-  Future<AssetGroupSummaryResponse?> getAccountSelectionData(
-      int pageNumber, int pageSize, String productFamilyKey) async {
+  Future<AssetGroupSummaryResponse?> getAccountSelectionData(int pageNumber,
+      int pageSize, String productFamilyKey, String? query) async {
     try {
       Map<String, String> queryMap = Map();
       queryMap["pageNumber"] = pageNumber.toString();
@@ -1321,33 +1346,6 @@ class AssetAdminManagerUserService extends BaseService {
         queryMap["customerIdentifier"] = customerSelected!.CustomerUID!;
         Logger().wtf(customerSelected!.CustomerUID);
       }
-      if (isVisionLink) {
-        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
-            .getClientSeven()!
-            .getAdminProductFamilyFilterData(
-                Urls.getGroupListDataVL +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                accountSelected!.CustomerUID);
-        return groupSummaryResponse;
-      } else {
-        AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
-            .getClient()!
-            .getGroupListData(
-                Urls.groupListData +
-                    FilterUtils.constructQueryFromMap(queryMap),
-                "in-vfleet-uf-map-api",
-                accountSelected!.CustomerUID);
-        return groupSummaryResponse;
-      }
-    } catch (e) {
-      Logger().e(e.toString());
-    }
-    return null;
-  }
-
-  Future<AddGroupDataResponse?> getAddGroupSaveData(
-      AddGroupPayLoad addGroupPayLoad, String query) async {
-    try {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
             query: query,
@@ -1356,11 +1354,58 @@ class AssetAdminManagerUserService extends BaseService {
                 : customerSelected?.CustomerUID,
             customerId: accountSelected!.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
+        AssetGroupSummaryResponse groupSummaryResponse =
+            AssetGroupSummaryResponse.fromJson(
+                data.data["notificationAssetList"]);
+        return groupSummaryResponse;
+      } else {
+        if (isVisionLink) {
+          AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+              .getClientSeven()!
+              .getAdminProductFamilyFilterData(
+                  Urls.getGroupListDataVL +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  accountSelected!.CustomerUID);
+          return groupSummaryResponse;
+        } else {
+          AssetGroupSummaryResponse groupSummaryResponse = await MyApi()
+              .getClient()!
+              .getGroupListData(
+                  Urls.groupListData +
+                      FilterUtils.constructQueryFromMap(queryMap),
+                  "in-vfleet-uf-map-api",
+                  accountSelected!.CustomerUID);
+          return groupSummaryResponse;
+        }
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
+  }
+
+  Future<AddGroupDataResponse?> getAddGroupSaveData(
+      {AddGroupPayLoad? addGroupPayLoad, gqlPayload, String? query}) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: query,
+            payLoad: gqlPayload,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        if (data.data["createGroups"]["groupUID"] != null) {
+          return AddGroupDataResponse.fromJson(data.data["createGroups"]);
+        } else {
+          return null;
+        }
       }
       if (isVisionLink) {
         AddGroupDataResponse addGroupDataResponse = await MyApi()
             .getClientSeven()!
-            .getAddGroupSaveData(Urls.getAddGroupSaveData, addGroupPayLoad,
+            .getAddGroupSaveData(Urls.getAddGroupSaveData, addGroupPayLoad!,
                 accountSelected!.CustomerUID);
         return addGroupDataResponse;
       }
@@ -1387,8 +1432,26 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<UpdateResponse?> getAddGroupEditPayLoad(
-      EditGroupPayLoad addGroupEditPayload) async {
+      EditGroupPayLoad addGroupEditPayload,
+      String query,
+      Map<String, dynamic> gqlPayload) async {
     try {
+      if (enableGraphQl) {
+        Logger().w(gqlPayload);
+        gqlPayload["customerUID"] = accountSelected!.CustomerUID;
+        var data = await Network().getGraphqlData(
+            query: query,
+            payLoad: gqlPayload,
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            customerId: accountSelected!.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub);
+        if (data.data["updateGroups"]["isUpdated"] != null) {
+          return UpdateResponse(
+              isDeleted: data.data["updateGroups"]["isUpdated"]);
+        }
+      }
       if (isVisionLink) {
         UpdateResponse updateResponse = await MyApi()
             .getClientSeven()!
@@ -1675,7 +1738,8 @@ class AssetAdminManagerUserService extends BaseService {
       Logger().e(e.toString());
     }
   }
-   Future<bool?> resendInvitation(String id) async {
+
+  Future<bool?> resendInvitation(String id) async {
     if (enableGraphQl) {
       var data = await Network().getGraphqlData(
           query: graphqlSchemaService!.resentInvitation(),

@@ -40,7 +40,8 @@ class _TestRouterViewState extends State<TestRouterView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TestRouterViewModel>.reactive(
-      builder: (BuildContext context, TestRouterViewModel viewModel, Widget? _) {
+      builder:
+          (BuildContext context, TestRouterViewModel viewModel, Widget? _) {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
@@ -378,6 +379,7 @@ class _TestRouterViewState extends State<TestRouterView> {
                               child: Stack(
                                 children: [
                                   GoogleMap(
+                                    mapToolbarEnabled: false,
                                     onTap: (position) {
                                       _customInfoWindowController
                                           .hideInfoWindow!();

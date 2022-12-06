@@ -34,6 +34,9 @@ class ConfiguredAlerts {
   int? numberOfAssetGroups;
   int? numberOfGeofences;
   int? alertCategoryID;
+  List<String>? assetGroups;
+  List<String> ? geofences;
+  
   int? alertGroupID;
   List<OperandData>? operands;
   List<SiteOperand>? siteOperands;
@@ -60,7 +63,11 @@ class ConfiguredAlerts {
       this.siteOperands,
       this.assets,
       this.deliveryConfig,
-      this.scheduleDetails});
+      this.scheduleDetails,
+      this.assetGroups,
+      this.geofences
+      
+      });
 
   factory ConfiguredAlerts.fromJson(Map<String, dynamic> json) =>
       _$ConfiguredAlertsFromJson(json);

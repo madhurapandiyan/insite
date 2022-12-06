@@ -81,24 +81,25 @@ class SubScriptionService extends BaseService {
       if (accountSelected != null) {
         queryMap["OEM"] = "VEhD";
       }
-      // if (enableGraphQl) {
-      //   var data = await Network().getGraphqlPlantData(
-      //     query: query,
-      //     // customerId: "THC",
-      //     // userId: (await _localService!.getLoggedInUser())!.sub,
-      //     // subId: customerSelected?.CustomerUID == null
-      //     //     ? ""
-      //     //     : customerSelected?.CustomerUID,
-      //   );
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlPlantData(
+          query: query,
+          
+          // customerId: "THC",
+          // userId: (await _localService!.getLoggedInUser())!.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
+        );
        
-      //     Logger().i(data.data["frameSubscription"]["plantDispatchSummary"]["modelFleetList"]);
-      //   SubscriptionDashboardResult subscriptionDashboardResult =
-      //       SubscriptionDashboardResult.fromJson(
-      //           data.data);
+          Logger().i(data.data["frameSubscription"]["plantDispatchSummary"]["modelFleetList"]);
+        SubscriptionDashboardResult subscriptionDashboardResult =
+            SubscriptionDashboardResult.fromJson(
+                data.data);
        
-      //   Logger().wtf(data);
-      //   return subscriptionDashboardResult;
-      // } else {
+        Logger().wtf(data);
+        return subscriptionDashboardResult;
+      } else {
         SubscriptionDashboardResult dashboardResult =
             await MyApi().getClientNine()!.getSubscriptionDashboardResults(
                   Urls.subscriptionResults +
@@ -110,7 +111,7 @@ class SubScriptionService extends BaseService {
 
         Logger().d('subscription result: ${dashboardResult.toJson()}');
         return dashboardResult;
-    //  }
+      }
     } catch (e) {
       print(e.toString());
       return null;

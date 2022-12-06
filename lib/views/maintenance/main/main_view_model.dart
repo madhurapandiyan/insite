@@ -6,9 +6,11 @@ import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_checkList.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
+
 import 'package:insite/core/models/serviceItem.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -26,6 +28,7 @@ class MainViewModel extends InsiteViewModel {
   MaintenanceService? _maintenanceService = locator<MaintenanceService>();
   NavigationService? _navigationService = locator<NavigationService>();
   GraphqlSchemaService? graphqlSchemaService = locator<GraphqlSchemaService>();
+  final LocalService? _localService = locator<LocalService>();
 
   int pageNumber = 1;
   int pageSize = 50;
@@ -72,7 +75,8 @@ class MainViewModel extends InsiteViewModel {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        if (_maintenanceList.length != _totalCount) {
+        if (_maintenanceList.length >= totalCount!) {
+        } else {
           _loadMore();
         }
       }
@@ -92,7 +96,6 @@ class MainViewModel extends InsiteViewModel {
     if (isVisionLink) {
       MaintenanceViewData? result =
           await _maintenanceService!.getMaintenanceData(
-          
         startTime:
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(maintenanceStartDate),
         endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(maintenanceEndDate),
@@ -197,13 +200,10 @@ class MainViewModel extends InsiteViewModel {
   }
 
   refresh() async {
-    Logger().v("main");
     _loading = true;
     notifyListeners();
     _maintenanceList.clear();
-     await getSelectedFilterData();
     await getMaintenanceViewList();
-    
     // await getSelectedFilterData();
     // await getDateRangeFilterData();
     // pageNumber = 1;

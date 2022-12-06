@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -551,13 +552,16 @@ class HttpWrapper {
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
           if (error.response?.statusCode == 401) {
+            Logger().e("Session Expired Please Login Again");
             Logger().e(error.response!.data.toString());
-            var data = await _dialogService!.showDialog(
-                title: "Session Expired Please Login Again",
-                cancelTitle: "Cancel",
-                buttonTitle: "Login");
-            if (data!.confirmed) {
-              onTokenExpired();
+            if (!Platform.isIOS) {
+              var data = await _dialogService!.showDialog(
+                  title: "Session Expired Please Login Again",
+                  cancelTitle: "Cancel",
+                  buttonTitle: "Login");
+              if (data!.confirmed) {
+                onTokenExpired();
+              }
             }
           } else {
             return errorInterceptorHandler.next(error);

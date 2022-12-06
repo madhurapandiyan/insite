@@ -8,7 +8,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+    //throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -50,10 +50,9 @@ android {
     defaultConfig {
         applicationId "com.trimble.insite"
         minSdkVersion 20
-        targetSdkVersion 30
-        versionCode 8
-        versionName '2.0.8'
-        
+        targetSdkVersion 31
+        versionCode 214
+        versionName '2.1.4'
     }
 
    signingConfigs {
@@ -94,10 +93,15 @@ android {
             applicationIdSuffix ".indiastack"
             versionNameSuffix "-indiastack"
         }
-        trimble {
+        worksiq {
             dimension "flavors"
-            applicationIdSuffix ".trimble"
-            versionNameSuffix "-trimble"
+            applicationIdSuffix ".worksiq"
+            versionNameSuffix "-worksiq"
+        }
+        cummins{
+             dimension "flavors"
+            applicationIdSuffix ".cummins"
+            versionNameSuffix "-cummins"
         }
     }
 }

@@ -3,6 +3,7 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -15,6 +16,7 @@ import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:location/location.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
@@ -30,11 +32,26 @@ class AssetLocationView extends StatefulWidget {
 class _AssetLocationViewState extends State<AssetLocationView> {
   String _currentSelectedItem = "SATELLITE";
   double zoomVal = 5.0;
-  Completer<GoogleMapController> _controller = Completer();
+  double? latitude;
+  double? longitude;
+  Location currentLocation = Location();
+
   MapType currentType = MapType.normal;
   List<DateTime>? dateRange;
-  late GoogleMapController mapController;
+  //late GoogleMapController mapController;
   BitmapDescriptor? mapMarker;
+  @override
+  void initState() {
+    super.initState();
+    if (AppConfig.instance!.productFlavor == "worksiq" ||
+        AppConfig.instance!.productFlavor == "cummins") {
+    } else {
+      currentLocation.onLocationChanged.listen((LocationData loc) {
+        latitude = loc.latitude;
+        longitude = loc.longitude;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -43,140 +60,167 @@ class _AssetLocationViewState extends State<AssetLocationView> {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuerry = MediaQuery.of(context);
     return ViewModelBuilder<AssetLocationViewModel>.reactive(
       builder:
           (BuildContext context, AssetLocationViewModel viewModel, Widget? _) {
         if (viewModel.loading) {
           return InsiteProgressBar();
         } else {
-          return viewModel.dataNotFound
-              ? EmptyView(
-                  title: "No Data Found",
-                )
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                        width: 1,
-                        color: Theme.of(context).textTheme.bodyText1!.color!),
-                    shape: BoxShape.rectangle,
-                  ),
-                  child: Column(
+          return Container(
+            // height: 400,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(
+                  width: 1,
+                  color: Theme.of(context).textTheme.bodyText1!.color!),
+              shape: BoxShape.rectangle,
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InsiteButton(
-                              title: "Refresh",
-                              width: 90,
-                              height: 30,
-                              //bgColor: Theme.of(context).backgroundColor,
-                              textColor:
-                                  Theme.of(context).textTheme.bodyText1!.color,
-                              onTap: () async {
-                                viewModel.customInfoWindowController
-                                    .hideInfoWindow!();
-                                if (widget.screenType == ScreenType.HEALTH) {
-                                  viewModel.refreshForAssetView();
-                                } else {
-                                  viewModel.refresh();
-                                }
-                              },
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            // InsiteText(
-                            //     text: Utils.getDateInFormatddMMyyyy(
-                            //             viewModel.startDate) +
-                            //         " - " +
-                            //         Utils.getDateInFormatddMMyyyy(
-                            //             viewModel.endDate),
-                            //     fontWeight: FontWeight.bold,
-                            //     size: 12),
-                            InsiteButton(
-                              title: Utils.getDateInFormatddMMyyyy(
-                                      viewModel.startDate) +
-                                  " - " +
-                                  Utils.getDateInFormatddMMyyyy(
-                                      viewModel.endDate),
-                              // width: 90,
-                              //bgColor: Theme.of(context).backgroundColor,
-                              textColor:
-                                  Theme.of(context).textTheme.bodyText1!.color,
-                              onTap: () async {
-                                dateRange = await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => Dialog(
-                                      backgroundColor: transparent,
-                                      child: DateRangeView()),
-                                );
-                                if (dateRange != null &&
-                                    dateRange!.isNotEmpty) {
-                                  setState(() {
-                                    dateRange = dateRange;
-                                  });
-                                  viewModel.customInfoWindowController
-                                      .hideInfoWindow!();
-                                  viewModel.refresh();
-                                }
-                              },
-                            ),
-                          ],
-                        ),
+                      InsiteButton(
+                        title: "Refresh",
+                        width: 90,
+                        height: 30,
+                        //bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        onTap: () async {
+                          viewModel
+                              .customInfoWindowController.hideInfoWindow!();
+                          if (widget.screenType == ScreenType.HEALTH) {
+                            viewModel.refreshForAssetView();
+                          } else {
+                            viewModel.refresh();
+                          }
+                        },
                       ),
-                      Expanded(
+                      SizedBox(
+                        width: 20,
+                      ),
+                      // InsiteText(
+                      //     text: Utils.getDateInFormatddMMyyyy(
+                      //             viewModel.startDate) +
+                      //         " - " +
+                      //         Utils.getDateInFormatddMMyyyy(
+                      //             viewModel.endDate),
+                      //     fontWeight: FontWeight.bold,
+                      //     size: 12),
+                      InsiteButton(
+                        title: Utils.getDateInFormatddMMyyyy(
+                                viewModel.startDate) +
+                            " - " +
+                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                        // width: 90,
+                        //bgColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        onTap: () async {
+                          dateRange = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => Dialog(
+                                backgroundColor: transparent,
+                                child: DateRangeView()),
+                          );
+                          if (dateRange != null && dateRange!.isNotEmpty) {
+                            setState(() {
+                              dateRange = dateRange;
+                            });
+                            viewModel
+                                .customInfoWindowController.hideInfoWindow!();
+                            viewModel.refresh();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                viewModel.dataNotFound
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: EmptyView(
+                          title: "No Data Found",
+                        ),
+                      )
+                    : Expanded(
                         child: Stack(
                           alignment: Alignment.bottomRight,
                           children: [
                             GoogleMap(
-                              onTap: (position) {
-                                viewModel.customInfoWindowController
-                                    .hideInfoWindow!();
-                              },
-                              onCameraMove: (position) {
-                                viewModel
-                                    .customInfoWindowController.onCameraMove!();
-                              },
-                              onMapCreated: (GoogleMapController controller) {
-                                mapController = controller;
-                                _controller.complete(controller);
-                                viewModel.customInfoWindowController
-                                    .googleMapController = controller;
-                                Future.delayed(Duration(seconds: 1), () {
-                                  mapController.animateCamera(
-                                      CameraUpdate.newLatLngBounds(
-                                          viewModel.getBound(), 0));
-                                });
-                              },
-                              mapType: _changemap(),
-                              compassEnabled: true,
-                              zoomControlsEnabled: false,
-                              markers: viewModel.markers,
-                              polylines: viewModel.polyline,
-                              initialCameraPosition:
-                                  viewModel.assetLocationHistory != null &&
-                                          viewModel.assetLocationHistory!
-                                              .assetLocation!.isNotEmpty
-                                      ? CameraPosition(
-                                          target: LatLng(
-                                              viewModel.assetLocationHistory!
-                                                  .assetLocation![0].latitude!,
-                                              viewModel
-                                                  .assetLocationHistory!
-                                                  .assetLocation![0]
-                                                  .longitude!),
-                                          zoom: 18)
-                                      : CameraPosition(
-                                          target: LatLng(30.666, 76.8127),
-                                          zoom: 4),
+                                mapToolbarEnabled: false,
+                                onTap: (position) {
+                                  viewModel.customInfoWindowController
+                                      .hideInfoWindow!();
+                                },
+                                onCameraMove: (position) {
+                                  viewModel.customInfoWindowController
+                                      .onCameraMove!();
+                                },
+                                onMapCreated: (GoogleMapController controller) {
+                                  // mapController = controller;
+                                  viewModel.controller = controller;
+                                  viewModel.mapcontroller.complete(controller);
+                                  viewModel.customInfoWindowController
+                                      .googleMapController = controller;
+                                  Future.delayed(Duration(seconds: 1), () {
+                                    viewModel.controller!.animateCamera(
+                                        CameraUpdate.newLatLngBounds(
+                                            viewModel.getBound(), 0));
+                                  });
+                                },
+                                mapType: _changemap(),
+                                compassEnabled: true,
+                                zoomControlsEnabled: false,
+                                markers: viewModel.markers,
+                                polylines: viewModel.polyline,
+                                initialCameraPosition:
+                                    viewModel.assetLocationHistory != null &&
+                                            viewModel.assetLocationHistory!
+                                                .assetLocation!.isNotEmpty
+                                        ? CameraPosition(
+                                            target: LatLng(
+                                                viewModel
+                                                    .assetLocationHistory!
+                                                    .assetLocation![0]
+                                                    .latitude!,
+                                                viewModel
+                                                    .assetLocationHistory!
+                                                    .assetLocation![0]
+                                                    .longitude!),
+                                            zoom: 5)
+                                        : viewModel.centerPosition != null
+                                            ? CameraPosition(
+                                                target: LatLng(
+                                                viewModel.centerPosition!.target
+                                                    .latitude,
+                                                viewModel.centerPosition!.target
+                                                    .latitude,
+                                              ))
+                                            : CameraPosition(
+                                                target: LatLng(30.666, 76.8127),
+                                                zoom: 4)),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 9, left: 15),
+                                child: LocationSearchBoxView(
+                                  screenType: ScreenType.ASSET_DETAIL,
+                                  searchBoxWidth: 0.6,
+                                  onSeletingSuggestion: (value, isSerialNo) {
+                                    viewModel.customInfoWindowController
+                                        .hideInfoWindow!();
+                                    if (isSerialNo) {
+                                    } else {
+                                      viewModel.onSeletingSuggestion(value);
+                                    }
+                                  },
+                                ),
+                              ),
                             ),
-                            // Align(
-                            //   alignment: Alignment.topLeft,
-                            //   child: LocationSearchBoxView(),
-                            // ),
                             CustomInfoWindow(
                               controller: viewModel.customInfoWindowController,
                               height: widget.screenType == ScreenType.HEALTH
@@ -194,7 +238,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 children: [
                                   Container(
                                     width: 100,
-                                    height: 30,
+                                    height: mediaQuerry.size.height * 0.065,
                                     margin: EdgeInsets.only(left: 20, top: 10),
                                     decoration: BoxDecoration(
                                         // border: Border.all(
@@ -220,80 +264,60 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                   ),
                                   Column(
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (viewModel.assetLocationHistory !=
-                                              null) {
-                                            zoomVal++;
-                                            _plus(
-                                              zoomVal,
-                                              LatLng(
-                                                  viewModel
-                                                      .assetLocationHistory!
-                                                      .assetLocation![0]
-                                                      .latitude!,
-                                                  viewModel
-                                                      .assetLocationHistory!
-                                                      .assetLocation![0]
-                                                      .longitude!),
-                                            );
-                                          }
-                                        },
-                                        child: Container(
-                                          width: 27.47,
-                                          height: 26.97,
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .backgroundColor,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5.0)),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                blurRadius: 1.0,
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1!
-                                                    .color!,
+                                      AppConfig.instance!.productFlavor ==
+                                                  "worksiq" ||
+                                              AppConfig.instance!
+                                                      .productFlavor ==
+                                                  "cummins"
+                                          ? SizedBox()
+                                          : Align(
+                                              alignment: Alignment.centerRight,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  _zoomToCurrentLocation(
+                                                      viewModel);
+                                                },
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      right: 10, bottom: 10),
+                                                  width: 30,
+                                                  height: 30,
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
+                                                        .backgroundColor,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                100)),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.gps_fixed_outlined,
+                                                    color: Colors.black,
+                                                    size: 30,
+                                                  ),
+                                                ),
                                               ),
-                                            ],
-                                            border: Border.all(
-                                              width: 1.0,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .color!,
                                             ),
-                                            shape: BoxShape.rectangle,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            "assets/images/plus.svg",
-                                            color: Theme.of(context)
-                                                .iconTheme
-                                                .color,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      GestureDetector(
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: GestureDetector(
                                           onTap: () {
                                             if (viewModel
                                                     .assetLocationHistory !=
                                                 null) {
-                                              zoomVal--;
-                                              _minus(
-                                                zoomVal,
-                                                LatLng(
-                                                    viewModel
-                                                        .assetLocationHistory!
-                                                        .assetLocation![0]
-                                                        .latitude!,
-                                                    viewModel
-                                                        .assetLocationHistory!
-                                                        .assetLocation![0]
-                                                        .longitude!),
-                                              );
+                                              zoomVal++;
+                                              _plus(
+                                                  zoomVal,
+                                                  LatLng(
+                                                      viewModel
+                                                          .assetLocationHistory!
+                                                          .assetLocation![0]
+                                                          .latitude!,
+                                                      viewModel
+                                                          .assetLocationHistory!
+                                                          .assetLocation![0]
+                                                          .longitude!),
+                                                  viewModel);
                                             }
                                           },
                                           child: Container(
@@ -323,12 +347,73 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                               shape: BoxShape.rectangle,
                                             ),
                                             child: SvgPicture.asset(
-                                              "assets/images/minus.svg",
+                                              "assets/images/plus.svg",
                                               color: Theme.of(context)
                                                   .iconTheme
                                                   .color,
                                             ),
-                                          )),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              if (viewModel
+                                                      .assetLocationHistory !=
+                                                  null) {
+                                                zoomVal--;
+                                                _minus(
+                                                    zoomVal,
+                                                    LatLng(
+                                                        viewModel
+                                                            .assetLocationHistory!
+                                                            .assetLocation![0]
+                                                            .latitude!,
+                                                        viewModel
+                                                            .assetLocationHistory!
+                                                            .assetLocation![0]
+                                                            .longitude!),
+                                                    viewModel);
+                                              }
+                                            },
+                                            child: Container(
+                                              width: 27.47,
+                                              height: 26.97,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .backgroundColor,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(5.0)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    blurRadius: 1.0,
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .color!,
+                                                  ),
+                                                ],
+                                                border: Border.all(
+                                                  width: 1.0,
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .color!,
+                                                ),
+                                                shape: BoxShape.rectangle,
+                                              ),
+                                              child: SvgPicture.asset(
+                                                "assets/images/minus.svg",
+                                                color: Theme.of(context)
+                                                    .iconTheme
+                                                    .color,
+                                              ),
+                                            )),
+                                      ),
                                     ],
                                   )
                                 ],
@@ -390,9 +475,9 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                           ],
                         ),
                       )
-                    ],
-                  ),
-                );
+              ],
+            ),
+          );
         }
       },
       viewModelBuilder: () =>
@@ -400,18 +485,28 @@ class _AssetLocationViewState extends State<AssetLocationView> {
     );
   }
 
-  Future<void> _minus(double zoomVal, LatLng targetPosition) async {
+  Future<void> _minus(double zoomVal, LatLng targetPosition,
+      AssetLocationViewModel assetLocationViewModel) async {
     Logger().d("zoom minus value " + zoomVal.toString());
-    final GoogleMapController controller = await _controller.future;
+    final GoogleMapController controller = assetLocationViewModel.controller!;
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
-  Future<void> _plus(double zoomVal, LatLng targetPosition) async {
+  Future<void> _plus(double zoomVal, LatLng targetPosition,
+      AssetLocationViewModel assetLocationViewModel) async {
     Logger().d("zoom plus value " + zoomVal.toString());
-    final GoogleMapController controller = await _controller.future;
+    final GoogleMapController controller = assetLocationViewModel.controller!;
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
+  }
+
+  Future<void> _zoomToCurrentLocation(AssetLocationViewModel viewModel) async {
+     Logger().i(latitude);
+    final GoogleMapController mapController =
+        await viewModel.mapcontroller.future;
+    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(latitude ?? 0.0, longitude ?? 0.0), zoom: 13)));
   }
 
   MapType _changemap() {

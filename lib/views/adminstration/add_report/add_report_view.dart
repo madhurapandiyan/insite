@@ -105,6 +105,20 @@ class _AddReportViewState extends State<AddReportView> {
                                   value: viewModel.assetsDropDownValue,
                                   onChanged: (String? value) {
                                     viewModel.assetsDropDownValue = value;
+                                    if (viewModel.assetsDropDownValue ==
+                                            "Backhoe Loader Operation" ||
+                                        viewModel.assetsDropDownValue ==
+                                            "Utilization Details" ||
+                                        viewModel.assetsDropDownValue ==
+                                            "Excavator Usage") {
+                                      viewModel.choiseData = ["Assets"];
+                                    } else {
+                                      viewModel.choiseData = [
+                                        "Assets",
+                                        "Groups",
+                                        "Geofences",
+                                      ];
+                                    }
                                     setState(() {});
                                   },
                                   items: viewModel.reportFleetAssets,
@@ -342,6 +356,7 @@ class _AddReportViewState extends State<AddReportView> {
                         SizedBox(
                           height: 15,
                         ),
+
                         Container(
                           height: MediaQuery.of(context).size.height * 0.05,
                           decoration: BoxDecoration(
@@ -361,10 +376,15 @@ class _AddReportViewState extends State<AddReportView> {
                             ),
                           ),
                         ),
-
                         SizedBox(
                           height: 15,
                         ),
+                        InsiteText(
+                          text: "Choose by : ",
+                          size: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+
                         viewModel.dropDownValue == "Cost Analysis - Fleet" ||
                                 viewModel.dropDownValue ==
                                     "Cost Analysis - Single Asset"
@@ -444,12 +464,10 @@ class _AddReportViewState extends State<AddReportView> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: CustomDropDownWidget(
-                              items: ["Assets"],
-                              value: viewModel.chooseByDropDownValue,
+                              items: viewModel.choiseData,
+                              value: viewModel.assetSelectionValue,
                               onChanged: (String? value) {
-                                viewModel.chooseByDropDownValue = value!;
-
-                                setState(() {});
+                                viewModel.updateModelValue(value!);
                               },
                             ),
                           ),
@@ -457,72 +475,74 @@ class _AddReportViewState extends State<AddReportView> {
                         SizedBox(
                           height: 15,
                         ),
-                        viewModel.chooseByDropDownValue == "Assets"
-                            ? Column(
-                                children: [
-                                  viewModel.isAssetLoading
-                                      ? Center(
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.45,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.85,
-                                            child: Card(
-                                              child: Center(
-                                                child: InsiteProgressBar(),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : AssetSelectionWidgetView(
-                                          isAddingAllAsset: viewModel
-                                                          .assetsDropDownValue ==
-                                                      "Utilization Details" ||
-                                                  viewModel
-                                                          .assetsDropDownValue ==
-                                                      "Fault Code Asset Details"
-                                              ? false
-                                              : true,
-                                          onRemoving: () {
-                                            viewModel.onRemoving();
-                                          },
-                                          key: viewModel.assetSelectionState,
-                                          addingAllAsset: (data) {
-                                            viewModel.onAddingAllAsset(data);
-                                          },
-                                          onAddingAsset: (i, value) {
-                                            viewModel.onAddingAsset(i, value);
-                                          },
-                                          assetData: (value) {},
-                                          assetResult: viewModel.assetIdresult,
+                        // viewModel.chooseByDropDownValue == "Assets"
+                        //     ?
+                        Column(
+                          children: [
+                            viewModel.isAssetLoading
+                                ? Center(
+                                    child: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.45,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.85,
+                                      child: Card(
+                                        child: Center(
+                                          child: InsiteProgressBar(),
                                         ),
-                                  SizedBox(
-                                    height: 20,
+                                      ),
+                                    ),
+                                  )
+                                : AssetSelectionWidgetView(
+                                    isAddingAllAsset:
+                                        viewModel.assetsDropDownValue ==
+                                                    "Utilization Details" ||
+                                                viewModel.assetsDropDownValue ==
+                                                    "Fault Code Asset Details"
+                                            ? false
+                                            : true,
+                                    dropdownValue:
+                                        viewModel.assetSelectionValue,
+                                    onRemoving: () {
+                                      viewModel.onRemoving();
+                                    },
+                                    key: viewModel.assetSelectionState,
+                                    addingAllAsset: (data) {
+                                      viewModel.onAddingAllAsset(data);
+                                    },
+                                    onAddingAsset: (i, value) {
+                                      viewModel.onAddingAsset(i, value);
+                                    },
+                                    assetData: (value) {},
+                                    assetResult: viewModel.assetIdresult,
                                   ),
-                                  SelectedAsset(
-                                    isLoading: viewModel.isAssetLoading,
-                                    dropDownList: viewModel.dropDownList,
-                                    initialValue: viewModel.initialValue,
-                                    onChangeSearchBox: (value) {
-                                      viewModel.onChangingSelectedAsset(value);
-                                    },
-                                    onChange: (value) {
-                                      viewModel.onChangingInitialValue(value);
-                                    },
-                                    onDeletingSelectedAsset: (i) {
-                                      viewModel.onDeletingAsset(i);
-                                    },
-                                    displayList: viewModel.isSearching
-                                        ? viewModel.searchAsset
-                                        : viewModel.selectedAsset,
-                                  ),
-                                ],
-                              )
-                            : Container(),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            SelectedAsset(
+                              selectedDropDownValue:
+                                  viewModel.assetSelectionValue,
+                              isLoading: viewModel.isAssetLoading,
+                              dropDownList: viewModel.dropDownList,
+                              initialValue: viewModel.initialValue,
+                              onChangeSearchBox: (value) {
+                                viewModel.onChangingSelectedAsset(value);
+                              },
+                              onChange: (value) {
+                                viewModel.onChangingInitialValue(value);
+                              },
+                              onDeletingSelectedAsset: (i) {
+                                viewModel.onDeletingAsset(i);
+                              },
+                              displayList: viewModel.isSearching
+                                  ? viewModel.searchAsset
+                                  : viewModel.selectedAsset,
+                            ),
+                          ],
+                        ),
+                        //: ,
+                        //  Container(),
                         SizedBox(
                           height: 30,
                         ),

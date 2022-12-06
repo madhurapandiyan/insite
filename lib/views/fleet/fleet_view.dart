@@ -62,6 +62,7 @@ class _FleetViewState extends State<FleetView> {
                           total: viewModel.totalCount,
                           isDashboard: false,
                         ),
+
                         // viewModel.appliedFilters
                         //         .where((element) =>
                         //             element.type !=

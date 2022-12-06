@@ -75,13 +75,13 @@ class AccountSelectionViewModel extends InsiteViewModel {
     try {
       Customer? account = await _localService!.getAccountInfo();
       if (account != null) {
-        Logger().i("selected account " + account.DisplayName!);
+        Logger().i("selected account " + account.Name!);
         _accountSelected = account;
         notifyListeners();
       }
       Customer? _subAccount = await _localService!.getCustomerInfo();
       if (_subAccount != null) {
-        Logger().i("selected sub account " + _subAccount.DisplayName!);
+        Logger().i("selected sub account " + _subAccount.Name!);
         _subAccountSelected = _subAccount;
         notifyListeners();
       }
@@ -100,6 +100,11 @@ class AccountSelectionViewModel extends InsiteViewModel {
     Logger().d("getCustomerList");
     List<Customer>? result =
         await _loginService!.getCustomers(limit: limit, start: start);
+    result?.sort((a, b) {
+      return a.Name.toString()
+          .toLowerCase()
+          .compareTo(b.Name.toString().toLowerCase());
+    });
     addCustomers(result!);
     Logger().d("getCustomerList " + _customers.length.toString());
     _loading = false;
@@ -107,12 +112,8 @@ class AccountSelectionViewModel extends InsiteViewModel {
   }
 
   addCustomers(List<Customer> list) {
-    if(list.isNotEmpty){
-      Logger().e("inside sorting order");
-      list.sort((a, b) => a.DisplayName!.compareTo(b.DisplayName!),);
-      for (Customer customer in list) {
-      if (_accountSelected != null &&
-          _accountSelected!.DisplayName == customer.DisplayName) {
+    for (Customer customer in list) {
+      if (_accountSelected != null && _accountSelected!.Name == customer.Name) {
         _customers.add(AccountData(
             isSelected: true,
             selectionType: AccountType.ACCOUNT,
@@ -127,30 +128,24 @@ class AccountSelectionViewModel extends InsiteViewModel {
         addCustomers(customer.Children!);
       }
     }
-    }
-    
   }
 
   addSubCustomers(List<Customer> list) {
-    if (list.isNotEmpty) {
-      Logger().v("inside sorting");
-      list.sort((a, b) => a.DisplayName!.compareTo(b.DisplayName!));
-      for (Customer customer in list) {
-        if (_subAccountSelected != null &&
-            _subAccountSelected!.DisplayName == customer.DisplayName) {
-          _subCustomers.add(AccountData(
-              isSelected: true,
-              selectionType: AccountType.CUSTOMER,
-              value: customer));
-        } else {
-          _subCustomers.add(AccountData(
-              isSelected: false,
-              selectionType: AccountType.CUSTOMER,
-              value: customer));
-        }
-        if (customer.Children!.isNotEmpty) {
-          addSubCustomers(customer.Children!);
-        }
+    for (Customer customer in list) {
+      if (_subAccountSelected != null &&
+          _subAccountSelected!.Name == customer.Name) {
+        _subCustomers.add(AccountData(
+            isSelected: true,
+            selectionType: AccountType.CUSTOMER,
+            value: customer));
+      } else {
+        _subCustomers.add(AccountData(
+            isSelected: false,
+            selectionType: AccountType.CUSTOMER,
+            value: customer));
+      }
+      if (customer.Children!.isNotEmpty) {
+        addSubCustomers(customer.Children!);
       }
     }
   }
@@ -165,29 +160,27 @@ class AccountSelectionViewModel extends InsiteViewModel {
 
     if (result!.isNotEmpty) {
       _subCustomers.clear();
-      if (_subAccountSelected != null &&
-          _subAccountSelected!.DisplayName == "ALL") {
-        _subCustomers.add(AccountData(
-            isSelected: true,
-            selectionType: AccountType.CUSTOMER,
-            value: Customer(
-                CustomerUID: "",
-                Name: "ALL ACCOUNTS",
-                CustomerType: "ALL",
-                DisplayName: "ALL ACCOUNTS",
-                Children: [])));
-      } else {
-        _subCustomers.add(AccountData(
-            isSelected: false,
-            selectionType: AccountType.CUSTOMER,
-            value: Customer(
-                CustomerUID: "",
-                Name: "ALL ACCOUNTS",
-                CustomerType: "ALL",
-                DisplayName: "ALL ACCOUNTS",
-                Children: [])));
-      }
-
+      // if (_subAccountSelected != null && _subAccountSelected!.Name == "ALL") {
+      //   _subCustomers.add(AccountData(
+      //       isSelected: true,
+      //       selectionType: AccountType.CUSTOMER,
+      //       value: Customer(
+      //           CustomerUID: "",
+      //           Name: "ALL ACCOUNTS",
+      //           CustomerType: "ALL",
+      //           DisplayName: "ALL ACCOUNTS",
+      //           Children: [])));
+      // } else {
+      //   _subCustomers.add(AccountData(
+      //       isSelected: false,
+      //       selectionType: AccountType.CUSTOMER,
+      //       value: Customer(
+      //           CustomerUID: "",
+      //           Name: "ALL ACCOUNTS",
+      //           CustomerType: "ALL",
+      //           DisplayName: "ALL ACCOUNTS",
+      //           Children: [])));
+      // }
       addSubCustomers(result);
     }
     Logger().d("getSubCustomerList result " + _subCustomers.length.toString());
@@ -217,6 +210,11 @@ class AccountSelectionViewModel extends InsiteViewModel {
       Logger().d("getCustomerList");
       List<Customer>? result = await _loginService!
           .getCustomers(limit: limit, start: start, searchKey: value);
+      result?.sort((a, b) {
+        return a.Name.toString()
+            .toLowerCase()
+            .compareTo(b.Name.toString().toLowerCase());
+      });
       _customers.clear();
       addCustomers(result!);
       Logger().d("getCustomerList " + _customers.length.toString());

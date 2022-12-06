@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/locator.dart';
@@ -76,8 +78,8 @@ class AppbarViewModel extends InsiteViewModel {
     // Logger()
     //     .w(Urls.getV4LogoutUrl(response!.id_token, Urls.tataHitachiLogoutUrl));
     // return;
-    _localService.clearAll();
-    _localStorageService.clearAll();
+    await _localService.clearAll();
+    await _localStorageService.clearAll();
     Future.delayed(Duration(seconds: 2), () async {
       // if normal api login is used below set of lines should be called on logout
       // PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -107,9 +109,14 @@ class AppbarViewModel extends InsiteViewModel {
           _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
               arguments: LoginArguments(response: response));
         } else {
-          _navigationService.clearTillFirstAndShow(
-            indiaStack.indiaStackSplashViewRoute,
-          );
+          if (Platform.isIOS) {
+            _navigationService.replaceWith(indiaStack.indiaStackLoginViewRoute,
+                arguments: LoginArguments(response: response));
+          } else {
+            _navigationService.clearTillFirstAndShow(
+              indiaStack.indiaStackSplashViewRoute,
+            );
+          }
         }
       }
     });

@@ -41,34 +41,108 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InsiteText(
-          text: "Severity :",
+          text: title,
         ),
         child,
       ],
     );
   }
 
-  Widget showingSwitchableWidget(
-      List<SwitchState> listData, Function checkingSwitchState) {
+  Widget showingSwitchableWidget(List<SwitchState> listData,
+      Function checkingSwitchState, AddNewNotificationsViewModel viewModel) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List.generate(
             listData.length,
             (i) => Column(
                   children: [
-                    TextButton.icon(
-                        onPressed: () {
-                          checkingSwitchState(i);
-                        },
-                        icon: Icon(
-                          Icons.crop_square,
-                          color: listData[i].state!
-                              ? Theme.of(context).buttonColor
-                              : Colors.black,
-                        ),
-                        label: InsiteText(
-                          text: listData[i].text,
-                        )),
+                    listData[i].text == "Include" ||
+                            listData[i].text == "Exclude"
+                        ? ListTile(
+                            onTap: () {
+                              viewModel.customizable.first.state!
+                                  ? checkingSwitchState(i)
+                                  : null;
+                            },
+                            dense: true,
+                            visualDensity: VisualDensity(vertical: -2),
+                            leading: Container(
+                              height: 17,
+                              width: 17,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: tango, width: 2),
+                                borderRadius: BorderRadius.circular(3),
+                                color: listData[i].state! ? tango : null,
+                              ),
+                              child: listData[i].state!
+                                  ? Icon(
+                                      Icons.check,
+                                      size: 13,
+                                      color: white,
+                                    )
+                                  : null,
+                            ),
+                            title: InsiteText(
+                                text: listData[i].text,
+                                size: 15,
+                                fontWeight: FontWeight.w400,
+                                color: viewModel.customizable.first.state!
+                                    ? black
+                                    : Colors.grey),
+                          )
+                        // TextButton.icon(
+                        //     onPressed: () {
+                        //       checkingSwitchState(i);
+                        //     },
+                        //     icon: Icon(Icons.crop_square,
+                        //         color: listData[i].state!
+                        //             ? Theme.of(context).buttonColor
+                        //             : Colors.black),
+                        //     label: InsiteText(
+                        //       text: listData[i].text,
+                        //       color: viewModel.customizable.first.state!
+                        //           ? Colors.black
+                        //           : Colors.black.withOpacity(0.3),
+                        //     ))
+                        : ListTile(
+                            onTap: () {
+                              checkingSwitchState(i);
+                            },
+                            dense: true,
+                            visualDensity: VisualDensity(vertical: -2),
+                            leading: Container(
+                              height: 17,
+                              width: 17,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: tango, width: 2),
+                                borderRadius: BorderRadius.circular(3),
+                                color: listData[i].state! ? tango : null,
+                              ),
+                              child: listData[i].state!
+                                  ? Icon(
+                                      Icons.check,
+                                      size: 13,
+                                      color: white,
+                                    )
+                                  : null,
+                            ),
+                            title: InsiteText(
+                              text: listData[i].text,
+                              size: 15,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                    // TextButton.icon(
+                    //     onPressed: () {
+                    //       checkingSwitchState(i);
+                    //     },
+                    //     icon: Icon(Icons.crop_square,
+                    //         color: listData[i].state!
+                    //             ? Theme.of(context).buttonColor
+                    //             : Colors.black),
+                    //     label: InsiteText(
+                    //       text: listData[i].text,
+                    //     )),
                   ],
                 )));
   }
@@ -91,13 +165,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
             onRefineApplied: () {
               //viewModel.refresh();
             },
-            body:
-                // viewModel.isLoading
-                //     ? Center(
-                //         child: InsiteProgressBar(),
-                //       )
-                //     :
-                SingleChildScrollView(
+            body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -271,7 +339,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                             viewModel
                                                                 .severityState,
                                                             viewModel
-                                                                .checkingSeverityState),
+                                                                .checkingSeverityState,
+                                                            viewModel),
                                                       ),
                                                       showingSwitchableWidgetWithTitle(
                                                         "Fault Code Type :",
@@ -279,7 +348,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                             viewModel
                                                                 .faultCodeType,
                                                             viewModel
-                                                                .checkingFaultCodeTypeState),
+                                                                .checkingFaultCodeTypeState,
+                                                            viewModel),
                                                       ),
                                                       SizedBox(
                                                         height: 10,
@@ -303,19 +373,19 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                           viewModel
                                                               .customizable,
                                                           viewModel
-                                                              .onCustomiozablestateChange),
+                                                              .onCustomiozablestateChange,
+                                                          viewModel),
                                                       Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 20),
-                                                              child: showingSwitchableWidget(
-                                                                  viewModel
-                                                                      .customizableState,
-                                                                  viewModel
-                                                                      .checkingCustomizeableState),
-                                                            ),
-                                                       
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(left: 20),
+                                                        child: showingSwitchableWidget(
+                                                            viewModel
+                                                                .customizableState,
+                                                            viewModel
+                                                                .checkingCustomizeableState,
+                                                            viewModel),
+                                                      ),
                                                       SizedBox(
                                                         height: 10,
                                                       ),
@@ -440,7 +510,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                               viewModel
                                                                   .fluidAnalysisState,
                                                               viewModel
-                                                                  .checkingFluidAnalysisState)),
+                                                                  .checkingFluidAnalysisState,
+                                                              viewModel)),
                                                     )
                                                   : viewModel.dropDownInitialValue ==
                                                           "Inspection"
@@ -454,7 +525,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                   viewModel
                                                                       .inspectionState,
                                                                   viewModel
-                                                                      .checkingInspectionState)),
+                                                                      .checkingInspectionState,
+                                                                  viewModel)),
                                                         )
                                                       : viewModel.dropDownInitialValue ==
                                                               "Asset Security"
@@ -468,7 +540,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                       viewModel
                                                                           .assetSecurityState,
                                                                       viewModel
-                                                                          .checkingAssetSecurityState)),
+                                                                          .checkingAssetSecurityState,
+                                                                      viewModel)),
                                                             )
                                                           : viewModel.dropDownInitialValue ==
                                                                   "Zone Inclusion/Exclusion"
@@ -947,11 +1020,11 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     ),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: CustomDropDownWidget(
-                                  value: "Assets",
+                                  value: viewModel.assetSelectionValue,
                                   items: viewModel.choiseData,
                                   enableHint: true,
                                   onChanged: (String? value) {
-                                    // viewModel.updateModelValue(value!);
+                                    viewModel.updateModelValueChooseBy(value!);
                                   },
                                 ),
                               ),
@@ -988,6 +1061,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                         },
                                         assetData: (value) {},
                                         assetResult: viewModel.assetIdresult,
+                                        dropdownValue:
+                                            viewModel.assetSelectionValue,
                                       ),
                                     ),
                               SizedBox(
@@ -1006,6 +1081,8 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                 onDeletingSelectedAsset: (i) {
                                   viewModel.onDeletingAsset(i);
                                 },
+                                selectedDropDownValue:
+                                    viewModel.assetSelectionValue,
                                 displayList: viewModel.isSearching
                                     ? viewModel.searchAsset
                                     : viewModel.selectedAsset,
@@ -1097,7 +1174,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     height: 20,
                                   ),
                                   InsiteButton(
-                                    // onTap: viewModel.addContact,
+                                     onTap: viewModel.addContact,
                                     fontSize: 16,
                                     height: 50,
                                     width: 200,
@@ -1306,4 +1383,12 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
       viewModelBuilder: () => AddNewNotificationsViewModel(widget.alertData),
     );
   }
+
+//  Color? getColors(SwitchState listData) {
+//     if(listData.text=="Customize"){
+//      if(listData.state==)
+
+//     }
+//     return null;
+//   }
 }

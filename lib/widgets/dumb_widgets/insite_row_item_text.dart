@@ -3,6 +3,7 @@ import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
+import 'package:logger/logger.dart';
 import 'insite_image.dart';
 import 'insite_text.dart';
 
@@ -204,6 +205,7 @@ class InsiteTableRowItemWithButton extends StatelessWidget {
           ),
           content!.isNotEmpty
               ? InsiteButton(
+                  content: content,
                   bgColor: buttonColor != null ? buttonColor : buttonColorFive,
                   title: content,
                   padding: EdgeInsets.all(0),
@@ -236,11 +238,12 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return Container(
       padding: EdgeInsets.all(8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           InsiteText(
             text: title,
@@ -249,6 +252,7 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
           ),
           content!.isNotEmpty
               ? InsiteButton(
+                  content: content,
                   bgColor: buttonColor != null ? buttonColor : buttonColorFive,
                   title: content,
                   padding: EdgeInsets.all(0),
@@ -256,7 +260,7 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
                   width: 70,
                   fontSize: 11,
                   onTap: () {
-                    onTap!();
+                    //onTap!();
                   },
                 )
               : InsiteText(
@@ -304,6 +308,7 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 4.0, horizontal: 4),
                           child: InsiteButton(
+                            content: text.countOf,
                             bgColor: Utils.getFaultColor(text.countOf),
                             title: text.count.toString(),
                             padding: EdgeInsets.all(0),

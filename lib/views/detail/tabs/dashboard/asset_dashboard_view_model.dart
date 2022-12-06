@@ -25,6 +25,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 
 import 'package:insite/views/health/health_view.dart';
+import 'package:insite/views/maintenance/maintenance_view.dart';
 
 import 'package:intl/intl.dart';
 import 'package:load/load.dart';
@@ -170,12 +171,19 @@ class AssetDashboardViewModel extends InsiteViewModel {
   }
 
   getMaintenanceCountData() async {
+    var outputFormat = DateFormat('yyyy/MM/dd 18:29:59');
+    var todayEndDate = outputFormat.format(DateTime.now());
+    var date = DateTime.now();
+    var nextWeekEndDate = new DateTime(date.year, date.month, date.day + 6);
     try {
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
-        fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-        endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
-      ));
+              assetId: assetDetail!.assetUid,
+              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
+              endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+              nextWeekEndDate:
+                  Utils.maintenanceToDateFormate(nextWeekEndDate.toString()),
+              todayEndDate: todayEndDate));
       if (data?.maintenanceDashboard?.dashboardData != null &&
           data!.maintenanceDashboard!.dashboardData!.isNotEmpty) {
         data.maintenanceDashboard?.dashboardData!.forEach((element) {
@@ -246,16 +254,23 @@ class AssetDashboardViewModel extends InsiteViewModel {
                   .subtract(Duration(days: 1))),
           endDate: Utils.getFaultDateFormatEndDate(DateTime.now())),
     );
-    Logger().v(
-        assetDashboardFaultData!.summaryData!.first.countData!.first.countOf);
+    if (assetDashboardFaultData != null) {
+      // Logger().v(
+      //     assetDashboardFaultData.summaryData!.first.countData!.first.countOf);
 
-    for (var i = 0; i < assetDashboardFaultData.summaryData!.length; i++) {
-      var data = assetDashboardFaultData.summaryData![i];
-      for (var j = 0; j < data.countData!.length; j++) {
-        faultCountDataList!.add(data.countData![j]);
+      for (var i = 0; i < assetDashboardFaultData.summaryData!.length; i++) {
+        var data = assetDashboardFaultData.summaryData![i];
+        for (var j = 0; j < data.countData!.length; j++) {
+          faultCountDataList!.add(data.countData![j]);
+        }
       }
+      _faultCountloading = false;
     }
-    _faultCountloading = false;
+
     notifyListeners();
+  }
+
+  goToMaintainenceView() {
+    _navigationService!.navigateToView(MaintenanceView());
   }
 }

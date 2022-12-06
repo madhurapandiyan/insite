@@ -5,6 +5,7 @@ import 'package:insite/core/base/base_service.dart';
 
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/maintenance_checkList.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -2357,7 +2358,9 @@ mutation (\$assetFilterCategoryID: Int, \$assetFilterUIDs: [String], \$reportCat
          method
       },
       reportTitle,
-      reportPeriod
+      reportPeriod,
+      assetFilterCategoryID,
+      assetFilterUIDs
     }
   }
 }""";
@@ -2605,7 +2608,7 @@ mutation createNotification(\$alertCategoryID: Int, \$notificationSubscribers: n
     return data;
   }
 
-  String updateNotification(
+   String updateNotification(
       {int? alertCategoryID,
       String? currentDate,
       String? alertTitle,
@@ -2616,38 +2619,39 @@ mutation createNotification(\$alertCategoryID: Int, \$notificationSubscribers: n
       String? notificationDeliveryChannel,
       List<Operand>? operand,
       List<Schedule>? schedule,
-      List<String>? assetId,
+      List<String>? assetUIDs,
+      List<String>? geofenceUIDs,
+      List<String>? assetGroupUIDs,
       NotificationSubscribers? notificationSubscribers,
       String? alertId}) {
     var data = """
 mutation{
   updateNotification(
     alertCategoryID: $alertCategoryID
-assetUIDs: ${Utils.getStringListData(assetId!)}
-notificationSubscribers:${Utils.getNotificationSubscribers(notificationSubscribers!)}
-allAssets: false
-currentDate: "$currentDate"
-schedule: ${Utils.getNotificationSchedule(schedule!)}
-alertTitle: "$alertTitle"
-alertGroupId: $alertGroupId
-notificationTypeGroupID: $notificationTypeGroupID
-operands:${Utils.getOperand(operand)}
-notificationTypeId: $notificationTypeId
-numberOfOccurences: $numberOfOccurences
-notificationDeliveryChannel:"$notificationDeliveryChannel"
-geofenceUIDs: null
-assetGroupUIDs: null
-siteOperands: null
-switchOperand: null
-zones: null
-notificationUid:"$alertId"
-  ){
-    isUpdated
-  }
-}""";
+    assetUIDs: ${assetUIDs != null ? Utils.getStringListData(assetUIDs) : null}
+    notificationSubscribers:${Utils.getNotificationSubscribers(notificationSubscribers!)}
+    allAssets: false
+    currentDate: "$currentDate"
+    schedule: ${Utils.getNotificationSchedule(schedule!)}
+    alertTitle: "$alertTitle"
+    alertGroupId: $alertGroupId
+    notificationTypeGroupID: $notificationTypeGroupID
+    operands:${Utils.getOperand(operand)}
+    notificationTypeId: $notificationTypeId
+    numberOfOccurences: $numberOfOccurences
+    notificationDeliveryChannel:"$notificationDeliveryChannel"
+    geofenceUIDs:${geofenceUIDs != null ? Utils.getStringListData(geofenceUIDs) : null}
+    assetGroupUIDs: ${assetGroupUIDs != null ? Utils.getStringListData(assetGroupUIDs) : null}
+    siteOperands: null
+    switchOperand: null
+    zones: null
+    notificationUid:"$alertId"
+      ){
+        isUpdated
+      }
+  }""";
     return data;
   }
-
   String checkNotificationTitle(String title) {
     var data = """
 query{
@@ -2701,7 +2705,8 @@ query{
       String? manufacturer,
       int? pageNo,
       int? pageSize,
-      String? deviceType}) {
+      String? deviceType,
+      String? customerIdentifier}) {
     var data = """
 query{
   notificationAssetList(
@@ -2712,6 +2717,7 @@ productfamily: ${productfamily == null ? "\"\"" : "${"\"" + productfamily + "\""
 model: ${model == null ? "\"\"" : "${"\"" + model + "\""}"}
 manufacturer: ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer + "\""}"}
 deviceType: ${deviceType == null ? "\"\"" : "${"\"" + deviceType + "\""}"}
+customerIdentifier:${customerIdentifier == null ? "\"\"" : "${"\"" + customerIdentifier + "\""}"}
 ){
 assetDetailsRecords{
       assetIdentifier,
@@ -2785,7 +2791,7 @@ siteOperands{
     return data;
   }
 
-  String editSingleNotification(String? id, String? pageNo) {
+String editSingleNotification(String? id, String? pageNo) {
     var data = """
 query{
   getNotificationAlertConfigData(
@@ -2886,6 +2892,7 @@ query{
     notificationUserStatus:$notificationUserStatus,
     fromDate:"${startDate != null ? startDate : ""}",
     toDate:"${endDate != null ? endDate : ""}",
+    
   
      notificationType:${Utils.getStringListData(notificationType ?? [])}
      productFamily:"${productFamily != null ? productFamily : ""}"
@@ -2923,16 +2930,44 @@ readStatus
     return data;
   }
 
-  createGroup(List assetUids, String groupName, String? description) {
+  createGroup() {
     var data = """
-mutation{
-  createGroups(
-    assetUID:$assetUids,
-    description:"$description",
-    groupName:"$groupName"
-  ){
-    groupUID
+mutation createGroups(\$assetUID: [String], \$description: String, \$groupName: String){
+  createGroups(assetUID: \$assetUID, description: \$description, groupName: \$groupName){
+ groupUID
   }
+}
+""";
+    return data;
+  }
+
+  groupsGrid() {
+    var data = """
+query (\$pageNumber: Int, \$sort: String, \$searchKey: String, \$searchValue: String){
+  groupsGrid(pageNumber: \$pageNumber, sort: \$sort, searchKey: \$searchKey, searchValue: \$searchValue){
+        total{
+      items,
+      pages
+    },
+    groups{
+      groupUid,
+      groupName,
+      description,
+      isFavourite,
+      createdOnUTC,
+      createdByUserName,
+      assetUID
+    }
+  }
+}""";
+    return data;
+  }
+
+  getGroupDeleteData(String? groupId) {
+    var data = """mutation{
+    deleteGroup(GroupUID:"$groupId"){
+        isDeleted
+    }
 }""";
     return data;
   }
@@ -3752,16 +3787,32 @@ maintenanceIntervals(
     return data;
   }
 
-  updateMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
+//   updateMaintenanceIntervals(MaintenanceIntervalData? mainInterval) {
+//     var data = """
+// mutation{
+//   updateMaintenanceIntervals(
+//     intervalList:${Utils.updateMaintenanceIntervals(mainInterval)}
+//     checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList) ?? []}){
+//     status,
+//      message
+//   }
+// }""";
+//     return data;
+//   }
+////////
+
+
+  updateMaintenanceIntervals() {
     var data = """
-mutation{
-  updateMaintenanceIntervals(
-    intervalList:${Utils.updateMaintenanceIntervals(mainInterval)}
-    checkList:${Utils.updateMaintenanceCheckList(mainInterval!.checkList, mainInterval.intervalId!) ?? []}){
-    status,
-     message
+mutation updateMaintenanceIntervals(\$intervalList: [intervalListObj], \$checkList: [checkListObj]) {
+  updateMaintenanceIntervals(intervalList: \$intervalList, checkList: \$checkList) {
+    status
+    message
   }
-}""";
+}
+
+
+ """;
     return data;
   }
 
@@ -3933,6 +3984,16 @@ mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
     invitation_id,
     count,
     isInvitationSent,
+    isUpdated
+  }
+}""";
+    return data;
+  }
+
+  updateGroup() {
+    var data = """
+mutation updateGroups(\$groupUid: String, \$groupName: String, \$description: String, \$customerUID: String, \$associatedAssetUID: [String], \$dissociatedAssetUID: [String]){
+  updateGroups(groupUid: \$groupUid, groupName: \$groupName, description: \$description, customerUID: \$customerUID, associatedAssetUID: \$associatedAssetUID, dissociatedAssetUID: \$dissociatedAssetUID){
     isUpdated
   }
 }""";

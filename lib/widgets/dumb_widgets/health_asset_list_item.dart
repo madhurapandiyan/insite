@@ -4,6 +4,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/health/fault_list_item_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'insite_button.dart';
 import 'insite_row_item_text.dart';
@@ -152,7 +153,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                         widget.fault!.asset["dynamic"] != null
                                     ? (widget
                                         .fault!.asset["dynamic"]["hourMeter"]
-                                        .toString())
+                                        .toStringAsFixed(3))
                                     : "-",
                               ),
                               InsiteTableRowItem(
@@ -224,6 +225,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                               viewModel.faults.length, (index) {
                                             Fault fault =
                                                 viewModel.faults[index];
+
                                             return TableRow(children: [
                                               InsiteTextWithPadding(
                                                 padding: EdgeInsets.all(8),
@@ -233,6 +235,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                                 size: 12,
                                               ),
                                               InsiteButton(
+                                                content: "",
                                                 title:
                                                     fault.severityLabel ?? "",
                                                 padding: EdgeInsets.all(8),

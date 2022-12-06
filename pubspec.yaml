@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.0.8+8
+version: 2.1.4+214
 environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies:
@@ -41,6 +41,8 @@ dependencies:
   in_app_update: ^3.0.0
   jwt_decoder: ^2.0.1
   flutter_typeahead: ^4.0.0
+  #geolocator: ^9.0.2
+  package_info_plus: ^1.4.2
 
 
 
@@ -61,6 +63,8 @@ dependencies:
   load: ^1.0.0
   geocore: ^0.7.0
   google_polyline_algorithm: ^3.1.0
+  location: ^4.4.0
+  
   
   
 
@@ -74,12 +78,14 @@ dependencies:
   flutter_downloader: ^1.5.1
   gql_dio_link: ^0.1.0
   open_file: ^3.2.1
-  firebase_crashlytics: ^2.5.3
-  firebase_core: ^1.13.1
+  firebase_crashlytics: ^2.7.3
+  firebase_core: ^1.16.0
   horizontal_data_table: any
   phone_number: ^1.0.0
   
-  
+  firebase_core_platform_interface: 4.4.0
+ 
+
   
 
 
@@ -196,6 +202,16 @@ flutter:
     - assets/images/healthicon.svg
     - assets/images/asset_operationicon.svg
     - assets/images/adminisitratoricon.svg
+    - assets/images/worksiq.png
+    - assets/images/ic_fleet.png
+    - assets/images/health_icon.png
+    - assets/images/ic_admin-setting-icon.png
+    - assets/images/worksiq.svg
+    - assets/images/worksiq.png
+    - assets/images/cummins-logo.png
+    - assets/images/locationIcon.svg
+    - assets/images/assetOperationIcon.svg
+    - assets/images/utilisationIcon.svg
     
   fonts:
     - family: Roboto

@@ -12,6 +12,7 @@ import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/core/services/geofence_service.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/add_group/model/add_group_model.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
@@ -34,11 +35,22 @@ class AddGroupViewModel extends InsiteViewModel {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  final Geofenceservice? _geofenceservice = locator<Geofenceservice>();
 
   Groups? groups;
   List<AddGroupModel>? selectedAssetDisplayList = [];
 
+  String? assetSelectionValue;
+
+  String _searchKeyword = '';
+  set searchKeyword(String keyword) {
+    this._searchKeyword = keyword;
+  }
+
   TextEditingController selectedItemController = TextEditingController();
+
+  List<String> _choiseData = ["Assets", "Geofences", "Groups"];
+  List<String> get choiseData => _choiseData;
 
   Customer? accountSelected;
 
@@ -69,11 +81,68 @@ class AddGroupViewModel extends InsiteViewModel {
     this.log = getLogger(this.runtimeType.toString());
     _manageUserService!.setUp();
 
-    Future.delayed(Duration(seconds: 1), () {
-      getData();
-      getGroupListData();
+    Future.delayed(Duration(seconds: 1), () async {
+    
+      _manageUserService!.setUp();
+      await getGroupListData();
+      
+      if (groups != null) {
+        nameController.text = groups.GroupName ?? "";
+        descriptionController.text = groups.Description ?? "";
+        if (assetIdresult?.assetDetailsRecords != null &&
+            assetIdresult!.assetDetailsRecords!.isNotEmpty) {
+          for (var asset in assetIdresult!.assetDetailsRecords!) {
+            if (groups.assetUID!
+                .any((element) => element == asset.assetIdentifier)) {
+              selectedAsset!.add(asset);
+            }
+          }
+        }
+      }
     });
   }
+
+  updateModelValueChooseBy(String value) async {
+    if (value == assetSelectionValue) {
+      return;
+    }
+    showLoadingDialog();
+    assetSelectionValue = value;
+    if (value == choiseData[1]) {
+      var geofenceData = await _geofenceservice!.getGeofenceData();
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: geofenceData!.geofences!
+              .map((e) => Asset(
+                    assetIdentifier: e.GeofenceUID,
+                    assetSerialNumber: e.GeofenceName,
+                  ))
+              .toList());
+      Logger().w(assetIdresult!.assetDetailsRecords!.first.toJson());
+    } else if (value == choiseData[2]) {
+      var groupResult =
+          await _manageUserService!.getManageGroupSummaryResponseListData(
+              1,
+              {
+                "pageNumber": 1,
+                "searchKey": "GroupName",
+                "searchValue": _searchKeyword,
+                "sort": ""
+              },
+              _searchKeyword);
+      assetIdresult = AssetGroupSummaryResponse(
+          assetDetailsRecords: groupResult!.groups!
+              .map((e) => Asset(
+                    assetIdentifier: e.GroupUid,
+                    assetSerialNumber: e.GroupName,
+                  ))
+              .toList());
+    } else {
+      await getGroupListData();
+    }
+    hideLoadingDialog();
+    notifyListeners();
+  }
+
   List<String> assetUidData = [];
 
   // AssetGroupSummaryResponse? assetIdresult;
@@ -84,27 +153,34 @@ class AddGroupViewModel extends InsiteViewModel {
         _snackBarservice!.showSnackbar(message: "Name should be specified");
         return;
       }
-
+      assetUidData.clear();
       selectedAsset?.forEach((element) {
         Logger().wtf(element.assetIdentifier);
         assetUidData.add(element.assetIdentifier!);
       });
 
       showLoadingDialog(tapDismiss: true);
-      AddGroupDataResponse? result = await _manageUserService!
-          .getAddGroupSaveData(
-              AddGroupPayLoad(
-                AssetUID: assetUidData,
-                Description: descriptionController.text,
-                GroupName: nameController.text,
-              ),
-              graphqlSchemaService?.createGroup(
-                  Utils.getStringListData(assetUidData),
-                  nameController.text,
-                  descriptionController.text));
+      AddGroupDataResponse? result =
+          await _manageUserService!.getAddGroupSaveData(
+        addGroupPayLoad: AddGroupPayLoad(
+          AssetUID: assetUidData,
+          Description: descriptionController.text,
+          GroupName: nameController.text,
+        ),
+        gqlPayload: {
+          "assetUID": assetUidData,
+          "description": descriptionController.text,
+          "groupName": nameController.text
+        },
+        query: graphqlSchemaService?.createGroup(),
+      );
       if (result != null) {
-        gotoManageGroupPage();
         _snackBarservice!.showSnackbar(message: "You have added a new group");
+        gotoManageGroupPage();
+        hideLoadingDialog();
+      } else {
+        _snackBarservice!
+            .showSnackbar(message: "Something wents wrong try again later");
         hideLoadingDialog();
       }
       Logger().i(result);
@@ -112,6 +188,11 @@ class AddGroupViewModel extends InsiteViewModel {
       final error = DioException.fromDioError(e);
       Fluttertoast.showToast(msg: error.message!);
     }
+    notifyListeners();
+  }
+
+  onRemoving() {
+    selectedAsset!.clear();
     notifyListeners();
   }
 
@@ -154,9 +235,29 @@ class AddGroupViewModel extends InsiteViewModel {
 
   onAddingAsset(int i, Asset? selectedData) {
     if (selectedData != null) {
-      assetIdresult?.assetDetailsRecords?.remove(selectedData);
-      selectedAsset?.add(selectedData);
+      if (selectedAsset!.any((element) =>
+          element.assetIdentifier == selectedData.assetIdentifier)) {
+        snackbarService!.showSnackbar(message: "Asset Already Selected");
+      } else {
+        assetIdresult?.assetDetailsRecords?.remove(selectedData);
+        // assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
+        //     element.assetIdentifier == selectedData.assetIdentifier);
+        selectedAsset?.add(selectedData);
+      }
     }
+    notifyListeners();
+  }
+
+  onAddingAllAsset(List<Asset>? allAsset) {
+    if (allAsset != null && allAsset.isNotEmpty) {
+      selectedAsset!.clear();
+      selectedAsset?.addAll(allAsset);
+    }
+    notifyListeners();
+  }
+
+  onRemove() {
+    selectedAsset!.clear();
     notifyListeners();
   }
 
@@ -167,6 +268,8 @@ class AddGroupViewModel extends InsiteViewModel {
         var data = selectedAsset?.elementAt(i);
         assetIdresult?.assetDetailsRecords?.add(data!);
         selectedAsset?.removeAt(i);
+
+        dissociatedAssetId.add(data!.assetIdentifier!);
         Logger().e(selectedAsset?.length);
         notifyListeners();
       }
@@ -180,26 +283,54 @@ class AddGroupViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  void getData() {
-    if (groups != null) {
-      getEditGroupData();
-    } else {}
-    hideLoadingDialog();
-    notifyListeners();
-  }
+  // void getData() {
+  //   if (groups != null) {
+  //     getEditGroupData();
+  //   } else {}
+  //   hideLoadingDialog();
+  //   notifyListeners();
+  // }
 
-  getAddGroupEditData() async {
+   getAddGroupEditData() async {
     try {
-      Logger().i(dissociatedAssetId);
+      assetUidData.clear();
+      selectedAsset?.forEach((element) {
+        Logger().wtf(element.assetIdentifier);
+        assetUidData.add(element.assetIdentifier!);
+      });
+      dissociatedAssetId.removeWhere((element) {
+        if (assetUidData.any((newId) => element == newId)) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      dissociatedAssetId.removeWhere((element) {
+        if (element == null) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      dissociatedAssetId = dissociatedAssetId.toSet().toList();
       showLoadingDialog();
       UpdateResponse? result = await _manageUserService!.getAddGroupEditPayLoad(
-          EditGroupPayLoad(
-              GroupName: nameController.text,
-              GroupUid: groups!.GroupUid!,
-              CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
-              Description: descriptionController.text,
-              AssociatedAssetUID: associatedAssetId,
-              DissociatedAssetUID: dissociatedAssetId));
+        EditGroupPayLoad(
+            GroupName: nameController.text,
+            GroupUid: groups!.GroupUid!,
+            CustomerUID: "d7ac4554-05f9-e311-8d69-d067e5fd4637",
+            Description: descriptionController.text,
+            AssociatedAssetUID: associatedAssetId,
+            DissociatedAssetUID: dissociatedAssetId),
+        graphqlSchemaService!.updateGroup(),
+        {
+          "associatedAssetUID": assetUidData,
+          "groupUid": groups!.GroupUid,
+          "description": descriptionController.text,
+          "groupName": nameController.text,
+          "dissociatedAssetUID": dissociatedAssetId
+        },
+      );
       if (result != null) {
         gotoManageGroupPage();
       }

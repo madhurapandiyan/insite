@@ -8,6 +8,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/location_search.dart';
 import 'package:insite/core/models/search_location_geofence.dart';
 import 'package:insite/core/services/asset_location_service.dart';
+import 'package:insite/utils/enums.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 
@@ -15,17 +16,24 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
   var _assetLocationService = locator<AssetLocationService>();
 
   List<String> dropDownList = ['S/N', 'Location'];
+  List<String> assetDropDownList = ['Location'];
 
   String? searchDropDownValue = "S/N";
+
+  bool? isSerching=false;
+
+  String? searchLocationDropDownValue = "Location";
 
   TextEditingController searchController = TextEditingController();
 
   List<LocationKey>? list = [];
 
-AssetLocationSearch ? result;
+  AssetLocationSearch? result;
 
   searchLocation(query) async {
-    SearchLocationGeofence? result =
+    if(query!=null){
+      isSerching=true;
+ SearchLocationGeofence? result =
         await _assetLocationService.getGeofenceSerachLocationData(
             graphqlSchemaService!.searchLocationData(10, query));
     if (result?.geofenceSearchLoaction?.locations != null &&
@@ -40,6 +48,10 @@ AssetLocationSearch ? result;
         list!.add(data);
       });
     }
+    }
+    isSerching=false;
+    notifyListeners();
+   
   }
 
   onChangedDropDownValue(String? value) {
@@ -48,7 +60,9 @@ AssetLocationSearch ? result;
   }
 
   searchLocationSeralNumber(String value) async {
-    result = await _assetLocationService.getAssetLocationsearch(
+    if(value!=null){
+      isSerching=true;
+result = await _assetLocationService.getAssetLocationsearch(
         graphqlSchemaService!.searchLocationSerialNumberData(
             query: value, pageNumber: 1, pageSize: 1000));
 
@@ -62,11 +76,21 @@ AssetLocationSearch ? result;
         list!.add(data);
       });
     }
+    
+    }
+    isSerching=false;
+    notifyListeners();
+    
+
   }
 
-  onSearchTextChanged(String? value) async {
+  onSearchTextChanged(String? value,ScreenType screenType) async {
     try {
-      if (value!.isNotEmpty && value.length > 2) {
+      if(screenType==ScreenType.ASSET_DETAIL){
+        await searchLocation(value!);
+      }
+      else{
+        if (value!.isNotEmpty && value.length > 2) {
         if (searchDropDownValue == "S/N") {
           await searchLocationSeralNumber(value);
         } else {
@@ -75,6 +99,8 @@ AssetLocationSearch ? result;
       } else {
         list!.clear();
       }
+      }
+      
       notifyListeners();
     } catch (e) {}
   }
@@ -102,6 +128,11 @@ AssetLocationSearch ? result;
 
   onSelect(String value) {
     searchController.text = value;
+    notifyListeners();
+  }
+
+  onChangeDropDownValueTwo(String value) {
+    searchLocationDropDownValue = value;
     notifyListeners();
   }
 

@@ -100,6 +100,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                             height: 20,
                           ),
                           CustomTextBox(
+                            showTextColour: widget.user != null ? true : false,
                             isenabled:
                                 widget.isEdit == null || widget.isEdit == false
                                     ? true
@@ -134,6 +135,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                       height: 20,
                                     ),
                                     CustomTextBox(
+                                        showTextColour:
+                                            widget.user != null ? true : false,
                                         title: "First name",
                                         isenabled: widget.isEdit == null ||
                                                 widget.isEdit == false
@@ -145,6 +148,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                       height: 20,
                                     ),
                                     CustomTextBox(
+                                      showTextColour:
+                                          widget.user != null ? true : false,
                                       title: "Last name",
                                       isenabled: widget.isEdit == null ||
                                               widget.isEdit == false
@@ -156,9 +161,11 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                       height: 20,
                                     ),
                                     CustomTextBox(
+                                      showTextColour:
+                                          widget.user != null ? true : false,
                                       controller:
                                           viewModel.phoneNumberController,
-                                      title: "Phone number: (Optional)",
+                                      title: "Phone number:(Optional)",
                                       isenabled: widget.isEdit == null ||
                                               widget.isEdit == false
                                           ? true
@@ -167,6 +174,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         if (value!.isEmpty) {
                                           return null;
                                         }
+                                        // else if (int.parse(value) <= 7) {
+                                        //   return "Enter Valid Phone Number";
+                                        // }
                                         String pattern =
                                             "^(?:[+0]9)?[0-9]{7,15}\$";
                                         RegExp regex = new RegExp(pattern);
@@ -206,6 +216,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                                 viewModel.assetsData[index];
                                             return Center(
                                               child: AppAvatar(
+                                                  index: index,
                                                   onSelect: () {
                                                     viewModel
                                                         .onApplicationAccessSelection(
@@ -348,6 +359,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                           padding:
                                               const EdgeInsets.only(left: 10.0),
                                           child: CustomDropDownWidget(
+                                            textColorChange: widget.user != null
+                                                ? true
+                                                : false,
                                             items: viewModel.jobTypeList,
                                             onChanged: (String? value) {
                                               unfocus();
@@ -357,6 +371,16 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                             value: viewModel.jobTypeValue,
                                           ),
                                         )),
+                                    //     CustomTextBox(
+                                    //   showTextColour:
+                                    //       widget.user != null ? true : false,
+                                    //   title: "Last name",
+                                    //   isenabled: widget.isEdit == null ||
+                                    //           widget.isEdit == false
+                                    //       ? true
+                                    //       : false,
+                                    //   controller: viewModel.lastNameController,
+                                    // ),
                                     SizedBox(
                                       height: 20,
                                     ),
@@ -417,6 +441,8 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                       height: 20,
                                     ),
                                     CustomTextBox(
+                                      showTextColour:
+                                          widget.user != null ? true : false,
                                       title: "Country",
                                       isenabled: widget.isEdit == null ||
                                               widget.isEdit == false
@@ -431,6 +457,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                       children: [
                                         Expanded(
                                           child: CustomTextBox(
+                                            showTextColour: widget.user != null
+                                                ? true
+                                                : false,
                                             title: "State",
                                             isenabled: widget.isEdit == null ||
                                                     widget.isEdit == false
@@ -445,6 +474,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         ),
                                         Expanded(
                                           child: CustomTextBox(
+                                            showTextColour: widget.user != null
+                                                ? true
+                                                : false,
                                             title: "Pin code",
                                             isenabled: widget.isEdit == null ||
                                                     widget.isEdit == false

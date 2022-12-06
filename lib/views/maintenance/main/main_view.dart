@@ -38,13 +38,11 @@ class MainViewState extends State<MainView> {
 
   onFilterApplied() {
     model!.refresh();
-    
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MainViewModel>.reactive(
-      
       builder: (BuildContext context, MainViewModel viewModel, Widget? _) {
         model = viewModel;
         return Stack(
@@ -63,10 +61,12 @@ class MainViewState extends State<MainView> {
                             " - " +
                             Utils.getDateInFormatddMMyyyy(
                                 viewModel.maintenanceEndDate),
+
                         //width: 90,
                         //bgColor: Theme.of(context).backgroundColor,
                         textColor: white,
                         onTap: () async {
+                          //Logger().wtf(viewModel.maintenanceEndDate);
                           dateRange = [];
                           dateRange = await showDialog(
                             context: context,
@@ -86,7 +86,10 @@ class MainViewState extends State<MainView> {
                   isDashboard: false,
                   total: viewModel.totalCount!.toInt(),
                   screenType: ScreenType.MAINTENANCE,
-                  count: viewModel.maintenanceList.length,
+                  count: viewModel.maintenanceList.length <
+                          viewModel.totalCount!.toInt()
+                      ? viewModel.maintenanceList.length
+                      : viewModel.totalCount!.toInt(),
                 ),
                 Expanded(
                   child: viewModel.loading

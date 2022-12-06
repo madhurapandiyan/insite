@@ -173,15 +173,18 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   Icons.add,
                                                   color: appbarcolor,
                                                 )),
-                                            Dropdown(
-                                              maptype: viewModel.mapType,
-                                              changingvalue: (value) {
-                                                viewModel
-                                                    .onDropDownMapTypeChange(
-                                                        value!);
-                                              },
-                                              initialvalue:
-                                                  viewModel.initialMapType,
+                                            Container(
+                                              width: MediaQuery.of(context).size.width*0.5,
+                                              child: Dropdown(
+                                                maptype: viewModel.mapType,
+                                                changingvalue: (value) {
+                                                  viewModel
+                                                      .onDropDownMapTypeChange(
+                                                          value!);
+                                                },
+                                                initialvalue:
+                                                    viewModel.initialMapType,
+                                              ),
                                             ),
                                             // InsiteButton(
                                             //     title: "",
@@ -247,19 +250,20 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                     color: appbarcolor,
                                                   )),
                                               LocationSearchBoxView(
-                                                  onSeletingSuggestion:
-                                                      (value, isSerialNo) {
-                                                    if (!isSerialNo) {
-                                                      viewModel
-                                                          .onLocationSearchedSerialNo(
-                                                              value);
-                                                    } else {
-                                                      viewModel
-                                                          .onLocationSelected(
-                                                              value);
-                                                    }
-                                                  },
-                                                  searchBoxWidth: 0.5),
+                                                searchBoxWidth: 0.5,
+                                                onSeletingSuggestion:
+                                                    (value, isSerialNo) {
+                                                  if (!isSerialNo) {
+                                                    viewModel
+                                                        .onLocationSearchedSerialNo(
+                                                            value);
+                                                  } else {
+                                                    viewModel
+                                                        .onLocationSelected(
+                                                            value);
+                                                  }
+                                                },
+                                              ),
                                               Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment

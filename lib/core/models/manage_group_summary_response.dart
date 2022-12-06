@@ -18,7 +18,7 @@ class ManageGroupSummaryResponse {
 @JsonSerializable()
 class Links {
   String? next;
-  String ? last;
+  String? last;
 
   Links({this.next, this.last});
 
@@ -29,8 +29,8 @@ class Links {
 
 @JsonSerializable()
 class Total {
-  int ?items;
-  int ? pages;
+  int? items;
+  int? pages;
 
   Total({this.items, this.pages});
 
@@ -41,13 +41,18 @@ class Total {
 
 @JsonSerializable()
 class Groups {
-  String ?GroupUid;
+  @JsonKey(name: "groupUid")
+  String? GroupUid;
+  @JsonKey(name: "groupName")
   String? GroupName;
+  @JsonKey(name: "description")
   String? Description;
-  bool ? IsFavourite;
-  String ?createdOnUTC;
-  String ?CreatedByUserName;
-  List<String>? AssetUID;
+  @JsonKey(name: "isFavourite")
+  bool? IsFavourite;
+  String? createdOnUTC;
+  String? createdByUserName;
+  @JsonKey(name: "assetUID")
+  List<String>? assetUID;
 
   Groups(
       {this.GroupUid,
@@ -55,8 +60,8 @@ class Groups {
       this.Description,
       this.IsFavourite,
       this.createdOnUTC,
-      this.CreatedByUserName,
-      this.AssetUID});
+      this.createdByUserName,
+      this.assetUID});
 
   factory Groups.fromJson(Map<String, dynamic> json) => _$GroupsFromJson(json);
   Map<String, dynamic> toJson() => _$GroupsToJson(this);
@@ -64,6 +69,6 @@ class Groups {
 
 class GroupRow {
   final Groups? groups;
-  bool ? isSelected;
+  bool? isSelected;
   GroupRow({this.groups, this.isSelected = false});
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/asset_detail.dart';
-
+import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/dashboard/asset_dashboard_view_model.dart';
-
 import 'package:insite/widgets/dumb_widgets/asset_details_widget.dart';
+import 'package:insite/widgets/dumb_widgets/empty_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/smart_widgets/fault_health_dashboard.dart';
 import 'package:insite/widgets/smart_widgets/google_map_detail.dart';
@@ -18,9 +18,10 @@ import 'package:stacked/stacked.dart';
 
 class AssetDashbaord extends StatefulWidget {
   final AssetDetail? detail;
+  final ScreenType? screenType;
   final Function(int)? switchTab;
 
-  AssetDashbaord({this.detail, this.switchTab});
+  AssetDashbaord({this.detail, this.switchTab,this.screenType});
 
   @override
   _AssetDashbaordState createState() => _AssetDashbaordState();
@@ -133,9 +134,9 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       horizontal: 16.0,
                     ),
                     child: FuelLevel(
-                        liquidColor: Theme.of(context).buttonColor,
-                        value: widget.detail != null &&
-                                widget.detail!.percentDEFRemaining != null
+                        liquidColor:widget.detail!.percentDEFRemaining != null? Utils.defColors(double.parse(
+                            widget.detail!.percentDEFRemaining.toString())):Colors.red,
+                        value: widget.detail != null && widget.detail!.percentDEFRemaining != null
                             ? double.parse(
                                 widget.detail!.percentDEFRemaining!.toString())
                             : 0,
@@ -172,19 +173,23 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: FaultHealthDashboard(
-                      screenType: ScreenType.DASHBOARD,
+                    child:
+                     FaultHealthDashboard(
+                      
+                      screenType: ScreenType.ASSET_DETAIL,
                       countData: viewModel.faultCountDataList != null
                           ? viewModel.faultCountDataList
                           : [],
                       onFilterSelected: (value, dateFilter) async {
+                        
                         await viewModel.onDateAndFilterSelected(
                             value, dateFilter);
                         viewModel.gotoFaultPage();
                       },
                       loading: viewModel.faultCountloading,
                       isRefreshing: viewModel.refreshing,
-                    ),
+                    )
+                   
                   ),
                   SizedBox(
                     height: 20.0,
@@ -238,7 +243,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
                     ),
-                    child:  Notes(
+                    child: Notes(
                       controller: notesController,
                       onDelete: (value) {
                         viewModel.deletNotes(value);
@@ -285,6 +290,7 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       countData: viewModel.maintenanceDashboardCount,
                       isLoading: viewModel.maintenanceLoading,
                       onFilterSelected: (val, filterType, count) {
+                        viewModel.goToMaintainenceView();
                         // viewModel.onMaintenanceFilterClicked(
                         //     val, filterType, count);
                       },

@@ -62,6 +62,12 @@ ConfiguredAlerts _$ConfiguredAlertsFromJson(Map<String, dynamic> json) =>
       scheduleDetails: (json['scheduleDetails'] as List<dynamic>?)
           ?.map((e) => ScheduleDetails.fromJson(e as Map<String, dynamic>))
           .toList(),
+      assetGroups: (json['assetGroups'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      geofences: (json['geofences'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$ConfiguredAlertsToJson(ConfiguredAlerts instance) =>
@@ -79,6 +85,8 @@ Map<String, dynamic> _$ConfiguredAlertsToJson(ConfiguredAlerts instance) =>
       'numberOfAssetGroups': instance.numberOfAssetGroups,
       'numberOfGeofences': instance.numberOfGeofences,
       'alertCategoryID': instance.alertCategoryID,
+      'assetGroups': instance.assetGroups,
+      'geofences': instance.geofences,
       'alertGroupID': instance.alertGroupID,
       'operands': instance.operands?.map((e) => e.toJson()).toList(),
       'siteOperands': instance.siteOperands?.map((e) => e.toJson()).toList(),

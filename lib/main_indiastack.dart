@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -26,6 +25,7 @@ void main() async {
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
     await FlutterDownloader.initialize(debug: true);
     await Hive.initFlutter();
+    //FirebaseCrashlytics.instance.crash();
     Hive.registerAdapter<FilterData>(FilterDataAdapter());
     Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
     Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());

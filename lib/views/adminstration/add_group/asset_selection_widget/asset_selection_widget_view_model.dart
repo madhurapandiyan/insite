@@ -4,8 +4,12 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_group_summary_response.dart';
 import 'package:insite/core/models/asset_status.dart';
+import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/core/services/local_service.dart';
+import 'package:insite/core/services/local_storage_service.dart';
+import 'package:insite/core/services/login_service.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
@@ -18,12 +22,14 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
       locator<AssetAdminManagerUserService>();
   AssetStatusService? _assetService = locator<AssetStatusService>();
 
+  LoginService? _loginService = locator<LoginService>();
+
   AssetGroupSummaryResponse? assetIdresult;
   PageController? pageController;
   ScrollController scrollController = ScrollController();
   ScrollController scrollController1 = ScrollController();
   List<AssetSelectionCategory>? assetSelectionCategory;
-
+  LocalService _localService = locator<LocalService>();
   AssetSelectionWidgetViewModel(AssetGroupSummaryResponse? data) {
     this.log = getLogger(this.runtimeType.toString());
     if (isVisionLink) {
@@ -32,8 +38,10 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
       assetSelectionCategory = assetSelectionCategoryIn;
     }
     pageController = PageController(initialPage: _currentPage);
+
     _assetService!.setUp();
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 1), () async {
+      _accountSelected = await _localService.getAccountInfo();
       if (data == null) {
       } else {
         getGroupListData(data);
@@ -44,6 +52,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 9999;
 
+  bool? isAccountShow = false;
+
   bool _isloading = true;
   bool get isloading => _isloading;
 
@@ -53,11 +63,16 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   bool isSearchingManufacture = false;
   bool isSearchingDeviceType = false;
 
+  List<Asset>? accountAssetSerialNumberList = [];
+
   List<Asset>? _assetId = [];
   List<Asset>? get assetId => _assetId;
 
   List<Asset>? _assetSerialNumber = [];
   List<Asset>? get assetSerialNumber => _assetSerialNumber;
+
+  List<AccountSelectedData>? _accountNameData = [];
+  List<AccountSelectedData>? get accountNameData => _accountNameData;
 
   List<Asset>? _serialNoSearch = [];
   List<Asset>? get serialNoSearch => _serialNoSearch;
@@ -73,6 +88,12 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
 
   List<Count> _deviceTypdeData = [];
   List<Count> get deviceTypdeData => _deviceTypdeData;
+
+  Customer? _accountSelected;
+  Customer? get accountSelected => _accountSelected;
+
+  int? start = 1;
+  int? limit = 100;
 
   List<Asset>? _productFamilyCountData = [];
   List<Asset>? get productFamilyCountData => _productFamilyCountData;
@@ -114,8 +135,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
   ];
 
   List<AssetSelectionCategory> assetSelectionCategoryIn = [
-    AssetSelectionCategory(
-        name: "Asset Id", assetCategoryType: AssetCategoryType.ASSETID),
+    // AssetSelectionCategory(
+    //     name: "Asset Id", assetCategoryType: AssetCategoryType.ASSETID),
     AssetSelectionCategory(
         name: "Serial Number", assetCategoryType: AssetCategoryType.SERIALNO),
     AssetSelectionCategory(
@@ -128,6 +149,8 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         name: "Model", assetCategoryType: AssetCategoryType.MODEL),
     AssetSelectionCategory(
         name: "Device Type", assetCategoryType: AssetCategoryType.DEVICETYPE),
+    AssetSelectionCategory(
+        name: "Account", assetCategoryType: AssetCategoryType.ACCOUNT),
   ];
 
   int _currentPage = 0;
@@ -342,6 +365,82 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     }
   }
 
+  getAccountFilterData(String? customIdentifier) async {
+    try {
+      if (customIdentifier == "0ba12330-cffb-11eb-82e0-0ae8ba8d3970" ||
+          customIdentifier == "4f372aa8-aefb-11eb-82ce-0ae8ba8d3970" ||
+          customIdentifier == "adc197bc-9c2b-11eb-a8b3-0242ac130003" ||
+          customIdentifier == "79d3dff3-ace0-11eb-82ce-0ae8ba8d3970") {
+        isAccountShow = true;
+        pageController!.animateToPage(13,
+            duration: Duration(microseconds: 200), curve: Curves.easeInOut);
+        notifyListeners();
+      } else {
+        showLoadingDialog();
+        assetIdresult = await _manageUserService!.getAccountSelectionData(
+            pageNumber,
+            pageSize,
+            customIdentifier!,
+            graphqlSchemaService!.getNotificationAssetList(
+                customerIdentifier: customIdentifier,
+                pageNo: pageNumber,
+                pageSize: pageSize));
+        if (assetIdresult != null) {
+          for (var serialNumber in assetIdresult!.assetDetailsRecords!) {
+            accountAssetSerialNumberList!.add(Asset(
+                assetIcon: serialNumber.assetIcon,
+                assetId: serialNumber.assetId,
+                assetIdentifier: serialNumber.assetIdentifier,
+                makeCode: serialNumber.makeCode,
+                model: serialNumber.model,
+                type: AssetCategoryType.ACCOUNT,
+                assetSerialNumber: serialNumber.assetSerialNumber));
+          }
+          isAccountShow = false;
+
+          pageController!.animateToPage(12,
+              duration: Duration(microseconds: 200), curve: Curves.easeInOut);
+          hideLoadingDialog();
+        }
+      }
+
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  getAccountTypeData() async {
+    showLoadingDialog();
+    List<Customer>? result = await _loginService!.getSubCustomers(
+        customerId: accountSelected!.CustomerUID,
+        limit: limit,
+        start: start,
+        isFromPagination: true);
+    if (result != null) {
+      Logger().wtf(result.first.toJson());
+
+      for (int i = 0; i < result.length; i++) {
+        var data = result[i];
+        if (data.CustomerUID == "6ea359eb-ada5-11eb-82ce-0ae8ba8d3970") {
+          for (int j = 0; j < data.Children!.length; j++) {
+            var tataHitachiNameData = data.Children![j];
+            _accountNameData!.add(AccountSelectedData(
+                name: tataHitachiNameData.Name,
+                customerUid: tataHitachiNameData.CustomerUID));
+          }
+        } else {
+          _accountNameData!.add(AccountSelectedData(
+              name: data.Name, customerUid: data.CustomerUID));
+        }
+      }
+      hideLoadingDialog();
+
+      Logger().w(accountNameData!.length);
+      notifyListeners();
+    }
+  }
+
   getFilterDeviceTypeData(String productFamilyKey) async {
     try {
       showLoadingDialog();
@@ -426,6 +525,11 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         duration: Duration(microseconds: 200), curve: Curves.easeInOut);
   }
 
+  onAccountTypeBackPressed() {
+    pageController!.animateToPage(11,
+        duration: Duration(microseconds: 200), curve: Curves.easeInOut);
+  }
+
   onAddingSerialNo(int i, Asset? asset) {
     assetSerialNumber?.removeAt(i);
     notifyListeners();
@@ -453,6 +557,10 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     } else if (type == AssetCategoryType.DEVICETYPE) {
       await getDeviceTypeData();
       pageController!.animateToPage(9,
+          duration: Duration(microseconds: 200), curve: Curves.easeInOut);
+    } else if (type == AssetCategoryType.ACCOUNT) {
+      await getAccountTypeData();
+      pageController!.animateToPage(11,
           duration: Duration(microseconds: 200), curve: Curves.easeInOut);
     }
   }
@@ -496,6 +604,12 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         } else {
           return null;
         }
+      case AssetCategoryType.ACCOUNT:
+        if (accountAssetSerialNumberList!.isNotEmpty) {
+          return accountAssetSerialNumberList;
+        } else {
+          return null;
+        }
       default:
     }
   }
@@ -519,6 +633,9 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         break;
       case AssetCategoryType.MODEL:
         subModelData?.removeAt(i);
+        break;
+      case AssetCategoryType.ACCOUNT:
+        accountAssetSerialNumberList!.removeAt(i);
         break;
       default:
     }
@@ -552,7 +669,7 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
         break;
       default:
     }
-    
+
     notifyListeners();
   }
 
@@ -561,6 +678,7 @@ class AssetSelectionWidgetViewModel extends InsiteViewModel {
     _subManufacturerList!.clear();
     _subDeviceList!.clear();
     _subModelData!.clear();
+    accountAssetSerialNumberList!.clear();
   }
 }
 
@@ -580,4 +698,10 @@ enum AssetCategoryType {
   PRODUCTFAMILY,
   DEVICETYPE,
   MANUFACTURER
+}
+
+class AccountSelectedData {
+  final String? customerUid;
+  final String? name;
+  AccountSelectedData({this.customerUid, this.name});
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/flavor/flavor.dart';
@@ -29,6 +30,7 @@ void main() async {
     Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());
     Hive.registerAdapter<CountData>(CountDataAdapter());
     Hive.registerAdapter<FilterSubType?>(FilterSubTypeAdapter());
+    
     AppConfig(
         baseUrl: "https://unifiedfleet.myvisionlink.com",
         apiFlavor: "visionlink",

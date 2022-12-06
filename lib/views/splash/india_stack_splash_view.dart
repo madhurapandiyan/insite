@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:insite/core/flavor/flavor.dart';
@@ -49,6 +50,16 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
   String codeVerifier = randomAlphaNumeric(43);
   String state = randomAlphaNumeric(43);
   String? codeChallenge;
+
+  Future<bool> _onWillPop(BuildContext context) async {
+    print("onwillpop");
+    if (await flutterWebviewPlugin.canGoBack()) {
+      flutterWebviewPlugin.goBack();
+    } else {
+      exit(0);
+    }
+    return Future.value(false);
+  }
 
   @override
   void initState() {
@@ -234,9 +245,7 @@ class _IndiaStackSplashViewState extends State<IndiaStackSplashView> {
       builder: (BuildContext context, SplashViewModel viewModel, Widget? _) {
         // setupListeners();
         return WillPopScope(
-          onWillPop: () {
-            return Future.value(false);
-          },
+          onWillPop: () => _onWillPop(context),
           child: Scaffold(
             backgroundColor:
                 widget.showingSnackbar ? white : Theme.of(context).buttonColor,

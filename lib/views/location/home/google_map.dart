@@ -232,6 +232,7 @@ class GoogleMapHomeWidgetState extends State<GoogleMapHomeWidget> {
                                           bottomLeft: Radius.circular(10),
                                           bottomRight: Radius.circular(10)),
                                       child: GoogleMap(
+                                        mapToolbarEnabled: false,
                                         onLongPress: (argument) {},
                                         onCameraMoveStarted: () {},
                                         onCameraMove: (position) {

@@ -9,6 +9,7 @@ import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/login_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/adminstration_view.dart';
 import 'package:insite/views/asset_operation/asset_operation_view.dart';
 import 'package:insite/views/dashboard/dashboard_view.dart';
@@ -25,6 +26,7 @@ import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked_services/stacked_services.dart' as service;
 
 class HomeViewModel extends InsiteViewModel {
@@ -40,6 +42,8 @@ class HomeViewModel extends InsiteViewModel {
   bool isLoading = true;
   AppUpdateInfo? updateInfo;
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
+
+  PackageInfo ?packageInfoData;
 
   HomeViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -116,11 +120,23 @@ class HomeViewModel extends InsiteViewModel {
   checkForUpdate() async {
     try {
       Logger().w("checking for update ....");
+      Logger().e( "Update Available Version:-2."+" 1 ." +" " +"${updateInfo?.availableVersionCode.toString()}");
+
       var info = await InAppUpdate.checkForUpdate();
-      Logger().w(info.availableVersionCode);
+      var packageInfo=await PackageInfo.fromPlatform();
+      packageInfoData=packageInfo;
+
       updateInfo = info;
+
+      Logger().wtf(packageInfoData!.version);
+
+      // if(packageInfoData!=null){
+      //   Utils.removeVersionName(packageInfoData!.version.toString());
+      // }
+
       if (updateInfo?.updateAvailability ==
           UpdateAvailability.updateAvailable) {
+
         snackbarService?.showSnackbar(
             duration: Duration(seconds: 10),
             mainButtonTitle: "Update",
@@ -135,7 +151,7 @@ class HomeViewModel extends InsiteViewModel {
                   }
                 : null,
             message:
-                "Update Available Vesion:-${updateInfo?.availableVersionCode.toString()}");
+                "Update Available Version:-${Utils.removeVersionName(packageInfoData!.version.toString())}");
       }
 
       // scaffoldKey.currentState!.showSnackBar(SnackBar(

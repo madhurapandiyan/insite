@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/admin_manage_user.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/fault.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/fault_service.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:logger/logger.dart';
 
@@ -28,6 +32,8 @@ class FaultListItemViewModel extends InsiteViewModel {
   List<Fault> _faults = [];
   List<Fault> get faults => _faults;
 
+  int? totalCount = 0;
+
   ScrollController? scrollController;
   int pageNumber = 1;
   int pageSize = 20;
@@ -40,7 +46,9 @@ class FaultListItemViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        _loadMore();
+        if (faults.length != faults.length) {
+          _loadMore();
+        }
       }
     });
     Future.delayed(Duration(seconds: 1), () {
@@ -56,33 +64,50 @@ class FaultListItemViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-    FaultSummaryResponse? result =
-        await _faultService!.getAssetViewDetailSummaryList(
-      Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-      Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-      pageSize,
-      pageNumber,
-      appliedFilters,
-      fault!.asset["uid"],
-      graphqlSchemaService!.getFaultSingleData(
-        faultsId: fault!.asset["uid"],
-        startDate:  Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-        endDate:  Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-        langeDesc: "en-US",
-        limit: pageSize,
-        pageSize: pageNumber
-
-      )
-    );
+    FaultSummaryResponse? result = await _faultService!
+        .getAssetViewDetailSummaryList(
+            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+            pageSize,
+            pageNumber,
+            appliedFilters,
+            fault!.asset["uid"],
+            graphqlSchemaService!.getFaultSingleData(
+                faultsId: fault!.asset["uid"],
+                startDate:
+                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+                langeDesc: "en-US",
+                limit: pageSize,
+                pageSize: pageNumber));
     if (result != null && result.faults != null) {
-      Logger().i("faults");
+      // totalCount =result.faults.first.countData! ;
+
       if (result.faults!.isNotEmpty) {
-        _faults.addAll(result.faults!);
+        // _faults.addAll(result.faults!);
+
+        if (appliedFilters!.isNotEmpty) {
+          if (appliedFilters![0]!.title == 'Yellow' ||
+              appliedFilters![0]!.title == 'Orange') {
+            for (int i = 0; i <= result.faults!.length - 1; i++) {
+              if (result.faults![i].severityLabel == 'High') {
+                continue;
+              } else {
+                _faults.add(result.faults!.elementAt(i));
+              }
+            }
+          } else {
+            _faults.addAll(result.faults!);
+          }
+        } else {
+          _faults.addAll(result.faults!);
+        }
+
         _refreshing = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _faults.addAll(result.faults!);
+        //_faults.addAll(result.faults!);
         _refreshing = false;
         _loadingMore = false;
         _shouldLoadmore = false;

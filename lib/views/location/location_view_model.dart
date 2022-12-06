@@ -40,8 +40,6 @@ class LocationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  
-
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
   CustomInfoWindowController get customInfoWindowController =>
@@ -266,7 +264,7 @@ class LocationViewModel extends InsiteViewModel {
 
   onSeletingSuggestion(LatLng value) async {
     Logger().w(value.latitude);
-   
+
     GoogleMapController control = await controller.future;
     control.animateCamera(CameraUpdate.newLatLngZoom(value, 10));
 
