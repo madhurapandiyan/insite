@@ -566,17 +566,37 @@ class _SelectedAssetState extends State<SelectedAsset> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InsiteText(
-                      text: "Selected Assets",
+                      text: widget.selectedDropDownValue == "Groups"
+                          ? "Selected Groups"
+                          : widget.selectedDropDownValue == "Geofences"
+                              ? "Selected Geofences"
+                              : "Selected Assets",
                       size: 14,
                       fontWeight: FontWeight.w700,
                     ),
-                    InsiteText(
-                      text: widget.displayList!.length.toString() +
-                          " " +
-                          "Assets",
-                      size: 14,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    widget.selectedDropDownValue == "Groups"
+                        ? InsiteText(
+                            text: widget.displayList!.length.toString() +
+                                " " +
+                                "Groups",
+                            size: 14,
+                            fontWeight: FontWeight.w700,
+                          )
+                        : widget.selectedDropDownValue == "Geofences"
+                            ? InsiteText(
+                                text: widget.displayList!.length.toString() +
+                                    " " +
+                                    "Geofences",
+                                size: 14,
+                                fontWeight: FontWeight.w700,
+                              )
+                            : InsiteText(
+                                text: widget.displayList!.length.toString() +
+                                    " " +
+                                    "Assets",
+                                size: 14,
+                                fontWeight: FontWeight.w700,
+                              ),
                   ],
                 ),
                 Container(

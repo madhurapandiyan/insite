@@ -1227,6 +1227,7 @@ class Utils {
         //  }
         filterDetails =
             "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+        
       }
       filterDetails!.trimLeft();
 
@@ -1529,6 +1530,21 @@ class Utils {
         "telematicsDeviceId"
       ];
       return list;
+    } else if (value == "Site Entry and Exit Report") {
+      list = [
+        "assetSerialNumber",
+        "makeCode",
+        "model",
+        "ReportedDateTime",
+        "geofenceName",
+        "EventType",
+        "Lat/Long",
+        "location",
+        "state",
+        "pincode",
+        "country",
+      ];
+      return list;
     }
     return null;
   }
@@ -1586,6 +1602,10 @@ class Utils {
       case "Maintenance History":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
+        return querUrl;
+      case "Site Entry and Exit Report":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
     }
   }
@@ -1645,6 +1665,10 @@ class Utils {
       case "Maintenance History":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
+        return querUrl;
+      case "Site Entry and Exit Report":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
     }
   }
@@ -2114,7 +2138,7 @@ class Utils {
       "intervalID": mainInterval!.intervalId,
       "intervalDescription": mainInterval.intervalDescription!.isEmpty
           ? "\"" + "\""
-          : mainInterval.intervalDescription,
+          : mainInterval.description,
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };
@@ -2175,15 +2199,13 @@ class Utils {
     }
   }
 
-  static String ?removeVersionName(String ? title){
+  static String? removeVersionName(String? title) {
     final versionString;
-    if(title!.contains("indiastack")){
-      versionString=title.split("-indiastack");
+    if (title!.contains("indiastack")) {
+      versionString = title.split("-indiastack");
       Logger().e(versionString[0]);
       return versionString[0];
     }
     return null;
   }
-
- 
 }
