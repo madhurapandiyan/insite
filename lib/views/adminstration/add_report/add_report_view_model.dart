@@ -730,25 +730,33 @@ class AddReportViewModel extends InsiteViewModel {
   List<String>? emailIds = [];
 
   addContact() {
-    Logger().w(emailController.text);
-    emailIds!.forEach((element) {
-      if (selectedUser.any((emailIds) => emailIds.email == element)) {
-        selectedUser.clear();
-        snackbarService!
-            .showSnackbar(message: "Not to add Email Report Recipients");
-      }
-    });
-    if (emailController.text.contains("@")) {
-      isShowingSelectedContact = true;
-      selectedUser.add(User(
-        email: emailController.text,
-      ));
-      emailIds!.add(emailController.text);
-    } else {
-      snackbarService!.showSnackbar(message: "Please Enter the valid Email-Id");
-    }
+    // Logger().w(emailController.text);
+    // emailIds!.forEach((element) {
+    //   if (selectedUser.any((emailIds) => emailIds.email == element)) {
+    //     selectedUser.clear();
+    //     snackbarService!
+    //         .showSnackbar(message: "Not to add Email Report Recipients");
+    //   }
+    // });
 
-    notifyListeners();
+    if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
+      snackbarService!
+          .showSnackbar(message: "Not to add Email Report Recipients");
+    } else {
+      if (emailController.text.contains("@")) {
+        isShowingSelectedContact = true;
+        selectedUser.add(User(
+          email: emailController.text,
+        ));
+        emailIds!.add(emailController.text);
+        notifyListeners();
+      } else {
+        snackbarService!
+            .showSnackbar(message: "Please Enter the valid Email-Id");
+      }
+
+      notifyListeners();
+    }
   }
 
   addPayload() {

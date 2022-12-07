@@ -107,7 +107,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   bool isEditing = false;
 
-  bool isEditLoader=true;
+  bool isEditLoader = true;
 
   List<String?> _noticationTypes = ["select"];
   List<String?> get notificationTypes => _noticationTypes;
@@ -121,7 +121,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<String?> _notificationSubTypes = ["Options"];
   List<String?> get notificationSubTypes => _notificationSubTypes;
 
-  List<String> _choiseData = ["Assets", "Groups", "Geofences",];
+  List<String> _choiseData = [
+    "Assets",
+    "Groups",
+    "Geofences",
+  ];
   List<String> get choiseData => _choiseData;
 
   bool _loading = true;
@@ -464,7 +468,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
- getGroupListData() async {
+  getGroupListData() async {
     try {
       assetIdresult = await _manageUserService!.getGroupListData(false);
       if (isEditing) {
@@ -894,7 +898,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   getEditOperandData(List<OperandData>? data) {
-     if (dropDownInitialValue == "Fault Code") {
+    if (dropDownInitialValue == "Fault Code") {
       var isInclude = false;
       var isExclude = false;
       var severityData =
@@ -1200,15 +1204,34 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   addContact() {
-    if (emailController.text.contains("@")) {
-      isShowingSelectedContact = true;
+    // if (emailController.text.contains("@")) {
+    //   isShowingSelectedContact = true;
 
-      selectedUser.add(User(
-        email: emailController.text,
-      ));
-      emailIds!.add(emailController.text);
+    //   selectedUser.add(User(
+    //     email: emailController.text,
+    //   ));
+    //   emailIds!.add(emailController.text);
+    //   emailController.clear();
+    // } else {
+    //   snackbarService!.showSnackbar(message: "Please Enter the valid Email-id");
+    // }
+    if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
+      snackbarService!
+          .showSnackbar(message: "Not to add Email Report Recipients");
     } else {
-      snackbarService!.showSnackbar(message: "Please Enter the valid Email-id");
+      if (emailController.text.contains("@")) {
+        isShowingSelectedContact = true;
+        selectedUser.add(User(
+          email: emailController.text,
+        ));
+        emailIds!.add(emailController.text);
+        notifyListeners();
+      } else {
+        snackbarService!
+            .showSnackbar(message: "Please Enter the valid Email-Id");
+      }
+
+      notifyListeners();
     }
 
     notifyListeners();
@@ -1683,7 +1706,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       if (value!.length >= 2) {
         notificationExists = await _notificationService!.checkNotificationTitle(
             value, graphqlSchemaService!.checkNotificationTitle(value));
-         //isTitleExist = notificationExists!.alertTitleExists!;
+        //isTitleExist = notificationExists!.alertTitleExists!;
 
         notifyListeners();
       } else {
@@ -2215,7 +2238,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       assetUidData.add(element.assetIdentifier!);
     });
 
-
     if (notificationExists?.alertTitleExists == true) {
       Logger().v("show title");
       _snackBarservice!.showSnackbar(message: "Notification title exists");
@@ -2295,7 +2317,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");
           hideLoadingDialog();
           gotoManageNotificationsPage();
-         }
+        }
         // else {
         //   _snackBarservice!
         //       .showSnackbar(message: "Kindly recheck credentials added");
