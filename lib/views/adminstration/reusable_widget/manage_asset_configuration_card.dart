@@ -33,18 +33,23 @@ class ManageAssetConfigurationCard extends StatelessWidget {
                   // SizedBox(
                   //   height: 20,
                   // ),
+
                   Container(
-                      decoration: BoxDecoration(
-                          color: assetSetting!.isSelected
-                              ? Theme.of(context).buttonColor
-                              : Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Icon(
-                        Icons.crop_square,
-                        color: assetSetting!.isSelected
-                            ? Theme.of(context).buttonColor
-                            : Colors.black,
-                      )),
+                    // decoration: BoxDecoration(
+                    //     color: assetSetting!.isSelected
+                    //         ? Theme.of(context).buttonColor
+                    //         : Theme.of(context).backgroundColor,
+                    //     borderRadius: BorderRadius.all(Radius.circular(4))),
+                    child: assetSetting!.isSelected
+                        ? Icon(
+                            Icons.check_box_rounded,
+                            color: Theme.of(context).buttonColor,
+                          )
+                        : Icon(
+                            Icons.check_box_outline_blank,
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                          ),
+                  ),
                 ],
               ),
             ),
@@ -74,9 +79,8 @@ class ManageAssetConfigurationCard extends StatelessWidget {
                                     width: 2.5, color: containercolor),
                                 borderRadius: BorderRadius.circular(5),
                                 shape: BoxShape.rectangle),
-                            child: Image.asset(Utils().getImageAssetConfiguration(
-                                
-                                 assetSetting
+                            child: Image.asset(Utils()
+                                .getImageAssetConfiguration(assetSetting
                                     ?.assetSettings?.assetIconKey))),
                         SizedBox(
                           width: 10,

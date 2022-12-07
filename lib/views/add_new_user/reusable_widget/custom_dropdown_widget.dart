@@ -46,7 +46,7 @@ class CustomDropDownWidget extends StatelessWidget {
         onChanged: istappable == null || istappable == true ? onChanged : null,
         hint: enableHint
             ? InsiteText(
-                text: "  Select",
+                text: "Select",
                 size: 14,
                 fontWeight: FontWeight.w700,
                 color: textColorChange
