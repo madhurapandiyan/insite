@@ -68,6 +68,7 @@ class PreferencesViewModel extends InsiteViewModel {
 
   PreferencesViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    _preferenceService!.setUp();
 
     getUserPreference();
   }
