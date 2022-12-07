@@ -52,7 +52,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
 
   List<MaintenanceList>? historyData = [];
 
-  String ?assetId;
+  String? assetId;
   bool dataNotFound = false;
 
   bool isToggled = true;
@@ -141,7 +141,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
     if (isVisionLink) {
       MaintenanceListService? result =
           await _maintenanceService?.getMaintenanceServiceList(
-       assetId,
+        assetId,
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         pageSize,
         pageNumber,
@@ -179,7 +179,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
               limit: pageSize,
               page: pageNumber,
               query: await graphqlSchemaService!.getMaintenanceListData(
-                  assetId:assetId,
+                  assetId: assetId,
                   startDate:
                       Utils.maintenanceFromDateFormate(maintenanceStartDate!),
                   endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),

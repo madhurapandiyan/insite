@@ -101,10 +101,10 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                           )
                         : InsiteButton(
                             title: Utils.getDateInFormatddMMyyyy(
-                                    viewModel.startDate) +
+                                    viewModel.maintenanceHistoryEndDate) +
                                 " - " +
                                 Utils.getDateInFormatddMMyyyy(
-                                    viewModel.endDate),
+                                    viewModel.maintenanceStartDate),
                             height: 36,
                             onTap: () async {
                               dateRange = [];
