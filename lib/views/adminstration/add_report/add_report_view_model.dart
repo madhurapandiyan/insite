@@ -74,7 +74,7 @@ class AddReportViewModel extends InsiteViewModel {
   ];
   // List<String> _choiseData = ["Assets"];
   //List<String> get choiseData => _choiseData;
-  String? assetSelectionValue;
+  String? assetSelectionValue="Assets";
 
   String? assetsDropDownValue = "Select";
 
