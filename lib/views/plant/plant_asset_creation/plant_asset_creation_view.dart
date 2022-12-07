@@ -78,19 +78,19 @@ class _PlantAssetCreationViewState extends State<PlantAssetCreationView> {
                         SizedBox(
                           width: 5,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 5.0),
-                          child: InsiteButton(
-                            title: "",
-                            icon: Icon(
-                              Icons.download,
-                              color: appbarcolor,
-                            ),
-                            onTap: () {
-                              viewModel.downloadAssetCreationData();
-                            },
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(right: 5.0),
+                        //   child: InsiteButton(
+                        //     title: "",
+                        //     icon: Icon(
+                        //       Icons.download,
+                        //       color: appbarcolor,
+                        //     ),
+                        //     onTap: () {
+                        //       viewModel.downloadAssetCreationData();
+                        //     },
+                        //   ),
+                        // ),
                       ],
                     )
                   ],
