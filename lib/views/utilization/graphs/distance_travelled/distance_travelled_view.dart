@@ -42,7 +42,7 @@ class DistanceTravelledViewState extends State<DistanceTravelledView> {
       builder: (BuildContext context, DistanceTravelledViewModel viewModel,
           Widget? _) {
         if (viewModel.update) {
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             widget.updateCount!(viewModel.utilLizationListData.length);
             viewModel.updateCountToFalse();
           });

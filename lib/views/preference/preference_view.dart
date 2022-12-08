@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+//import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/views/preference/preference_view_model.dart';
@@ -225,7 +225,7 @@ class _PreferencesViewState extends State<PreferencesView> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: InsiteText(
-                      text: "Units".tr() + " (" + "optional".tr() + ")",
+                      text: "Units" + " (" + "optional" + ")",
                       fontWeight: FontWeight.w700,
                       size: 15,
                     ),
