@@ -118,12 +118,28 @@ class SingleInfoView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        InsiteText(
-                            text: "Hours: ${assetLocation!.hourmeter} Hrs",
-                            size: 8.0),
-                        InsiteText(
-                            text: "Odometer: ${assetLocation!.odometer} Hrs",
-                            size: 8.0),
+                        Row(
+                          children: [
+                            InsiteText(
+                                text: "Hours:",
+                                fontWeight: FontWeight.w900,
+                                size: 10.0),
+                            InsiteText(
+                              text: "${assetLocation!.hourmeter} Hrs",
+                              size: 8.0,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            InsiteText(text: "Odometer:",  fontWeight: FontWeight.w900,
+                                size: 10.0),
+                            InsiteText(
+                              text: " ${assetLocation!.odometer} Hrs",
+                              size: 8.0,
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),

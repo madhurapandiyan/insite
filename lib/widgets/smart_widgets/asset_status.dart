@@ -99,6 +99,7 @@ class _AssetStatusState extends State<AssetStatus> {
                       Expanded(
                         flex: 1,
                         child: Container(
+                          padding: EdgeInsets.only(left: 6),
                           width: MediaQuery.of(context).size.width * 0.20,
                           height: MediaQuery.of(context).size.height * 0.20,
                           alignment: Alignment.center,

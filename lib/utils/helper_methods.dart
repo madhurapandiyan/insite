@@ -10,6 +10,7 @@ import 'package:insite/utils/enums.dart';
 import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
 import 'package:insite/views/adminstration/asset_settings_configure/model/configure_grid_view_model.dart';
 import 'package:insite/views/preference/model/time_zone.dart';
+import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -1231,6 +1232,7 @@ class Utils {
         //  }
         filterDetails =
             "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
+        
       }
       filterDetails!.trimLeft();
 
@@ -1314,6 +1316,17 @@ class Utils {
     } else {
       return "${alert?.operands?.first.condition} ${alert?.operands?.first.value}";
     }
+  }
+
+  static List?  getDeleteSmsData(List<DeleteSmsReport> smsData){
+   List<Map<String, dynamic>> newMap=[];
+   smsData.forEach((element) {
+     Map<String,dynamic>smsMap={
+      "id":element.ID
+     };
+     newMap.add(smsMap);
+    });
+    return newMap;
   }
 
   static List<String>? getReportColumn(String value) {
@@ -1533,6 +1546,21 @@ class Utils {
         "telematicsDeviceId"
       ];
       return list;
+    } else if (value == "Site Entry and Exit Report") {
+      list = [
+        "assetSerialNumber",
+        "makeCode",
+        "model",
+        "ReportedDateTime",
+        "geofenceName",
+        "EventType",
+        "Lat/Long",
+        "location",
+        "state",
+        "pincode",
+        "country",
+      ];
+      return list;
     }
     return null;
   }
@@ -1590,6 +1618,10 @@ class Utils {
       case "Maintenance History":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
+        return querUrl;
+      case "Site Entry and Exit Report":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
     }
   }
@@ -1649,6 +1681,10 @@ class Utils {
       case "Maintenance History":
         querUrl =
             "https://cloud.api.trimble.com/osg-in/maintenance-equipmentworks/1.0/maintenance/list?fromDate=&toDate=&history=true";
+        return querUrl;
+      case "Site Entry and Exit Report":
+        querUrl =
+            "https://cloud.api.trimble.com/osg-in/frame-geofence/1.0/AssetGeofence/EntryExitReport";
         return querUrl;
     }
   }
@@ -2118,7 +2154,7 @@ class Utils {
       "intervalID": mainInterval!.intervalId,
       "intervalDescription": mainInterval.intervalDescription!.isEmpty
           ? "\"" + "\""
-          : mainInterval.intervalDescription,
+          : mainInterval.description,
       "firstOccurrences": mainInterval.initialOccurence,
       "intervalName": mainInterval.intervalName
     };

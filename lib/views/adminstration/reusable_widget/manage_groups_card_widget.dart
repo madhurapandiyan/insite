@@ -36,23 +36,34 @@ class _ManageGroupCardWidgetState extends State<ManageGroupCardWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   // Padding(
-                  //   padding: const EdgeInsets.only(bottom: 20.0),
-                  //   child: Icon(Icons.arrow_drop_down, color: Colors.white),
+                  //   padding: const EdgeInsets.only(bottom: 18.0),
+                  //   child: Container(
+                  //       decoration: BoxDecoration(
+                  //           color: widget.groups!.isSelected!
+                  //               ? Theme.of(context).buttonColor
+                  //               : Theme.of(context).backgroundColor,
+                  //           borderRadius: BorderRadius.all(Radius.circular(4))),
+                  //       child: Icon(
+                  //         Icons.crop_square,
+                  //         color: widget.groups!.isSelected!
+                  //             ? Theme.of(context).buttonColor
+                  //             : Colors.black,
+                  //       )),
                   // ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 18.0),
                     child: Container(
-                        decoration: BoxDecoration(
-                            color: widget.groups!.isSelected!
-                                ? Theme.of(context).buttonColor
-                                : Theme.of(context).backgroundColor,
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
-                        child: Icon(
-                          Icons.crop_square,
-                          color: widget.groups!.isSelected!
-                              ? Theme.of(context).buttonColor
-                              : Colors.black,
-                        )),
+                      child: widget.groups!.isSelected!
+                          ? Icon(
+                              Icons.check_box_rounded,
+                              color: Theme.of(context).buttonColor,
+                            )
+                          : Icon(
+                              Icons.check_box_outline_blank,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color,
+                            ),
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {

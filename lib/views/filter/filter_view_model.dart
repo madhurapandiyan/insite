@@ -71,8 +71,8 @@ class FilterViewModel extends InsiteViewModel {
         screenType == ScreenType.UTILIZATION ||
         screenType == ScreenType.ASSET_OPERATION ||
         screenType == ScreenType.HEALTH ||
-        screenType == ScreenType.MAINTENANCE||
-        screenType==ScreenType.NOTIFICATIONS) {
+        screenType == ScreenType.MAINTENANCE ||
+        screenType == ScreenType.NOTIFICATIONS) {
       AssetCount? resultModel = await _assetService!.getAssetCount(
           "model",
           FilterType.MODEL,
@@ -384,7 +384,9 @@ class FilterViewModel extends InsiteViewModel {
     if (list.isEmpty) {
       clearFilterOfType(type);
     } else {
+      Logger().wtf("type");
       Logger().e(type);
+
       if (type == FilterType.FUEL_LEVEL) {
         updateFilter(list.first);
       } else {

@@ -22,7 +22,7 @@ class InsiteTitleCountRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InsiteText(
-                text: name,
+                text: name == "" ? "Undefined" : name,
                 fontWeight: FontWeight.w700,
                 size: 12.0,
               ),

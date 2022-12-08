@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model.dart';
@@ -14,7 +15,7 @@ class ShowingOldDeviceDetail extends StatelessWidget {
   final String? date;
   final Function? onBackPressed;
   final Function? onNextPressed;
-  final List<DeviceContainsList> searchList;
+  final List<dynamic> searchList;
   final Function(int)? onSelectedDeviceId;
   final Function(String)? onEnteringDeviceId;
   final TextEditingController? searchTextController;
@@ -71,12 +72,12 @@ class ShowingOldDeviceDetail extends StatelessWidget {
                       children: List.generate(
                           searchList.length,
                           (i) => SingleChildScrollView(
-                                child: DeviceIdListWidget(
-                                    onSelected: () {
-                                      onSelectedDeviceId!(i);
-                                      FocusScope.of(context).unfocus();
-                                    },
-                                    deviceId: searchList[i].containsList),
+                                child:  DeviceIdListWidget(
+                                        onSelected: () {
+                                          onSelectedDeviceId!(i);
+                                          FocusScope.of(context).unfocus();
+                                        },
+                                        deviceId: searchList[i].containsList),
                               )),
                     )),
             SizedBox(

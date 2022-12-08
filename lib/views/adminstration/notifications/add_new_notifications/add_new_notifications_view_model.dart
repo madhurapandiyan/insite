@@ -1200,18 +1200,24 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   addContact() {
-    if (emailController.text.contains("@")) {
-      isShowingSelectedContact = true;
-
-      selectedUser.add(User(
-        email: emailController.text,
-      ));
-      emailIds!.add(emailController.text);
+     if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
+      snackbarService!
+          .showSnackbar(message: "Recipient already added");
     } else {
-      snackbarService!.showSnackbar(message: "Please Enter the valid Email-id");
-    }
+      if (emailController.text.contains("@")) {
+        isShowingSelectedContact = true;
+        selectedUser.add(User(
+          email: emailController.text,
+        ));
+        emailIds!.add(emailController.text);
+        notifyListeners();
+      } else {
+        snackbarService!
+            .showSnackbar(message: "Please Enter the valid Email-Id");
+      }
 
-    notifyListeners();
+      notifyListeners();
+    }
   }
 
   onGettingFaultCodeData() async {

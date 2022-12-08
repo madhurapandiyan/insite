@@ -1019,7 +1019,19 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                           .color!,
                                     ),
                                     borderRadius: BorderRadius.circular(10)),
-                                child: CustomDropDownWidget(
+                                child:viewModel.isEditing?
+                                 Container(
+                                    width: 400,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InsiteText(
+                                        text: viewModel.assetSelectionValue,
+                                        size: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ): 
+                                CustomDropDownWidget(
                                   value: viewModel.assetSelectionValue,
                                   items: viewModel.choiseData,
                                   enableHint: true,
@@ -1142,7 +1154,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                               boxShadow: [
                                                 BoxShadow(
                                                     color: Colors.black,
-                                                    blurStyle: BlurStyle.outer,
+                                                    // blurStyle: BlurStyle.outer,
                                                     blurRadius: 0.5,
                                                     spreadRadius: 0.2)
                                               ]),
@@ -1174,7 +1186,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     height: 20,
                                   ),
                                   InsiteButton(
-                                    onTap: viewModel.addContact,
+                                     onTap: viewModel.addContact,
                                     fontSize: 16,
                                     height: 50,
                                     width: 200,

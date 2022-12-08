@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:insite/core/base/base_service.dart';
+
 import 'package:insite/core/models/estimated_asset_setting.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/maintenance_checkList.dart';
@@ -9,11 +11,12 @@ import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_intervals/add_intervals_view_model.dart';
 import 'package:insite/views/plant/plant_asset_creation/asset_creation_model.dart';
+import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:logger/logger.dart';
 
 import '../logger.dart';
+import '../models/add_asset_registration.dart';
 import '../models/add_notification_payload.dart';
-import '../models/asset_creation_payload.dart';
 
 class GraphqlSchemaService extends BaseService {
   GraphqlSchemaService._internal() {
@@ -293,6 +296,49 @@ query faultDataSummary{
  }
 """;
 
+getModelFleetList(){
+  var data="""{
+  frameSubscription {
+    plantDispatchSummary {
+      modelFleetList {
+        ModelCount
+        ModelName
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+}
+""";
+return data;
+}
+  getSubscriptionDashboardResult() {
+    var data = """query{
+  frameSubscription{
+    plantDispatchSummary {
+      activeSubscription
+      yetToBeActivated
+      totalDevicesSupplied
+      plantAssetCount
+      subscriptionEnded
+      assetActivationByDay
+      assetActivationByWeek
+      assetActivationByMonth
+      modelFleetList {
+        ModelCount
+        ModelName
+      }
+    }
+  }
+}
+
+
+
+""";
+    return data;
+  }
+
   getUserManagementRefine(String filter) {
     var data = """
 query{
@@ -304,6 +350,319 @@ query{
     }
   }
 }""";
+    return data;
+  }
+
+  getReplacementHistoryCount({int? start, int? limit, bool? count}) {
+    var data = """query{
+  replacementHistory(start:$start,limit:$limit,sortColumn:"",sortMethod:"", count:$count) {
+  count 
+__typename
+  }
+  }""";
+    return data;
+  }
+
+  getReplacementDetails({int? start, int? limit}) {
+    var data = """query{
+  replacementHistory(start:$start,limit:$limit) {
+    oldDeviceId
+    newDeviceId
+    reason
+    vin
+    insertUTC
+    emailID
+    firstName
+    lastName
+    state
+    description
+    __typename
+  }
+  }
+""";
+    return data;
+  }
+
+ 
+
+  register() {
+    var data = """ mutation deviceProvisionTransfer(\$id: Int!, \$gnacc: String!, \$request: AssetOperationInput!) {
+  assetOperation(id: \$id, gnacc: \$gnacc, request: \$request) {
+    code
+    status
+    requestID
+    __typename
+  }
+}
+
+""";
+Logger().wtf("data:$data");
+    return data;
+  }
+
+  getModelNameBySerialNumber(String? serialNumber) {
+    var data = """  query {
+ assetModelByMachineSerialNumber(machineSerialNumber:"$serialNumber") {
+   startsWith
+   startRange
+   endRange
+   groupClusterId
+   modelName
+ }
+ 
+}""";
+    return data;
+  }
+
+  getDeviceIdReplacement(String? text, String? status, int? limit) {
+    var data = """
+query  {
+  frameSubscription {
+    subscriptionFleetList(status:"$status", model: "", start: 0, limit: $limit, search: {
+      gpsDeviceID: "$text"
+    })
+    {
+      count
+      provisioningInfo {
+        vin
+        gpsDeviceID
+        model
+        subscriptionStartDate
+        __typename
+      }
+      __typename
+    }   __typename
+    }
+  }
+
+""";
+    return data;
+  }
+
+  getSubscriptionFleetData(int? start, int? limit) {
+    var data = """
+query {
+ fleetProvisionStatus(start:$start,limit:$limit) {
+  count, 
+  fleetProvisionStatusInfo {  
+    gpsDeviceID,     
+    vin,    
+    model,     
+    oemName,     
+    subscriptionStartDate,      
+    actualStartDate,     
+    subscriptionEndDate,      
+    productFamily,      
+    customerName,      
+    customerCode,      
+    dealerName,     
+    dealerCode,     
+    commissioningDate,     
+    secondaryIndustry,      
+    primaryIndustry,      
+    networkProvider,     
+    status,      
+    description,     
+    __typename    
+  }
+  }
+ }
+""";
+    return data;
+  }
+
+  getDeviceCodeAndName(
+      {int? start, int? limit, String? type, String? name, String? code}) {
+    var data = """
+query {
+assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",code:"$code") {
+  
+  name
+  userName
+  email
+  code
+} 
+ 
+
+ 
+}
+""";
+    return data;
+  }
+
+  getDetailResultData(String? status, int? start, int? limit, String? name) {
+    var data = """ 
+    query {
+        frameSubscription {
+        subscriptionFleetList(status: "$status", model: "", start: $start, limit: $limit, search: {gpsDeviceID: "$name"}) {
+      
+      provisioningInfo {
+        vin
+        gpsDeviceID
+        model
+       
+        subscriptionStartDate
+      
+      }
+     }
+    }
+    }
+
+""";
+
+    return data;
+  }
+
+  deleteSms(int? userId, List<DeleteSmsReport> reportId) {
+    var data = """mutation  {
+   deleteSMS(UserID: $userId, request: ${Utils.getDeleteSmsData(reportId)}) {
+     fieldCount
+     affectedRows
+     insertId
+     serverStatus
+     warningCount
+     message
+     protocol41
+     changedRows
+   }
+ }""";
+    return data;
+  }
+
+  getSmsReportSummary(int? start, int? limit) {
+    var data = """query {
+   getSMSSummaryReport(start: $start, limit: $limit) {
+     result
+{
+gpsDeviceId
+          id
+             language
+             name
+            number
+             serialNumber
+             startDate
+         }
+        count
+   }
+ 
+ }""";
+    return data;
+  }
+
+  getTransferHistoryCount({int? start, int? limit}) {
+    var data = """
+query{
+  deviceTransferCount(start:$start,limit:$limit){
+    count,
+    
+    
+  }
+}""";
+    return data;
+  }
+
+  getTranferHistory(int? start, int? limit) {
+    var data = """query{
+  deviceTransfer(start:$start,limit:$limit){
+    destinationCustomerType,
+    destinationName1,
+    destinationName2,
+    gpsDeviceID,
+    insertUTC,
+    oemName,
+    sourceCustomerType,
+    sourceName1,
+    sourceName2,
+    status,
+    fk_AssetId,
+    vin
+    __typename
+    
+  }
+}""";
+    return data;
+  }
+
+  getDeviceTransferDetails({String? searchKey, String? searchValue}) {
+    var data = """
+query{
+singleFleetDetails(searchKey:"$searchKey",
+    searchValue: "$searchValue",
+    oem: "VEhD") {
+  vin
+  gpsDeviceID
+  model
+  oemName
+  subscriptionStartDate
+  actualStartDate
+  subscriptionEndDate
+  productFamily
+  customerName
+  customerCode
+  dealerName
+  dealerCode
+  commissioningDate
+  secondaryIndustry
+  primaryIndustry
+  networkProvider
+  status
+  description
+}
+}
+ 
+""";
+    return data;
+  }
+
+  getDealerToDealerTransfer({String? searchValue}) {
+    var data = """query  {
+  dealerToDealerTransfer(oem:"THC", searchValue: "$searchValue") {
+    vin
+    gpsDeviceID
+    commissioningDate
+    customerDetails {
+      name
+      code
+      email
+      __typename
+    }
+    dealerDetails {
+      name
+      code
+      email
+      __typename
+    }
+    secondaryIndustry
+    primaryIndustry
+    __typename
+  }
+}
+""";
+    return data;
+  }
+
+  getDeviceIdTransfer(
+      {int? limit,
+      String? oem,
+      String? searchkey,
+      String? searchValue,
+      int? start,
+      String? userId}) {
+    String data = """
+query{
+  hierarchyFleetSearch(limit: $limit,
+oem: "$oem",
+searchKey: "$searchkey",
+searchValue: "$searchValue",
+start: $start,
+userUID: "$userId") {
+    vin
+    gpsDeviceID
+    __typename
+  }
+}
+ 
+""";
     return data;
   }
 
@@ -3301,7 +3660,8 @@ maintenanceIntervals(
       String? status,
       String? calendar,
       String? model}) {
-    var data = """query{
+    {
+      var data = """query{
     frameSubscription{
         subscriptionFleetList(
              limit:${limit != null ? limit : null},
@@ -3314,7 +3674,6 @@ maintenanceIntervals(
             count,
             provisioningInfo{
               gpsDeviceID,
-
               model,
               vin
               productFamily,
@@ -3324,16 +3683,50 @@ maintenanceIntervals(
               customerName,
               status,
               description,
-              networkProvider
-
-
+              networkProvider,
+              subscriptionStartDate,
+              actualStartDate,
+              subscriptionEndDate
+              
       }
-
-
             }
             }
         }""";
-    return data;
+      return data;
+    }
+
+    // String getPlantDashboardAndHierarchyCalendarListData(
+    //     {int? limit, int? start, String? status}) {
+    //   var data = """query{
+    //   frameSubscription{
+    //       subscriptionFleetList(
+    //           limit:$limit,
+    //           start:$start,
+    //           calendar:"$status"
+
+    //       ){
+    //           count,
+    //           provisioningInfo{
+    //             gpsDeviceID,
+
+    //             model,
+    //             vin
+    //             productFamily,
+    //             customerCode,
+    //             dealerName,
+    //             dealerCode,
+    //             customerName,
+    //             status,
+    //             description,
+    //             networkProvider
+
+    //     }
+
+    //           }
+    //           }
+    //       }""";
+    //   return data;
+    // }
   }
 
   // String getPlantDashboardAndHierarchyCalendarListData(
@@ -3556,6 +3949,16 @@ createAsset(
 mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
   deleteMetaDataNotes(userAssetNoteUid:\$userAssetNoteUid)
 }""";
+    return data;
+  }
+
+  singleAssetTransferIndustryData() {
+    var data = """query{
+    primarySecondaryIndustries{
+        primaryIndustry,
+        secondaryIndustries
+        }
+        }""";
     return data;
   }
 

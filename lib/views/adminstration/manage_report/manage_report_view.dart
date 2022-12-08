@@ -87,6 +87,7 @@ class ManageReportView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: CustomTextBox(
+                          
                           controller: viewModel.searchcontroller,
                           title: "Search Reports",
                           showLoading: viewModel.isSearching,

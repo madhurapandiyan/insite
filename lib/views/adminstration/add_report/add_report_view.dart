@@ -464,13 +464,26 @@ class _AddReportViewState extends State<AddReportView> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10.0),
-                            child: CustomDropDownWidget(
-                              items: viewModel.choiseData,
-                              value: viewModel.assetSelectionValue,
-                              onChanged: (String? value) {
-                                viewModel.updateModelValue(value!);
-                              },
-                            ),
+                            child: viewModel.isEditing
+                                ? Container(
+                                    width: 400,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: InsiteText(
+                                        text: viewModel.assetSelectionValue,
+                                        size: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  )
+                                : 
+                               CustomDropDownWidget(
+                                    items: viewModel.choiseData,
+                                    value: viewModel.assetSelectionValue,
+                                    onChanged: (String? value) {
+                                      viewModel.updateModelValue(value!);
+                                    },
+                                  ),
                           ),
                         ),
                         SizedBox(
@@ -681,7 +694,7 @@ class _AddReportViewState extends State<AddReportView> {
                                     boxShadow: [
                                       BoxShadow(
                                           color: Colors.black,
-                                          blurStyle: BlurStyle.outer,
+                                          //blurStyle: BlurStyle.outer,
                                           blurRadius: 0.5,
                                           spreadRadius: 0.2)
                                     ]),

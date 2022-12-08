@@ -390,7 +390,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
             calendarController.view != CalendarView.month)) {
       return;
     }
-    SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
+    SchedulerBinding.instance!.addPostFrameCallback((Duration timeStamp) {
       setState(() {
         _view = calendarController.view;
       });

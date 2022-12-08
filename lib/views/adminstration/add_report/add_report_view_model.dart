@@ -74,7 +74,7 @@ class AddReportViewModel extends InsiteViewModel {
   ];
   // List<String> _choiseData = ["Assets"];
   //List<String> get choiseData => _choiseData;
-  String? assetSelectionValue;
+  String? assetSelectionValue = "Assets";
 
   String? assetsDropDownValue = "Select";
 
@@ -213,6 +213,8 @@ class AddReportViewModel extends InsiteViewModel {
         assetsDropDownValue = templateTitleValue;
       } else if (templateTitleValue == "Maintenance History") {
         assetsDropDownValue = templateTitleValue;
+      } else if (templateTitleValue == "Site Entry and Exit Report") {
+        assetsDropDownValue = templateTitleValue;
       }
 
       reportFleetAssets!
@@ -279,6 +281,16 @@ class AddReportViewModel extends InsiteViewModel {
                 ) {
               reportFleetAssets!.add(assetItems.reportTypeName!);
             }
+          }
+        }
+      }
+
+      ///hotcode
+      for (var assetItems in result!.reports!) {
+        if (assetItems.sourceAppName == "UNIFIEDFLEET" &&
+            assetItems.defaultColumn != "") {
+          if (assetItems.reportName == "AssetGeofenceEntryExitReport") {
+            reportFleetAssets!.add("Site Entry and Exit Report");
           }
         }
       }
@@ -404,9 +416,14 @@ class AddReportViewModel extends InsiteViewModel {
         editQueryUrl = resultData.scheduledReport!.queryUrl;
         result?.reports?.forEach((element) {
           if (element.reportName == resultData.scheduledReport!.reportType) {
-            Logger().wtf(element.reportTypeName);
-            Logger().wtf(element.reportName);
-            assetsDropDownValue = element.reportTypeName;
+            if ("AssetGeofenceEntryExitReport" ==
+                resultData.scheduledReport!.reportType) {
+              assetsDropDownValue = "Site Entry and Exit Report";
+            } else {
+              Logger().wtf(element.reportTypeName);
+              Logger().wtf(element.reportName);
+              assetsDropDownValue = element.reportTypeName;
+            }
           }
         });
         Logger().wtf(resultData.scheduledReport?.assetFilterCategoryID);
@@ -516,7 +533,14 @@ class AddReportViewModel extends InsiteViewModel {
         } else {
           if (selectedAsset!.any((element) =>
               element.assetIdentifier == selectedData?.assetIdentifier)) {
-            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+            if (assetSelectionValue == "Groups") {
+              snackbarService!.showSnackbar(message: "Group Alerady Selected");
+            } else if (assetSelectionValue == "Geofences") {
+              snackbarService!
+                  .showSnackbar(message: "Geofences Alerady Selected");
+            } else {
+              snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+            }
           } else {
             assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
                 element.assetIdentifier == selectedData?.assetIdentifier);
@@ -526,7 +550,14 @@ class AddReportViewModel extends InsiteViewModel {
       } else {
         if (selectedAsset!.any((element) =>
             element.assetIdentifier == selectedData?.assetIdentifier)) {
-          snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+          if (assetSelectionValue == "Groups") {
+            snackbarService!.showSnackbar(message: "Group Alerady Selected");
+          } else if (assetSelectionValue == "Geofences") {
+            snackbarService!
+                .showSnackbar(message: "Geofences Alerady Selected");
+          } else {
+            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+          }
         } else {
           assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
               element.assetIdentifier == selectedData?.assetIdentifier);
@@ -675,8 +706,8 @@ class AddReportViewModel extends InsiteViewModel {
       } else {
         assetIdresult = await _manageUserService!.getGroupListData(false);
         isAssetLoading = false;
-        Logger().wtf(assetIdresult?.assetDetailsRecords!.toList());
-        Logger().wtf('ELSEEEEEEEEEEEEEEEE');
+        // Logger().wtf(assetIdresult?.assetDetailsRecords!.toList());
+        // Logger().wtf('ELSEEEEEEEEEEEEEEEE');
       }
       notifyListeners();
     } catch (e) {
@@ -713,25 +744,24 @@ class AddReportViewModel extends InsiteViewModel {
   List<String>? emailIds = [];
 
   addContact() {
-    Logger().w(emailController.text);
-    emailIds!.forEach((element) {
-      if (selectedUser.any((emailIds) => emailIds.email == element)) {
-        selectedUser.clear();
-        snackbarService!
-            .showSnackbar(message: "Not to add Email Report Recipients");
-      }
-    });
-    if (emailController.text.contains("@")) {
-      isShowingSelectedContact = true;
-      selectedUser.add(User(
-        email: emailController.text,
-      ));
-      emailIds!.add(emailController.text);
+    if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
+      snackbarService!
+          .showSnackbar(message: "Recipient already added");
     } else {
-      snackbarService!.showSnackbar(message: "Please Enter the valid Email-Id");
-    }
+      if (emailController.text.contains("@")) {
+        isShowingSelectedContact = true;
+        selectedUser.add(User(
+          email: emailController.text,
+        ));
+        emailIds!.add(emailController.text);
+        notifyListeners();
+      } else {
+        snackbarService!
+            .showSnackbar(message: "Please Enter the valid Email-Id");
+      }
 
-    notifyListeners();
+      notifyListeners();
+    }
   }
 
   addPayload() {
@@ -744,6 +774,8 @@ class AddReportViewModel extends InsiteViewModel {
     result?.reports?.forEach((element) {
       if (element.reportTypeName == assetsDropDownValue) {
         reportType = element.reportName!;
+      } else if (assetsDropDownValue == "Site Entry and Exit Report") {
+        reportType = "AssetGeofenceEntryExitReport";
       }
     });
     Logger().wtf(assetsDropDownValue);

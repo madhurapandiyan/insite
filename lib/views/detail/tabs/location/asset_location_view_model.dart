@@ -377,15 +377,26 @@ class AssetLocationViewModel extends InsiteViewModel {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  InsiteText(
-                                      text: "Source :",
-                                      fontWeight: FontWeight.w900,
-                                      size: 10.0),
-                                  InsiteText(
-                                      text: assetLocation.source != null
-                                          ? assetLocation.source
+                                  Text(
+                                       "Source :",
+                                       style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontFamily: 'Roboto',
+                                        color: textcolor,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 10.0)),
+                                  Text(
+                                      assetLocation.source != null
+                                          ? assetLocation.source!
                                           : "",
-                                      size: 8.0),
+                                            style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontFamily: 'Roboto',
+                                        color: textcolor,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 8.0,
+                                            )
+                                      ),
                                 ],
                               ),
                             ),
