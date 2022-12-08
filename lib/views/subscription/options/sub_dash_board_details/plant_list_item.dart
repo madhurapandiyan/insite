@@ -50,12 +50,12 @@ class PlantListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Plant Name : ",
                         content:
-                            detailResult!.Name != null ? detailResult!.Name : "",
+                            detailResult!.name != null ? detailResult!.name : "",
                       ),
                       InsiteTableRowItem(
                         title: "User Name : ",
-                        content: detailResult!.UserName != null
-                            ? detailResult!.UserName
+                        content: detailResult!.userName != null
+                            ? detailResult!.userName
                             : "",
                       ),
                     ],
@@ -65,12 +65,12 @@ class PlantListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Plant Code : ",
                         content:
-                            detailResult!.Code != null ? detailResult!.Code : "",
+                            detailResult!.code != null ? detailResult!.code : "",
                       ),
                       InsiteTableRowItem(
                         title: "Plant Email Id : ",
-                        content: detailResult!.Email != null
-                            ? detailResult!.Email
+                        content: detailResult!.email != null
+                            ? detailResult!.email
                             : "",
                       ),
                     ],

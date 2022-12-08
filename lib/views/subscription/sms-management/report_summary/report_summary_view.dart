@@ -40,7 +40,7 @@ class ReportSummaryView extends StatelessWidget {
                             
                             fontWeight: FontWeight.bold,
                             text:
-                                "REPORT SUMMARY FOR SMS ( ${viewModel.modelDataList.length} of ${viewModel.smsReportSummaryModel!.result!.first.first.count} )",
+                                "REPORT SUMMARY FOR SMS ( ${viewModel.modelDataList.length} of ${viewModel.totalCount} )",
                           ),
                               viewModel.showDeleteButton
                                   ? InsiteButton(
@@ -93,16 +93,16 @@ class ReportSummaryView extends StatelessWidget {
                                       isSelected:
                                           viewModel.modelDataList[i].isSelected,
                                       date:
-                                          viewModel.modelDataList[i].StartDate,
+                                          viewModel.modelDataList[i].startDate,
                                       deviceId: viewModel
-                                          .modelDataList[i].GPSDeviceID,
+                                          .modelDataList[i].gpsDeviceId,
                                       language:
-                                          viewModel.modelDataList[i].Language,
+                                          viewModel.modelDataList[i].language,
                                       mobileNo:
-                                          viewModel.modelDataList[i].Number,
-                                      name: viewModel.modelDataList[i].Name,
+                                          viewModel.modelDataList[i].number,
+                                      name: viewModel.modelDataList[i].name,
                                       serialNo: viewModel
-                                          .modelDataList[i].SerialNumber,
+                                          .modelDataList[i].serialNumber,
                                     )),
                         ),
                         viewModel.isLoadMore ? InsiteProgressBar() : SizedBox()

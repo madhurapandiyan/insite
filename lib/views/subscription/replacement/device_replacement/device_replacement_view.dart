@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_widget.dart/old_deviceId_search_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
@@ -96,7 +97,8 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                       : viewModel.changingIndex == 3
                                           ? MediaQuery.of(context).size.width *
                                               0.6
-                                          : MediaQuery.of(context).size.width * 1,
+                                          : MediaQuery.of(context).size.width *
+                                              1,
                           height: MediaQuery.of(context).size.height * 0.02,
                           //   Container(
                           //     //   width: MediaQuery.of(context).size.width * 0.4,
@@ -115,7 +117,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                       height: viewModel.changingIndex == 0
                           ? MediaQuery.of(context).size.height * 0.25
                           : MediaQuery.of(context).size.height * 0.55,
-          //: MediaQuery.of(context).size.height * 0.55,
+                      //: MediaQuery.of(context).size.height * 0.55,
                       child: PageView(
                         physics: NeverScrollableScrollPhysics(),
                         onPageChanged: (int) {
@@ -134,7 +136,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                   viewModel.onSearchingDeviceId().then((value) {
                                     Logger().w(value);
                                     if (value == true) {
-                                     controller.jumpToPage(1);
+                                      controller.jumpToPage(1);
                                     } else {}
                                   });
                                 }
@@ -156,8 +158,8 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                               ? Card(
                                   child: ShowingOldDeviceDetail(
                                     onSearching: () {
-                                      if (viewModel
-                                              .searchTextController.text.length <
+                                      if (viewModel.searchTextController.text
+                                              .length <
                                           4) {
                                         Fluttertoast.showToast(
                                             msg: "Enter valid Device Id");
@@ -191,10 +193,14 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                         .deviceSearchModelResponse!.result!.VIN,
                                     date: viewModel.deviceSearchModelResponse!
                                         .result!.S_StartDate,
-                                    deviceId: viewModel.deviceSearchModelResponse!
-                                        .result!.GPSDeviceID,
+                                    deviceId: viewModel
+                                        .deviceSearchModelResponse!
+                                        .result!
+                                        .GPSDeviceID,
                                     modelName: viewModel
-                                        .deviceSearchModelResponse!.result!.Model,
+                                        .deviceSearchModelResponse!
+                                        .result!
+                                        .Model,
                                   ),
                                 )
                               : SizedBox(),
@@ -205,13 +211,15 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                     child: GettingNewDeviceId(
                                       onBackPressed: () {
                                         controller.animateToPage(1,
-                                            duration: Duration(milliseconds: 500),
+                                            duration:
+                                                Duration(milliseconds: 500),
                                             curve: Curves.easeInOut);
                                       },
                                       onNextPressed: () {
                                         viewModel.onBackPressed();
                                         controller.animateToPage(3,
-                                            duration: Duration(milliseconds: 500),
+                                            duration:
+                                                Duration(milliseconds: 500),
                                             curve: Curves.easeInOut);
                                       },
                                       onSelectingNewDeviceId: (value) {
@@ -219,11 +227,13 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                       },
                                       controller:
                                           viewModel.replaceDeviceIdController,
-                                      modelData: viewModel.replaceDeviceModelData,
+                                      modelData:
+                                          viewModel.replaceDeviceModelData,
                                       showingDeviceId:
                                           viewModel.checkingNewDeviceIdEnter,
                                       onChange: (value) {
-                                        viewModel.onGettingReplaceDeviceId(value);
+                                        viewModel
+                                            .onGettingReplaceDeviceId(value);
                                       },
                                       onDropDownValueChange: (value) {
                                         viewModel.onDropDownChanged(value);
@@ -252,7 +262,8 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                       onBackPressed: () {
                                         viewModel.onBackPressed();
                                         controller.animateToPage(2,
-                                            duration: Duration(milliseconds: 500),
+                                            duration:
+                                                Duration(milliseconds: 500),
                                             curve: Curves.easeInOut);
                                       },
                                       onReplacing: () {
@@ -284,18 +295,19 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                                           height: 40,
                                                           title: "Yes",
                                                           onTap: () async {
+                                                            //toDo
                                                             viewModel
                                                                 .onRegister()
                                                                 .then((value) {
-                                                                   viewModel.onReplacementSuccessful();
+                                                              viewModel
+                                                                  .onReplacementSuccessful();
                                                               if (value ==
                                                                   "success") {
                                                                 Navigator.of(
                                                                         context)
                                                                     .pop();
-          
-                                                                controller.animateToPage(
-                                                                    0,
+
+                                                                controller.animateToPage(0,
                                                                     duration: Duration(
                                                                         milliseconds:
                                                                             500),
@@ -323,7 +335,9 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                           .result!
                                           .Model,
                                       machineSerialNo: viewModel
-                                          .deviceSearchModelResponse!.result!.VIN,
+                                          .deviceSearchModelResponse!
+                                          .result!
+                                          .VIN,
                                       startDate: viewModel
                                           .deviceSearchModelResponse!
                                           .result!

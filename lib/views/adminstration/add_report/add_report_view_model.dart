@@ -533,7 +533,14 @@ class AddReportViewModel extends InsiteViewModel {
         } else {
           if (selectedAsset!.any((element) =>
               element.assetIdentifier == selectedData?.assetIdentifier)) {
-            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+            if (assetSelectionValue == "Groups") {
+              snackbarService!.showSnackbar(message: "Group Alerady Selected");
+            } else if (assetSelectionValue == "Geofences") {
+              snackbarService!
+                  .showSnackbar(message: "Geofences Alerady Selected");
+            } else {
+              snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+            }
           } else {
             assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
                 element.assetIdentifier == selectedData?.assetIdentifier);

@@ -4,6 +4,7 @@ import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_expansion_tile.dart';
+import 'package:logger/logger.dart';
 
 class AssetListItem extends StatelessWidget {
   final DetailResult? detailResult;
@@ -13,6 +14,7 @@ class AssetListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -50,13 +52,13 @@ class AssetListItem extends StatelessWidget {
                   TableRow(
                     children: [
                       InsiteTableRowItemWithImage(
-                        title: detailResult!.GPSDeviceID != null
-                            ? "Device ID : " + "\n" + detailResult!.GPSDeviceID!
+                        title: detailResult!.gpsDeviceId != null
+                            ? "Device ID : " + "\n" + detailResult!.gpsDeviceId!
                             : "Device ID : " + "\n",
-                        path: detailResult == null || detailResult!.Model == null
+                        path: detailResult == null || detailResult!.model == null
                             ? "assets/images/EX210.png"
-                            : detailResult!.Model != null
-                                ? Utils().imageData(detailResult!.Model!)
+                            : detailResult!.model != null
+                                ? Utils().imageData(detailResult!.model!)
                                 : "",
                       ),
                       // Table(
@@ -69,8 +71,8 @@ class AssetListItem extends StatelessWidget {
                       // ),
                       InsiteTableRowItem(
                         title: "Model :",
-                        content: detailResult!.Model != null
-                            ? detailResult!.Model
+                        content: detailResult!.model != null
+                            ? detailResult!.model
                             : "",
                       ),
                       // ],
@@ -84,15 +86,15 @@ class AssetListItem extends StatelessWidget {
                       InsiteRichText(
                         title: "Serial No. ",
                         content:
-                            detailResult!.VIN != null ? detailResult!.VIN : "",
+                            detailResult!.vin!= null ? detailResult!.vin : "",
                         onTap: () {
                           onCallback!();
                         },
                       ),
                       InsiteTableRowItem(
                         title: "Product Family :",
-                        content: detailResult!.ProductFamily != null
-                            ? detailResult!.ProductFamily
+                        content: detailResult!.productFamily != null
+                            ? detailResult!.productFamily
                             : "",
                       ),
                     ],
@@ -107,16 +109,16 @@ class AssetListItem extends StatelessWidget {
                       children: [
                         InsiteTableRowItem(
                           title: "Subscription Start Date :",
-                          content: detailResult!.SubscriptionStartDate != null
+                          content: detailResult!.subscriptionStartDate != null
                               ? Utils.getDateInFormatddMMyyyy(
-                                  detailResult!.SubscriptionStartDate)
+                                  detailResult!.subscriptionStartDate)
                               : "",
                         ),
                         InsiteTableRowItem(
                           title: "Subscription End Date :",
-                          content: detailResult!.SubscriptionStartDate != null
+                          content: detailResult!.subscriptionStartDate != null
                               ? Utils.getDateInFormatddMMyyyy(
-                                  detailResult!.SubscriptionEndDate)
+                                  detailResult!.subscriptionEndDate)
                               : "",
                         ),
                       ],
@@ -129,9 +131,9 @@ class AssetListItem extends StatelessWidget {
                     TableRow(children: [
                       InsiteTableRowItem(
                         title: "Actual Start Date :",
-                        content: detailResult!.SubscriptionStartDate != null
+                        content: detailResult!.subscriptionStartDate != null
                             ? Utils.getDateInFormatddMMyyyy(
-                                detailResult!.ActualStartDate)
+                                detailResult!.actualStartDate)
                             : "",
                       ),
                     ])

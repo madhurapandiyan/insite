@@ -6,6 +6,7 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'package:insite/widgets/smart_widgets/insite_scaffold.dart';
 import 'package:insite/widgets/smart_widgets/reusable_container_large.dart';
 import 'package:insite/widgets/smart_widgets/insite_title_count_row.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'subscription_dashboard_view_model.dart';
 
@@ -108,13 +109,17 @@ class _SubscriptionDashboardViewState extends State<SubscriptionDashboardView> {
                                     itemBuilder: (context, index) {
                                       return InsiteTitleCountRow(
                                         name: viewModel.modelNames[index],
-                                        count: viewModel.modelCount[index]!
-                                            .toStringAsFixed(0),
+                                        count:
+                                            viewModel.modelCount[index] == " "
+                                                ? " "
+                                                : viewModel.modelCount[index]!
+                                                    .toStringAsFixed(0),
                                         filter: viewModel.modelNames[index] ==
                                                 "Not Mapped"
                                             ? ""
                                             : viewModel.modelNames[index],
                                         onClicked: () {
+                                          Logger().w(viewModel.modelNames[index]);
                                           viewModel.gotoModelsPage(viewModel
                                                       .modelNames[index] ==
                                                   "Not Mapped"

@@ -92,3 +92,130 @@ Map<String, dynamic> _$AssetTransferToJson(AssetTransfer instance) =>
       'UserID': instance.UserID,
       'transfer': instance.transfer,
     };
+
+AssetOperation _$AssetOperationFromJson(Map<String, dynamic> json) =>
+    AssetOperation(
+      code: json['code'] as String?,
+      status: json['status'] as String?,
+      requestId: json['requestID'] as String?,
+      typename: json['__typename'] as String?,
+    );
+
+Map<String, dynamic> _$AssetOperationToJson(AssetOperation instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'status': instance.status,
+      'requestID': instance.requestId,
+      '__typename': instance.typename,
+    };
+
+AssetOperationInput _$AssetOperationInputFromJson(Map<String, dynamic> json) =>
+    AssetOperationInput(
+      source: json['source'] as String?,
+      userId: json['userID'] as int?,
+      version: json['version'] as String?,
+      asset: (json['asset'] as List<dynamic>?)
+          ?.map((e) => Asset.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$AssetOperationInputToJson(AssetOperationInput instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('source', instance.source);
+  writeNotNull('userID', instance.userId);
+  writeNotNull('version', instance.version);
+  writeNotNull('asset', instance.asset?.map((e) => e.toJson()).toList());
+  return val;
+}
+
+TranferAssetOperationInput _$TranferAssetOperationInputFromJson(
+        Map<String, dynamic> json) =>
+    TranferAssetOperationInput(
+      source: json['source'] as String?,
+      userId: json['userID'] as int?,
+      version: json['version'] as String?,
+      transfer: (json['transfer'] as List<dynamic>?)
+          ?.map((e) => Asset.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$TranferAssetOperationInputToJson(
+    TranferAssetOperationInput instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('source', instance.source);
+  writeNotNull('userID', instance.userId);
+  writeNotNull('version', instance.version);
+  writeNotNull('transfer', instance.transfer?.map((e) => e.toJson()).toList());
+  return val;
+}
+
+Asset _$AssetFromJson(Map<String, dynamic> json) => Asset(
+      deviceId: json['deviceId'] as String?,
+      machineModel: json['machineModel'] as String?,
+      hmr: json['hmr'] as int?,
+      hmrDate: json['hmrDate'] as String?,
+      primaryIndustry: json['primaryIndustry'] as String?,
+      secondaryIndustry: json['secondaryIndustry'] as String?,
+      machineSlNo: json['machineSlNo'] as String?,
+      commissioningDate: json['commissioningDate'] as String?,
+      plantName: json['plantName'] as String?,
+      plantCode: json['plantCode'] as String?,
+      plantEmailId: json['plantEmailID'] as String?,
+      dealerName: json['dealerName'] as String?,
+      dealerCode: json['dealerCode'] as String?,
+      dealerEmailId: json['dealerEmailID'] as String?,
+      customerName: json['customerName'] as String?,
+      customerCode: json['customerCode'] as String?,
+      customerEmailId: json['customerEmailID'] as String?,
+      customerLanguage: json['customerLanguage'] as String?,
+      customerMobile: json['customerMobile'] as String?,
+      dealerLanguage: json['dealerLanguage'] as String?,
+      dealerMobile: json['dealerMobile'] as String?,
+    );
+
+Map<String, dynamic> _$AssetToJson(Asset instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('customerMobile', instance.customerMobile);
+  writeNotNull('customerLanguage', instance.customerLanguage);
+  writeNotNull('dealerMobile', instance.dealerMobile);
+  writeNotNull('dealerLanguage', instance.dealerLanguage);
+  writeNotNull('deviceId', instance.deviceId);
+  writeNotNull('machineModel', instance.machineModel);
+  writeNotNull('hmr', instance.hmr);
+  writeNotNull('hmrDate', instance.hmrDate);
+  writeNotNull('primaryIndustry', instance.primaryIndustry);
+  writeNotNull('secondaryIndustry', instance.secondaryIndustry);
+  writeNotNull('machineSlNo', instance.machineSlNo);
+  writeNotNull('commissioningDate', instance.commissioningDate);
+  writeNotNull('plantName', instance.plantName);
+  writeNotNull('plantCode', instance.plantCode);
+  writeNotNull('plantEmailID', instance.plantEmailId);
+  writeNotNull('dealerName', instance.dealerName);
+  writeNotNull('dealerCode', instance.dealerCode);
+  writeNotNull('dealerEmailID', instance.dealerEmailId);
+  writeNotNull('customerName', instance.customerName);
+  writeNotNull('customerCode', instance.customerCode);
+  writeNotNull('customerEmailID', instance.customerEmailId);
+  return val;
+}

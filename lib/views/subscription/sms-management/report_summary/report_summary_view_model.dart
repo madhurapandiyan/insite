@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/sms_management_service.dart';
 import 'package:insite/views/subscription/sms-management/model/delete_sms_management_schedule.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_reportSummary_responce_model.dart';
@@ -20,7 +21,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   final SmsManagementService? _smsScheduleService =
       locator<SmsManagementService>();
-
+  LocalService? _localService = locator<LocalService>();
   ReportSummaryViewModel() {
     this.log = getLogger(this.runtimeType.toString());
 
@@ -51,6 +52,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   int startLimit = 0;
   int? endLimit;
+  int totalCount = 0;
 
   int startCount = 0;
   final controller = new ScrollController();
@@ -59,27 +61,71 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   getReportSummaryData() async {
     try {
-      _smsReportSummaryModel =
-          await _smsScheduleService!.getsmsReportSummaryModel(startCount);
-      for (var i = 0; i < _smsReportSummaryModel!.result!.length; i++) {
-        if (i == 0) {
-          isLoading = false;
-          notifyListeners();
-        } else {
-          _smsReportSummaryModel!.result![1].forEach((element) {
-            modelDataList.add(element);
-          });
-          for (var i = 0; i < modelDataList.length; i++) {
-          //  modelDataList.sort((a, b) => b.StartDate!.compareTo(a.StartDate!));
-            modelDataList[i].isSelected = false;
+      if (enableGraphQl) {
+        int start = 1;
+        int limit = 100;
+        SmsReportSummaryModel? smsSummaryModel = await _smsScheduleService!
+            .getsmsReportSummaryModel(
+                0, graphqlSchemaService!.getSmsReportSummary(start, limit));
+
+        if (smsSummaryModel != null) {
+          totalCount = int.parse(smsSummaryModel.getSMSSummaryReport!.count!);
+          Logger().wtf("totalCount:$totalCount");
+          if (smsSummaryModel.getSMSSummaryReport != null) {
+            if (smsSummaryModel.getSMSSummaryReport!.result != null) {
+              for (var element
+                  in smsSummaryModel.getSMSSummaryReport!.result!) {
+                modelDataList.add(ReportSummaryModel(
+                    id: element.id,
+                    gpsDeviceId: element.gpsDeviceId,
+                    serialNumber: element.serialNumber,
+                    name: element.name,
+                    number: element.number,
+                    startDate: element.startDate,
+                    language: element.language));
+              }
+              isLoading = false;
+              isLoadMore = false;
+              notifyListeners();
+            } else {
+              isLoading = false;
+              isLoadMore = false;
+              notifyListeners();
+            }
+          } else {
+            isLoading = false;
+            isLoadMore = false;
+            notifyListeners();
           }
+        } else {
           isLoading = false;
           isLoadMore = false;
           notifyListeners();
         }
+      } else {
+        _smsReportSummaryModel =
+            await _smsScheduleService!.getsmsReportSummaryModel(startCount, "");
+        totalCount = smsReportSummaryModel!.result!.first.first.count!;
+        Logger().wtf("totalCount:$totalCount");
+        for (var i = 0; i < _smsReportSummaryModel!.result!.length; i++) {
+          if (i == 0) {
+            isLoading = false;
+            notifyListeners();
+          } else {
+            _smsReportSummaryModel!.result![1].forEach((element) {
+              modelDataList.add(element);
+            });
+            for (var i = 0; i < modelDataList.length; i++) {
+              modelDataList[i].isSelected = false;
+            }
+            isLoading = false;
+            isLoadMore = false;
+            notifyListeners();
+          }
+        }
+        isLoading = false;
+        notifyListeners();
       }
-      isLoading = false;
-      notifyListeners();
     } catch (e) {
       isLoading = false;
       Logger().e(e.toString());
@@ -91,9 +137,9 @@ class ReportSummaryViewModel extends InsiteViewModel {
     try {
       modelDataList[i].isSelected = !modelDataList[i].isSelected!;
       if (modelDataList[i].isSelected!) {
-        selectedId.add(modelDataList[i].ID);
+        selectedId.add(modelDataList[i].id);
       } else if (modelDataList[i].isSelected == false) {
-        selectedId.remove(modelDataList[i].ID);
+        selectedId.remove(modelDataList[i].id);
       }
       Logger().wtf(selectedId);
       setBool();
@@ -118,18 +164,26 @@ class ReportSummaryViewModel extends InsiteViewModel {
 
   onDeletingSmsSchedule() async {
     try {
+      var userId = await _localService!.getUserId();
+      var id = int.parse(userId as String);
+      //List deleteSms = [];
       DeleteSmsReport deleteData;
       selectedId.forEach((id) {
         deleteData = DeleteSmsReport(ID: id);
+
+        // var deleteSMSRequest={"id":id};
+        // deleteSms.add(deleteSMSRequest);
+
+        Logger().w(deleteData.ID);
+
         deleteSmsReport.add(deleteData);
         var deletingData =
-            modelDataList.singleWhere((element) => element.ID == id);
+            modelDataList.singleWhere((element) => element.id == id);
         modelDataList.remove(deletingData);
-        // selectedId.remove(id);
         notifyListeners();
       });
-      var data =
-          await _smsScheduleService!.deleteSmsScheduleReport(deleteSmsReport);
+      var data = await _smsScheduleService!
+          .deleteSmsScheduleReport(deleteSmsReport, id);
       Logger().w(selectedId.length);
       selectedId.clear();
       deleteSmsReport.clear();
@@ -184,15 +238,15 @@ class ReportSummaryViewModel extends InsiteViewModel {
         }
         int index = i + 1;
         sheetObj.updateCell(
-            CellIndex.indexByString("A$index"), data[i].GPSDeviceID);
+            CellIndex.indexByString("A$index"), data[i].gpsDeviceId);
         sheetObj.updateCell(
-            CellIndex.indexByString("B$index"), data[i].SerialNumber);
-        sheetObj.updateCell(CellIndex.indexByString("C$index"), data[i].Name);
-        sheetObj.updateCell(CellIndex.indexByString("D$index"), data[i].Number);
+            CellIndex.indexByString("B$index"), data[i].serialNumber);
+        sheetObj.updateCell(CellIndex.indexByString("C$index"), data[i].name);
+        sheetObj.updateCell(CellIndex.indexByString("D$index"), data[i].number);
         sheetObj.updateCell(
-            CellIndex.indexByString("E$index"), data[i].Language);
+            CellIndex.indexByString("E$index"), data[i].language);
         sheetObj.updateCell(
-            CellIndex.indexByString("F$index"), data[i].StartDate);
+            CellIndex.indexByString("F$index"), data[i].startDate);
       }
       Logger().e("excel sheet update");
       return excelSheet;
