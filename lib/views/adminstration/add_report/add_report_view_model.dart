@@ -746,7 +746,7 @@ class AddReportViewModel extends InsiteViewModel {
   addContact() {
     if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
       snackbarService!
-          .showSnackbar(message: "Not to add Email Report Recipients");
+          .showSnackbar(message: "Recipient already added");
     } else {
       if (emailController.text.contains("@")) {
         isShowingSelectedContact = true;
