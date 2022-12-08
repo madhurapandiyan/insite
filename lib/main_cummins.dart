@@ -31,7 +31,7 @@ void main() async {
       productFlavor: "cummins",
       enableLogin: true,
       isProd: false,
-      enableGraphql: false,
+      enableGraphql: true,
       enalbeNativeLogin: false,
       apiFlavor: "indiastack");
   await LocatorInjector.setUpLocator();
