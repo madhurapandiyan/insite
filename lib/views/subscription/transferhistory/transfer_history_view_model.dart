@@ -27,11 +27,10 @@ class TransferHistoryViewModel extends InsiteViewModel {
 
   int start = 0;
   int limit = 50;
+  int totalCount = 0;
 
   List<DetailResult> _devices = [];
   List<DetailResult> get devices => _devices;
-
-  SubscriptionDashboardDetailResult?  subscriptionDashboardDetailResultresult;
 
   TransferHistoryViewModel() {
     this.log = getLogger(this.runtimeType.toString());
@@ -49,29 +48,80 @@ class TransferHistoryViewModel extends InsiteViewModel {
   }
 
   getTransferHistoryViewData() async {
-    Logger().i("getTransferHistoryViewData");
-    subscriptionDashboardDetailResultresult =
-        await _subscriptionService!.getTransferHistoryViewData(
-      start: start == 0 ? start : start + 1,
-      limit: limit,
-    );
-    if (subscriptionDashboardDetailResultresult != null) {
-      if (subscriptionDashboardDetailResultresult!.result!.isNotEmpty) {
-        start = start + limit;
-        devices.addAll(subscriptionDashboardDetailResultresult!.result![0]);
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
+    int startCount = 1;
+    int endLimit = 100;
+    if (enableGraphQl) {
+       SubscriptionDashboardDetailResult? tranferCount = await _subscriptionService!
+          .getTransferHistoryViewData(start: 0,limit: 0,query:graphqlSchemaService!.getTransferHistoryCount(start:0,limit: 1));
+              if(tranferCount!=null){
+             totalCount = int.parse(tranferCount.deviceTransferCount!.count as String);
+        Logger().wtf("totalCount:$totalCount");
+              }
+      SubscriptionDashboardDetailResult? transferHistory = await _subscriptionService!
+          .getTransferHistoryViewData(start: 0,limit: 0,query:graphqlSchemaService!.getTranferHistory(startCount, endLimit));
+
+      if (transferHistory != null) {
+      
+        if (transferHistory.deviceTransfer!= null) {
+          for (DeviceTransfer element in transferHistory.deviceTransfer!) {
+            devices.add(DetailResult(
+              gpsDeviceId: element.gpsDeviceId,
+              oemName: element.oemName,
+              status: element.status,
+              destinationCustomerType: element.destinationCustomerType,
+              destinationName1: element.destinationName1,
+              destinationName2: element.destinationName2,
+              sourceCustomerType: element.sourceCustomerType,
+              fkAssetId: element.fkAssetId,
+              insertUtc: element.insertUtc,
+              sourceName1: element.sourceName1,
+              sourceName2: element.sourceName2,
+              vin: element.vin,
+            ));
+          }
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        }
       } else {
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
-      Logger().i("getTransferHistoryViewData length ${devices.length}");
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
+    } else {
+      Logger().i("getTransferHistoryViewData");
+      SubscriptionDashboardDetailResult?
+          subscriptionDashboardDetailResultresult =
+          await _subscriptionService!.getTransferHistoryViewData(
+        start: start == 0 ? start : start + 1,
+        limit: limit,query:"" 
+      );
+
+      if (subscriptionDashboardDetailResultresult != null) {
+        totalCount =
+            subscriptionDashboardDetailResultresult.result!.last.last.count!;
+
+        Logger().wtf("totalCount:$totalCount");
+        if (subscriptionDashboardDetailResultresult.result!.isNotEmpty) {
+          start = start + limit;
+          devices.addAll(subscriptionDashboardDetailResultresult.result![0]);
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
+         _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      }
     }
   }
 

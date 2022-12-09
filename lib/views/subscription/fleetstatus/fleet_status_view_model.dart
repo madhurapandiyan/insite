@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
+import 'package:insite/core/models/subscription_fleet_graphql.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:logger/logger.dart';
 
 class FleetStatusViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
-  
+
   SubScriptionService? _subscriptionService = locator<SubScriptionService>();
 
   bool _showDownload = false;
@@ -42,6 +44,7 @@ class FleetStatusViewModel extends InsiteViewModel {
   }
   late Logger log;
   SubscriptionDashboardDetailResult? subscriptionDashboardDetailResult;
+  SubscriptionFleetGraph? fleetProvisionStatus;
 
   _loadMore() {
     log.i("shouldLoadmore and is already loadingMore " +
@@ -57,17 +60,18 @@ class FleetStatusViewModel extends InsiteViewModel {
   }
 
   getFleetStatusData() async {
-    Logger().i("getFleetStatusData");
-    subscriptionDashboardDetailResult =
-        await _subscriptionService!.getFleetStatusData(
-      start: start == 0 ? start : start + 1,
-      limit: limit,
-    );
+    if (enableGraphQl) {
+      fleetProvisionStatus = await _subscriptionService!.getFleetDataGraphql(
+          graphqlSchemaService!.getSubscriptionFleetData(start, limit));
 
-    if (subscriptionDashboardDetailResult != null) {
-      if (subscriptionDashboardDetailResult!.result!.isNotEmpty) {
-        start = start + limit;
-        devices.addAll(subscriptionDashboardDetailResult!.result![1]);
+      if (fleetProvisionStatus!
+          .fleetProvisionStatus!.fleetProvisionStatusInfo!.isNotEmpty) {
+        Logger().w(fleetProvisionStatus!
+            .fleetProvisionStatus!.fleetProvisionStatusInfo!.first
+            .toJson());
+       // start = start + limit;
+        devices.addAll(fleetProvisionStatus!
+            .fleetProvisionStatus!.fleetProvisionStatusInfo!);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
@@ -80,12 +84,37 @@ class FleetStatusViewModel extends InsiteViewModel {
       _loading = false;
       _loadingMore = false;
       notifyListeners();
+    } else {
+      Logger().i("getFleetStatusData");
+      subscriptionDashboardDetailResult =
+          await _subscriptionService!.getFleetStatusData(
+        start: start == 0 ? start : start + 1,
+        limit: limit,
+      );
+
+      if (subscriptionDashboardDetailResult != null) {
+        if (subscriptionDashboardDetailResult!.result!.isNotEmpty) {
+          start = start + limit;
+          // devices.addAll(subscriptionDashboardDetailResult!.result![1]);
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
+        _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      }
     }
   }
 
   int start = 0;
   int limit = 50;
 
-  List<DetailResult> _devices = [];
-  List<DetailResult> get devices => _devices;
+  List<FleetProvisionStatusInfo> _devices = [];
+  List<FleetProvisionStatusInfo> get devices => _devices;
 }

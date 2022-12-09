@@ -94,8 +94,15 @@ abstract class InsiteViewModel extends BaseViewModel {
 
   String? get endDate => _endDate;
 
-  String? _maintenanceHistoryEndDate = DateFormat("yyyy-MM-dd")
+  String? _maintenanceHistoryStartDate = DateFormat("yyyy-MM-dd")
       .format(DateTime.now().subtract(Duration(days: 29)));
+  String? get maintenanceHistoryStartDate => _maintenanceHistoryStartDate;
+  set maintenanceHistoryStartDate(String? maintenanceHistoryStartDate) {
+    this._maintenanceHistoryStartDate = maintenanceHistoryStartDate;
+  }
+
+  String? _maintenanceHistoryEndDate =
+      DateFormat("yyyy-MM-dd").format(DateTime.now());
   String? get maintenanceHistoryEndDate => _maintenanceHistoryEndDate;
   set maintenanceHistoryEndDate(String? maintenanceHistoryEndDate) {
     this._maintenanceHistoryEndDate = maintenanceHistoryEndDate;

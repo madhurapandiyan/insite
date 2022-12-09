@@ -116,6 +116,8 @@ class Router {
       case assetViewRoute:
         return MaterialPageRoute(builder: (_) => view8.AssetOperationView());
       case assetDetailViewRoute:
+
+      
         Logger().w(settings.arguments);
         var fleetArgs =
             (settings.arguments as Map)["arguments"] as view9.DetailArguments;

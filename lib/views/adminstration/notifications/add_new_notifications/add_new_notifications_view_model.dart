@@ -53,6 +53,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   AlertConfigEdit? localData;
 
   NotificationExist? notificationExists;
+  String? maintenanceDropDownValue;
   @override
   void dispose() {
     super.dispose();
@@ -377,7 +378,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   TextEditingController faultCodeSearchController = TextEditingController();
 
   List<FaultCodeDetails>? faultCodeTypeSearch = [];
-  List<FaultCodeDetails>? SelectedfaultCodeTypeSearch = [];
+  List<FaultCodeDetails> SelectedfaultCodeTypeSearch = [];
 
   bool isTitleExist = false;
   bool isNotificationNameChange = false;
@@ -1204,20 +1205,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   addContact() {
-    // if (emailController.text.contains("@")) {
-    //   isShowingSelectedContact = true;
-
-    //   selectedUser.add(User(
-    //     email: emailController.text,
-    //   ));
-    //   emailIds!.add(emailController.text);
-    //   emailController.clear();
-    // } else {
-    //   snackbarService!.showSnackbar(message: "Please Enter the valid Email-id");
-    // }
     if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
-      snackbarService!
-          .showSnackbar(message: "Not to add Email Report Recipients");
+      snackbarService!.showSnackbar(message: "Recipient already added");
     } else {
       if (emailController.text.contains("@")) {
         isShowingSelectedContact = true;
@@ -1233,8 +1222,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
       notifyListeners();
     }
-
-    notifyListeners();
   }
 
   onGettingFaultCodeData() async {
@@ -1872,8 +1859,19 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         }
       });
     }
+
     Logger().wtf(notificationType!.toJson());
     notificationTypeId = notificationType!.notificationTypeID!;
+
+    if (SelectedfaultCodeTypeSearch.isNotEmpty) {
+      for (int i = 0; i < SelectedfaultCodeTypeSearch.length; i++) {
+        operandData.add(Operand(
+            operandID: 23,
+            operatorId: 40,
+            value: SelectedfaultCodeTypeSearch[i].faultCodeIdentifier));
+      }
+      notifyListeners();
+    }
   }
 
   getAssetStatusOperandAndNotificationId() {
@@ -2019,11 +2017,17 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         OperandData?.singleWhere((element) => element.operandName == "DueType");
     // if (fuelLossOperandData!.operators!
     //     .any((element) => element.name == _dropDownSubInitialValue)) {
+
+    if (_dropDownSubInitialValue == "Overdue") {
+      maintenanceDropDownValue = '1';
+    } else if (_dropDownSubInitialValue == "Upcoming") {
+      maintenanceDropDownValue = '2';
+    }
     operandData.add(Operand(
         operandID: OperandData!.first.operandID,
         operatorId: OperandData.first.operators!.first.operatorID,
-        value: assetStatusOccurenceController.text));
-    // }
+        value: maintenanceDropDownValue));
+    // }assetStatusOccurenceController.text
   }
 
   gettingNotificationIdandOperands() async {

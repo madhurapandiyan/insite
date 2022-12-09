@@ -74,7 +74,7 @@ class AddReportViewModel extends InsiteViewModel {
   ];
   // List<String> _choiseData = ["Assets"];
   //List<String> get choiseData => _choiseData;
-  String? assetSelectionValue="Assets";
+  String? assetSelectionValue = "Assets";
 
   String? assetsDropDownValue = "Select";
 
@@ -533,7 +533,14 @@ class AddReportViewModel extends InsiteViewModel {
         } else {
           if (selectedAsset!.any((element) =>
               element.assetIdentifier == selectedData?.assetIdentifier)) {
-            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+            if (assetSelectionValue == "Groups") {
+              snackbarService!.showSnackbar(message: "Group Alerady Selected");
+            } else if (assetSelectionValue == "Geofences") {
+              snackbarService!
+                  .showSnackbar(message: "Geofences Alerady Selected");
+            } else {
+              snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+            }
           } else {
             assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
                 element.assetIdentifier == selectedData?.assetIdentifier);
@@ -543,7 +550,14 @@ class AddReportViewModel extends InsiteViewModel {
       } else {
         if (selectedAsset!.any((element) =>
             element.assetIdentifier == selectedData?.assetIdentifier)) {
-          snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+          if (assetSelectionValue == "Groups") {
+            snackbarService!.showSnackbar(message: "Group Alerady Selected");
+          } else if (assetSelectionValue == "Geofences") {
+            snackbarService!
+                .showSnackbar(message: "Geofences Alerady Selected");
+          } else {
+            snackbarService!.showSnackbar(message: "Asset Alerady Selected");
+          }
         } else {
           assetIdresult?.assetDetailsRecords?.removeWhere((element) =>
               element.assetIdentifier == selectedData?.assetIdentifier);
@@ -730,18 +744,9 @@ class AddReportViewModel extends InsiteViewModel {
   List<String>? emailIds = [];
 
   addContact() {
-    // Logger().w(emailController.text);
-    // emailIds!.forEach((element) {
-    //   if (selectedUser.any((emailIds) => emailIds.email == element)) {
-    //     selectedUser.clear();
-    //     snackbarService!
-    //         .showSnackbar(message: "Not to add Email Report Recipients");
-    //   }
-    // });
-
     if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
       snackbarService!
-          .showSnackbar(message: "Not to add Email Report Recipients");
+          .showSnackbar(message: "Recipient already added");
     } else {
       if (emailController.text.contains("@")) {
         isShowingSelectedContact = true;
