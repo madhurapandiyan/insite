@@ -937,7 +937,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         faultCodeDescription.forEach((item) {
           faultCodeTypeSearch?.forEach((element) => {
                 if (element.faultCodeIdentifier == item.value)
-                  {SelectedfaultCodeTypeSearch?.add(element)}
+                  {SelectedfaultCodeTypeSearch.add(element)}
               });
         });
         customizable[0].state = true;
@@ -974,13 +974,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onAddingFaultCode(int i) {
     var data = faultCodeTypeSearch!.elementAt(i);
     faultCodeTypeSearch!.remove(data);
-    SelectedfaultCodeTypeSearch!.add(data);
+    SelectedfaultCodeTypeSearch.add(data);
     notifyListeners();
   }
 
   onDeletingSelectedFaultCode(int i) {
-    var data = SelectedfaultCodeTypeSearch!.elementAt(i);
-    SelectedfaultCodeTypeSearch!.remove(data);
+    var data = SelectedfaultCodeTypeSearch.elementAt(i);
+    SelectedfaultCodeTypeSearch.remove(data);
     faultCodeTypeSearch!.add(data);
     notifyListeners();
   }
@@ -1870,7 +1870,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             operatorId: 40,
             value: SelectedfaultCodeTypeSearch[i].faultCodeIdentifier));
       }
-      notifyListeners();
     }
   }
 

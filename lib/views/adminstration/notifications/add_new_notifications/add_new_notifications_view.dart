@@ -477,7 +477,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                   height: 20,
                                                                 ),
                                                                 viewModel
-                                                                        .SelectedfaultCodeTypeSearch!
+                                                                        .SelectedfaultCodeTypeSearch
                                                                         .isNotEmpty
                                                                     ? Container(
                                                                         height: mediaquerry.size.height *
@@ -1187,7 +1187,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     height: 20,
                                   ),
                                   InsiteButton(
-                                    onTap: viewModel.addContact,
+                                     onTap: viewModel.addContact,
                                     fontSize: 16,
                                     height: 50,
                                     width: 200,
