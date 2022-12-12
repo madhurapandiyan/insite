@@ -35,7 +35,6 @@ class UtilizationListViewState extends State<UtilizationListView> {
   //  //onFilterApplied();
   //   super.didUpdateWidget(oldWidget);
   // }
-   
 
   // @override
   // void initState() {
@@ -51,7 +50,6 @@ class UtilizationListViewState extends State<UtilizationListView> {
 
   onFilterApplied() {
     Logger().v("refresh");
-   
   }
 
   @override
@@ -60,18 +58,18 @@ class UtilizationListViewState extends State<UtilizationListView> {
     return ViewModelBuilder<UtilizationListViewModel>.reactive(
         builder: (BuildContext context, UtilizationListViewModel viewModel,
             Widget? _) {
-      // viewModelClass=viewModel;
+          // viewModelClass=viewModel;
           return InsiteInheritedDataProvider(
             count: viewModel.appliedFilters!.length,
             child: InsiteScaffold(
-               onFilterApplied: (){
+              onFilterApplied: () {
                 viewModel.refresh();
-               },
-               onRefineApplied: (){
+              },
+              onRefineApplied: () {
                 viewModel.refresh();
-               },
-               viewModel: viewModel,
-               screenType: ScreenType.UTILIZATION,
+              },
+              viewModel: viewModel,
+              screenType: ScreenType.UTILIZATION,
               body: Padding(
                 padding: const EdgeInsets.only(top: 0),
                 child: Stack(
@@ -79,17 +77,17 @@ class UtilizationListViewState extends State<UtilizationListView> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Padding(
-                           padding: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 16),
-                           child: InsiteTextOverFlow(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5.0, horizontal: 16),
+                          child: InsiteTextOverFlow(
                             text: Utils.getPageTitle(ScreenType.UTILIZATION),
                             color: Theme.of(context).textTheme.bodyText1!.color,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.bold,
                             size: 16,
+                          ),
                         ),
-                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 24),
@@ -124,10 +122,11 @@ class UtilizationListViewState extends State<UtilizationListView> {
                                     builder: (BuildContext context) => Dialog(
                                         backgroundColor: transparent,
                                         child: DateRangeView(
-                                          //filterType: FilterType.UTILIZATION_COUNT,
-                                        )),
+                                            //filterType: FilterType.UTILIZATION_COUNT,
+                                            )),
                                   );
-                                  if (dateRange != null && dateRange!.isNotEmpty) {
+                                  if (dateRange != null &&
+                                      dateRange!.isNotEmpty) {
                                     viewModel.refresh();
                                   }
                                 },
@@ -161,10 +160,11 @@ class UtilizationListViewState extends State<UtilizationListView> {
                                       scrollDirection: Axis.vertical,
                                       itemCount:
                                           viewModel.utilLizationListData.length,
-                                      padding: EdgeInsets.only(left: 16, right: 16),
+                                      padding:
+                                          EdgeInsets.only(left: 16, right: 16),
                                       itemBuilder: (context, index) {
-                                        AssetResult utilizationData =
-                                            viewModel.utilLizationListData[index];
+                                        AssetResult utilizationData = viewModel
+                                            .utilLizationListData[index];
                                         return UtilizationListItem(
                                           utilizationData: utilizationData,
                                           isShowingInDetailPage: false,
