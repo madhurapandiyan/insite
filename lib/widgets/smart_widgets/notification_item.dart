@@ -23,7 +23,6 @@ class NotificationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final jsonValue = jsonDecode(notifications!.notificationConfigJSON);
 
-    Logger().w(jsonValue);
 
     return GestureDetector(
       onTap: () {
@@ -49,23 +48,19 @@ class NotificationItem extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        InsiteRichText(
-                          title: "Serial No. ",
-                          content: notifications!.serialNumber,
-                          onTap: () {
-                            showDetails!();
-                          },
-                        ),
-                        InsiteTableRowItem(
-                          title: "Notification Type",
-                          content: notifications!.notificationSubType,
-                        ),
-                        InsiteTableRowItem(
-                          title: "Hour Mtr.",
-                          content: jsonValue["HourMeter"] == null
-                              ? " "
-                              : jsonValue["HourMeter"].toStringAsFixed(2),
-                        ),
+                        // Container(
+                        //     decoration: BoxDecoration(
+                        //         color: notifications!.isSelected!
+                        //             ? Theme.of(context).buttonColor
+                        //             : Theme.of(context).backgroundColor,
+                        //         borderRadius:
+                        //             BorderRadius.all(Radius.circular(4))),
+                        //     child: Icon(
+                        //       Icons.crop_square,
+                        //       color: notifications!.isSelected!
+                        //           ? Theme.of(context).buttonColor
+                        //           : Colors.black,
+                        //     )),
                       ],
                     ),
                   ),

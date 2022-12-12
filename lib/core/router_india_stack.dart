@@ -120,7 +120,7 @@ class Router {
       
         Logger().w(settings.arguments);
         var fleetArgs =
-            (settings.arguments as Map)["arguments"] as view9.DetailArguments;
+            settings.arguments  as view9.DetailArguments;
        // Logger().w(fleetArgs.fleet!.assetId);
         return MaterialPageRoute(
             builder: (_) => view9.AssetDetailView(
