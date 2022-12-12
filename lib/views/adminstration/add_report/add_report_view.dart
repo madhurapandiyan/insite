@@ -111,7 +111,8 @@ class _AddReportViewState extends State<AddReportView> {
                                         viewModel.assetsDropDownValue ==
                                             "Utilization Details" ||
                                         viewModel.assetsDropDownValue ==
-                                            "Excavator Usage") {
+                                            "Excavator Usage"||
+                                            viewModel.assetsDropDownValue=="Fault Code Asset Details") {
                                       viewModel.choiseData = ["Assets"];
                                     } else {
                                       viewModel.choiseData = [
@@ -598,7 +599,7 @@ class _AddReportViewState extends State<AddReportView> {
                           child: Padding(
                               padding: const EdgeInsets.only(left: 10, top: 3),
                               child: CustomDatePicker(
-                                initialText: "MM/dd/yyyy",
+                                initialText: "MM/DD/YYYY",
                                 controller: viewModel.dateTimeController,
                                 voidCallback: () {
                                   getDatePicker(viewModel);

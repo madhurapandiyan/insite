@@ -477,7 +477,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                   height: 20,
                                                                 ),
                                                                 viewModel
-                                                                        .SelectedfaultCodeTypeSearch!
+                                                                        .SelectedfaultCodeTypeSearch
                                                                         .isNotEmpty
                                                                     ? Container(
                                                                         height: mediaquerry.size.height *
@@ -1019,26 +1019,27 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                           .color!,
                                     ),
                                     borderRadius: BorderRadius.circular(10)),
-                                child:viewModel.isEditing?
-                                 Container(
-                                    width: 400,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: InsiteText(
-                                        text: viewModel.assetSelectionValue,
-                                        size: 14,
-                                        fontWeight: FontWeight.w700,
+                                child: viewModel.isEditing
+                                    ? Container(
+                                        width: 400,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InsiteText(
+                                            text: viewModel.assetSelectionValue,
+                                            size: 14,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      )
+                                    : CustomDropDownWidget(
+                                        value: viewModel.assetSelectionValue,
+                                        items: viewModel.choiseData,
+                                        enableHint: true,
+                                        onChanged: (String? value) {
+                                          viewModel
+                                              .updateModelValueChooseBy(value!);
+                                        },
                                       ),
-                                    ),
-                                  ): 
-                                CustomDropDownWidget(
-                                  value: viewModel.assetSelectionValue,
-                                  items: viewModel.choiseData,
-                                  enableHint: true,
-                                  onChanged: (String? value) {
-                                    viewModel.updateModelValueChooseBy(value!);
-                                  },
-                                ),
                               ),
                               SizedBox(
                                 height: 10,

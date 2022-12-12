@@ -53,6 +53,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   AlertConfigEdit? localData;
 
   NotificationExist? notificationExists;
+  String? maintenanceDropDownValue;
   @override
   void dispose() {
     super.dispose();
@@ -107,7 +108,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   bool isEditing = false;
 
-  bool isEditLoader=true;
+  bool isEditLoader = true;
 
   List<String?> _noticationTypes = ["select"];
   List<String?> get notificationTypes => _noticationTypes;
@@ -121,7 +122,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<String?> _notificationSubTypes = ["Options"];
   List<String?> get notificationSubTypes => _notificationSubTypes;
 
-  List<String> _choiseData = ["Assets", "Groups", "Geofences",];
+  List<String> _choiseData = [
+    "Assets",
+    "Groups",
+    "Geofences",
+  ];
   List<String> get choiseData => _choiseData;
 
   bool _loading = true;
@@ -373,7 +378,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   TextEditingController faultCodeSearchController = TextEditingController();
 
   List<FaultCodeDetails>? faultCodeTypeSearch = [];
-  List<FaultCodeDetails>? SelectedfaultCodeTypeSearch = [];
+  List<FaultCodeDetails> SelectedfaultCodeTypeSearch = [];
 
   bool isTitleExist = false;
   bool isNotificationNameChange = false;
@@ -464,7 +469,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
- getGroupListData() async {
+  getGroupListData() async {
     try {
       assetIdresult = await _manageUserService!.getGroupListData(false);
       if (isEditing) {
@@ -894,7 +899,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   getEditOperandData(List<OperandData>? data) {
-     if (dropDownInitialValue == "Fault Code") {
+    if (dropDownInitialValue == "Fault Code") {
       var isInclude = false;
       var isExclude = false;
       var severityData =
@@ -932,7 +937,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         faultCodeDescription.forEach((item) {
           faultCodeTypeSearch?.forEach((element) => {
                 if (element.faultCodeIdentifier == item.value)
-                  {SelectedfaultCodeTypeSearch?.add(element)}
+                  {SelectedfaultCodeTypeSearch.add(element)}
               });
         });
         customizable[0].state = true;
@@ -969,13 +974,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onAddingFaultCode(int i) {
     var data = faultCodeTypeSearch!.elementAt(i);
     faultCodeTypeSearch!.remove(data);
-    SelectedfaultCodeTypeSearch!.add(data);
+    SelectedfaultCodeTypeSearch.add(data);
     notifyListeners();
   }
 
   onDeletingSelectedFaultCode(int i) {
-    var data = SelectedfaultCodeTypeSearch!.elementAt(i);
-    SelectedfaultCodeTypeSearch!.remove(data);
+    var data = SelectedfaultCodeTypeSearch.elementAt(i);
+    SelectedfaultCodeTypeSearch.remove(data);
     faultCodeTypeSearch!.add(data);
     notifyListeners();
   }
@@ -1200,9 +1205,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   addContact() {
-     if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
-      snackbarService!
-          .showSnackbar(message: "Recipient already added");
+    if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
+      snackbarService!.showSnackbar(message: "Recipient already added");
     } else {
       if (emailController.text.contains("@")) {
         isShowingSelectedContact = true;
@@ -1689,7 +1693,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       if (value!.length >= 2) {
         notificationExists = await _notificationService!.checkNotificationTitle(
             value, graphqlSchemaService!.checkNotificationTitle(value));
-         //isTitleExist = notificationExists!.alertTitleExists!;
+        //isTitleExist = notificationExists!.alertTitleExists!;
 
         notifyListeners();
       } else {
@@ -1855,8 +1859,18 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         }
       });
     }
+
     Logger().wtf(notificationType!.toJson());
     notificationTypeId = notificationType!.notificationTypeID!;
+
+    if (SelectedfaultCodeTypeSearch.isNotEmpty) {
+      for (int i = 0; i < SelectedfaultCodeTypeSearch.length; i++) {
+        operandData.add(Operand(
+            operandID: 23,
+            operatorId: 40,
+            value: SelectedfaultCodeTypeSearch[i].faultCodeIdentifier));
+      }
+    }
   }
 
   getAssetStatusOperandAndNotificationId() {
@@ -2002,11 +2016,17 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         OperandData?.singleWhere((element) => element.operandName == "DueType");
     // if (fuelLossOperandData!.operators!
     //     .any((element) => element.name == _dropDownSubInitialValue)) {
+
+    if (_dropDownSubInitialValue == "Overdue") {
+      maintenanceDropDownValue = '1';
+    } else if (_dropDownSubInitialValue == "Upcoming") {
+      maintenanceDropDownValue = '2';
+    }
     operandData.add(Operand(
         operandID: OperandData!.first.operandID,
         operatorId: OperandData.first.operators!.first.operatorID,
-        value: assetStatusOccurenceController.text));
-    // }
+        value: maintenanceDropDownValue));
+    // }assetStatusOccurenceController.text
   }
 
   gettingNotificationIdandOperands() async {
@@ -2221,7 +2241,6 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       assetUidData.add(element.assetIdentifier!);
     });
 
-
     if (notificationExists?.alertTitleExists == true) {
       Logger().v("show title");
       _snackBarservice!.showSnackbar(message: "Notification title exists");
@@ -2301,7 +2320,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           _snackBarservice!.showSnackbar(message: "Add Notification Success");
           hideLoadingDialog();
           gotoManageNotificationsPage();
-         }
+        }
         // else {
         //   _snackBarservice!
         //       .showSnackbar(message: "Kindly recheck credentials added");
