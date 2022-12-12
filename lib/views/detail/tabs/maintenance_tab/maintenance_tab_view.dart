@@ -3,7 +3,7 @@ import 'package:insite/core/models/maintenance.dart';
 import 'package:insite/core/models/maintenance_list_india_stack.dart';
 import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/theme/colors.dart';
-import 'package:insite/utils/enums.dart';
+
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/date_range/date_range_view.dart';
 import 'package:insite/widgets/dumb_widgets/empty_view.dart';
@@ -33,6 +33,7 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
 
   MaintenanceTabViewModel? model;
   List<String?>? dateRange = [];
+  List<DateTime>? dateRanges = [];
   @override
   Widget build(BuildContext context) {
     Logger().wtf(widget.summaryData!.assetID);
@@ -101,25 +102,30 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                           )
                         : InsiteButton(
                             title: Utils.getDateInFormatddMMyyyy(
-                                    viewModel.startDate) +
+                                    viewModel.maintenanceHistoryStartDate) +
                                 " - " +
                                 Utils.getDateInFormatddMMyyyy(
-                                    viewModel.endDate),
+                                    viewModel.maintenanceHistoryEndDate),
                             height: 36,
                             onTap: () async {
-                              dateRange = [];
-                              dateRange = await showDialog(
+                              dateRanges = [];
+                              dateRanges = await showDialog(
                                 context: context,
                                 builder: (BuildContext context) => Dialog(
                                     backgroundColor: transparent,
                                     child: DateRangeView()),
                               );
-                              if (dateRange != null && dateRange!.isNotEmpty) {
-                                setState(() {
-                                  dateRange = dateRange;
-                                });
-                                viewModel.refresh();
-                              }
+                              viewModel.maintenanceHistoryStartDate =
+                                  dateRanges!.first.toString();
+                              viewModel.maintenanceHistoryEndDate =
+                                  dateRanges!.last.toString();
+                              viewModel.refresh();
+                              // if (dateRanges != null && dateRanges!.isNotEmpty) {
+                              //   setState(() {
+                              //     dateRanges = dateRanges;
+                              //   });
+                              //   viewModel.refresh();
+                              // }
                             },
                             textColor: white,
                             //width: 100,
