@@ -28,6 +28,7 @@ import 'reusable_widget/selcted_card_widget.dart';
 
 class AddNewNotificationsView extends StatefulWidget {
   final AlertConfigEdit? alertData;
+  
   AddNewNotificationsView({this.alertData});
   @override
   State<AddNewNotificationsView> createState() =>
@@ -165,7 +166,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
             onRefineApplied: () {
               //viewModel.refresh();
             },
-            body: SingleChildScrollView(
+            body: viewModel.isEditLoading!?
+            InsiteProgressBar():
+            SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -477,7 +480,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                   height: 20,
                                                                 ),
                                                                 viewModel
-                                                                        .SelectedfaultCodeTypeSearch!
+                                                                        .SelectedfaultCodeTypeSearch
                                                                         .isNotEmpty
                                                                     ? Container(
                                                                         height: mediaquerry.size.height *
@@ -1019,26 +1022,27 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                           .color!,
                                     ),
                                     borderRadius: BorderRadius.circular(10)),
-                                child:viewModel.isEditing?
-                                 Container(
-                                    width: 400,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: InsiteText(
-                                        text: viewModel.assetSelectionValue,
-                                        size: 14,
-                                        fontWeight: FontWeight.w700,
+                                child: viewModel.isEditing
+                                    ? Container(
+                                        width: 400,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InsiteText(
+                                            text: viewModel.assetSelectionValue,
+                                            size: 14,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      )
+                                    : CustomDropDownWidget(
+                                        value: viewModel.assetSelectionValue,
+                                        items: viewModel.choiseData,
+                                        enableHint: true,
+                                        onChanged: (String? value) {
+                                          viewModel
+                                              .updateModelValueChooseBy(value!);
+                                        },
                                       ),
-                                    ),
-                                  ): 
-                                CustomDropDownWidget(
-                                  value: viewModel.assetSelectionValue,
-                                  items: viewModel.choiseData,
-                                  enableHint: true,
-                                  onChanged: (String? value) {
-                                    viewModel.updateModelValueChooseBy(value!);
-                                  },
-                                ),
                               ),
                               SizedBox(
                                 height: 10,
@@ -1154,7 +1158,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                               boxShadow: [
                                                 BoxShadow(
                                                     color: Colors.black,
-                                                    blurStyle: BlurStyle.outer,
+                                                    // blurStyle: BlurStyle.outer,
                                                     blurRadius: 0.5,
                                                     spreadRadius: 0.2)
                                               ]),
@@ -1186,7 +1190,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     height: 20,
                                   ),
                                   InsiteButton(
-                                    onTap: viewModel.addContact,
+                                     onTap: viewModel.addContact,
                                     fontSize: 16,
                                     height: 50,
                                     width: 200,

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/theme/colors.dart';
@@ -43,6 +44,16 @@ class LocationSearchBoxView extends StatelessWidget {
                               new BorderRadius.all(new Radius.circular(8))),
                       child: screenType == ScreenType.ASSET_DETAIL
                           ? DropdownButton<String>(
+
+                              icon: Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: SvgPicture.asset(
+                                  "assets/images/arrowdown.svg",
+                                //  width: 10,
+                                  color: Theme.of(context).iconTheme.color,
+                                  height: 10,
+                                ),
+                              ),
                               isExpanded: false,
                               elevation: 0,
                               underline: Container(),
@@ -65,6 +76,16 @@ class LocationSearchBoxView extends StatelessWidget {
                               },
                             )
                           : DropdownButton<String>(
+                             icon: Padding(
+                               padding: const EdgeInsets.only(left: 3),
+                               child: SvgPicture.asset(
+                                
+                                  "assets/images/arrowdown.svg",
+                                  width: 10,
+                                  color: Theme.of(context).iconTheme.color,
+                                  height: 10,
+                                ),
+                             ),
                               isExpanded: false,
                               elevation: 0,
                               underline: Container(),
@@ -87,6 +108,7 @@ class LocationSearchBoxView extends StatelessWidget {
                               },
                             ),
                     ),
+
                     // Expanded(
                     //   child: CustomDropDownWidget(
                     //     items: viewModel.dropDownList,

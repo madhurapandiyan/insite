@@ -11,23 +11,25 @@ SubscriptionDashboardResult _$SubscriptionDashboardResultFromJson(
     SubscriptionDashboardResult(
       result: (json['result'] as List<dynamic>?)
           ?.map((e) => (e as List<dynamic>)
-              .map((e) => Result.fromJson(e as Map<String, dynamic>))
+              .map(
+                  (e) => ResultSubscription.fromJson(e as Map<String, dynamic>))
               .toList())
           .toList(),
-      plantDispatchSummary: json['plantDispatchSummary'] == null
+      frameSubscription: json['frameSubscription'] == null
           ? null
-          : PlantDispatchSummary.fromJson(
-              json['plantDispatchSummary'] as Map<String, dynamic>),
+          : FrameSubscription.fromJson(
+              json['frameSubscription'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SubscriptionDashboardResultToJson(
         SubscriptionDashboardResult instance) =>
     <String, dynamic>{
       'result': instance.result,
-      'plantDispatchSummary': instance.plantDispatchSummary,
+      'frameSubscription': instance.frameSubscription,
     };
 
-Result _$ResultFromJson(Map<String, dynamic> json) => Result(
+ResultSubscription _$ResultSubscriptionFromJson(Map<String, dynamic> json) =>
+    ResultSubscription(
       activeList: (json['activelist'] as num?)?.toDouble(),
       inActiveList: (json['inActiveList'] as num?)?.toDouble(),
       modelCount: (json['ModelCount'] as num?)?.toDouble(),
@@ -42,7 +44,8 @@ Result _$ResultFromJson(Map<String, dynamic> json) => Result(
           (json['subscriptionEndingAsset_Month'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
+Map<String, dynamic> _$ResultSubscriptionToJson(ResultSubscription instance) =>
+    <String, dynamic>{
       'activelist': instance.activeList,
       'inActiveList': instance.inActiveList,
       'ModelCount': instance.modelCount,
@@ -78,7 +81,9 @@ PlantDispatchSummary _$PlantDispatchSummaryFromJson(
       assetActivationByDay: json['assetActivationByDay'],
       assetActivationByWeek: json['assetActivationByWeek'] as int?,
       assetActivationByMonth: json['assetActivationByMonth'] as int?,
-    );
+    )..modelFleetList = (json['modelFleetList'] as List<dynamic>?)
+        ?.map((e) => ModelFleetList.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Map<String, dynamic> _$PlantDispatchSummaryToJson(
         PlantDispatchSummary instance) =>
@@ -89,4 +94,19 @@ Map<String, dynamic> _$PlantDispatchSummaryToJson(
       'assetActivationByDay': instance.assetActivationByDay,
       'assetActivationByWeek': instance.assetActivationByWeek,
       'assetActivationByMonth': instance.assetActivationByMonth,
+      'modelFleetList': instance.modelFleetList,
+    };
+
+ModelFleetList _$ModelFleetListFromJson(Map<String, dynamic> json) =>
+    ModelFleetList(
+      modelCount: json['ModelCount'] as int?,
+      modelName: json['ModelName'] as String?,
+      typename: json['__typename'] as String?,
+    );
+
+Map<String, dynamic> _$ModelFleetListToJson(ModelFleetList instance) =>
+    <String, dynamic>{
+      'ModelCount': instance.modelCount,
+      'ModelName': instance.modelName,
+      '__typename': instance.typename,
     };

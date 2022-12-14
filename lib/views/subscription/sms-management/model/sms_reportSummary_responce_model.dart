@@ -5,9 +5,11 @@ part 'sms_reportSummary_responce_model.g.dart';
 class SmsReportSummaryModel {
   final String? code;
   final String? status;
+  GetSMSSummaryReport? getSMSSummaryReport;
   final List<List<ReportSummaryModel>>? result;
 
-  SmsReportSummaryModel({this.code, this.status, this.result});
+  SmsReportSummaryModel(
+      {this.code, this.status, this.result, this.getSMSSummaryReport});
   factory SmsReportSummaryModel.fromJson(Map<String, dynamic> json) =>
       _$SmsReportSummaryModelFromJson(json);
 
@@ -17,28 +19,73 @@ class SmsReportSummaryModel {
 @JsonSerializable()
 class ReportSummaryModel {
   final int? count;
-  final int? ID;
-  final String? GPSDeviceID;
-  final String? SerialNumber;
-  final String? Name;
-  final String? Number;
-  final String? StartDate;
-  final String? Language;
+  @JsonKey(name: "ID")
+  final int? id;
+  @JsonKey(name: "GPSDeviceID")
+  final String? gpsDeviceId;
+  @JsonKey(name: "SerialNumber")
+  final String? serialNumber;
+  @JsonKey(name: "Name")
+  final String? name;
+  @JsonKey(name: "Number")
+  final String? number;
+  @JsonKey(name: "StartDate")
+  final String? startDate;
+  @JsonKey(name: "Language")
+  final String? language;
   bool? isSelected;
 
   ReportSummaryModel(
       {this.count,
-      this.ID,
-      this.GPSDeviceID,
-      this.SerialNumber,
-      this.Name,
-      this.Number,
-      this.StartDate,
-      this.isSelected=false,
-      this.Language});
+      this.id,
+      this.gpsDeviceId,
+      this.serialNumber,
+      this.name,
+      this.number,
+      this.startDate,
+      this.isSelected = false,
+      this.language});
 
   factory ReportSummaryModel.fromJson(Map<String, dynamic> json) =>
       _$ReportSummaryModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$ReportSummaryModelToJson(this);
+}
+
+
+@JsonSerializable()
+class GetSMSSummaryReport {
+  String? count;
+  List<Result>? result;
+  GetSMSSummaryReport({this.result,this.count});
+
+  factory GetSMSSummaryReport.fromJson(Map<String, dynamic> json) =>
+      _$GetSMSSummaryReportFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GetSMSSummaryReportToJson(this);
+}
+
+@JsonSerializable()
+class Result {
+   int? id;
+   String? gpsDeviceId;
+   String? serialNumber;
+   String? name;
+   String? number;
+   String? startDate;
+   String? language;
+
+  Result(
+      {this.id,
+      this.gpsDeviceId,
+      this.serialNumber,
+      this.name,
+      this.number,
+      this.startDate,
+      this.language});
+
+  factory Result.fromJson(Map<String, dynamic> json) =>
+      _$ResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ResultToJson(this);
 }

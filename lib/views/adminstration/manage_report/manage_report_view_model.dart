@@ -279,17 +279,22 @@ class ManageReportViewModel extends InsiteViewModel {
         description:
             "The Site Entry and Exit Report provides the complete details of Asset(s) traveling in and out of a Geofence..")
   ];
+  Timer? debounce;
 
   searchReports(String searchValue) async {
-    if (searchValue.length >= 3||searchValue.length>0) {
+    if (searchValue.length >= 1) {
       Logger().d("search Reports $searchValue");
       pageNumber = 1;
       _isSearching = true;
       _searchKeyword = searchValue;
-      await getManageReportListData();
-    } else {
-      return;
+
+      if (debounce != null) debounce!.cancel();
+      debounce = Timer(Duration(seconds: 2), () {
+        _searchKeyword = searchValue;
+        getManageReportListData();
+      });
     }
+    notifyListeners();
   }
 
   updateSearchDataToEmpty() {

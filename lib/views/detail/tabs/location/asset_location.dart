@@ -30,7 +30,7 @@ class AssetLocationView extends StatefulWidget {
 }
 
 class _AssetLocationViewState extends State<AssetLocationView> {
-  String _currentSelectedItem = "SATELLITE";
+  String _currentSelectedItem = "HYBRID";
   double zoomVal = 5.0;
   double? latitude;
   double? longitude;

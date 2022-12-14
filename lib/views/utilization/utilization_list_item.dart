@@ -158,11 +158,11 @@ class UtilizationListItem extends StatelessWidget {
                                     TableRow(
                                       children: [
                                         InsiteTableRowItem(
-                                          title: "Lifetime Fuel (Litres)",
+                                          title: "Lifetime Fuel",
                                           content: "-",
                                         ),
                                         InsiteTableRowItem(
-                                          title: "Fuel Burned (Litres)",
+                                          title: "Fuel Burned ",
                                           content: utilizationData!
                                                       .runtimeFuelConsumedLiters !=
                                                   null
@@ -175,7 +175,7 @@ class UtilizationListItem extends StatelessWidget {
                                     ),
                                     TableRow(children: [
                                       InsiteTableRowItem(
-                                        title: "Burn Rate (Litres/hr)",
+                                        title: "Burn Rate ",
                                         content: utilizationData!
                                                     .runtimeFuelConsumptionRate !=
                                                 null
@@ -247,13 +247,13 @@ class UtilizationListItem extends StatelessWidget {
                                   TableRow(
                                     children: [
                                       InsiteTableRowItem(
-                                        title: "Lifetime Fuel (Litres)",
+                                        title: "Lifetime Fuel ",
                                         content: utilizationData
                                                 ?.lastIdleFuelConsumptionLitersMeter ??
                                             "-",
                                       ),
                                       InsiteTableRowItem(
-                                        title: "Fuel Burned (Litres)",
+                                        title: "Fuel Burned ",
                                         content: utilizationData!
                                                     .idleFuelConsumedLiters !=
                                                 null
@@ -266,7 +266,7 @@ class UtilizationListItem extends StatelessWidget {
                                   ),
                                   TableRow(children: [
                                     InsiteTableRowItem(
-                                      title: "Burn Rate (Litres/hr)",
+                                      title: "Burn Rate ",
                                       content: utilizationData!
                                                   .idleFuelConsumptionRate !=
                                               null
@@ -537,7 +537,7 @@ class UtilizationListItem extends StatelessWidget {
                                                   : "",
                                             ),
                                             InsiteTableRowItem(
-                                              title: "Fuel Burned (Litres)",
+                                              title: "Fuel Burned",
                                               content: utilizationData!
                                                           .runtimeFuelConsumedLiters !=
                                                       null

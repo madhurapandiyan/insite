@@ -51,12 +51,12 @@ class DealerListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Dealer Name : ",
                         content:
-                            detailResult!.Name != null ? detailResult!.Name : "",
+                            detailResult!.name != null ? detailResult!.name : "",
                       ),
                       InsiteTableRowItem(
                         title: "User Name : ",
-                        content: detailResult!.UserName != null
-                            ? detailResult!.UserName
+                        content: detailResult!.userName != null
+                            ? detailResult!.userName
                             : "",
                       ),
                     ],
@@ -66,12 +66,12 @@ class DealerListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Dealer Code : ",
                         content:
-                            detailResult!.Code != null ? detailResult!.Code : "",
+                            detailResult!.code != null ? detailResult!.code : "",
                       ),
                       InsiteTableRowItem(
                         title: "Dealer Email Id : ",
-                        content: detailResult!.Email != null
-                            ? detailResult!.Email
+                        content: detailResult!.email != null
+                            ? detailResult!.email
                             : "",
                       ),
                     ],

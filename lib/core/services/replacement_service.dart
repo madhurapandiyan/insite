@@ -1,7 +1,12 @@
 import 'package:insite/core/base/base_service.dart';
+import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/repository/network.dart';
+import 'package:insite/core/repository/network_graphql.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/filter.dart';
 import 'package:insite/utils/urls.dart';
+import 'package:insite/views/subscription/replacement/model/device_replacement_details.dart';
 import 'package:insite/views/subscription/replacement/model/device_replacement_status_model.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model.dart';
 import 'package:insite/views/subscription/replacement/model/device_search_model_response.dart';
@@ -11,6 +16,26 @@ import 'package:insite/views/subscription/replacement/model/replacement_model.da
 import 'package:logger/logger.dart';
 
 class ReplacementService extends BaseService {
+  LocalService? _localService = locator<LocalService>();
+
+  Customer? accountSelected;
+  Customer? customerSelected;
+  String? token;
+
+  setUp() async {
+    try {
+      accountSelected = await _localService!.getAccountInfo();
+      customerSelected = await _localService!.getCustomerInfo();
+      token = await _localService!.getToken();
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  ReplacementService() {
+    setUp();
+  }
+
   Future<DeviceSearchModel?> getDeviceSearchModel(String searchWord) async {
     DeviceSearchModel? data;
     Map<String, String> queryMap = Map();
@@ -26,6 +51,33 @@ class ReplacementService extends BaseService {
               FilterUtils.constructQueryFromMap(queryMap));
     }
     return data;
+  }
+
+  Future<SubscriptionDeviceFleetList?> getSearchedDeviceDetails(
+      String? query) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService?.getLoggedInUser())?.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+
+        SubscriptionDeviceFleetList? deviceDetails =
+            SubscriptionDeviceFleetList.fromJson(
+                data.data["frameSubscription"]["subscriptionFleetList"]);
+
+        Logger().wtf("dashboard:${deviceDetails.toJson()}");
+
+        return deviceDetails;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
   Future<DeviceSearchModelResponse?> getDeviceSearchModelResponse(
@@ -72,20 +124,30 @@ class ReplacementService extends BaseService {
   }
 
   Future<TotalDeviceReplacementStatusModel?>
-      getTotalDeviceReplacementStatusModel(int startCount) async {
+      getTotalDeviceReplacementStatusModel(int startCount, String query) async {
     TotalDeviceReplacementStatusModel? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
     queryMap["start"] = startCount.toString();
     queryMap["limit"] = "16";
-    if (isVisionLink) {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlPlantData(
+        query: query,
+      );
+
+      TotalDeviceReplacementStatusModel? deviceDetails =
+          TotalDeviceReplacementStatusModel.fromJson(data.data);
+
+      Logger().wtf("response:$data");
+
+      return deviceDetails;
     } else {
       data = await MyApi().getClientNine()!.getRepalcementDeviceStatus(
           Urls.getReportOfReplacement +
               FilterUtils.constructQueryFromMap(queryMap));
+      Logger().wtf("data:$data");
       return data;
     }
-    return data;
   }
 
   Future<ReplacementDeviceIdDownload?> getReplacementDeviceIdDownload() async {
