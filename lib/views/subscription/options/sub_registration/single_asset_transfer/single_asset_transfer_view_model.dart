@@ -689,8 +689,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   getSelectedDate(DateTime? value) {
     _pickedDate = value;
-    commisioningDateController.text =
-        DateFormat("dd/MM/yyyy").format(_pickedDate!);
+    commisioningDateController.text =Utils.getDateFormatForDatePicker(_pickedDate!.toString(),userPref);
+       // DateFormat("dd/MM/yyyy").format(_pickedDate!);
     notifyListeners();
   }
 

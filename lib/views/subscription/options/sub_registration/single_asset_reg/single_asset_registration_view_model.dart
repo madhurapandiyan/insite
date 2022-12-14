@@ -13,6 +13,7 @@ import 'package:insite/core/models/subscription_serial_number_results.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -221,7 +222,7 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
     _pickedDate = value;
     var outputFormat = DateFormat('dd-MM-yyyy');
     //var dateTime = DateFormat("dd-MM-yyyy").parse(_pickedDate.toString());
-    hourMeterDateController.text = outputFormat.format(value!);
+    hourMeterDateController.text = Utils.getDateFormatForDatePicker(value!.toString(),userPref);
     // DateFormat.yMMMd().format(_pickedDate!);
     notifyListeners();
   }

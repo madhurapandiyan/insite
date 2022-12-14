@@ -599,7 +599,7 @@ class _AddReportViewState extends State<AddReportView> {
                           child: Padding(
                               padding: const EdgeInsets.only(left: 10, top: 3),
                               child: CustomDatePicker(
-                                initialText: "MM/DD/YYYY",
+                                initialText:  Utils.getDateFormat(viewModel.userPref?.dateFormat)?.toUpperCase(),
                                 controller: viewModel.dateTimeController,
                                 voidCallback: () {
                                   getDatePicker(viewModel);
@@ -926,7 +926,7 @@ class _AddReportViewState extends State<AddReportView> {
 
     if (pickedStartDate != null) {
       print(pickedStartDate);
-      String formattedDate =Utils.getManualDateFormat(pickedStartDate.toString());
+      String formattedDate =Utils.getDateFormatForDatePicker(pickedStartDate.toString(),viewModel.userPref);
       // DateFormat('MM/dd/yyyy').format(pickedStartDate);
 
       print(formattedDate);
