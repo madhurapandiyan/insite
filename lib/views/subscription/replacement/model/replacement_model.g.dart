@@ -45,7 +45,7 @@ ReplacementGraphqlModel _$ReplacementGraphqlModelFromJson(
     ReplacementGraphqlModel(
       source: json['source'] as String?,
       userID: json['userID'] as int?,
-      version: (json['version'] as num?)?.toDouble(),
+      version: json['version'] as String?,
       device: (json['device'] as List<dynamic>?)
           ?.map((e) =>
               NewDeviceIdGrapgqlDetail.fromJson(e as Map<String, dynamic>))

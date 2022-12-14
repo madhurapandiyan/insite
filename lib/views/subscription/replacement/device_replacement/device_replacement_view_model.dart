@@ -332,7 +332,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
       ReplacementModel replacementData = ReplacementModel(
           Source: "THC",
           UserID: int.parse(userId!),
-          Version: 2.1,
+          Version: 2.0,
           device: [NewdeviceData]);
       var data = await replacementService!.savingReplacement(replacementData,graphqlSchemaService!.register());
       if (data["status"] == "success") {

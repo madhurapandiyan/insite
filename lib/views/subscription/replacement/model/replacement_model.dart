@@ -33,7 +33,7 @@ class NewDeviceIdDetail {
 class ReplacementGraphqlModel {
   final String? source;
   final int? userID;
-  final double? version;
+  final String? version;
   final List<NewDeviceIdGrapgqlDetail>? device;
   ReplacementGraphqlModel({this.source, this.userID, this.version, this.device});
 

@@ -54,27 +54,24 @@ class ReplacementService extends BaseService {
   }
 
   Future<SubscriptionDeviceFleetList?> getSearchedDeviceDetails(
-      String? query,dynamic payLoad) async {
+      String? query, dynamic payLoad) async {
     try {
-      
-        var data = await Network().getGraphqlPlantData(
+      var data = await Network().getGraphqlPlantData(
           query: query,
           // customerId: accountSelected?.CustomerUID,
           // userId: (await _localService?.getLoggedInUser())?.sub,
           // subId: customerSelected?.CustomerUID == null
           //     ? ""
           //     : customerSelected?.CustomerUID,
-              payLoad: payLoad
-        );
+          payLoad: payLoad);
 
-        SubscriptionDeviceFleetList? deviceDetails =
-            SubscriptionDeviceFleetList.fromJson(
-                data.data["frameSubscription"]["subscriptionFleetList"]);
+      SubscriptionDeviceFleetList? deviceDetails =
+          SubscriptionDeviceFleetList.fromJson(
+              data.data["frameSubscription"]["subscriptionFleetList"]);
 
-        Logger().wtf("dashboard:${deviceDetails.toJson()}");
+      Logger().wtf("dashboard:${deviceDetails.toJson()}");
 
-        return deviceDetails;
-      
+      return deviceDetails;
     } catch (e) {
       print(e.toString());
       return null;
@@ -114,33 +111,36 @@ class ReplacementService extends BaseService {
   }
 
   Future<dynamic> savingReplacement(
-      ReplacementModel replacementModeldata,String? query) async {
-        if(enableGraphQl){
-          var data = await Network().getGraphqlPlantData(
-          query: query,
-          // customerId: accountSelected?.CustomerUID,
-          // userId: (await _localService?.getLoggedInUser())?.sub,
-          // subId: customerSelected?.CustomerUID == null
-          //     ? ""
-          //     : customerSelected?.CustomerUID,
-              payLoad:  {
-    "id": replacementModeldata.UserID,
-    "gnacc": "aDU1ZXFZeUxxYXFnM3FzZ1NxOHhrdz09OzUzQkQ0QTZGQ0I0OUNCQUQ=",
-    "request": ReplacementGraphqlModel(
-      source: "THC",
-      userID: replacementModeldata.UserID,
-      version: replacementModeldata.Version,
-      device:replacementModeldata.device?.map((e) => NewDeviceIdGrapgqlDetail(
-        newDeviceId: e.NewDeviceId,
-        oldDeviceId: e.OldDeviceId,
-        reason: e.Reason,
-        vin: e.VIN
-        )).toList() ).toJson()
-  },
-        );
-
-          return data;  
-        }
+      ReplacementModel replacementModeldata, String? query) async {
+    if (enableGraphQl) {
+      var data = await Network().getGraphqlPlantData(
+        query: query,
+        // customerId: accountSelected?.CustomerUID,
+        // userId: (await _localService?.getLoggedInUser())?.sub,
+        // subId: customerSelected?.CustomerUID == null
+        //     ? ""
+        //     : customerSelected?.CustomerUID,
+        payLoad: {
+          "id": replacementModeldata.UserID,
+          "gnacc": "",
+          "request": ReplacementGraphqlModel(
+                  source: "THC",
+                  userID: replacementModeldata.UserID,
+                  version: replacementModeldata.Version.toString(),
+                  device: replacementModeldata.device
+                      ?.map((e) => NewDeviceIdGrapgqlDetail(
+                          newDeviceId: e.NewDeviceId,
+                          oldDeviceId: e.OldDeviceId,
+                          reason: e.Reason,
+                          vin: e.VIN))
+                      .toList())
+              .toJson()
+        },
+      );
+      if (data.data['assetOperation'] == null) {
+        return {'status': 'success'};
+      }
+    }
     if (isVisionLink) {
     } else {
       var data = await MyApi()
