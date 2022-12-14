@@ -398,7 +398,7 @@ class Utils {
   static String? maintenanceFromDateFormate(String date) {
     try {
       DateTime parseDate = DateTime.parse(date);
-      var data = parseDate.add(Duration(hours: 19, minutes: 00, seconds: 00));
+      var data = parseDate.add(Duration(hours: 00, minutes: 00, seconds: 00));
       var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
       ;
       return formatedStringData;

@@ -26,6 +26,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   bool? isLoadMore;
   int pageNumber = 1;
   int pageCount = 50;
+  
   ManageNotificationsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();

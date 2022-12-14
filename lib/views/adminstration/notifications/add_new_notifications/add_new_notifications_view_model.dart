@@ -50,6 +50,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   TabController? controller;
   Customer? accountSelected;
 
+  bool ? isEditLoading=false;
+
   AlertConfigEdit? localData;
 
   NotificationExist? notificationExists;
@@ -78,6 +80,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       await onGettingFaultCodeData();
       hideLoadingDialog();
       if (data != null) {
+        getEditLoading();
         Future.delayed(Duration.zero, () async {
           editingNotification(data);
         });
@@ -106,9 +109,17 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     }
   }
 
+  getEditLoading(){
+    isEditLoading=true;
+    notifyListeners();
+  }
+
   bool isEditing = false;
 
   bool isEditLoader = true;
+
+
+  
 
   List<String?> _noticationTypes = ["select"];
   List<String?> get notificationTypes => _noticationTypes;
@@ -561,6 +572,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           }
         }
       }
+     
       isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -801,6 +813,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         break;
       default:
     }
+     isEditLoading=false;
     await getGroupListData();
     notifyListeners();
 
@@ -895,6 +908,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     // data.alertConfig!.assets!.forEach((element) {
     //   assetUidData.add(element.assetUID!);
     // });
+    
     notifyListeners();
   }
 

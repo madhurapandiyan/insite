@@ -84,26 +84,30 @@ class HealthListItem extends StatelessWidget {
                       content: Utils.getDateUTC(faultElement!.lastReportedTimeUTC,dateFormat,timeZone)
                       
                     ),
-                    Column(
-                      children: [
-                        InsiteText(
-                          text: "Severity",
-                          size: 13,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        InsiteButton(
-                          content:faultElement!.severityLabel!.toUpperCase() ,
-                          width: 70,
-                          height: 30,
-                          bgColor:
-                              Utils.getFaultColor(faultElement!.severityLabel),
-                          title: faultElement!.severityLabel!.toUpperCase(),
-                          //textColor:  Utils.getFaultColor(faultElement!.severityLabel),
-                        )
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InsiteText(
+                            text: "Severity",
+                            size: 13,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          InsiteButton(
+                            content:faultElement!.severityLabel!.toUpperCase() ,
+                            width: 70,
+                            height: 30,
+                            bgColor:
+                                Utils.getFaultColor(faultElement!.severityLabel),
+                            title: faultElement!.severityLabel!.toUpperCase(),
+                            //textColor:  Utils.getFaultColor(faultElement!.severityLabel),
+                          )
+                        ],
+                      ),
                     )
                   ]),
                 ],
