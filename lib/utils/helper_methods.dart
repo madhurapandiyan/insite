@@ -2364,4 +2364,44 @@ static bool getLocationDisplay(String? location){
   }
 }
 
+static String? getDateFormat( dateFormat){
+
+  if(dateFormat=="MM/dd/yy"){
+   dateFormat='MM/dd/yyyy';
+  // var outputFormat = DateFormat('MM/dd/yyyy').toString();
+  Logger().wtf(dateFormat);
+  return dateFormat;
+  }else{
+    dateFormat='dd/MM/yyyy';
+    //var outputFormat = DateFormat('dd/MM/yyyy').toString(); 
+     Logger().wtf(dateFormat);
+    return dateFormat;
+  }
+  
+}
+
+static String getDateFormatForDatePicker(String? date,UserPreference? userPreference){
+  try {
+      Logger().wtf(userPreference?.dateFormat);
+      if(userPreference!.dateFormat=="MM/dd/yy"){
+
+  DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date!);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('MM/dd/yyyy');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+  }else{
+  
+  DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date!);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat('dd/MM/yyyy');
+      var outputDate = outputFormat.format(inputDate);
+      return outputDate;
+  }
+      
+    } catch (e) {
+      return "";
+    }
+
+}
 }

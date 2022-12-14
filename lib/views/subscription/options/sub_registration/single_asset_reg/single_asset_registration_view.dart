@@ -244,6 +244,7 @@ class _SingleAssetRegistrationViewState
                                                             BorderRadius
                                                                 .circular(10)),
                                                     child: CustomDatePicker(
+                                                      userPreference: viewModel.userPref,
                                                       controller: viewModel
                                                           .hourMeterDateController,
                                                       voidCallback: () =>
