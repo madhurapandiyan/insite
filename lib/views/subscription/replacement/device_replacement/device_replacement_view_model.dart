@@ -38,11 +38,11 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   bool isGettingNewDeviceId = false;
   int? changingIndex = 0;
 
-  List<dynamic> _searchList = [];
-  List<dynamic> get searchList => _searchList;
+  List<DeviceContainsList> _searchList = [];
+  List<DeviceContainsList> get searchList => _searchList;
 
-  dynamic _deviceSearchModelResponse;
-  dynamic get deviceSearchModelResponse => _deviceSearchModelResponse;
+  DeviceSearchModelResponse? _deviceSearchModelResponse;
+  DeviceSearchModelResponse? get deviceSearchModelResponse => _deviceSearchModelResponse;
 
   var searchTextController = TextEditingController();
   var replaceDeviceIdController = TextEditingController();
@@ -57,8 +57,8 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
   String initialvalue = "Select Reason *";
 
-  dynamic _replaceDeviceModelData;
-  dynamic get replaceDeviceModelData => _replaceDeviceModelData;
+  ReplaceDeviceModel? _replaceDeviceModelData;
+  ReplaceDeviceModel? get replaceDeviceModelData => _replaceDeviceModelData;
 
   onDropDownChanged(String value) {
     initialvalue = value;
@@ -93,18 +93,39 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   onEnteringDeviceId(String searchedWord) async {
     try {
       if (searchedWord.length < 4) {
+        checkingDeviceIdEnter=false;
         _searchList.clear();
 
         notifyListeners();
         return null;
       } else {
         if (enableGraphQl) {
+          
           SubscriptionDeviceFleetList? deviceFleetList =
               await replacementService!.getSearchedDeviceDetails(
-                  graphqlSchemaService!
-                      .getDeviceIdReplacement(searchedWord, "active",20));
+                  graphqlSchemaService!.getDeviceIdReplacement(), {
+            "status": "active",
+            "model": "",
+            "start": 0,
+            "limit": 20,
+            "search": {"gpsDeviceID": searchedWord}
+          });
+          if (deviceFleetList!.provisioningInfo != null &&
+              deviceFleetList.provisioningInfo!.isNotEmpty) {
+            final result = deviceFleetList.provisioningInfo?.first;
+            _deviceSearchModelResponse = DeviceSearchModelResponse(
+                result: DeviceSearchResponce(
+                    GPSDeviceID: result?.gpsDeviceID,
+                    Model: result?.model,
+                    VIN: result?.model,
+                    S_StartDate: result?.subscriptionStartDate));
+          }
+          deviceFleetList.provisioningInfo!.forEach((element) {
+            _searchList.add(DeviceContainsList(
+                containsList: element.gpsDeviceID, count: 1));
+          });
 
-          _searchList = deviceFleetList!.provisioningInfo!;
+          //_searchList = deviceFleetList!.provisioningInfo!;
 
           Logger().wtf(_searchList.length);
           if (_searchList.isEmpty) {
@@ -135,23 +156,18 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   onSelectedDeviceId(int i) {
-    if (enableGraphQl) {
-      searchTextController.text = searchList[i].gpsDeviceID!;
-      checkingDeviceIdEnter = true;
-      searchList.clear();
-      notifyListeners();
-    } else {
+    
       searchTextController.text = searchList[i].containsList!;
       checkingDeviceIdEnter = true;
       searchList.clear();
       notifyListeners();
-    }
+    
   }
 
   onSelectedNewDeviceId(int i) {
     if (enableGraphQl) {
       replaceDeviceIdController.text =
-          _replaceDeviceModelData!.provisioningInfo![i].gpsDeviceID!;
+          _replaceDeviceModelData!.result!.last[i].GPSDeviceID!;
       checkingNewDeviceIdEnter = false;
       notifyListeners();
     } else {
@@ -169,16 +185,34 @@ class DeviceReplacementViewModel extends InsiteViewModel {
 
   Future<bool?> onSearchingDeviceId() async {
     try {
+      var searchId;
       if (searchTextController.text.length < 4) {
         Fluttertoast.showToast(msg: "Enter valid device id");
         return false;
       } else {
         if (enableGraphQl) {
+          final result;
           showLoadingDialog();
           _searchList.clear();
-          _deviceSearchModelResponse = await replacementService!
-              .getSearchedDeviceDetails(graphqlSchemaService!
-                  .getDeviceIdReplacement(searchTextController.text, "active",20));
+          var searchId = await replacementService!.getSearchedDeviceDetails(
+              graphqlSchemaService!.getDeviceIdReplacement(), {
+            "status": "active",
+            "model": "",
+            "start": 0,
+            "limit": 20,
+            "search": {"gpsDeviceID": searchTextController.text}
+          });
+
+          if (searchId?.provisioningInfo != null &&
+              searchId!.provisioningInfo!.isNotEmpty) {
+            result = searchId.provisioningInfo!.first;
+            _deviceSearchModelResponse = DeviceSearchModelResponse(
+                result: DeviceSearchResponce(
+                    GPSDeviceID: result?.gpsDeviceID,
+                    Model: result?.model,
+                    VIN: result?.vin,
+                    S_StartDate: result?.subscriptionStartDate));
+          }
 
           isGettingOldDeviceId = true;
           searchingOldDeviceId = true;
@@ -188,8 +222,17 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         } else {
           showLoadingDialog();
           _searchList.clear();
-          _deviceSearchModelResponse = await replacementService!
+
+          searchId = await replacementService!
               .getDeviceSearchModelResponse(searchTextController.text);
+
+          var value = searchId?.result;
+          _deviceSearchModelResponse = DeviceSearchModelResponse(
+              result: DeviceSearchResponce(
+                  GPSDeviceID: value?.GPSDeviceID,
+                  Model: value?.Model,
+                  VIN: value?.VIN,
+                  S_StartDate: value?.S_StartDate));
           isGettingOldDeviceId = true;
           searchingOldDeviceId = true;
           hideLoadingDialog();
@@ -218,17 +261,38 @@ class DeviceReplacementViewModel extends InsiteViewModel {
         notifyListeners();
       } else {
         if (enableGraphQl) {
-          _replaceDeviceModelData = await replacementService!
-              .getSearchedDeviceDetails(graphqlSchemaService!
-                  .getDeviceIdReplacement(searchWord, "inactive",20));
+          var data = await replacementService!.getSearchedDeviceDetails(
+              graphqlSchemaService!.getDeviceIdReplacement(), {
+            "status": "inactive",
+            "model": "",
+            "start": 0,
+            "limit": 20,
+            "search": {"gpsDeviceID": searchWord}
+          });
 
-          if (_replaceDeviceModelData!.provisioningInfo!.isEmpty) {
+          if (data!.provisioningInfo != null &&
+              data.provisioningInfo!.isNotEmpty) {
+            
+            List<DeviceModel> searchList = [];
+            data.provisioningInfo?.forEach((element) {
+              searchList.add(DeviceModel(
+                  GPSDeviceID: element.gpsDeviceID,
+                  Model: element.model,
+                  VIN: element.vin,
+                  SubscriptionStartDate: element.subscriptionStartDate));
+            });
+            _replaceDeviceModelData = ReplaceDeviceModel(result: [searchList]);
+            checkingNewDeviceIdEnter = true;
+          }
+
+          if (data.provisioningInfo!.isEmpty) {
             Fluttertoast.showToast(msg: "Device Not Found");
             replaceDeviceIdController.clear();
+            checkingNewDeviceIdEnter=false;
             notifyListeners();
             return;
           }
-          checkingNewDeviceIdEnter = true;
+          
           notifyListeners();
         } else {
           _replaceDeviceModelData =
@@ -270,7 +334,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
           UserID: int.parse(userId!),
           Version: 2.1,
           device: [NewdeviceData]);
-      var data = await replacementService!.savingReplacement(replacementData);
+      var data = await replacementService!.savingReplacement(replacementData,graphqlSchemaService!.register());
       if (data["status"] == "success") {
         searchList.clear();
         showingNewDeviceIdPreview = false;

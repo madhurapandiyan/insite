@@ -12,7 +12,7 @@ import 'deviceId_widget_list.dart';
 
 class GettingNewDeviceId extends StatefulWidget {
   final String? oldDeviceId;
-  final dynamic modelData;
+  final ReplaceDeviceModel? modelData;
   final String? modelName;
   final Function(String)? onChange;
   final TextEditingController? controller;
@@ -165,6 +165,9 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
                           //   widget.controller!.text.toUpperCase().trim())
                           // widget.controller!.text.isEmpty
                           () {
+                            if(widget.initialValue=="Select Reason *"){
+                              return ;
+                            }
                         if (widget.modelData!.result!.last.any((element) =>
                             element.GPSDeviceID == widget.controller!.text)) {
                           widget.onNextPressed!();
