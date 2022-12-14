@@ -28,6 +28,7 @@ import 'reusable_widget/selcted_card_widget.dart';
 
 class AddNewNotificationsView extends StatefulWidget {
   final AlertConfigEdit? alertData;
+  
   AddNewNotificationsView({this.alertData});
   @override
   State<AddNewNotificationsView> createState() =>
@@ -165,7 +166,9 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
             onRefineApplied: () {
               //viewModel.refresh();
             },
-            body: SingleChildScrollView(
+            body: viewModel.isEditLoading!?
+            InsiteProgressBar():
+            SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

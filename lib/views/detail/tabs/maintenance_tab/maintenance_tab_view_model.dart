@@ -96,6 +96,7 @@ class MaintenanceTabViewModel extends InsiteViewModel {
   }
 
   getHistoryMaintenanceListItem({bool? isRefreshing}) async {
+    Logger().w(maintenanceHistoryStartDate);
     Logger().v(assetId);
     if (isRefreshing == true) {
       isHistoryDataOptained = true;
@@ -112,10 +113,11 @@ class MaintenanceTabViewModel extends InsiteViewModel {
             page: pageNumber,
             query: await graphqlSchemaService!.getMaintenanceListData(
                 assetId: assetId,
+
                 histroy: true,
                 startDate:
-                    Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-                endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+                    Utils.maintenanceFromDateFormate(maintenanceHistoryStartDate!),
+                endDate: Utils.maintenanceToDateFormate(maintenanceHistoryEndDate!),
                 limit: pageSize,
                 pageNo: pageNumber));
     if (maintenanceListData != null &&
