@@ -151,7 +151,9 @@ class SubScriptionService extends BaseService {
       String? name,
       int? code,
       PLANTSUBSCRIPTIONFILTERTYPE? filterType,
-      query}) async {
+      query,
+      dynamic payLoad
+      }) async {
     try {
       Map<String, String> queryMap = Map();
       if (accountSelected != null) {
@@ -341,13 +343,13 @@ if(enableGraphQl){
       {String? serialNumber, String? query}) async {
     try {
       if (enableGraphQl) {
-        var data = await Network().getGraphqlData(
+        var data = await Network().getGraphqlPlantData(
           query: query,
-          customerId: accountSelected?.CustomerUID,
-          userId: (await _localService?.getLoggedInUser())?.sub,
-          subId: customerSelected?.CustomerUID == null
-              ? ""
-              : customerSelected?.CustomerUID,
+          // customerId: accountSelected?.CustomerUID,
+          // userId: (await _localService?.getLoggedInUser())?.sub,
+          // subId: customerSelected?.CustomerUID == null
+          //     ? ""
+          //     : customerSelected?.CustomerUID,
         );
         SerialNumberResults? deviceDetails =
             SerialNumberResults.fromJson(data.data);

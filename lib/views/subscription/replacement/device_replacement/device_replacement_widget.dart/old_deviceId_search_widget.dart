@@ -16,14 +16,16 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
   final Function(int)? onSelectedDeviceId;
   final Function? onSearchingDeviceId;
   final bool isGettingOldDeviceId;
-
+  final bool? checkingDeviceIdEnter;
   OldDeviceIdSearchWidget(
       {required this.searchList,
       this.searchTextController,
       this.onEnteringDeviceId,
       this.onSelectedDeviceId,
       this.onSearchingDeviceId,
-      required this.isGettingOldDeviceId});
+      required this.isGettingOldDeviceId,
+      this.checkingDeviceIdEnter,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,7 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
                   controller: searchTextController,
                   onChanged: (value) {
                     onEnteringDeviceId!(value);
+                    
                   },
                   suffixWidget: Icon(
                     Icons.search,
@@ -86,7 +89,7 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
                                             FocusScope.of(context).unfocus();
                                           },
 
-                                          // deviceId: searchList[i].containsList
+                                          deviceId: searchList[i].containsList
                                         )),
                               ),
                       )),
@@ -95,8 +98,9 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
               ),
               InsiteButton(
                   onTap: () {
+                    if(checkingDeviceIdEnter==true){
                     onSearchingDeviceId!();
-                  },
+                  }},
                   textColor: white,
                   fontSize: 17,
                   height: MediaQuery.of(context).size.height * 0.05,
