@@ -51,12 +51,12 @@ class CustomerListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Customer Name : ",
                         content:
-                            detailResult!.Name != null ? detailResult!.Name : "",
+                            detailResult!.name != null ? detailResult!.name : "",
                       ),
                       InsiteTableRowItem(
                         title: "User Name : ",
-                        content: detailResult!.UserName != null
-                            ? detailResult!.UserName
+                        content: detailResult!.userName != null
+                            ? detailResult!.userName
                             : "",
                       ),
                     ],
@@ -66,12 +66,12 @@ class CustomerListItem extends StatelessWidget {
                       InsiteTableRowItem(
                         title: "Customer Code : ",
                         content:
-                            detailResult!.Code != null ? detailResult!.Code : "",
+                            detailResult!.code != null ? detailResult!.code : "",
                       ),
                       InsiteTableRowItem(
                         title: "Customer Email Id : ",
-                        content: detailResult!.Email != null
-                            ? detailResult!.Email
+                        content: detailResult!.email != null
+                            ? detailResult!.email
                             : "",
                       ),
                     ],

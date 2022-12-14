@@ -49,19 +49,19 @@ class ToBeActivatedListItem extends StatelessWidget {
                   TableRow(
                     children: [
                       InsiteTableRowItemWithImage(
-                        title: detailResult!.GPSDeviceID != null
-                            ? "Device ID : " + "\n" + detailResult!.GPSDeviceID!
+                        title: detailResult!.gpsDeviceId != null
+                            ? "Device ID : " + "\n" + detailResult!.gpsDeviceId!
                             : "Device ID : " + "\n",
-                        path: detailResult == null || detailResult!.Model == null
+                        path: detailResult == null || detailResult!.model == null
                             ? "assets/images/EX210.png"
-                            : detailResult!.Model != null
-                                ? Utils().imageData(detailResult!.Model!)
+                            : detailResult!.model != null
+                                ? Utils().imageData(detailResult!.model!)
                                 : "",
                       ),
                       InsiteTableRowItem(
                         title: "Network Provider : ",
-                        content: detailResult!.NetworkProvider != null
-                            ? detailResult!.NetworkProvider
+                        content: detailResult!.networkProvider != null
+                            ? detailResult!.networkProvider
                             : "",
                       ),
                     ],

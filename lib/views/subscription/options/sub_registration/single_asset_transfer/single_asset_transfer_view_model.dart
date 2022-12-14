@@ -3,19 +3,26 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
 import 'package:insite/core/models/add_asset_transfer.dart';
+import 'package:insite/core/models/dealer_to_dealer_tranfer.dart';
+import 'package:insite/core/models/device_details_graphql.dart';
 import 'package:insite/core/models/device_details_per_id.dart';
 import 'package:insite/core/models/get_asset_details_by_serial_no.dart';
+import 'package:insite/core/models/get_single_transfer_deviceId_graphql.dart';
 import 'package:insite/core/models/get_single_transfer_device_id.dart';
+import 'package:insite/core/models/hierachy_graphql.dart';
 import 'package:insite/core/models/hierarchy_model.dart';
+import 'package:insite/core/models/industry_list_data.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
 import 'package:insite/core/models/preview_data.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:intl/intl.dart';
 import 'package:load/load.dart';
@@ -52,6 +59,11 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   List<Result> _deviceList = [];
   List<Result> get deviceList => _deviceList;
+  List<SingleFleetDetails>? _deviceDetailsList = [];
+  List<SingleFleetDetails>? get deviceDetailsList => _deviceDetailsList;
+
+  List<HierarchyFleetSearch> _deviceIdList = [];
+  List<HierarchyFleetSearch> get deviceIdList => _deviceIdList;
 
   List<ResultData> _deviceValues = [];
   List<ResultData> get deviceValues => _deviceValues;
@@ -62,8 +74,8 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   List<String> _deviceDetail = [];
   List<String> get deviceDetail => _deviceDetail;
 
-  List<HierarchyModel> _devices = [];
-  List<HierarchyModel> get devices => _devices;
+  List<dynamic> _devices = [];
+  List<dynamic> get devices => _devices;
 
   List<HierarchyModel> _deviceListData = [];
   List<HierarchyModel> get deviceListData => _deviceListData;
@@ -88,6 +100,12 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   bool _fillCustomerDetails = false;
   bool get fillCustomerDetails => _fillCustomerDetails;
+
+  bool transDealerCodeChange = false;
+  bool transDealerNameChange = false;
+  bool transCustomerCodeChange = false;
+  bool transCustomerNameChange = false;
+ 
 
   String _initialLanguage = "Select Language";
   String get initialLanguge => _initialLanguage;
@@ -133,8 +151,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   List<String> get industrySubDetails => _industrySubDetails;
 
   DeviceDetailsPerId? deviceDetailsPerId;
+  SelectedDevice? deviceDetailsPerIdGraphql;
   CustomerDetails? customerDetails;
-
+  DealerToDealerDetail? dealerToDealerDetails;
   List<String> _popUpCardTitles = [
     "Entity Details",
     "Dealer Details",
@@ -170,6 +189,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   List<String?> _customerCode = [];
   List<String?> get customerCode => _customerCode;
 
+  List<Asset> _totalAsset = [];
+  List<Asset> get totalAsset => _totalAsset;
+
   List<AssetValues> _totalAssetValues = [];
   List<AssetValues> get totalAssetValues => _totalAssetValues;
 
@@ -202,42 +224,92 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   SingleAssetTransferViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     Future.delayed(Duration(seconds: 1), () {});
+    getIndustryGraphqlData(initialIndustryDetail);
   }
 
   allowAssetTransferClicked() async {
     //_enableCustomerDetails = !_enableCustomerDetails;
-    if (isDeviceIdChange) {
-      await onSelectedDeviceId(deviceIdController.text);
-    }
+    // if (isDeviceIdChange) {
+    //   await onSelectedDeviceId(deviceIdController.text);
+    // }
+    if (enableGraphQl) {
+      if (deviceIdController.text.isNotEmpty) {
+        if (deviceDetailsPerIdGraphql!.singleFleetDetails!.first.customerCode ==
+                null &&
+            deviceDetailsPerIdGraphql!.singleFleetDetails!.first.customerName ==
+                null) {
+          _allowTransferAsset = !_allowTransferAsset;
+          deviceIdController.clear();
+          machineSerialNumberController.clear();
+          machineModelController.clear();
+          // customerCodeController.clear();
+          // customerEmailController.clear();
+          // customerNameController.clear();
+          notifyListeners();
+          snackbarService!.showSnackbar(
+              message:
+                  "This Asset/device not provisioned under a Dealer & Customer !!");
+          return;
+        } else {
+          //  customerCodeController.text = deviceDetailsPerIdGraphql!
+          //         .singleFleetDetails!.first.customerCode!;
+          //     customerEmailController.text = deviceDetailsPerIdGraphql!
+          //         .singleFleetDetails!.first.customerName!;
+          //     customerNameController.text = deviceDetailsPerIdGraphql!
+          //         .singleFleetDetails!.first.customerName!;
+          _allowTransferAsset = !_allowTransferAsset;
+          notifyListeners();
+          var data = await _subscriptionService!.getDealerToDealerDetail(
+              graphqlSchemaService!.getDealerToDealerTransfer(
+                  searchValue: deviceIdController.text));
+          customerCodeController.text =
+              data!.dealerToDealerTransfer!.customerDetails!.code.toString();
+          customerEmailController.text =
+              data.dealerToDealerTransfer!.customerDetails!.email.toString();
+          customerNameController.text =
+              data.dealerToDealerTransfer!.customerDetails!.name.toString();
 
-    if (deviceIdController.text.isNotEmpty) {
-      if (deviceDetailsPerId!.result!.first.CustomerCode == null &&
-          deviceDetailsPerId!.result!.first.CustomerName == null) {
-        _allowTransferAsset = !_allowTransferAsset;
-        deviceIdController.clear();
-        machineSerialNumberController.clear();
-        machineModelController.clear();
-        // customerCodeController.clear();
-        // customerEmailController.clear();
-        // customerNameController.clear();
-        notifyListeners();
-        snackbarService!.showSnackbar(
-            message:
-                "This Asset/device not provisioned under a Dealer & Customer !!");
-        return;
+         // notifyListeners();
+        }
       } else {
-        // customerCodeController.text =
-        //     deviceDetailsPerId!.result!.first.CustomerCode!;
-        // customerNameController.text =
-        //     deviceDetailsPerId!.result!.first.CustomerName!;
-        // customerEmailController.text =
-        //     customerDetails!.customerResult!.customerData!.email!;
         _allowTransferAsset = !_allowTransferAsset;
+
         notifyListeners();
       }
     } else {
-      _allowTransferAsset = !_allowTransferAsset;
-      notifyListeners();
+      if (isDeviceIdChange) {
+        await onSelectedDeviceId(deviceIdController.text);
+      }
+
+      if (deviceIdController.text.isNotEmpty) {
+        if (deviceDetailsPerId!.result!.first.CustomerCode == null &&
+            deviceDetailsPerId!.result!.first.CustomerName == null) {
+          _allowTransferAsset = !_allowTransferAsset;
+          deviceIdController.clear();
+          machineSerialNumberController.clear();
+          machineModelController.clear();
+          // customerCodeController.clear();
+          // customerEmailController.clear();
+          // customerNameController.clear();
+          notifyListeners();
+          snackbarService!.showSnackbar(
+              message:
+                  "This Asset/device not provisioned under a Dealer & Customer !!");
+          return;
+        } else {
+          customerCodeController.text =
+              deviceDetailsPerId!.result!.first.CustomerCode!;
+          customerNameController.text =
+              deviceDetailsPerId!.result!.first.CustomerName!;
+          customerEmailController.text =
+              customerDetails!.customerResult!.customerData!.email!;
+          _allowTransferAsset = !_allowTransferAsset;
+          notifyListeners();
+        }
+      } else {
+        _allowTransferAsset = !_allowTransferAsset;
+        notifyListeners();
+      }
     }
   }
 
@@ -254,6 +326,39 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   onSelectingSubIndustry(String value) {
     _initialSubIndustryDetailValue = value;
     notifyListeners();
+  }
+
+  getIndustryGraphqlData(String? value) async {
+    if (enableGraphQl) {
+      _initialIndustryDetail = "Select Industry Details";
+      _industryDetails = ["Select Industry Details"];
+      _initialSubIndustryDetailValue = "Select Secondary Details";
+      _industrySubDetails = ["Select Secondary Details"];
+      _showSubIndustry = false;
+      notifyListeners();
+      IndustryListData? result = await _subscriptionService!
+          .getIndustryTransferData(
+              graphqlSchemaService!.singleAssetTransferIndustryData());
+      if (result != null) {
+        result.primarySecondaryIndustries!.forEach((element) {
+          _industryDetails.add(element.primaryIndustry!);
+        });
+
+        for (var i = 0; i < result.primarySecondaryIndustries!.length; i++) {
+          var data = result.primarySecondaryIndustries![i];
+          if (data.primaryIndustry == value) {
+            _showSubIndustry = true;
+            _industrySubDetails.add(data.secondaryIndustries!);
+          }
+        }
+      }
+      Logger().wtf(result!.primarySecondaryIndustries!.first.toJson());
+      notifyListeners();
+      Logger().w("graphql api  integration");
+    }
+     else {
+      updateIndustry(value!);
+    }
   }
 
   updateIndustry(String value) {
@@ -349,7 +454,6 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
         "Machinery",
         "Motor vehicles",
         "Shipbuilding",
-        "Other manufacturing",
         "Other manufacturing",
         "Non-manufacturing",
         "Retail",
@@ -462,6 +566,7 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     }
 
     _showSubIndustry = true;
+    industrySubDetails.toSet().toList();
     notifyListeners();
   }
 
@@ -666,116 +771,324 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     }
   }
 
-  onSelectedNameTile(String value) {
-    Logger().e(value);
-    _devices.forEach((element) {
-      if (element.Name == value) {
-        customerNameController.text = element.Name!;
-        customerCodeController.text = element.Code!;
-        customerEmailController.text = element.Email!;
-        customerId.clear();
+  onSelectedNameTile(String value) async {
+    Logger().i(_devices.length);
+    if (enableGraphQl) {
+      var selectedCustomerName = await (_subscriptionService!
+          .getSubscriptionDevicesFromGraphQl(
+              graphqlSchemaService!.getDeviceCodeAndName(
+        start: 0,
+        limit: 50,
+        type: "CUSTOMER",
+        name: value,
+        code: "",
+      )));
+      _devices.forEach((element) {
+        if (element.name == value) {
+          customerNameController.text = element.name!;
+          customerCodeController.text = element.code!;
+          customerEmailController.text = element.email ?? "";
+          _customerId.clear();
+          notifyListeners();
+        }
+      });
+      if (customerCodeController.text.isNotEmpty) {
+        var data = await (_subscriptionService!
+            .getSubscriptionDevicesFromGraphQl(
+                graphqlSchemaService!.getDeviceCodeAndName(
+          start: 0,
+          limit: 50,
+          type: "CUSTOMER",
+          name: "",
+          code: customerCodeController.text,
+        )));
       }
-    });
-    notifyListeners();
+      
+      transCustomerNameChange=false;
+      transCustomerCodeChange=false;
+      notifyListeners();
+    } else {
+      _devices.forEach((element) {
+        if (element.Name == value) {
+          customerNameController.text = element.Name;
+          customerCodeController.text = element.Code;
+          customerEmailController.text = element.Email ?? "";
+          _customerId.clear();
+          notifyListeners();
+        }
+      });
+      transCustomerNameChange=false;
+      transCustomerCodeChange=false;
+    }
   }
 
-  onSelectedCodeTile(String value) {
-    Logger().e(value);
-    _devices.forEach((element) {
-      Logger().wtf(value);
-      if (element.Code == value) {
-        customerNameController.text = element.Name!;
-        customerCodeController.text = element.Code!;
-        customerEmailController.text = element.Email!;
-        customerCode.clear();
-        notifyListeners();
+  onSelectedCodeTile(String value) async {
+    Logger().i(_devices.length);
+    if (enableGraphQl) {
+      var selectedCustomerCode = await (_subscriptionService!
+          .getSubscriptionDevicesFromGraphQl(
+              graphqlSchemaService!.getDeviceCodeAndName(
+        start: 0,
+        limit: 50,
+        type: "CUSTOMER",
+        name: "",
+        code: value,
+      )));
+      _devices.forEach((element) {
+        if (element.code == value) {
+          customerNameController.text = element.name!;
+          customerCodeController.text = element.code!;
+          customerEmailController.text = element.email ?? "";
+          _customerCode.clear();
+          notifyListeners();
+        }
+      });
+      if (customerNameController.text.isNotEmpty) {
+        var data = await (_subscriptionService!
+            .getSubscriptionDevicesFromGraphQl(
+                graphqlSchemaService!.getDeviceCodeAndName(
+          start: pageNumber,
+          limit: pageSize,
+          type: "CUSTOMER",
+          name: customerNameController.text,
+          code: "",
+        )));
       }
-    });
+      transCustomerCodeChange=false;
+       transCustomerNameChange=false;
+       notifyListeners();
+    } else {
+      _devices.forEach((element) {
+        if (element.Code == value) {
+          customerNameController.text = element.Name;
+          customerCodeController.text = element.Code;
+          customerEmailController.text = element.Email ?? "";
+          _customerCode.clear();
+          notifyListeners();
+        }
+      });
+      transCustomerCodeChange=false;
+       transCustomerNameChange=false;
+    }
   }
 
-  onSelectedDealerNameTile(String value) {
-    _devices.forEach((element) {
-      if (element.Name == value) {
-        dealerNameController.text = element.Name!;
-        dealerCodeController.text = element.Code!;
-        dealerEmailController.text = element.Email!;
-        _dealerId.clear();
-        notifyListeners();
+  onSelectedDealerNameTile(String value) async {
+    Logger().i(_devices.length);
+    if (enableGraphQl) {
+      var selectedDealerName = await (_subscriptionService!
+          .getSubscriptionDevicesFromGraphQl(
+              graphqlSchemaService!.getDeviceCodeAndName(
+        start: 0,
+        limit: 50,
+        type: "DEALER",
+        name: value,
+        code: "",
+      )));
+      _devices.forEach((element) async {
+        if (element.name == value) {
+          dealerNameController.text = element.name!;
+          dealerCodeController.text = element.code!;
+  if (dealerCodeController.text.isNotEmpty) {
+        var data = await (_subscriptionService!
+            .getSubscriptionDevicesFromGraphQl(
+                graphqlSchemaService!.getDeviceCodeAndName(
+          start: pageNumber,
+          limit: 50,
+          type: "DEALER",
+          name: "",
+          code: dealerCodeController.text,
+        )));
       }
-    });
+          dealerEmailController.text = element.email ?? "";
+          _dealerId.clear();
+          notifyListeners();
+        }
+      });
+    
+      transDealerNameChange=false;
+       transDealerCodeChange=false;
+       notifyListeners();
+    } else {
+      _devices.forEach((element) {
+        if (element.Name == value) {
+          dealerNameController.text = element.Name;
+          dealerCodeController.text = element.Code;
+          dealerEmailController.text = element.Email ?? "";
+          _dealerId.clear();
+          notifyListeners();
+        }
+      });
+      transDealerNameChange=false;
+       transDealerCodeChange=false;
+    }
   }
 
-  onSelectedDealerCodeTile(String value) {
-    _devices.forEach((element) {
-      if (element.Code == value) {
-        dealerNameController.text = element.Name!;
-        dealerCodeController.text = element.Code!;
-        dealerEmailController.text = element.Email!;
-        _dealerCode.clear();
-        notifyListeners();
+  onSelectedDealerCodeTile(String value) async {
+    Logger().i(_devices.length);
+    if (enableGraphQl) {
+      var selectedDealerCode = await (_subscriptionService!
+          .getSubscriptionDevicesFromGraphQl(
+              graphqlSchemaService!.getDeviceCodeAndName(
+        start: 0,
+        limit: 50,
+        type: "DEALER",
+        name: "",
+        code: value,
+      )));
+      selectedDealerCode!.assetOrHierarchyByTypeAndId!.forEach((element) async{
+        if (element.code == value) {
+          dealerNameController.text = element.name!;
+          if (dealerNameController.text.isNotEmpty) {
+        var data = await (_subscriptionService!
+            .getSubscriptionDevicesFromGraphQl(
+                graphqlSchemaService!.getDeviceCodeAndName(
+          start: 0,
+          limit: 50,
+          type: "DEALER",
+          name: dealerNameController.text,
+          code: "",
+        )));
       }
-    });
+          dealerCodeController.text = element.code!;
+          dealerEmailController.text = element.email ?? "";
+          _dealerCode.clear();
+          notifyListeners();
+        }
+      });
+      
+      transDealerCodeChange=false;
+      transDealerNameChange=false;
+      notifyListeners();
+     
+    } else {
+      _devices.forEach((element) {
+        if (element.Code == value) {
+          dealerNameController.text = element.Name;
+          dealerCodeController.text = element.Code;
+          dealerEmailController.text = element.Email ?? "";
+          _dealerCode.clear();
+          notifyListeners();
+        }
+      });
+      transDealerCodeChange=false;
+      transDealerNameChange=false;
+    
+    }
   }
 
   onSelectedDeviceId(String value) async {
     try {
-      showLoadingDialog();
-      deviceDetailsPerId =
-          await _subscriptionService!.getDeviceDetailsPerDeviceId(value);
-      if (deviceDetailsPerId?.result?.first.CustomerCode == null &&
-          deviceDetailsPerId?.result?.first.CustomerName == null) {
-        if (_allowTransferAsset) {
-          _snackbarService.showSnackbar(
-              message:
-                  "This Asset/device not provisioned under a Dealer & Customer !!");
-          deviceIdController.clear();
-          machineSerialNumberController.clear();
-          machineModelController.clear();
-          customerCodeController.clear();
-          customerEmailController.clear();
-          customerNameController.clear();
-          notifyListeners();
-          return;
+      if (enableGraphQl) {
+        showLoadingDialog();
+        var selectedDeviceId = await _subscriptionService!
+            .getAssetTransferDeviceIds(graphqlSchemaService!
+                .getDeviceIdTransfer(
+                    limit: 50,
+                    oem: "VEhD",
+                    searchkey: "GPSDeviceID",
+                    searchValue: value,
+                    start: 0,
+                    userId: (await _localService?.getLoggedInUser())?.sub));
+        deviceDetailsPerIdGraphql = await _subscriptionService!
+            .getDeviceDetailsbyIdGraphql(graphqlSchemaService!
+                .getDeviceTransferDetails(
+                    searchKey: "GPSDeviceID", searchValue: value));
+        if (deviceDetailsPerIdGraphql?.singleFleetDetails?.first.customerCode ==
+                null &&
+            deviceDetailsPerIdGraphql?.singleFleetDetails?.first.customerName ==
+                null) {
+          if (_allowTransferAsset) {
+            _snackbarService.showSnackbar(
+                message:
+                    "This Asset/device not provisioned under a Dealer & Customer !!");
+            deviceIdController.clear();
+            machineSerialNumberController.clear();
+            machineModelController.clear();
+            customerCodeController.clear();
+            customerEmailController.clear();
+            customerNameController.clear();
+            notifyListeners();
+            return;
+          } else {
+            customerCodeController.clear();
+            customerNameController.clear();
+            customerEmailController.clear();
+            machineModelController.text =
+                deviceDetailsPerIdGraphql!.singleFleetDetails!.first.model!;
+          }
         } else {
-          customerCodeController.clear();
-          customerNameController.clear();
-          customerEmailController.clear();
-          machineModelController.text =
-              deviceDetailsPerId!.result!.first.model!;
-        }
-      } else {
-        Logger().e(deviceDetailsPerId!.result!.first.model!);
-        customerDetails = await _subscriptionService!.getCustomerDetails(value);
-        customerCodeController.text =
-            customerDetails!.customerResult!.customerData!.code!;
-        customerEmailController.text =
-            customerDetails!.customerResult!.customerData!.email!;
-        customerNameController.text =
-            customerDetails!.customerResult!.customerData!.name!;
-        machineModelController.text = deviceDetailsPerId!.result!.first.model!;
-      }
-      _deviceList.forEach((element) {
-        if (element.gPSDeviceID == value) {
-          deviceIdController.text = element.gPSDeviceID!;
-          machineSerialNumberController.text = element.vIN!;
-          _gpsDeviceIdList.clear();
-          notifyListeners();
-        }
-      });
-      hideLoadingDialog();
-    } catch (e) {
-      Logger().e(e.toString());
-      hideLoadingDialog();
-    }
-  }
+          Logger()
+              .i(deviceDetailsPerIdGraphql!.singleFleetDetails!.first.model!);
+          // customerDetails =
+          //     await _subscriptionService!.getCustomerDetails(value);
+          _deviceDetailsList!
+              .addAll(deviceDetailsPerIdGraphql!.singleFleetDetails!);
 
-  onSelectedSerialNo(String value) {
-    _deviceList.forEach((element) async {
-      if (element.vIN == value) {
-        var data = await _subscriptionService!
-            .getDeviceDetailsPerDeviceId(element.gPSDeviceID!);
-        if (data?.result?.first.CustomerCode == null &&
-            data?.result?.first.CustomerName == null) {
+          Logger().i(_deviceDetailsList);
+          deviceIdController.text =
+              deviceDetailsPerIdGraphql!.singleFleetDetails!.first.gpsDeviceID!;
+          machineSerialNumberController.text =
+              deviceDetailsPerIdGraphql!.singleFleetDetails!.first.vin!;
+          if (machineSerialNumberController.text.isNotEmpty) {
+            //   getSerialNumbers( machineSerialNumberController.text);
+            var data = await _subscriptionService!.getAssetTransferDeviceIds(
+                graphqlSchemaService!.getDeviceIdTransfer(
+                    limit: 50,
+                    oem: "VEhD",
+                    searchkey: "VIN",
+                    searchValue: machineSerialNumberController.text,
+                    start: start,
+                    userId: (await _localService?.getLoggedInUser())?.sub));
+          }
+
+          machineModelController.text =
+              deviceDetailsPerIdGraphql!.singleFleetDetails!.first.model!;
+
+          commisioningDateController.text = DateFormat("dd/MM/yyyy").format(
+              deviceDetailsPerIdGraphql!
+                  .singleFleetDetails!.first.commissioningDate!);
+          if (_allowTransferAsset) {
+            dealerToDealerDetails = await _subscriptionService!
+                .getDealerToDealerDetail(graphqlSchemaService!
+                    .getDealerToDealerTransfer(
+                        searchValue: deviceIdController.text));
+            customerCodeController.text = dealerToDealerDetails!
+                .dealerToDealerTransfer!.customerDetails!.code
+                .toString();
+            customerEmailController.text = dealerToDealerDetails!
+                .dealerToDealerTransfer!.customerDetails!.email
+                .toString();
+            customerNameController.text = dealerToDealerDetails!
+                .dealerToDealerTransfer!.customerDetails!.name
+                .toString();
+          }
+          // customerCodeController.text = deviceDetailsPerIdGraphql!
+          //     .singleFleetDetails!.first.customerCode!;
+          // customerEmailController.text = deviceDetailsPerIdGraphql!
+          //     .singleFleetDetails!.first.customerName!;
+          // customerNameController.text = deviceDetailsPerIdGraphql!
+          //     .singleFleetDetails!.first.customerName!;
+          // machineModelController.text =
+          //     deviceDetailsPerIdGraphql!.singleFleetDetails!.first.model!;
+        }
+
+        _deviceDetailsList!.forEach((element) {
+          if (element.gpsDeviceID == value) {
+            deviceIdController.text = element.gpsDeviceID!;
+            machineSerialNumberController.text = element.vin!;
+            machineModelController.text = element.model!;
+            _gpsDeviceIdList.clear();
+            notifyListeners();
+          }
+        });
+        hideLoadingDialog();
+        notifyListeners();
+      } else {
+        showLoadingDialog();
+        deviceDetailsPerId =
+            await _subscriptionService!.getDeviceDetailsPerDeviceId(value);
+        if (deviceDetailsPerId?.result?.first.CustomerCode == null &&
+            deviceDetailsPerId?.result?.first.CustomerName == null) {
           if (_allowTransferAsset) {
             _snackbarService.showSnackbar(
                 message:
@@ -796,23 +1109,199 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
                 deviceDetailsPerId!.result!.first.model!;
           }
         } else {
-          customerDetails = await _subscriptionService!
-              .getCustomerDetails(element.gPSDeviceID!);
-          customerCodeController.text =
-              customerDetails!.customerResult!.customerData!.code!;
-          customerEmailController.text =
-              customerDetails!.customerResult!.customerData!.email!;
-          customerNameController.text =
-              customerDetails!.customerResult!.customerData!.name!;
-          machineModelController.text = data!.result!.first.model!;
-          deviceIdController.text = element.gPSDeviceID!;
-          machineSerialNumberController.text = element.vIN!;
-          isDeviceIdChange = true;
-          _serialNoList.clear();
-          onSelectingSerialNo(value);
+          Logger().e(deviceDetailsPerId!.result!.first.model!);
+          customerDetails =
+              await _subscriptionService!.getCustomerDetails(value);
+          if (_allowTransferAsset) {
+            customerCodeController.text =
+                customerDetails!.customerResult!.customerData!.code!;
+            customerEmailController.text =
+                customerDetails!.customerResult!.customerData!.email!;
+            customerNameController.text =
+                customerDetails!.customerResult!.customerData!.name!;
+          }
+          // customerCodeController.text =
+          //     customerDetails!.customerResult!.customerData!.code!;
+          // customerEmailController.text =
+          //     customerDetails!.customerResult!.customerData!.email!;
+          // customerNameController.text =
+          //     customerDetails!.customerResult!.customerData!.name!;
+          machineModelController.text =
+              deviceDetailsPerId!.result!.first.model!;
         }
+        _deviceList.forEach((element) {
+          if (element.gPSDeviceID == value) {
+            deviceIdController.text = element.gPSDeviceID!;
+            machineSerialNumberController.text = element.vIN!;
+            _gpsDeviceIdList.clear();
+            notifyListeners();
+          }
+        });
+        hideLoadingDialog();
       }
-    });
+    } catch (e) {
+      Logger().e(e.toString());
+      hideLoadingDialog();
+    }
+  }
+
+  onSelectedSerialNo(String value) async {
+    if (enableGraphQl) {
+      showLoadingDialog();
+      var selectedSerialNum = await _subscriptionService!
+          .getAssetTransferDeviceIds(graphqlSchemaService!.getDeviceIdTransfer(
+              limit: 50,
+              oem: "VEhD",
+              searchkey: "VIN",
+              searchValue: value,
+              start: start,
+              userId: (await _localService?.getLoggedInUser())?.sub));
+      deviceDetailsPerIdGraphql = await _subscriptionService!
+          .getDeviceDetailsbyIdGraphql(graphqlSchemaService!
+              .getDeviceTransferDetails(searchKey: "VIN", searchValue: value));
+      if (deviceDetailsPerIdGraphql?.singleFleetDetails?.first.customerCode ==
+              null &&
+          deviceDetailsPerIdGraphql?.singleFleetDetails?.first.customerName ==
+              null) {
+        if (_allowTransferAsset) {
+          _snackbarService.showSnackbar(
+              message:
+                  "This Asset/device not provisioned under a Dealer & Customer !!");
+          deviceIdController.clear();
+          machineSerialNumberController.clear();
+          machineModelController.clear();
+          customerCodeController.clear();
+          customerEmailController.clear();
+          customerNameController.clear();
+          notifyListeners();
+          return;
+        } else {
+          customerCodeController.clear();
+          customerNameController.clear();
+          customerEmailController.clear();
+          machineModelController.text =
+              deviceDetailsPerIdGraphql!.singleFleetDetails!.first.model!;
+        }
+      } else {
+        Logger().i(deviceDetailsPerIdGraphql!.singleFleetDetails!.first.model!);
+        // customerDetails =
+        //     await _subscriptionService!.getCustomerDetails(value);
+        _deviceDetailsList!
+            .addAll(deviceDetailsPerIdGraphql!.singleFleetDetails!);
+
+        Logger().i(_deviceDetailsList);
+        deviceIdController.text =
+            deviceDetailsPerIdGraphql!.singleFleetDetails!.first.gpsDeviceID!;
+        if (deviceIdController.text.isNotEmpty) {
+          //  getDeviceIds(deviceIdController.text);
+
+          var data = await _subscriptionService!.getAssetTransferDeviceIds(
+              graphqlSchemaService!.getDeviceIdTransfer(
+                  limit: limit,
+                  oem: "VEhD",
+                  searchkey: "GPSDeviceID",
+                  searchValue: deviceIdController.text,
+                  start: start,
+                  userId: (await _localService?.getLoggedInUser())?.sub));
+        }
+        machineSerialNumberController.text =
+            deviceDetailsPerIdGraphql!.singleFleetDetails!.first.vin!;
+        machineModelController.text =
+            deviceDetailsPerIdGraphql!.singleFleetDetails!.first.model!;
+
+        commisioningDateController.text = DateFormat("dd/MM/yyyy").format(
+            deviceDetailsPerIdGraphql!
+                .singleFleetDetails!.first.commissioningDate!);
+        if (_allowTransferAsset) {
+          var seialNumDetail = await _subscriptionService!
+              .getDealerToDealerDetail(graphqlSchemaService!
+                  .getDealerToDealerTransfer(
+                      searchValue: deviceIdController.text));
+          customerCodeController.text = seialNumDetail!
+              .dealerToDealerTransfer!.customerDetails!.code
+              .toString();
+          customerEmailController.text = seialNumDetail
+              .dealerToDealerTransfer!.customerDetails!.email
+              .toString();
+          customerNameController.text = seialNumDetail
+              .dealerToDealerTransfer!.customerDetails!.name
+              .toString();
+        }
+        // customerCodeController.text = deviceDetailsPerIdGraphql!
+        //     .singleFleetDetails!.first.customerCode!;
+        // customerEmailController.text = deviceDetailsPerIdGraphql!
+        //     .singleFleetDetails!.first.customerName!;
+        // customerNameController.text = deviceDetailsPerIdGraphql!
+        //     .singleFleetDetails!.first.customerName!;
+        // machineModelController.text =
+        //     deviceDetailsPerIdGraphql!.singleFleetDetails!.first.model!;
+      }
+
+      _deviceDetailsList!.forEach((element) {
+        if (element.vin == value) {
+          deviceIdController.text = element.gpsDeviceID!;
+          machineSerialNumberController.text = element.vin!;
+          machineModelController.text = element.model!;
+
+          //_serialNoList.clear();
+
+          notifyListeners();
+        }
+      });
+      hideLoadingDialog();
+    } else {
+      _deviceList.forEach((element) async {
+        if (element.vIN == value) {
+          var data = await _subscriptionService!
+              .getDeviceDetailsPerDeviceId(element.gPSDeviceID!);
+          if (data?.result?.first.CustomerCode == null &&
+              data?.result?.first.CustomerName == null) {
+            if (_allowTransferAsset) {
+              _snackbarService.showSnackbar(
+                  message:
+                      "This Asset/device not provisioned under a Dealer & Customer !!");
+              deviceIdController.clear();
+              machineSerialNumberController.clear();
+              machineModelController.clear();
+              customerCodeController.clear();
+              customerEmailController.clear();
+              customerNameController.clear();
+              notifyListeners();
+              return;
+            } else {
+              customerCodeController.clear();
+              customerNameController.clear();
+              customerEmailController.clear();
+              machineModelController.text =
+                  deviceDetailsPerId!.result!.first.model!;
+            }
+          } else {
+            customerDetails = await _subscriptionService!
+                .getCustomerDetails(element.gPSDeviceID!);
+            if (_allowTransferAsset) {
+              customerCodeController.text =
+                  customerDetails!.customerResult!.customerData!.code!;
+              customerEmailController.text =
+                  customerDetails!.customerResult!.customerData!.email!;
+              customerNameController.text =
+                  customerDetails!.customerResult!.customerData!.name!;
+            }
+            // customerCodeController.text =
+            //     customerDetails!.customerResult!.customerData!.code!;
+            // customerEmailController.text =
+            //     customerDetails!.customerResult!.customerData!.email!;
+            // customerNameController.text =
+            //     customerDetails!.customerResult!.customerData!.name!;
+            machineModelController.text = data!.result!.first.model!;
+            deviceIdController.text = element.gPSDeviceID!;
+            machineSerialNumberController.text = element.vIN!;
+            isDeviceIdChange = true;
+            _serialNoList.clear();
+            onSelectingSerialNo(value);
+          }
+        }
+      });
+    }
   }
 
   onSelectingSerialNo(String value) async {
@@ -824,40 +1313,90 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onCustomerNameChanges({String? name, String? type, int? code}) async {
     try {
-      detailResultList.clear();
-      if (name == null || name.isEmpty) {
-        Logger().e("if");
-        Future.delayed(Duration(seconds: 3), () {
-          _customerId.clear();
-          notifyListeners();
-        });
-      } else {
-        _customerId.clear();
-        _devices.clear();
-        Logger().e("type");
-        if (name.length >= 3) {
-          customerNameChange =
-              await (_subscriptionService!.getSubscriptionDevicesListData(
-            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-            start: pageNumber,
-            name: name,
-            code: code,
-            fitler: type,
-            limit: pageSize,
-          ));
-          customerCode.clear();
-          if (customerNameChange!.result![1].isNotEmpty) {
-            customerNameChange!.result![1].forEach((element) {
-              _devices.add(element);
-              _customerId.add(element.Name);
-              notifyListeners();
-            });
-          } else {
+      if (enableGraphQl) {
+        detailResultList.clear();
+        if (name == null || name.isEmpty) {
+          Future.delayed(Duration(seconds: 3), () {
             _customerId.clear();
-            _devices.clear();
-            detailResultList.clear();
             notifyListeners();
+          });
+        } else {
+          _devices.clear();
+          _customerId.clear();
+          _customerCode.clear();
+          if (name.length >= 3) {
+            DeviceDataValues? deviceValues = await (_subscriptionService!
+                .getSubscriptionDevicesFromGraphQl(
+                    graphqlSchemaService!.getDeviceCodeAndName(
+              start: 0,
+              limit: 50,
+              type: type,
+              name: name,
+              code: "",
+            )));
+            Logger().wtf(deviceValues);
+            if (deviceValues!.assetOrHierarchyByTypeAndId!.isNotEmpty) {
+              deviceValues.assetOrHierarchyByTypeAndId!.forEach((element) {
+                _devices.add(element);
+                _customerId.add(element.name);
+                notifyListeners();
+              });
+            } else {
+              transCustomerNameChange=true;
+              _devices.clear();
+              _customerId.clear();
+              detailResultList.clear();
+              //_dealerId.clear();
+              notifyListeners();
+            }
+             
           }
+          if(customerNameController.text.isEmpty){
+               transCustomerNameChange=false; 
+               notifyListeners(); 
+              }
+        }
+      } else {
+        detailResultList.clear();
+        if (name == null || name.isEmpty) {
+          Logger().e("if");
+          Future.delayed(Duration(seconds: 3), () {
+            _customerId.clear();
+            notifyListeners();
+          });
+        } else {
+          _customerId.clear();
+          _devices.clear();
+          Logger().e("type");
+          if (name.length >= 3) {
+            customerNameChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(query: "",
+              filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+              start: pageNumber,
+              name: name,
+              code: code,
+              fitler: type,
+              limit: pageSize,
+            ));
+            customerCode.clear();
+            if (customerNameChange!.result![1].isNotEmpty) {
+              customerNameChange!.result![1].forEach((element) {
+                _devices.add(element);
+                _customerId.add(element.Name);
+                notifyListeners();
+              });
+            } else {
+              transCustomerNameChange=true;
+              _customerId.clear();
+              _devices.clear();
+              detailResultList.clear();
+              notifyListeners();
+            }
+          }
+           if(customerNameController.text.isEmpty){
+               transCustomerNameChange=false; 
+               notifyListeners(); 
+              }
         }
       }
     } on DioError catch (e) {
@@ -866,43 +1405,103 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     }
   }
 
-  onCustomerCodeChanges({String? name, String? type, int? code}) async {
+  onCustomerCodeChanges({String? name, String? type, dynamic code}) async {
     try {
-      detailResultList.clear();
-      if (code == null || code.toString().isEmpty) {
-        Future.delayed(Duration(seconds: 3), () {
-          _customerCode.clear();
-          notifyListeners();
-        });
-      } else {
-        _customerCode.clear();
-        _devices.clear();
-        if (code.toString().length >= 3) {
-          customerCodeChange =
-              await (_subscriptionService!.getSubscriptionDevicesListData(
-            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-            start: pageNumber,
-            name: name,
-            code: code,
-            fitler: type,
-            limit: pageSize,
-          ));
-          customerId.clear();
-          if (customerCodeChange!.result![1].isNotEmpty) {
-            customerCodeChange!.result![1].forEach((element) {
-              _devices.add(element);
-              _customerCode.add(element.Code);
-              notifyListeners();
-            });
-          } else {
+      if (enableGraphQl) {
+        detailResultList.clear();
+        if (code == null ) {
+          Future.delayed(Duration(seconds: 3), () {
             _customerCode.clear();
-            _devices.clear();
-            detailResultList.clear();
             notifyListeners();
+          });
+        } else {
+          _devices.clear();
+          _customerId.clear();
+          _customerCode.clear();
+          if (code.toString().length >= 3) {
+            DeviceDataValues? deviceValues = await (_subscriptionService!
+                .getSubscriptionDevicesFromGraphQl(
+                    graphqlSchemaService!.getDeviceCodeAndName(
+              start: 0,
+              limit: 50,
+              type: type,
+              name: name == null ? "" : name,
+              code: code == null ? "" : code.toString(),
+            )));
+            Logger().wtf(deviceValues);
+            Logger().wtf(deviceValues!.assetOrHierarchyByTypeAndId!.length);
+            if (deviceValues!.assetOrHierarchyByTypeAndId!.isNotEmpty) {
+              deviceValues.assetOrHierarchyByTypeAndId!.forEach((element) {
+                
+                _devices.clear();
+                _customerCode.clear();
+                // _devices.add(HierarchyModel(
+                //   Code: element.code,
+                //   Email: element.email,
+                //   Name: element.name,
+                //   UserName: element.userName,
+                
+                // ));
+                _devices.add(element);
+                _customerCode.add(element.code);
+                notifyListeners();
+              });
+            } else {
+              transCustomerCodeChange=true;
+              _customerCode.clear();
+            
+              _devices.clear();
+              detailResultList.clear();
+              notifyListeners();
+            }
           }
+          if(customerCodeController.text.isEmpty){
+               transCustomerCodeChange=false; 
+               notifyListeners(); 
+              }
+        }
+      } else {
+        detailResultList.clear();
+        if (code == null || code.toString().isEmpty) {
+          Future.delayed(Duration(seconds: 3), () {
+            _customerCode.clear();
+            notifyListeners();
+          });
         } else {
           _customerCode.clear();
-          notifyListeners();
+          _devices.clear();
+          if (code.toString().length >= 3) {
+            customerCodeChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(query: "",
+              filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+              start: pageNumber,
+              name: name,
+              code: code,
+              fitler: type,
+              limit: pageSize,
+            ));
+            customerId.clear();
+            if (customerCodeChange!.result![1].isNotEmpty) {
+              customerCodeChange!.result![1].forEach((element) {
+                _devices.add(element);
+                _customerCode.add(element.Code);
+                notifyListeners();
+              });
+            } else {
+              transCustomerCodeChange=true;
+              _customerCode.clear();
+              _devices.clear();
+              detailResultList.clear();
+              notifyListeners();
+            }
+          } else {
+            _customerCode.clear();
+            notifyListeners();
+          }
+          if(customerCodeController.text.isEmpty){
+               transCustomerCodeChange=false; 
+               notifyListeners(); 
+              }
         }
       }
     } on DioError catch (e) {
@@ -913,38 +1512,88 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onDealerNameChanges({String? name, String? type, int? code}) async {
     try {
-      detailResultList.clear();
-      if (name == null || name.isEmpty) {
-        Future.delayed(Duration(seconds: 3), () {
-          _dealerId.clear();
-          notifyListeners();
-        });
-      } else {
-        _devices.clear();
-        _dealerId.clear();
-        if (name.length >= 3) {
-          dealerNameChange =
-              await (_subscriptionService!.getSubscriptionDevicesListData(
-            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-            start: pageNumber,
-            name: name,
-            code: code,
-            fitler: type,
-            limit: pageSize,
-          ));
-          dealerCode.clear();
-          if (dealerNameChange!.result![1].isNotEmpty) {
-            dealerNameChange!.result![1].forEach((element) {
-              _devices.add(element);
-              _dealerId.add(element.Name);
-              notifyListeners();
-            });
-          } else {
+      if (enableGraphQl) {
+        // detailResultList.clear();
+        
+        if (name == null || name.isEmpty) {
+          Future.delayed(Duration(seconds: 3), () {
             _dealerId.clear();
-            _devices.clear();
-            detailResultList.clear();
             notifyListeners();
+          });
+        } else {
+          _devices.clear();
+          _dealerId.clear();
+          _dealerCode.clear();
+           
+          if (name.length >= 3) {
+            DeviceDataValues? deviceValues = await (_subscriptionService!
+                .getSubscriptionDevicesFromGraphQl(
+                    graphqlSchemaService!.getDeviceCodeAndName(
+              start: 0,
+              limit: 50,
+              type: type,
+              name: name,
+              code: "",
+            )));
+            Logger().wtf(deviceValues);
+            if (deviceValues!.assetOrHierarchyByTypeAndId!.isNotEmpty) {
+              deviceValues.assetOrHierarchyByTypeAndId!.forEach((element) {
+                _devices.add(element);
+                _dealerId.add(element.name);
+                notifyListeners();
+              });
+            } else {
+              transDealerNameChange=true;
+              _devices.clear();
+             detailResultList.clear();
+              _dealerId.clear();
+              notifyListeners();
+               }
           }
+          if(dealerNameController.text.isEmpty){
+               transDealerNameChange=false; 
+               notifyListeners(); 
+              }
+        }
+      } else {
+        detailResultList.clear();
+        if (name == null || name.isEmpty) {
+          Future.delayed(Duration(seconds: 3), () {
+            _dealerId.clear();
+            notifyListeners();
+          });
+        } else {
+          _devices.clear();
+          _dealerId.clear();
+          if (name.length >= 3) {
+            dealerNameChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+              start: pageNumber,
+              name: name,
+              code: code,
+              fitler: type,
+              limit: pageSize,
+            ));
+            dealerCode.clear();
+            if (dealerNameChange!.result![1].isNotEmpty) {
+              dealerNameChange!.result![1].forEach((element) {
+                _devices.add(element);
+                _dealerId.add(element.Name);
+                notifyListeners();
+              });
+            } else {
+              transDealerNameChange=true;
+              _dealerId.clear();
+              _devices.clear();
+              detailResultList.clear();
+              notifyListeners();
+            }
+          }
+           if(dealerNameController.text.isEmpty){
+               transDealerNameChange=false; 
+               notifyListeners(); 
+              }
         }
       }
     } on DioError catch (e) {
@@ -955,39 +1604,89 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   onDealerCodeChanges({String? name, String? type, dynamic code}) async {
     try {
-      detailResultList.clear();
-      if (code == null || code.toString().isEmpty) {
-        Future.delayed(Duration(seconds: 3), () {
-          _dealerCode.clear();
-          notifyListeners();
-        });
-      } else {
-        _devices.clear();
-        _dealerCode.clear();
-
-        if (code.toString().length >= 3) {
-          dealerCodeChange =
-              await (_subscriptionService!.getSubscriptionDevicesListData(
-            filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-            start: pageNumber,
-            name: name,
-            code: code,
-            fitler: type,
-            limit: pageSize,
-          ));
-          dealerCode.clear();
-          if (dealerCodeChange!.result![1].isNotEmpty) {
-            dealerCodeChange!.result![1].forEach((element) {
-              _devices.add(element);
-              _dealerCode.add(element.Code);
-              notifyListeners();
-            });
-          } else {
-            _devices.clear();
+      if (enableGraphQl) {
+        detailResultList.clear();
+        if (code == null || code.isEmpty) {
+          Future.delayed(Duration(seconds: 3), () {
             _dealerCode.clear();
-            detailResultList.clear();
             notifyListeners();
+          });
+        } else {
+          _devices.clear();
+          _dealerId.clear();
+          _dealerCode.clear();
+          if (code.toString().length >= 3) {
+            DeviceDataValues? deviceValues = await (_subscriptionService!
+                .getSubscriptionDevicesFromGraphQl(
+                    graphqlSchemaService!.getDeviceCodeAndName(
+              start: 0,
+              limit: 50,
+              type: type,
+              name: "",
+              code: code.toString(),
+            )));
+            Logger().wtf(deviceValues);
+              _devices.clear();
+                dealerCode.clear();
+            if (deviceValues!.assetOrHierarchyByTypeAndId!.isNotEmpty) {
+              deviceValues.assetOrHierarchyByTypeAndId!.forEach((element) {
+                _devices.add(element);
+                _dealerCode.add(element.code);
+                notifyListeners();
+              });
+            } else {
+              transDealerCodeChange=true;
+              _devices.clear();
+              detailResultList.clear();
+              _dealerCode.clear();
+              notifyListeners();
+            }
           }
+           if(dealerCodeController.text.isEmpty){
+               transDealerCodeChange=false; 
+               notifyListeners(); 
+              }
+        }
+      } else {
+        detailResultList.clear();
+        if (code == null || code.toString().isEmpty) {
+          Future.delayed(Duration(seconds: 3), () {
+            _dealerCode.clear();
+            notifyListeners();
+          });
+        } else {
+          _devices.clear();
+          _dealerCode.clear();
+
+          if (code.toString().length >= 3) {
+            dealerCodeChange =
+                await (_subscriptionService!.getSubscriptionDevicesListData(
+              filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+              start: pageNumber,
+              name: name,
+              code: code,
+              fitler: type,
+              limit: pageSize,
+            ));
+            dealerCode.clear();
+            if (dealerCodeChange!.result![1].isNotEmpty) {
+              dealerCodeChange!.result![1].forEach((element) {
+                _devices.add(element);
+                _dealerCode.add(element.Code);
+                notifyListeners();
+              });
+            } else {
+              transDealerCodeChange=true;
+              _devices.clear();
+              _dealerCode.clear();
+              detailResultList.clear();
+              notifyListeners();
+            }
+          }
+           if(dealerCodeController.text.isEmpty){
+               transDealerCodeChange=false; 
+               notifyListeners(); 
+              }
         }
       }
     } on DioError catch (e) {
@@ -998,100 +1697,210 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   updateSerialNumberValues(String text) async {
     machineSerialNumberController.text = text;
+    if (enableGraphQl) {
+      SelectedDevice? detailsPerSerialNo = await _subscriptionService!
+          .getDeviceDetailsbyIdGraphql(graphqlSchemaService!
+              .getDeviceTransferDetails(
+                  searchKey: "VIN",
+                  searchValue: machineSerialNumberController.text));
 
-    AssetDetailsBySerialNo? detailsPerSerialNo = await _subscriptionService!
-        .getDeviceAssetDetailsBySerialNo(machineSerialNumberController.text);
+      if (detailsPerSerialNo != null) {
+        if (detailsPerSerialNo.singleFleetDetails!.isNotEmpty) {
+          for (var element in detailsPerSerialNo.singleFleetDetails!) {
+            serialValues.add(ResultsValues(
+                deviceId: element.gpsDeviceID, model: element.model));
+          }
 
-    if (detailsPerSerialNo != null) {
-      if (detailsPerSerialNo.result!.isNotEmpty) {
-        serialValues.addAll(detailsPerSerialNo.result!);
+          _loading = false;
+          _loadingMore = false;
 
-        _loading = false;
-        _loadingMore = false;
+          serialValues.forEach((element) {
+            deviceIdController.text = element.deviceId!;
+            machineModelController.text = element.model!;
+          });
 
-        serialValues.forEach((element) {
-          deviceIdController.text = element.deviceId!;
-          machineModelController.text = element.model!;
-        });
-
-        Logger().wtf(_deviceDetail);
-      } else {
+          Logger().wtf(_deviceDetail);
+        } else {
+          _loading = false;
+          _loadingMore = false;
+        }
         _loading = false;
         _loadingMore = false;
       }
-      _loading = false;
-      _loadingMore = false;
-    }
 
-    notifyListeners();
+      notifyListeners();
+    } else {
+      AssetDetailsBySerialNo? detailsPerSerialNo = await _subscriptionService!
+          .getDeviceAssetDetailsBySerialNo(machineSerialNumberController.text);
+
+      if (detailsPerSerialNo != null) {
+        if (detailsPerSerialNo.result!.isNotEmpty) {
+          serialValues.addAll(detailsPerSerialNo.result!);
+
+          _loading = false;
+          _loadingMore = false;
+
+          serialValues.forEach((element) {
+            deviceIdController.text = element.deviceId!;
+            machineModelController.text = element.model!;
+          });
+
+          Logger().wtf(_deviceDetail);
+        } else {
+          _loading = false;
+          _loadingMore = false;
+        }
+        _loading = false;
+        _loadingMore = false;
+      }
+
+      notifyListeners();
+    }
   }
 
   updateDeviceIdValues(String text) async {
     deviceIdController.text = text;
+    if (enableGraphQl) {
+      SelectedDevice? detailsPerId = await _subscriptionService!
+          .getDeviceDetailsbyIdGraphql(graphqlSchemaService!
+              .getDeviceTransferDetails(
+                  searchKey: "GPSDeviceID",
+                  searchValue: deviceIdController.text));
 
-    DeviceDetailsPerId? detailsPerId = await _subscriptionService!
-        .getDeviceDetailsPerDeviceId(deviceIdController.text);
+      if (detailsPerId != null) {
+        if (detailsPerId.singleFleetDetails!.isNotEmpty) {
+          for (var element in detailsPerId.singleFleetDetails!) {
+            deviceValues.add(ResultData(
+              CustomerCode: element.customerCode,
+              CustomerName: element.customerName,
+              DealerCode: element.dealerCode,
+              DealerName: element.dealerName,
+              model: element.model,
+              serialNo: element.vin,
+            ));
+          }
 
-    if (detailsPerId != null) {
-      if (detailsPerId.result!.isNotEmpty) {
-        deviceValues.addAll(detailsPerId.result!);
+          _loading = false;
+          _loadingMore = false;
 
-        _loading = false;
-        _loadingMore = false;
+          deviceValues.forEach((element) {
+            machineSerialNumberController.text = element.serialNo!;
+            machineModelController.text = element.model!;
+          });
 
-        deviceValues.forEach((element) {
-          machineSerialNumberController.text = element.serialNo!;
-          machineModelController.text = element.model!;
-        });
-
-        Logger().wtf(_deviceDetail);
-      } else {
+          Logger().wtf(_deviceDetail);
+        } else {
+          _loading = false;
+          _loadingMore = false;
+        }
         _loading = false;
         _loadingMore = false;
       }
-      _loading = false;
-      _loadingMore = false;
-    }
 
-    notifyListeners();
+      notifyListeners();
+    } else {
+      DeviceDetailsPerId? detailsPerId = await _subscriptionService!
+          .getDeviceDetailsPerDeviceId(deviceIdController.text);
+
+      if (detailsPerId != null) {
+        if (detailsPerId.result!.isNotEmpty) {
+          deviceValues.addAll(detailsPerId.result!);
+
+          _loading = false;
+          _loadingMore = false;
+
+          deviceValues.forEach((element) {
+            machineSerialNumberController.text = element.serialNo!;
+            machineModelController.text = element.model!;
+          });
+
+          Logger().wtf(_deviceDetail);
+        } else {
+          _loading = false;
+          _loadingMore = false;
+        }
+        _loading = false;
+        _loadingMore = false;
+      }
+
+      notifyListeners();
+    }
   }
 
   getSerialNumbers(String text) async {
     try {
-      if (text.length > 3) {
-        SingleTransferDeviceId? serialNoResults = await (_subscriptionService!
-            .getSingleTransferDeviceId(
-                filter: "asset",
-                filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-                controllerValue: text,
-                start: start == 0 ? start : start + 1,
-                limit: limit,
-                searchBy: "VIN"));
-        gpsDeviceIdList.clear();
-        _serialNoList.clear();
-        deviceList.clear();
+      if (text.length >=3) {
+        if (enableGraphQl) {
+          DeviceIdValues? serialNoResults = await _subscriptionService!
+              .getAssetTransferDeviceIds(graphqlSchemaService!
+                  .getDeviceIdTransfer(
+                      limit: 50,
+                      oem: "VEhD",
+                      searchkey: "VIN",
+                      searchValue: text,
+                      start: start,
+                      userId: (await _localService?.getLoggedInUser())?.sub));
 
-        if (serialNoResults != null) {
-          if (serialNoResults.result!.isNotEmpty) {
-            deviceList.addAll(serialNoResults.result!);
-            _loading = false;
-            _loadingMore = false;
-            _serialNoList.clear();
-            deviceList.forEach((element) {
-              if (_serialNoList.any((serialno) => serialno == element.vIN)) {
-              } else {
-                _serialNoList.add(element.vIN);
-              }
-            });
-          } else {
+          gpsDeviceIdList.clear();
+          _serialNoList.clear();
+          deviceList.clear();
+
+          if (serialNoResults != null) {
+            if (serialNoResults.hierarchyFleetSearch!.isNotEmpty) {
+              deviceIdList.addAll(serialNoResults.hierarchyFleetSearch!);
+              _loading = false;
+              _loadingMore = false;
+              _serialNoList.clear();
+              deviceIdList.forEach((element) {
+                if (_serialNoList.any((serialno) => serialno == element.vin)) {
+                } else {
+                  _serialNoList.add(element.vin);
+                }
+              });
+            } else {
+              _loading = false;
+              _loadingMore = false;
+            }
             _loading = false;
             _loadingMore = false;
           }
-          _loading = false;
-          _loadingMore = false;
+          Logger().wtf(serialNoList.length);
+          notifyListeners();
+        } else {
+          SingleTransferDeviceId? serialNoResults = await (_subscriptionService!
+              .getSingleTransferDeviceId(
+                  filter: "asset",
+                  filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+                  controllerValue: text,
+                  start: start == 0 ? start : start + 1,
+                  limit: limit,
+                  searchBy: "VIN"));
+          gpsDeviceIdList.clear();
+          _serialNoList.clear();
+          deviceList.clear();
+
+          if (serialNoResults != null) {
+            if (serialNoResults.result!.isNotEmpty) {
+              deviceList.addAll(serialNoResults.result!);
+              _loading = false;
+              _loadingMore = false;
+              _serialNoList.clear();
+              deviceList.forEach((element) {
+                if (_serialNoList.any((serialno) => serialno == element.vIN)) {
+                } else {
+                  _serialNoList.add(element.vIN);
+                }
+              });
+            } else {
+              _loading = false;
+              _loadingMore = false;
+            }
+            _loading = false;
+            _loadingMore = false;
+          }
+          Logger().wtf(serialNoList.length);
+          notifyListeners();
         }
-        Logger().wtf(serialNoList.length);
-        notifyListeners();
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
@@ -1101,39 +1910,79 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
 
   getDeviceIds(String text) async {
     try {
-      if (text.length >= 3) {
-        SingleTransferDeviceId? deviceIdResults = await _subscriptionService!
-            .getSingleTransferDeviceId(
-                filter: "asset",
-                filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
-                controllerValue: text,
-                start: start == 0 ? start : start + 1,
-                limit: limit,
-                searchBy: "GPSDeviceID");
+      if (enableGraphQl) {
+        if(text.length>=3){
+        DeviceIdValues? deviceData = await _subscriptionService!
+            .getAssetTransferDeviceIds(graphqlSchemaService!
+                .getDeviceIdTransfer(
+                    limit: limit,
+                    oem: "VEhD",
+                    searchkey: "GPSDeviceID",
+                    searchValue: text,
+                    start: start,
+                    userId: (await _localService?.getLoggedInUser())?.sub));
         serialNoList.clear();
         _gpsDeviceIdList.clear();
-        deviceList.clear();
-        if (deviceIdResults != null) {
-          if (deviceIdResults.result!.isNotEmpty) {
-            deviceList.addAll(deviceIdResults.result!);
+        deviceIdList.clear();
+        if (deviceData != null) {
+          if(deviceData.hierarchyFleetSearch!=null){
+          if (deviceData.hierarchyFleetSearch!.isNotEmpty) {
+            deviceIdList.addAll(deviceData.hierarchyFleetSearch!);
             _loading = false;
             _loadingMore = false;
-            deviceList.forEach((element) {
+            deviceIdList.forEach((element) {
               if (_gpsDeviceIdList
-                  .any((device) => device == element.gPSDeviceID)) {
+                  .any((device) => device == element.gpsDeviceID)) {
               } else {
-                _gpsDeviceIdList.add(element.gPSDeviceID);
+                _gpsDeviceIdList.add(element.gpsDeviceID);
               }
             });
           } else {
             _loading = false;
             _loadingMore = false;
           }
+          
           _loading = false;
           _loadingMore = false;
-        }
+         } }
         //Logger().wtf(deviceIdResults!.result!.first.gPSDeviceID);
         notifyListeners();
+      }
+      } else {
+        if (text.length >= 3) {
+          SingleTransferDeviceId? deviceIdResults = await _subscriptionService!
+              .getSingleTransferDeviceId(
+                  filter: "asset",
+                  filterType: PLANTSUBSCRIPTIONFILTERTYPE.TYPE,
+                  controllerValue: text,
+                  start: start == 0 ? start : start + 1,
+                  limit: limit,
+                  searchBy: "GPSDeviceID");
+          serialNoList.clear();
+          _gpsDeviceIdList.clear();
+          deviceList.clear();
+          if (deviceIdResults != null) {
+            if (deviceIdResults.result!.isNotEmpty) {
+              deviceList.addAll(deviceIdResults.result!);
+              _loading = false;
+              _loadingMore = false;
+              deviceList.forEach((element) {
+                if (_gpsDeviceIdList
+                    .any((device) => device == element.gPSDeviceID)) {
+                } else {
+                  _gpsDeviceIdList.add(element.gPSDeviceID);
+                }
+              });
+            } else {
+              _loading = false;
+              _loadingMore = false;
+            }
+            _loading = false;
+            _loadingMore = false;
+          }
+          //Logger().wtf(deviceIdResults!.result!.first.gPSDeviceID);
+          notifyListeners();
+        }
       }
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
@@ -1144,7 +1993,10 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
   subscriptionAssetRegistration() async {
     var userId = await _localService!.getUserId();
     try {
+      int? id = int.parse(userId!);
+
       AssetValues deviceAssetValues;
+      Asset deviceAsset;
       deviceAssetValues = AssetValues(
         CustomerLanguage:
             initialCustLanguge == languages[0] ? null : initialCustLanguge,
@@ -1187,19 +2039,97 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
                 ? null
                 : _initialSubIndustryDetailValue,
       );
+      deviceAsset = Asset(
+        customerLanguage:
+            initialCustLanguge == languages[0] ? null : initialCustLanguge,
+        customerMobile: customerMobileNoController.text.isEmpty
+            ? null
+            : customerMobileNoController.text,
+        dealerMobile: dealerMobileNoController.text.isEmpty
+            ? null
+            : dealerMobileNoController.text,
+        dealerLanguage: initialLanguge == languages[0] ? null : initialLanguge,
+        deviceId: deviceIdController.text,
+        machineSlNo: machineSerialNumberController.text,
+        machineModel: machineModelController.text.isEmpty
+            ? null
+            : machineModelController.text,
+        customerName: customerNameController.text.isEmpty
+            ? null
+            : customerNameController.text,
+        customerCode: customerCodeController.text.isEmpty
+            ? null
+            : customerCodeController.text,
+        customerEmailId: customerEmailController.text.isEmpty
+            ? null
+            : customerEmailController.text,
+        dealerName: dealerNameController.text.isEmpty
+            ? null
+            : dealerNameController.text,
+        dealerCode: dealerCodeController.text.isEmpty
+            ? null
+            : dealerCodeController.text,
+        dealerEmailId: dealerEmailController.text.isEmpty
+            ? null
+            : dealerEmailController.text,
+        commissioningDate: null,
+        primaryIndustry: _initialIndustryDetail == _industryDetails[0]
+            ? null
+            : _initialIndustryDetail,
+        secondaryIndustry:
+            _initialSubIndustryDetailValue == industrySubDetails[0]
+                ? null
+                : _initialSubIndustryDetailValue,
+      );
       _totalAssetValues.clear();
       _totalAssetValues.add(deviceAssetValues);
+      _totalAsset.clear();
+      Logger().wtf(deviceAsset.toJson());
+      _totalAsset.add(deviceAsset);
       AssetTransfer data = AssetTransfer(
           Source: "THC",
           Version: "2.1",
           UserID: int.parse(userId!),
           transfer: _totalAssetValues);
+      Logger().w("data:${data.toJson()}");
       Logger().i(data.transfer!.length);
       Logger().i(data.transfer!.first.toJson());
-      var result =
-          await _subscriptionService!.postSingleAssetTransferRegistration(data);
-      Logger().e(result);
+_totalAsset.forEach((element) {
+  Logger().i("mylist:${element.toJson()}");
+});
+      TranferAssetOperationInput request = TranferAssetOperationInput(
+        source: "THC",
+        userId: id,
+        version: "2.0",
+        transfer: _totalAsset,
+      );
+
+      Logger().w("request: ${request.toJson()}");
+      var result;
+      if (enableGraphQl) {
+        String? gnacc = "";
+         result = await _subscriptionService!.postSingleAssetTranferGraphql(
+            query: graphqlSchemaService!.register(),
+            payLoad:{
+    "id": id,
+    "gnacc": gnacc,
+    "request": request.toJson()
+  }
+            );
+
+        
+
+        Logger().e(result);
+      } else {
+        result = await _subscriptionService!
+            .postSingleAssetTransferRegistration(data);
+        Logger().e(result);
+      }
+      // var result = await _subscriptionService!.postSingleAssetTransferRegistration(data);
+      // Logger().e(result);
+      _totalAsset.clear();
       onTransferSuccess();
+
       return result;
     } on DioError catch (e) {
       final error = DioException.fromDioError(e);
@@ -1229,7 +2159,9 @@ class SingleAssetTransferViewModel extends InsiteViewModel {
     customerEmailController.clear();
     customerMobileNoController.clear();
     dealerMobileNoController.clear();
+    transDealerCodeChange = false;
+    transDealerNameChange = false;
+   transCustomerCodeChange = false;
+   transCustomerNameChange = false;
   }
-
-
 }
