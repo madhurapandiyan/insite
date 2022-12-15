@@ -81,11 +81,11 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                     viewModel.isToggled
                         ? InsiteButton(
                             width: 200,
-                            title: Utils.getDateInFormatddMMyyyy(
-                                    viewModel.maintenanceStartDate) +
+                            title: Utils.getDateFormatForDatePicker(
+                                    viewModel.maintenanceStartDate,viewModel.userPref) +
                                 " - " +
-                                Utils.getDateInFormatddMMyyyy(
-                                    viewModel.maintenanceEndDate),
+                                Utils.getDateFormatForDatePicker(
+                                    viewModel.maintenanceEndDate,viewModel.userPref),
                             //width: 90,
                             //bgColor: Theme.of(context).backgroundColor,
                             textColor: white,
@@ -103,11 +103,11 @@ class _MaintenanceTabViewState extends State<MaintenanceTabView> {
                             },
                           )
                         : InsiteButton(
-                            title: Utils.getDateInFormatddMMyyyy(
-                                    viewModel.maintenanceHistoryStartDate) +
+                            title: Utils.getDateFormatForDatePicker(
+                                    viewModel.maintenanceHistoryStartDate,viewModel.userPref) +
                                 " - " +
-                                Utils.getDateInFormatddMMyyyy(
-                                    viewModel.maintenanceHistoryEndDate),
+                                Utils.getDateFormatForDatePicker(
+                                    viewModel.maintenanceHistoryEndDate,viewModel.userPref),
                             height: 36,
                             onTap: () async {
                               dateRanges = [];

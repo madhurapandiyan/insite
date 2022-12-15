@@ -507,7 +507,7 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                     ),
                     borderRadius: BorderRadius.circular(10)),
                 child: CustomDatePicker(
-                  initialText:'MM/dd/yyyy' ,
+                  initialText:Utils.getDateFormat(viewModel.userPref?.dateFormat)?.toUpperCase() ,
                   controller: viewModel.hourMeterDateController,
                   voidCallback: () => showDatePicker(
                     context: context,

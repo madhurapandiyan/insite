@@ -67,10 +67,10 @@ class FaultViewState extends State<FaultView> {
                         // ),
                         InsiteButton(
                           //width: 90,
-                          title: Utils.getDateInFormatddMMyyyy(
-                                  viewModel.startDate) +
+                          title: Utils.getDateFormatForDatePicker(
+                                  viewModel.startDate,viewModel.userPref) +
                               " - " +
-                              Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                              Utils.getDateFormatForDatePicker(viewModel.endDate,viewModel.userPref),
                           // bgColor: Theme.of(context).backgroundColor,
                           textColor: white,
                           onTap: () async {

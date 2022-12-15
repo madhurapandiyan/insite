@@ -165,7 +165,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onEndDatePicked(DateTime value) {
-    endingDate = Utils.getManualDateFormat(value.toString()) ;
+    endingDate = Utils.getDateFormatForDatePicker(value.toString(),userPref) ;
 
     notifyListeners();
   }
