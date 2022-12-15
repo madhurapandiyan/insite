@@ -237,6 +237,7 @@ class SingleAssetTransferView extends StatelessWidget {
                                                                   .circular(
                                                                       10)),
                                                       child: CustomDatePicker(
+                                                        userPreference: viewModel.userPref,
                                                         controller: viewModel
                                                             .commisioningDateController,
                                                         voidCallback: () =>
