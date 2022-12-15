@@ -14,11 +14,25 @@ class FaultCodeTypeSearch {
 }
 
 @JsonSerializable()
+class SingleFaultCodeTypeSearch {
+  final List<FaultCodeDetails>? faults;
+  final String? status;
+  SingleFaultCodeTypeSearch({
+    this.faults,
+    this.status,
+  });
+  factory SingleFaultCodeTypeSearch.fromJson(Map<String, dynamic> json) =>
+      _$SingleFaultCodeTypeSearchFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SingleFaultCodeTypeSearchToJson(this);
+}
+
+@JsonSerializable()
 class FaultCodeDetails {
   final String? faultCodeIdentifier;
   final String? faultDescription;
   final String? faultCodeType;
-   bool isExpanded;
+  bool isExpanded;
   FaultCodeDetails(
       {this.faultCodeIdentifier,
       this.faultCodeType,

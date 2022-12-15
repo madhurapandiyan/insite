@@ -912,7 +912,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  getEditOperandData(List<OperandData>? data) {
+  getEditOperandData(List<OperandData>? data) async{
     if (dropDownInitialValue == "Fault Code") {
       var isInclude = false;
       var isExclude = false;
@@ -955,6 +955,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
               });
         });
         customizable[0].state = true;
+          var faultCodeDescriptionList = await _notificationService!
+            .getSingleFaultCodeDescription(graphqlSchemaService
+                ?.getSingleNotiFaultDescription(alertConfigUid));
+        faultCodeDescriptionList!.faults!.length > 0
+            ? faultCodeDescriptionList.faults?.forEach((element) {
+                SelectedfaultCodeTypeSearch?.add(element);
+              })
+            : null;
+
+           
       }
       if (severityData
           .any((element) => element.value == "1" && element.operatorID == 25)) {

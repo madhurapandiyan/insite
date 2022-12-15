@@ -23,6 +23,22 @@ Map<String, dynamic> _$FaultCodeTypeSearchToJson(
       'total': instance.total,
     };
 
+SingleFaultCodeTypeSearch _$SingleFaultCodeTypeSearchFromJson(
+        Map<String, dynamic> json) =>
+    SingleFaultCodeTypeSearch(
+      faults: (json['faults'] as List<dynamic>?)
+          ?.map((e) => FaultCodeDetails.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      status: json['status'] as String?,
+    );
+
+Map<String, dynamic> _$SingleFaultCodeTypeSearchToJson(
+        SingleFaultCodeTypeSearch instance) =>
+    <String, dynamic>{
+      'faults': instance.faults,
+      'status': instance.status,
+    };
+
 FaultCodeDetails _$FaultCodeDetailsFromJson(Map<String, dynamic> json) =>
     FaultCodeDetails(
       faultCodeIdentifier: json['faultCodeIdentifier'] as String?,
