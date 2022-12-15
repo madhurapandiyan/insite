@@ -414,14 +414,11 @@ Logger().wtf("data:$data");
     return data;
   }
 
-  getDeviceIdReplacement(String? text, String? status, int? limit) {
+  getDeviceIdReplacement() {
     var data = """
-query  {
+query SubscriptionFleetList(\$status: String, \$model: String, \$start: Int, \$limit: Int, \$search: FleetSearch) {
   frameSubscription {
-    subscriptionFleetList(status:"$status", model: "", start: 0, limit: $limit, search: {
-      gpsDeviceID: "$text"
-    })
-    {
+    subscriptionFleetList(status: \$status, model: \$model, start: \$start, limit: \$limit, search: \$search) {
       count
       provisioningInfo {
         vin
@@ -431,9 +428,10 @@ query  {
         __typename
       }
       __typename
-    }   __typename
     }
+    __typename
   }
+}
 
 """;
     return data;

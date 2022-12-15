@@ -467,7 +467,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
               .getSubscriptionDeviceListData(
                   filter: filter,
                   query: graphqlSchemaService!
-                      .getDeviceIdReplacement(name, "inactive", 50));
+                      .getDeviceIdReplacement(),payLoad: {
+    "status": "inactive",
+    "model": "",
+    "start": 0,
+    "limit": 50,
+    "search": {
+      "gpsDeviceID": name
+    }});
 
           if (deviceIdChange != null) {
             if (deviceIdChange!.subscriptionFleetList != null) {
@@ -746,7 +753,14 @@ class SingleAssetRegistrationViewModel extends InsiteViewModel {
           .getSubscriptionDeviceListData(
               filter: filter,
               query: graphqlSchemaService!
-                  .getDeviceIdReplacement(value, "inactive", 50));
+                  .getDeviceIdReplacement(),payLoad: {
+    "status": "inactive",
+    "model": "",
+    "start": 0,
+    "limit": 50,
+    "search": {
+      "gpsDeviceID": value
+    }});
       selectedDeviceId!.subscriptionFleetList!.provisioningInfo!
           .forEach((element) {
         if (element.gpsDeviceID == value) {
