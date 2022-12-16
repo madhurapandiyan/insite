@@ -3801,7 +3801,22 @@ maintenanceIntervals(
 // }""";
 //     return data;
 //   }
-////////
+
+
+ getSingleNotiFaultDescription(alertConfigId) {
+    var query = """{
+      getSingleFaultConfig(alertConfigId: ${alertConfigId == null ? "\"\"" : "${"\"" + alertConfigId + "\""}"}) {
+        faults {
+          faultDescription
+          faultCodeType
+          faultCodeIdentifier
+        }
+        responseStatus
+      }
+    }
+  """;
+    return query;
+  }
 
   updateMaintenanceIntervals() {
     var data = """

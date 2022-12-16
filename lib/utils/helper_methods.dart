@@ -397,10 +397,10 @@ class Utils {
 
   static String? maintenanceFromDateFormate(String date) {
     try {
-      DateTime parseDate = DateTime.parse(date);
-      var data = parseDate.add(Duration(hours: 00, minutes: 00, seconds: 00));
+      DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
+      var data = parseDate.add(Duration(hours: 18, minutes: 30, seconds: 00));
       var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
-      ;
+      
       return formatedStringData;
     } catch (e) {
       Logger().e(e.toString());
@@ -1863,8 +1863,8 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 08, seconds: 00, minutes: 00));
-      //.add(Duration(days: 1));
+          .add(Duration(hours: 18, seconds: 29, minutes: 59))
+      .subtract(Duration(days: 1));
       Logger().e(inputDate);
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
@@ -1895,8 +1895,8 @@ class Utils {
       var parseDate = DateFormat("yyyy-MM-dd").format(value!);
 
       var inputDate = DateTime.parse(parseDate)
-          .add(Duration(hours: 15, seconds: 59, minutes: 59))
-          .add(Duration(days: 1));
+          .add(Duration(hours: 18, seconds: 29, minutes: 59));
+          //.add(Duration(days: 1));
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
