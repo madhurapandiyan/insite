@@ -213,6 +213,23 @@ class NotificationService extends BaseService {
     }
   }
 
+   Future<SingleFaultCodeTypeSearch?> getSingleFaultCodeDescription(
+      String query) async {
+    Map<String, String> queryMap = Map();
+    var data = await Network().getGraphqlData(
+      query: query,
+      customerId: accountSelected?.CustomerUID,
+      userId: (await _localService!.getLoggedInUser())!.sub,
+      subId: customerSelected?.CustomerUID == null
+          ? ""
+          : customerSelected?.CustomerUID,
+    );
+    SingleFaultCodeTypeSearch notificationsData =
+        SingleFaultCodeTypeSearch.fromJson(data.data["getSingleFaultConfig"]);
+    return notificationsData;
+  }
+
+
   Future<ManageNotificationsData?> getsearchNotificationsData(
       {String? searchText, int? pageNumber, int? count}) async {
     if (enableGraphQl) {
