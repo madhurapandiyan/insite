@@ -10,7 +10,9 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'deviceId_widget_list.dart';
 
 class OldDeviceIdSearchWidget extends StatelessWidget {
+   bool? isShowingHelperText;
   final List<dynamic> searchList;
+  final String? helperText;
   final TextEditingController? searchTextController;
   final Function(String)? onEnteringDeviceId;
   final Function(int)? onSelectedDeviceId;
@@ -18,7 +20,10 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
   final bool isGettingOldDeviceId;
   final bool? checkingDeviceIdEnter;
   OldDeviceIdSearchWidget(
-      {required this.searchList,
+      {
+      this.isShowingHelperText,
+      required this.searchList,
+      this.helperText,
       this.searchTextController,
       this.onEnteringDeviceId,
       this.onSelectedDeviceId,
@@ -52,6 +57,7 @@ class OldDeviceIdSearchWidget extends StatelessWidget {
                     //   },
                     // )
                     CustomTextBox(
+                      helperText:isShowingHelperText==true? helperText:null,
                   controller: searchTextController,
                   onChanged: (value) {
                     onEnteringDeviceId!(value);

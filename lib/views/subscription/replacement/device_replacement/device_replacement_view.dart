@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/subscription/replacement/device_replacement/device_replacement_widget.dart/old_deviceId_search_widget.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -127,6 +128,8 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                         children: [
                           Card(
                             child: OldDeviceIdSearchWidget(
+                              helperText:"No Device Id Found" ,
+                              isShowingHelperText: viewModel.isisShowingHelperText,
                               checkingDeviceIdEnter: viewModel.checkingDeviceIdEnter,
                               onSearchingDeviceId: () async {
                                 
@@ -193,8 +196,8 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                     },
                                     Vin: viewModel
                                         .deviceSearchModelResponse!.result!.VIN,
-                                    date: viewModel.deviceSearchModelResponse!
-                                        .result!.S_StartDate,
+                                    date:Utils.getDateUTC( viewModel.deviceSearchModelResponse!
+                                        .result!.S_StartDate, viewModel.userPref, viewModel.zone),
                                     deviceId: viewModel
                                         .deviceSearchModelResponse!
                                         .result!
@@ -211,6 +214,8 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(20),
                                     child: GettingNewDeviceId(
+                                         helperText:"No Device Id Found" ,
+                                       isShowingHelperText: viewModel.isisShowingHelperText,
                                       onBackPressed: () {
                                         controller.animateToPage(1,
                                             duration:
@@ -340,10 +345,10 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                           .deviceSearchModelResponse!
                                           .result!
                                           .VIN,
-                                      startDate: viewModel
+                                      startDate: Utils.getDateUTC(viewModel
                                           .deviceSearchModelResponse!
                                           .result!
-                                          .S_StartDate,
+                                          .S_StartDate, viewModel.userPref, viewModel.zone),
                                       newDeviceId: viewModel
                                           .replaceDeviceIdController.text,
                                     ),
