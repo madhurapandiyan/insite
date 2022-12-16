@@ -127,7 +127,9 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                         children: [
                           Card(
                             child: OldDeviceIdSearchWidget(
+                              checkingDeviceIdEnter: viewModel.checkingDeviceIdEnter,
                               onSearchingDeviceId: () async {
+                                
                                 if (viewModel.searchTextController.text.length <
                                     4) {
                                   Fluttertoast.showToast(
@@ -237,7 +239,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                       },
                                       onDropDownValueChange: (value) {
                                         viewModel.onDropDownChanged(value);
-                                        Focus.of(context).unfocus();
+                                      //  Focus.of(context).unfocus();
                                       },
                                       initialValue: viewModel.initialvalue,
                                       items: viewModel.dropDownValues,
@@ -273,7 +275,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                         showDialog(
                                             context: context,
                                             builder: (ctx) => AlertDialog(
-                                                  backgroundColor: tuna,
+                                                  backgroundColor: white,
                                                   actions: [
                                                     Row(
                                                       mainAxisAlignment:
@@ -288,7 +290,7 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                                               Navigator.of(
                                                                       context)
                                                                   .pop(),
-                                                          bgColor: tuna,
+                                                          bgColor: white,
                                                         ),
                                                         InsiteButton(
                                                           width: 120,

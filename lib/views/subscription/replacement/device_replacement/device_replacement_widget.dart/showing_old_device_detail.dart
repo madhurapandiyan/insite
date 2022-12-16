@@ -83,19 +83,19 @@ class ShowingOldDeviceDetail extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            InsiteButton(
-              textColor: Theme.of(context).textTheme.bodyText1!.color,
-              onTap: () {
-                onSearching!();
-              },
-              // bgColor: white,
-              title: "Search",
-              height: MediaQuery.of(context).size.height * 0.05,
-              // width: MediaQuery.of(context).size.width * 0.3,
-            ),
-            SizedBox(
-              height: 10,
-            ),
+            // InsiteButton(
+            //   textColor: Theme.of(context).textTheme.bodyText1!.color,
+            //   onTap: () {
+            //     onSearching!();
+            //   },
+            //   // bgColor: white,
+            //   title: "Search",
+            //   height: MediaQuery.of(context).size.height * 0.05,
+            //   // width: MediaQuery.of(context).size.width * 0.3,
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             InsiteText(
               fontWeight: FontWeight.w500,
               text: "Device ID :",

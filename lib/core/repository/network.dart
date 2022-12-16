@@ -551,17 +551,23 @@ class HttpWrapper {
       ..add(InterceptorsWrapper(
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
+          if (error.response?.data != null) {
+            onTokenExpired();
+          }
           if (error.response?.statusCode == 401) {
             Logger().e("Session Expired Please Login Again");
             Logger().e(error.response!.data.toString());
-            if (!Platform.isIOS) {
-              var data = await _dialogService!.showDialog(
-                  title: "Session Expired Please Login Again",
-                  cancelTitle: "Cancel",
-                  buttonTitle: "Login");
-              if (data!.confirmed) {
-                onTokenExpired();
-              }
+
+            var data = await _dialogService!.showDialog(
+                title: "Session Expired Please Login Again",
+                cancelTitle: "Cancel",
+                buttonTitle: "Login");
+            if (data!.confirmed) {
+              onTokenExpired();
+            }
+
+            if (Platform.isIOS) {
+              return;
             }
           } else {
             return errorInterceptorHandler.next(error);
