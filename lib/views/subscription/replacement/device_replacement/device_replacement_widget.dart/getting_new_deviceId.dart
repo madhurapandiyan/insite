@@ -11,6 +11,8 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 import 'deviceId_widget_list.dart';
 
 class GettingNewDeviceId extends StatefulWidget {
+  bool? isShowingHelperText;
+   final String? helperText;
   final String? oldDeviceId;
   final ReplaceDeviceModel? modelData;
   final String? modelName;
@@ -26,7 +28,10 @@ class GettingNewDeviceId extends StatefulWidget {
   bool? showingDeviceId;
 
   GettingNewDeviceId(
-      {this.controller,
+      {
+      this.helperText,
+      this.isShowingHelperText,
+      this.controller,
       this.oldDeviceId,
       this.modelName,
       this.modelData,
@@ -83,8 +88,9 @@ class _GettingNewDeviceIdState extends State<GettingNewDeviceId> {
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.75,
-            height: MediaQuery.of(context).size.height * 0.05,
+           //height: MediaQuery.of(context).size.height * 0.05,
             child: CustomTextBox(
+              helperText:widget.isShowingHelperText==true?widget.helperText:null ,
               controller: widget.controller,
               onChanged: (value) {
                 widget.onChange!(value);

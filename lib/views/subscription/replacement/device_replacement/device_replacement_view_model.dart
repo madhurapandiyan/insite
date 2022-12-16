@@ -36,13 +36,15 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   bool showingDialog = false;
   bool isGettingOldDeviceId = false;
   bool isGettingNewDeviceId = false;
+  bool isisShowingHelperText = false;
   int? changingIndex = 0;
 
   List<DeviceContainsList> _searchList = [];
   List<DeviceContainsList> get searchList => _searchList;
 
   DeviceSearchModelResponse? _deviceSearchModelResponse;
-  DeviceSearchModelResponse? get deviceSearchModelResponse => _deviceSearchModelResponse;
+  DeviceSearchModelResponse? get deviceSearchModelResponse =>
+      _deviceSearchModelResponse;
 
   var searchTextController = TextEditingController();
   var replaceDeviceIdController = TextEditingController();
@@ -93,14 +95,14 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   onEnteringDeviceId(String searchedWord) async {
     try {
       if (searchedWord.length < 4) {
-        checkingDeviceIdEnter=false;
+        isisShowingHelperText = false;
+        checkingDeviceIdEnter = false;
         _searchList.clear();
 
         notifyListeners();
         return null;
       } else {
         if (enableGraphQl) {
-          
           SubscriptionDeviceFleetList? deviceFleetList =
               await replacementService!.getSearchedDeviceDetails(
                   graphqlSchemaService!.getDeviceIdReplacement(), {
@@ -110,8 +112,15 @@ class DeviceReplacementViewModel extends InsiteViewModel {
             "limit": 20,
             "search": {"gpsDeviceID": searchedWord}
           });
-          if (deviceFleetList!.provisioningInfo != null &&
-              deviceFleetList.provisioningInfo!.isNotEmpty) {
+          if (deviceFleetList?.count == null) {
+            isisShowingHelperText = true;
+            //  Fluttertoast.showToast(msg: "No Data Found");
+          } else {
+            isisShowingHelperText = false;
+          }
+
+          if (deviceFleetList?.provisioningInfo != null &&
+              deviceFleetList!.provisioningInfo!.isNotEmpty) {
             final result = deviceFleetList.provisioningInfo?.first;
             _deviceSearchModelResponse = DeviceSearchModelResponse(
                 result: DeviceSearchResponce(
@@ -119,19 +128,19 @@ class DeviceReplacementViewModel extends InsiteViewModel {
                     Model: result?.model,
                     VIN: result?.model,
                     S_StartDate: result?.subscriptionStartDate));
+            deviceFleetList!.provisioningInfo!.forEach((element) {
+              _searchList.add(DeviceContainsList(
+                  containsList: element.gpsDeviceID, count: 1));
+            });
           }
-          deviceFleetList.provisioningInfo!.forEach((element) {
-            _searchList.add(DeviceContainsList(
-                containsList: element.gpsDeviceID, count: 1));
-          });
 
           //_searchList = deviceFleetList!.provisioningInfo!;
 
           Logger().wtf(_searchList.length);
-          if (_searchList.isEmpty) {
-            Fluttertoast.showToast(msg: "No Data Found");
-            return;
-          }
+          // if (_searchList.isEmpty) {
+          //   Fluttertoast.showToast(msg: "No Data Found");
+          //   return;
+          // }
 
           notifyListeners();
         } else {
@@ -156,12 +165,10 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   }
 
   onSelectedDeviceId(int i) {
-    
-      searchTextController.text = searchList[i].containsList!;
-      checkingDeviceIdEnter = true;
-      searchList.clear();
-      notifyListeners();
-    
+    searchTextController.text = searchList[i].containsList!;
+    checkingDeviceIdEnter = true;
+    searchList.clear();
+    notifyListeners();
   }
 
   onSelectedNewDeviceId(int i) {
@@ -255,6 +262,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
   onGettingReplaceDeviceId(String searchWord) async {
     try {
       if (searchWord.length < 4) {
+        isisShowingHelperText = false;
         _replaceDeviceModelData = null;
         isGettingNewDeviceId = false;
         checkingNewDeviceIdEnter = false;
@@ -269,10 +277,17 @@ class DeviceReplacementViewModel extends InsiteViewModel {
             "limit": 20,
             "search": {"gpsDeviceID": searchWord}
           });
+          if (data?.count == null) {
+            isisShowingHelperText = true;
 
-          if (data!.provisioningInfo != null &&
-              data.provisioningInfo!.isNotEmpty) {
-            
+            //  Fluttertoast.showToast(msg: "No Data Found");
+
+          } else {
+            isisShowingHelperText = false;
+          }
+
+          if (data?.provisioningInfo != null &&
+              data!.provisioningInfo!.isNotEmpty) {
             List<DeviceModel> searchList = [];
             data.provisioningInfo?.forEach((element) {
               searchList.add(DeviceModel(
@@ -285,14 +300,14 @@ class DeviceReplacementViewModel extends InsiteViewModel {
             checkingNewDeviceIdEnter = true;
           }
 
-          if (data.provisioningInfo!.isEmpty) {
-            Fluttertoast.showToast(msg: "Device Not Found");
-            replaceDeviceIdController.clear();
-            checkingNewDeviceIdEnter=false;
-            notifyListeners();
-            return;
-          }
-          
+          // if (data.provisioningInfo!.isEmpty) {
+          // //  Fluttertoast.showToast(msg: "Device Not Found");
+          //   replaceDeviceIdController.clear();
+          //   checkingNewDeviceIdEnter = false;
+          //   notifyListeners();
+          //   return;
+          // }
+
           notifyListeners();
         } else {
           _replaceDeviceModelData =
@@ -334,7 +349,8 @@ class DeviceReplacementViewModel extends InsiteViewModel {
           UserID: int.parse(userId!),
           Version: 2.0,
           device: [NewdeviceData]);
-      var data = await replacementService!.savingReplacement(replacementData,graphqlSchemaService!.register());
+      var data = await replacementService!
+          .savingReplacement(replacementData, graphqlSchemaService!.register());
       if (data["status"] == "success") {
         searchList.clear();
         showingNewDeviceIdPreview = false;

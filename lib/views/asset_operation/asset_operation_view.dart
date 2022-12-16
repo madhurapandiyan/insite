@@ -122,11 +122,11 @@ class _AssetOperationViewState extends State<AssetOperationView> {
                             //   width: 10,
                             // ),
                             InsiteButton(
-                              title: Utils.getDateInFormatddMMyyyy(
-                                      viewModel.startDate) +
+                              title: Utils.getDateFormatForDatePicker(
+                                      viewModel.startDate,viewModel.userPref) +
                                   " - " +
-                                  Utils.getDateInFormatddMMyyyy(
-                                      viewModel.endDate),
+                                  Utils.getDateFormatForDatePicker(
+                                      viewModel.endDate,viewModel.userPref),
                               height: 36,
                               onTap: () async {
                                 dateRange = [];

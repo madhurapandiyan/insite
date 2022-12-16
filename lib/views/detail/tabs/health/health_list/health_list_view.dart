@@ -58,11 +58,11 @@ class _HealthListViewState extends State<HealthListView> {
                         //   width: 10,
                         // ),
                         InsiteButton(
-                          title:  Utils.getDateInFormatddMMyyyy(
-                                    viewModel.startDate) +
+                          title:  Utils.getDateFormatForDatePicker(
+                                    viewModel.startDate,viewModel.userPref) +
                                 " - " +
-                                Utils.getDateInFormatddMMyyyy(
-                                    viewModel.endDate),
+                                Utils.getDateFormatForDatePicker(
+                                    viewModel.endDate,viewModel.userPref),
                           //width: 90,
                           //bgColor: Theme.of(context).backgroundColor,
                           textColor:

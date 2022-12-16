@@ -73,7 +73,9 @@ class _DateRangeViewState extends State<DateRangeView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DateRangeViewModel>.reactive(
       builder: (BuildContext context, DateRangeViewModel viewModel, Widget? _) {
-        return Container(
+       
+        return  viewModel.isLoading?Center(child: CircularProgressIndicator(),):
+         Container(
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.95,
           decoration: BoxDecoration(
@@ -296,15 +298,19 @@ class _DateRangeViewState extends State<DateRangeView> {
                                       // });
                                     },
                                     title: customFromDate == null
-                                        ? 'dd-mm-yyyy'.toUpperCase()
-                                        : DateFormat("dd-MM-yyyy")
-                                            .format(customFromDate!),
+                                        ? Utils.getDateFormat(viewModel.userPref?.dateFormat)?.toUpperCase()
+                                        :  Utils.getDateFormatForDatePicker(
+                                            customFromDate!.toString(),viewModel.userPref),
+                                        // DateFormat("dd-MM-yyyy")
+                                        //     .format(customFromDate!),
                                   )
                                 : InsiteButton(
                                     title: customFromDate == null
-                                        ? Utils.getDateInFormatddMMyyyy(
-                                            viewModel.startDate)
-                                        : dateFormat.format(customFromDate!),
+                                        ?Utils.getDateFormatForDatePicker(
+                                            viewModel.startDate,viewModel.userPref)
+                                        :  Utils.getDateFormatForDatePicker(
+                                            customFromDate!.toString(),viewModel.userPref),
+                                        //dateFormat.format(customFromDate!),
                                     fontSize: 12,
                                     onTap: () {
                                       showFromToDatePicker(
@@ -355,15 +361,17 @@ class _DateRangeViewState extends State<DateRangeView> {
                                               viewModel.startDate!));
                                     },
                                     title: customToDate == null
-                                        ? 'dd-mm-yyyy'.toUpperCase()
-                                        : DateFormat("dd-MM-yyyy")
-                                            .format(customToDate!),
+                                        ? Utils.getDateFormat(viewModel.userPref)?.toUpperCase()
+                                        :Utils.getDateFormatForDatePicker(customToDate!.toString(), viewModel.userPref)
+                                        // DateFormat("dd-MM-yyyy")
+                                         //   .format(customToDate!),
                                   )
                                 : InsiteButton(
                                     title: customToDate == null
-                                        ? Utils.getDateInFormatddMMyyyy(
-                                            viewModel.endDate)
-                                        : dateFormat.format(customToDate!),
+                                        ? Utils.getDateFormatForDatePicker(
+                                            viewModel.endDate,viewModel.userPref)
+                                        : Utils.getDateFormatForDatePicker(customToDate!.toString(),viewModel.userPref),
+                                        //dateFormat.format(customToDate!),
                                     fontSize: 12,
                                   
                                     onTap: () {
@@ -617,7 +625,8 @@ class _DateRangeMaintenanceViewState extends State<DateRangeMaintenanceView> {
               isFromDate ? DateTime.now() : DateTime.parse(model!.endDate!),
           firstDate: DateTime.now(),
           lastDate: DateTime(9999));
-      model!.onEndDateSelected(DateFormat("dd-MM-yyyy").format(data!), data);
+      model!.onEndDateSelected(Utils.getDateFormatForDatePicker(data!.toString(),model.userPref), data);
+      //model!.onEndDateSelected(DateFormat("dd-MM-yyyy").format(data!), data);
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -677,8 +686,9 @@ class _DateRangeMaintenanceViewState extends State<DateRangeMaintenanceView> {
                                     onTap: () {
                                       //showFromToDatePicker(context, true, model: viewModel);
                                     },
-                                    title: DateFormat("dd-MM-yyyy")
-                                        .format(DateTime.now()),
+                                    title:Utils.getDateFormatForDatePicker(DateTime.now().toString(),viewModel.userPref)
+                                    //  DateFormat("dd-MM-yyyy")
+                                    //     .format(DateTime.now()),
                                   ),
                                 ],
                               ),
@@ -712,8 +722,10 @@ class _DateRangeMaintenanceViewState extends State<DateRangeMaintenanceView> {
                                           model: viewModel);
                                     },
                                     title: viewModel.pickedDate == null
-                                        ? 'dd-mm-yyyy'.toUpperCase()
-                                        : viewModel.pickedDate,
+                                        ? Utils.getDateFormat(viewModel.userPref)?.toUpperCase()
+                                        : 
+                                        viewModel.pickedDate,
+                                       // Utils.getDateFormatForDatePicker(viewModel.pickedDate, viewModel.userPref),
                                   ),
                                 ],
                               ),

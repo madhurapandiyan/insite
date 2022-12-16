@@ -5,6 +5,7 @@ import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/services/date_range_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/utils/enums.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
@@ -40,12 +41,17 @@ class DateRangeViewModel extends InsiteViewModel {
   }
 
   DateRangeType get dateType => _dateType;
-
+ bool isLoading=true;
   DateRangeViewModel() {
+    initSetup();
     _dateRangeService?.setUp();
     getDateRangeFilterData();
   }
-
+initSetup()async{
+await getUserPreference();
+isLoading=false;
+notifyListeners();
+}
   updateDateRange(String? startDate, String? endDate, String? type) async {
     Logger().d("updateDateRange start date, end date, type",
         startDate! + " " + endDate! + " " + type!);
@@ -133,11 +139,12 @@ class DateRangeMaintenanceViewModel extends InsiteViewModel {
 
   showSelectedDate() {
     if (maintenanceEndDate != null) {
-      pickedDate =
-          DateFormat("dd-MM-yyyy").format(DateTime.parse(maintenanceEndDate!));
+      pickedDate =Utils.getDateFormatForDatePicker(maintenanceEndDate!.toString(),userPref);
+         // DateFormat("dd-MM-yyyy").format(DateTime.parse(maintenanceEndDate!));
     } else {
-      pickedDate = DateFormat("dd-MM-yyyy")
-          .format(DateTime.now().add(Duration(days: 30)));
+      pickedDate = Utils.getDateFormatForDatePicker(DateTime.now().add(Duration(days: 30)).toString(),userPref);
+      // DateFormat("dd-MM-yyyy")
+      //     .format(DateTime.now().add(Duration(days: 30)));
     }
   }
 

@@ -2277,21 +2277,21 @@ class Utils {
     }
   }
 
-static String getManualDateFormat(date) {
-    try {
-       if(date==null||date.toString().isEmpty){
-        return "-";
-      }
-       Logger().e(date);
-      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
-      var inputDate = DateTime.parse(parseDate.toString());
-      var outputFormat = DateFormat('MM/dd/yyyy');
-      var outputDate = outputFormat.format(inputDate);
-      return outputDate;
-    } catch (e) {
-      return "";
-    }
-  }
+// static String getManualDateFormat(date) {
+//     try {
+//        if(date==null||date.toString().isEmpty){
+//         return "-";
+//       }
+//        Logger().e(date);
+//       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date);
+//       var inputDate = DateTime.parse(parseDate.toString());
+//       var outputFormat = DateFormat('MM/dd/yyyy');
+//       var outputDate = outputFormat.format(inputDate);
+//       return outputDate;
+//     } catch (e) {
+//       return "";
+//     }
+//   }
  static String getDateTimeFromString(
       String? date,UserPreference? dateFormat) {
     try {
@@ -2368,13 +2368,11 @@ static String? getDateFormat( dateFormat){
 
   if(dateFormat=="MM/dd/yy"){
    dateFormat='MM/dd/yyyy';
-  // var outputFormat = DateFormat('MM/dd/yyyy').toString();
   Logger().wtf(dateFormat);
   return dateFormat;
   }else{
     dateFormat='dd/MM/yyyy';
-    //var outputFormat = DateFormat('dd/MM/yyyy').toString(); 
-     Logger().wtf(dateFormat);
+    Logger().wtf(dateFormat);
     return dateFormat;
   }
   
@@ -2382,7 +2380,9 @@ static String? getDateFormat( dateFormat){
 
 static String getDateFormatForDatePicker(String? date,UserPreference? userPreference){
   try {
-      Logger().wtf(userPreference?.dateFormat);
+      Logger().wtf("date format:${userPreference?.dateFormat}");
+       
+    
       if(userPreference!.dateFormat=="MM/dd/yy"){
 
   DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date!);
@@ -2400,6 +2400,7 @@ static String getDateFormatForDatePicker(String? date,UserPreference? userPrefer
   }
       
     } catch (e) {
+      Logger().e(e.toString());
       return "";
     }
 

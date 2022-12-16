@@ -142,7 +142,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   MaintenanceCheckListModelPop? serviceCheckList;
   String? hourMeterDate;
   getSelectedDate(DateTime? newDate) {
-    hourMeterDateController.text =Utils.getManualDateFormat(newDate.toString());
+    hourMeterDateController.text =Utils.getDateFormatForDatePicker(newDate.toString(),userPref);
         //Utils.getDateInFormatddMMyyyy(newDate.toString());
     hourMeterDate = newDate!.toLocal().toIso8601String();
     notifyListeners();

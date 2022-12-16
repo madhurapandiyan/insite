@@ -73,10 +73,10 @@ class _SingleAssetUtilizationGraphViewState
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: InsiteButton(
-                        title: Utils.getDateInFormatddMMyyyy(
-                                viewModel.startDate) +
+                        title: Utils.getDateFormatForDatePicker(
+                                viewModel.startDate,viewModel.userPref) +
                             " - " +
-                            Utils.getDateInFormatddMMyyyy(viewModel.endDate),
+                            Utils.getDateFormatForDatePicker(viewModel.endDate,viewModel.userPref),
                         // width: 90,
                         //bgColor: Theme.of(context).backgroundColor,
                         textColor: Theme.of(context).textTheme.bodyText1!.color,
