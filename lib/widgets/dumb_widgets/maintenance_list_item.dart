@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/maintenance.dart';
-import 'package:insite/core/models/maintenance_list_services.dart';
 import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/maintenance/main/main_view_model.dart';
