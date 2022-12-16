@@ -169,7 +169,7 @@ class ManageReportCardWidget extends StatelessWidget {
                         content: scheduledReportsRow!
                                     .scheduledReports!.reportCreationDate !=
                                 null
-                            ? Utils.getDateInFormatReportCardDate(
+                            ?Utils.getLastReportedDateOneUTC(
                                 scheduledReportsRow!
                                     .scheduledReports!.reportCreationDate)
                             : "-",

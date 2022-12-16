@@ -438,6 +438,10 @@ class _TabPageState extends State<AssetDetailView> {
                                                   ? AddIntervalsView(
                                                       assetId: viewModel
                                                           .assetDetail!,
+                                                      backCallback: () {
+                                                        selectedTabIndex = 5;
+                                                        setState(() {});
+                                                      },
                                                     )
                                                   : Container(
                                                       child: EmptyView(

@@ -157,8 +157,8 @@ class _MaintenanceListItemState extends State<MaintenanceListItem> {
                           ),
                           InsiteTableRowItem(
                             title: "Last Reported Fuel Time :",
-                            content:
-                                widget.summaryData!.fuelReportedTime ?? "-",
+                            content:Utils.getLastReportedDateOneUTC(widget.summaryData!.fuelReportedTime)
+                                
                           ),
                         ]),
                       ],
