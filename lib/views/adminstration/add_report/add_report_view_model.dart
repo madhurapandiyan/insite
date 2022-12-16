@@ -459,9 +459,9 @@ class AddReportViewModel extends InsiteViewModel {
         nameController.text = resultData.scheduledReport!.reportTitle!;
         reportFormat = resultData.scheduledReport?.reportFormat;
 
-        // dateTimeController.text = DateFormat("yyyy-MM-dd").format(
-        //     DateFormat("yyyy-MM-dd")
-        //         .parse(resultData.scheduledReport?.scheduleEndDate ?? ""));
+        dateTimeController.text = Utils.getDateInFormatddMMyyyy(
+            resultData.scheduledReport?.scheduleEndDate ?? "");
+
         emailIds!.clear();
         selectedUser.clear();
         resultData.scheduledReport!.emailRecipients!.forEach((element) {
@@ -745,8 +745,7 @@ class AddReportViewModel extends InsiteViewModel {
 
   addContact() {
     if (selectedUser.any((emailID) => emailID.email == emailController.text)) {
-      snackbarService!
-          .showSnackbar(message: "Recipient already added");
+      snackbarService!.showSnackbar(message: "Recipient already added");
     } else {
       if (emailController.text.contains("@")) {
         isShowingSelectedContact = true;

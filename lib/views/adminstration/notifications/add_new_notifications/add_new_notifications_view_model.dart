@@ -960,7 +960,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
                 ?.getSingleNotiFaultDescription(alertConfigUid));
         faultCodeDescriptionList!.faults!.length > 0
             ? faultCodeDescriptionList.faults?.forEach((element) {
-                SelectedfaultCodeTypeSearch?.add(element);
+                SelectedfaultCodeTypeSearch.add(element);
               })
             : null;
 
