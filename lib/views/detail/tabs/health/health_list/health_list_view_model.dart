@@ -61,9 +61,10 @@ class HealthListViewModel extends InsiteViewModel {
           Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
           graphqlSchemaService?.getSingleAssetData(
               assetUid: assetDetail!.assetUid,
-              startDateTime:
-                  Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-              endDateTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              startDateTime: Utils()
+                  .getStartDateTimeInGMTFormatForHealth(startDate, zone!),
+              endDateTime:
+                  Utils().getEndDateTimeInGMTFormatForHealth(endDate, zone!),
               page: page,
               limit: limit));
       if (result != null && result.assetData != null) {

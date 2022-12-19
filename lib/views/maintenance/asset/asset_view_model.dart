@@ -129,9 +129,10 @@ class AssetMaintenanceViewModel extends InsiteViewModel {
               page: page,
               query: await graphqlSchemaService!.getMaintennaceAssetListData(
                   appliedFilter: appliedFilters,
-                  fromDate:
-                      Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-                  toDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+                  fromDate: Utils.maintenanceFromDateFormateFromTimeZone(
+                      maintenanceStartDate!, zone!),
+                  toDate: Utils.maintenanceToDateFormateFromTimeZone(
+                      maintenanceEndDate!, zone!),
                   limit: limit,
                   pageNo: page));
 

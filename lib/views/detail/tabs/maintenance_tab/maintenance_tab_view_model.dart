@@ -113,11 +113,11 @@ class MaintenanceTabViewModel extends InsiteViewModel {
             page: pageNumber,
             query: await graphqlSchemaService!.getMaintenanceListData(
                 assetId: assetId,
-
                 histroy: true,
-                startDate:
-                    Utils.maintenanceFromDateFormate(maintenanceHistoryStartDate!),
-                endDate: Utils.maintenanceToDateFormate(maintenanceHistoryEndDate!),
+                startDate: Utils.maintenanceFromDateFormateFromTimeZone(
+                    maintenanceStartDate!, zone!),
+                endDate: Utils.maintenanceToDateFormateFromTimeZone(
+                    maintenanceEndDate!, zone!),
                 limit: pageSize,
                 pageNo: pageNumber));
     if (maintenanceListData != null &&
@@ -175,9 +175,10 @@ class MaintenanceTabViewModel extends InsiteViewModel {
       Logger().w("data");
       MaintenanceListData? maintenanceListData = await _maintenanceService!
           .getMaintenanceListData(
-              startTime:
-                  Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-              endTime: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+              startTime: Utils.maintenanceFromDateFormateFromTimeZone(
+                  maintenanceStartDate!, zone!),
+              endTime: Utils.maintenanceToDateFormateFromTimeZone(
+                  maintenanceEndDate!, zone!),
               limit: pageSize,
               page: pageNumber,
               query: await graphqlSchemaService!.getMaintenanceListData(

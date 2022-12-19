@@ -133,6 +133,9 @@ class DashboardViewModel extends InsiteViewModel {
   List<ChartSampleData> statusChartData = [];
   List<ChartSampleData> fuelChartData = [];
 
+  final date = DateTime.now();
+  final nextWeekEndDate = DateTime.now().add(Duration(days: 6));
+
   DashboardViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _assetService!.setUp();
@@ -367,15 +370,13 @@ class DashboardViewModel extends InsiteViewModel {
                 .subtract(Duration(days: 1))),
         Utils.getFaultDateFormatEndDate(DateTime.now()),
         graphqlSchemaService!.getFaultCountData(
-          
-
-          startDate: Utils.getFaultDateFormatStartDate(
-              DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
-                ),
-
-          //  Utils.getDateInFormatyyyyMMddTHHmmssZStartDashboardFaultDate(
-          //     startDate),
-          endDate: Utils.getFaultDateFormatEndDate(DateTime.now()),
+          startDate: Utils().getStartDateTimeInGMTFormatForHealth(
+              DateUtil.calcFromDate(
+                DateRangeType.lastSevenDays,
+              ).toString(),
+              zone!),
+          endDate: Utils().getEndDateTimeInGMTFormatForHealth(
+              DateTime.now().add(Duration(days: 1)).toString(), zone!),
         ));
     if (count != null) {
       _faultCountData = count;
@@ -385,19 +386,17 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   getMaintenanceCountData() async {
-    var outputFormat = DateFormat('yyyy/MM/dd 18:29:59');
-    var todayEndDate = outputFormat.format(DateTime.now());
-    var date = DateTime.now();
-    var nextWeekEndDate = new DateTime(date.year, date.month, date.day + 6);
-
     try {
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
-              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-              endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
-              nextWeekEndDate:
-                  Utils.maintenanceToDateFormate(nextWeekEndDate.toString()),
-              todayEndDate: todayEndDate));
+              fromDate: Utils.maintenanceFromDateFormateFromTimeZone(
+                  maintenanceStartDate!, zone!),
+              endDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  maintenanceEndDate!, zone!),
+              nextWeekEndDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  nextWeekEndDate.toString(), zone!),
+              todayEndDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  date.toString(), zone!)));
       if (data?.maintenanceDashboard?.dashboardData != null &&
           data!.maintenanceDashboard!.dashboardData!.isNotEmpty) {
         data.maintenanceDashboard?.dashboardData!.forEach((element) {
@@ -433,15 +432,14 @@ class DashboardViewModel extends InsiteViewModel {
     if (type == MAINTENANCETOTAL.OVERDUE ||
         type == MAINTENANCETOTAL.UPCOMING ||
         type == MAINTENANCETOTAL.NEXTMONTH) {
-      maintenanceStartDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+      maintenanceStartDate = date.toString();
       maintenanceEndDate = DateFormat("yyyy-MM-dd")
           .format(DateTime.now().add(Duration(days: 30)));
       _localService?.saveMaintenanceFromDate(maintenanceStartDate);
       _localService?.saveMaintenanceEndDate(maintenanceEndDate);
     } else if (type == MAINTENANCETOTAL.NEXTWEEK) {
-      maintenanceStartDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
-      maintenanceEndDate = DateFormat("yyyy-MM-dd")
-          .format(DateTime.now().add(Duration(days: 6)));
+      maintenanceStartDate = date.toString();
+      maintenanceEndDate = nextWeekEndDate.toString();
       _localService?.saveMaintenanceFromDate(maintenanceStartDate);
       _localService?.saveMaintenanceEndDate(maintenanceEndDate);
     }
@@ -464,12 +462,14 @@ class DashboardViewModel extends InsiteViewModel {
       Logger().w(maintenanceStartDate);
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
-              fromDate: Utils.maintenanceFromDateFormateEndDate(maintenanceStartDate!),
-              endDate: Utils.maintenanceFromDateFormate(maintenanceEndDate!),
-              prodFamily: filterData.title,
-              todayEndDate: Utils.maintenanceFromDateFormate(maintenanceEndDate!),
-              nextWeekEndDate: Utils.maintenanceFromDateNextWeekEndDate(maintenanceEndDate!)
-              ));
+              fromDate: Utils.maintenanceFromDateFormateFromTimeZone(
+                  maintenanceStartDate!, zone!),
+              endDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  maintenanceEndDate!, zone!),
+              nextWeekEndDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  nextWeekEndDate.toString(), zone!),
+              todayEndDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  date.toString(), zone!)));
       maintenanceDashboardCount = data;
       _maintenanceLoading = false;
       notifyListeners();
@@ -486,12 +486,10 @@ class DashboardViewModel extends InsiteViewModel {
   }
 
   onDateAndFilterSelected(FilterData data, FilterData dateFilter) async {
-    
     Logger().d("onFilterSelected ${data.title}");
     await clearFilterDb();
     if (currentFilterSelected != null) {
       await addFilter(currentFilterSelected!);
-       
     }
     await addFilter(data);
     await _dateRangeService!.updateDateFilter(dateFilter);
@@ -511,8 +509,8 @@ class DashboardViewModel extends InsiteViewModel {
 
   gotoUtilizationPage() {
     Logger().i("go to utilization page");
-    _navigationService!
-        .navigateWithTransition(UtilizationListView(), transition: "rightToLeft");
+    _navigationService!.navigateWithTransition(UtilizationListView(),
+        transition: "rightToLeft");
   }
 
   getUtilizationSummary() async {
@@ -696,11 +694,15 @@ class DashboardViewModel extends InsiteViewModel {
         Utils.getDateInFormatyyyyMMddTHHmmssZStartSingleAssetDay(endDate),
         Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
         graphqlSchemaService!.getFaultCountData(
-            prodFamily: dropDownValue,
-            startDate: Utils.getFaultDateFilterFormatStartDate(
-                DateUtil.calcFromDate(DateRangeType.lastSevenDays)),
-            endDate: Utils.getFaultDateFilterFormatEndDate(
-                DateTime.now())));
+          prodFamily: dropDownValue,
+          startDate: Utils().getStartDateTimeInGMTFormatForHealth(
+              DateUtil.calcFromDate(
+                DateRangeType.lastSevenDays,
+              ).toString(),
+              zone!),
+          endDate: Utils().getEndDateTimeInGMTFormatForHealth(
+              DateTime.now().add(Duration(days: 1)).toString(), zone!),
+        ));
     if (count != null) {
       _faultCountData = count;
     }

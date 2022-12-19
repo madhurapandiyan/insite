@@ -96,9 +96,10 @@ class MainViewModel extends InsiteViewModel {
     if (isVisionLink) {
       MaintenanceViewData? result =
           await _maintenanceService!.getMaintenanceData(
-        startTime:
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(maintenanceStartDate),
-        endTime: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(maintenanceEndDate),
+        startTime: Utils.maintenanceFromDateFormateFromTimeZone(
+            maintenanceStartDate!, zone!),
+        endTime: Utils.maintenanceToDateFormateFromTimeZone(
+            maintenanceEndDate!, zone!),
         limit: pageSize,
         page: pageNumber,
       );
@@ -132,9 +133,10 @@ class MainViewModel extends InsiteViewModel {
               page: pageNumber,
               query: await graphqlSchemaService!.getMaintenanceListData(
                   appliedFilter: appliedFilters,
-                  startDate:
-                      Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-                  endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+                  startDate: Utils.maintenanceFromDateFormateFromTimeZone(
+                      maintenanceStartDate!, zone!),
+                  endDate: Utils.maintenanceToDateFormateFromTimeZone(
+                      maintenanceEndDate!, zone!),
                   limit: pageSize,
                   pageNo: pageNumber));
 
@@ -170,7 +172,8 @@ class MainViewModel extends InsiteViewModel {
                 serviceId: item.serviceNumber,
                 dealerName: item.dealerName,
                 deviceType: item.deviceType,
-                geoLocation:GeoLocation(latitude: item.latitude,longitude: item.longitude) ,
+                geoLocation: GeoLocation(
+                    latitude: item.latitude, longitude: item.longitude),
                 location: Location(
                     city: item.city,
                     country: item.country,
