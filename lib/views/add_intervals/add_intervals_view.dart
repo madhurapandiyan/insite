@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/maintenance_checkList.dart' as check;
+import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
+import 'package:insite/views/detail/asset_detail_view.dart';
 import 'package:insite/widgets/dumb_widgets/insite_button.dart';
 import 'package:insite/widgets/dumb_widgets/insite_progressbar.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -15,7 +17,8 @@ import 'add_intervals_view_model.dart';
 
 class AddIntervalsView extends StatelessWidget {
   final AssetDetail? assetId;
-  AddIntervalsView({this.assetId});
+  final VoidCallback ? backCallback;
+  AddIntervalsView({this.assetId,this.backCallback});
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddIntervalsViewModel>.reactive(
@@ -27,6 +30,7 @@ class AddIntervalsView extends StatelessWidget {
           children: [
             ManageIntervals(
               viewModel: viewModel,
+              backCallback: backCallback,
             ),
             AddIntervalsChecklist(
               viewModel: viewModel,
@@ -65,7 +69,6 @@ Widget onSelectedIntervalsDetails(
         SizedBox(
           height: 10,
         ),
-        
         InsiteText(
             text: "CHECK LIST AND PART LIST",
             size: 16,
@@ -228,7 +231,8 @@ alertBox(BuildContext? context, Function onDelete) {
 
 class ManageIntervals extends StatelessWidget {
   final AddIntervalsViewModel? viewModel;
-  ManageIntervals({this.viewModel});
+  final VoidCallback ?backCallback;
+  ManageIntervals({this.viewModel,this.backCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -253,6 +257,11 @@ class ManageIntervals extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                IconButton(
+                                    onPressed: () {
+                                      backCallback!();
+                                    },
+                                    icon: Icon(Icons.arrow_back_ios_new)),
                                 InsiteText(
                                   text: "Intervals",
                                   size: 16,
