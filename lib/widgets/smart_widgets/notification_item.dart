@@ -127,7 +127,7 @@ class NotificationItem extends StatelessWidget {
                             InsiteTableRowItem(
                               title: "Date & Time",
                               content: notifications!.occurUTC != null
-                                  ? Utils.getLastReportedDateOneUTC(
+                                  ? Utils.getDateInFormatddMMyyyy(
                                       notifications!.occurUTC)
                                   : "",
                             ),

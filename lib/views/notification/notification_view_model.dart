@@ -248,8 +248,10 @@ class NotificationViewModel extends InsiteViewModel {
                 notificationUserStatus: 0,
                 notificationStatus: 0,
                 productFamily: productFamilyFilterData,
-                startDate: "",
-                endDate: ""));
+                startDate:startDate==null?"": 
+                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                endDate: endDate==null?"":
+                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;
