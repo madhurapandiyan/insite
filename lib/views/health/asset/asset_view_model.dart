@@ -60,21 +60,22 @@ class AssetViewModel extends InsiteViewModel {
     Logger().d("getAssetViewList");
     await getSelectedFilterData();
     await getDateRangeFilterData();
-    AssetFaultSummaryResponse? result = await _faultService!
-        .getAssetViewSummaryList(
+    AssetFaultSummaryResponse? result =
+        await _faultService!.getAssetViewSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
             appliedFilters,
             await graphqlSchemaService!.getAssetFaultQuery(
-                filtlerList: appliedFilters,
-                pageNo: pageNumber,
-                limit: pageSize,
-                startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(
-                    startDate),
-                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(
-                    endDate)));
+              filtlerList: appliedFilters,
+              pageNo: pageNumber,
+              limit: pageSize,
+              startDate: Utils()
+                  .getStartDateTimeInGMTFormatForHealth(startDate, zone!),
+              endDate:
+                  Utils().getEndDateTimeInGMTFormatForHealth(endDate, zone!),
+            ));
     if (result != null && result.assetFaults != null) {
       _totalCount = result.total;
       if (result.assetFaults!.isNotEmpty) {
@@ -111,20 +112,22 @@ class AssetViewModel extends InsiteViewModel {
     notifyListeners();
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-    AssetFaultSummaryResponse? result = await _faultService!
-        .getAssetViewSummaryList(
+    AssetFaultSummaryResponse? result =
+        await _faultService!.getAssetViewSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
             appliedFilters,
             await graphqlSchemaService!.getAssetFaultQuery(
-                startDate:
-                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                filtlerList: appliedFilters,
-                pageNo: pageNumber,
-                limit: pageSize,
-                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+              startDate: Utils()
+                  .getStartDateTimeInGMTFormatForHealth(startDate, zone!),
+              endDate:
+                  Utils().getEndDateTimeInGMTFormatForHealth(endDate, zone!),
+              filtlerList: appliedFilters,
+              pageNo: pageNumber,
+              limit: pageSize,
+            ));
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();

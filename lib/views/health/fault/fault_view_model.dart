@@ -70,13 +70,12 @@ class FaultViewModel extends InsiteViewModel {
         pageNumber,
         appliedFilters,
         await graphqlSchemaService!.getfaultQueryString(
-            limit: pageSize,
-            pageNo: pageNumber,
-            applyFilter: appliedFilters,
-            startDate:
-                Utils.getDateInFormatyyyyMMddTHHmmssZStartFaultDate(startDate),
-            endDate:
-                Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(endDate)));
+          limit: pageSize,
+          pageNo: pageNumber,
+          applyFilter: appliedFilters,
+          startDate:Utils().getStartDateTimeInGMTFormatForHealth(startDate, zone!),
+          endDate: Utils().getEndDateTimeInGMTFormatForHealth(endDate, zone!),
+        ));
 
     // result!.faults!.forEach((element) {
     //   Logger().i(element.details!.toJson());
@@ -125,11 +124,12 @@ class FaultViewModel extends InsiteViewModel {
         pageNumber,
         appliedFilters,
         await graphqlSchemaService!.getfaultQueryString(
-            pageNo: pageNumber,
-            limit: pageSize,
-            startDate: Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            applyFilter: appliedFilters,
-            endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+          pageNo: pageNumber,
+          limit: pageSize,
+          startDate:Utils().getStartDateTimeInGMTFormatForHealth(startDate, zone!),
+          endDate: Utils().getEndDateTimeInGMTFormatForHealth(endDate, zone!),
+          applyFilter: appliedFilters,
+        ));
     if (result != null) {
       _totalCount = result.total;
       _faults.clear();
