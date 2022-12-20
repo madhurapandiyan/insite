@@ -42,23 +42,12 @@ class UtilizationListItem extends StatelessWidget {
                                 width: 1)),
                         columnWidths: {
                           0: FlexColumnWidth(4),
-                          1: FlexColumnWidth(3),
+                          1: FlexColumnWidth(4),
                           2: FlexColumnWidth(3),
                         },
                         children: [
                           TableRow(
                             children: [
-                              InsiteTableRowItemWithIcon(
-                                iconPath: Utils().getImageWithAssetIconKey(
-                                  assetIconKey: utilizationData!.assetIcon,
-                                ),
-                                title: utilizationData!.lastReportedTime != null
-                                    ? "${Utils.getDateTimeWithOutTimeZone(
-                                        utilizationData!.lastReportedTime,
-                                        dateFormat,
-                                      )} ${utilizationData?.lastReportedTimeZoneAbbrev ?? ""}"
-                                    : "-",
-                              ),
                               InsiteTableRowItem(
                                 title: "Last Reported Time ",
                                 content: utilizationData!.lastReportedTime !=

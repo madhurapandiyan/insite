@@ -164,10 +164,8 @@ class InsiteTableRowItemWithIcon extends StatelessWidget {
         children: [
           Icon(
             Icons.arrow_drop_down,
+            size: 18,
             color: Colors.white,
-          ),
-          SizedBox(
-            width: 10,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 4),
@@ -238,7 +236,6 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     return Container(
       padding: EdgeInsets.all(8),
       child: Row(
