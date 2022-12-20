@@ -376,7 +376,7 @@ class DashboardViewModel extends InsiteViewModel {
               ).toString(),
               zone!),
           endDate: Utils().getEndDateTimeInGMTFormatForHealth(
-              DateTime.now().add(Duration(days: 1)).toString(), zone!),
+              DateTime.now().toString(), zone!),
         ));
     if (count != null) {
       _faultCountData = count;
@@ -414,6 +414,9 @@ class DashboardViewModel extends InsiteViewModel {
               if (dashboardData.displayName == "Next Month") {
                 dashboardData.maintenanceTotal = MAINTENANCETOTAL.NEXTMONTH;
               }
+              if (dashboardData.displayName == "Today") {
+                dashboardData.maintenanceTotal = MAINTENANCETOTAL.TODAY;
+              }
             });
           }
         });
@@ -440,6 +443,11 @@ class DashboardViewModel extends InsiteViewModel {
     } else if (type == MAINTENANCETOTAL.NEXTWEEK) {
       maintenanceStartDate = date.toString();
       maintenanceEndDate = nextWeekEndDate.toString();
+      _localService?.saveMaintenanceFromDate(maintenanceStartDate);
+      _localService?.saveMaintenanceEndDate(maintenanceEndDate);
+    } else if (type == MAINTENANCETOTAL.TODAY) {
+      maintenanceStartDate = date.toString();
+      maintenanceEndDate = date.toString();
       _localService?.saveMaintenanceFromDate(maintenanceStartDate);
       _localService?.saveMaintenanceEndDate(maintenanceEndDate);
     }
@@ -701,7 +709,7 @@ class DashboardViewModel extends InsiteViewModel {
               ).toString(),
               zone!),
           endDate: Utils().getEndDateTimeInGMTFormatForHealth(
-              DateTime.now().add(Duration(days: 1)).toString(), zone!),
+              DateTime.now().toString(), zone!),
         ));
     if (count != null) {
       _faultCountData = count;

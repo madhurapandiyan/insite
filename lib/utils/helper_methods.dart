@@ -2406,14 +2406,14 @@ class Utils {
     try {
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
       final locationNY = tzo.getLocation(prefData!.zone!.momentTimezone);
       tzo.TZDateTime nowNY2 = tzo.TZDateTime.from(parseDate, locationNY);
       final diffMin = nowNY2.timeZoneOffset.inMinutes;
-      var inputDate =
-          DateTime.parse(parseDate.toString()).add(Duration(minutes: -diffMin));
-      Logger().w(prefFormat.format(inputDate).toString());
-      return prefFormat.format(inputDate).toString();
+      var timeZoneDate =
+          DateTime.utc(parseDate.year, parseDate.month, parseDate.day)
+              .add(Duration(minutes: -diffMin));
+      Logger().w(timeZoneDate);
+      return prefFormat.format(timeZoneDate).toString();
     } catch (e) {
       Logger().e(e.toString());
       return "";
@@ -2422,42 +2422,36 @@ class Utils {
 
   String getEndDateTimeInGMTFormatForHealth(date, UserPreferedData? prefData) {
     try {
-      Logger().i(date);
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
       final locationNY = tzo.getLocation(prefData!.zone!.momentTimezone);
-
       tzo.TZDateTime nowNY2 = tzo.TZDateTime.from(parseDate, locationNY);
-
       final diffMin = nowNY2.timeZoneOffset.inMinutes;
-
-      var inputDate = DateTime.parse(parseDate.toString())
-          .add(Duration(minutes: (-diffMin - 1)));
-      Logger().w(prefFormat.format(inputDate).toString());
-      return prefFormat.format(inputDate).toString();
+      var timeZoneDate =
+          DateTime.utc(parseDate.year, parseDate.month, parseDate.day)
+              .add(Duration(hours: 23, minutes: 59, seconds: 59))
+              .add(Duration(minutes: -diffMin));
+      Logger().w(timeZoneDate);
+      return prefFormat.format(timeZoneDate).toString();
     } catch (e) {
       Logger().e(e.toString());
       return "";
     }
   }
 
-    static String? maintenanceFromDateFormateFromTimeZone(
+  static String? maintenanceFromDateFormateFromTimeZone(
       String date, UserPreferedData prefData) {
     try {
-      Logger().i("date before formate $date");
-      DateTime parseDate =
-          new DateFormat("yyyy-MM-dd").parse(date, true).toUtc();
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
       final locationNY = tzo.getLocation(prefData.zone!.momentTimezone);
       tzo.TZDateTime nowNY2 = tzo.TZDateTime.from(parseDate, locationNY);
       final diffMin = nowNY2.timeZoneOffset.inMinutes;
-      Logger().v('diffMin $diffMin');
-      var inputDate = DateTime.parse(parseDate.toString())
-          .add(Duration(minutes: (-diffMin)));
-      Logger()
-          .w(' date after formate ${prefFormat.format(inputDate).toString()}');
-      return prefFormat.format(inputDate).toString();
+      var timeZoneDate =
+          DateTime.utc(parseDate.year, parseDate.month, parseDate.day)
+              .add(Duration(minutes: -diffMin));
+      Logger().w(timeZoneDate);
+      return prefFormat.format(timeZoneDate).toString();
     } catch (e) {
       Logger().e(e.toString());
       return null;
@@ -2467,19 +2461,17 @@ class Utils {
   static String? maintenanceToDateFormateFromTimeZone(
       String date, UserPreferedData prefData) {
     try {
-      Logger().i("date before formate $date");
-      DateTime parseDate =
-          new DateFormat("yyyy-MM-dd").parse(date, true).toUtc();
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
       final locationNY = tzo.getLocation(prefData.zone!.momentTimezone);
       tzo.TZDateTime nowNY2 = tzo.TZDateTime.from(parseDate, locationNY);
       final diffMin = nowNY2.timeZoneOffset.inMinutes;
-      
-      var inputDate = DateTime.parse(parseDate.toString())
-          .add(Duration(minutes: (-diffMin-1)));
-      Logger()
-          .w(' date after formate ${prefFormat.format(inputDate).toString()}');
-      return prefFormat.format(inputDate).toString();
+      var timeZoneDate =
+          DateTime.utc(parseDate.year, parseDate.month, parseDate.day)
+              .add(Duration(hours: 23, minutes: 59, seconds: 59))
+              .add(Duration(minutes: -diffMin));
+      Logger().w(timeZoneDate);
+      return prefFormat.format(timeZoneDate).toString();
     } catch (e) {
       Logger().e(e.toString());
       return null;
