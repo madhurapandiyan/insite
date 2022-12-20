@@ -29,12 +29,12 @@ class DateRangeViewModel extends InsiteViewModel {
   String? get endDate => _endDate;
   DateRangeType get selectedDateRange => _selectedDateRange!;
 
-  DateRangeType ?_selectedDateRange;
+  DateRangeType? _selectedDateRange = DateRangeType.unselectedDateRange;
   set selectedDateRange(DateRangeType value) {
     this._selectedDateRange = value;
   }
 
-  DateRangeType? _dateType ;
+  DateRangeType? _dateType = DateRangeType.currentWeek;
   set dateType(DateRangeType dateType) {
     this._dateType = dateType;
   }
@@ -70,9 +70,12 @@ class DateRangeViewModel extends InsiteViewModel {
       Logger().d("start ", appliedFilters[0]);
       Logger().d("start ", appliedFilters[1]);
       Logger().d("label ", appliedFilters[2]);
-     
-      
-      _selectedDateRange = getType(appliedFilters[2]);
+      if (appliedFilters.any((element) => element=="unselectedDateRange")) {
+        _selectedDateRange = DateRangeType.unselectedDateRange;
+      } else {
+        _selectedDateRange = getType(appliedFilters[2]);
+      }
+
       notifyListeners();
     } else {
       startDate = DateFormat('yyyy-MM-dd').format(
@@ -113,7 +116,6 @@ class DateRangeViewModel extends InsiteViewModel {
         type = DateRangeType.previousMonth;
         break;
       default:
-      type=null;
     }
     return type!;
   }
