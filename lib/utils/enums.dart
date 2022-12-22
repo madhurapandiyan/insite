@@ -55,7 +55,8 @@ enum DateRangeType {
   lastThirtyDays,
   currentMonth,
   previousMonth,
-  custom
+  custom,
+  unselectedDateRange
 }
 
 enum CustomDatePick { customFromDate, customToDate, customNoDate }

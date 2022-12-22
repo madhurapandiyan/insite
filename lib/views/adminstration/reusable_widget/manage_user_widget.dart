@@ -14,6 +14,7 @@ class ManageUserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Logger().w(user!.user!.c);
     getRoleName(List<ApplicationAccess>? userDetail, moduleName) {
       if (userDetail != null) {
         final index = userDetail
@@ -99,7 +100,7 @@ class ManageUserWidget extends StatelessWidget {
                               ),
                               InsiteTableRowItem(
                                 title: "Created At",
-                                content: Utils.getDateInFormatddMMyyyy(
+                                content: Utils.getLastReportedDateOneLocalUTC(
                                     user!.user!.createdOn),
                               ),
                             ]),
@@ -118,7 +119,7 @@ class ManageUserWidget extends StatelessWidget {
                                 title: "Last login",
                                 content: user!.user!.lastLoginDate == null
                                     ? "-"
-                                    : Utils.getDateInFormatddMMyyyy(
+                                    : Utils.getLastReportedDateOneLocalUTC(
                                         user!.user!.lastLoginDate),
                               )
                             ])
