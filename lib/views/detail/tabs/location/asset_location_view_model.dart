@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:clippy_flutter/triangle.dart';
 import 'package:custom_info_window/custom_info_window.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
@@ -80,7 +81,19 @@ class AssetLocationViewModel extends InsiteViewModel {
       }
     });
   }
-
+   Future<void> zoomToCurrentLocation() async {
+     await Geolocator.requestPermission();
+    final isLocationServiceEnabled=await Geolocator.isLocationServiceEnabled();
+    if(isLocationServiceEnabled){
+      final userLocation=await Geolocator.getCurrentPosition();
+      Logger().wtf(userLocation.latitude);
+       Logger().wtf(userLocation.longitude);
+  var cameraPosition=CameraPosition(
+        target: LatLng(userLocation.latitude,userLocation.longitude), zoom: 10);
+    controller!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    }
+  
+  }
   getAssetLocationHistoryResult() async {
     await getDateRangeFilterData();
     AssetLocationHistory? result = await _assetLocationHistoryService!

@@ -43,14 +43,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
   @override
   void initState() {
     super.initState();
-    if (AppConfig.instance!.productFlavor == "worksiq" ||
-        AppConfig.instance!.productFlavor == "cummins") {
-    } else {
-      currentLocation.onLocationChanged.listen((LocationData loc) {
-        latitude = loc.latitude;
-        longitude = loc.longitude;
-      });
-    }
+    
   }
 
   @override
@@ -274,8 +267,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                               alignment: Alignment.centerRight,
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  _zoomToCurrentLocation(
-                                                      viewModel);
+                                                 viewModel.zoomToCurrentLocation();
                                                 },
                                                 child: Container(
                                                   margin: EdgeInsets.only(
@@ -501,13 +493,7 @@ class _AssetLocationViewState extends State<AssetLocationView> {
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
-  Future<void> _zoomToCurrentLocation(AssetLocationViewModel viewModel) async {
-     Logger().i(latitude);
-    final GoogleMapController mapController =
-        await viewModel.mapcontroller.future;
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(latitude ?? 0.0, longitude ?? 0.0), zoom: 13)));
-  }
+ 
 
   MapType _changemap() {
     switch (_currentSelectedItem) {
