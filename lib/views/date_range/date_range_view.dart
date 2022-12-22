@@ -34,7 +34,8 @@ class _DateRangeViewState extends State<DateRangeView> {
       {CustomDatePick? currentCustomDatePick,
       DateTime? startDate,
       DateTime? endDate,
-      required BuildContext ctx}) {
+      required BuildContext ctx,
+      DateRangeViewModel? viewModel}) {
     showDatePicker(
             context: ctx,
             initialDate: currentCustomDatePick == CustomDatePick.customFromDate
@@ -48,8 +49,11 @@ class _DateRangeViewState extends State<DateRangeView> {
             lastDate: DateTime(9999))
         .then((selectedDay) {
       setState(() {
+        viewModel!.selectedDateRange=DateRangeType.unselectedDateRange;
         _selectedDay = selectedDay;
         if (currentCustomDatePick == CustomDatePick.customFromDate) {
+          Logger().w(customFromDate);
+          Logger().v(customToDate);
           customFromDate = _selectedDay;
           fromDate = _selectedDay;
         }
@@ -277,6 +281,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     onTap: () {
                                       Logger().wtf(viewModel.startDate!);
                                       showFromToDatePicker(
+                                        viewModel: viewModel,
                                           ctx: context,
                                           currentCustomDatePick:
                                               CustomDatePick.customFromDate,
@@ -308,6 +313,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     fontSize: 12,
                                     onTap: () {
                                       showFromToDatePicker(
+                                        viewModel: viewModel,
                                           ctx: context,
                                           currentCustomDatePick:
                                               CustomDatePick.customFromDate,
@@ -346,6 +352,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                     textColor: white,
                                     onTap: () {
                                       showFromToDatePicker(
+                                        viewModel: viewModel,
                                           ctx: context,
                                           currentCustomDatePick:
                                               CustomDatePick.customToDate,
@@ -368,6 +375,7 @@ class _DateRangeViewState extends State<DateRangeView> {
                                   
                                     onTap: () {
                                       showFromToDatePicker(
+                                        viewModel: viewModel,
                                           ctx: context,
                                           currentCustomDatePick:
                                               CustomDatePick.customToDate,

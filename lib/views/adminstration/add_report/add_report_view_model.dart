@@ -921,6 +921,7 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   editPayload() {
+   chooseByDropDownValue=assetSelectionValue!;
     emailIds!.clear();
     associatedIdentifier!.clear();
     selectedUser.forEach((element) {
@@ -930,6 +931,7 @@ class AddReportViewModel extends InsiteViewModel {
       associatedIdentifier?.add(element.assetIdentifier!);
     });
     addReportPayLoad = AddReportPayLoad(
+    
       reportUid: scheduledReportsId!.reportUid ?? "",
       assetFilterUIDs: chooseByDropDownValue == "Groups" ||
               chooseByDropDownValue == "Geofences"
