@@ -926,8 +926,11 @@ class _AddReportViewState extends State<AddReportView> {
 
     if (pickedStartDate != null) {
       print(pickedStartDate);
-      String formattedDate =Utils.getDateFormatForDatePicker(pickedStartDate.toString(),viewModel.userPref);
+      //String formattedDate =Utils.getDateFormatForDatePicker(pickedStartDate.toString(),viewModel.userPref);
       // DateFormat('MM/dd/yyyy').format(pickedStartDate);
+       String formattedDate =
+          DateFormat(viewModel.userPref?.dateFormat.toString())
+              .format(pickedStartDate);
 
       print(formattedDate);
       viewModel.getDatPickerData(formattedDate);

@@ -459,8 +459,11 @@ class AddReportViewModel extends InsiteViewModel {
         nameController.text = resultData.scheduledReport!.reportTitle!;
         reportFormat = resultData.scheduledReport?.reportFormat;
 
-        dateTimeController.text = Utils.getDateInFormatddMMyyyy(
-            resultData.scheduledReport?.scheduleEndDate ?? "");
+        resultData.scheduledReport?.scheduleEndDate != ""
+            ? dateTimeController.text = DateFormat("yyyy-MM-dd").format(
+                DateFormat("yyyy-MM-dd")
+                    .parse(resultData.scheduledReport?.scheduleEndDate ?? ""))
+            : null;
 
         emailIds!.clear();
         selectedUser.clear();
@@ -806,7 +809,10 @@ class AddReportViewModel extends InsiteViewModel {
       reportTitle: nameController.text,
       reportScheduledDate: Utils.getLastReportedDateFilterData(DateTime.now()),
       reportStartDate: "",
-      reportEndDate: dateTimeController.text,
+      reportEndDate: dateTimeController.text != ""
+          ? DateFormat("yyyy-MM-dd")
+              .format(DateFormat("dd/MM/yy").parse(dateTimeController.text))
+          : "",
       emailSubject: serviceDueController.text,
       emailRecipients: emailIds,
       svcMethod: assetsDropDownValue == "Utilization Details"
@@ -921,6 +927,7 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   editPayload() {
+   chooseByDropDownValue=assetSelectionValue!;
     emailIds!.clear();
     associatedIdentifier!.clear();
     selectedUser.forEach((element) {
@@ -930,6 +937,7 @@ class AddReportViewModel extends InsiteViewModel {
       associatedIdentifier?.add(element.assetIdentifier!);
     });
     addReportPayLoad = AddReportPayLoad(
+    
       reportUid: scheduledReportsId!.reportUid ?? "",
       assetFilterUIDs: chooseByDropDownValue == "Groups" ||
               chooseByDropDownValue == "Geofences"

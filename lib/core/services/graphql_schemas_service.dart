@@ -1047,7 +1047,7 @@ locationReportedTimeUTC
   assetOperationsDailyTotals(
    pageNumber: $pageNo,
 pageSize: $pageSize,
-sort: "-assetid",
+sort: "assetserialnumber",
 startDate:"$startDate",
 endDate: "$endDate",
 productfamily: ${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"},

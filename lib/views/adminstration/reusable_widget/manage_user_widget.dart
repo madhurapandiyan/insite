@@ -18,6 +18,7 @@ class ManageUserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Logger().w(user!.user!.c);
     getRoleName(List<ApplicationAccess>? userDetail, moduleName) {
       if (userDetail != null) {
         final index = userDetail

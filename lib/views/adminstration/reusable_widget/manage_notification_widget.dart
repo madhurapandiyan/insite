@@ -93,7 +93,7 @@ class ManageNotificationWidget extends StatelessWidget {
                         ),
               InsiteText(
                 text: alerts?.createdDate != null
-                    ? Utils.getDateUTC(alerts?.createdDate,dateFormat,timeZone)
+                    ? Utils.getDateInFormatMMddyyyy(alerts?.createdDate)
                     : "",
                 size: 15,
                 fontWeight: FontWeight.bold,
