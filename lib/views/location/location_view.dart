@@ -522,7 +522,7 @@ class _LocationViewState extends State<LocationView> {
   }
 
   Future<void> _zoomToCurrentLocation(LocationViewModel viewModel) async {
-    Logger().i(latitude);
+    Logger().w(latitude);
     final GoogleMapController mapController = await viewModel.controller.future;
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(latitude ?? 0.0, longitude ?? 0.0), zoom: 13)));
