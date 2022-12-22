@@ -2228,6 +2228,7 @@ class Utils {
   static String getDateUTC(
       String? date, UserPreference? formate, UserPreferedData? timeZone) {
     try {
+       tz.initializeTimeZones();
       if (date == null || date.toString().isEmpty) {
         return "-";
       }
@@ -2251,6 +2252,7 @@ class Utils {
   static String getPreferenceDate(
       date, UserPreference? format, UserPreferedData? timeZone) {
     try {
+      tz.initializeTimeZones();
       if (date == null || date.toString().isEmpty) {
         return "-";
       }
@@ -2307,8 +2309,7 @@ class Utils {
     }
   }
 
-    static String getDateFromString(
-      String? date, UserPreference? dateFormat) {
+  static String getDateFromString(String? date, UserPreference? dateFormat) {
     try {
       if (date == null || date.toString().isEmpty) {
         return "-";
@@ -2420,6 +2421,7 @@ class Utils {
   String getStartDateTimeInGMTFormatForHealth(
       date, UserPreferedData? prefData) {
     try {
+       tz.initializeTimeZones();
       Logger().i("start Date $date");
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -2439,6 +2441,7 @@ class Utils {
 
   String getEndDateTimeInGMTFormatForHealth(date, UserPreferedData? prefData) {
     try {
+       tz.initializeTimeZones();
       Logger().i("end Date $date");
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -2460,6 +2463,7 @@ class Utils {
   static String? maintenanceFromDateFormateFromTimeZone(
       String date, UserPreferedData prefData) {
     try {
+       tz.initializeTimeZones();
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
       final locationNY = tzo.getLocation(prefData.zone!.momentTimezone);
@@ -2479,6 +2483,7 @@ class Utils {
   static String? maintenanceToDateFormateFromTimeZone(
       String date, UserPreferedData prefData) {
     try {
+       tz.initializeTimeZones();
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
       final locationNY = tzo.getLocation(prefData.zone!.momentTimezone);

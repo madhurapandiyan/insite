@@ -164,6 +164,7 @@ class AssetOperationViewModel extends InsiteViewModel {
       //   _totalCount = result.pagination!.totalAssets!.toInt();
       // }
       if (result.assets!.isNotEmpty) {
+        Logger().w(result.assets!.first.toJson());
         Logger().i("list of assets " + result.assets!.length.toString());
         _assets.addAll(result.assets!);
         _loading = false;

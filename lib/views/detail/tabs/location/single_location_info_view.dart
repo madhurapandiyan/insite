@@ -132,12 +132,12 @@ class SingleInfoView extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            InsiteText(text: "Odometer:",  fontWeight: FontWeight.w900,
-                                size: 10.0),
-                            InsiteText(
-                              text: " ${assetLocation!.odometer} Hrs",
-                              size: 8.0,
-                            )
+                            // InsiteText(text: "Odometer:",  fontWeight: FontWeight.w900,
+                            //     size: 10.0),
+                            // InsiteText(
+                            //   text: " ${assetLocation!.odometer} Hrs",
+                            //   size: 8.0,
+                            // )
                           ],
                         )
                       ],

@@ -28,19 +28,19 @@ class DateRangeViewModel extends InsiteViewModel {
   }
 
   String? get endDate => _endDate;
-  DateRangeType get selectedDateRange => _selectedDateRange;
+  DateRangeType get selectedDateRange => _selectedDateRange!;
 
-  DateRangeType _selectedDateRange = DateRangeType.currentWeek;
+  DateRangeType? _selectedDateRange = DateRangeType.unselectedDateRange;
   set selectedDateRange(DateRangeType value) {
     this._selectedDateRange = value;
   }
 
-  DateRangeType _dateType = DateRangeType.currentWeek;
+  DateRangeType? _dateType = DateRangeType.currentWeek;
   set dateType(DateRangeType dateType) {
     this._dateType = dateType;
   }
 
-  DateRangeType get dateType => _dateType;
+  DateRangeType get dateType => _dateType!;
  bool isLoading=true;
   DateRangeViewModel() {
     initSetup();
@@ -76,8 +76,12 @@ notifyListeners();
       Logger().d("start ", appliedFilters[0]);
       Logger().d("start ", appliedFilters[1]);
       Logger().d("label ", appliedFilters[2]);
-      
-      _selectedDateRange = getType(appliedFilters[2]);
+      if (appliedFilters.any((element) => element=="unselectedDateRange")) {
+        _selectedDateRange = DateRangeType.unselectedDateRange;
+      } else {
+        _selectedDateRange = getType(appliedFilters[2]);
+      }
+
       notifyListeners();
     } else {
       startDate = DateFormat('yyyy-MM-dd').format(
@@ -87,7 +91,7 @@ notifyListeners();
   }
 
   DateRangeType getType(value) {
-    DateRangeType type = DateRangeType.currentWeek;
+    DateRangeType? type;
     Logger().e(value);
     switch (value) {
       case "currentMonth":
@@ -119,7 +123,7 @@ notifyListeners();
         break;
       default:
     }
-    return type;
+    return type!;
   }
 }
 

@@ -28,7 +28,7 @@ class UtilizationListViewModel extends InsiteViewModel {
   int get totalCount => _totalCount;
 
   int pageNumber = 1;
-  int pageCount = 20;
+  int pageCount = 50;
   ScrollController? scrollController;
 
   List<AssetResult> _utilLizationListData = [];
@@ -125,7 +125,7 @@ class UtilizationListViewModel extends InsiteViewModel {
           pageCount,
           appliedFilters,
           await graphqlSchemaService!.getFleetUtilization(
-              sort: null,
+              sort: "lastReportedTime",
               applyFilter: appliedFilters,
               startDate: Utils.getIdlingDateParse(startDate),
               endDate: Utils.getIdlingDateParse(endDate),
