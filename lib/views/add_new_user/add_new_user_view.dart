@@ -177,9 +177,17 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         // else if (int.parse(value) <= 7) {
                                         //   return "Enter Valid Phone Number";
                                         // }
-                                        String pattern =
-                                            "^(?:[+0]9)?[0-9]{7,15}\$";
-                                        RegExp regex = new RegExp(pattern);
+                                        String pattern;
+                                        RegExp regex;
+                                        if(value.startsWith("+")){
+                                          pattern ="^(?:[+0][0-9])?[0-9]{6,14}\$";
+                                           regex = new RegExp(pattern);
+                                        }else{
+                                          pattern= "^(?:[+0]9)?[0-9]{7,15}\$";
+                                           regex = new RegExp(pattern);
+                                        }
+                                       
+                                        
 
                                         if (regex.hasMatch(value)) {
                                           return null;

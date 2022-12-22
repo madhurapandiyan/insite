@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/insite_data_provider.dart';
@@ -37,14 +38,7 @@ class _LocationViewState extends State<LocationView> {
   @override
   void initState() {
     super.initState();
-    if (AppConfig.instance!.productFlavor == "worksiq" ||
-        AppConfig.instance!.productFlavor == "cummins") {
-    } else {
-      currentLocation.onLocationChanged.listen((LocationData loc) {
-        latitude = loc.latitude;
-        longitude = loc.longitude;
-      });
-    }
+    
   }
 
   @override
@@ -161,6 +155,7 @@ class _LocationViewState extends State<LocationView> {
                                   },
                                   onMapCreated:
                                       (GoogleMapController controller) async {
+                                        viewModel.googleMapController=controller;
                                     viewModel.customInfoWindowController
                                         .googleMapController = controller;
                                     viewModel.controller.complete(controller);
@@ -336,8 +331,8 @@ class _LocationViewState extends State<LocationView> {
                                                         Alignment.centerRight,
                                                     child: GestureDetector(
                                                       onTap: () {
-                                                        _zoomToCurrentLocation(
-                                                            viewModel);
+                                                      viewModel.zoomToCurrentLocation(
+                                                      );
                                                       },
                                                       child: Container(
                                                         margin: EdgeInsets.only(
@@ -521,12 +516,7 @@ class _LocationViewState extends State<LocationView> {
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
 
-  Future<void> _zoomToCurrentLocation(LocationViewModel viewModel) async {
-    Logger().i(latitude);
-    final GoogleMapController mapController = await viewModel.controller.future;
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(latitude ?? 0.0, longitude ?? 0.0), zoom: 13)));
-  }
+ 
 
   MapType _changemap() {
     switch (_currentSelectedItem) {
