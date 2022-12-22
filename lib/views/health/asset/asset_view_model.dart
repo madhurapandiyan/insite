@@ -57,43 +57,47 @@ class AssetViewModel extends InsiteViewModel {
   }
 
   getAssetViewList() async {
-    Logger().d("getAssetViewList");
-    await getSelectedFilterData();
-    await getDateRangeFilterData();
-    AssetFaultSummaryResponse? result =
-        await _faultService!.getAssetViewSummaryList(
-            Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-            Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-            pageSize,
-            pageNumber,
-            appliedFilters,
-            await graphqlSchemaService!.getAssetFaultQuery(
-              filtlerList: appliedFilters,
-              pageNo: pageNumber,
-              limit: pageSize,
-              startDate: Utils()
-                  .getStartDateTimeInGMTFormatForHealth(startDate, zone!),
-              endDate:
-                  Utils().getEndDateTimeInGMTFormatForHealth(endDate, zone!),
-            ));
-    if (result != null && result.assetFaults != null) {
-      _totalCount = result.total;
-      if (result.assetFaults!.isNotEmpty) {
-        _faults.addAll(result.assetFaults!);
-        _loading = false;
-        _loadingMore = false;
-        notifyListeners();
+    try {
+      Logger().d("getAssetViewList");
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
+      AssetFaultSummaryResponse? result =
+          await _faultService!.getAssetViewSummaryList(
+              Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+              Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
+              pageSize,
+              pageNumber,
+              appliedFilters,
+              await graphqlSchemaService!.getAssetQuery(
+                filtlerList: appliedFilters,
+                pageNo: pageNumber,
+                limit: pageSize,
+                startDate: Utils()
+                    .getStartDateTimeInGMTFormatForHealth(startDate, zone!),
+                endDate:
+                    Utils().getEndDateTimeInGMTFormatForHealth(endDate, zone!),
+              ));
+      if (result != null && result.assetFaults != null) {
+        _totalCount = result.total;
+        if (result.assetFaults!.isNotEmpty) {
+          _faults.addAll(result.assetFaults!);
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _faults.addAll(result.assetFaults!);
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
       } else {
-        _faults.addAll(result.assetFaults!);
         _loading = false;
         _loadingMore = false;
-        _shouldLoadmore = false;
         notifyListeners();
       }
-    } else {
-      _loading = false;
-      _loadingMore = false;
-      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
     }
   }
 
