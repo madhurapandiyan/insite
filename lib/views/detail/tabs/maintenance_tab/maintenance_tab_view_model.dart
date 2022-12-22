@@ -115,9 +115,9 @@ class MaintenanceTabViewModel extends InsiteViewModel {
                 assetId: assetId,
                 histroy: true,
                 startDate: Utils.maintenanceFromDateFormateFromTimeZone(
-                    maintenanceStartDate!, zone!),
+                    maintenanceHistoryStartDate!, zone!),
                 endDate: Utils.maintenanceToDateFormateFromTimeZone(
-                    maintenanceEndDate!, zone!),
+                    maintenanceHistoryEndDate!, zone!),
                 limit: pageSize,
                 pageNo: pageNumber));
     if (maintenanceListData != null &&
