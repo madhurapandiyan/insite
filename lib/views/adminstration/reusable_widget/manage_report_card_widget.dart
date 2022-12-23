@@ -183,8 +183,8 @@ class ManageReportCardWidget extends StatelessWidget {
                         content: scheduledReportsRow!
                                     .scheduledReports!.scheduleEndDate !=
                                 null
-                            ? Utils.getPreferenceDate(scheduledReportsRow!
-                                .scheduledReports!.scheduleEndDate,dateFormat,timeZone)
+                            ? Utils.getDateFromString(scheduledReportsRow!
+                                .scheduledReports!.scheduleEndDate,dateFormat)
                             : "-",
                       )
                     ])
