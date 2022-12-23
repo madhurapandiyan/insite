@@ -460,9 +460,10 @@ class AddReportViewModel extends InsiteViewModel {
         reportFormat = resultData.scheduledReport?.reportFormat;
 
         resultData.scheduledReport?.scheduleEndDate != ""
-            ? dateTimeController.text = DateFormat("yyyy-MM-dd").format(
-                DateFormat("yyyy-MM-dd")
-                    .parse(resultData.scheduledReport?.scheduleEndDate ?? ""))
+            ? dateTimeController.text =Utils.getPreferenceDate(resultData.scheduledReport?.scheduleEndDate, userPref,zone)
+            //  DateFormat(userPref?.dateFormat).format(
+            //     DateFormat(userPref?.dateFormat)
+            //         .parse(resultData.scheduledReport?.scheduleEndDate ?? ""))
             : null;
 
         emailIds!.clear();

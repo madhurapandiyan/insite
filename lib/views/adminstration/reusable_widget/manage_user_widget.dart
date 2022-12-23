@@ -104,8 +104,8 @@ class ManageUserWidget extends StatelessWidget {
                               ),
                               InsiteTableRowItem(
                                 title: "Created At",
-                                content: Utils.getDateUTC(
-                                    user!.user!.createdOn,dateFormat,timeZone),
+                                content: Utils.getDateTimeWithOutTimeZone(
+                                    user!.user!.createdOn,dateFormat),
                               ),
                             ]),
                             TableRow(children: [
@@ -123,8 +123,8 @@ class ManageUserWidget extends StatelessWidget {
                                 title: "Last login",
                                 content: user!.user!.lastLoginDate == null
                                     ? "-"
-                                    : Utils.getDateUTC(
-                                        user!.user!.lastLoginDate,dateFormat,timeZone),
+                                    : Utils.getDateTimeWithOutTimeZone(
+                                        user!.user!.lastLoginDate,dateFormat),
                               )
                             ])
                           ],

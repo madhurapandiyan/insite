@@ -599,7 +599,7 @@ class _AddReportViewState extends State<AddReportView> {
                           child: Padding(
                               padding: const EdgeInsets.only(left: 10, top: 3),
                               child: CustomDatePicker(
-                                initialText:  Utils.getDateFormat(viewModel.userPref?.dateFormat)?.toUpperCase(),
+                                initialText:  viewModel.userPref?.dateFormat?.toUpperCase(),
                                 controller: viewModel.dateTimeController,
                                 voidCallback: () {
                                   getDatePicker(viewModel);
