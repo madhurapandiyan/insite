@@ -128,6 +128,7 @@ class DeviceReplacementViewModel extends InsiteViewModel {
                     Model: result?.model,
                     VIN: result?.model,
                     S_StartDate: result?.subscriptionStartDate));
+                    _searchList.clear();
             deviceFleetList!.provisioningInfo!.forEach((element) {
               _searchList.add(DeviceContainsList(
                   containsList: element.gpsDeviceID, count: 1));

@@ -25,7 +25,7 @@ class AssetViewState extends State<AssetView> {
     viewModel.refresh();
   }
 
-  late var viewModel;
+ late var viewModel;
   List<DateTime>? dateRange = [];
 
   @override
@@ -37,8 +37,8 @@ class AssetViewState extends State<AssetView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AssetViewModel>.reactive(
-      viewModelBuilder: () => viewModel,
       builder: (BuildContext context, AssetViewModel model, Widget? _) {
+       // viewModel = model;
         return Padding(
           padding: const EdgeInsets.only(top: 35),
           child: Stack(
@@ -64,9 +64,10 @@ class AssetViewState extends State<AssetView> {
                         InsiteButton(
                           //width: 90,
                           title: Utils.getDateFormatForDatePicker(
-                                  viewModel.startDate,viewModel.userPref) +
+                                  viewModel.startDate, viewModel.userPref) +
                               " - " +
-                              Utils.getDateFormatForDatePicker(viewModel.endDate,viewModel.userPref),
+                              Utils.getDateFormatForDatePicker(
+                                  viewModel.endDate, viewModel.userPref),
                           // bgColor: Theme.of(context).backgroundColor,
                           textColor: white,
                           onTap: () async {
@@ -131,6 +132,7 @@ class AssetViewState extends State<AssetView> {
           ),
         );
       },
+      viewModelBuilder: () => viewModel,
     );
   }
 }

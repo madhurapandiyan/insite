@@ -954,7 +954,10 @@ class AddReportViewModel extends InsiteViewModel {
       reportTitle: nameController.text,
       emailSubject: serviceDueController.text,
       emailContent: emailContentController.text,
-      reportEndDate: dateTimeController.text,
+      reportEndDate:  dateTimeController.text != ""
+          ? DateFormat("yyyy-MM-dd")
+              .format(DateFormat("dd/MM/yy").parse(dateTimeController.text))
+          : "",
       emailRecipients: emailIds,
       queryUrl: editQueryUrl,
       assetFilterCategoryID: chooseByDropDownValue == "Assets"

@@ -140,6 +140,7 @@ class FaultService extends BaseService {
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,
+          
           customerId: accountSelected?.CustomerUID,
           userId: (await _localService!.getLoggedInUser())!.sub,
           subId: customerSelected?.CustomerUID == null
