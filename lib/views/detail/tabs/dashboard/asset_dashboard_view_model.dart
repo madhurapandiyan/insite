@@ -179,11 +179,15 @@ class AssetDashboardViewModel extends InsiteViewModel {
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
               assetId: assetDetail!.assetUid,
-              fromDate: Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-              endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
-              nextWeekEndDate:
-                  Utils.maintenanceToDateFormate(nextWeekEndDate.toString()),
-              todayEndDate: todayEndDate));
+               fromDate: Utils.maintenanceFromDateFormateFromTimeZone(
+                  maintenanceStartDate!, zone!),
+              endDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  maintenanceEndDate!, zone!),
+              nextWeekEndDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  nextWeekEndDate.toString(), zone!),
+              todayEndDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  date.toString(), zone!)
+              ));
       if (data?.maintenanceDashboard?.dashboardData != null &&
           data!.maintenanceDashboard!.dashboardData!.isNotEmpty) {
         data.maintenanceDashboard?.dashboardData!.forEach((element) {
@@ -249,10 +253,13 @@ class AssetDashboardViewModel extends InsiteViewModel {
         await _assetSingleHistoryService!.getAssetDashboardFaultCountData(
       graphqlSchemaService!.getSingleAssetFaulSummaryData(
           assetUid: assetDetail?.assetUid,
-          startDate: Utils.getFaultDateFormatStartDate(
-              DateUtil.calcFromDate(DateRangeType.lastSevenDays)!
-                  .subtract(Duration(days: 1))),
-          endDate: Utils.getFaultDateFormatEndDate(DateTime.now())),
+         startDate: Utils().getStartDateTimeInGMTFormatForHealth(
+              DateUtil.calcFromDate(
+                DateRangeType.lastSevenDays,
+              ).toString(),
+              zone!),
+          endDate: Utils().getEndDateTimeInGMTFormatForHealth(
+              DateTime.now().toString(), zone!),)
     );
     if (assetDashboardFaultData != null) {
       // Logger().v(

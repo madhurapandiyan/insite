@@ -111,7 +111,7 @@ abstract class InsiteViewModel extends BaseViewModel {
   String? get endDate => _endDate;
 
   String? _maintenanceHistoryStartDate = DateFormat("yyyy-MM-dd")
-      .format(DateTime.now().subtract(Duration(days: 29)));
+      .format(DateTime.now().subtract(Duration(days: 10)));
   String? get maintenanceHistoryStartDate => _maintenanceHistoryStartDate;
   set maintenanceHistoryStartDate(String? maintenanceHistoryStartDate) {
     this._maintenanceHistoryStartDate = maintenanceHistoryStartDate;
@@ -274,7 +274,7 @@ abstract class InsiteViewModel extends BaseViewModel {
     _maintenanceStartDate = _localService?.getMaintenanceFromDate() ??
         DateFormat("yyyy-MM-dd").format(DateTime.now());
     _maintenanceEndDate = _localService?.getMaintenanceEndDate() ??
-        DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 29)));
+        DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 30)));
   }
 
   clearSpecificFilterType({FilterType? type}) {

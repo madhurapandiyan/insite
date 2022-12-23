@@ -183,9 +183,10 @@ class MaintenanceTabViewModel extends InsiteViewModel {
               page: pageNumber,
               query: await graphqlSchemaService!.getMaintenanceListData(
                   assetId: assetId,
-                  startDate:
-                      Utils.maintenanceFromDateFormate(maintenanceStartDate!),
-                  endDate: Utils.maintenanceToDateFormate(maintenanceEndDate!),
+                  startDate: Utils.maintenanceFromDateFormateFromTimeZone(
+                  maintenanceStartDate!, zone!),
+              endDate: Utils.maintenanceToDateFormateFromTimeZone(
+                  maintenanceEndDate!, zone!),
                   limit: pageSize,
                   pageNo: pageNumber));
       if (maintenanceListData != null &&
