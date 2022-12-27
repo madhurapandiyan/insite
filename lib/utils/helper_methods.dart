@@ -2187,7 +2187,7 @@ class Utils {
           }
           checkList.add(checkData);
         }
-        Logger().wtf(checkList);
+        Logger().wtf(checkList.first);
         return checkList;
       } else {
         return null;

@@ -40,8 +40,7 @@ class AssetDetailWidgt extends StatelessWidget {
             padding: EdgeInsets.all(8),
             child: Table(
               border: TableBorder.all(),
-              
-              defaultColumnWidth:FlexColumnWidth(5) ,
+              defaultColumnWidth: FlexColumnWidth(5),
               children: [
                 TableRow(children: [
                   // hiding for now
@@ -59,11 +58,6 @@ class AssetDetailWidgt extends StatelessWidget {
                   )
                 ]),
                 TableRow(children: [
-                  // hiding for now
-                  // InsiteTableRowItem(
-                  //   title: "Geofences",
-                  //   content: "-",
-                  // ),
                   InsiteTableRowItem(
                     title: "Manufacturer",
                     content: detail!.manufacturer,
@@ -117,6 +111,16 @@ class AssetDetailWidgt extends StatelessWidget {
                     content: detail!.lastReportedLocation != null
                         ? detail!.lastReportedLocation
                         : "-",
+                  ),
+                ]),
+                TableRow(children: [
+                  InsiteTableRowItem(
+                    title: "Groups",
+                    content: "-",
+                  ),
+                  InsiteTableRowItem(
+                    title: "Geofences",
+                    content: "-",
                   ),
                 ])
               ],

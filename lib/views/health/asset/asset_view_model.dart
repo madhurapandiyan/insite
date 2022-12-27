@@ -76,6 +76,7 @@ class AssetViewModel extends InsiteViewModel {
                 endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(
                     endDate)));
     if (result != null && result.assetFaults != null) {
+      Logger().w(result.assetFaults!.first.toJson());
       _totalCount = result.total;
       if (result.assetFaults!.isNotEmpty) {
         _faults.addAll(result.assetFaults!);
@@ -162,9 +163,9 @@ class AssetViewModel extends InsiteViewModel {
       assetDetailViewRoute,
       arguments: DetailArguments(
           fleet: Fleet(
-            assetSerialNumber: fleet.asset["uid"],
-            assetId: fleet.asset["uid"],
-            assetIdentifier: fleet.asset["uid"],
+            assetSerialNumber: fleet.asset!.uid,
+            assetId:fleet.asset!.uid,
+            assetIdentifier: fleet.asset!.uid,
           ),
           type: ScreenType.HEALTH,
           index: 1),

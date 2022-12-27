@@ -38,6 +38,9 @@ class FaultViewModel extends InsiteViewModel {
   List<Fault> _faults = [];
   List<Fault> get faults => _faults;
 
+  List<Devices> _device = [];
+  List<Devices> get device => _device;
+
   late ScrollController scrollController;
 
   FaultViewModel() {
@@ -83,14 +86,17 @@ class FaultViewModel extends InsiteViewModel {
     // });
 
     if (result != null) {
+      Logger().w(result.faults!.first.details!.toJson());
       _totalCount = result.total;
       if (result.faults!.isNotEmpty) {
         _faults.addAll(result.faults!);
+        getDeviceData(result);
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
         _faults.addAll(result.faults!);
+        getDeviceData(result);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -134,6 +140,7 @@ class FaultViewModel extends InsiteViewModel {
       _totalCount = result.total;
       _faults.clear();
       _faults.addAll(result.faults!);
+      getDeviceData(result);
       _refreshing = false;
       _loading = false;
       notifyListeners();
@@ -164,12 +171,22 @@ class FaultViewModel extends InsiteViewModel {
       assetDetailViewRoute,
       arguments: DetailArguments(
           fleet: Fleet(
-            assetSerialNumber: fleet.asset["uid"],
-            assetId: fleet.asset["uid"],
-            assetIdentifier: fleet.asset["uid"],
+            assetSerialNumber: fleet.asset!.uid,
+            assetId: fleet.asset!.uid,
+            assetIdentifier: fleet.asset!.uid,
           ),
           type: ScreenType.HEALTH,
           index: 1),
     );
+  }
+
+  getDeviceData(FaultSummaryResponse response) {
+    for (int i = 0; i < response.faults!.length; i++) {
+      var data = response.faults![i];
+      for (int j = 0; j < data.asset!.details!.devices!.length; j++) {
+        _device.add(data.asset!.details!.devices![j]);
+      }
+    }
+    Logger().wtf(device.first.toJson());
   }
 }
