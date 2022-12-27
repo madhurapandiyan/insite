@@ -108,6 +108,7 @@ class FaultViewState extends State<FaultView> {
                                 itemBuilder: (context, index) {
                                   Fault? fault = viewModel.faults[index];
                                   return FaultListItem(
+                                  device: viewModel.device[index],
                                     fault: fault,
                                     onCallback: () {
                                       viewModel.onDetailPageSelected(fault);
