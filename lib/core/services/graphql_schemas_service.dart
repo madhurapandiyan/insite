@@ -893,6 +893,7 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
     await cleaValue();
     await clearAllList();
     await gettingLocationFilter(filtlerList);
+    Logger().v(filtlerList!.first!.title);
     final String assetFaultQuery = """
 query{
 assetData(

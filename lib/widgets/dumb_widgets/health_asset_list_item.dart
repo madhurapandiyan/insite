@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/detail/tabs/health/fault_list_item_view_model.dart';
@@ -11,8 +12,9 @@ import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
 class HealthAssetListItem extends StatefulWidget {
-  final Fault? fault;
+  final AssetFault? fault;
   final VoidCallback? onCallback;
+  
   final Key? key;
   const HealthAssetListItem({this.key, this.fault, this.onCallback})
       : super(key: key);
@@ -104,14 +106,14 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                             ),
                             InsiteTableRowItemWithMultipleButton(
                                 title: "Fault Total",
-                                texts: widget.fault!.asset!.countData != null
-                                    ? widget.fault!.asset!.countData
+                                texts: widget.fault!.countData != null
+                                    ? widget.fault!.countData
                                     : []),
                           ]),
                         ],
                       ),
                       onExpansionChanged: (value) {
-                        viewModel.onExpanded();
+                       // viewModel.onExpanded();
                       },
                       initiallyExpanded: false,
                       tilePadding: EdgeInsets.all(0),
@@ -219,9 +221,9 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                           border: TableBorder.all(),
                                           children: List.generate(
                                               viewModel.faults.length, (index) {
-                                            Fault fault =
+                                            AssetFault fault =
                                                 viewModel.faults[index];
-
+                                                Logger().i(fault.asset!.toJson());
                                             return TableRow(children: [
                                               InsiteTextWithPadding(
                                                 padding: EdgeInsets.all(8),
@@ -275,7 +277,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
           ),
         );
       },
-      viewModelBuilder: () => FaultListItemViewModel(widget.fault),
+      viewModelBuilder: () => FaultListItemViewModel(widget.fault!),
     );
   }
 }

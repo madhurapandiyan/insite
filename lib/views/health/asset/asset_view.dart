@@ -102,9 +102,10 @@ class AssetViewState extends State<AssetView> {
                                     left: 16, right: 16, top: 4),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  Fault? fault = viewModel.faults[index];
+                                  AssetFault? fault = viewModel.faults[index];
                                   return HealthAssetListItem(
                                     key: UniqueKey(),
+                                 
                                     fault: fault,
                                     onCallback: () {
                                       viewModel.onDetailPageSelected(fault);

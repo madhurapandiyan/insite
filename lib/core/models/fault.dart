@@ -22,6 +22,8 @@ class FaultSummaryResponse {
   Map<String, dynamic> toJson() => _$FaultSummaryResponseToJson(this);
 }
 
+
+
 @JsonSerializable()
 class Fault {
   Asset? asset;
@@ -172,11 +174,24 @@ class FaultDynamic {
       _$FaultDynamicFromJson(json);
   Map<String, dynamic> toJson() => _$FaultDynamicToJson(this);
 }
+@JsonSerializable()
+class AssetFault{
+   Asset? asset;
+  List<Count>? countData;
+
+  AssetFault({this.asset,this.countData});
+    factory AssetFault.fromJson(Map<String, dynamic> json) {
+    return _$AssetFaultFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$AssetFaultToJson(this);
+
+}
 
 @JsonSerializable()
 class AssetFaultSummaryResponse {
   final List<Links>? pageLinks;
-  final List<Fault>? assetFaults;
+  final List<AssetFault>? assetFaults;
   final int? page;
   final int? limit;
   final int? total;
