@@ -396,7 +396,7 @@ class Utils {
       DateTime parseDate = DateTime.parse(date).subtract(Duration(days: 1));
       var data = parseDate.add(Duration(hours: 18, minutes: 30, seconds: 00));
       var formatedStringData = DateFormat("yyyy/MM/dd HH:mm:ss").format(data);
-      
+
       return formatedStringData;
     } catch (e) {
       Logger().e(e.toString());
@@ -1228,7 +1228,6 @@ class Utils {
         //  }
         filterDetails =
             "${filterDetails == null ? "" : "$filterDetails,"}${appliedFilter[i]!.title}";
-        
       }
       filterDetails!.trimLeft();
 
@@ -1314,13 +1313,11 @@ class Utils {
     }
   }
 
-  static List?  getDeleteSmsData(List<DeleteSmsReport> smsData){
-   List<Map<String, dynamic>> newMap=[];
-   smsData.forEach((element) {
-     Map<String,dynamic>smsMap={
-      "id":element.ID
-     };
-     newMap.add(smsMap);
+  static List? getDeleteSmsData(List<DeleteSmsReport> smsData) {
+    List<Map<String, dynamic>> newMap = [];
+    smsData.forEach((element) {
+      Map<String, dynamic> smsMap = {"id": element.ID};
+      newMap.add(smsMap);
     });
     return newMap;
   }
@@ -1860,7 +1857,7 @@ class Utils {
 
       var inputDate = DateTime.parse(parseDate)
           .add(Duration(hours: 18, seconds: 29, minutes: 59))
-      .subtract(Duration(days: 1));
+          .subtract(Duration(days: 1));
       Logger().e(inputDate);
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
@@ -1892,7 +1889,7 @@ class Utils {
 
       var inputDate = DateTime.parse(parseDate)
           .add(Duration(hours: 18, seconds: 29, minutes: 59));
-          //.add(Duration(days: 1));
+      //.add(Duration(days: 1));
 
       var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
       var outputDate = outputFormat.format(inputDate);
@@ -2163,15 +2160,16 @@ class Utils {
   }
 
   static List<Map<String, dynamic>>? updateMaintenanceCheckList(
-      List<MaintenanceCheckList>? data) {
-    //, int intervalId
+      List<MaintenanceCheckList>? data, MaintenanceIntervalData? mainInterval) {
     try {
       List<Map<String, dynamic>> checkList = [];
+
       if (data != null && data.isNotEmpty) {
         for (var check in data) {
           Map<String, dynamic> checkData = {
             "ChecklistName": check.checkName,
-            "checkListId": check.checkListId,
+            "intervalID": mainInterval!.intervalId,
+            //"checkListId": check.checkListId,
             "partList": []
           };
           for (var part in check.partList!) {
@@ -2188,6 +2186,7 @@ class Utils {
           checkList.add(checkData);
         }
         Logger().wtf(checkList);
+
         return checkList;
       } else {
         return null;

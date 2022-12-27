@@ -336,13 +336,14 @@ class AddIntervalsViewModel extends InsiteViewModel {
     try {
       showLoadingDialog();
       await gettingUserData();
+
       Map<String, dynamic> updateInterval = {
         "intervalList": Utils.updateMaintenanceIntervals(maintenanceInterval),
-        "checkList":
-            Utils.updateMaintenanceCheckList(maintenanceInterval!.checkList) ??
-                []
+        "checkList": Utils.updateMaintenanceCheckList(
+                maintenanceInterval!.checkList, maintenanceInterval) ??
+            []
       };
-      //EditIntervalResponse?
+
       EditIntervalResponse intervalData = await _maintenanceService!
           .updateMaintenanceIntervals(
               _graphqlSchemaService!.updateMaintenanceIntervals(),
@@ -354,7 +355,9 @@ class AddIntervalsViewModel extends InsiteViewModel {
             message: "Interval/Checklist/Partlist Updated Successfully!!!");
 
         hideLoadingDialog();
+        clearAllValue();
         goToManage();
+        notifyListeners();
       }
     } catch (e) {
       hideLoadingDialog();
