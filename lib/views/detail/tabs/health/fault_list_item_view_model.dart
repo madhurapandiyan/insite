@@ -39,7 +39,7 @@ class FaultListItemViewModel extends InsiteViewModel {
   int pageSize = 20;
 
   FaultListItemViewModel(this._fault) {
-    Logger().wtf("FaultListItemViewModel ${fault!.asset["uid"]}");
+    Logger().wtf("FaultListItemViewModel ${fault!.asset!.uid}");
     setUp();
     _faultService!.setUp();
     scrollController = new ScrollController();
@@ -71,9 +71,9 @@ class FaultListItemViewModel extends InsiteViewModel {
             pageSize,
             pageNumber,
             appliedFilters,
-            fault!.asset["uid"],
+            fault!.asset!.uid,
             graphqlSchemaService!.getFaultSingleData(
-                faultsId: fault!.asset["uid"],
+                faultsId: fault!.asset!.uid,
                 startDate:
                     Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
                 endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
@@ -90,7 +90,7 @@ class FaultListItemViewModel extends InsiteViewModel {
           if (appliedFilters![0]!.title == 'Yellow' ||
               appliedFilters![0]!.title == 'Orange') {
             for (int i = 0; i <= result.faults!.length - 1; i++) {
-              if (result.faults![i].severityLabel == 'High') {
+              if (result.faults![i].basic!.severityLabel == 'High') {
                 continue;
               } else {
                 _faults.add(result.faults!.elementAt(i));

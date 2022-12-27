@@ -745,6 +745,8 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
           devices {
             deviceType
             firmwareVersion
+            deviceSerialNumber
+
           }
           dealerCode
           dealerCustomerName
