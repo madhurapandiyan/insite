@@ -296,8 +296,8 @@ query faultDataSummary{
  }
 """;
 
-getModelFleetList(){
-  var data="""{
+  getModelFleetList() {
+    var data = """{
   frameSubscription {
     plantDispatchSummary {
       modelFleetList {
@@ -311,8 +311,9 @@ getModelFleetList(){
   }
 }
 """;
-return data;
-}
+    return data;
+  }
+
   getSubscriptionDashboardResult() {
     var data = """query{
   frameSubscription{
@@ -383,10 +384,9 @@ __typename
     return data;
   }
 
- 
-
   register() {
-    var data = """ mutation deviceProvisionTransfer(\$id: Int!, \$gnacc: String!, \$request: AssetOperationInput!) {
+    var data =
+        """ mutation deviceProvisionTransfer(\$id: Int!, \$gnacc: String!, \$request: AssetOperationInput!) {
   assetOperation(id: \$id, gnacc: \$gnacc, request: \$request) {
     code
     status
@@ -396,7 +396,7 @@ __typename
 }
 
 """;
-Logger().wtf("data:$data");
+    Logger().wtf("data:$data");
     return data;
   }
 
@@ -804,6 +804,85 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
     return faultQueryString;
   }
 
+//   getAssetFaultQuery({
+//     String? startDate,
+//     String? endDate,
+//     int? pageNo,
+//     int? limit,
+//     List<FilterData?>? filtlerList,
+//   }) async {
+//     await cleaValue();
+//     await clearAllList();
+//     await gettingLocationFilter(filtlerList);
+//     final String assetFaultQuery = """
+// query{
+// assetData(
+//   severityList: ${severityList.isEmpty ? [] : severityList}
+// faultTypeList: []
+// productFamilyList: ${productfamilyList.isEmpty ? [] : productfamilyList}
+// manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
+// modelList:${modelList.isEmpty ? [] : modelList}
+// deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
+// assetStatusList: ${assetstatusList.isEmpty ? [] : assetstatusList}
+// fuelLevelPercentLT: ""
+// fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
+// startDateTime: "$startDate"
+// endDateTime: "$endDate"
+// page: $pageNo
+// limit:$limit
+// assetUid: []
+// ){
+
+//   assetFaults{
+//     asset{
+//       uid,
+//       basic{
+//         assetId,
+//         serialNumber
+//       }
+//      details{
+//           makeCode
+// model
+// productFamily
+// assetIcon
+// devices{
+//   deviceType,
+//   firmwareVersion
+// }
+// dealerCode
+// dealerCustomerName
+// dealerName
+// universalCustomerName
+//         }
+//       dynamic{
+//           status
+// locationLatitude
+// locationLongitude
+// location
+// hourMeter
+// odometer
+// locationReportedTimeUTC
+//         }
+//     },
+//     countData{
+//       countOf,
+//       count
+//     }
+//   },
+//    page,
+//   limit,
+//   total,
+//   status,
+//   reqId,
+//   mst,
+//   pageLinks{
+//     method
+//   }
+// }
+// }""";
+//     return assetFaultQuery;
+//   }
+
   getAssetFaultQuery({
     String? startDate,
     String? endDate,
@@ -819,20 +898,14 @@ query{
 assetData(
   severityList: ${severityList.isEmpty ? [] : severityList}
 faultTypeList: []
-productFamilyList: ${productfamilyList.isEmpty ? [] : productfamilyList}
-manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
-modelList:${modelList.isEmpty ? [] : modelList}
-deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
-assetStatusList: ${assetstatusList.isEmpty ? [] : assetstatusList}
-fuelLevelPercentLT: ""
-fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
 startDateTime: "$startDate"
 endDateTime: "$endDate"
 page: $pageNo
 limit:$limit
-assetUid: []
+priority: ""
+
 ){
- 
+
   assetFaults{
     asset{
       uid,
@@ -2608,7 +2681,7 @@ mutation createNotification(\$alertCategoryID: Int, \$notificationSubscribers: n
     return data;
   }
 
-   String updateNotification(
+  String updateNotification(
       {int? alertCategoryID,
       String? currentDate,
       String? alertTitle,
@@ -2652,6 +2725,7 @@ mutation{
   }""";
     return data;
   }
+
   String checkNotificationTitle(String title) {
     var data = """
 query{
@@ -2791,7 +2865,7 @@ siteOperands{
     return data;
   }
 
-String editSingleNotification(String? id, String? pageNo) {
+  String editSingleNotification(String? id, String? pageNo) {
     var data = """
 query{
   getNotificationAlertConfigData(
@@ -3800,8 +3874,7 @@ maintenanceIntervals(
 //     return data;
 //   }
 
-
- getSingleNotiFaultDescription(alertConfigId) {
+  getSingleNotiFaultDescription(alertConfigId) {
     var query = """{
       getSingleFaultConfig(alertConfigId: ${alertConfigId == null ? "\"\"" : "${"\"" + alertConfigId + "\""}"}) {
         faults {
@@ -3815,7 +3888,6 @@ maintenanceIntervals(
   """;
     return query;
   }
-
 
   updateMaintenanceIntervals() {
     var data = """
