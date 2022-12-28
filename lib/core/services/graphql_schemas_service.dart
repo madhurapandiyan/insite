@@ -821,6 +821,7 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
 // faultTypeList: []
 // productFamilyList: ${productfamilyList.isEmpty ? [] : productfamilyList}
 // manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
+
 // modelList:${modelList.isEmpty ? [] : modelList}
 // deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
 // assetStatusList: ${assetstatusList.isEmpty ? [] : assetstatusList}
@@ -882,7 +883,7 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
 // }""";
 //     return assetFaultQuery;
 //   }
-
+//need to change the code from line 885-1339
   getAssetFaultQuery({
     String? startDate,
     String? endDate,
@@ -893,8 +894,14 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
     await cleaValue();
     await clearAllList();
     await gettingLocationFilter(filtlerList);
-    Logger().v(filtlerList!.first!.title);
-    final String assetFaultQuery = """
+    String? assetFaultQuery;
+    if (productfamilyList.isEmpty &&
+        manufacturerList.isEmpty &&
+        modelList.isEmpty &&
+        deviceTypeList.isEmpty &&
+        assetstatusList.isEmpty &&
+        fuelLevelPercentLt == null) {
+      assetFaultQuery = """
 query{
 assetData(
   severityList: ${severityList.isEmpty ? [] : severityList}
@@ -954,6 +961,386 @@ locationReportedTimeUTC
   }
 }
 }""";
+    }
+    if (productfamilyList.isNotEmpty) {
+      assetFaultQuery = """
+query{
+assetData(
+  severityList: ${severityList.isEmpty ? [] : severityList}
+faultTypeList: []
+productFamilyList: ${productfamilyList.isEmpty ? [] : productfamilyList}
+startDateTime: "$startDate"
+endDateTime: "$endDate"
+page: $pageNo
+limit:$limit
+priority: ""
+
+){
+
+  assetFaults{
+    asset{
+      uid,
+      basic{
+        assetId,
+        serialNumber
+      }
+     details{
+          makeCode
+model
+productFamily
+assetIcon
+devices{
+  deviceType,
+  firmwareVersion
+}
+dealerCode
+dealerCustomerName
+dealerName
+universalCustomerName
+        }
+      dynamic{
+          status
+locationLatitude
+locationLongitude
+location
+hourMeter
+odometer
+locationReportedTimeUTC
+        }
+    },
+    countData{
+      countOf,
+      count
+    }
+  },
+   page,
+  limit,
+  total,
+  status,
+  reqId,
+  mst,
+  pageLinks{
+    method
+  }
+}
+}""";
+    }
+    if (manufacturerList.isNotEmpty) {
+      assetFaultQuery = """
+query{
+assetData(
+  severityList: ${severityList.isEmpty ? [] : severityList}
+faultTypeList: []
+manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
+startDateTime: "$startDate"
+endDateTime: "$endDate"
+page: $pageNo
+limit:$limit
+priority: ""
+
+){
+
+  assetFaults{
+    asset{
+      uid,
+      basic{
+        assetId,
+        serialNumber
+      }
+     details{
+          makeCode
+model
+productFamily
+assetIcon
+devices{
+  deviceType,
+  firmwareVersion
+}
+dealerCode
+dealerCustomerName
+dealerName
+universalCustomerName
+        }
+      dynamic{
+          status
+locationLatitude
+locationLongitude
+location
+hourMeter
+odometer
+locationReportedTimeUTC
+        }
+    },
+    countData{
+      countOf,
+      count
+    }
+  },
+   page,
+  limit,
+  total,
+  status,
+  reqId,
+  mst,
+  pageLinks{
+    method
+  }
+}
+}""";
+    }
+    if (modelList.isNotEmpty) {
+      assetFaultQuery = """
+query{
+assetData(
+  severityList: ${severityList.isEmpty ? [] : severityList}
+faultTypeList: []
+modelList:${modelList.isEmpty ? [] : modelList}
+startDateTime: "$startDate"
+endDateTime: "$endDate"
+page: $pageNo
+limit:$limit
+priority: ""
+
+){
+
+  assetFaults{
+    asset{
+      uid,
+      basic{
+        assetId,
+        serialNumber
+      }
+     details{
+          makeCode
+model
+productFamily
+assetIcon
+devices{
+  deviceType,
+  firmwareVersion
+}
+dealerCode
+dealerCustomerName
+dealerName
+universalCustomerName
+        }
+      dynamic{
+          status
+locationLatitude
+locationLongitude
+location
+hourMeter
+odometer
+locationReportedTimeUTC
+        }
+    },
+    countData{
+      countOf,
+      count
+    }
+  },
+   page,
+  limit,
+  total,
+  status,
+  reqId,
+  mst,
+  pageLinks{
+    method
+  }
+}
+}""";
+    }
+    if (deviceTypeList.isNotEmpty) {
+      assetFaultQuery = """
+query{
+assetData(
+  severityList: ${severityList.isEmpty ? [] : severityList}
+faultTypeList: []
+deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
+startDateTime: "$startDate"
+endDateTime: "$endDate"
+page: $pageNo
+limit:$limit
+priority: ""
+
+){
+
+  assetFaults{
+    asset{
+      uid,
+      basic{
+        assetId,
+        serialNumber
+      }
+     details{
+          makeCode
+model
+productFamily
+assetIcon
+devices{
+  deviceType,
+  firmwareVersion
+}
+dealerCode
+dealerCustomerName
+dealerName
+universalCustomerName
+        }
+      dynamic{
+          status
+locationLatitude
+locationLongitude
+location
+hourMeter
+odometer
+locationReportedTimeUTC
+        }
+    },
+    countData{
+      countOf,
+      count
+    }
+  },
+   page,
+  limit,
+  total,
+  status,
+  reqId,
+  mst,
+  pageLinks{
+    method
+  }
+}
+}""";
+      if (fuelLevelPercentLt != null) {
+        assetFaultQuery = """
+query{
+assetData(
+  severityList: ${severityList.isEmpty ? [] : severityList},
+faultTypeList: [],
+fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
+startDateTime: "$startDate",
+endDateTime: "$endDate",
+page: $pageNo,
+limit:$limit
+priority: ""
+
+){
+
+  assetFaults{
+    asset{
+      uid,
+      basic{
+        assetId,
+        serialNumber
+      }
+     details{
+          makeCode
+model
+productFamily
+assetIcon
+devices{
+  deviceType,
+  firmwareVersion
+}
+dealerCode
+dealerCustomerName
+dealerName
+universalCustomerName
+        }
+      dynamic{
+          status
+locationLatitude
+locationLongitude
+location
+hourMeter
+odometer
+locationReportedTimeUTC
+        }
+    },
+    countData{
+      countOf,
+      count
+    }
+  },
+   page,
+  limit,
+  total,
+  status,
+  reqId,
+  mst,
+  pageLinks{
+    method
+  }
+}
+}""";
+      }
+      if (assetstatusList.isNotEmpty) {
+        assetFaultQuery = """
+query{
+assetData(
+  severityList: ${severityList.isEmpty ? [] : severityList},
+faultTypeList: [],
+assetStatusList: ${assetstatusList.isEmpty ? [] : assetstatusList}
+startDateTime: "$startDate",
+endDateTime: "$endDate",
+page: $pageNo,
+limit:$limit
+priority: ""
+
+){
+
+  assetFaults{
+    asset{
+      uid,
+      basic{
+        assetId,
+        serialNumber
+      }
+     details{
+          makeCode
+model
+productFamily
+assetIcon
+devices{
+  deviceType,
+  firmwareVersion
+}
+dealerCode
+dealerCustomerName
+dealerName
+universalCustomerName
+        }
+      dynamic{
+          status
+locationLatitude
+locationLongitude
+location
+hourMeter
+odometer
+locationReportedTimeUTC
+        }
+    },
+    countData{
+      countOf,
+      count
+    }
+  },
+   page,
+  limit,
+  total,
+  status,
+  reqId,
+  mst,
+  pageLinks{
+    method
+  }
+}
+}""";
+      }
+    }
+
     return assetFaultQuery;
   }
 

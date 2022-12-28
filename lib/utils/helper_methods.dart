@@ -2159,45 +2159,54 @@ class Utils {
     return intervalList;
   }
 
-  static List<Map<String, dynamic>>? updateMaintenanceCheckList(
-      List<MaintenanceCheckList>? data, MaintenanceIntervalData? mainInterval) {
-    try {
-      List<Map<String, dynamic>> checkList = [];
+  // static List<Map<String, dynamic>>? updateMaintenanceCheckList(
+  //     List<MaintenanceCheckList>? data, MaintenanceIntervalData? mainInterval) {
+  //   //, int intervalId
+  //   try {
+  //     List<Map<String, dynamic>> checkList = [];
+  //     List<CheckAndPartList> checkListData = [];
 
-      if (data != null && data.isNotEmpty) {
-        for (var check in data) {
-          Map<String, dynamic> checkData = {
-            "ChecklistName": check.checkName,
-            "intervalID": mainInterval!.intervalId,
-            //"checkListId": check.checkListId,
-            "partList": []
-          };
-          for (var part in check.partList!) {
-            Map<String, dynamic> partsData = {
-              "partId": part.partId,
-              "partName": part.partName,
-              "partNo": part.partNo,
-              "quantity": part.quantiy,
-              "units": part.units
-            };
-            var partList = checkData["partList"] as List<dynamic>;
-            partList.add(partsData);
-          }
-          checkList.add(checkData);
-        }
+  //     if (data != null && data.isNotEmpty) {
+  //       for (var check in data) {
+  //         Map<String, dynamic> checkData = {
+  //           "ChecklistName": check.checkName,
+  //           "intervalID": mainInterval!.intervalId,
+  //           //"checkListId": check.checkListId,
+  //           "partList": []
+  //         };
 
- 
-        Logger().wtf(checkList);
+  //         for (var checkLists in checkListData) {
+  //           for (var part in checkLists.partListData!) {
+  //             Map<String, dynamic> partsData = {
+  //               "partId": part.partId,
+  //               "partName": "part.partName!.text",
+  //               "partNo": part.part!.text,
+  //               "quantity": int.parse(
+  //                   part.quantity!.text.isEmpty ? "0" : part.quantity!.text),
+  //               "units": part.value
+  //             };
+  //             var partList = checkData["partList"] as List<dynamic>;
+  //             partList.add(partsData);
 
+  //             Logger().wtf(part.partName!.text);
+  //             Logger().wtf(part.part!.text);
+  //             Logger().wtf(int.parse(
+  //                 part.quantity!.text.isEmpty ? "0" : part.quantity!.text));
+  //             Logger().wtf(part.value);
+  //           }
+  //         }
+  //         checkList.add(checkData);
+  //       }
+  //       Logger().wtf(checkList);
 
-        return checkList;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      Logger().e(e.toString());
-    }
-  }
+  //       return checkList;
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     Logger().e(e.toString());
+  //   }
+  // }
 
   static String fuelFilterQuery(String? fuelLevelPercentLt) {
     if (fuelLevelPercentLt == "25") {
