@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -13,12 +14,12 @@ import 'insite_row_item_text.dart';
 import 'insite_text.dart';
 
 class HealthAssetListItem extends StatefulWidget {
+  final AssetFault? fault;
+  final VoidCallback? onCallback;
   final UserPreference?dateFormat;
   final UserPreferedData?timeZone;
-  final Fault? fault;
-  final VoidCallback? onCallback;
   final Key? key;
-  const HealthAssetListItem({this.key, this.fault, this.onCallback, this.dateFormat, this.timeZone})
+  const HealthAssetListItem({this.key, this.fault, this.onCallback,this.dateFormat,this.timeZone})
       : super(key: key);
 
   @override
@@ -74,25 +75,22 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                             children: [
                               InsiteTableRowItemWithImage(
                                 title: Utils.getMakeTitle(widget
-                                        .fault!.asset["details"]["makeCode"]) +
+                                        .fault!.asset!.details!.makeCode!) +
                                     "\n" +
-                                    widget.fault!.asset["details"]["model"],
-                                path: widget.fault!.asset["details"] != null &&
-                                        widget.fault!.asset["details"]
-                                                ["model"] !=
-                                            null
+                                    widget.fault!.asset!.details!.model!,
+                                path:  widget.fault!.asset!.details!= null &&
+                                        widget.fault!.asset!.details!.model!=null
                                     ? Utils().getImageWithAssetIconKey(
-                                        model: widget.fault!.asset["details"]
-                                            ["model"],
-                                        assetIconKey: widget.fault!
-                                            .asset["details"]["assetIcon"])
+                                        model:widget.fault!.asset!.details!.model!,
+                                        assetIconKey: widget.fault!.asset!
+                                            .details!.assetIcon)
                                     : "assets/images/EX210.png",
                               ),
                               InsiteTableRowItem(
                                 title: "Asset Status",
                                 content: widget.fault!.asset != null &&
-                                        widget.fault!.asset["dynamic"] != null
-                                    ? widget.fault!.asset["dynamic"]["status"]
+                                        widget.fault!.asset!.faultDynamic!=null
+                                    ? widget.fault!.asset!.faultDynamic!.status
                                     : "-",
                               )
                             ],
@@ -100,11 +98,10 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                           TableRow(children: [
                             InsiteRichText(
                               title: "Serial No. : ",
-                              content: widget.fault!.asset["basic"] != null &&
-                                      widget.fault!.asset["basic"]
-                                              ["serialNumber"] !=
-                                          null
-                                  ? widget.fault!.asset["basic"]["serialNumber"]
+                              content: widget.fault!.asset!.basic != null &&
+                                      widget.fault!.asset!.basic!.serialNumber!=null
+                                            
+                                  ? widget.fault!.asset!.basic!.serialNumber!
                                   : "",
                               onTap: () {
                                 widget.onCallback!();
@@ -119,7 +116,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                         ],
                       ),
                       onExpansionChanged: (value) {
-                        viewModel.onExpanded();
+                       // viewModel.onExpanded();
                       },
                       initiallyExpanded: false,
                       tilePadding: EdgeInsets.all(0),
@@ -135,18 +132,18 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                               InsiteTableRowItem(
                                 title: "Last Reported Time : ",
                                 content: widget.fault!.asset != null &&
-                                        widget.fault!.asset["dynamic"] != null
+                                        widget.fault!.asset != null
                                     ? Utils.getDateUTC(
-                                        widget.fault!.asset["dynamic"]
-                                            ["locationReportedTimeUTC"],widget.dateFormat,widget.timeZone)
+                                        widget.fault!.asset!.
+                                            faultDynamic!.locationReportedTimeUTC!,widget.dateFormat,widget.timeZone)
                                     : "-",
                               ),
                               InsiteTableRowItem(
                                 title: "Location : ",
                                 content: widget.fault!.asset != null &&
-                                        widget.fault!.asset["dynamic"] != null
-                                    ? (widget.fault!.asset["dynamic"]
-                                        ["location"])
+                                        widget.fault!.asset != null
+                                    ? (widget.fault!.asset!.faultDynamic!.location!
+                                        )
                                     : "-",
                               ),
                             ]),
@@ -154,9 +151,9 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                               InsiteTableRowItem(
                                 title: "Current Hour Meter : ",
                                 content: widget.fault!.asset != null &&
-                                        widget.fault!.asset["dynamic"] != null
+                                        widget.fault!.asset!.faultDynamic != null
                                     ? (widget
-                                        .fault!.asset["dynamic"]["hourMeter"]
+                                        .fault!.asset!.faultDynamic!.hourMeter!
                                         .toStringAsFixed(3))
                                     : "-",
                               ),
@@ -227,36 +224,36 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
                                           border: TableBorder.all(),
                                           children: List.generate(
                                               viewModel.faults.length, (index) {
-                                            Fault fault =
+                                            AssetFault fault =
                                                 viewModel.faults[index];
-
+                                                Logger().i(fault.asset!.toJson());
                                             return TableRow(children: [
                                               InsiteTextWithPadding(
                                                 padding: EdgeInsets.all(8),
                                                 text: Utils
-                                                    .getDateUTC(
-                                                        fault.faultOccuredUTC,widget.dateFormat,widget.timeZone),
+                                                    .getLastReportedDateOneUTC(
+                                                        fault.asset!.basic!.faultOccuredUTC),
                                                 size: 12,
                                               ),
                                               InsiteButton(
                                                 content: "",
                                                 title:
-                                                    fault.severityLabel ?? "",
+                                                    fault.asset!.basic!.severityLabel ?? "",
                                                 padding: EdgeInsets.all(8),
                                                 margin: EdgeInsets.all(8),
                                                 bgColor: Utils.getFaultColor(
-                                                    fault.severityLabel),
+                                                   fault.asset!.basic!.severityLabel),
                                                 height: 30,
                                                 width: 40,
                                               ),
                                               InsiteTextWithPadding(
                                                 padding: EdgeInsets.all(8),
-                                                text: fault.source ?? "-",
+                                                text: fault.asset!.basic!.source ?? "-",
                                                 size: 12,
                                               ),
                                               InsiteTextWithPadding(
                                                 padding: EdgeInsets.all(8),
-                                                text: fault.description ?? "-",
+                                                text:fault.asset!.basic!.description?? "-",
                                                 size: 12,
                                               ),
                                             ]);
@@ -283,7 +280,7 @@ class _HealthAssetListItemState extends State<HealthAssetListItem> {
           ),
         );
       },
-      viewModelBuilder: () => FaultListItemViewModel(widget.fault),
+      viewModelBuilder: () => FaultListItemViewModel(widget.fault!),
     );
   }
 }

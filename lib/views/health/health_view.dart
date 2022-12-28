@@ -63,8 +63,10 @@ class _HealthViewState extends State<HealthView> {
                                 key: faultViewKey,
                               ),
                             )
-                          : Flexible(
-                              child: AssetView(
+                          : 
+                          Flexible(
+                              child:
+                               AssetView(
                                 key: assetViewKey,
                               ),
                             ),

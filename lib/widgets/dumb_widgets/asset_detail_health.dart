@@ -60,7 +60,7 @@ class AssetDetailHealth extends StatelessWidget {
                   ),
                   InsiteTableRowItem(
                     title: "Geofences",
-                    content: "-",
+                    content: detail,
                   )
                 ]),
                 TableRow(children: [

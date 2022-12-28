@@ -110,6 +110,7 @@ class FaultViewState extends State<FaultView> {
                                   return FaultListItem(
                                     dateFormat: viewModel.userPref,
                                     timeZone: viewModel.zone,
+                                  device: viewModel.device[index],
                                     fault: fault,
                                     onCallback: () {
                                       viewModel.onDetailPageSelected(fault);

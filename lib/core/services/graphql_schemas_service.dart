@@ -745,6 +745,8 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
           devices {
             deviceType
             firmwareVersion
+            deviceSerialNumber
+
           }
           dealerCode
           dealerCustomerName
@@ -885,25 +887,19 @@ locationReportedTimeUTC
     await cleaValue();
     await clearAllList();
     await gettingLocationFilter(filtlerList);
+    Logger().v(filtlerList!.first!.title);
     final String assetFaultQuery = """
 query{
 assetData(
   severityList: ${severityList.isEmpty ? [] : severityList}
 faultTypeList: []
-productFamilyList: ${productfamilyList.isEmpty ? [] : productfamilyList}
-manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
-modelList:${modelList.isEmpty ? [] : modelList}
-deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
-assetStatusList: ${assetstatusList.isEmpty ? [] : assetstatusList}
-fuelLevelPercentLT: ""
-fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
 startDateTime: "$startDate"
 endDateTime: "$endDate"
 page: $pageNo
 limit:$limit
 priority: ""
 ){
- 
+
   assetFaults{
     asset{
       uid,

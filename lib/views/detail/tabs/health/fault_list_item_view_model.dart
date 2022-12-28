@@ -29,8 +29,8 @@ class FaultListItemViewModel extends InsiteViewModel {
   bool _shouldLoadmore = true;
   bool get shouldLoadmore => _shouldLoadmore;
 
-  List<Fault> _faults = [];
-  List<Fault> get faults => _faults;
+  List<AssetFault> _faults = [];
+  List<AssetFault> get faults => _faults;
 
   int? totalCount = 0;
 
@@ -38,9 +38,13 @@ class FaultListItemViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 20;
 
-  FaultListItemViewModel(this._fault) {
-    Logger().wtf("FaultListItemViewModel ${fault!.asset["uid"]}");
+   String? faultid;
+
+  FaultListItemViewModel(AssetFault fault) {
+    Logger().wtf("FaultListItemViewModel ${fault.asset!.uid}");
     setUp();
+    this.faultid=fault.asset!.uid;
+
     _faultService!.setUp();
     scrollController = new ScrollController();
     scrollController!.addListener(() {
@@ -64,43 +68,43 @@ class FaultListItemViewModel extends InsiteViewModel {
     await getDateRangeFilterData();
     Logger().d("start date " + startDate!);
     Logger().d("end date " + endDate!);
-    FaultSummaryResponse? result = await _faultService!
+    AssetFaultSummaryResponse? result = await _faultService!
         .getAssetViewDetailSummaryList(
             Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
             Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
             pageSize,
             pageNumber,
             appliedFilters,
-            fault!.asset["uid"],
+           faultid,
             graphqlSchemaService!.getFaultSingleData(
-                faultsId: fault!.asset["uid"],
+                faultsId: faultid,
                 startDate:
                     Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
                 endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
                 langeDesc: "en-US",
                 limit: pageSize,
                 pageSize: pageNumber));
-    if (result != null && result.faults != null) {
+    if (result != null && result.assetFaults != null) {
       // totalCount =result.faults.first.countData! ;
 
-      if (result.faults!.isNotEmpty) {
+      if (result.assetFaults!.isNotEmpty) {
         // _faults.addAll(result.faults!);
 
         if (appliedFilters!.isNotEmpty) {
           if (appliedFilters![0]!.title == 'Yellow' ||
               appliedFilters![0]!.title == 'Orange') {
-            for (int i = 0; i <= result.faults!.length - 1; i++) {
-              if (result.faults![i].severityLabel == 'High') {
+            for (int i = 0; i <= result.assetFaults!.length - 1; i++) {
+              if (result.assetFaults![i].asset!.basic!.severityLabel == 'High') {
                 continue;
               } else {
-                _faults.add(result.faults!.elementAt(i));
+                _faults.add(result.assetFaults!.elementAt(i));
               }
             }
           } else {
-            _faults.addAll(result.faults!);
+            _faults.addAll(result.assetFaults!);
           }
         } else {
-          _faults.addAll(result.faults!);
+          _faults.addAll(result.assetFaults!);
         }
 
         _refreshing = false;
