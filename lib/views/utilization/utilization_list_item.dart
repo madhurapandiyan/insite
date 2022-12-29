@@ -157,7 +157,17 @@ class UtilizationListItem extends StatelessWidget {
                                       children: [
                                         InsiteTableRowItem(
                                           title: "Lifetime Fuel",
-                                          content: "-",
+                                          content: utilizationData
+                                                    ?.lastRuntimeFuelConsumptionLitersMeter !=
+                                                null
+                                            ? Utils.convertLitersToGal(
+                                                utilizationData
+                                                    ?.lastRuntimeFuelConsumptionLitersMeter
+                                                    .toString(),
+                                                false,
+                                                dateFormat)
+                                            : "-",
+                                        //  content: "-",
                                         ),
                                         InsiteTableRowItem(
                                           title: "Fuel Burned",

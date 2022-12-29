@@ -189,6 +189,7 @@ class SubScriptionService extends BaseService {
             filter == "DEALER") {
           var data = await Network().getGraphqlPlantData(
             query: query,
+            payLoad: payLoad
             // customerId: "THC",
             // userId: (await _localService!.getLoggedInUser())!.sub,
             // subId: customerSelected?.CustomerUID == null
@@ -206,6 +207,7 @@ class SubScriptionService extends BaseService {
             filter == "5T WL") {
           var data = await Network().getGraphqlPlantData(
             query: query,
+            payLoad: payLoad
             // customerId: "THC",
             // userId: (await _localService!.getLoggedInUser())!.sub,
             // subId: customerSelected?.CustomerUID == null

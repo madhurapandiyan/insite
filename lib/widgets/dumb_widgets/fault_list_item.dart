@@ -178,8 +178,8 @@ class FaultListItem extends StatelessWidget {
                             title: "Location-LastReported : ",
                             content: fault!.basic != null &&
                                     fault!.basic!.faultOccuredUTC != null
-                                ?  Utils.getLastReportedDateOneUTC(
-                                    fault!.asset!.faultDynamic!.locationReportedTimeUTC)
+                                ?  Utils.getDateUTC(
+                                    fault!.asset!.faultDynamic!.locationReportedTimeUTC,dateFormat,timeZone)
                                 : "",
                             style: TextStyle(
                                 color: Theme.of(context)
