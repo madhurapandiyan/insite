@@ -106,6 +106,11 @@ Widget onSelectedIntervalsDetails(
                               text: "Quantity",
                               //  size: 12,
                             ),
+                            InsiteTextWithPadding(
+                              padding: EdgeInsets.all(8),
+                              text: "Units",
+                              //  size: 12,
+                            ),
                           ]),
                         ],
                       ),
@@ -132,6 +137,11 @@ Widget onSelectedIntervalsDetails(
                                   text: part.quantity.toString(),
                                   //  size: 12,
                                 ),
+                                InsiteTextWithPadding(
+                                    padding: EdgeInsets.all(8),
+                                    text: part.units.toString()
+                                    //  size: 12,
+                                    ),
                               ])
                             ],
                           );

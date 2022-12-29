@@ -2163,18 +2163,16 @@ class Utils {
       List<MaintenanceCheckList>? data, MaintenanceIntervalData? mainInterval) {
     try {
       List<Map<String, dynamic>> checkList = [];
-
+      List<Map<String, dynamic>> checkListed = [];
       if (data != null && data.isNotEmpty) {
         for (var check in data) {
           Map<String, dynamic> checkData = {
             "ChecklistName": check.checkName,
             "intervalID": mainInterval!.intervalId,
-            //"checkListId": check.checkListId,
             "partList": []
           };
           for (var part in check.partList!) {
             Map<String, dynamic> partsData = {
-              "partId": part.partId,
               "partName": part.partName,
               "partNo": part.partNo,
               "quantity": part.quantiy,
@@ -2183,14 +2181,14 @@ class Utils {
             var partList = checkData["partList"] as List<dynamic>;
             partList.add(partsData);
           }
+
           checkList.add(checkData);
         }
+        checkListed.add(checkList.last);
+        // Logger().wtf(checkList.last);
+        // Logger().w(checkList);
 
- 
-        Logger().wtf(checkList);
-
-
-        return checkList;
+        return checkListed;
       } else {
         return null;
       }

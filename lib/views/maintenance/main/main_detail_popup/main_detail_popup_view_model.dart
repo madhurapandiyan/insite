@@ -84,7 +84,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   int pageSize = 20;
   int selectedIndex = 0;
 
-  MainDetailPopupViewModel({AssetData? assetDataValue, int? serviceNo}) {
+  MainDetailPopupViewModel({AssetData? assetDataValue, num? serviceNo}) {
     this.log = getLogger(this.runtimeType.toString());
     scrollController = ScrollController();
     _maintenanceService!.setUp();
@@ -128,7 +128,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
   bool _isinitialCheckList = true;
   bool get isinitialCheckList => _isinitialCheckList;
 
-  int? serviceNumber;
+  num? serviceNumber;
 
   TextEditingController workOrderDateController =
       TextEditingController(text: "");
@@ -170,7 +170,7 @@ class MainDetailPopupViewModel extends InsiteViewModel {
     } catch (e) {}
   }
 
-  getMaintenanceCheckList(int? serviceId) async {
+  getMaintenanceCheckList(num? serviceId) async {
     serviceCheckList = await _maintenanceService!
         .getMaintenanceServiceItemCheckList(
             query: graphqlSchemaService!

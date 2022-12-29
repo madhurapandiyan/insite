@@ -99,7 +99,7 @@ class PartListData {
   final String? partNo;
   final String? description;
   final String? units;
-  final int? quantity;
+  final num? quantity;
   final int? partId;
 
   PartListData(
@@ -120,7 +120,7 @@ class PartListData {
 class PartListDataPop {
   final String? name;
   final String? partNo;
-  final int? quantity;
+  final num? quantity;
   final int? partId;
   final String? description;
   final String? units;

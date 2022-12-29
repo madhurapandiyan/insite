@@ -113,7 +113,7 @@ class MainViewState extends State<MainView> {
                                     viewModel.onServiceSelected(
                                         ctx: context,
                                         serviceId:
-                                            summaryData.serviceId!.toInt(),
+                                            summaryData.serviceId!,
                                         assetDataValue: AssetData(
                                           assetID: summaryData.assetID,
                                           assetIcon: summaryData.assetIcon,

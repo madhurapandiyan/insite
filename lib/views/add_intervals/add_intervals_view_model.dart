@@ -343,13 +343,15 @@ class AddIntervalsViewModel extends InsiteViewModel {
                 maintenanceInterval!.checkList, maintenanceInterval) ??
             []
       };
-
+      Logger().wtf(Utils.updateMaintenanceCheckList(
+          maintenanceInterval!.checkList, maintenanceInterval));
       EditIntervalResponse intervalData = await _maintenanceService!
           .updateMaintenanceIntervals(
               _graphqlSchemaService!.updateMaintenanceIntervals(),
               updateInterval);
 
       if (intervalData != null) {
+        //Logger().wtf(updateMaintenanceCheckList(maintenanceInterval));
         // Logger().wtf(intervalData.updateMaintenanceIntervals!.message);
         snackbarService!.showSnackbar(
             message: "Interval/Checklist/Partlist Updated Successfully!!!");
@@ -359,6 +361,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
         goToManage();
         notifyListeners();
       }
+      hideLoadingDialog();
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());
