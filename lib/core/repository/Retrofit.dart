@@ -593,13 +593,13 @@ abstract class RestClient {
       @Body() dynamic fitlers, @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')
-  Future<FaultSummaryResponse> assetViewDetailSummaryURL(
+  Future<AssetFaultSummaryResponse> assetViewDetailSummaryURL(
       @Path() String url,
       @Header("X-VisionLink-CustomerUid") customerId,
       @Header("service") serviceHeader);
 
   @GET('{url}')
-  Future<FaultSummaryResponse> assetViewDetailSummaryURLVL(
+  Future<AssetFaultSummaryResponse> assetViewDetailSummaryURLVL(
       @Path() String url, @Header("X-VisionLink-CustomerUid") customerId);
 
   @GET('{url}')

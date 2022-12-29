@@ -1730,7 +1730,7 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<FaultSummaryResponse> assetViewDetailSummaryURL(
+  Future<AssetFaultSummaryResponse> assetViewDetailSummaryURL(
       url, customerId, serviceHeader) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1741,17 +1741,17 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<FaultSummaryResponse>(
+        _setStreamType<AssetFaultSummaryResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = FaultSummaryResponse.fromJson(_result.data!);
+    final value = AssetFaultSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<FaultSummaryResponse> assetViewDetailSummaryURLVL(
+  Future<AssetFaultSummaryResponse> assetViewDetailSummaryURLVL(
       url, customerId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1759,12 +1759,12 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<FaultSummaryResponse>(
+        _setStreamType<AssetFaultSummaryResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '${url}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = FaultSummaryResponse.fromJson(_result.data!);
+    final value = AssetFaultSummaryResponse.fromJson(_result.data!);
     return value;
   }
 

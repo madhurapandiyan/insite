@@ -1,6 +1,7 @@
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/geofence_title_name.dart';
 
 import 'package:insite/core/repository/network.dart';
 import 'package:insite/core/repository/network_graphql.dart';
@@ -312,5 +313,25 @@ class Geofenceservice extends BaseService {
           customer!.CustomerUID,
           "in-geofence-gfapi");
     }
+  }
+
+  Future<GeofenceTitleName?> getGeofenceName(String? searchValue) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+            query: graphqlSchemaService!.getGeofename(searchValue),
+            subId: customerSelected?.CustomerUID == null
+                ? ""
+                : customerSelected?.CustomerUID,
+            userId: (await _localService!.getLoggedInUser())!.sub,
+            customerId: accountSelected?.CustomerUID);
+        GeofenceTitleName geofenceTitleName =
+            GeofenceTitleName.fromJson(data.data);
+        return geofenceTitleName;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
   }
 }

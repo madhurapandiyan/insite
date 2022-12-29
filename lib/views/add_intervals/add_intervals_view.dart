@@ -17,8 +17,8 @@ import 'add_intervals_view_model.dart';
 
 class AddIntervalsView extends StatelessWidget {
   final AssetDetail? assetId;
-  final VoidCallback ? backCallback;
-  AddIntervalsView({this.assetId,this.backCallback});
+  final VoidCallback? backCallback;
+  AddIntervalsView({this.assetId, this.backCallback});
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddIntervalsViewModel>.reactive(
@@ -231,8 +231,8 @@ alertBox(BuildContext? context, Function onDelete) {
 
 class ManageIntervals extends StatelessWidget {
   final AddIntervalsViewModel? viewModel;
-  final VoidCallback ?backCallback;
-  ManageIntervals({this.viewModel,this.backCallback});
+  final VoidCallback? backCallback;
+  ManageIntervals({this.viewModel, this.backCallback});
 
   @override
   Widget build(BuildContext context) {

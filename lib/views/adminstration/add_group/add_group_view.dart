@@ -74,6 +74,9 @@ class _AddGroupViewState extends State<AddGroupView> {
                         // width: MediaQuery.of(context).size.width * 0.75,
                         height: MediaQuery.of(context).size.height * 0.05,
                         child: CustomTextBox(
+                          onChanged: (String ? value){
+                           viewModel.getGroupListSearchData(value);
+                          },
                             title: "Name",
                             controller: viewModel.nameController)),
                     SizedBox(
