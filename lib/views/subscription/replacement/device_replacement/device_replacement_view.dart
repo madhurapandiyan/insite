@@ -196,8 +196,8 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                     },
                                     Vin: viewModel
                                         .deviceSearchModelResponse!.result!.VIN,
-                                    date:Utils.getDateUTC( viewModel.deviceSearchModelResponse!
-                                        .result!.S_StartDate, viewModel.userPref, viewModel.zone),
+                                    date:Utils.getDateFromString( viewModel.deviceSearchModelResponse!
+                                        .result!.S_StartDate, viewModel.userPref),
                                     deviceId: viewModel
                                         .deviceSearchModelResponse!
                                         .result!
@@ -345,10 +345,10 @@ class _DeviceReplacementViewState extends State<DeviceReplacementView> {
                                           .deviceSearchModelResponse!
                                           .result!
                                           .VIN,
-                                      startDate: Utils.getDateUTC(viewModel
+                                      startDate: Utils.getDateFromString(viewModel
                                           .deviceSearchModelResponse!
                                           .result!
-                                          .S_StartDate, viewModel.userPref, viewModel.zone),
+                                          .S_StartDate, viewModel.userPref),
                                       newDeviceId: viewModel
                                           .replaceDeviceIdController.text,
                                     ),
