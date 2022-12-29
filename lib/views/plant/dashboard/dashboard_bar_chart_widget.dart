@@ -69,7 +69,7 @@ class _DashboardBarChartWidgetState extends State<DashboardBarChartWidget> {
                           title: widget.title2,
                           textColor: Colors.white,
                           onTap: () {
-                            widget.onFilterSelected!("total");
+                            //widget.onFilterSelected!("total");
                           },
                         )
                       : SizedBox()

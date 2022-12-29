@@ -77,6 +77,9 @@ class AssetDetail {
   final String? lastPercentDEFRemainingUTC;
   final List<Device>? devices;
   final List<ServicePlan>? activeServicePlans;
+  final List<Geofences>? geofences;
+  final List<Group>? groups;
+
   AssetDetail(
       this.assetUid,
       this.assetId,
@@ -109,9 +112,31 @@ class AssetDetail {
       this.universalCustomerIdentifier,
       this.universalCustomerName,
       this.lastReportedLocationLatitude,
-      this.lastReportedLocationLongitude);
+      this.lastReportedLocationLongitude,
+      this.geofences,
+      this.groups);
   factory AssetDetail.fromJson(Map<String, dynamic> json) =>
       _$AssetDetailFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssetDetailToJson(this);
+}
+
+@JsonSerializable()
+class Geofences {
+  final String? name;
+  Geofences({this.name});
+  factory Geofences.fromJson(Map<String, dynamic> json) =>
+      _$GeofencesFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GeofencesToJson(this);
+}
+
+@JsonSerializable()
+class Group {
+  final String? name;
+  Group({this.name});
+    factory Group.fromJson(Map<String, dynamic> json) =>
+      _$GroupFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GroupToJson(this);
 }
