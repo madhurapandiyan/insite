@@ -95,8 +95,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                         lifeTimeFuel: widget.detail?.lifetimeFuel != null
                             ? "lifetime fuel :\n" +
                             Utils.convertLitersToGal(widget.detail?.lifetimeFuel, false, viewModel.userPref,
-                                    precision: 0)+
-                               " liters"
+                                    precision: 0)
+                              
                             : "lifetime fuel -",
                         percentage: widget.detail != null &&
                                 widget.detail!.fuelLevelLastReported != null
