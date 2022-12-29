@@ -28,7 +28,7 @@ class PlantDashboardViewModel extends InsiteViewModel {
 
   List<double?> _results = [];
   List<double?> get results => _results;
-int? totalcount;
+  int? totalcount;
   List<String?> _modelNames = [];
   List<String?> get modelNames => _modelNames;
   List<double?> _modelCount = [];
@@ -55,34 +55,39 @@ int? totalcount;
         SubscriptionDashboardResult? result = await _subscriptionService!
             .getResultsFromSubscriptionApi(
                 graphqlSchemaService!.getPlantDashboardandCalendarData());
-        totalcount = result!.frameSubscription!.plantDispatchSummary!.subscriptionEnded! +
-            result.frameSubscription!.plantDispatchSummary!.yetToBeActivated! +
-            result.frameSubscription!.plantDispatchSummary!.activeSubscription!;
+        totalcount = result!
+            .frameSubscription!.plantDispatchSummary!.totalDevicesSupplied;
         statusChartData.clear();
         statusChartData.add(ChartSampleData(
             x: names[1],
-            y: (result.frameSubscription!.plantDispatchSummary!.activeSubscription),
+            y: (result
+                .frameSubscription!.plantDispatchSummary!.activeSubscription),
             z: "active"));
         statusChartData.add(ChartSampleData(
             x: names[2],
-            y: (result.frameSubscription!.plantDispatchSummary!.yetToBeActivated),
+            y: (result
+                .frameSubscription!.plantDispatchSummary!.yetToBeActivated),
             z: "inactive"));
         statusChartData.add(ChartSampleData(
             x: names[3],
-            y: (result.frameSubscription!.plantDispatchSummary!.yetToBeActivated),
+            y: (result
+                .frameSubscription!.plantDispatchSummary!.yetToBeActivated),
             z: "subscriptionendasset"));
         activatedChartData.clear();
         activatedChartData.add(ChartSampleData(
             x: "Today",
-            y: (result.frameSubscription!.plantDispatchSummary!.assetActivationByDay),
+            y: (result
+                .frameSubscription!.plantDispatchSummary!.assetActivationByDay),
             z: "day"));
         activatedChartData.add(ChartSampleData(
             x: "Week",
-            y: (result.frameSubscription!.plantDispatchSummary!.assetActivationByWeek),
+            y: (result.frameSubscription!.plantDispatchSummary!
+                .assetActivationByWeek),
             z: "week"));
         activatedChartData.add(ChartSampleData(
             x: "Month",
-            y: (result.frameSubscription!.plantDispatchSummary!.assetActivationByMonth),
+            y: (result.frameSubscription!.plantDispatchSummary!
+                .assetActivationByMonth),
             z: "month"));
         Logger().i("activatedChartData $activatedChartData}");
       } else {

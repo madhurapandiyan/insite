@@ -115,8 +115,10 @@ class InsiteRichText extends StatelessWidget {
       child: RichText(
           text: TextSpan(children: [
         TextSpan(
+
             text: title,
             style: TextStyle(
+              fontWeight: FontWeight.bold,
               color: Theme.of(context).textTheme.bodyText1!.color,
             )),
         TextSpan(

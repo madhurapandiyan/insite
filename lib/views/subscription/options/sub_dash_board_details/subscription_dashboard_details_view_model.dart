@@ -183,6 +183,9 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
                 i++) {
               var items = result!.subscriptionFleetList!.provisioningInfo![i];
               DetailResult fleetListData = DetailResult(
+                  subscriptionStartDate: items.subscriptionStartDate,
+                  actualStartDate: items.actualStartDate,
+                  subscriptionEndDate: items.subscriptionEndDate,
                   gpsDeviceId: items.gpsDeviceID,
                   vin: items.vin,
                   model: items.model,

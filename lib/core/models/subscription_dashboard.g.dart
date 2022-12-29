@@ -81,9 +81,11 @@ PlantDispatchSummary _$PlantDispatchSummaryFromJson(
       assetActivationByDay: json['assetActivationByDay'],
       assetActivationByWeek: json['assetActivationByWeek'] as int?,
       assetActivationByMonth: json['assetActivationByMonth'] as int?,
-    )..modelFleetList = (json['modelFleetList'] as List<dynamic>?)
-        ?.map((e) => ModelFleetList.fromJson(e as Map<String, dynamic>))
-        .toList();
+      totalDevicesSupplied: json['totalDevicesSupplied'] as int?,
+      modelFleetList: (json['modelFleetList'] as List<dynamic>?)
+          ?.map((e) => ModelFleetList.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$PlantDispatchSummaryToJson(
         PlantDispatchSummary instance) =>
@@ -94,6 +96,7 @@ Map<String, dynamic> _$PlantDispatchSummaryToJson(
       'assetActivationByDay': instance.assetActivationByDay,
       'assetActivationByWeek': instance.assetActivationByWeek,
       'assetActivationByMonth': instance.assetActivationByMonth,
+      'totalDevicesSupplied': instance.totalDevicesSupplied,
       'modelFleetList': instance.modelFleetList,
     };
 

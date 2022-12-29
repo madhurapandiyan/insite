@@ -43,6 +43,12 @@ AssetDetail _$AssetDetailFromJson(Map<String, dynamic> json) => AssetDetail(
       json['universalCustomerName'] as String?,
       (json['lastReportedLocationLatitude'] as num?)?.toDouble(),
       (json['lastReportedLocationLongitude'] as num?)?.toDouble(),
+      (json['geofences'] as List<dynamic>?)
+          ?.map((e) => Geofences.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      (json['groups'] as List<dynamic>?)
+          ?.map((e) => Group.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$AssetDetailToJson(AssetDetail instance) =>
@@ -79,4 +85,22 @@ Map<String, dynamic> _$AssetDetailToJson(AssetDetail instance) =>
       'lastPercentDEFRemainingUTC': instance.lastPercentDEFRemainingUTC,
       'devices': instance.devices,
       'activeServicePlans': instance.activeServicePlans,
+      'geofences': instance.geofences,
+      'groups': instance.groups,
+    };
+
+Geofences _$GeofencesFromJson(Map<String, dynamic> json) => Geofences(
+      name: json['name'] as String?,
+    );
+
+Map<String, dynamic> _$GeofencesToJson(Geofences instance) => <String, dynamic>{
+      'name': instance.name,
+    };
+
+Group _$GroupFromJson(Map<String, dynamic> json) => Group(
+      name: json['name'] as String?,
+    );
+
+Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
+      'name': instance.name,
     };

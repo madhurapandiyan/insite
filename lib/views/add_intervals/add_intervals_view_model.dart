@@ -235,51 +235,6 @@ class AddIntervalsViewModel extends InsiteViewModel {
     }
   }
 
-  List<Map<String, dynamic>>? updateMaintenanceCheckList(
-      MaintenanceIntervalData? mainInterval) {
-    try {
-      List<Map<String, dynamic>> checkList = [];
-
-      if (checkListData.isNotEmpty) {
-        for (var check in checkListData) {
-          Map<String, dynamic> checkData = {
-            "ChecklistName": check.checkListName!.text,
-            "intervalID": mainInterval!.intervalId,
-            //"checkListId": check.checkListId,
-            "partList": []
-          };
-
-          for (var part in check.partListData!) {
-            Map<String, dynamic> partsData = {
-              "partName": part.partName!.text,
-              "partNo": part.part!.text,
-              "quantity": int.parse(
-                  part.quantity!.text.isEmpty ? "0" : part.quantity!.text),
-              "units": part.value
-            };
-            var partList = checkData["partList"] as List<dynamic>;
-            partList.add(partsData);
-          }
-          if (selectedIntervals!.checkList != null &&
-              selectedIntervals!.checkList!.isNotEmpty) {
-            for (var checkDatas in selectedIntervals!.checkList!) {
-              if (check.checkListName!.text != checkDatas.checkListName) {
-                checkList.add(checkData);
-              }
-            }
-          }
-        }
-        Logger().wtf(checkList);
-
-        return checkList;
-      } else {
-        return null;
-      }
-    } catch (e) {
-      Logger().e(e.toString());
-    }
-  }
-
   clearAllValue() {
     namecontroller.clear();
     frequencyController.clear();
@@ -384,17 +339,19 @@ class AddIntervalsViewModel extends InsiteViewModel {
 
       Map<String, dynamic> updateInterval = {
         "intervalList": Utils.updateMaintenanceIntervals(maintenanceInterval),
-        "checkList": updateMaintenanceCheckList(maintenanceInterval) ?? []
+        "checkList": Utils.updateMaintenanceCheckList(
+                maintenanceInterval!.checkList, maintenanceInterval) ??
+            []
       };
-      Logger().wtf(updateMaintenanceCheckList(maintenanceInterval));
-
+      Logger().wtf(Utils.updateMaintenanceCheckList(
+          maintenanceInterval!.checkList, maintenanceInterval));
       EditIntervalResponse intervalData = await _maintenanceService!
           .updateMaintenanceIntervals(
               _graphqlSchemaService!.updateMaintenanceIntervals(),
               updateInterval);
 
       if (intervalData != null) {
-        Logger().wtf(updateMaintenanceCheckList(maintenanceInterval));
+        //Logger().wtf(updateMaintenanceCheckList(maintenanceInterval));
         // Logger().wtf(intervalData.updateMaintenanceIntervals!.message);
         snackbarService!.showSnackbar(
             message: "Interval/Checklist/Partlist Updated Successfully!!!");
@@ -404,7 +361,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
         goToManage();
         notifyListeners();
       }
-      // hideLoadingDialog();
+      hideLoadingDialog();
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());

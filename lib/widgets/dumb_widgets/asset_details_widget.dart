@@ -8,7 +8,9 @@ import 'package:logger/logger.dart';
 
 class AssetDetailWidgt extends StatelessWidget {
   final AssetDetail? detail;
-  const AssetDetailWidgt({this.detail});
+  final String? group;
+  final String? geofence;
+  const AssetDetailWidgt({this.detail, this.group, this.geofence});
 
   @override
   Widget build(BuildContext context) {
@@ -115,13 +117,10 @@ class AssetDetailWidgt extends StatelessWidget {
                 ]),
                 TableRow(children: [
                   InsiteTableRowItem(
-                    title: "Groups",
-                    content: "-",
-                  ),
+                      title: "Groups", content: group != null ? group! : "-"),
                   InsiteTableRowItem(
-                    title: "Geofences",
-                    content: "-",
-                  ),
+                      title: "Geofences",
+                      content: geofence != null ? geofence : "-"),
                 ])
               ],
             ),
