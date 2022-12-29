@@ -71,6 +71,9 @@ class AssetDashboardViewModel extends InsiteViewModel {
 
   List<Count>? faultCountDataList = [];
 
+  List<String>? getGroupname = [];
+  List<String>? getGeofenceName = [];
+
   bool _loading = true;
   bool get loading => _loading;
 
@@ -146,8 +149,17 @@ class AssetDashboardViewModel extends InsiteViewModel {
   getAssetDetail() async {
     AssetDetail? result =
         await _assetSingleHistoryService!.getAssetDetail(assetDetail?.assetUid);
-    _assetDetail = result;
-    _loading = false;
+    if (result != null) {
+      _assetDetail = result;
+      _loading = false;
+      result.groups!.forEach((element) {
+        getGroupname!.add(element.name!);
+      });
+      result.geofences!.forEach((element) {
+        getGeofenceName!.add(element.name!);
+      });
+    }
+
     notifyListeners();
   }
 

@@ -887,7 +887,7 @@ locationReportedTimeUTC
     await cleaValue();
     await clearAllList();
     await gettingLocationFilter(filtlerList);
-    Logger().v(filtlerList!.first!.title);
+    // Logger().v(filtlerList!.first!.title);
     final String assetFaultQuery = """
 query{
 assetData(
@@ -948,6 +948,16 @@ locationReportedTimeUTC
 }
 }""";
     return assetFaultQuery;
+  }
+
+  getGeofename(String? searchValue) {
+    var data = """query{
+    getGeofenceName(geofenceName:"$searchValue"){
+        geofenceNameExist
+        
+    }
+}""";
+    return data;
   }
 
   fleetSummary(List<FilterData?>? applyFilter, pagenumber, startDate, endDate,

@@ -9,6 +9,7 @@ import 'package:geobase/geobase.dart';
 import 'package:geodesy/geodesy.dart' as geodesy;
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insite/core/models/geofence_title_name.dart';
 import 'package:insite/core/models/marker.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:latlong2/latlong.dart' as latlng;
@@ -59,6 +60,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
   List<LatLng> latlngs = [];
 
   Geofencepayload? geofenceRequestPayload;
+
+  bool? isTitleExist;
 
   late Addgeofencemodel addGeofencePayLoad;
 
@@ -636,6 +639,15 @@ class AddgeofenseViewModel extends InsiteViewModel {
     }
   }
 
+  getGeofenceTitleData(String? value) async {
+    GeofenceTitleName? result = await _geofenceService!.getGeofenceName(value);
+    Logger().i(result!.getGeofenceName!.toJson());
+    if (result.getGeofenceName!.geofenceNameExist != null) {
+      isTitleExist = result.getGeofenceName!.geofenceNameExist;
+    }
+    notifyListeners();
+  }
+
   onSavingData() async {
     try {
       if (isPolygonsCreated) {
@@ -648,6 +660,10 @@ class AddgeofenseViewModel extends InsiteViewModel {
               .showSnackbar(message: "Please Draw a valid polygons");
           return;
         }
+      }
+      if (isTitleExist!) {
+        snackbarService!.showSnackbar(message: "Geofence name must be unique");
+        return;
       }
 
       // if (titleController.text.isEmpty && descriptionController.text.isEmpty) {

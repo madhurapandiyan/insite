@@ -75,6 +75,8 @@ class _AssetDashbaordState extends State<AssetDashbaord> {
                       dateFormat: viewModel.userPref,
                       timeZone: viewModel.zone,
                       detail: widget.detail,
+                      group: viewModel.getGroupname!.isNotEmpty?viewModel.getGroupname!.first:null,
+                      geofence: viewModel.getGeofenceName!.isNotEmpty?viewModel.getGeofenceName!.first:null,
                     ),
                   ),
                   SizedBox(

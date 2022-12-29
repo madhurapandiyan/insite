@@ -42,6 +42,8 @@ class AddGroupViewModel extends InsiteViewModel {
 
   String? assetSelectionValue;
 
+  int pageNumber = 1;
+
   String _searchKeyword = '';
   set searchKeyword(String keyword) {
     this._searchKeyword = keyword;
@@ -53,6 +55,9 @@ class AddGroupViewModel extends InsiteViewModel {
   List<String> get choiseData => _choiseData;
 
   Customer? accountSelected;
+
+  bool _isShowDuplicateName = false;
+  bool get isShowDuplicateName => _isShowDuplicateName;
 
   bool _isAssetLoading = true;
   bool get isAssetLoading => _isAssetLoading;
@@ -82,10 +87,9 @@ class AddGroupViewModel extends InsiteViewModel {
     _manageUserService!.setUp();
 
     Future.delayed(Duration(seconds: 1), () async {
-    
       _manageUserService!.setUp();
       await getGroupListData();
-      
+
       if (groups != null) {
         nameController.text = groups.GroupName ?? "";
         descriptionController.text = groups.Description ?? "";
@@ -100,6 +104,27 @@ class AddGroupViewModel extends InsiteViewModel {
         }
       }
     });
+  }
+
+  getGroupListSearchData(serachValue) async {
+    Logger().i("getManagerUserAssetList");
+    ManageGroupSummaryResponse? result =
+        await _manageUserService!.getManageGroupSummaryResponseListData(
+            pageNumber,
+            {
+              "pageNumber": pageNumber,
+              "searchKey": "GroupName",
+              "searchValue": serachValue,
+              "sort": ""
+            },
+            serachValue);
+    if (result != null) {
+      if (result.groups!.any((duplicategroupName) =>
+          duplicategroupName.GroupName == nameController.text)) {
+        _isShowDuplicateName = true;
+      }
+    }
+    notifyListeners();
   }
 
   updateModelValueChooseBy(String value) async {
@@ -158,6 +183,9 @@ class AddGroupViewModel extends InsiteViewModel {
         Logger().wtf(element.assetIdentifier);
         assetUidData.add(element.assetIdentifier!);
       });
+       if (isShowDuplicateName) {
+        _snackBarservice!.showSnackbar(message: "Group Name already exists");
+      } 
 
       showLoadingDialog(tapDismiss: true);
       AddGroupDataResponse? result =
@@ -291,7 +319,7 @@ class AddGroupViewModel extends InsiteViewModel {
   //   notifyListeners();
   // }
 
-   getAddGroupEditData() async {
+  getAddGroupEditData() async {
     try {
       assetUidData.clear();
       selectedAsset?.forEach((element) {
@@ -312,6 +340,11 @@ class AddGroupViewModel extends InsiteViewModel {
           return false;
         }
       });
+       if (isShowDuplicateName) {
+        _snackBarservice!.showSnackbar(message: "Group Name already exists");
+      } 
+
+     
       dissociatedAssetId = dissociatedAssetId.toSet().toList();
       showLoadingDialog();
       UpdateResponse? result = await _manageUserService!.getAddGroupEditPayLoad(

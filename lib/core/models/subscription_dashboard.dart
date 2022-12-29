@@ -88,8 +88,9 @@ class PlantDispatchSummary {
   dynamic assetActivationByDay;
   int ? assetActivationByWeek;
   int ?  assetActivationByMonth;
+  int ?totalDevicesSupplied;
   List<ModelFleetList>? modelFleetList;
-  PlantDispatchSummary({this.activeSubscription,this.yetToBeActivated,this.subscriptionEnded,this.assetActivationByDay,this.assetActivationByWeek,this.assetActivationByMonth});
+  PlantDispatchSummary({this.activeSubscription,this.yetToBeActivated,this.subscriptionEnded,this.assetActivationByDay,this.assetActivationByWeek,this.assetActivationByMonth,this.totalDevicesSupplied,this.modelFleetList});
 
   factory PlantDispatchSummary.fromJson(Map<String, dynamic> json)=>_$PlantDispatchSummaryFromJson(json);
 

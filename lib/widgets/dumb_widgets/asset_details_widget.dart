@@ -12,7 +12,9 @@ class AssetDetailWidgt extends StatelessWidget {
   final UserPreference?dateFormat;
   final UserPreferedData?timeZone;
   final AssetDetail? detail;
-  const AssetDetailWidgt({this.detail, this.dateFormat, this.timeZone});
+  final String? group;
+  final String? geofence;
+  const AssetDetailWidgt({this.detail, this.group, this.geofence,this.dateFormat,this.timeZone});
 
   @override
   Widget build(BuildContext context) {
@@ -120,13 +122,10 @@ class AssetDetailWidgt extends StatelessWidget {
                 ]),
                 TableRow(children: [
                   InsiteTableRowItem(
-                    title: "Groups",
-                    content: "-",
-                  ),
+                      title: "Groups", content: group != null ? group! : "-"),
                   InsiteTableRowItem(
-                    title: "Geofences",
-                    content: "-",
-                  ),
+                      title: "Geofences",
+                      content: geofence != null ? geofence : "-"),
                 ])
               ],
             ),

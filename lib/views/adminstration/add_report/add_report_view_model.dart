@@ -75,8 +75,12 @@ class AddReportViewModel extends InsiteViewModel {
   // List<String> _choiseData = ["Assets"];
   //List<String> get choiseData => _choiseData;
   String? assetSelectionValue = "Assets";
+  bool _isShowDuplicateName = false;
+  bool get isShowDuplicateName => _isShowDuplicateName;
 
   String? assetsDropDownValue = "Select";
+  int pageNumber = 1;
+  int limit = 20;
 
   String reportFormatDropDownValue = ".CSV";
   String frequencyDropDownValue = "Daily";
@@ -157,6 +161,32 @@ class AddReportViewModel extends InsiteViewModel {
   getListViewState() {
     isListViewState = true;
     notifyListeners();
+  }
+
+  getManageReportListData(String? searchValue) async {
+    try {
+      Logger().i("getManagerUserAssetList");
+      ManageReportResponse? result = await _manageUserService!
+          .getManageReportListData(
+              pageNumber,
+              limit,
+              searchValue!,
+              appliedFilters,
+              await graphqlSchemaService!.getManageReportListData(
+                  page: pageNumber,
+                  limit: limit,
+                  searchtext: searchValue,
+                  appliedFilters: appliedFilters));
+      if (result != null) {
+        if (result.scheduledReports!.any((duplicateName) =>
+            duplicateName.reportTitle == nameController.text)) {
+          _isShowDuplicateName = true;
+        }
+      }
+      notifyListeners();
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   getDropDownValue(String dropdownValue) {
@@ -911,6 +941,9 @@ class AddReportViewModel extends InsiteViewModel {
         _snackBarservice!.showSnackbar(message: "Please Select Report Type");
         return;
       }
+      if (isShowDuplicateName) {
+        _snackBarservice!.showSnackbar(message: "Report Name already exists");
+      }
       showLoadingDialog();
       ManageReportResponse? responce = await _manageUserService!
           .getAddReportSaveData(
@@ -928,7 +961,7 @@ class AddReportViewModel extends InsiteViewModel {
   }
 
   editPayload() {
-   chooseByDropDownValue=assetSelectionValue!;
+    chooseByDropDownValue = assetSelectionValue!;
     emailIds!.clear();
     associatedIdentifier!.clear();
     selectedUser.forEach((element) {
@@ -938,7 +971,6 @@ class AddReportViewModel extends InsiteViewModel {
       associatedIdentifier?.add(element.assetIdentifier!);
     });
     addReportPayLoad = AddReportPayLoad(
-    
       reportUid: scheduledReportsId!.reportUid ?? "",
       assetFilterUIDs: chooseByDropDownValue == "Groups" ||
               chooseByDropDownValue == "Geofences"

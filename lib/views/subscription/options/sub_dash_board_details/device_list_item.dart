@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/base_service.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/models/subscription_fleet_graphql.dart';
+import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
@@ -11,9 +12,11 @@ class DeviceListItem extends StatelessWidget {
   final DetailResult? detailResult;
   final FleetProvisionStatusInfo? fleetProvisionStatusInfo;
   final VoidCallback? onCallback;
+  final UserPreference ? dateFormat;
   const DeviceListItem(
       {Key? key,
       this.detailResult,
+      this.dateFormat,
       this.onCallback,
       this.fleetProvisionStatusInfo})
       : super(key: key);
@@ -164,8 +167,8 @@ class DeviceListItem extends StatelessWidget {
                                   InsiteTableRowItem(
                                     title: "Subscription Start Date",
                                     content: detailResult!.subscriptionStartDate != null
-                                        ? Utils.getDateInFormatddMMyyyy(
-                                            detailResult!.subscriptionStartDate)
+                                        ? Utils.getDateFromString(
+                                            detailResult!.subscriptionStartDate,dateFormat)
                                         : "-",
                                   ),
                                 ],
@@ -177,8 +180,8 @@ class DeviceListItem extends StatelessWidget {
                                     content:
                                         detailResult!.subscriptionStartDate !=
                                                 null
-                                            ? Utils.getDateInFormatddMMyyyy(
-                                                detailResult!.actualStartDate)
+                                            ? Utils.getDateFromString(
+                                                detailResult!.actualStartDate,dateFormat)
                                             : "",
                                   ),
                                   InsiteTableRowItem(
@@ -186,8 +189,8 @@ class DeviceListItem extends StatelessWidget {
                                     content: detailResult!
                                                 .subscriptionStartDate !=
                                             null
-                                        ? Utils.getDateInFormatddMMyyyy(
-                                            detailResult!.subscriptionEndDate)
+                                        ? Utils.getDateFromString(
+                                            detailResult!.subscriptionEndDate,dateFormat)
                                         : "",
                                   ),
                                 ],

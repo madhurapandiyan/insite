@@ -385,6 +385,9 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                   width: double.infinity,
                                   height: mediaquerry.size.height * 0.05,
                                   child: CustomTextBox(
+                                    onChanged: (String ? value){
+                                      viewModel.getGeofenceTitleData(value);
+                                    },
                                     focusNode: viewModel.titleFocus,
                                     title: "Title",
                                     controller: viewModel.titleController,
