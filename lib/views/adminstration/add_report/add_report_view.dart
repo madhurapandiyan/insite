@@ -343,6 +343,9 @@ class _AddReportViewState extends State<AddReportView> {
                           height: 15,
                         ),
                         CustomTextBox(
+                          onChanged: (String ? value){
+                            viewModel.getManageReportListData(value);
+                          },
                           title: "Enter the Name",
                           controller: viewModel.nameController,
                         ),

@@ -277,7 +277,7 @@ class InsiteTableRowItemWithRowButton extends StatelessWidget {
 
 class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
   final String? title;
-  final List<dynamic>? texts;
+  final List<Count>? texts;
   const InsiteTableRowItemWithMultipleButton({
     this.title,
     this.texts,
@@ -285,6 +285,7 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger().w(texts!.first.countOf);
     return Container(
       padding: EdgeInsets.all(8),
       child: Column(
@@ -295,6 +296,7 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
             size: 14,
             fontWeight: FontWeight.bold,
           ),
+
           Container(
             height: 30,
             child: ListView(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
+import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/fault.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/router_constants.dart';
@@ -20,6 +21,8 @@ class AssetViewModel extends InsiteViewModel {
   int pageNumber = 1;
   int pageSize = 20;
 
+  List<Count>? countDataAsset = [];
+
   int? _totalCount = 0;
   int? get totalCount => _totalCount;
 
@@ -35,8 +38,8 @@ class AssetViewModel extends InsiteViewModel {
   bool _refreshing = false;
   bool get refreshing => _refreshing;
 
-  List<Fault> _faults = [];
-  List<Fault> get faults => _faults;
+  List<AssetFault> _faults = [];
+  List<AssetFault> get faults => _faults;
 
   late ScrollController scrollController;
   AssetViewModel() {
@@ -76,15 +79,17 @@ class AssetViewModel extends InsiteViewModel {
                 endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEndFaultDate(
                     endDate)));
     if (result != null && result.assetFaults != null) {
-      Logger().w(result.assetFaults!.first.toJson());
+      Logger().w(result.assetFaults!.first.countData!.first.toJson());
       _totalCount = result.total;
       if (result.assetFaults!.isNotEmpty) {
         _faults.addAll(result.assetFaults!);
+       
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
         _faults.addAll(result.assetFaults!);
+       
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -132,6 +137,7 @@ class AssetViewModel extends InsiteViewModel {
       Logger().w("inside fault view");
       if (result.assetFaults != null) {
         _faults.addAll(result.assetFaults!);
+        
       }
       _refreshing = false;
       _loading = false;
@@ -158,17 +164,19 @@ class AssetViewModel extends InsiteViewModel {
     }
   }
 
-  onDetailPageSelected(Fault fleet) {
+  onDetailPageSelected(AssetFault fleet) {
     _navigationService!.navigateTo(
       assetDetailViewRoute,
       arguments: DetailArguments(
           fleet: Fleet(
             assetSerialNumber: fleet.asset!.uid,
-            assetId:fleet.asset!.uid,
+            assetId: fleet.asset!.uid,
             assetIdentifier: fleet.asset!.uid,
           ),
           type: ScreenType.HEALTH,
           index: 1),
     );
   }
+
+ 
 }

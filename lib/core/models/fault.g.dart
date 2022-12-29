@@ -176,11 +176,26 @@ Map<String, dynamic> _$FaultDynamicToJson(FaultDynamic instance) =>
       'odometer': instance.odometer,
     };
 
+AssetFault _$AssetFaultFromJson(Map<String, dynamic> json) => AssetFault(
+      asset: json['asset'] == null
+          ? null
+          : Asset.fromJson(json['asset'] as Map<String, dynamic>),
+      countData: (json['countData'] as List<dynamic>?)
+          ?.map((e) => Count.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$AssetFaultToJson(AssetFault instance) =>
+    <String, dynamic>{
+      'asset': instance.asset,
+      'countData': instance.countData,
+    };
+
 AssetFaultSummaryResponse _$AssetFaultSummaryResponseFromJson(
         Map<String, dynamic> json) =>
     AssetFaultSummaryResponse(
       assetFaults: (json['assetFaults'] as List<dynamic>?)
-          ?.map((e) => Fault.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => AssetFault.fromJson(e as Map<String, dynamic>))
           .toList(),
       pageLinks: (json['pageLinks'] as List<dynamic>?)
           ?.map((e) => Links.fromJson(e as Map<String, dynamic>))

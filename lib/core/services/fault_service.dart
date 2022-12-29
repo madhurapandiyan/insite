@@ -226,7 +226,7 @@ class FaultService extends BaseService {
     }
   }
 
-  Future<FaultSummaryResponse?> getAssetViewDetailSummaryList(
+  Future<AssetFaultSummaryResponse?> getAssetViewDetailSummaryList(
       startDate,
       endDate,
       pageSize,
@@ -244,10 +244,10 @@ class FaultService extends BaseService {
               ? ""
               : customerSelected?.CustomerUID,
         );
-        return FaultSummaryResponse.fromJson(data.data["faultsinglesData"]);
+        return AssetFaultSummaryResponse.fromJson(data.data["faultsinglesData"]);
       } else {
         if (isVisionLink) {
-          FaultSummaryResponse fleetSummaryResponse =
+          AssetFaultSummaryResponse fleetSummaryResponse =
               accountSelected != null && customerSelected != null
                   ? await MyApi().getClientThree()!.assetViewDetailSummaryURLVL(
                       Urls.assetHealthSummaryVL +
@@ -277,7 +277,7 @@ class FaultService extends BaseService {
                       accountSelected!.CustomerUID);
           return fleetSummaryResponse;
         } else {
-          FaultSummaryResponse fleetSummaryResponse =
+          AssetFaultSummaryResponse fleetSummaryResponse =
               accountSelected != null && customerSelected != null
                   ? await MyApi().getClient()!.assetViewDetailSummaryURL(
                       Urls.assetHealthSummary +
