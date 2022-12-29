@@ -266,7 +266,7 @@ class FaultListItem extends StatelessWidget {
                                     .color),
                           ),
                           InsiteRichText(
-                            title: "model :",
+                            title: "Model :",
                             content: fault!.asset!.details!.model != null &&
                                     fault!.asset!.details!.model != null
                                 ? fault!.asset!.details!.model.toString()
