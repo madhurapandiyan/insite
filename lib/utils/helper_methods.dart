@@ -2357,9 +2357,9 @@ class Utils {
     if (prefData.units == 'Metric') {
       return "${num.parse(l2GValue.toString()).toStringAsFixed(precision != null ? precision : 1)} ${noUnit ? '' : 'Liters'}";
     } else if (prefData.units == 'US Standard') {
-      return "${(num.parse(l2GValue.toString()) *  0.219969).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+      return "${(num.parse(l2GValue.toString()) *  0.264172).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
     } else if (prefData.units == 'Imperial') {
-      return "${(num.parse(l2GValue.toString()) * 0.264172).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+      return "${(num.parse(l2GValue.toString()) *  0.219969).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
     } else {
       return '-';
     }
