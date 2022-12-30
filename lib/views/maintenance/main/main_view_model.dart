@@ -257,7 +257,7 @@ class MainViewModel extends InsiteViewModel {
 
   onServiceSelected({
     BuildContext? ctx,
-    int? serviceId,
+    num? serviceId,
     AssetData? assetDataValue,
   }) async {
     MaintenanceCheckListModel? serviceCheckList;

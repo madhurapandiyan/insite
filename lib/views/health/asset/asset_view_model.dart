@@ -71,7 +71,7 @@ class AssetViewModel extends InsiteViewModel {
               pageSize,
               pageNumber,
               appliedFilters,
-              await graphqlSchemaService!.getAssetQuery(
+              await graphqlSchemaService!.getAssetFaultQuery(
                 filtlerList: appliedFilters,
                 pageNo: pageNumber,
                 limit: pageSize,

@@ -165,7 +165,7 @@ PartListData _$PartListDataFromJson(Map<String, dynamic> json) => PartListData(
       partName: json['partName'] as String?,
       partId: json['partId'] as int?,
       partNo: json['partNo'] as String?,
-      quantity: json['quantity'] as int?,
+      quantity: json['quantity'] as num?,
       units: json['units'] as String?,
     );
 
@@ -193,7 +193,7 @@ PartListDataPop _$PartListDataPopFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       partId: json['partId'] as int?,
       partNo: json['partNo'] as String?,
-      quantity: json['quantity'] as int?,
+      quantity: json['quantity'] as num?,
       units: json['units'] as String?,
     );
 

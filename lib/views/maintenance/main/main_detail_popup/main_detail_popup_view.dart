@@ -18,7 +18,7 @@ class MainDetailPopupView extends StatefulWidget {
   final AssetData? assetDataValue;
 
   final BuildContext? parentContext;
-  final int? serviceNo;
+  final num? serviceNo;
 
   const MainDetailPopupView({
     Key? key,

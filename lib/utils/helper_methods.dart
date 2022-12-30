@@ -2170,18 +2170,16 @@ class Utils {
       List<MaintenanceCheckList>? data, MaintenanceIntervalData? mainInterval) {
     try {
       List<Map<String, dynamic>> checkList = [];
-
+      List<Map<String, dynamic>> checkListed = [];
       if (data != null && data.isNotEmpty) {
         for (var check in data) {
           Map<String, dynamic> checkData = {
             "ChecklistName": check.checkName,
             "intervalID": mainInterval!.intervalId,
-            //"checkListId": check.checkListId,
             "partList": []
           };
           for (var part in check.partList!) {
             Map<String, dynamic> partsData = {
-              "partId": part.partId,
               "partName": part.partName,
               "partNo": part.partNo,
               "quantity": part.quantiy,
@@ -2190,14 +2188,14 @@ class Utils {
             var partList = checkData["partList"] as List<dynamic>;
             partList.add(partsData);
           }
+
           checkList.add(checkData);
         }
+        checkListed.add(checkList.last);
+        // Logger().wtf(checkList.last);
+        // Logger().w(checkList);
 
- 
-        Logger().wtf(checkList);
-
-
-        return checkList;
+        return checkListed;
       } else {
         return null;
       }
@@ -2233,7 +2231,7 @@ class Utils {
   static String getDateUTC(
       String? date, UserPreference? formate, UserPreferedData? timeZone) {
     try {
-       tz.initializeTimeZones();
+      tz.initializeTimeZones();
       if (date == null || date.toString().isEmpty) {
         return "-";
       }
@@ -2357,9 +2355,9 @@ class Utils {
     if (prefData.units == 'Metric') {
       return "${num.parse(l2GValue.toString()).toStringAsFixed(precision != null ? precision : 1)} ${noUnit ? '' : 'Liters'}";
     } else if (prefData.units == 'US Standard') {
-      return "${(num.parse(l2GValue.toString()) *  0.264172).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+      return "${(num.parse(l2GValue.toString()) * 0.264172).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
     } else if (prefData.units == 'Imperial') {
-      return "${(num.parse(l2GValue.toString()) *  0.219969).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+      return "${(num.parse(l2GValue.toString()) * 0.219969).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
     } else {
       return '-';
     }
@@ -2426,7 +2424,7 @@ class Utils {
   String getStartDateTimeInGMTFormatForHealth(
       date, UserPreferedData? prefData) {
     try {
-       tz.initializeTimeZones();
+      tz.initializeTimeZones();
       Logger().i("start Date $date");
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -2446,7 +2444,7 @@ class Utils {
 
   String getEndDateTimeInGMTFormatForHealth(date, UserPreferedData? prefData) {
     try {
-       tz.initializeTimeZones();
+      tz.initializeTimeZones();
       Logger().i("end Date $date");
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -2468,7 +2466,7 @@ class Utils {
   static String? maintenanceFromDateFormateFromTimeZone(
       String date, UserPreferedData prefData) {
     try {
-       tz.initializeTimeZones();
+      tz.initializeTimeZones();
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
       final locationNY = tzo.getLocation(prefData.zone!.momentTimezone);
@@ -2488,7 +2486,7 @@ class Utils {
   static String? maintenanceToDateFormateFromTimeZone(
       String date, UserPreferedData prefData) {
     try {
-       tz.initializeTimeZones();
+      tz.initializeTimeZones();
       DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
       var prefFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
       final locationNY = tzo.getLocation(prefData.zone!.momentTimezone);
@@ -2503,6 +2501,38 @@ class Utils {
     } catch (e) {
       Logger().e(e.toString());
       return null;
+    }
+  }
+
+  static List<String> getUnitsDropdown(UserPreference? prefData) {
+    List<String> metricList = ["Gallon", "lbs", "None"];
+    if (prefData!.units == 'Metric') {
+      return ["Litre", "Kg", "None"];
+    } else if (prefData.units == 'US Standard') {
+      return metricList;
+    } else if (prefData.units == 'Imperial') {
+      return metricList;
+    } else {
+      return [];
+    }
+  }
+
+  static String userPreferenceUnitCoversion(value, unit) {
+    if (value == null || value == '_') {
+      return '-';
+    }
+    Logger().e(unit);
+
+    if (unit == "Kg") {
+      return "${(num.parse(value.toString()) * 2.205).toStringAsFixed(2)} ";
+    } else if (unit == "Litre") {
+      return "${(num.parse(value.toString()) / 3.785).toStringAsFixed(2)} ";
+    } else if (unit == "lbs") {
+      return "${(num.parse(value.toString()) * 0.45392).toStringAsFixed(2)} ";
+    } else if (unit == "Gallon") {
+      return "${(num.parse(value.toString()) * 3.78541).toStringAsFixed(2)} ";
+    } else {
+      return "";
     }
   }
 }

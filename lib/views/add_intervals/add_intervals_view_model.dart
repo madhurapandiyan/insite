@@ -138,6 +138,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
     data.partListData!.add(PartListDataClass(
         part: TextEditingController(),
         partName: TextEditingController(),
+        items: Utils.getUnitsDropdown(userPref),
         quantity: TextEditingController()));
     Logger().w(data.partListData!.length);
     notifyListeners();
@@ -343,13 +344,15 @@ class AddIntervalsViewModel extends InsiteViewModel {
                 maintenanceInterval!.checkList, maintenanceInterval) ??
             []
       };
-
+      Logger().wtf(Utils.updateMaintenanceCheckList(
+          maintenanceInterval!.checkList, maintenanceInterval));
       EditIntervalResponse intervalData = await _maintenanceService!
           .updateMaintenanceIntervals(
               _graphqlSchemaService!.updateMaintenanceIntervals(),
               updateInterval);
 
       if (intervalData != null) {
+        //Logger().wtf(updateMaintenanceCheckList(maintenanceInterval));
         // Logger().wtf(intervalData.updateMaintenanceIntervals!.message);
         snackbarService!.showSnackbar(
             message: "Interval/Checklist/Partlist Updated Successfully!!!");
@@ -359,6 +362,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
         goToManage();
         notifyListeners();
       }
+      hideLoadingDialog();
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());
@@ -462,14 +466,13 @@ class PartListDataClass {
   List<String>? items;
   String? value;
   int? partId;
-  PartListDataClass({
-    this.part,
-    this.partName,
-    this.quantity,
-    this.partId,
-    this.value,
-    this.items = const ["Kg", "Gallon", "None"],
-  });
+  PartListDataClass(
+      {this.part,
+      this.partName,
+      this.quantity,
+      this.partId,
+      this.value,
+      this.items});
 }
 
 class MaintenanceIntervalData {

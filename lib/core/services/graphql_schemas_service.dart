@@ -804,79 +804,6 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
     return faultQueryString;
   }
 
-  getAssetQuery({
-    String? startDate,
-    String? endDate,
-    int? pageNo,
-    int? limit,
-    List<FilterData?>? filtlerList,
-  }) async{
-    await cleaValue();
-    await clearAllList();
-    await gettingLocationFilter(filtlerList);
-    final String assetFaultQuery = """
-query{
-assetData(
-  severityList: ${severityList.isEmpty ? [] : severityList}
-faultTypeList: []
-
-startDateTime: "$startDate"
-endDateTime: "$endDate"
-page: $pageNo
-limit:$limit
-priority: ""
-){
- 
-  assetFaults{
-    asset{
-      uid,
-      basic{
-        assetId,
-        serialNumber
-      }
-     details{
-          makeCode
-model
-productFamily
-assetIcon
-devices{
-  deviceType,
-  firmwareVersion
-}
-dealerCode
-dealerCustomerName
-dealerName
-universalCustomerName
-        }
-      dynamic{
-          status
-locationLatitude
-locationLongitude
-location
-hourMeter
-odometer
-locationReportedTimeUTC
-        }
-    },
-    countData{
-      countOf,
-      count
-    }
-  },
-   page,
-  limit,
-  total,
-  status,
-  reqId,
-  mst,
-  pageLinks{
-    method
-  }
-}
-}""";
-    return assetFaultQuery;
-  }
-
   getAssetFaultQuery({
     String? startDate,
     String? endDate,
@@ -887,12 +814,19 @@ locationReportedTimeUTC
     await cleaValue();
     await clearAllList();
     await gettingLocationFilter(filtlerList);
-    // Logger().v(filtlerList!.first!.title);
     final String assetFaultQuery = """
 query{
 assetData(
   severityList: ${severityList.isEmpty ? [] : severityList}
 faultTypeList: []
+productFamilyList: ${productfamilyList.isEmpty ? null : productfamilyList}
+manufacturerList:${manufacturerList.isEmpty ? null : manufacturerList}
+
+modelList:${modelList.isEmpty ? null : modelList}
+deviceTypeList: ${deviceTypeList.isEmpty ? null : deviceTypeList}
+assetStatusList: ${assetstatusList.isEmpty ? null : assetstatusList}
+fuelLevelPercentLT: ""
+fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
 startDateTime: "$startDate"
 endDateTime: "$endDate"
 page: $pageNo
@@ -3512,7 +3446,7 @@ maintenanceTotals{
     return data;
   }
 
-  getMaitenanceCheckList({String? assetId, int? serviceNo}) {
+  getMaitenanceCheckList({String? assetId, num? serviceNo}) {
     var data = """
 query{
   maintenanceCheckList(
@@ -3581,7 +3515,7 @@ query{
       String? serviceDate,
       String? serviceMeter,
       String? serviceNotes,
-      int? serviceNo,
+      num? serviceNo,
       String? workOrder}) {
     var data = """
 mutation {

@@ -4,6 +4,7 @@ import 'package:insite/core/models/asset_detail.dart';
 import 'package:insite/core/models/maintenance_checkList.dart' as check;
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/theme/colors.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_dropdown_widget.dart';
 import 'package:insite/views/add_new_user/reusable_widget/custom_text_box.dart';
 import 'package:insite/views/detail/asset_detail_view.dart';
@@ -106,6 +107,11 @@ Widget onSelectedIntervalsDetails(
                               text: "Quantity",
                               //  size: 12,
                             ),
+                            InsiteTextWithPadding(
+                              padding: EdgeInsets.all(8),
+                              text: "Units",
+                              //  size: 12,
+                            ),
                           ]),
                         ],
                       ),
@@ -128,10 +134,18 @@ Widget onSelectedIntervalsDetails(
                                   //  size: 12,
                                 ),
                                 InsiteTextWithPadding(
-                                  padding: EdgeInsets.all(8),
-                                  text: part.quantity.toString(),
-                                  //  size: 12,
-                                ),
+                                    padding: EdgeInsets.all(8),
+                                    text: Utils.userPreferenceUnitCoversion(
+                                        part.quantity.toString(),
+                                        part.units.toString())
+
+                                    //  size: 12,
+                                    ),
+                                InsiteTextWithPadding(
+                                    padding: EdgeInsets.all(8),
+                                    text: part.units.toString()
+                                    //  size: 12,
+                                    ),
                               ])
                             ],
                           );
