@@ -48,7 +48,8 @@ Widget onSelectedIntervalsDetails(
     {check.IntervalList? data,
     Function? onEditIntervals,
     BuildContext? context,
-    Function? onDelete}) {
+    Function? onDelete,
+    AddIntervalsViewModel? viewModel}) {
   return Padding(
     padding: const EdgeInsets.all(15.0),
     child: Column(
@@ -136,14 +137,18 @@ Widget onSelectedIntervalsDetails(
                                 InsiteTextWithPadding(
                                     padding: EdgeInsets.all(8),
                                     text: Utils.userPreferenceUnitCoversion(
-                                        part.quantity.toString(),
-                                        part.units.toString())
+                                        userPreference: viewModel!.userPref,
+                                        unit: part.units.toString(),
+                                        value: part.quantity.toString())
 
                                     //  size: 12,
                                     ),
                                 InsiteTextWithPadding(
                                     padding: EdgeInsets.all(8),
-                                    text: part.units.toString()
+                                    text:
+                                        Utils.userPreferenceUnitCoversionUnits(
+                                            unit: part.units.toString(),
+                                            userPreference: viewModel.userPref)
                                     //  size: 12,
                                     ),
                               ])
@@ -357,6 +362,7 @@ class ManageIntervals extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.95,
                   child: Card(
                     child: onSelectedIntervalsDetails(
+                        viewModel: viewModel,
                         data: viewModel!.selectedIntervals,
                         onEditIntervals: viewModel!.onEditIntervalsinManage,
                         context: context,

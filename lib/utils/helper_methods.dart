@@ -2517,20 +2517,57 @@ class Utils {
     }
   }
 
-  static String userPreferenceUnitCoversion(value, unit) {
+  static String userPreferenceUnitCoversion(
+      {value, unit, UserPreference? userPreference}) {
     if (value == null || value == '_') {
       return '-';
     }
-    Logger().e(unit);
+    Logger().e(userPreference!.units);
+    if (userPreference.units == "US Standard" ||
+        userPreference.units == "Imperial") {
+      if (unit == "Kg") {
+        return "${(num.parse(value.toString()) * 2.205).toStringAsFixed(2)} ";
+      } else if (unit == "Litre") {
+        return "${(num.parse(value.toString()) / 3.785).toStringAsFixed(2)} ";
+      } else {
+        return value.toString();
+      }
+    } else if (userPreference.units == "Metric") {
+      if (unit == "lbs") {
+        return "${(num.parse(value.toString()) * 0.45392).toStringAsFixed(2)} ";
+      } else if (unit == "Gallon") {
+        return "${(num.parse(value.toString()) * 3.78541).toStringAsFixed(2)} ";
+      } else {
+        return value.toString();
+      }
+    } else {
+      return "";
+    }
+  }
 
-    if (unit == "Kg") {
-      return "${(num.parse(value.toString()) * 2.205).toStringAsFixed(2)} ";
-    } else if (unit == "Litre") {
-      return "${(num.parse(value.toString()) / 3.785).toStringAsFixed(2)} ";
-    } else if (unit == "lbs") {
-      return "${(num.parse(value.toString()) * 0.45392).toStringAsFixed(2)} ";
-    } else if (unit == "Gallon") {
-      return "${(num.parse(value.toString()) * 3.78541).toStringAsFixed(2)} ";
+  static String userPreferenceUnitCoversionUnits(
+      {unit, UserPreference? userPreference}) {
+    if (unit == null || unit == '_') {
+      return '-';
+    }
+    Logger().e(userPreference!.units);
+    if (userPreference.units == "US Standard" ||
+        userPreference.units == "Imperial") {
+      if (unit == "Kg") {
+        return "lbs";
+      } else if (unit == "Litre") {
+        return "Gallon";
+      } else {
+        return unit.toString();
+      }
+    } else if (userPreference.units == "Metric") {
+      if (unit == "lbs") {
+        return "Kg";
+      } else if (unit == "Gallon") {
+        return "Litre ";
+      } else {
+        return unit.toString();
+      }
     } else {
       return "";
     }
