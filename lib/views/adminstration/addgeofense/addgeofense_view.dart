@@ -382,9 +382,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
-                                  width: double.infinity,
-                                  height: mediaquerry.size.height * 0.05,
+                                  // width: double.infinity,
+                                  // height: mediaquerry.size.height * 0.05,
                                   child: CustomTextBox(
+                                    helperText:viewModel.isTitleExist==true? "Geofence name must be unique":"",
+                                    helperStyle: TextStyle(color: tango) ,
                                     onChanged: (String ? value){
                                       viewModel.getGeofenceTitleData(value);
                                     },

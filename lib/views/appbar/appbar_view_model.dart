@@ -56,8 +56,8 @@ class AppbarViewModel extends InsiteViewModel {
   onHomePressed() {
     if (accountSelected == null) {
       Logger().i("account not selected");
-      snackbarService!.showSnackbar(
-          message: "Account not selected", duration: Duration(seconds: 2));
+      // snackbarService!.showSnackbar(
+      //     message: "Account not selected", duration: Duration(seconds: 2));
     } else {
       if (screenType != ScreenType.HOME) {
         _navigationService.replaceWith(homeViewRoute);
