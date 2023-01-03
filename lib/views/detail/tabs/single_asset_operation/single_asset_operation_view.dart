@@ -140,7 +140,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                                 .assetLastReceivedEvent!
                                                 .lastReceivedEventTimeLocal !=
                                             null
-                                        ? Utils.getDateTimeWithOutTimeZone(
+                                        ? Utils.getLocalDateTimeWithOutTimeZone(
                                             viewModel
                                                 .singleAssetOperation!
                                                 .assetOperations!

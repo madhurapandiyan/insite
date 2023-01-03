@@ -2377,6 +2377,22 @@ class Utils {
     }
   }
 
+ static String getLocalDateTimeWithOutTimeZone(date, UserPreference? format) {
+    try {
+      Logger().wtf("getDateTimeWithOutTimeZone:$date");
+      var inputDate = DateTime.parse(date).toLocal();
+       Logger().wtf("parse:$inputDate");
+      // .subtract(Duration(days: 1))
+      // .add(Duration(hours: 18, minutes: 30));
+      var outputFormat =
+          DateFormat("${format!.dateFormat} ${format.timeFormat}");
+      var outputDate = outputFormat.format(inputDate);
+       Logger().wtf("outputDate:$outputDate");
+      return outputDate;
+    } catch (e) {
+      return "";
+    }
+  }
   static bool getLocationDisplay(String? location) {
     if (location == "Address") {
       return true;
