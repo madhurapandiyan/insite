@@ -72,8 +72,10 @@ class _AddGroupViewState extends State<AddGroupView> {
                     ),
                     Container(
                         // width: MediaQuery.of(context).size.width * 0.75,
-                        height: MediaQuery.of(context).size.height * 0.05,
+                       // height: MediaQuery.of(context).size.height * 0.05,
                         child: CustomTextBox(
+                          helperText:viewModel.isShowDuplicateName?"Group Name already exists":"" ,
+                           helperStyle: TextStyle(color: tango) ,
                           onChanged: (String ? value){
                            viewModel.getGroupListSearchData(value);
                           },

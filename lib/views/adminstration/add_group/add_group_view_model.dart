@@ -124,6 +124,9 @@ class AddGroupViewModel extends InsiteViewModel {
         _isShowDuplicateName = true;
       }
     }
+    if(nameController.text.isEmpty){
+      _isShowDuplicateName=false;
+    }
     notifyListeners();
   }
 
