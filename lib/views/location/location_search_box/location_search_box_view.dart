@@ -37,7 +37,7 @@ class LocationSearchBoxView extends StatelessWidget {
                 return Row(
                   children: [
                     Container(
-                    //  width: constrain.maxWidth * 0.28,
+                      width: constrain.maxWidth * 0.28,
                       decoration: new BoxDecoration(
                           color: Colors.white,
                           borderRadius:
