@@ -2163,32 +2163,50 @@ class Utils {
       List<MaintenanceCheckList>? data, MaintenanceIntervalData? mainInterval) {
     try {
       List<Map<String, dynamic>> checkList = [];
-      List<Map<String, dynamic>> checkListed = [];
+     
       if (data != null && data.isNotEmpty) {
         for (var check in data) {
-          Map<String, dynamic> checkData = {
-            "ChecklistName": check.checkName,
-            "intervalID": mainInterval!.intervalId,
-            "partList": []
-          };
-          for (var part in check.partList!) {
-            Map<String, dynamic> partsData = {
-              "partName": part.partName,
-              "partNo": part.partNo,
-              "quantity": part.quantiy,
-              "units": part.units
-            };
-            var partList = checkData["partList"] as List<dynamic>;
-            partList.add(partsData);
-          }
+          Map<String, dynamic> checkData;
 
+          if (check.checkListId != null) {
+            checkData = {
+              "ChecklistName": check.checkName,
+              "checkListId": check.checkListId,
+              "partList": []
+            };
+          } else {
+            checkData = {
+              "ChecklistName": check.checkName,
+              "intervalID": mainInterval!.intervalId,
+              "partList": []
+            };
+          }
+          for (var part in check.partList!) {
+            Map<String, dynamic> partsData;
+            if (part.partId != null) {
+              partsData = {
+                "partId": part.partId,
+                "partName": part.partName,
+                "partNo": part.partNo,
+                "quantity": part.quantiy,
+                "units": part.units
+              };
+              var partList = checkData["partList"] as List<dynamic>;
+              partList.add(partsData);
+            } else {
+              partsData = {
+                "partName": part.partName,
+                "partNo": part.partNo,
+                "quantity": part.quantiy,
+                "units": part.units
+              };
+              var partList = checkData["partList"] as List<dynamic>;
+              partList.add(partsData);
+            }
+          }
           checkList.add(checkData);
         }
-        checkListed.add(checkList.last);
-        // Logger().wtf(checkList.last);
-        // Logger().w(checkList);
-
-        return checkListed;
+        return checkList;
       } else {
         return null;
       }
