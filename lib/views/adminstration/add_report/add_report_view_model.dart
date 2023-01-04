@@ -39,6 +39,7 @@ class AddReportViewModel extends InsiteViewModel {
 
   List<String>? svcBody = [];
   List<AddGroupModel>? selectedItemAssets = [];
+  //List<ScheduledReports> reportNameTitleList = [];
 
   final SnackbarService? _snackBarservice = locator<SnackbarService>();
 
@@ -92,6 +93,8 @@ class AddReportViewModel extends InsiteViewModel {
   List<Asset>? searchAsset = [];
   List<Asset>? selectedAsset = [];
   AssetGroupSummaryResponse? assetIdresult;
+
+  ManageReportResponse? reportResponseResult;
 
   List<String> dropDownList = ["All", "ID", "S/N"];
 
@@ -166,19 +169,18 @@ class AddReportViewModel extends InsiteViewModel {
   getManageReportListData(String? searchValue) async {
     try {
       Logger().i("getManagerUserAssetList");
-      ManageReportResponse? result = await _manageUserService!
-          .getManageReportListData(
-              pageNumber,
-              limit,
-              searchValue!,
-              appliedFilters,
-              await graphqlSchemaService!.getManageReportListData(
-                  page: pageNumber,
-                  limit: limit,
-                  searchtext: searchValue,
-                  appliedFilters: appliedFilters));
-      if (result != null) {
-        if (result.scheduledReports!.any((duplicateName) =>
+      reportResponseResult = await _manageUserService!.getManageReportListData(
+          pageNumber,
+          limit,
+          searchValue!,
+          appliedFilters,
+          await graphqlSchemaService!.getManageReportListData(
+              page: pageNumber,
+              limit: limit,
+              searchtext: searchValue,
+              appliedFilters: appliedFilters));
+      if (reportResponseResult!= null) {
+        if (reportResponseResult!.scheduledReports!.any((duplicateName) =>
             duplicateName.reportTitle == nameController.text)) {
           _isShowDuplicateName = true;
         }

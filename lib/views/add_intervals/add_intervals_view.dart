@@ -749,6 +749,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                                 },
                                 onPartListAdded: () {
                                   widget.viewModel!.onPartListAdded(i);
+                                  Logger().wtf("checkingpart");
                                 },
                                 onPartListDeleted: (partListIndex) {
                                   widget.viewModel!

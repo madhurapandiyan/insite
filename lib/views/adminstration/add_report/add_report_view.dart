@@ -111,8 +111,9 @@ class _AddReportViewState extends State<AddReportView> {
                                         viewModel.assetsDropDownValue ==
                                             "Utilization Details" ||
                                         viewModel.assetsDropDownValue ==
-                                            "Excavator Usage"||
-                                            viewModel.assetsDropDownValue=="Fault Code Asset Details") {
+                                            "Excavator Usage" ||
+                                        viewModel.assetsDropDownValue ==
+                                            "Fault Code Asset Details") {
                                       viewModel.choiseData = ["Assets"];
                                     } else {
                                       viewModel.choiseData = [
@@ -344,11 +345,23 @@ class _AddReportViewState extends State<AddReportView> {
                           height: 15,
                         ),
                         CustomTextBox(
-                          onChanged: (String ? value){
+                          onChanged: (String? value) {
                             viewModel.getManageReportListData(value);
                           },
                           title: "Enter the Name",
                           controller: viewModel.nameController,
+                          validator: (value) {
+                            if (viewModel.reportResponseResult != null) {
+                              if (viewModel
+                                  .reportResponseResult!.scheduledReports!
+                                  .any((duplicateName) =>
+                                      duplicateName.reportTitle ==
+                                      viewModel.nameController.text)) {
+                                return 'Report Name already exists';
+                              }
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(
                           height: 30,
@@ -480,8 +493,7 @@ class _AddReportViewState extends State<AddReportView> {
                                       ),
                                     ),
                                   )
-                                : 
-                               CustomDropDownWidget(
+                                : CustomDropDownWidget(
                                     items: viewModel.choiseData,
                                     value: viewModel.assetSelectionValue,
                                     onChanged: (String? value) {

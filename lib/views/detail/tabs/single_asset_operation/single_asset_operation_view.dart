@@ -116,262 +116,339 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                         ],
                       ),
                     ),
-                    viewModel.singleAssetOperation != null
-                        ? Table(
-                            border: TableBorder.all(width: 1.0),
-                            children: [
-                              TableRow(
-                                children: [
-                                  // InsiteTableRowItem(
-                                  //   title: 'Last Event',
-                                  //   content: assetOperation.assetOperations.assets.first
-                                  //           .assetLastReceivedEvent.lastReceivedEvent
-                                  //           .contains('Off')
-                                  //       ? 'Engine Ignition/ off'
-                                  //       : 'Engine Ignition/ on',
-                                  // ),
-                                  InsiteTableRowItem(
-                                    title: 'Last Event Time',
-                                    content: viewModel
-                                                .singleAssetOperation!
-                                                .assetOperations!
-                                                .assets!
-                                                .first
-                                                .assetLastReceivedEvent!
-                                                .lastReceivedEventTimeLocal !=
-                                            null
-                                        ? Utils.getLocalDateTimeWithOutTimeZone(
-                                            viewModel
-                                                .singleAssetOperation!
-                                                .assetOperations!
-                                                .assets!
-                                                .first
-                                                .assetLastReceivedEvent!
-                                                .lastReceivedEventTimeLocal,viewModel.userPref)
-                                        : "-",
-                                  ),
-                                  InsiteTableRowItem(
-                                    title: 'Distance Traveled (km)',
-                                      content: viewModel
-                                                  .singleAssetOperation!
-                                                  .assetOperations!
-                                                  .assets!
-                                                  .first
-                                                  .distanceTravelledKilometers ==
-                                              null
-                                          ? '-'
-                                          : Utils.unitConversion(
-                                              viewModel
-                                                  .singleAssetOperation!
-                                                  .assetOperations!
-                                                  .assets!
-                                                  .first
-                                                  .distanceTravelledKilometers,
-                                              false,
-                                              viewModel.userPref)
-
-                                  ),
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  // InsiteTableRowItem(
-                                  //   title: 'Last Known Operator',
-                                  //   content: assetOperation.assetOperations.assets.first
-                                  //               .lastKnownOperator.runtimeType ==
-                                  //           String
-                                  //       ? assetOperation.assetOperations.assets.first
-                                  //           .lastKnownOperator.runtimeType
-                                  //       : '-',
-                                  // ),
-                                  InsiteTableRowItem(
-                                    title: 'This data was last refreshed on',
-                                    content: Utils.getDateTimeWithOutTimeZone(
-                                        DateTime.now().toString(),viewModel.userPref),
-                                  ),
-                                  InsiteTableRowItem(
-                                    title: 'Total Duration ',
-                                    content: viewModel
-                                                .singleAssetOperation!
-                                                .assetOperations!
-                                                .assets!
-                                                .first
-                                                .dateRangeRuntimeDuration !=
-                                            null
-                                        ? Utils.formatHHmm(Duration(
-                                                    seconds: viewModel
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            viewModel.singleAssetOperation != null
+                                ? Table(
+                                    border: TableBorder.all(width: 1.0),
+                                    children: [
+                                      TableRow(
+                                        children: [
+                                          // InsiteTableRowItem(
+                                          //   title: 'Last Event',
+                                          //   content: assetOperation.assetOperations.assets.first
+                                          //           .assetLastReceivedEvent.lastReceivedEvent
+                                          //           .contains('Off')
+                                          //       ? 'Engine Ignition/ off'
+                                          //       : 'Engine Ignition/ on',
+                                          // ),
+                                          InsiteTableRowItem(
+                                            title: 'Last Event Time',
+                                            content: viewModel
                                                         .singleAssetOperation!
                                                         .assetOperations!
                                                         .assets!
                                                         .first
-                                                        .dateRangeRuntimeDuration!
-                                                        .toInt())
-                                                .inSeconds)
-                                            .toString()
-                                        : "-",
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        : SizedBox(),
-                    Expanded(
-                      child: viewModel.singleAssetOperation != null
-                          ? Stack(
-                              children: [
-                                SfCalendar(
-                                  showNavigationArrow: false,
-                                  backgroundColor:
-                                      Theme.of(context).backgroundColor,
-                                  cellBorderColor: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color,
-                                  showCurrentTimeIndicator: false,
-                                  controller: calendarController,
-                                  onTap: (calendarTapDetails) {
-                                    // Logger().i(
-                                    // "on tap ${calendarTapDetails.appointments[0].notes}");
-                                    // var title = "Running";
-                                    // var startTime =
-                                    //     Utils.getLastReportedDateUTC(
-                                    //         calendarTapDetails
-                                    //             .appointments[0].startTime);
-                                    // var endTime =
-                                    //     Utils.getLastReportedDateUTC(
-                                    //         calendarTapDetails
-                                    //             .appointments[0].endTime);
-                                    // var duration = (double.parse(
-                                    //             calendarTapDetails
-                                    //                 .appointments[0].notes) /
-                                    //         60)
-                                    //     .round();
-                                    // var message =
-                                    //     "Start:$startTime \n End: $endTime \n Duration: $duration minutes";
-                                    // Utils.showInfo(context, title, message);
-                                  },
-                                  onSelectionChanged:
-                                      (calendarSelectionDetails) {},
-                                  view: viewModel.calenderView,
-                                  //initialDisplayDate: DateTime.tryParse(viewModel.startDate!),
-                                  todayHighlightColor:
-                                      Theme.of(context).buttonColor,
-                                  todayTextStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                  timeSlotViewSettings: TimeSlotViewSettings(
-                                    dateFormat: 'd',
-                                    dayFormat: 'MMM',
-                                    timeIntervalHeight:
-                                        sfCalendarTimeIntervalHeight,
-                                    timeTextStyle: TextStyle(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1!
-                                            .color),
-                                  ),
-                                  // minDate:
-                                  //     DateTime.tryParse(viewModel.startDate!),
-                                  // maxDate:
-                                  //     DateTime.tryParse(viewModel.endDate!)!
-                                  //         .add(Duration(days: 1)),
-                                  onViewChanged: onViewChanged,
-                                  viewHeaderStyle: ViewHeaderStyle(
-                                    dayTextStyle: TextStyle(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1!
-                                            .color),
-                                    dateTextStyle: TextStyle(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1!
-                                            .color),
-                                    backgroundColor:
-                                        Theme.of(context).backgroundColor,
-                                  ),
-                                  dataSource: AppointmentDataSource(
-                                    getRecursiveAppointments(
-                                        viewModel.chartData),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 90, horizontal: 16),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 28.0,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              sfCalendarTimeIntervalHeight += 5;
-                                            });
-                                          },
-                                          child: Container(
-                                            width: 27.47,
-                                            height: 26.97,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  blurRadius: 1.0,
-                                                  color: darkhighlight,
-                                                ),
-                                              ],
-                                              border: Border.all(
-                                                  width: 1.0,
-                                                  color: darkhighlight),
-                                              shape: BoxShape.rectangle,
-                                            ),
-                                            child: SvgPicture.asset(
-                                              "assets/images/plus.svg",
-                                            ),
+                                                        .assetLastReceivedEvent!
+                                                        .lastReceivedEventTimeLocal !=
+                                                    null
+                                                ? Utils.getLastReportedDateOneLocalUTC(
+                                                    viewModel
+                                                        .singleAssetOperation!
+                                                        .assetOperations!
+                                                        .assets!
+                                                        .first
+                                                        .assetLastReceivedEvent!
+                                                        .lastReceivedEventTimeLocal)
+                                                : "-",
                                           ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              if (sfCalendarTimeIntervalHeight >
-                                                  45)
-                                                sfCalendarTimeIntervalHeight -=
-                                                    5;
-                                            });
-                                          },
-                                          child: Container(
-                                            width: 27.47,
-                                            height: 26.97,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  blurRadius: 1.0,
-                                                  color: darkhighlight,
-                                                ),
-                                              ],
-                                              border: Border.all(
-                                                  width: 1.0,
-                                                  color: darkhighlight),
-                                              shape: BoxShape.rectangle,
-                                            ),
-                                            child: SvgPicture.asset(
-                                              "assets/images/minus.svg",
-                                            ),
+                                          InsiteTableRowItem(
+                                            title: 'Distance Travelled',
+                                            content: viewModel
+                                                        .singleAssetOperation!
+                                                        .assetOperations!
+                                                        .assets!
+                                                        .first
+                                                        .distanceTravelledKilometers ==
+                                                    null
+                                                ? '-'
+                                                : '${viewModel.singleAssetOperation!.assetOperations!.assets!.first.distanceTravelledKilometers!.round()} km',
                                           ),
+                                        ],
+                                      ),
+                                      TableRow(
+                                        children: [
+                                          // InsiteTableRowItem(
+                                          //   title: 'Last Known Operator',
+                                          //   content: assetOperation.assetOperations.assets.first
+                                          //               .lastKnownOperator.runtimeType ==
+                                          //           String
+                                          //       ? assetOperation.assetOperations.assets.first
+                                          //           .lastKnownOperator.runtimeType
+                                          //       : '-',
+                                          // ),
+                                          InsiteTableRowItem(
+                                            title:
+                                                'This data was last refreshed on',
+                                            content:
+                                                Utils.formatCurrentSystemTime(
+                                                    DateTime.now().toString()),
+                                          ),
+                                          InsiteTableRowItem(
+                                            title: 'Total Duration ',
+                                            content: viewModel
+                                                        .singleAssetOperation!
+                                                        .assetOperations!
+                                                        .assets!
+                                                        .first
+                                                        .dateRangeRuntimeDuration !=
+                                                    null
+                                                ? Utils.formatHHmm(Duration(
+                                                            seconds: viewModel
+                                                                .singleAssetOperation!
+                                                                .assetOperations!
+                                                                .assets!
+                                                                .first
+                                                                .dateRangeRuntimeDuration!
+                                                                .toInt())
+                                                        .inSeconds)
+                                                    .toString()
+                                                : "-",
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox(),
+                            viewModel.singleAssetOperation != null
+                                ? Stack(
+                                    children: [
+                                      SfCalendar(
+                                        showNavigationArrow: false,
+                                        backgroundColor:
+                                            Theme.of(context).backgroundColor,
+                                        cellBorderColor: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .color,
+                                        showCurrentTimeIndicator: false,
+                                        controller: calendarController,
+                                        onTap: (calendarTapDetails) {
+                                          // Logger().i(
+                                          // "on tap ${calendarTapDetails.appointments[0].notes}");
+                                          // var title = "Running";
+                                          // var startTime =
+                                          //     Utils.getLastReportedDateUTC(
+                                          //         calendarTapDetails
+                                          //             .appointments[0].startTime);
+                                          // var endTime =
+                                          //     Utils.getLastReportedDateUTC(
+                                          //         calendarTapDetails
+                                          //             .appointments[0].endTime);
+                                          // var duration = (double.parse(
+                                          //             calendarTapDetails
+                                          //                 .appointments[0].notes) /
+                                          //         60)
+                                          //     .round();
+                                          // var message =
+                                          //     "Start:$startTime \n End: $endTime \n Duration: $duration minutes";
+                                          // Utils.showInfo(context, title, message);
+                                        },
+                                        onSelectionChanged:
+                                            (calendarSelectionDetails) {},
+                                        view: viewModel.calenderView,
+                                        //initialDisplayDate: DateTime.tryParse(viewModel.startDate!),
+                                        todayHighlightColor:
+                                            Theme.of(context).buttonColor,
+                                        todayTextStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                        timeSlotViewSettings:
+                                            TimeSlotViewSettings(
+                                          dateFormat: 'd',
+                                          dayFormat: 'MMM',
+                                          timeIntervalHeight:
+                                              sfCalendarTimeIntervalHeight,
+                                          timeTextStyle: TextStyle(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : EmptyView(title: 'No Results'),
-                    ),
+                                        // minDate:
+                                        //     DateTime.tryParse(viewModel.startDate!),
+                                        // maxDate:
+                                        //     DateTime.tryParse(viewModel.endDate!)!
+                                        //         .add(Duration(days: 1)),
+                                        onViewChanged: onViewChanged,
+                                        viewHeaderStyle: ViewHeaderStyle(
+                                          dayTextStyle: TextStyle(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color),
+                                          dateTextStyle: TextStyle(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color),
+                                          backgroundColor:
+                                              Theme.of(context).backgroundColor,
+                                        ),
+                                        dataSource: AppointmentDataSource(
+                                          getRecursiveAppointments(
+                                              viewModel.chartData),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 20,
+                                        bottom: 20,
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  sfCalendarTimeIntervalHeight +=
+                                                      5;
+                                                });
+                                              },
+                                              child: Container(
+                                                width: 27.47,
+                                                height: 26.97,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5.0)),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      blurRadius: 1.0,
+                                                      color: darkhighlight,
+                                                    ),
+                                                  ],
+                                                  border: Border.all(
+                                                      width: 1.0,
+                                                      color: darkhighlight),
+                                                  shape: BoxShape.rectangle,
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  "assets/images/plus.svg",
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (sfCalendarTimeIntervalHeight >
+                                                      45)
+                                                    sfCalendarTimeIntervalHeight -=
+                                                        5;
+                                                });
+                                              },
+                                              child: Container(
+                                                width: 27.47,
+                                                height: 26.97,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5.0)),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      blurRadius: 1.0,
+                                                      color: darkhighlight,
+                                                    ),
+                                                  ],
+                                                  border: Border.all(
+                                                      width: 1.0,
+                                                      color: darkhighlight),
+                                                  shape: BoxShape.rectangle,
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  "assets/images/minus.svg",
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Align(
+                                      //   alignment: Alignment.bottomLeft,
+                                      //   child: Padding(
+                                      //     padding: EdgeInsets.symmetric(
+                                      //         vertical: 90, horizontal: 16),
+                                      //     child: Column(
+                                      //       children: [
+                                      //         SizedBox(
+                                      //           height: 28.0,
+                                      //         ),
+                                      //         GestureDetector(
+                                      //           onTap: () {
+                                      //             setState(() {
+                                      //               sfCalendarTimeIntervalHeight +=
+                                      //                   5;
+                                      //             });
+                                      //           },
+                                      //           child: Container(
+                                      //             width: 27.47,
+                                      //             height: 26.97,
+                                      //             decoration: BoxDecoration(
+                                      //               borderRadius:
+                                      //                   BorderRadius.all(
+                                      //                       Radius.circular(
+                                      //                           5.0)),
+                                      //               boxShadow: [
+                                      //                 BoxShadow(
+                                      //                   blurRadius: 1.0,
+                                      //                   color: darkhighlight,
+                                      //                 ),
+                                      //               ],
+                                      //               border: Border.all(
+                                      //                   width: 1.0,
+                                      //                   color: darkhighlight),
+                                      //               shape: BoxShape.rectangle,
+                                      //             ),
+                                      //             child: SvgPicture.asset(
+                                      //               "assets/images/plus.svg",
+                                      //             ),
+                                      //           ),
+                                      //         ),
+                                      //         SizedBox(height: 10),
+                                      //         GestureDetector(
+                                      //           onTap: () {
+                                      //             setState(() {
+                                      //               if (sfCalendarTimeIntervalHeight >
+                                      //                   45)
+                                      //                 sfCalendarTimeIntervalHeight -=
+                                      //                     5;
+                                      //             });
+                                      //           },
+                                      //           child: Container(
+                                      //             width: 27.47,
+                                      //             height: 26.97,
+                                      //             decoration: BoxDecoration(
+                                      //               borderRadius:
+                                      //                   BorderRadius.all(
+                                      //                       Radius.circular(
+                                      //                           5.0)),
+                                      //               boxShadow: [
+                                      //                 BoxShadow(
+                                      //                   blurRadius: 1.0,
+                                      //                   color: darkhighlight,
+                                      //                 ),
+                                      //               ],
+                                      //               border: Border.all(
+                                      //                   width: 1.0,
+                                      //                   color: darkhighlight),
+                                      //               shape: BoxShape.rectangle,
+                                      //             ),
+                                      //             child: SvgPicture.asset(
+                                      //               "assets/images/minus.svg",
+                                      //             ),
+                                      //           ),
+                                      //         ),
+                                      //       ],
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    ],
+                                  )
+                                : EmptyView(title: 'No Results'),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 viewModel.refreshing ? InsiteProgressBar() : SizedBox()
@@ -390,7 +467,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
             calendarController.view != CalendarView.month)) {
       return;
     }
-    SchedulerBinding.instance!.addPostFrameCallback((Duration timeStamp) {
+    SchedulerBinding.instance.addPostFrameCallback((Duration timeStamp) {
       setState(() {
         _view = calendarController.view;
       });
