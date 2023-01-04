@@ -126,20 +126,20 @@ class AddIntervalsViewModel extends InsiteViewModel {
   }
 
   onCheckListAdded() {
+    TextEditingController checkListName = TextEditingController();
     checkListData.add(CheckAndPartList(
-        checkListName: TextEditingController(),
-        partListData: [],
-        expansionState: false));
+        checkListName: checkListName, partListData: [], expansionState: false));
     notifyListeners();
   }
 
   onPartListAdded(int i) {
     var data = checkListData[i];
+
     data.partListData!.add(PartListDataClass(
         part: TextEditingController(),
         partName: TextEditingController(),
         quantity: TextEditingController()));
-    Logger().w(data.partListData!.length);
+
     notifyListeners();
   }
 
