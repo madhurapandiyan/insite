@@ -19,6 +19,7 @@ class AddIntervalsView extends StatelessWidget {
   final AssetDetail? assetId;
   final VoidCallback? backCallback;
   AddIntervalsView({this.assetId, this.backCallback});
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddIntervalsViewModel>.reactive(
@@ -118,6 +119,7 @@ Widget onSelectedIntervalsDetails(
                         children: List.generate(
                             data.checkList![index].partList!.length, (i) {
                           var part = data.checkList![index].partList![i];
+
                           return Table(
                             border: TableBorder.all(color: Colors.black),
                             children: [
@@ -305,6 +307,7 @@ class ManageIntervals extends StatelessWidget {
                                 children: List.generate(
                                     viewModel!.switchState.length, (index) {
                                   var data = viewModel!.switchState[index];
+
                                   return ListTile(
                                     onTap: () {
                                       viewModel!.onSwitchTaped(index);
@@ -378,6 +381,7 @@ class AddIntervalsChecklist extends StatefulWidget {
 
 class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
   double height = 0.3;
+
   Widget checkListAndPartList(
       {BuildContext? ctx,
       Function(int?)? onPartListDeleted,
@@ -547,6 +551,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
         Container(
             width: MediaQuery.of(ctx).size.width * 0.5,
             child: CustomDropDownWidget(
+              selectedValue: partListData.selectedValue,
               items: partListData.items,
               value: partListData.value,
               onChanged: (value) {
@@ -723,6 +728,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
             // ListTile(
             //   title: InsiteText(text: "mappiy"),
             // )
+
             widget.viewModel!.checkListData.isEmpty
                 ? SizedBox()
                 : Container(
@@ -731,6 +737,7 @@ class _AddIntervalsChecklistState extends State<AddIntervalsChecklist> {
                       children: List.generate(
                           widget.viewModel!.checkListData.length, (i) {
                         var data = widget.viewModel!.checkListData[i];
+
                         return Column(
                           children: [
                             checkListAndPartList(

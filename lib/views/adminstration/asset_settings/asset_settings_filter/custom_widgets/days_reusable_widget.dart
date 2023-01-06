@@ -9,10 +9,10 @@ class DaysReusableWidget extends StatefulWidget {
   final String? value;
   final Function(String)? onRuntimeValueChanged;
   final Function(String)? onIdleValueChanged;
-  final dynamic countRuntimeValue;
-  final dynamic countIdleValue;
+  final num? countRuntimeValue;
+  final num? countIdleValue;
 
-  final dynamic? percentCountValue;
+  final num? percentCountValue;
   final Function(String)? onPercentCountValueChange;
   final bool? isChangingState;
 
@@ -105,15 +105,20 @@ class _DaysReusableWidgetState extends State<DaysReusableWidget> {
                 width: 100,
                 child: widget.isChangingState!
                     ? InsiteText(
-                        text:
-                            "(%)" + " " + "(${widget.countIdleValue.toString()}"+" " + "hrs)",
+                        text: "(%)" +
+                            " " +
+                            "(${widget.countIdleValue.toString()}" +
+                            " " +
+                            "hrs)",
                         size: 14,
                         fontWeight: FontWeight.w700,
                       )
                     : InsiteText(
                         text: "(Hrs)" +
                             " " +
-                            "(${widget.percentCountValue==null?"0":widget.percentCountValue} "+" " +"%)",
+                            "(${widget.percentCountValue == null ? "0" : widget.percentCountValue} " +
+                            " " +
+                            "%)",
                         size: 14,
                         fontWeight: FontWeight.w700,
                       ))
