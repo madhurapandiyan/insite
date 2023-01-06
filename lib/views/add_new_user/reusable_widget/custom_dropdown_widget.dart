@@ -9,6 +9,7 @@ class CustomDropDownWidget extends StatelessWidget {
   final bool enableHint;
   final bool textColorChange;
   final Function? onTap;
+  final String? selectedValue;
 
   //final ValueChanged<String> onChanged;
   CustomDropDownWidget(
@@ -20,7 +21,8 @@ class CustomDropDownWidget extends StatelessWidget {
       this.isEnabled = true,
       this.textColorChange = false,
       this.enableHint = true,
-      this.onTap});
+      this.onTap,
+      this.selectedValue});
   final Function(String?)? onChanged;
   //CustomDropDownWidget({this.value, this.items, this.onChanged});
   bool isEnabled;
@@ -36,7 +38,6 @@ class CustomDropDownWidget extends StatelessWidget {
             onTap!();
           }
         },
-        
         focusNode: onFocus,
         isExpanded: true,
         dropdownColor: Theme.of(context).backgroundColor,
@@ -46,7 +47,7 @@ class CustomDropDownWidget extends StatelessWidget {
         onChanged: istappable == null || istappable == true ? onChanged : null,
         hint: enableHint
             ? InsiteText(
-                text: "Select",
+                text: selectedValue != null ? selectedValue : "Select",
                 size: 14,
                 fontWeight: FontWeight.w700,
                 color: textColorChange

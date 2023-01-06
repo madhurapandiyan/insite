@@ -1865,8 +1865,8 @@ class Utils {
       var inputDate = DateTime.parse(parseDate)
           .add(Duration(hours: 18, seconds: 29, minutes: 59))
           .subtract(Duration(days: 1));
-      Logger().e(inputDate);
-      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      //Logger().e(inputDate);
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
     } catch (e) {
@@ -1898,7 +1898,7 @@ class Utils {
           .add(Duration(hours: 18, seconds: 29, minutes: 59));
       //.add(Duration(days: 1));
 
-      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
     } catch (e) {
@@ -2170,7 +2170,7 @@ class Utils {
       List<MaintenanceCheckList>? data, MaintenanceIntervalData? mainInterval) {
     try {
       List<Map<String, dynamic>> checkList = [];
-     
+
       if (data != null && data.isNotEmpty) {
         for (var check in data) {
           Map<String, dynamic> checkData;
