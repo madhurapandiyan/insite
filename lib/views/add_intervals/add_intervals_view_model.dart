@@ -394,6 +394,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
             expansionState: false);
         for (var partData in checkData.partList!) {
           PartListDataClass editedPartData = PartListDataClass(
+              selectedValue: partData.units,
               part: TextEditingController(text: partData.partNo),
               partName: TextEditingController(text: partData.partName),
               partId: partData.partId,
@@ -465,13 +466,15 @@ class PartListDataClass {
   List<String>? items;
   String? value;
   int? partId;
+  String? selectedValue;
   PartListDataClass({
     this.part,
     this.partName,
     this.quantity,
     this.partId,
     this.value,
-    this.items = const ["Kg", "Gallon", "None"],
+    this.selectedValue,
+    this.items = const ["Kg", "Litre", "None"],
   });
 }
 
