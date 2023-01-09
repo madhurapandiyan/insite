@@ -417,7 +417,11 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                                             ),
                                             InsiteTextWithPadding(
                                               padding: EdgeInsets.all(8),
-                                              text: part.quantity.toString(),
+                                              text: Utils.userPreferenceUnitCoversion(
+                                        userPreference: viewModel.userPref,
+                                        unit: part.units.toString(),
+                                        value: part.quantity.toString())
+                                              // part.quantity.toString(),
                                               //  size: 12,
                                             ),
                                           ])
