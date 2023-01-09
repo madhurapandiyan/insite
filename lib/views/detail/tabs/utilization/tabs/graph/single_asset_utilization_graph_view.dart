@@ -393,7 +393,7 @@ class _SingleAssetUtilizationGraphViewState
                                                 .workingHours
                                             : 0,
                                 label: rangeChoice == 1
-                                    ? '${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.daily![index].startDate!)}   \n${DateFormat(viewModel.zone?.timeFormate.toString()).format(viewModel.singleAssetUtilization!.daily![index].data!.lastReportedTime!)}'
+                                    ? '${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.daily![index].startDate!)}   \n${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.daily![index].endDate!)}'
                                     : rangeChoice == 2
                                         ? '${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.weekly![index].startDate!)}   \n${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.weekly![index].endDate!)}'
                                         : '${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.monthly![index].startDate!)}   \n${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.monthly![index].endDate!)}',
@@ -409,7 +409,7 @@ class _SingleAssetUtilizationGraphViewState
                                 isPercentage: false,
                                 color: periwinkleGrey,
                                 label: rangeChoice == 1
-                                    ? '${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.daily![index].startDate!)}\n${DateFormat(viewModel.zone?.timeFormate.toString()).format(viewModel.singleAssetUtilization!.daily![index].data!.lastReportedTime!)}'
+                                    ? '${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.daily![index].startDate!)}\n${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.daily![index].endDate!)}'
                                     : rangeChoice == 2
                                         ? '${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.weekly![index].startDate!)}\n${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.weekly![index].endDate!)}'
                                         : '${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.monthly![index].startDate!)}\n${DateFormat(viewModel.userPref?.dateFormat).format(viewModel.singleAssetUtilization!.monthly![index].endDate!)}',
