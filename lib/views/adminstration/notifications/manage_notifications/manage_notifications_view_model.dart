@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/logger.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
 import 'package:insite/core/services/notification_service.dart';
@@ -25,8 +26,8 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   ScrollController? scrollController = ScrollController();
   bool? isLoadMore;
   int pageNumber = 1;
-  int pageCount = 50;
-  
+  int pageCount = 20;
+
   ManageNotificationsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
@@ -138,12 +139,21 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   getSearchListData() async {
     try {
       showLoadingDialog();
-
+    await getSelectedFilterData();
+ var notificationFilters=appliedFilters!.where((element) => element!.type==FilterType.NOTIFICATION_TYPE);
+ var notificationType= notificationFilters.map((e) => e!.title).toList();
+  Logger().wtf(notificationType.length);
       ManageNotificationsData? response = await _notificationService!
           .getsearchNotificationsData(
-              pageNumber: pageNumber,
-              count: pageCount,
-              searchText: searchController.text);
+             searchText: searchController.text,
+             payLoad: {
+  "pageNumber": pageNumber,
+  "count": pageCount,
+  "searchKey": searchController.text,
+  "notificationType":  notificationType.isNotEmpty?notificationType:null
+}
+             );
+             Logger().wtf("response:$response");
       if (response!.total!.items != null) {
         _totalCount = response.total!.items!;
       }
@@ -151,6 +161,12 @@ class ManageNotificationsViewModel extends InsiteViewModel {
         if (response.configuredAlerts != null &&
             response.configuredAlerts!.isNotEmpty) {
           _notifications = response.configuredAlerts!;
+          notifyListeners();
+        }else{
+          _notifications=response.configuredAlerts!;
+           _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
           notifyListeners();
         }
       }
@@ -186,8 +202,24 @@ class ManageNotificationsViewModel extends InsiteViewModel {
 
   getManageNotificationsData() async {
     try {
+     await getSelectedFilterData();
+ var notificationFilters=appliedFilters!.where((element) => element!.type==FilterType.NOTIFICATION_TYPE);
+ var notificationType= notificationFilters.map((e) => e!.title).toList();
+  Logger().wtf(notificationType.length);
+notificationType.forEach((element) {
+ Logger().wtf(element);
+ });
+
+
       ManageNotificationsData? response = await _notificationService!
-          .getManageNotificationsData(pageNumber, pageCount, "");
+          .getManageNotificationsData(pageNumber, {
+  "pageNumber": pageNumber,
+  "count": pageCount,
+  "searchKey": "",
+  "notificationType": notificationType.isNotEmpty?notificationType:null
+});
+
+
       if (response != null) {
         if (response.total!.items != null) {
           _totalCount = response.total!.items!;
@@ -220,5 +252,62 @@ class ManageNotificationsViewModel extends InsiteViewModel {
     } catch (e) {
       hideLoadingDialog();
     }
+  }
+
+  refresh() async {
+
+    await getSelectedFilterData();
+    appliedFilters?.forEach((element) {
+      Logger().d(element?.toJson());
+    });
+     var notificationFilters=appliedFilters!.where((element) => element!.type==FilterType.NOTIFICATION_TYPE);
+     Logger().wtf("notificationFilters:$notificationFilters");
+     _loading=true;
+     _loadingMore=true;
+     _shouldLoadmore=true;
+     notifyListeners();
+       
+     
+      ManageNotificationsData? response = await _notificationService!
+          .getManageNotificationsData(pageNumber, {
+  "pageNumber": pageNumber,
+  "count": pageCount,
+  "searchKey": "",
+  "notificationType": notificationFilters.map((e) => e!.title).toList()
+});
+        
+   
+      if (response != null) {
+        if (response.total?.items != null) {
+          _totalCount = response.total!.items!;
+        }
+        if (response.configuredAlerts != null &&
+            response.configuredAlerts!.isNotEmpty) {
+            _notifications.clear();
+          _notifications.addAll(response.configuredAlerts!);
+
+          for (var i = 0; i < _notifications.length; i++) {
+            _notifications
+                .sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
+          }
+          _loading = false;
+          _loadingMore = false;
+          notifyListeners();
+        } else {
+          _notifications = response.configuredAlerts!;
+
+          _loading = false;
+          _loadingMore = false;
+          _shouldLoadmore = false;
+          notifyListeners();
+        }
+      } else {
+        _loading = false;
+        _loadingMore = false;
+        notifyListeners();
+      }
+      _searchNotifications = _notifications;
+    
+    
   }
 }

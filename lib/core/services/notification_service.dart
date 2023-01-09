@@ -5,6 +5,7 @@ import 'package:insite/core/models/add_notification_payload.dart';
 import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/main_notification.dart';
+import 'package:insite/core/models/manage_notification_filter.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/models/notification_type.dart';
 import 'package:insite/core/models/update_user_data.dart';
@@ -167,21 +168,20 @@ class NotificationService extends BaseService {
     }
   }
 
+ 
   Future<ManageNotificationsData?> getManageNotificationsData(
-      int pageNumber, int count, String? searchText) async {
+      int pageNumber, dynamic payLoad) async {
     try {
       if (enableGraphQl) {
-        String doubleQuote = "\"";
+      
         var data = await Network().getGraphqlData(
-          query: _graphqlSchemaService.manageNotificationList(
-              pageNumber: pageNumber,
-              count: count,
-              searchKey: doubleQuote + "$searchText" + doubleQuote),
+          query: _graphqlSchemaService.manageNotificationList(),
           userId: (await _localService?.getLoggedInUser())?.sub,
           customerId: accountSelected!.CustomerUID,
           subId: customerSelected?.CustomerUID == null
               ? ""
               : customerSelected?.CustomerUID,
+              payLoad: payLoad
         );
 
         ManageNotificationsData manageNotificationResponse =
@@ -229,21 +229,42 @@ class NotificationService extends BaseService {
     return notificationsData;
   }
 
-
-  Future<ManageNotificationsData?> getsearchNotificationsData(
-      {String? searchText, int? pageNumber, int? count}) async {
-    if (enableGraphQl) {
-      String doubleQuote = "\"";
+Future<ManageNotificationFilter?> getManageNotificationFilterData()async{
+  try{
+  if (enableGraphQl) {
+      
       var data = await Network().getGraphqlData(
-        query: await _graphqlSchemaService.manageNotificationList(
-            pageNumber: pageNumber,
-            count: count,
-            searchKey: doubleQuote + "$searchText" + doubleQuote),
+        query:_graphqlSchemaService.getNotificationFilter() ,
         userId: (await _localService?.getLoggedInUser())?.sub,
         customerId: accountSelected!.CustomerUID,
         subId: customerSelected?.CustomerUID == null
             ? ""
             : customerSelected?.CustomerUID,
+      );
+  ManageNotificationFilter manageNotificationResponse =
+          ManageNotificationFilter.fromJson(
+              data.data);
+              Logger().i(manageNotificationResponse.toJson());
+    return manageNotificationResponse;
+    }
+  }catch(e){
+  Logger().e(e.toString());
+  }
+  return null;
+}
+
+  Future<ManageNotificationsData?> getsearchNotificationsData(
+      {String? searchText, dynamic payLoad}) async {
+    if (enableGraphQl) {
+    
+      var data = await Network().getGraphqlData(
+        query: await _graphqlSchemaService.manageNotificationList(),
+        userId: (await _localService?.getLoggedInUser())?.sub,
+        customerId: accountSelected!.CustomerUID,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+            payLoad: payLoad
       );
 
       ManageNotificationsData manageNotificationResponse =

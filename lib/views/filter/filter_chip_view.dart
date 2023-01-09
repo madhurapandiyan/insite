@@ -22,13 +22,13 @@ class FilterChipView extends StatelessWidget {
         children: List.generate(
           filters!.length,
           (index) {
-            FilterData data = filters![index]!;
-            return FilterChipItem(
+            FilterData? data = filters![index];
+            return data!=null? FilterChipItem(
               label: Utils.getFilterTitleForChipView(data),
               onClose: () {
                 onClosed!(data);
               },
-            );
+            ):SizedBox();
           },
         ),
       ),

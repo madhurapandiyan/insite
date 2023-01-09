@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
@@ -16,19 +17,21 @@ import 'manage_notifications_view_model.dart';
 class ManageNotificationsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+   
     return ViewModelBuilder<ManageNotificationsViewModel>.reactive(
       builder: (BuildContext context, ManageNotificationsViewModel viewModel,
           Widget? _) {
+             Logger().wtf( viewModel.appliedFilters!.toSet().toList().where((e) => e!.type==FilterType.NOTIFICATION_TYPE).toList().length);
         return InsiteInheritedDataProvider(
-          count: viewModel.appliedFilters!.length,
+          count: viewModel.appliedFilters!.where((e) => e!.type==FilterType.NOTIFICATION_TYPE).toList().length,
           child: InsiteScaffold(
             viewModel: viewModel,
             screenType: ScreenType.MANAGE_NOTIFICATION,
             onFilterApplied: () {
-              //viewModel.refresh();
+              viewModel.refresh();
             },
             onRefineApplied: () {
-              //viewModel.refresh();
+              viewModel.refresh();
             },
             body: Column(
               children: [
