@@ -234,12 +234,12 @@ class GraphqlSchemaService extends BaseService {
                 .toList();
             fuelLevelPercentLt = Utils.getFilterData(data, filterData!.type!);
             Logger().wtf("fuelLevelPercentLt $fuelLevelPercentLt");
-          } else if (filterData?.type == FilterType.MAKE) {
+          } else if (filterData?.type == FilterType.MODEL) {
             var data = filtlerList
-                .where((element) => element?.type == FilterType.MAKE)
+                .where((element) => element?.type == FilterType.MODEL)
                 .toList();
-            make = Utils.getFilterData(data, filterData!.type!);
-            Logger().wtf("make $make");
+            model = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("model $model");
           } else if (filterData?.type == FilterType.DEVICE_TYPE) {
             var data = filtlerList
                 .where((element) => element?.type == FilterType.DEVICE_TYPE)
@@ -278,6 +278,13 @@ class GraphqlSchemaService extends BaseService {
             longitude = double.parse(data.last!.extras![1]!);
             radiusKms = double.parse(data.last!.extras![2]!);
           }
+          // else if (filterData?.type == FilterType.MAKE) {
+          //   var data = filtlerList
+          //       .where((element) => element?.type == FilterType.MAKE)
+          //       .toList();
+          //   make = Utils.getFilterData(data, filterData!.type!);
+          //   Logger().wtf("make $make");
+          // }
         });
       }
     } catch (e) {
@@ -3328,7 +3335,7 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
     serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
     assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
     assetId: ${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"},
-    make:  ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
+    model:  ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
     manufacturer:  ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
     productFamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}, 
     assetStatus:  ${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
@@ -3410,7 +3417,7 @@ serviceStatus:${serviceStatusList.isEmpty ? [] : serviceStatusList}
 serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
 assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
 assetId:""
-make:[]
+model:${modelList.isEmpty ? [] : modelList},
 manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}
 productFamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}
 assetStatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}

@@ -309,6 +309,7 @@ class _EstimatedRunTimeWidgetViewState
                                         ),
                                         onTap: () {
                                           viewModel.getIncrementRuntimeValue();
+                                          viewModel.getRuntimeAllValueData();
                                         }),
                                     InkWell(
                                       child: Icon(
@@ -317,6 +318,7 @@ class _EstimatedRunTimeWidgetViewState
                                       ),
                                       onTap: () {
                                         viewModel.getDecrementRuntimeValue();
+                                        viewModel.getRuntimeAllValueData();
                                       },
                                     ),
                                   ],
@@ -378,6 +380,7 @@ class _EstimatedRunTimeWidgetViewState
                                         ),
                                         onTap: () {
                                           viewModel.getIncrementIdleValue();
+                                          viewModel.getIdleAllValue();
                                         }),
                                     InkWell(
                                       child: Icon(
@@ -386,6 +389,7 @@ class _EstimatedRunTimeWidgetViewState
                                       ),
                                       onTap: () {
                                         viewModel.getDecrementIdleValue();
+                                        viewModel.getIdleAllValue();
                                       },
                                     ),
                                   ],
