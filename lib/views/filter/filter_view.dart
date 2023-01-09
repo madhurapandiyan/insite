@@ -36,6 +36,7 @@ class _FilterViewState extends State<FilterView> {
   final GlobalKey<FilterItemState> filterSeverityKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterJobTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterUserTypeKey = new GlobalKey();
+   final GlobalKey<FilterItemState> filterManageNotificationTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterFrequencyTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterFormatTypeKey = new GlobalKey();
   final GlobalKey<FilterItemState> filterReportTypeKey = new GlobalKey();
@@ -97,6 +98,8 @@ class _FilterViewState extends State<FilterView> {
       filterFormatTypeKey.currentState!.deSelectFromOutSide(data);
     } else if (data.type == FilterType.REPORT_TYPE) {
       filterReportTypeKey.currentState!.deSelectFromOutSide(data);
+    } else if (data.type == FilterType.NOTIFICATION_TYPE) {
+      filterManageNotificationTypeKey.currentState!.deSelectFromOutSide(data);
     }
   }
 
@@ -127,7 +130,12 @@ class _FilterViewState extends State<FilterView> {
                           children: [
                             viewModel.selectedFilterData!.isNotEmpty
                                 ? FilterChipView(
-                                    filters: viewModel.selectedFilterData,
+                                    filters:  widget.screenType==ScreenType.MANAGE_NOTIFICATION? viewModel.selectedFilterData!.map((e) {
+                                      if( e!.type==FilterType.NOTIFICATION_TYPE){
+                                      return e;
+                                      }
+                                     
+                                    }).toList():viewModel.selectedFilterData,
                                     onClosed: (value) {
                                       viewModel.removeSelectedFilter(value);
                                       deSelect(value);
@@ -182,7 +190,7 @@ class _FilterViewState extends State<FilterView> {
                                 : SizedBox(),
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT &&  widget.screenType != ScreenType.MANAGE_NOTIFICATION
                                 ? FilterItem(
                                     isExpand: viewModel.isShowing,
                                     filterType: FilterType.ALL_ASSETS,
@@ -201,7 +209,7 @@ class _FilterViewState extends State<FilterView> {
 
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT  && widget.screenType != ScreenType.MANAGE_NOTIFICATION
                                 ? FilterItem(
                                     isExpand: viewModel.isShowing,
                                     filterType: FilterType.PRODUCT_FAMILY,
@@ -246,7 +254,7 @@ class _FilterViewState extends State<FilterView> {
 
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT  && widget.screenType != ScreenType.MANAGE_NOTIFICATION
                                 ? FilterItem(
                                     isExpand: viewModel.isShowing,
                                     filterType: FilterType.MODEL,
@@ -276,7 +284,7 @@ class _FilterViewState extends State<FilterView> {
                             //         .onFilterCleared(FilterType.MODEL_YEAR);
                             //   },
                             // ), widget.screenType != ScreenType.USER_MANAGEMENT &&
-                            widget.screenType != ScreenType.MANAGE_REPORT
+                            widget.screenType != ScreenType.MANAGE_REPORT  && widget.screenType != ScreenType.MANAGE_NOTIFICATION
                                 ? FilterItem(
                                     isExpand: viewModel.isShowing,
                                     filterType: FilterType.MANUFACTURER,
@@ -384,7 +392,7 @@ class _FilterViewState extends State<FilterView> {
 
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT  && widget.screenType != ScreenType.MANAGE_NOTIFICATION
                                 ? FilterItem(
                                     isExpand: viewModel.isShowing,
                                     filterType: FilterType.DEVICE_TYPE,
@@ -403,7 +411,7 @@ class _FilterViewState extends State<FilterView> {
 
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT  && widget.screenType != ScreenType.MANAGE_NOTIFICATION
                                 ? FilterItem(
                                     isExpand: viewModel.isShowing,
                                     filterType: FilterType.FUEL_LEVEL,
@@ -423,7 +431,7 @@ class _FilterViewState extends State<FilterView> {
 
                             widget.screenType != ScreenType.USER_MANAGEMENT &&
                                     widget.screenType !=
-                                        ScreenType.MANAGE_REPORT
+                                        ScreenType.MANAGE_REPORT  && widget.screenType != ScreenType.MANAGE_NOTIFICATION
                                 // widget.screenType != ScreenType.FLEET&&
                                 //  widget.screenType !=
                                 //     ScreenType.UTILIZATION &&
@@ -506,6 +514,23 @@ class _FilterViewState extends State<FilterView> {
                                     onClear: () {
                                       viewModel
                                           .onFilterCleared(FilterType.USERTYPE);
+                                    },
+                                  )
+                                : SizedBox(),
+                           widget.screenType == ScreenType.MANAGE_NOTIFICATION
+                                ? FilterItem(
+                                    isExpand: viewModel.isShowing,
+                                    filterType: FilterType.NOTIFICATION_TYPE,
+                                    key: filterManageNotificationTypeKey,
+                                    data: viewModel.notification,
+                                    isSingleSelection: true,
+                                    onApply: (List<FilterData> list) {
+                                      viewModel.onFilterSelected(
+                                          list, FilterType.NOTIFICATION_TYPE);
+                                    },
+                                    onClear: () {
+                                      viewModel.onFilterCleared(
+                                          FilterType.NOTIFICATION_TYPE);
                                     },
                                   )
                                 : SizedBox(),

@@ -847,6 +847,9 @@ class Utils {
       case FilterType.ASSET_TYPE:
         title = "ASSET TYPE";
         break;
+        case FilterType.NOTIFICATION_TYPE:
+        title = "NOTIFICATION TYPE";
+        break;
 
       default:
     }

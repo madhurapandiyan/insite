@@ -142,6 +142,7 @@ class AssetLocationViewModel extends InsiteViewModel {
           onTap: () {
             customInfoWindowController.addInfoWindow!(
               SingleInfoView(
+                zone: zone,
                 dateFormat: userPref,
                 assetLocation: assetLocation,
               ),

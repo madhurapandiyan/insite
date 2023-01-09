@@ -9,8 +9,9 @@ import 'package:insite/widgets/dumb_widgets/insite_text.dart';
 
 class SingleInfoView extends StatelessWidget {
    final UserPreference?dateFormat;
+   final UserPreferedData?zone;
   final AssetLocation? assetLocation;
-  const SingleInfoView({Key? key, this.assetLocation, this.dateFormat}) : super(key: key);
+  const SingleInfoView({Key? key, this.assetLocation, this.dateFormat,this.zone}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class SingleInfoView extends StatelessWidget {
                             fontWeight: FontWeight.w900,
                             size: 10.0),
                         InsiteText(
-                            text:Utils.getDateTimeFromString(assetLocation!.locationEventLocalTime!.toString(),dateFormat)+" ${assetLocation!.locationEventLocalTimeZoneAbbrev}",
+                            text:Utils.getDateUTC(assetLocation!.locationEventLocalTime!.toIso8601String(),dateFormat,zone)+" ${assetLocation!.locationEventLocalTimeZoneAbbrev}",
                             // assetLocation!.locationEventLocalTime
                             //         .toString()
                             //         .split('T')

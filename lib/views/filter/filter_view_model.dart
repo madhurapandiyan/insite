@@ -3,9 +3,11 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/maintenance_refine.dart';
+import 'package:insite/core/models/manage_notification_filter.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
+import 'package:insite/core/services/notification_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:load/load.dart';
@@ -14,7 +16,7 @@ import 'package:logger/logger.dart';
 class FilterViewModel extends InsiteViewModel {
   AssetStatusService? _assetService = locator<AssetStatusService>();
   MaintenanceService? _maintenanceService = locator<MaintenanceService>();
-
+  NotificationService? _notificationService = locator<NotificationService>();
   bool _loading = false;
   bool get loading => _loading;
   bool _refineLoading = true;
@@ -30,6 +32,8 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataFuelLevel = [];
   List<FilterData> filterDataIdlingLevel = [];
   List<FilterData> filterSeverity = [];
+    List<FilterData> notification=[];
+
   List<FilterData> filterDataJobType = [];
   List<FilterData> filterDataUserType = [];
   List<FilterData> filterFrequencyType = [];
@@ -158,6 +162,16 @@ class FilterViewModel extends InsiteViewModel {
           filterReportType,
           FilterType.REPORT_FORMAT,
           FilterType.REPORT_TYPE);
+    }
+     if (screenType == ScreenType.MANAGE_NOTIFICATION) {
+    
+        var result=await  _notificationService!.getManageNotificationFilterData();
+      Logger().wtf("result:${result?.toJson()}");
+      addNotificatiion(
+          notification,
+          result,
+           FilterType.NOTIFICATION_TYPE,
+          );
     }
     if (screenType == ScreenType.MAINTENANCE) {
       var data = await _maintenanceService!.getRefineData(
@@ -348,6 +362,37 @@ class FilterViewModel extends InsiteViewModel {
       }
     }
   }
+
+ addNotificatiion(filterData, ManageNotificationFilter? manageNotificationFilter,filternotificationtype) {
+  try {
+    
+ 
+    if ( manageNotificationFilter?.getAlertConfigsCountData?.alertConfigs!=null&&
+        manageNotificationFilter!.getAlertConfigsCountData!.alertConfigs!.isNotEmpty) {
+          var result=manageNotificationFilter.getAlertConfigsCountData?.alertConfigs;
+          Logger().wtf("result:${manageNotificationFilter.getAlertConfigsCountData?.toJson()}");
+          for (var element in result!) {
+            
+             FilterData data = FilterData(
+              count: element.count.toString(),
+              title: element.notificationType,
+              isSelected: isAlreadSelected(element.notificationType, filternotificationtype),
+              extras: [element.notificationTypeGroup.toString()],
+              type: filternotificationtype,
+            
+              );
+          filterData.add(data);
+         
+          }
+      
+        } 
+      Logger() .wtf(filterData.length);
+       } catch (e) {
+    Logger().e(e.toString());
+  }
+      }
+   
+
 
   removeAllSelectedFilter() async {
     selectedFilterData!.clear();

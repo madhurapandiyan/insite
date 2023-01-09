@@ -2155,57 +2155,46 @@ lastLocationUpdateUTC
     return data;
   }
 
-  String manageNotificationList(
-      {int? pageNumber, int? count, String? searchKey}) {
-    String manageNotificationData = """
-     query notificationsData{
-  getConfiguredAlertsData(pageNumber: $pageNumber, count: $count, searchKey:$searchKey, notificationType: null) {
-    configuredAlerts {
-      alertConfigID
-      alertConfigUID
-      notificationTitle
-      allAssetsInd
-      notificationTypeGroupID
-      notificationTypeID
-      createdDate
-      updatedDate
-      notificationType
-      numberOfAssets
-      numberOfAssetGroups
-      numberOfGeofences
-      alertCategoryID
-      alertGroupID
-      operands {
-        operandID
-        operandName
-        operatorID
-        condition
-        value
-        unit
-      }
-      siteOperands {
-        operandID,
-        operandName,
-        geoFenceID,
-        geoFenceUID,
-        name
-      }
-      allAssetsInd
-    }
-    links {
-      prev
-      next
-      last
-    }
+  String manageNotificationList() {
+    String manageNotificationData = """query (\$pageNumber: Int, \$count: Int, \$searchKey: String, \$notificationType: [String]) {
+  getConfiguredAlertsData(pageNumber: \$pageNumber, count: \$count, searchKey: \$searchKey, notificationType: \$notificationType) {
     total {
-      items
       pages
+      items
     }
     responseStatus
-    
+    configuredAlerts {
+      createdDate
+      updatedDate
+      alertConfigUID
+      alertConfigID
+      alertGroupID
+      notificationType
+      numberOfAssets
+      notificationTitle
+      numberOfGeofences
+      notificationTypeID
+      numberOfAssetGroups
+      notificationTypeGroupID
+      siteOperands {
+        operandID
+        operandName
+        geoFenceID
+        geoFenceUID
+        name
+      }
+      operands {
+        operatorID
+        value
+        operandID
+        operandName
+        condition
+        unit
+      }
+      allAssetsInd
+    }
   }
-}
-""";
+}""";
     return manageNotificationData;
   }
 
@@ -4047,5 +4036,19 @@ mutation createUpdateUserPreference(\$userPreferenceInput: UserPreferenceInput!,
   createUpdateUserPreference(userPreferenceInput: \$userPreferenceInput, isCreate: \$isCreate)
 }""";
     return data;
+  }
+ 
+  getNotificationFilter(){
+    var data="""{
+  getAlertConfigsCountData {
+    alertConfigs {
+      notificationType
+      notificationTypeGroup
+      count
+    }
+  }
+}
+""";
+return data;
   }
 }
