@@ -172,6 +172,25 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  getRuntimeAllValueData() {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[i];
+      if (data != null) {
+       // data.runTimecount = double.parse(value);
+        if (isChangingState == true) {
+          data.idleCount =
+              Utils.getHrsValueeData(data.percentCount, data.runTimecount);
+        } else {
+          String countValue =
+              Utils.getPercentageValueData(data.runTimecount, data.idleCount);
+
+          data.percentCount = double.parse(countValue);
+        }
+      }
+    }
+    notifyListeners();
+  }
+
   onClickValueRunTimeApply() {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[i];
@@ -186,6 +205,30 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
         var data = countValue[index];
         if (data != null) {
           data.idleCount = double.parse(value);
+          if (isChangingState == true) {
+            data.idleCount =
+                Utils.getHrsValueeData(data.idleCount, data.runTimecount);
+            Logger().w(data.percentCount);
+          }
+          String countValue =
+              Utils.getPercentageValueData(data.runTimecount, data.idleCount);
+
+          data.percentCount = double.parse(countValue);
+        }
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+
+    notifyListeners();
+  }
+
+  getIdleAllValue() {
+    try {
+      for (int i = 0; i < countValue.length; i++) {
+        var data = countValue[i];
+        if (data != null) {
+          //data.idleCount = double.parse(value);
           if (isChangingState == true) {
             data.idleCount =
                 Utils.getHrsValueeData(data.idleCount, data.runTimecount);
