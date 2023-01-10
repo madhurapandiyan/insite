@@ -564,14 +564,14 @@ class DashboardViewModel extends InsiteViewModel {
     switch (_idlingLevelRange) {
       case IdlingLevelRange.DAY:
         return DateFormat('MM/dd/yyyy')
-            .format(DateUtil.calcFromDate(DateRangeType.today)!);
+            .format(DateUtil.calcIdlingFromDate(DateRangeType.today)!);
       case IdlingLevelRange.WEEK:
         return DateFormat('MM/dd/yyyy')
-            .format(DateUtil.calcFromDate(DateRangeType.currentWeek)!);
+            .format(DateUtil.calcIdlingFromDate(DateRangeType.currentWeek)!);
 
       case IdlingLevelRange.MONTH:
         return DateFormat('MM/dd/yyyy')
-            .format(DateUtil.calcFromDate(DateRangeType.currentMonth)!);
+            .format(DateUtil.calcIdlingFromDate(DateRangeType.currentMonth)!);
 
       default:
         return null;

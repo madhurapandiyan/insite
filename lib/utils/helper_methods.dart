@@ -2562,8 +2562,8 @@ class Utils {
     Logger().e(userPreference!.units);
     if (userPreference.units == "US Standard" ||
         userPreference.units == "Imperial") {
-      if (unit == "Kg") {
-        return "${(num.parse(value.toString()) * 2.205).toStringAsFixed(2)} ";
+      if (unit == "kg") {
+        return "${(num.parse(value.toString()) * 2.205).toStringAsFixed(1)} ";
       } else if (unit == "Litre") {
         return "${(num.parse(value.toString()) / 3.785).toStringAsFixed(2)} ";
       } else {
@@ -2590,8 +2590,8 @@ class Utils {
     Logger().e(userPreference!.units);
     if (userPreference.units == "US Standard" ||
         userPreference.units == "Imperial") {
-      if (unit == "Kg") {
-        return "lbs";
+      if (unit == "kg") {
+        return "Lbs";
       } else if (unit == "Litre") {
         return "Gallon";
       } else {
@@ -2608,5 +2608,9 @@ class Utils {
     } else {
       return "";
     }
+  }
+   static String getIdlingDateFormatPref(dynamic value,UserPreference? userPreference) {
+    var data = DateFormat(userPreference!.dateFormat).format(value);
+    return data;
   }
 }
