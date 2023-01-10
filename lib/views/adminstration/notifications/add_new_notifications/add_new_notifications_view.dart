@@ -195,7 +195,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                     if (viewModel.notificationExists!
                                             .alertTitleExists ==
                                         true) {
-                                      return "This notification title is already taken";
+                                      return "This notification title is already taken. Enter a new title.";
                                     }
                                   }
                                   return null;
