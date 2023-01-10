@@ -56,4 +56,23 @@ class DateUtil {
         return null;
     }
   }
+  static DateTime? calcIdlingFromDate(DateRangeType defaultDateRange) {
+    switch (defaultDateRange) {
+      case DateRangeType.today:
+        return DateTime.now();
+      case DateRangeType.yesterday:
+        return (DateTime.now().subtract(Duration(days: 1)));
+      case DateRangeType.currentWeek:
+        return (DateTime.now()
+            .subtract(Duration(days: DateTime.now().weekday )));
+      case DateRangeType.lastSevenDays:
+        return (DateTime.now().subtract(Duration(days: 6)));
+      case DateRangeType.lastThirtyDays:
+        return (DateTime.now().subtract(Duration(days: 29)));
+      case DateRangeType.currentMonth:
+        return (DateTime.utc(DateTime.now().year, DateTime.now().month, 1));
+      default:
+        return null;
+    }
+  }
 }
