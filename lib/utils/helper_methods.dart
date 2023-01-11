@@ -847,7 +847,7 @@ class Utils {
       case FilterType.ASSET_TYPE:
         title = "ASSET TYPE";
         break;
-        case FilterType.NOTIFICATION_TYPE:
+      case FilterType.NOTIFICATION_TYPE:
         title = "NOTIFICATION TYPE";
         break;
 
@@ -2370,7 +2370,7 @@ class Utils {
   }
 
   static String convertLitersToGal(l2GValue, noUnit, prefData, {precision}) {
-    if (l2GValue == null || l2GValue == '_'||prefData==null) {
+    if (l2GValue == null || l2GValue == '_' || prefData == null) {
       return '-';
     }
     if (prefData?.units == 'Metric') {
@@ -2384,9 +2384,14 @@ class Utils {
     }
   }
 
-  static String getDateTimeWithOutTimeZone(date, UserPreference? format) {
+  static String getDateTimeWithOutTimeZone(date, UserPreference? format,
+      {bool? isToSetLocalTime}) {
     try {
       var inputDate = DateTime.parse(date);
+      if (isToSetLocalTime == true) {
+        inputDate = inputDate.toLocal();
+      }
+      Logger().w(inputDate.toString());
       // .subtract(Duration(days: 1))
       // .add(Duration(hours: 18, minutes: 30));
       var outputFormat =
@@ -2398,22 +2403,23 @@ class Utils {
     }
   }
 
- static String getLocalDateTimeWithOutTimeZone(date, UserPreference? format) {
+  static String getLocalDateTimeWithOutTimeZone(date, UserPreference? format) {
     try {
       Logger().wtf("getDateTimeWithOutTimeZone:$date");
       var inputDate = DateTime.parse(date).toLocal();
-       Logger().wtf("parse:$inputDate");
+      Logger().wtf("parse:$inputDate");
       // .subtract(Duration(days: 1))
       // .add(Duration(hours: 18, minutes: 30));
       var outputFormat =
           DateFormat("${format!.dateFormat} ${format.timeFormat}");
       var outputDate = outputFormat.format(inputDate);
-       Logger().wtf("outputDate:$outputDate");
+      Logger().wtf("outputDate:$outputDate");
       return outputDate;
     } catch (e) {
       return "";
     }
   }
+
   static bool getLocationDisplay(String? location) {
     if (location == "Address") {
       return true;
@@ -2554,31 +2560,67 @@ class Utils {
     }
   }
 
+  // static String userPreferenceUnitCoversion(
+  //     {value, unit, UserPreference? userPreference}) {
+  //   if (value == null || value == '_') {
+  //     return '-';
+  //   }
+  //   Logger().e(userPreference!.units);
+  //   if (userPreference.units == "US Standard" ||
+  //       userPreference.units == "Imperial") {
+  //     if (unit == "kg") {
+  //       return "${(num.parse(value.toString()) * 2.205).toStringAsFixed(1)} ";
+  //     } else if (unit == "Litre") {
+  //       return "${(num.parse(value.toString()) / 3.785).toStringAsFixed(2)} ";
+  //     } else {
+  //       return value.toString();
+  //     }
+  //   } else if (userPreference.units == "Metric") {
+  //     if (unit == "lbs") {
+  //       return "${(num.parse(value.toString()) * 0.45392).toStringAsFixed(2)} ";
+  //     } else if (unit == "Gallon") {
+  //       return "${(num.parse(value.toString()) * 3.78541).toStringAsFixed(2)} ";
+  //     } else {
+  //       return value.toString();
+  //     }
+  //   } else {
+  //     return "";
+  //   }
+  // }
+
   static String userPreferenceUnitCoversion(
-      {value, unit, UserPreference? userPreference}) {
-    if (value == null || value == '_') {
+      {value, unit, UserPreference? userPreference, precision}) {
+    if (value == null || value == '_' || userPreference == null) {
       return '-';
     }
-    Logger().e(userPreference!.units);
-    if (userPreference.units == "US Standard" ||
-        userPreference.units == "Imperial") {
-      if (unit == "kg") {
-        return "${(num.parse(value.toString()) * 2.205).toStringAsFixed(1)} ";
-      } else if (unit == "Litre") {
-        return "${(num.parse(value.toString()) / 3.785).toStringAsFixed(2)} ";
-      } else {
-        return value.toString();
+    if (userPreference.units == 'Metric') {
+      return "${num.parse(value.toString()).toStringAsFixed(precision != null ? precision : 1)}";
+    } else if (userPreference.units == 'US Standard') {
+      switch (unit) {
+        case 'Litre':
+          return "${(num.parse(value.toString()) * 0.264172).toStringAsFixed(precision != null ? precision : 1)}";
+        case 'kg':
+          final us_ton = num.parse(value.toString()) / 907.2;
+          final us_pound = (us_ton * 2000)
+              .toStringAsFixed(precision != null ? precision : 1);
+          return "$us_pound";
+        default:
+          return "${num.parse(value.toString()).toStringAsFixed(precision != null ? precision : 1)}";
       }
-    } else if (userPreference.units == "Metric") {
-      if (unit == "lbs") {
-        return "${(num.parse(value.toString()) * 0.45392).toStringAsFixed(2)} ";
-      } else if (unit == "Gallon") {
-        return "${(num.parse(value.toString()) * 3.78541).toStringAsFixed(2)} ";
-      } else {
-        return value.toString();
+    } else if (userPreference.units == 'Imperial') {
+      switch (unit) {
+        case 'Litre':
+          return "${(num.parse(value.toString()) * 0.219969).toStringAsFixed(precision != null ? precision : 1)}";
+        case 'kg':
+          final imperial_ton = num.parse(value.toString()) / 1016;
+          final imperial_pound = (imperial_ton * 2240)
+              .toStringAsFixed(precision != null ? precision : 1);
+          return "$imperial_pound";
+        default:
+          return "${num.parse(value.toString()).toStringAsFixed(precision != null ? precision : 1)}";
       }
     } else {
-      return "";
+      return '-';
     }
   }
 
@@ -2609,7 +2651,9 @@ class Utils {
       return "";
     }
   }
-   static String getIdlingDateFormatPref(dynamic value,UserPreference? userPreference) {
+
+  static String getIdlingDateFormatPref(
+      dynamic value, UserPreference? userPreference) {
     var data = DateFormat(userPreference!.dateFormat).format(value);
     return data;
   }

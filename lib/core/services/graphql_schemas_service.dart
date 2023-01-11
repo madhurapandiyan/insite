@@ -2881,7 +2881,7 @@ mutation{
 
   String seeAllNotification(
       {int? pageNo,
-      int? notificationStatus,
+      dynamic notificationStatus,
       String? startDate,
       String? endDate,
       int? notificationUserStatus,
@@ -2892,7 +2892,7 @@ mutation{
 query{
   seeAllNotificationList(
     pageNumber:$pageNo,
-    notificationStatus:${notificationStatus ?? 0},
+    notificationStatus:${notificationStatus ?? [0]},
     notificationUserStatus:$notificationUserStatus,
     fromDate:"${startDate != null ? startDate : ""}",
     toDate:"${endDate != null ? endDate : ""}",

@@ -94,10 +94,12 @@ class _NotificationViewState extends State<NotificationView> {
                                     // ),
                                     InsiteButton(
                                       title: Utils.getDateFormatForDatePicker(
-                                              viewModel.startDate,viewModel.userPref) +
+                                              viewModel.startDate,
+                                              viewModel.userPref) +
                                           " - " +
                                           Utils.getDateFormatForDatePicker(
-                                              viewModel.endDate,viewModel.userPref),
+                                              viewModel.endDate,
+                                              viewModel.userPref),
                                       //  bgColor: Theme.of(context).backgroundColor,
                                       textColor: white,
                                       onTap: () async {
@@ -113,6 +115,7 @@ class _NotificationViewState extends State<NotificationView> {
                                             dateRange!.first.toString();
                                         viewModel.endDate =
                                             dateRange!.last.toString();
+                                        viewModel.isDateRangeSelected = true;
                                         viewModel.refresh();
                                       },
                                     ),

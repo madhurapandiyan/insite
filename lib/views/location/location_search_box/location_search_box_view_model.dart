@@ -13,6 +13,9 @@ import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 
 class LocationSearchBoxViewModel extends InsiteViewModel {
+  LocationSearchBoxViewModel() {
+    _assetLocationService.setUp();
+  }
   var _assetLocationService = locator<AssetLocationService>();
 
   List<String> dropDownList = ['S/N', 'Location'];
@@ -20,7 +23,7 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
 
   String? searchDropDownValue = "S/N";
 
-  bool? isSerching=false;
+  bool? isSerching = false;
 
   String? searchLocationDropDownValue = "Location";
 
@@ -31,27 +34,26 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
   AssetLocationSearch? result;
 
   searchLocation(query) async {
-    if(query!=null){
-      isSerching=true;
- SearchLocationGeofence? result =
-        await _assetLocationService.getGeofenceSerachLocationData(
-            graphqlSchemaService!.searchLocationData(10, query));
-    if (result?.geofenceSearchLoaction?.locations != null &&
-        result!.geofenceSearchLoaction!.locations!.isNotEmpty) {
-      list!.clear();
-      result.geofenceSearchLoaction!.locations!.forEach((element) {
-        LocationKey data = LocationKey(
-          value: element.shortString,
-          latitude: double.parse(element.coords?.lat ?? "0.0"),
-          longitude: double.parse(element.coords?.lon ?? "0.0"),
-        );
-        list!.add(data);
-      });
+    if (query != null) {
+      isSerching = true;
+      SearchLocationGeofence? result =
+          await _assetLocationService.getGeofenceSerachLocationData(
+              graphqlSchemaService!.searchLocationData(10, query));
+      if (result?.geofenceSearchLoaction?.locations != null &&
+          result!.geofenceSearchLoaction!.locations!.isNotEmpty) {
+        list!.clear();
+        result.geofenceSearchLoaction!.locations!.forEach((element) {
+          LocationKey data = LocationKey(
+            value: element.shortString,
+            latitude: double.parse(element.coords?.lat ?? "0.0"),
+            longitude: double.parse(element.coords?.lon ?? "0.0"),
+          );
+          list!.add(data);
+        });
+      }
     }
-    }
-    isSerching=false;
+    isSerching = false;
     notifyListeners();
-   
   }
 
   onChangedDropDownValue(String? value) {
@@ -60,47 +62,43 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
   }
 
   searchLocationSeralNumber(String value) async {
-    if(value!=null){
-      isSerching=true;
-result = await _assetLocationService.getAssetLocationsearch(
-        graphqlSchemaService!.searchLocationSerialNumberData(
-            query: value, pageNumber: 1, pageSize: 1000));
+    if (value != null) {
+      isSerching = true;
+      result = await _assetLocationService.getAssetLocationsearch(
+          graphqlSchemaService!.searchLocationSerialNumberData(
+              query: value, pageNumber: 1, pageSize: 1000));
 
-    if (result != null && result!.assetLocation!.mapRecords!.isNotEmpty) {
-      list!.clear();
-      result!.assetLocation!.mapRecords!.forEach((element) {
-        LocationKey data = LocationKey(
-            value: element!.assetSerialNumber ?? "",
-            latitude: element.lastReportedLocationLatitude,
-            longitude: element.lastReportedLocationLongitude);
-        list!.add(data);
-      });
+      if (result != null && result!.assetLocation!.mapRecords!.isNotEmpty) {
+        list!.clear();
+        result!.assetLocation!.mapRecords!.forEach((element) {
+          LocationKey data = LocationKey(
+              value: element!.assetSerialNumber ?? "",
+              latitude: element.lastReportedLocationLatitude,
+              longitude: element.lastReportedLocationLongitude);
+          list!.add(data);
+        });
+      }
     }
-    
-    }
-    isSerching=false;
+    isSerching = false;
     notifyListeners();
-    
-
   }
 
-  onSearchTextChanged(String? value,ScreenType screenType) async {
+  onSearchTextChanged(String? value, ScreenType screenType) async {
     try {
-      if(screenType==ScreenType.ASSET_DETAIL){
+      if (screenType == ScreenType.ASSET_DETAIL) {
         await searchLocation(value!);
-      }
-      else{
-        if (value!.isNotEmpty && value.length > 2) {
-        if (searchDropDownValue == "S/N") {
-          await searchLocationSeralNumber(value);
-        } else {
-          await searchLocation(value);
-        }
       } else {
-        list!.clear();
+        if (value!.isNotEmpty && value.length > 2) {
+          if (searchDropDownValue == "S/N") {
+            await searchLocationSeralNumber(value);
+          } else {
+            await searchLocation(value);
+          }
+        } else {
+          list!.clear();
+        }
       }
-      }
-      
+
       notifyListeners();
     } catch (e) {}
   }

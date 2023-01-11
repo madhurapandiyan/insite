@@ -62,6 +62,12 @@ class NotificationViewModel extends InsiteViewModel {
   bool _showDeSelect = false;
   bool get showDeSelect => _showDeSelect;
 
+  bool _isDateRangeSelected = false;
+  bool get isDateRangeSelected => _isDateRangeSelected;
+  set isDateRangeSelected(bool value) {
+    this._isDateRangeSelected = value;
+  }
+
   int pageNumber = 1;
   int pageCount = 50;
 
@@ -98,7 +104,7 @@ class NotificationViewModel extends InsiteViewModel {
       }
     });
     Future.delayed(Duration(seconds: 1), () async {
-      await getNotificationData(false);
+      await getNotificationData(true);
     });
   }
   onItemDeselect() {
@@ -236,8 +242,8 @@ class NotificationViewModel extends InsiteViewModel {
   }
 
   getNotificationData(bool isFirst) async {
-    notification.NotificationsData? response = await _mainNotificationService!
-        .getNotificationsData(
+    notification.NotificationsData? response =
+        await _mainNotificationService!.getNotificationsData(
             "0",
             "0",
             startDate,
@@ -246,12 +252,18 @@ class NotificationViewModel extends InsiteViewModel {
                 pageNo: pageNumber,
                 notificationType: filterValue,
                 notificationUserStatus: 0,
-                notificationStatus: 0,
+                notificationStatus:filterValue!.isEmpty?[0]:[1] ,
                 productFamily: productFamilyFilterData,
-                startDate:startDate==null?"": 
-                Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                endDate: endDate==null?"":
-                Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+                startDate: isFirst
+                    ? null
+                    : startDate == null
+                        ? ""
+                        : Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
+                endDate: isFirst
+                    ? null
+                    : endDate == null
+                        ? ""
+                        : Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;
@@ -336,8 +348,11 @@ class NotificationViewModel extends InsiteViewModel {
       notifyListeners();
       // await getSelectedFilterData();
       // await getDateRangeFilterData();
-
-      getNotificationData(true);
+      if (_isDateRangeSelected) {
+        getNotificationData(false);
+      } else {
+        getNotificationData(true);
+      }
     }
   }
 

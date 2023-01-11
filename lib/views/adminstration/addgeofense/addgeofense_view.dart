@@ -31,7 +31,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime.now(),
-            lastDate: DateTime(2023))
+            lastDate: DateTime(9999))
         .then((value) {
       if (value == null) {
         return;
@@ -174,7 +174,10 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   color: appbarcolor,
                                                 )),
                                             Container(
-                                              width: MediaQuery.of(context).size.width*0.5,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.5,
                                               child: Dropdown(
                                                 maptype: viewModel.mapType,
                                                 changingvalue: (value) {
@@ -251,7 +254,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   )),
                                               LocationSearchBoxView(
                                                 searchBoxWidth: 0.5,
-                                                screenType: ScreenType.ADD_GEOFENCE,
+                                                screenType:
+                                                    ScreenType.ADD_GEOFENCE,
                                                 onSeletingSuggestion:
                                                     (value, isSerialNo) {
                                                   if (!isSerialNo) {
@@ -386,15 +390,17 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                   // width: double.infinity,
                                   // height: mediaquerry.size.height * 0.05,
                                   child: CustomTextBox(
-                                    helperText:viewModel.isTitleExist==true? "Geofence name must be unique":"",
-                                    helperStyle: TextStyle(color: tango) ,
-                                    onChanged: (String ? value){
-                                      viewModel.getGeofenceTitleData(value);
-                                    },
-                                    focusNode: viewModel.titleFocus,
-                                    title: "Title",
-                                    controller: viewModel.titleController,
-                                  )),
+                                helperText: viewModel.isTitleExist == true
+                                    ? "Geofence name must be unique"
+                                    : "",
+                                helperStyle: TextStyle(color: tango),
+                                onChanged: (String? value) {
+                                  viewModel.getGeofenceTitleData(value);
+                                },
+                                focusNode: viewModel.titleFocus,
+                                title: "Title",
+                                controller: viewModel.titleController,
+                              )),
                               Container(
                                 padding: EdgeInsets.only(
                                   top: 15,

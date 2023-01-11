@@ -207,6 +207,10 @@ class DashboardViewModel extends InsiteViewModel {
     this._isFilterApplied = false;
     this._currentFilterSelected = null;
     _refreshing = true;
+
+    _maintenanceLoading = true;
+    _notificationLoading = true;
+    _faultCountloading = true;
     if (isIntial) {
       getAssetCount();
     }
@@ -470,7 +474,7 @@ class DashboardViewModel extends InsiteViewModel {
       Logger().w(maintenanceStartDate);
       var data = await _maintenanceService?.getMaintenanceDashboardCount(
           query: await graphqlSchemaService!.maintenanceDashboardCount(
-            prodFamily: filterData.title,
+              prodFamily: filterData.title,
               fromDate: Utils.maintenanceFromDateFormateFromTimeZone(
                   maintenanceStartDate!, zone!),
               endDate: Utils.maintenanceToDateFormateFromTimeZone(
@@ -619,6 +623,7 @@ class DashboardViewModel extends InsiteViewModel {
       _refreshing = true;
       _maintenanceLoading = true;
       _notificationLoading = true;
+      _faultCountloading = true;
       notifyListeners();
       // if (isFromProdFamily) {
       //   await getProductFamilyAssetCount();

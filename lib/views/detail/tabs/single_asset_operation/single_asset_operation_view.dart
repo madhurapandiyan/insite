@@ -84,10 +84,11 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                               // ),
                               InsiteButton(
                                 title: Utils.getDateFormatForDatePicker(
-                                        viewModel.startDate,viewModel.userPref) +
+                                        viewModel.startDate,
+                                        viewModel.userPref) +
                                     " - " +
                                     Utils.getDateFormatForDatePicker(
-                                        viewModel.endDate,viewModel.userPref),
+                                        viewModel.endDate, viewModel.userPref),
                                 //width: 90,
                                 // bgColor: Theme.of(context).backgroundColor,
                                 textColor: Theme.of(context)
@@ -135,7 +136,7 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                           //       : 'Engine Ignition/ on',
                                           // ),
                                           InsiteTableRowItem(
-                                            title: 'Last Event Time',
+                                            title: 'Last Event Time :',
                                             content: viewModel
                                                         .singleAssetOperation!
                                                         .assetOperations!
@@ -144,18 +145,20 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                                         .assetLastReceivedEvent!
                                                         .lastReceivedEventTimeLocal !=
                                                     null
-                                                ? Utils.getLastReportedDateOneLocalUTC(
+                                                ? Utils.getDateTimeWithOutTimeZone(
                                                     viewModel
                                                         .singleAssetOperation!
                                                         .assetOperations!
                                                         .assets!
                                                         .first
                                                         .assetLastReceivedEvent!
-                                                        .lastReceivedEventTimeLocal)
+                                                        .lastReceivedEventTimeLocal,
+                                                    viewModel.userPref,
+                                                    isToSetLocalTime: true)
                                                 : "-",
                                           ),
                                           InsiteTableRowItem(
-                                            title: 'Distance Travelled',
+                                            title: 'Distance Travelled :',
                                             content: viewModel
                                                         .singleAssetOperation!
                                                         .assetOperations!
@@ -181,10 +184,11 @@ class _SingleAssetOperationViewState extends State<SingleAssetOperationView> {
                                           // ),
                                           InsiteTableRowItem(
                                             title:
-                                                'This data was last refreshed on',
-                                            content:
-                                                Utils.formatCurrentSystemTime(
-                                                    DateTime.now().toString()),
+                                                'This data was last refreshed on :',
+                                            content: Utils.getDateTimeWithOutTimeZone(
+                                                DateTime.now().toString(),
+                                                viewModel.userPref,
+                                                isToSetLocalTime: true),
                                           ),
                                           InsiteTableRowItem(
                                             title: 'Total Duration ',

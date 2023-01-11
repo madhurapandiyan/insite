@@ -136,7 +136,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<String> _choiseData = [
     "Assets",
     "Groups",
-    "Geofences",
+    //"Geofences",
   ];
   List<String> get choiseData => _choiseData;
 
@@ -712,7 +712,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     List<String> geofenceList = [
       "Site Entry",
       "Site Exit",
-      "Site Entry & Site Exit"
+     // "Site Entry & Site Exit"
     ];
 
     List<String> maintenance = ["Overdue", "Upcoming"];

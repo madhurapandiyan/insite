@@ -185,7 +185,7 @@ class UtilizationListItem extends StatelessWidget {
                                     ),
                                     TableRow(children: [
                                       InsiteTableRowItem(
-                                        title: "Burn Rate",
+                                        title: "Burn Rate (gal/hr)",
                                         content: utilizationData!
                                                     .runtimeFuelConsumptionRate !=
                                                 null
@@ -287,7 +287,7 @@ class UtilizationListItem extends StatelessWidget {
                                   ),
                                   TableRow(children: [
                                     InsiteTableRowItem(
-                                      title: "Burn Rate",
+                                      title: "Burn Rate (gal/hr)",
                                       content: utilizationData!
                                                   .runtimeFuelConsumptionRate !=
                                               null

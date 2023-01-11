@@ -133,7 +133,7 @@ class _ManageGeofenceWidgetState extends State<ManageGeofenceWidget> {
                   ),
                   InsiteText(
                     text:
-                        "End Date : ${widget.geofenceDate == null ? "No End Date" : Utils.getPreferenceDate(widget.geofenceDate!, widget.userPreference, widget.userPreferedData)}",
+                        "End Date : ${widget.geofenceDate == null ? "No End Date" : Utils.getDateFromString(widget.geofenceDate!, widget.userPreference)}",
                     fontWeight: FontWeight.w700,
                   )
                 ],

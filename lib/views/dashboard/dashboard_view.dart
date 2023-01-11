@@ -128,6 +128,7 @@ class _DashboardViewState extends State<DashboardView> {
                                       filterData.title);
                             } else {
                               switchDropDownState = false;
+                              viewModel.notificationFilterTitle = null;
                               viewModel.getData(true);
                               filterLocationKey.currentState!
                                   .getAssetLocationHomeData();

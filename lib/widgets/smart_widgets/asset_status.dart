@@ -25,6 +25,9 @@ class AssetStatus extends StatefulWidget {
 
 class _AssetStatusState extends State<AssetStatus> {
   var colors = [
+    mustard,
+    emerald,
+    textcolor,
     burntSienna,
     emerald,
     mustard,
@@ -105,6 +108,9 @@ class _AssetStatusState extends State<AssetStatus> {
                           alignment: Alignment.center,
                           child: SfCircularChart(
                             palette: <Color>[
+                              mustard,
+                              emerald,
+                              textcolor,
                               burntSienna,
                               emerald,
                               mustard,
@@ -125,7 +131,10 @@ class _AssetStatusState extends State<AssetStatus> {
                             tooltipBehavior: TooltipBehavior(enable: true),
                           ),
                         ),
-                      ),SizedBox(width: 40,),
+                      ),
+                      SizedBox(
+                        width: 40,
+                      ),
                       Expanded(
                         child: Container(
                           margin: EdgeInsets.only(right: 20),
