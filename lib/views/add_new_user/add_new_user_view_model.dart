@@ -233,6 +233,10 @@ class AddNewUserViewModel extends InsiteViewModel {
             ? null
             : result.user?.job_type ?? null;
         jobTitleValue = result.user?.job_title ?? null;
+        addressController.text = result.user?.address?.addressline1 ?? "";
+        countryController.text = result.user?.address?.country ?? "";
+        stateController.text = result.user?.address?.state ?? "";
+        pinCodeController.text = result.user?.address?.zipcode ?? "";
         Logger().i("getUser ${result.user?.application_access?.length}");
         for (var applicationAccess in result.user!.application_access!) {
           for (int i = 0; i < assetsData.length; i++) {
@@ -252,6 +256,7 @@ class AddNewUserViewModel extends InsiteViewModel {
           }
         }
         Logger().i("getUser ${applicationSelectedDropDownList.length}");
+        Logger().v(jobTypeValue);
         _isLoading = false;
       } else {
         _isLoading = false;
