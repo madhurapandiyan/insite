@@ -552,7 +552,7 @@ class AssetAdminManagerUserService extends BaseService {
   }
 
   Future<ManageAssetConfiguration?> getAssetSettingData(pageSize, pageNumber,
-      String searchKeyword, String deviceTypeSelected) async {
+      String searchKeyword, String deviceTypeSelected,dynamic payLoad) async {
     Logger().i("getAssetSettingData");
     try {
       Map<String, String> queryMap = Map();
@@ -571,17 +571,14 @@ class AssetAdminManagerUserService extends BaseService {
       }
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
-            query: graphqlSchemaService!.getAssetSettingData(
-                pageNumber,
-                pageSize,
-                deviceTypeSelected,
-                searchKeyword,
-                searchKeyword.isEmpty ? "" : "assetSerialNumber"),
+            query: graphqlSchemaService!.getAssetSettingData(),
             customerId: accountSelected?.CustomerUID,
             subId: customerSelected?.CustomerUID == null
                 ? ""
                 : customerSelected?.CustomerUID,
-            userId: (await _localService!.getLoggedInUser())!.sub);
+            userId: (await _localService!.getLoggedInUser())!.sub,
+            payLoad: payLoad
+            );
         ManageAssetConfiguration responce =
             ManageAssetConfiguration.fromJson(data.data["assetSettingsGrid"]);
         return responce;

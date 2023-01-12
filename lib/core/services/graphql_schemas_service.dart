@@ -2976,73 +2976,42 @@ query (\$pageNumber: Int, \$sort: String, \$searchKey: String, \$searchValue: St
     return data;
   }
 
-  getAssetSettingData(int pageNo, int pageSize, String deviceType,
-      String searchWord, String filterName) {
-    Logger().w(searchWord.isEmpty);
-    Logger().w(filterName.isEmpty);
-    var data = """
-query{
-  assetSettingsGrid(
-    startDate: ""
-endDate:""
-pageNumber:$pageNo
-pageSize: $pageSize
-filterName: ${filterName.isEmpty ? doubleQuote + doubleQuote : doubleQuote + filterName + doubleQuote},
-filterValue: ${searchWord.isEmpty ? doubleQuote + doubleQuote : doubleQuote + searchWord + doubleQuote}
-sortColumn: ""
-deviceType: ${deviceType == "ALL" ? "\"\"" : "${"\"" + deviceType + "\""}"}
-  ){
-    assetSettings{
+  getAssetSettingData() {
+    
+    var data = """query (\$pageNumber: Int, \$pageSize: Int, \$filterName: String, \$filterValue: String, \$sortColumn: String, \$deviceType: String) {
+  assetSettingsGrid(pageNumber: \$pageNumber, pageSize: \$pageSize, filterName: \$filterName, filterValue: \$filterValue, sortColumn: \$sortColumn, deviceType: \$deviceType) {
+    pageInfo {
+      totalPages
+      totalRecords
+      currentPageSize
+      currentPageNumber
+    }
+    assetSettings {
       assetUid
-assetId
-assetSerialNumber
-assetModel
-assetMakeCode
-assetIconKey
-deviceSerialNumber
-devicetype
-targetStatus
-dailyReportingTime
-hoursMeter
-movingOrStoppedThreshold
-movingThresholdsDuration
-movingThresholdsRadius
-odometer
-smhOdometerConfig
-speedThreshold
-speedThresholdDuration
-speedThresholdEnabled
-configuredSwitches
-totalSwitches
-fuelType
-workDefinition
-pendingDeviceConfigInfo{
-  reportingSchedule{
-    lastUpdatedOn
-  }
-  meters{
-    lastUpdatedOn
-  }
-  switches{
-    lastUpdatedOn
-  }
-  movingThresholds{
-    lastUpdatedOn
-  }
-  speedingThresholds{
-    lastUpdatedOn
+      assetId
+      assetSerialNumber
+      assetModel
+      assetMakeCode
+      assetIconKey
+      deviceSerialNumber
+      devicetype
+      targetStatus
+      hoursMeter
+      movingOrStoppedThreshold
+      movingThresholdsDuration
+      movingThresholdsRadius
+      odometer
+      configuredSwitches
+      totalSwitches
+      workDefinition
+      speedThreshold
+      speedThresholdEnabled
+      fuelType
+      dailyReportingTime
+    }
   }
 }
-    },
-    pageInfo{
-      totalRecords,
-      totalPages,
-      currentPageNumber,
-      currentPageSize
-    },
-    errors
-  }
-}""";
+""";
     return data;
   }
 

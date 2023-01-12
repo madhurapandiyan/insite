@@ -91,9 +91,17 @@ class AssetSettingsViewModel extends InsiteViewModel {
   }
 
   getAssetSettingListData() async {
+    Logger().wtf(deviceTypeSelected);
     ManageAssetConfiguration? result =
         await _manageUserService.getAssetSettingData(
-            pageSize, pageNumber, _searchKeyword, deviceTypeSelected);
+            pageSize, pageNumber, _searchKeyword, deviceTypeSelected,{
+  "pageNumber": pageNumber,
+  "pageSize": pageSize,
+  "filterName": textEditingController.text.isNotEmpty?"assetSerialNumber":"",
+  "filterValue": textEditingController.text,
+  "sortColumn": "",
+  "deviceType":deviceTypeSelected=="ALL"?"":deviceTypeSelected
+});
     if (result != null && result.assetSettings!.isNotEmpty) {
       if (result.pageInfo != null) {
         _totalCount = result.pageInfo!.totalRecords!;
@@ -113,6 +121,8 @@ class AssetSettingsViewModel extends InsiteViewModel {
 
       notifyListeners();
     } else {
+     _assets.clear();
+       _totalCount = result!.pageInfo!.totalRecords!;
       _loading = false;
       _loadingMore = false;
       _isRefreshing = false;
@@ -130,7 +140,7 @@ class AssetSettingsViewModel extends InsiteViewModel {
   searchAssets(String searchValue) {
     Logger().i(searchAsset.length);
     pageNumber = 1;
-    if (textEditingController.text.length >= 4) {
+   // if (textEditingController.text.length >= 4) {
       if (debounce?.isActive ?? false) {
         debounce!.cancel();
       }
@@ -140,18 +150,26 @@ class AssetSettingsViewModel extends InsiteViewModel {
         await getSearchListAssetData();
         hideLoadingDialog();
       });
-    } else {
-      _assets = [];
-      _assets.addAll(searchAsset);
-      _totalCount = searchAsset.length;
-      notifyListeners();
-    }
+    // } else {
+      
+    //   // _assets = [];
+    //   // _assets.addAll(searchAsset);
+    //   // _totalCount = searchAsset.length;
+    //   notifyListeners();
+    // }
   }
 
   getSearchListAssetData() async {
     ManageAssetConfiguration? result =
         await _manageUserService.getAssetSettingData(
-            20, 1, textEditingController.text, deviceTypeSelected);
+            20, 1, textEditingController.text, deviceTypeSelected,{
+  "pageNumber": pageNumber,
+  "pageSize": pageSize,
+  "filterName": textEditingController.text.isEmpty? "":"assetSerialNumber",
+  "filterValue": textEditingController.text,
+  "sortColumn": "",
+  "deviceType":deviceTypeSelected=="ALL"?"":deviceTypeSelected
+});
     if (result != null && result.assetSettings!.isNotEmpty) {
       if (result.pageInfo != null) {
         _totalCount = result.pageInfo!.totalRecords!;
@@ -160,6 +178,10 @@ class AssetSettingsViewModel extends InsiteViewModel {
         _assets.add(
             AssetSettingsRow(assetSettings: assetSetting, isSelected: false));
       }
+       _loading = false;
+      _loadingMore = false;
+      _isRefreshing = false;
+      _shouldLoadmore=false;
       notifyListeners();
     } else {
       _assets = [];
