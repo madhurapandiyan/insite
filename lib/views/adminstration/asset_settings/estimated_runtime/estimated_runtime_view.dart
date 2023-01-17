@@ -417,7 +417,7 @@ class _EstimatedRunTimeWidgetViewState
                       value: dropDownValue,
                       percentCountValue: days.percentCount,
                       onRuntimeValueChanged: (String value) {
-                        viewModel.getRuntimeListValueData(value, index);
+                        viewModel.getRuntimeListValueData(value, index);                        
                       },
                       onIdleValueChanged: (String value) {
                         viewModel.getIdleListValue(value, index);
