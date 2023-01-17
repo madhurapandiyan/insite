@@ -1617,7 +1617,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       if (geofenceData != null) {
         geofenceData!.geofences!.forEach((element) {
           geoenceData.add(CheckBoxDropDown(items: element.GeofenceName));
-          Logger().wtf(element.GeofenceUID);
+          //Logger().wtf(element.GeofenceUID);
         });
       }
       hideLoadingDialog();

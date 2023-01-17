@@ -1301,6 +1301,10 @@ class Utils {
       data =
           "Fuel Loss ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
       return data;
+    } else if (alert?.notificationTypeGroupID == 7) {
+      data =
+          "${alert?.siteOperands!.length} Geofences - ${alert?.notificationType}";
+      return data;
     } else if (alert?.operands?.first.value == "1") {
       data = "Maintenance Interval Overdue";
       return data;
