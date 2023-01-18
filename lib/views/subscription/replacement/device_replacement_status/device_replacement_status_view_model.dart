@@ -10,7 +10,7 @@ import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
-import 'package:open_file/open_file.dart';
+//import 'package:open_file/open_file.dart';
 
 class DeviceReplacementStatusViewModel extends InsiteViewModel {
   Logger? log;
@@ -162,7 +162,7 @@ class DeviceReplacementStatusViewModel extends InsiteViewModel {
       File("${path!.path}/Device_Replacement_Report.xlsx")
         ..createSync(recursive: true)
         ..writeAsBytesSync(savefile!);
-      OpenFile.open("${path.path}/Device_Replacement_Report.xlsx");
+  //    OpenFile.open("${path.path}/Device_Replacement_Report.xlsx");
       // excelSheet.encode()!.then((onValue) {
       //   File("${path.path}/Device_Replacement_Report.xlsx")
       //     ..createSync(recursive: false)

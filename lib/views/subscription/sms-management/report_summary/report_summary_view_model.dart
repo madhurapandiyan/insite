@@ -13,7 +13,7 @@ import 'package:insite/views/subscription/sms-management/model/sms_reportSummary
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:open_file/open_file.dart';
+//import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 
 class ReportSummaryViewModel extends InsiteViewModel {
@@ -210,7 +210,7 @@ class ReportSummaryViewModel extends InsiteViewModel {
         ..createSync(recursive: true)
         ..writeAsBytesSync(saveFile!);
       hideLoadingDialog();
-      OpenFile.open("${path.path}/report_summary.xlsx");
+      //OpenFile.open("${path.path}/report_summary.xlsx");
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());
