@@ -34,7 +34,9 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 31
+    buildToolsVersion '29.0.3'
+    ndkVersion "22.0.7026061"
 
 
     sourceSets {
