@@ -11,7 +11,7 @@ import 'package:insite/core/services/sms_management_service.dart';
 import 'package:insite/views/adminstration/addgeofense/exception_handle.dart';
 import 'package:insite/views/subscription/sms-management/model/saving_sms_model.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_responce_model.dart';
-import 'package:open_file/open_file.dart';
+//import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:insite/views/subscription/sms-management/model/sms_single_asset_model.dart';
@@ -150,7 +150,7 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
           fileName: "Sample_Documents",
         );
         Logger().e("${baseStorage.path}/Sample_Documents.bin");
-        OpenFile.open("${baseStorage.path}/Sample_Documents.BIN");
+       // OpenFile.open("${baseStorage.path}/Sample_Documents.BIN");
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -270,7 +270,7 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
       File("${path!.path}/Exists_Combinations_export.xlsx")
         ..createSync(recursive: true)
         ..writeAsBytesSync(savefile!);
-      OpenFile.open("${path.path}/Exists_Combinations_export.xlsx");
+      //OpenFile.open("${path.path}/Exists_Combinations_export.xlsx");
     }
   }
 }

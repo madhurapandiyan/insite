@@ -3,7 +3,7 @@ description: A new Flutter project.
 publish_to: none
 version: 2.1.4+214
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 dependencies:
   badges: ^2.0.2
   build_runner: ^2.1.2
@@ -56,7 +56,7 @@ dependencies:
   logger: ^1.0.0
   maps_toolkit: ^2.0.0
   oauth2: ^2.0.0
-  open_file: ^3.2.1
+
   package_info: ^2.0.2
   package_info_plus: ^1.4.2
   path_provider: ^2.0.4
