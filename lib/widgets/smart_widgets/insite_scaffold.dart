@@ -120,6 +120,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                   widget.screenType == ScreenType.HEALTH ||
                   widget.screenType == ScreenType.LOCATION ||
                   widget.screenType == ScreenType.MANAGE_REPORT ||
+                   widget.screenType == ScreenType.NOTIFICATIONS ||
                   // widget.screenType == ScreenType.MANAGE_NOTIFICATION ||
                   widget.screenType == ScreenType.MAINTENANCE
                 

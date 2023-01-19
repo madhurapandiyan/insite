@@ -87,7 +87,9 @@ enum FilterType {
   @HiveField(25)
   UTILIZATION_COUNT,
   @HiveField(26)
-  NOTIFICATION_TYPE
+  NOTIFICATION_TYPE,
+   @HiveField(27)
+  NOTIFICATION_STATUS
 }
 
 @HiveType(typeId: 2)

@@ -3,10 +3,12 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_notification_payload.dart';
 
 import 'package:insite/core/models/customer.dart';
+import 'package:insite/core/models/filter_notification.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/main_notification.dart';
 import 'package:insite/core/models/manage_notification_filter.dart';
 import 'package:insite/core/models/manage_notifications.dart';
+import 'package:insite/core/models/notification_resolve.dart';
 import 'package:insite/core/models/notification_type.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/repository/network.dart';
@@ -80,7 +82,7 @@ class NotificationService extends BaseService {
   }
 
   Future<NotificationsData?> getNotificationsData(notificationUserStatus,
-      notificationStatus, startDate, endDate, String query) async {
+      notificationStatus, startDate, endDate, String query,dynamic payLoad) async {
     if (enableGraphQl) {
       var data = await Network().getGraphqlData(
         query: query,
@@ -89,6 +91,7 @@ class NotificationService extends BaseService {
         subId: customerSelected?.CustomerUID == null
             ? ""
             : customerSelected?.CustomerUID,
+            payLoad: payLoad
       );
       if (data.data["seeAllNotificationList"] != null) {
         NotificationsData? notificationsData =
@@ -447,6 +450,31 @@ Future<ManageNotificationFilter?> getManageNotificationFilterData()async{
     } catch (e) {}
   }
 
+Future<NotificationStatus?> getNotificationStatusData({dynamic payLoad})async{
+  try{
+  if (enableGraphQl) {
+      
+      var data = await Network().getGraphqlData(
+        query:_graphqlSchemaService.createupdateNotification() ,
+        userId: (await _localService?.getLoggedInUser())?.sub,
+        customerId: accountSelected!.CustomerUID,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+            payLoad:payLoad 
+      );
+  NotificationStatus notificationStatus =
+          NotificationStatus.fromJson(
+              data.data["updateNotificationResolve"]);
+              Logger().i(notificationStatus.toJson());
+    return notificationStatus;
+    }
+  }catch(e){
+  Logger().e(e.toString());
+  }
+  return null;
+}
+
   Future<UpdateResponse?> deleteMainNotification(List<String> ids) async {
     try {
       if (isVisionLink) {
@@ -458,6 +486,28 @@ Future<ManageNotificationFilter?> getManageNotificationFilterData()async{
                 accountSelected!.CustomerUID);
         return updateResponse;
       }
+    } catch (e) {}
+    return null;
+  }
+
+  Future<NotificationStatus?> deleteNotification({dynamic payload}) async {
+    try {
+      
+   var data = await Network().getGraphqlData(
+        query:_graphqlSchemaService.createupdateNotification() ,
+        userId: (await _localService?.getLoggedInUser())?.sub,
+        customerId: accountSelected!.CustomerUID,
+        subId: customerSelected?.CustomerUID == null
+            ? ""
+            : customerSelected?.CustomerUID,
+            payLoad:payload
+      );
+        NotificationStatus notificationStatus =
+          NotificationStatus.fromJson(
+              data.data["deleteNotification"]);
+              Logger().i(notificationStatus.toJson());
+    return notificationStatus;
+      
     } catch (e) {}
     return null;
   }
@@ -524,4 +574,29 @@ Future<ManageNotificationFilter?> getManageNotificationFilterData()async{
       return data;
     }
   }
+
+ Future<FilterNotification?> getNotificationStatusCount(
+      {String? query,}) async {
+    try {
+      if (enableGraphQl) {
+        var data = await Network().getGraphqlData(
+          query: query,
+          customerId: accountSelected?.CustomerUID,
+          userId: (await _localService!.getLoggedInUser())!.sub,
+          subId: customerSelected?.CustomerUID == null
+              ? ""
+              : customerSelected?.CustomerUID,
+        );
+        FilterNotification countData =
+            FilterNotification.fromJson(data.data["seeAllNotificationCountByStatus"]);
+
+        return countData;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+    return null;
+  }
+
 }

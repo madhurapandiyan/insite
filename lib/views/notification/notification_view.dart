@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/core/models/main_notification.dart' as main_notification;
+import 'package:insite/core/models/main_notification.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -37,10 +38,11 @@ class _NotificationViewState extends State<NotificationView> {
           child: InsiteScaffold(
               viewModel: viewModel,
               onFilterApplied: () {
+                
                 viewModel.refresh();
               },
               onRefineApplied: () {
-                //viewModel.refresh();
+                viewModel.refresh();
               },
               screenType: ScreenType.NOTIFICATIONS,
               body: Container(
@@ -112,11 +114,16 @@ class _NotificationViewState extends State<NotificationView> {
                                                   child: DateRangeView()),
                                         );
                                         viewModel.startDate =
-                                            dateRange!.first.toString();
+                                            dateRange?.first.toString();
                                         viewModel.endDate =
-                                            dateRange!.last.toString();
+                                            dateRange?.last.toString();
                                         viewModel.isDateRangeSelected = true;
-                                        viewModel.refresh();
+                                        if(dateRange==null?.dateRange?.isEmpty&& viewModel.appliedFilters!.isEmpty){
+                                          
+                                        }else{
+                                          viewModel.refresh();
+                                        }
+                                      
                                       },
                                     ),
                                   ],
@@ -247,20 +254,23 @@ class _NotificationViewState extends State<NotificationView> {
                                         controller: viewModel.scrollController,
                                         padding: EdgeInsets.all(8),
                                         itemBuilder: (context, index) {
-                                          main_notification.Notification
-                                              notifications =
+                                           NotificationRow notificationRow =
                                               viewModel.assets[index];
+                                          // main_notification.Notification
+                                          //     notifications =
+                                          //     viewModel.assets[index];
                                           return NotificationItem(
                                             dateFormat: viewModel.userPref,
                                             timeZone: viewModel.zone,
-                                            notifications: notifications,
+                                            selectedNotification: notificationRow,
+                                           notifications: notificationRow.selectednotifications,
                                             onCallback: () {
                                               viewModel.onItemSelected(index);
                                               selectedIndex = index;
                                             },
                                             showDetails: () {
                                               viewModel.onDetailPageSelected(
-                                                  notifications);
+                                                  notificationRow);
                                             },
                                           );
                                         }),
@@ -291,18 +301,18 @@ class _NotificationViewState extends State<NotificationView> {
     return PopupMenuButton<String>(
       offset: Offset(30, 50),
       itemBuilder: (context) => [
-        viewModel.showMenu
-            ? PopupMenuItem(
-                value: "Deselect",
-                child: InsiteText(
-                  text: "Deselect",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ))
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
+        // viewModel.showMenu
+        //     ? PopupMenuItem(
+        //         value: "Deselect",
+        //         child: InsiteText(
+        //           text: "Deselect",
+        //           fontWeight: FontWeight.w700,
+        //           size: 14,
+        //         ))
+        //     : PopupMenuItem(
+        //         child: SizedBox(),
+        //         height: 0,
+        //       ),
         viewModel.showEdit
             ? PopupMenuItem(
                 value: "Resolve",

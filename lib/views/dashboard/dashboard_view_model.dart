@@ -744,7 +744,7 @@ class DashboardViewModel extends InsiteViewModel {
     try {
       var data = await _assetService?.getNotificationDashboardCount(
           query: await graphqlSchemaService!.notificationDashboardCount(),
-          payload: {"productFamily": ""});
+          payload: {"productFamily": "","notificationStatus":1});
 
       if (data?.notifications != null) {
         _notificationCountDatas = data;
@@ -760,7 +760,7 @@ class DashboardViewModel extends InsiteViewModel {
     try {
       var data = await _assetService?.getNotificationDashboardCount(
           query: await graphqlSchemaService!.notificationDashboardCount(),
-          payload: {"productFamily": filterData.title});
+          payload: {"productFamily": filterData.title,"notificationStatus": 1});
 
       if (data?.notifications != null) {
         _notificationCountDatas = data;
