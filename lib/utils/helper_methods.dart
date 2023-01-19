@@ -154,23 +154,22 @@ class Utils {
   static String suceessRegistration =
       "Registration successful.Asset status may take a few minutes to check status, click Asset Status after 10 minutes";
 
-  static dynamic getHrsValueeData(
-      dynamic percentageValue, dynamic runTimeValue) {
+  static num getHrsValueeData(dynamic percentageValue, dynamic runTimeValue) {
     if (percentageValue == 0 && runTimeValue == 0) {
-      return 0.0;
+      return 0;
     }
-    int hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
+    double hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
     return hrsData;
   }
 
-  static String getPercentageValueData(runTimevalue, idleValue) {
+  static num getPercentageValueData(runTimevalue, idleValue) {
     if (runTimevalue == 0 && idleValue == 0) {
-      return "0";
+      return 0;
     }
     double perData = ((idleValue! / runTimevalue!) * 100);
     var data = perData;
 
-    return data.toString();
+    return data.toInt();
   }
 
   static String getLastReportedDateOne(date) {
@@ -1301,6 +1300,10 @@ class Utils {
     } else if (alert?.notificationTypeGroupID == 15) {
       data =
           "Fuel Loss ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 7) {
+      data =
+          "${alert?.siteOperands!.length} Geofences - ${alert?.notificationType}";
       return data;
     } else if (alert?.operands?.first.value == "1") {
       data = "Maintenance Interval Overdue";
