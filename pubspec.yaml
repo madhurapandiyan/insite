@@ -1,7 +1,7 @@
 name: insite
 description: A new Flutter project.
 publish_to: none
-version: 2.1.4+214
+version: 2.1.7+230
 environment:
   sdk: ">=2.12.0 <3.0.0"
 dependencies:
@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_colorpicker: ^1.0.2
-  flutter_downloader: ^1.5.1
+  #flutter_downloader: ^1.5.1
   flutter_map_marker_cluster: ^0.4.4
   flutter_svg: ^1.0.0
   flutter_typeahead: ^4.0.0
@@ -42,7 +42,7 @@ dependencies:
   google_maps_flutter: ^2.1.1
   google_polyline_algorithm: ^3.1.0
   gql_dio_link: ^0.1.0
-  graphql_flutter: any
+  graphql_flutter: ^5.0.1
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   horizontal_data_table: any
@@ -76,6 +76,7 @@ dependencies:
   syncfusion_flutter_gauges: ^19.1.65
   table_calendar: ^3.0.0
   timezone: ^0.8.0
+  
 
 dev_dependencies:
   flutter_test:

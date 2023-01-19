@@ -4,7 +4,7 @@ import 'dart:isolate';
 import 'package:dio/dio.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart' as file_picker;
-import 'package:flutter_downloader/flutter_downloader.dart';
+//import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/services/sms_management_service.dart';
@@ -143,12 +143,12 @@ class SmsScheduleMultiAssetViewModel extends InsiteViewModel {
         // baseStorage = Directory(path);
         // Logger().e(baseStorage.path);
 
-        final data = await FlutterDownloader.enqueue(
-          url:
-              "https://docs.google.com/spreadsheets/d/1sriUTiniAgufje5WQjdW0_oy3Di8nzf6/edit?usp=sharing&ouid=111783955878329228306&rtpof=true&sd=true",
-          savedDir: baseStorage.path,
-          fileName: "Sample_Documents",
-        );
+        // final data = await FlutterDownloader.enqueue(
+        //   url:
+        //       "https://docs.google.com/spreadsheets/d/1sriUTiniAgufje5WQjdW0_oy3Di8nzf6/edit?usp=sharing&ouid=111783955878329228306&rtpof=true&sd=true",
+        //   savedDir: baseStorage.path,
+        //   fileName: "Sample_Documents",
+        // );
         Logger().e("${baseStorage.path}/Sample_Documents.bin");
        // OpenFile.open("${baseStorage.path}/Sample_Documents.BIN");
       }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+//import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
@@ -23,7 +23,7 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-    await FlutterDownloader.initialize(debug: true);
+  //  await FlutterDownloader.initialize(debug: true);
     await Hive.initFlutter();
    
     Hive.registerAdapter<FilterData>(FilterDataAdapter());
