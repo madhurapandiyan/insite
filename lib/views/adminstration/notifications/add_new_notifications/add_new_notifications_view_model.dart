@@ -137,6 +137,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   ];
   List<String> get choiseData => _choiseData;
 
+  List<String> _choiseDatas = [
+    "Assets",
+    "Groups",
+  ];
+  List<String> get choiseDatas => _choiseDatas;
+
   bool _loading = true;
   bool get loading => _loading;
 
@@ -748,7 +754,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       _noticationTypes.clear();
       _dropDownInitialValue = "Geofence";
       _noticationTypes.add("Geofence");
-      _notificationSubTypes.clear();
+       _notificationSubTypes.clear();
       await getGeofenceData();
     } else {
       Logger().w(data.alertConfig!.notificationType);
@@ -1535,11 +1541,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             // });
           });
           Logger().w(_notificationSubTypes[0]);
-          if (_notificationSubTypes.isNotEmpty &&
-              _noticationTypes.length != 1) {
-            _notificationSubTypes.add(
-                "${_notificationSubTypes[1]} & ${_notificationSubTypes[2]}");
-          }
+          // if (_notificationSubTypes.isNotEmpty &&
+          //     _noticationTypes.length != 1) {
+          //   _notificationSubTypes.add(
+          //       "${_notificationSubTypes[1]} & ${_notificationSubTypes[2]}");
+          // }
 
           Logger().e(notificationTypeGroup.toJson());
           getGeofenceData();
