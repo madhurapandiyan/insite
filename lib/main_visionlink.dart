@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+//import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/flavor/flavor.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
@@ -24,7 +24,7 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
     await Hive.initFlutter();
-    await FlutterDownloader.initialize(debug: true);
+   // await FlutterDownloader.initialize(debug: true);
     Hive.registerAdapter<FilterData>(FilterDataAdapter());
     Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
     Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());

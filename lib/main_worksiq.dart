@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+//import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/theme/colors.dart';
@@ -20,7 +20,7 @@ import 'core/setup_snackbar_ui.dart';
 void main() async {
   Logger().d("main  worksiq");
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize(debug: true);
+  //await FlutterDownloader.initialize(debug: true);
   await Hive.initFlutter();
   Hive.registerAdapter<FilterData>(FilterDataAdapter());
   Hive.registerAdapter<FilterType?>(FilterTypeAdapter());

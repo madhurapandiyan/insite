@@ -2377,11 +2377,11 @@ class Utils {
       return '-';
     }
     if (prefData?.units == 'Metric') {
-      return "${num.parse(l2GValue.toString()).toStringAsFixed(precision != null ? precision : 1)} ${noUnit ? '' : 'Liters'}";
+      return "${num.parse(l2GValue.toString()).toStringAsFixed(precision != null ? precision : 1)} ${noUnit ? '' : 'l/hr'}";
     } else if (prefData.units == 'US Standard') {
-      return "${(num.parse(l2GValue.toString()) * 0.264172).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+      return "${(num.parse(l2GValue.toString()) * 0.264172).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'gal/hr'}";
     } else if (prefData.units == 'Imperial') {
-      return "${(num.parse(l2GValue.toString()) * 0.219969).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'Gallons'}";
+      return "${(num.parse(l2GValue.toString()) * 0.219969).toStringAsFixed(precision != null ? precision : 1)}  ${noUnit ? '' : 'gal/hr'}";
     } else {
       return '-';
     }
@@ -2597,7 +2597,14 @@ class Utils {
       return '-';
     }
     if (userPreference.units == 'Metric') {
-      return "${num.parse(value.toString()).toStringAsFixed(precision != null ? precision : 1)}";
+      switch (unit) {
+        case "lbs":
+          return "${(num.parse(value.toString()) * 0.45392).toStringAsFixed(2)} ";
+        case "gallon":
+          return "${(num.parse(value.toString()) * 3.78541).toStringAsFixed(2)} ";
+        default:
+          return "${num.parse(value.toString()).toStringAsFixed(precision != null ? precision : 1)}";
+      }
     } else if (userPreference.units == 'US Standard') {
       switch (unit) {
         case 'Litre':
@@ -2645,7 +2652,7 @@ class Utils {
     } else if (userPreference.units == "Metric") {
       if (unit == "lbs") {
         return "Kg";
-      } else if (unit == "Gallon") {
+      } else if (unit == "Gallon"||unit=="gallon") {
         return "Litre ";
       } else {
         return unit.toString();
