@@ -217,8 +217,7 @@ class _NotificationViewState extends State<NotificationView> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            viewModel.showEdit
-                                ? ClipRRect(
+                             ClipRRect(
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       topRight: Radius.circular(10),
@@ -233,10 +232,10 @@ class _NotificationViewState extends State<NotificationView> {
                                         height: 40,
                                         //icon: Icon(Icons.more_vert),
                                         widget: onContextMenuSelected(
-                                            viewModel, context, selectedIndex!),
+                                            viewModel, context, selectedIndex),
                                       ),
                                     ))
-                                : SizedBox()
+                               
                           ],
                         ),
                         SizedBox(
@@ -313,7 +312,7 @@ class _NotificationViewState extends State<NotificationView> {
         //         child: SizedBox(),
         //         height: 0,
         //       ),
-        viewModel.showEdit&&viewModel.assets.any((element) => element.selectednotifications?.resolvedStatus=="Unresolved")
+        viewModel.assets.any((element) => element.selectednotifications?.resolvedStatus=="Unresolved")
             ? PopupMenuItem(
                 value: "Resolve",
                 child: InsiteText(
@@ -326,8 +325,9 @@ class _NotificationViewState extends State<NotificationView> {
                 child: SizedBox(),
                 height: 0,
               ),
-        viewModel.showEdit
-            ? PopupMenuItem(
+        // viewModel.showEdit
+        //     ? 
+            PopupMenuItem(
                 value: "Delete",
                 child: InsiteText(
                   text: "Delete",
@@ -335,13 +335,13 @@ class _NotificationViewState extends State<NotificationView> {
                   size: 14,
                 ),
               )
-            : PopupMenuItem(
-                child: SizedBox(),
-                height: 0,
-              ),
+            // : PopupMenuItem(
+            //     child: SizedBox(),
+            //     height: 0,
+            //   ),
       ],
       onSelected: (value) {
-        viewModel.onSelectedItemClicK(value, context, index!);
+        viewModel.onSelectedItemClicK(value, context, index);
       },
       icon: Icon(
         Icons.more_vert,

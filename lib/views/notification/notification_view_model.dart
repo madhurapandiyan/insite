@@ -141,11 +141,7 @@ class NotificationViewModel extends InsiteViewModel {
      item=   notificationSelected.map((e) => e.selectednotifications?.notificationUID).toList();
       Logger().wtf("item:$item");
  
-//  _assets.forEach((element) {
-// if(element.isSelected){
-//   item.add(element.selectednotifications?.notificationUID);
-// }
-//     });
+
    var result =
             await _mainNotificationService!.getNotificationStatusData(payLoad:{
   "notificationUID":item
@@ -178,13 +174,9 @@ onResolveClicked(BuildContext context, int? index, bool isResolved) async {
                 _assets.clear();
                 if(isDateRangeSelected){
                getNotificationData(false);
-               _showEdit=false;
-                notifyListeners();
-                }else{
+              }else{
                   getNotificationData(true);
-                  _showEdit=false;
-                notifyListeners();
-                }
+                        }
                    
                  Navigator.pop(context, true);
               } ,
@@ -209,7 +201,7 @@ onResolveClicked(BuildContext context, int? index, bool isResolved) async {
       Logger().wtf("start date " + startDate!);
       Logger().wtf("end date " + endDate!);
   
-     List<int>? notificationStatus=[1];
+     List<int>? notificationStatus=[ isDateRangeSelected? 0:1];
       //await getNotificationData();
      
       var notificationFilter=appliedFilters!.where((element) => element!.type==FilterType.NOTIFICATION_TYPE||element.type==FilterType.NOTIFICATION_STATUS);
@@ -313,15 +305,11 @@ onResolveClicked(BuildContext context, int? index, bool isResolved) async {
                   "Are you sure you want to permanently remove this notification?",
               onPositiveActionClicked: () {
                 Navigator.pop(context, true);
-                 _showEdit=false;
-                  _assets[index!].isSelected=! _assets[index].isSelected;
-                   notifyListeners();
+               
               },
               onNegativeActionClicked: () {
                 Navigator.pop(context, false);
-                 _showEdit=false;
-                 _assets[index!].isSelected=! _assets[index].isSelected;
-                 notifyListeners();
+               
               },
             ));
       },
@@ -391,7 +379,7 @@ onResolveClicked(BuildContext context, int? index, bool isResolved) async {
       filterValue!.clear();
     }
     
-     List<int>? notificationStatus=[1];
+     List<int>? notificationStatus=[ isDateRangeSelected? 0:1];
      var notificationFilter=appliedFilters!.where((element) => element!.type==FilterType.NOTIFICATION_TYPE||element.type==FilterType.NOTIFICATION_STATUS);
     
       // var data=notificationFilter.map((e) {
