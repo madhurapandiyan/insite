@@ -313,7 +313,7 @@ class _NotificationViewState extends State<NotificationView> {
         //         child: SizedBox(),
         //         height: 0,
         //       ),
-        viewModel.showEdit
+        viewModel.showEdit&&viewModel.assets.any((element) => element.selectednotifications?.resolvedStatus=="Unresolved")
             ? PopupMenuItem(
                 value: "Resolve",
                 child: InsiteText(

@@ -4023,4 +4023,15 @@ createupdateNotification(){
 return data;
 }
 
+deleNotification(){
+  var data="""mutation deleteNotification(\$notificationUID: [String]){
+deleteNotification(notificationUID: \$notificationUID){
+successCount,
+failureCount,
+status
+}
+}""";
+return data;
+}
+
 }

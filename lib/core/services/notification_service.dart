@@ -494,7 +494,7 @@ Future<NotificationStatus?> getNotificationStatusData({dynamic payLoad})async{
     try {
       
    var data = await Network().getGraphqlData(
-        query:_graphqlSchemaService.createupdateNotification() ,
+        query:_graphqlSchemaService.deleNotification() ,
         userId: (await _localService?.getLoggedInUser())?.sub,
         customerId: accountSelected!.CustomerUID,
         subId: customerSelected?.CustomerUID == null
