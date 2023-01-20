@@ -150,44 +150,33 @@ class NotificationViewModel extends InsiteViewModel {
 
 
 if(result?.status=="SUCCESS"){
- onResolveClicked(context, index,true);
+   
+         
+snackbarService!.showSnackbar(message: "Notifications are Resolved Successfully");
+    _assets.clear();
+                if(isDateRangeSelected){
+               getNotificationData(false);
+              }else{
+                  getNotificationData(true);
+                        }   
+ 
   
 _refreshing=false;
   
 }else{
-  onResolveClicked(context, index,false);
-  _refreshing=false;
-}
-
- }
-
-onResolveClicked(BuildContext context, int? index, bool isResolved) async {
-    return await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-            backgroundColor: Theme.of(context).backgroundColor,
-            child:InsiteInfoDialog(
-              title: "Notification Status",
-              message: isResolved? "Notifications are Resolved Successfully":"Notifications are UnResolved",
-              onOkClicked:(){
-                _assets.clear();
+  snackbarService!.showSnackbar(message: "Notifications are UnResolved");
+   _assets.clear();
                 if(isDateRangeSelected){
                getNotificationData(false);
               }else{
                   getNotificationData(true);
                         }
-                   
-                 Navigator.pop(context, true);
-              } ,
-            )
-           
-             );
-      },
-      
-    );
-   
-  }
+ 
+  _refreshing=false;
+}
+
+ }
+
 
   refresh() async {
     try {
