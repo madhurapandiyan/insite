@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+//import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/router_constants_india_stack.dart';
 import 'package:insite/theme/colors.dart';
@@ -19,7 +19,7 @@ void main() async {
   Logger().d("main  cummins");
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await FlutterDownloader.initialize(debug: true);
+ // await FlutterDownloader.initialize(debug: true);
   Hive.registerAdapter<FilterData>(FilterDataAdapter());
   Hive.registerAdapter<FilterType?>(FilterTypeAdapter());
   Hive.registerAdapter<AssetCountData>(AssetCountDataAdapter());

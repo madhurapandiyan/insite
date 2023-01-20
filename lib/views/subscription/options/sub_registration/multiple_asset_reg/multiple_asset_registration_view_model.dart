@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 import 'package:excel/excel.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+//import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_asset_registration.dart';
@@ -33,30 +33,30 @@ class MultipleAssetRegistrationViewModel extends InsiteViewModel {
   bool _dataLoaded = false;
   bool get dataLoaded => _dataLoaded;
 
-  onSampleDownload() async {
-    try {
-      final status = await permission.Permission.storage.request();
+  // onSampleDownload() async {
+  //   try {
+  //     final status = await permission.Permission.storage.request();
 
-      if (status.isGranted) {
-        Directory baseStorage =
-            await (getExternalStorageDirectory() as FutureOr<Directory>);
-        int initialIndex = baseStorage.path.indexOf("data/");
-        String path = baseStorage.path
-            .replaceRange(initialIndex, baseStorage.path.length, "excel");
-        // baseStorage = Directory(path);
-        // Logger().e(baseStorage.path);
+  //     if (status.isGranted) {
+  //       Directory baseStorage =
+  //           await (getExternalStorageDirectory() as FutureOr<Directory>);
+  //       int initialIndex = baseStorage.path.indexOf("data/");
+  //       String path = baseStorage.path
+  //           .replaceRange(initialIndex, baseStorage.path.length, "excel");
+  //       // baseStorage = Directory(path);
+  //       // Logger().e(baseStorage.path);
 
-        final data = await FlutterDownloader.enqueue(
-            url:
-                "https://docs.google.com/spreadsheets/d/1ISiq3m39_APxsEFsBDOuBdkpLYv8H3Ik/edit?usp=sharing&ouid=104928811217417861871&rtpof=true&sd=true",
-            savedDir: baseStorage.path,
-            fileName: "Multiple Registration Sample",
-            openFileFromNotification: true);
-      }
-    } catch (e) {
-      Logger().e(e.toString());
-    }
-  }
+  //       final data = await FlutterDownloader.enqueue(
+  //           url:
+  //               "https://docs.google.com/spreadsheets/d/1ISiq3m39_APxsEFsBDOuBdkpLYv8H3Ik/edit?usp=sharing&ouid=104928811217417861871&rtpof=true&sd=true",
+  //           savedDir: baseStorage.path,
+  //           fileName: "Multiple Registration Sample",
+  //           openFileFromNotification: true);
+  //     }
+  //   } catch (e) {
+  //     Logger().e(e.toString());
+  //   }
+  // }
 
   onUpload() async {
     try {

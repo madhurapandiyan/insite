@@ -2,7 +2,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+//import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:insite/core/insite_data_provider.dart';
 import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
@@ -21,35 +21,35 @@ class MultipleAssetRegistrationView extends StatefulWidget {
 
 class _MultipleAssetRegistrationViewState
     extends State<MultipleAssetRegistrationView> {
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    IsolateNameServer.registerPortWithName(
-        MultipleAssetRegistrationViewModel().port.sendPort,
-        'downloader_send_port');
-    MultipleAssetRegistrationViewModel().port.listen((dynamic data) {
-      String? id = data[0];
-      DownloadTaskStatus? status = data[1];
-      int? progress = data[2];
-      setState(() {});
-    });
+  //   IsolateNameServer.registerPortWithName(
+  //       MultipleAssetRegistrationViewModel().port.sendPort,
+  //       'downloader_send_port');
+  //   MultipleAssetRegistrationViewModel().port.listen((dynamic data) {
+  //     String? id = data[0];
+  //     DownloadTaskStatus? status = data[1];
+  //     int? progress = data[2];
+  //     setState(() {});
+  //   });
 
-    FlutterDownloader.registerCallback(downloadCallback);
-  }
+  //   FlutterDownloader.registerCallback(downloadCallback);
+  // }
 
-  @override
-  void dispose() {
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   IsolateNameServer.removePortNameMapping('downloader_send_port');
+  //   super.dispose();
+  // }
 
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port')!;
-    send.send([id, status, progress]);
-  }
+  // static void downloadCallback(
+  //     String id, DownloadTaskStatus status, int progress) {
+  //   final SendPort send =
+  //       IsolateNameServer.lookupPortByName('downloader_send_port')!;
+  //   send.send([id, status, progress]);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +151,7 @@ class _MultipleAssetRegistrationViewState
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    viewModel.onSampleDownload();
+                                   // viewModel.onSampleDownload();
                                   },
                                   child: InsiteButton(
                                     title: 'SAMPLE FORMAT',
