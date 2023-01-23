@@ -106,7 +106,7 @@ class SiteOperands {
   int? maxOccurrence;
   int? minOccurrence;
   List<Operators>? operators;
-
+  
   SiteOperands(
       {this.operandName,
       this.operandID,

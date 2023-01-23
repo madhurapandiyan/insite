@@ -17,11 +17,10 @@ class AddNotificationPayLoad {
   int? notificationTypeId;
   int? numberOfOccurences;
   String? notificationDeliveryChannel;
-
+  List<SitOperands>? siteOperands;
   List<String>? geofenceUIDs;
-
   List<String>? assetGroupUIDs;
-  List<Operand>? siteOperands;
+  //List<Operand>? siteOperands;
   List<ZonePayload>? zones;
   AddNotificationPayLoad(
       {this.alertCategoryID,
@@ -101,4 +100,17 @@ class ZonePayload {
       _$ZonePayloadFromJson(json);
 
   Map<String, dynamic> toJson() => _$ZonePayloadToJson(this);
+}
+
+@JsonSerializable()
+class SitOperands {
+  int? operandID;
+  String? siteUID;
+
+  SitOperands({this.operandID, this.siteUID});
+
+  factory SitOperands.fromJson(Map<String, dynamic> json) =>
+      _$SitOperandsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SitOperandsToJson(this);
 }
