@@ -661,7 +661,7 @@ class AssetAdminManagerUserService extends BaseService {
 
       EstimatedAssetSetting listSettingTargetData =
           EstimatedAssetSetting(assetTargetSettings: getAssetList);
-      Logger().i(listSettingTargetData.toJson());
+      Logger().wtf(listSettingTargetData.toJson());
 
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
@@ -672,6 +672,7 @@ class AssetAdminManagerUserService extends BaseService {
                 ? ""
                 : customerSelected?.CustomerUID,
             userId: (await _localService!.getLoggedInUser())!.sub);
+
         return EstimatedResponse.fromJson(
             data.data["updateAssetTargetSettings"]);
       } else {

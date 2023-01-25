@@ -154,23 +154,22 @@ class Utils {
   static String suceessRegistration =
       "Registration successful.Asset status may take a few minutes to check status, click Asset Status after 10 minutes";
 
-  static dynamic getHrsValueeData(
-      dynamic percentageValue, dynamic runTimeValue) {
+  static num getHrsValueeData(dynamic percentageValue, dynamic runTimeValue) {
     if (percentageValue == 0 && runTimeValue == 0) {
-      return 0.0;
+      return 0;
     }
-    int hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
+    double hrsData = ((percentageValue! * runTimeValue!) * 1 / 100);
     return hrsData;
   }
 
-  static String getPercentageValueData(runTimevalue, idleValue) {
+  static num getPercentageValueData(runTimevalue, idleValue) {
     if (runTimevalue == 0 && idleValue == 0) {
-      return "0";
+      return 0;
     }
     double perData = ((idleValue! / runTimevalue!) * 100);
     var data = perData;
 
-    return data.toString();
+    return data.toInt();
   }
 
   static String getLastReportedDateOne(date) {
@@ -1256,6 +1255,7 @@ class Utils {
   }
 
   static String getNotificationCondition(ConfiguredAlerts? alert) {
+    Logger().v(alert?.operands?.first.condition);
     String? data;
     if (alert?.notificationTypeGroupID == 1) {
       data =
@@ -1301,6 +1301,10 @@ class Utils {
     } else if (alert?.notificationTypeGroupID == 15) {
       data =
           "Fuel Loss ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
+      return data;
+    } else if (alert?.notificationTypeGroupID == 7) {
+      data =
+          "${alert?.siteOperands!.length} Geofences - ${alert?.notificationType}";
       return data;
     } else if (alert?.operands?.first.value == "1") {
       data = "Maintenance Interval Overdue";
@@ -1858,8 +1862,8 @@ class Utils {
       var inputDate = DateTime.parse(parseDate)
           .add(Duration(hours: 18, seconds: 29, minutes: 59))
           .subtract(Duration(days: 1));
-      Logger().e(inputDate);
-      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      //Logger().e(inputDate);
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
     } catch (e) {
@@ -1891,7 +1895,7 @@ class Utils {
           .add(Duration(hours: 18, seconds: 29, minutes: 59));
       //.add(Duration(days: 1));
 
-      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
       var outputDate = outputFormat.format(inputDate);
       return outputDate;
     } catch (e) {
@@ -2166,30 +2170,46 @@ class Utils {
 
       if (data != null && data.isNotEmpty) {
         for (var check in data) {
-          Map<String, dynamic> checkData = {
-            "ChecklistName": check.checkName,
-            "intervalID": mainInterval!.intervalId,
-            //"checkListId": check.checkListId,
-            "partList": []
-          };
-          for (var part in check.partList!) {
-            Map<String, dynamic> partsData = {
-              "partId": part.partId,
-              "partName": part.partName,
-              "partNo": part.partNo,
-              "quantity": part.quantiy,
-              "units": part.units
+          Map<String, dynamic> checkData;
+
+          if (check.checkListId != null) {
+            checkData = {
+              "ChecklistName": check.checkName,
+              "checkListId": check.checkListId,
+              "partList": []
             };
-            var partList = checkData["partList"] as List<dynamic>;
-            partList.add(partsData);
+          } else {
+            checkData = {
+              "ChecklistName": check.checkName,
+              "intervalID": mainInterval!.intervalId,
+              "partList": []
+            };
+          }
+          for (var part in check.partList!) {
+            Map<String, dynamic> partsData;
+            if (part.partId != null) {
+              partsData = {
+                "partId": part.partId,
+                "partName": part.partName,
+                "partNo": part.partNo,
+                "quantity": part.quantiy,
+                "units": part.units
+              };
+              var partList = checkData["partList"] as List<dynamic>;
+              partList.add(partsData);
+            } else {
+              partsData = {
+                "partName": part.partName,
+                "partNo": part.partNo,
+                "quantity": part.quantiy,
+                "units": part.units
+              };
+              var partList = checkData["partList"] as List<dynamic>;
+              partList.add(partsData);
+            }
           }
           checkList.add(checkData);
         }
-
- 
-        Logger().wtf(checkList);
-
-
         return checkList;
       } else {
         return null;

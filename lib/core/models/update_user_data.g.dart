@@ -177,8 +177,9 @@ UpdateUserData _$UpdateUserDataFromJson(Map<String, dynamic> json) =>
       src: json['src'] as String?,
       company: json['company'] as String?,
       language: json['language'] as String?,
-      JobType: json['JobType'] as int?,
+      jobType: json['jobType'] as int?,
       customerUid: json['customerUid'] as String?,
+      userUId: json['userUId'] as String?,
       email: json['email'] as String?,
       isAssetSecurityEnabled: json['isAssetSecurityEnabled'] as bool?,
     );
@@ -205,8 +206,9 @@ Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) {
   writeNotNull('company', instance.company);
   writeNotNull('language', instance.language);
   writeNotNull('email', instance.email);
+  writeNotNull('userUId', instance.userUId);
   writeNotNull('customerUid', instance.customerUid);
-  writeNotNull('JobType', instance.JobType);
+  writeNotNull('jobType', instance.jobType);
   writeNotNull('isAssetSecurityEnabled', instance.isAssetSecurityEnabled);
   return val;
 }
@@ -214,7 +216,7 @@ Map<String, dynamic> _$UpdateUserDataToJson(UpdateUserData instance) {
 AddressData _$AddressDataFromJson(Map<String, dynamic> json) => AddressData(
       addressline1: json['addressline1'] as String?,
       addressline2: json['addressline2'] as String?,
-      country: json['country'] as String?,
+      city: json['city'] as String?,
       state: json['state'] as String?,
       zipcode: json['zipcode'] as String?,
     );
@@ -230,7 +232,7 @@ Map<String, dynamic> _$AddressDataToJson(AddressData instance) {
 
   writeNotNull('addressline1', instance.addressline1);
   writeNotNull('addressline2', instance.addressline2);
-  writeNotNull('country', instance.country);
+  writeNotNull('city', instance.city);
   writeNotNull('state', instance.state);
   writeNotNull('zipcode', instance.zipcode);
   return val;

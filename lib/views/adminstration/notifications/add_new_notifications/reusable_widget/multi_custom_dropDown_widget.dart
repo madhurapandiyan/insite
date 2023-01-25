@@ -49,7 +49,12 @@ class _MultiSelectionDropDownWidgetState
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: InsiteText(
-                  text: widget.initialValue,
+                  text: widget.initialValue == ""
+                      ? "Select"
+                      : widget.initialValue,
+                  color: widget.initialValue == ""
+                      ? Colors.grey[700]
+                      : Colors.black,
                 ),
               )),
         ),

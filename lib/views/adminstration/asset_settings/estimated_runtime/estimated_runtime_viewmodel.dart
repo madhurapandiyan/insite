@@ -132,9 +132,9 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
                 Utils.getHrsValueeData(data.idleCount, data.runTimecount);
             Logger().e(data.idleCount);
           } else {
-            String countValue =
+            num countValue =
                 Utils.getPercentageValueData(data.idleCount, data.runTimecount);
-            data.idleCount = double.parse(countValue);
+            data.idleCount = countValue;
           }
         }
       }
@@ -160,12 +160,31 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
         data.runTimecount = double.parse(value);
         if (isChangingState == true) {
           data.idleCount =
-              Utils.getHrsValueeData(data.percentCount, data.runTimecount);
+              Utils.getHrsValueeData(data.percentCount, data.runTimecount);    
         } else {
-          String countValue =
+          num countValue =
               Utils.getPercentageValueData(data.runTimecount, data.idleCount);
 
-          data.percentCount = double.parse(countValue);
+          data.percentCount = countValue;
+        }
+      }
+    }
+    notifyListeners();
+  }
+
+  getRuntimeAllValueData() {
+    for (int i = 0; i < countValue.length; i++) {
+      var data = countValue[i];
+      if (data != null) {
+        // data.runTimecount = double.parse(value);
+        if (isChangingState == true) {
+          data.idleCount =
+              Utils.getHrsValueeData(data.percentCount, data.runTimecount);
+        } else {
+          num countValue =
+              Utils.getPercentageValueData(data.runTimecount, data.idleCount);
+
+          data.percentCount = countValue;
         }
       }
     }
@@ -191,10 +210,35 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
                 Utils.getHrsValueeData(data.idleCount, data.runTimecount);
             Logger().w(data.percentCount);
           }
-          String countValue =
+          num countValue =
               Utils.getPercentageValueData(data.runTimecount, data.idleCount);
 
-          data.percentCount = double.parse(countValue);
+          // data.percentCount = double.parse(countValue);
+          data.percentCount = countValue;
+        }
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+
+    notifyListeners();
+  }
+
+  getIdleAllValue() {
+    try {
+      for (int i = 0; i < countValue.length; i++) {
+        var data = countValue[i];
+        if (data != null) {
+          //data.idleCount = double.parse(value);
+          if (isChangingState == true) {
+            data.idleCount =
+                Utils.getHrsValueeData(data.idleCount, data.runTimecount);
+            Logger().w(data.percentCount);
+          }
+          num countValue =
+              Utils.getPercentageValueData(data.runTimecount, data.idleCount);
+
+          data.percentCount = countValue;
         }
       }
     } catch (e) {
@@ -295,31 +339,29 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     }
 
     var result = await _manageUserService!.getAssetTargetSettingsData(
-        assetUId!,
+      assetUId!,
       Utils.getFaultDateFormatStartDate(startDate),
-        Utils.getFaultDateFormatEndDate( endDate),
-        Idle(
-            sunday: 
-             countValue[0].idleCount,
-            
-            monday:countValue[1].idleCount,
-            tuesday:countValue[2].idleCount,
-            wednesday:countValue[3].idleCount,
-            thursday:countValue[4].idleCount,
-            friday: countValue[5].idleCount,
-            saturday: countValue[6].idleCount),
-        Runtime(
-            sunday: countValue[0].runTimecount,
-            monday: countValue[1].runTimecount,
-            tuesday: countValue[2].runTimecount,
-            wednesday:countValue[3].runTimecount,
-            thursday: countValue[4].runTimecount,
-            friday: countValue[5].runTimecount,
-            saturday: countValue[6].runTimecount),
-          
-            );
+      Utils.getFaultDateFormatEndDate(endDate),
+      Idle(
+          sunday: countValue[0].idleCount!.toInt(),
+          monday: countValue[1].idleCount!.toInt(),
+          tuesday: countValue[2].idleCount!.toInt(),
+          wednesday: countValue[3].idleCount!.toInt(),
+          thursday: countValue[4].idleCount!.toInt(),
+          friday: countValue[5].idleCount!.toInt(),
+          saturday: countValue[6].idleCount!.toInt()),
+      Runtime(
+          sunday: countValue[0].runTimecount!.toInt(),
+          monday: countValue[1].runTimecount!.toInt(),
+          tuesday: countValue[2].runTimecount!.toInt(),
+          wednesday: countValue[3].runTimecount!.toInt(),
+          thursday: countValue[4].runTimecount!.toInt(),
+          friday: countValue[5].runTimecount!.toInt(),
+          saturday: countValue[6].runTimecount!.toInt()),
+    );
 
-    Logger().e(result!.data!.updateAssetTargetSettings!.assetUIDs);
+    // Logger().e(result!.data!.updateAssetTargetSettings!.assetUIDs);
+
     if (result != null) {
       Navigator.of(context).pop(true);
     } else {
@@ -334,13 +376,13 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
   getEstimatedTargetSettingsData() async {
     try {
       String? startdate = Utils.getLastReportedDateFilterData(
-          DateTime.utc(2022, DateTime.january,02 ));
+          DateTime.utc(2022, DateTime.january, 02));
       String? endDate = Utils.getLastReportedDateFilterData(
           DateTime.utc(2022, DateTime.may, 28));
       result = await _manageUserService!.getEstimatedTargetSettingListData(
           assetUId,
           graphqlSchemaService!
-              .getAssetTargetSettingsData(startdate,endDate,assetUId));
+              .getAssetTargetSettingsData(startdate, endDate, assetUId));
       if (result != null) {
         if (result!.assetTargetSettings!.isNotEmpty) {
           for (var i = 0; i < result!.assetTargetSettings!.length; i++) {

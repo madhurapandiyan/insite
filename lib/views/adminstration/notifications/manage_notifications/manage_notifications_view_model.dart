@@ -26,7 +26,7 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   bool? isLoadMore;
   int pageNumber = 1;
   int pageCount = 50;
-  
+
   ManageNotificationsViewModel() {
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
@@ -120,7 +120,8 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   Timer? deBounce;
   onChange() {
     Logger().w(searchController.text);
-    if (searchController.text.length >= 4||searchController.text.length==1) {
+    if (searchController.text.length >= 4 ||
+        searchController.text.length == 1) {
       if (deBounce?.isActive ?? false) {
         deBounce!.cancel();
       }
@@ -195,7 +196,6 @@ class ManageNotificationsViewModel extends InsiteViewModel {
         if (response.configuredAlerts != null &&
             response.configuredAlerts!.isNotEmpty) {
           _notifications.addAll(response.configuredAlerts!);
-
           for (var i = 0; i < _notifications.length; i++) {
             _notifications
                 .sort((a, b) => b.createdDate!.compareTo(a.createdDate!));

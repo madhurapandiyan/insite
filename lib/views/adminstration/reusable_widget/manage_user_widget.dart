@@ -199,7 +199,16 @@ class ManageUserWidget extends StatelessWidget {
                                       title: 'Created By',
                                       content: user!.user!.createdBy,
                                     ),
-                                    InsiteTableRowItem(title: "", content: ""),
+                                    InsiteTableRowItem(
+                                        title: "Phone Number",
+                                        content: user!.user!.phone),
+                                    InsiteTableRowItem(
+                                        title: "Address",
+                                        content: "${user!.user!.address!.addressline1}" +" "+
+                                            "${user!.user!.address!.addressline2}" + " "+
+                                            "${user!.user!.address!.city}" +" "+
+                                            "${user!.user!.address!.state}" +" "+
+                                            "${user!.user!.address!.zipcode}"),
                                   ])
                                 ],
                               ),
