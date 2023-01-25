@@ -127,6 +127,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<CheckBoxDropDown> _zoneNamesExclusion = [];
   List<CheckBoxDropDown> get zoneNamesExclusion => _zoneNamesExclusion;
 
+  List<String?> _notificationSubTypesEdit = ["Site Entry", "Site Exit"];
+  List<String?> get notificationSubTypesEdit => _notificationSubTypesEdit;
+
   List<String?> _notificationSubTypes = ["Options"];
   List<String?> get notificationSubTypes => _notificationSubTypes;
 
@@ -154,6 +157,9 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   String _dropDownSubInitialValue = "Options";
   String get dropDownSubInitialValue => _dropDownSubInitialValue;
+
+  String? _dropDownSubInitialValueEdit;
+  String get dropDownSubInitialValueEdit => _dropDownSubInitialValueEdit!;
 
   String _inclusionInitialValue = "Select Inclusion Zone";
   String get inclusionInitialValue => _inclusionInitialValue;
@@ -208,6 +214,17 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   List<String>? administratortAssets = [];
 
   List<String>? geofenceUIDList = [];
+  List<String>? geofenceNameList = [];
+
+  String geofenceName = '';
+
+  String geofenceNameBR = '';
+
+  List<String> geofenceAddedList = [];
+
+  String geofenceAddedName = '';
+
+  String geofenceAddedNameBR = '';
 
   AlertTypes? alterTypes;
   AlertConfigEdit? alertConfigData;
@@ -716,11 +733,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       "Greater than or equal to",
       "Less than or equal to"
     ];
-    List<String> geofenceList = [
-      "Site Entry",
-      "Site Exit",
-      "Site Entry & Site Exit"
-    ];
+    List<String> geofenceList = ["Site Entry", "Site Exit"];
 
     List<String> maintenance = ["Overdue", "Upcoming"];
     isEditing = true;
@@ -752,10 +765,35 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     } else if (geofenceList
         .any((element) => element == data.alertConfig!.notificationType)) {
       _noticationTypes.clear();
+      _dropDownSubInitialValueEdit = data.alertConfig!.notificationType;
+      Logger().wtf(data.alertConfig!.siteOperands!.length);
+      //geofenceCount = data.alertConfig!.siteOperands!.length;
       _dropDownInitialValue = "Geofence";
       _noticationTypes.add("Geofence");
-       _notificationSubTypes.clear();
+      _notificationSubTypes.clear();
       await getGeofenceData();
+      if (data.alertConfig!.siteOperands!.isNotEmpty) {
+        data.alertConfig!.siteOperands!
+          ..forEach((element) {
+            //geoenceData.add(CheckBoxDropDown(items: element.GeofenceName));
+            //Logger().wtf(element.GeofenceName);
+            geofenceAddedList.add(element.name.toString());
+            geofenceAddedName = "$geofenceAddedList";
+
+            geofenceAddedNameBR =
+                geofenceAddedName.substring(1, geofenceAddedName.length - 1);
+            Logger().wtf(element.name.toString());
+          });
+      }
+      for (int i = 0; i < geoenceData.length; i++) {
+        for (int j = 0; j < geofenceAddedList.length; j++) {
+          if (geoenceData[i].items == geofenceAddedList[j]) {
+            Logger().wtf(i);
+            Logger().wtf(geoenceData[i].items);
+            geoenceData[i].isSelected = true;
+          }
+        }
+      }
     } else {
       Logger().w(data.alertConfig!.notificationType);
       if (data.alertConfig!.notificationType == "Maintenance") {
@@ -1016,17 +1054,65 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   onSelectingDropDown(int i) {
     geoenceData[i].isSelected = !geoenceData[i].isSelected!;
-    // Logger().wtf(geoenceData[i].items);
+    // Logger().wtf(geoenceData[i].isSelected!);
 
-    Logger().wtf(geofenceData!.geofences![i].GeofenceName);
+    //Logger().wtf(geofenceData!.geofences![i].GeofenceName);
     if (geofenceData != null) {
-      if (geoenceData[i].items == geofenceData!.geofences![i].GeofenceName) {
+      if (geoenceData[i].isSelected! == true) {
         geofenceUIDList!.add(geofenceData!.geofences![i].GeofenceUID!);
 
-        Logger().wtf(geofenceUIDList![i]);
+        geofenceNameList!.add("${geofenceData!.geofences![i].GeofenceName!}");
+
+        geofenceName = "$geofenceNameList";
+
+        geofenceNameBR = geofenceName.substring(1, geofenceName.length - 1);
+
+        Logger().wtf(geoenceData[i].isSelected!);
+      } else if (geoenceData[i].isSelected! == false) {
+        geofenceUIDList!.remove(geofenceData!.geofences![i].GeofenceUID!);
+
+        geofenceNameList!.remove(geofenceData!.geofences![i].GeofenceName!);
+
+        geofenceName = "$geofenceNameList";
+
+        geofenceNameBR = geofenceName.substring(1, geofenceName.length - 1);
+
+        Logger().wtf(geoenceData[i].isSelected!);
       }
     }
     //Logger().wtf(geofenceUIDList);
+    notifyListeners();
+  }
+
+  onEditSelectingDropDown(int i) {
+    geoenceData[i].isSelected = !geoenceData[i].isSelected!;
+
+    if (geofenceData != null) {
+      if (geoenceData[i].isSelected! == true) {
+        geofenceUIDList!.add(geofenceData!.geofences![i].GeofenceUID!);
+
+        geofenceAddedList.add("${geofenceData!.geofences![i].GeofenceName!}");
+
+        geofenceAddedName = "$geofenceAddedList";
+
+        geofenceAddedNameBR =
+            geofenceAddedName.substring(1, geofenceAddedName.length - 1);
+
+        Logger().wtf(geoenceData[i].isSelected!);
+      } else if (geoenceData[i].isSelected! == false) {
+        geofenceUIDList!.remove(geofenceData!.geofences![i].GeofenceUID!);
+
+        geofenceAddedList.remove(geofenceData!.geofences![i].GeofenceName!);
+
+        geofenceAddedName = "$geofenceAddedList";
+
+        geofenceAddedNameBR =
+            geofenceAddedName.substring(1, geofenceAddedName.length - 1);
+
+        Logger().wtf(geoenceData[i].isSelected!);
+      }
+    }
+
     notifyListeners();
   }
 
@@ -1623,7 +1709,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       if (geofenceData != null) {
         geofenceData!.geofences!.forEach((element) {
           geoenceData.add(CheckBoxDropDown(items: element.GeofenceName));
-          //Logger().wtf(element.GeofenceUID);
+          //Logger().wtf(element.GeofenceName);
         });
       }
       hideLoadingDialog();
@@ -2283,6 +2369,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
             operand: operandData,
             alertId: alertConfigUid!,
             numberOfOccurences: 1));
+    Logger().wtf(operandData[0].operatorId);
     if (data != null) {
       _snackBarservice!.showSnackbar(message: "Edit Notification Success");
       gotoManageNotificationsPage();
