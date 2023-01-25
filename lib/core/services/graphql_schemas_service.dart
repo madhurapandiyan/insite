@@ -234,12 +234,6 @@ class GraphqlSchemaService extends BaseService {
                 .toList();
             fuelLevelPercentLt = Utils.getFilterData(data, filterData!.type!);
             Logger().wtf("fuelLevelPercentLt $fuelLevelPercentLt");
-          } else if (filterData?.type == FilterType.MAKE) {
-            var data = filtlerList
-                .where((element) => element?.type == FilterType.MAKE)
-                .toList();
-            make = Utils.getFilterData(data, filterData!.type!);
-            Logger().wtf("make $make");
           } else if (filterData?.type == FilterType.DEVICE_TYPE) {
             var data = filtlerList
                 .where((element) => element?.type == FilterType.DEVICE_TYPE)
@@ -277,6 +271,12 @@ class GraphqlSchemaService extends BaseService {
             latitude = double.parse(data.last!.extras![0]!);
             longitude = double.parse(data.last!.extras![1]!);
             radiusKms = double.parse(data.last!.extras![2]!);
+          } else if (filterData?.type == FilterType.MAKE) {
+            var data = filtlerList
+                .where((element) => element?.type == FilterType.MAKE)
+                .toList();
+            make = Utils.getFilterData(data, filterData!.type!);
+            Logger().wtf("make $make");
           }
         });
       }
@@ -804,85 +804,6 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
     return faultQueryString;
   }
 
-//   getAssetFaultQuery({
-//     String? startDate,
-//     String? endDate,
-//     int? pageNo,
-//     int? limit,
-//     List<FilterData?>? filtlerList,
-//   }) async {
-//     await cleaValue();
-//     await clearAllList();
-//     await gettingLocationFilter(filtlerList);
-//     final String assetFaultQuery = """
-// query{
-// assetData(
-//   severityList: ${severityList.isEmpty ? [] : severityList}
-// faultTypeList: []
-// productFamilyList: ${productfamilyList.isEmpty ? [] : productfamilyList}
-// manufacturerList:${manufacturerList.isEmpty ? [] : manufacturerList}
-// modelList:${modelList.isEmpty ? [] : modelList}
-// deviceTypeList: ${deviceTypeList.isEmpty ? [] : deviceTypeList}
-// assetStatusList: ${assetstatusList.isEmpty ? [] : assetstatusList}
-// fuelLevelPercentLT: ""
-// fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
-// startDateTime: "$startDate"
-// endDateTime: "$endDate"
-// page: $pageNo
-// limit:$limit
-// assetUid: []
-// ){
-
-//   assetFaults{
-//     asset{
-//       uid,
-//       basic{
-//         assetId,
-//         serialNumber
-//       }
-//      details{
-//           makeCode
-// model
-// productFamily
-// assetIcon
-// devices{
-//   deviceType,
-//   firmwareVersion
-// }
-// dealerCode
-// dealerCustomerName
-// dealerName
-// universalCustomerName
-//         }
-//       dynamic{
-//           status
-// locationLatitude
-// locationLongitude
-// location
-// hourMeter
-// odometer
-// locationReportedTimeUTC
-//         }
-//     },
-//     countData{
-//       countOf,
-//       count
-//     }
-//   },
-//    page,
-//   limit,
-//   total,
-//   status,
-//   reqId,
-//   mst,
-//   pageLinks{
-//     method
-//   }
-// }
-// }""";
-//     return assetFaultQuery;
-//   }
-
   getAssetFaultQuery({
     String? startDate,
     String? endDate,
@@ -893,18 +814,24 @@ fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevel
     await cleaValue();
     await clearAllList();
     await gettingLocationFilter(filtlerList);
-    // Logger().v(filtlerList!.first!.title);
     final String assetFaultQuery = """
 query{
 assetData(
   severityList: ${severityList.isEmpty ? [] : severityList}
 faultTypeList: []
+productFamilyList: ${productfamilyList.isEmpty ? null : productfamilyList}
+manufacturerList:${manufacturerList.isEmpty ? null : manufacturerList}
+
+modelList:${modelList.isEmpty ? null : modelList}
+deviceTypeList: ${deviceTypeList.isEmpty ? null : deviceTypeList}
+assetStatusList: ${assetstatusList.isEmpty ? null : assetstatusList}
+fuelLevelPercentLT: ""
+fuelLevelPercentLTE: ${fuelLevelPercentLt == null ? "\"\"" : "${"\"" + fuelLevelPercentLt! + "\""}"}
 startDateTime: "$startDate"
 endDateTime: "$endDate"
 page: $pageNo
 limit:$limit
-priority: ""
-
+assetUid: []
 ){
 
   assetFaults{
@@ -1225,6 +1152,14 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
       createdOn
       createdBy
       emailVerified
+      phone
+      address{
+        city
+        state
+        addressline1
+        addressline2
+        zipcode
+      }
       application_access {
         userUID
         role_name
@@ -3401,7 +3336,7 @@ getSearchSuggestions(snContains:"$snContains",assetIdContains:"$assetIdContains"
     serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
     assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
     assetId: ${assetId == null ? "\"\"" : "${"\"" + assetId + "\""}"},
-    make:  ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
+    model:  ${model == null ? "\"\"" : "${"\"" + model! + "\""}"},
     manufacturer:  ${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}, 
     productFamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}, 
     assetStatus:  ${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}, 
@@ -3483,7 +3418,7 @@ serviceStatus:${serviceStatusList.isEmpty ? [] : serviceStatusList}
 serviceType:${serviceTypeList.isEmpty ? [] : serviceTypeList}, 
 assetType:${assetTypeList.isEmpty ? [] : assetTypeList}, 
 assetId:""
-make:[]
+model:${modelList.isEmpty ? [] : modelList},
 manufacturer:${manufacturer == null ? "\"\"" : "${"\"" + manufacturer! + "\""}"}
 productFamily:${productFamily == null ? "\"\"" : "${"\"" + productFamily! + "\""}"}
 assetStatus:${assetStatus == null ? "\"\"" : "${"\"" + assetStatus! + "\""}"}
@@ -3516,7 +3451,7 @@ maintenanceTotals{
     return data;
   }
 
-  getMaitenanceCheckList({String? assetId, int? serviceNo}) {
+  getMaitenanceCheckList({String? assetId, num? serviceNo}) {
     var data = """
 query{
   maintenanceCheckList(
@@ -3585,7 +3520,7 @@ query{
       String? serviceDate,
       String? serviceMeter,
       String? serviceNotes,
-      int? serviceNo,
+      num? serviceNo,
       String? workOrder}) {
     var data = """
 mutation {

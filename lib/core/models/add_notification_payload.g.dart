@@ -40,7 +40,7 @@ AddNotificationPayLoad _$AddNotificationPayLoadFromJson(
           ?.map((e) => e as String)
           .toList(),
       siteOperands: (json['siteOperands'] as List<dynamic>?)
-          ?.map((e) => Operand.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => SitOperands.fromJson(e as Map<String, dynamic>))
           .toList(),
       zones: (json['zones'] as List<dynamic>?)
           ?.map((e) => ZonePayload.fromJson(e as Map<String, dynamic>))
@@ -72,9 +72,9 @@ Map<String, dynamic> _$AddNotificationPayLoadToJson(
   writeNotNull('numberOfOccurences', instance.numberOfOccurences);
   writeNotNull(
       'notificationDeliveryChannel', instance.notificationDeliveryChannel);
+  writeNotNull('siteOperands', instance.siteOperands);
   writeNotNull('geofenceUIDs', instance.geofenceUIDs);
   writeNotNull('assetGroupUIDs', instance.assetGroupUIDs);
-  writeNotNull('siteOperands', instance.siteOperands);
   writeNotNull('zones', instance.zones);
   return val;
 }
@@ -130,4 +130,15 @@ Map<String, dynamic> _$ZonePayloadToJson(ZonePayload instance) =>
     <String, dynamic>{
       'isInclusion': instance.isInclusion,
       'zoneUID': instance.zoneUID,
+    };
+
+SitOperands _$SitOperandsFromJson(Map<String, dynamic> json) => SitOperands(
+      operandID: json['operandID'] as int?,
+      siteUID: json['siteUID'] as String?,
+    );
+
+Map<String, dynamic> _$SitOperandsToJson(SitOperands instance) =>
+    <String, dynamic>{
+      'operandID': instance.operandID,
+      'siteUID': instance.siteUID,
     };

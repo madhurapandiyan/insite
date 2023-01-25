@@ -126,20 +126,20 @@ class AddIntervalsViewModel extends InsiteViewModel {
   }
 
   onCheckListAdded() {
+    TextEditingController checkListName = TextEditingController();
     checkListData.add(CheckAndPartList(
-        checkListName: TextEditingController(),
-        partListData: [],
-        expansionState: false));
+        checkListName: checkListName, partListData: [], expansionState: false));
     notifyListeners();
   }
 
   onPartListAdded(int i) {
     var data = checkListData[i];
+
     data.partListData!.add(PartListDataClass(
         part: TextEditingController(),
         partName: TextEditingController(),
         quantity: TextEditingController()));
-    Logger().w(data.partListData!.length);
+
     notifyListeners();
   }
 
@@ -343,13 +343,15 @@ class AddIntervalsViewModel extends InsiteViewModel {
                 maintenanceInterval!.checkList, maintenanceInterval) ??
             []
       };
-
+      Logger().wtf(Utils.updateMaintenanceCheckList(
+          maintenanceInterval!.checkList, maintenanceInterval));
       EditIntervalResponse intervalData = await _maintenanceService!
           .updateMaintenanceIntervals(
               _graphqlSchemaService!.updateMaintenanceIntervals(),
               updateInterval);
 
       if (intervalData != null) {
+        //Logger().wtf(updateMaintenanceCheckList(maintenanceInterval));
         // Logger().wtf(intervalData.updateMaintenanceIntervals!.message);
         snackbarService!.showSnackbar(
             message: "Interval/Checklist/Partlist Updated Successfully!!!");
@@ -359,6 +361,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
         goToManage();
         notifyListeners();
       }
+      hideLoadingDialog();
     } catch (e) {
       hideLoadingDialog();
       Logger().e(e.toString());
@@ -391,6 +394,7 @@ class AddIntervalsViewModel extends InsiteViewModel {
             expansionState: false);
         for (var partData in checkData.partList!) {
           PartListDataClass editedPartData = PartListDataClass(
+              selectedValue: partData.units,
               part: TextEditingController(text: partData.partNo),
               partName: TextEditingController(text: partData.partName),
               partId: partData.partId,
@@ -462,13 +466,15 @@ class PartListDataClass {
   List<String>? items;
   String? value;
   int? partId;
+  String? selectedValue;
   PartListDataClass({
     this.part,
     this.partName,
     this.quantity,
     this.partId,
     this.value,
-    this.items = const ["Kg", "Gallon", "None"],
+    this.selectedValue,
+    this.items = const ["Kg", "Litre", "None"],
   });
 }
 

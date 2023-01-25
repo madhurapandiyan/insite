@@ -120,8 +120,9 @@ class UpdateUserData {
       this.src,
       this.company,
       this.language,
-      this.JobType,
+      this.jobType,
       this.customerUid,
+      this.userUId,
       this.email,
       this.isAssetSecurityEnabled});
 
@@ -139,10 +140,11 @@ class UpdateUserData {
   String? language;
 
   String? email;
+  String? userUId;
 
   String? customerUid;
 
-  int? JobType;
+  int? jobType;
   bool? isAssetSecurityEnabled;
 
   factory UpdateUserData.fromJson(Map<String, dynamic> json) =>
@@ -155,13 +157,13 @@ class UpdateUserData {
 class AddressData {
   String? addressline1;
   String? addressline2;
-  String? country;
+  String? city;
   String? state;
   String? zipcode;
   AddressData(
       {this.addressline1,
       this.addressline2,
-      this.country,
+      this.city,
       this.state,
       this.zipcode});
 

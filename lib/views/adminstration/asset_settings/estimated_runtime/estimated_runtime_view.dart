@@ -80,7 +80,7 @@ class _EstimatedRunTimeWidgetViewState
                 Flexible(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.42,
-                    height: MediaQuery.of(context).size.height * 0.04,
+                    height: MediaQuery.of(context).size.height * 0.05,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
@@ -92,7 +92,7 @@ class _EstimatedRunTimeWidgetViewState
                             color:
                                 Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 3),
+                        padding: const EdgeInsets.only(left: 10),
                         child: CustomDatePicker(
                           controller: viewModel.startDateController,
                           voidCallback: () {
@@ -107,7 +107,7 @@ class _EstimatedRunTimeWidgetViewState
                 Flexible(
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.42,
-                    height: MediaQuery.of(context).size.height * 0.04,
+                    height: MediaQuery.of(context).size.height * 0.05,
                     decoration: BoxDecoration(
                         color: Theme.of(context).backgroundColor,
                         borderRadius: BorderRadius.only(
@@ -120,7 +120,7 @@ class _EstimatedRunTimeWidgetViewState
                             color:
                                 Theme.of(context).textTheme.bodyText1!.color!)),
                     child: Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 3),
+                        padding: const EdgeInsets.only(left: 10),
                         child: CustomDatePicker(
                           controller: viewModel.endDateController,
                           voidCallback: () async {
@@ -234,7 +234,7 @@ class _EstimatedRunTimeWidgetViewState
                         value: dropDownValue,
                         onChanged: (String? value) {
                           dropDownValue = value!;
-                          // viewModel.onChangeStateValue();
+                          viewModel.onChangeStateValue();
                           setState(() {});
                         },
                       ),
@@ -309,6 +309,7 @@ class _EstimatedRunTimeWidgetViewState
                                         ),
                                         onTap: () {
                                           viewModel.getIncrementRuntimeValue();
+                                          viewModel.getRuntimeAllValueData();
                                         }),
                                     InkWell(
                                       child: Icon(
@@ -317,6 +318,7 @@ class _EstimatedRunTimeWidgetViewState
                                       ),
                                       onTap: () {
                                         viewModel.getDecrementRuntimeValue();
+                                        viewModel.getRuntimeAllValueData();
                                       },
                                     ),
                                   ],
@@ -378,6 +380,7 @@ class _EstimatedRunTimeWidgetViewState
                                         ),
                                         onTap: () {
                                           viewModel.getIncrementIdleValue();
+                                          viewModel.getIdleAllValue();
                                         }),
                                     InkWell(
                                       child: Icon(
@@ -386,6 +389,7 @@ class _EstimatedRunTimeWidgetViewState
                                       ),
                                       onTap: () {
                                         viewModel.getDecrementIdleValue();
+                                        viewModel.getIdleAllValue();
                                       },
                                     ),
                                   ],
@@ -413,7 +417,7 @@ class _EstimatedRunTimeWidgetViewState
                       value: dropDownValue,
                       percentCountValue: days.percentCount,
                       onRuntimeValueChanged: (String value) {
-                        viewModel.getRuntimeListValueData(value, index);
+                        viewModel.getRuntimeListValueData(value, index);                        
                       },
                       onIdleValueChanged: (String value) {
                         viewModel.getIdleListValue(value, index);
