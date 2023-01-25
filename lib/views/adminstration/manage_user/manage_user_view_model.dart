@@ -231,13 +231,15 @@ class ManageUserViewModel extends InsiteViewModel {
     if (value == "Add User") {
       onAddNewUserClicked();
     } else if (value == "Edit User") {
-      var user = _assets.singleWhere((element) => element.isSelected);
-      _navigationService!.navigateWithTransition(
-          AddNewUserView(
-            isEdit: true,
-            user: user.user,
-          ),
-          transition: "fade");
+      onEditClicked();
+      // var user = _assets.firstWhere((element) => element.isSelected);
+      // Logger().i(user.user!.loginId);
+      // _navigationService!.navigateWithTransition(
+      //     AddNewUserView(
+      //       isEdit: true,
+      //       user: user.user,
+      //     ),
+      //     transition: "fade");
     } else if (value == "Resend-Invitation") {
       showLoadingDialog();
       var user = _assets.singleWhere((element) => element.isSelected);
@@ -285,7 +287,7 @@ class ManageUserViewModel extends InsiteViewModel {
       for (int i = 0; i < assets.length; i++) {
         var data = assets[i];
         if (data.isSelected) {
-          userIds.add( data.user!.userUid!);
+          userIds.add(data.user!.userUid!);
         }
       }
       if (userIds.isNotEmpty) {

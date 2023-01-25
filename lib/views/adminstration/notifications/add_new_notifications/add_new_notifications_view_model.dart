@@ -2054,6 +2054,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         (element) => element.operandName == "Engine Hours");
     if (engineHoursOperandData!.operators!
         .any((element) => element.name == _dropDownSubInitialValue)) {
+
+      Logger().w("fuck1");
       operandData.add(Operand(
           operandID: OperandData!.first.operandID,
           operatorId: OperandData.first.operators!.first.operatorID,

@@ -64,63 +64,66 @@ class MaintenanceDashBoard extends StatelessWidget {
                             countData!
                                 .maintenanceDashboard!.dashboardData!.isNotEmpty
                         ? Expanded(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              // physics: NeverScrollableScrollPhysics(),
-                              itemCount: countData
-                                  ?.maintenanceDashboard?.dashboardData?.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var data = countData?.maintenanceDashboard
-                                    ?.dashboardData?[index];
-                                return Column(
-                                  children: [
-                                    maintenanceDetailCount(data: data),
-                                    data?.subCount != null &&
-                                            data!.subCount!.isNotEmpty
-                                        ? Container(
-                                            height: 150,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: ListView.builder(
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.vertical,
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              itemCount: data.subCount?.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int i) {
-                                                return ListTile(
-                                                  title: InsiteText(
-                                                      text: data.subCount?[i]
-                                                          .displayName,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      size: 14.0),
-                                                  trailing: InsiteText(
-                                                      text: data
-                                                          .subCount?[i].count
-                                                          .toString(),
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      size: 14.0),
-                                                  onTap: () {
-                                                    onFilterSelected!(
-                                                        data.subCount![i]
-                                                            .maintenanceTotal!,
-                                                        data.displayName!,
-                                                        data.subCount![i]
-                                                            .count!);
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          )
-                                        : SizedBox()
-                                  ],
-                                );
-                              },
+                            child: Scrollbar(
+                              isAlwaysShown: true,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                // physics: NeverScrollableScrollPhysics(),
+                                itemCount: countData
+                                    ?.maintenanceDashboard?.dashboardData?.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var data = countData?.maintenanceDashboard
+                                      ?.dashboardData?[index];
+                                  return Column(
+                                    children: [
+                                      maintenanceDetailCount(data: data),
+                                      data?.subCount != null &&
+                                              data!.subCount!.isNotEmpty
+                                          ? Container(
+                                              height: 150,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 10),
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection: Axis.vertical,
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                itemCount: data.subCount?.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int i) {
+                                                  return ListTile(
+                                                    title: InsiteText(
+                                                        text: data.subCount?[i]
+                                                            .displayName,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        size: 14.0),
+                                                    trailing: InsiteText(
+                                                        text: data
+                                                            .subCount?[i].count
+                                                            .toString(),
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        size: 14.0),
+                                                    onTap: () {
+                                                      onFilterSelected!(
+                                                          data.subCount![i]
+                                                              .maintenanceTotal!,
+                                                          data.displayName!,
+                                                          data.subCount![i]
+                                                              .count!);
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          : SizedBox()
+                                    ],
+                                  );
+                                },
+                              ),
                             ),
                           )
                         : Expanded(
