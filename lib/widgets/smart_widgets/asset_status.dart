@@ -26,17 +26,26 @@ class AssetStatus extends StatefulWidget {
 class _AssetStatusState extends State<AssetStatus> {
   var colors = [
     mustard,
-    emerald,
     textcolor,
     burntSienna,
     emerald,
-    mustard,
-    textcolor,
     lightRose,
     persianIndigo,
     maptextcolor,
     sandyBrown
   ];
+
+  var colours = [
+    mustard,
+    emerald,
+    textcolor,
+    burntSienna,
+    lightRose,
+    persianIndigo,
+    maptextcolor,
+    sandyBrown
+  ];
+
   @override
   Widget build(BuildContext context) {
     // double width=MediaQuery.of(context).size.width*1.30;
@@ -107,19 +116,9 @@ class _AssetStatusState extends State<AssetStatus> {
                           height: MediaQuery.of(context).size.height * 0.20,
                           alignment: Alignment.center,
                           child: SfCircularChart(
-                            palette: <Color>[
-                              mustard,
-                              emerald,
-                              textcolor,
-                              burntSienna,
-                              emerald,
-                              mustard,
-                              textcolor,
-                              lightRose,
-                              persianIndigo,
-                              maptextcolor,
-                              sandyBrown
-                            ],
+                            palette: widget.statusChartData!.length < 4
+                                ? colors
+                                : colours,
                             legend: Legend(
                                 isVisible: false,
                                 overflowMode: LegendItemOverflowMode.wrap),
@@ -154,7 +153,9 @@ class _AssetStatusState extends State<AssetStatus> {
                                 ChartSampleData assetStatusData =
                                     widget.statusChartData![index];
                                 return AssetStatusWidget(
-                                  chartColor: colors[index],
+                                  chartColor: widget.statusChartData!.length < 4
+                                      ? colors[index]
+                                      : colours[index],
                                   label: assetStatusData.x,
                                   callBack: () {
                                     widget.onFilterSelected!(FilterData(

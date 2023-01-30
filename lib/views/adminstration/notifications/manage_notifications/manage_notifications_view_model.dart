@@ -121,7 +121,8 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   Timer? deBounce;
   onChange() {
     Logger().w(searchController.text);
-    if (searchController.text.length >= 4||searchController.text.length==1) {
+    if (searchController.text.length >= 4 ||
+        searchController.text.length == 1) {
       if (deBounce?.isActive ?? false) {
         deBounce!.cancel();
       }
@@ -139,21 +140,22 @@ class ManageNotificationsViewModel extends InsiteViewModel {
   getSearchListData() async {
     try {
       showLoadingDialog();
-    await getSelectedFilterData();
- var notificationFilters=appliedFilters!.where((element) => element!.type==FilterType.NOTIFICATION_TYPE);
- var notificationType= notificationFilters.map((e) => e!.title).toList();
-  Logger().wtf(notificationType.length);
+      await getSelectedFilterData();
+      var notificationFilters = appliedFilters!
+          .where((element) => element!.type == FilterType.NOTIFICATION_TYPE);
+      var notificationType = notificationFilters.map((e) => e!.title).toList();
+      Logger().wtf(notificationType.length);
       ManageNotificationsData? response = await _notificationService!
           .getsearchNotificationsData(
-             searchText: searchController.text,
-             payLoad: {
-  "pageNumber": pageNumber,
-  "count": pageCount,
-  "searchKey": searchController.text,
-  "notificationType":  notificationType.isNotEmpty?notificationType:null
-}
-             );
-             Logger().wtf("response:$response");
+              searchText: searchController.text,
+              payLoad: {
+            "pageNumber": pageNumber,
+            "count": pageCount,
+            "searchKey": searchController.text,
+            "notificationType":
+                notificationType.isNotEmpty ? notificationType : null
+          });
+      Logger().wtf("response:$response");
       if (response!.total!.items != null) {
         _totalCount = response.total!.items!;
       }
@@ -162,9 +164,9 @@ class ManageNotificationsViewModel extends InsiteViewModel {
             response.configuredAlerts!.isNotEmpty) {
           _notifications = response.configuredAlerts!;
           notifyListeners();
-        }else{
-          _notifications=response.configuredAlerts!;
-           _loading = false;
+        } else {
+          _notifications = response.configuredAlerts!;
+          _loading = false;
           _loadingMore = false;
           _shouldLoadmore = false;
           notifyListeners();
@@ -202,23 +204,23 @@ class ManageNotificationsViewModel extends InsiteViewModel {
 
   getManageNotificationsData() async {
     try {
-     await getSelectedFilterData();
- var notificationFilters=appliedFilters!.where((element) => element!.type==FilterType.NOTIFICATION_TYPE);
- var notificationType= notificationFilters.map((e) => e!.title).toList();
-  Logger().wtf(notificationType.length);
-notificationType.forEach((element) {
- Logger().wtf(element);
- });
+      await getSelectedFilterData();
+      var notificationFilters = appliedFilters!
+          .where((element) => element!.type == FilterType.NOTIFICATION_TYPE);
+      var notificationType = notificationFilters.map((e) => e!.title).toList();
+      Logger().wtf(notificationType.length);
+      notificationType.forEach((element) {
+        Logger().wtf(element);
+      });
 
-
-      ManageNotificationsData? response = await _notificationService!
-          .getManageNotificationsData(pageNumber, {
-  "pageNumber": pageNumber,
-  "count": pageCount,
-  "searchKey": "",
-  "notificationType": notificationType.isNotEmpty?notificationType:null
-});
-
+      ManageNotificationsData? response =
+          await _notificationService!.getManageNotificationsData(pageNumber, {
+        "pageNumber": pageNumber,
+        "count": pageCount,
+        "searchKey": "",
+        "notificationType":
+            notificationType.isNotEmpty ? notificationType : null
+      });
 
       if (response != null) {
         if (response.total!.items != null) {
@@ -255,59 +257,55 @@ notificationType.forEach((element) {
   }
 
   refresh() async {
-
     await getSelectedFilterData();
     appliedFilters?.forEach((element) {
       Logger().d(element?.toJson());
     });
-     var notificationFilters=appliedFilters!.where((element) => element!.type==FilterType.NOTIFICATION_TYPE);
-     Logger().wtf("notificationFilters:$notificationFilters");
-     _loading=true;
-     _loadingMore=true;
-     _shouldLoadmore=true;
-     notifyListeners();
-       
-     
-      ManageNotificationsData? response = await _notificationService!
-          .getManageNotificationsData(pageNumber, {
-  "pageNumber": pageNumber,
-  "count": pageCount,
-  "searchKey": "",
-  "notificationType": notificationFilters.map((e) => e!.title).toList()
-});
-        
-   
-      if (response != null) {
-        if (response.total?.items != null) {
-          _totalCount = response.total!.items!;
-        }
-        if (response.configuredAlerts != null &&
-            response.configuredAlerts!.isNotEmpty) {
-            _notifications.clear();
-          _notifications.addAll(response.configuredAlerts!);
+    var notificationFilters = appliedFilters!
+        .where((element) => element!.type == FilterType.NOTIFICATION_TYPE);
+    Logger().wtf("notificationFilters:$notificationFilters");
+    _loading = true;
+    _loadingMore = true;
+    _shouldLoadmore = true;
+    notifyListeners();
 
-          for (var i = 0; i < _notifications.length; i++) {
-            _notifications
-                .sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
-          }
-          _loading = false;
-          _loadingMore = false;
-          notifyListeners();
-        } else {
-          _notifications = response.configuredAlerts!;
+    ManageNotificationsData? response =
+        await _notificationService!.getManageNotificationsData(pageNumber, {
+      "pageNumber": pageNumber,
+      "count": pageCount,
+      "searchKey": "",
+      "notificationType": notificationFilters.map((e) => e!.title).toList()
+    });
 
-          _loading = false;
-          _loadingMore = false;
-          _shouldLoadmore = false;
-          notifyListeners();
+    if (response != null) {
+      if (response.total?.items != null) {
+        _totalCount = response.total!.items!;
+      }
+      if (response.configuredAlerts != null &&
+          response.configuredAlerts!.isNotEmpty) {
+        _notifications.clear();
+        _notifications.addAll(response.configuredAlerts!);
+
+        for (var i = 0; i < _notifications.length; i++) {
+          _notifications
+              .sort((a, b) => b.createdDate!.compareTo(a.createdDate!));
         }
-      } else {
         _loading = false;
         _loadingMore = false;
         notifyListeners();
+      } else {
+        _notifications = response.configuredAlerts!;
+
+        _loading = false;
+        _loadingMore = false;
+        _shouldLoadmore = false;
+        notifyListeners();
       }
-      _searchNotifications = _notifications;
-    
-    
+    } else {
+      _loading = false;
+      _loadingMore = false;
+      notifyListeners();
+    }
+    _searchNotifications = _notifications;
   }
 }

@@ -132,9 +132,9 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
                 Utils.getHrsValueeData(data.idleCount, data.runTimecount);
             Logger().e(data.idleCount);
           } else {
-            String countValue =
+            num countValue =
                 Utils.getPercentageValueData(data.idleCount, data.runTimecount);
-            data.idleCount = double.parse(countValue);
+            data.idleCount = countValue;
           }
         }
       }
@@ -160,12 +160,12 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
         data.runTimecount = double.parse(value);
         if (isChangingState == true) {
           data.idleCount =
-              Utils.getHrsValueeData(data.percentCount, data.runTimecount);
+              Utils.getHrsValueeData(data.percentCount, data.runTimecount);    
         } else {
-          String countValue =
+          num countValue =
               Utils.getPercentageValueData(data.runTimecount, data.idleCount);
 
-          data.percentCount = double.parse(countValue);
+          data.percentCount = countValue;
         }
       }
     }
@@ -176,15 +176,15 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
     for (int i = 0; i < countValue.length; i++) {
       var data = countValue[i];
       if (data != null) {
-       // data.runTimecount = double.parse(value);
+        // data.runTimecount = double.parse(value);
         if (isChangingState == true) {
           data.idleCount =
               Utils.getHrsValueeData(data.percentCount, data.runTimecount);
         } else {
-          String countValue =
+          num countValue =
               Utils.getPercentageValueData(data.runTimecount, data.idleCount);
 
-          data.percentCount = double.parse(countValue);
+          data.percentCount = countValue;
         }
       }
     }
@@ -210,10 +210,11 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
                 Utils.getHrsValueeData(data.idleCount, data.runTimecount);
             Logger().w(data.percentCount);
           }
-          String countValue =
+          num countValue =
               Utils.getPercentageValueData(data.runTimecount, data.idleCount);
 
-          data.percentCount = double.parse(countValue);
+          // data.percentCount = double.parse(countValue);
+          data.percentCount = countValue;
         }
       }
     } catch (e) {
@@ -234,10 +235,10 @@ class EstimatedRuntimeViewModel extends InsiteViewModel {
                 Utils.getHrsValueeData(data.idleCount, data.runTimecount);
             Logger().w(data.percentCount);
           }
-          String countValue =
+          num countValue =
               Utils.getPercentageValueData(data.runTimecount, data.idleCount);
 
-          data.percentCount = double.parse(countValue);
+          data.percentCount = countValue;
         }
       }
     } catch (e) {

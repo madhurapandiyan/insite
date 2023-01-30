@@ -988,17 +988,34 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                 ),
                                               ),
                                             )
-                                          : CustomDropDownWidget(
-                                              value:
+                                          : viewModel.dropDownInitialValue ==
+                                                  "Geofence"
+                                              ? CustomDropDownWidget(
+                                                  value: viewModel
+                                                              .assetSelectionValue ==
+                                                          "Geofences"
+                                                      ? null
+                                                      : viewModel
+                                                          .assetSelectionValue,
+                                                  items: viewModel.choiseDatas,
+                                                  enableHint: true,
+                                                  onChanged: (String? value) {
+                                                    viewModel
+                                                        .updateModelValueChooseBy(
+                                                            value!);
+                                                  },
+                                                )
+                                              : CustomDropDownWidget(
+                                                  value: 
                                                   viewModel.assetSelectionValue,
-                                              items: viewModel.choiseData,
-                                              enableHint: true,
-                                              onChanged: (String? value) {
-                                                viewModel
-                                                    .updateModelValueChooseBy(
-                                                        value!);
-                                              },
-                                            ),
+                                                  items: viewModel.choiseData,
+                                                  enableHint: true,
+                                                  onChanged: (String? value) {
+                                                    viewModel
+                                                        .updateModelValueChooseBy(
+                                                            value!);
+                                                  },
+                                                ),
                                     ),
                                     SizedBox(
                                       height: 10,
