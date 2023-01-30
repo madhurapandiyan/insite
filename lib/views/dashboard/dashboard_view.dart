@@ -312,9 +312,14 @@ class _DashboardViewState extends State<DashboardView> {
                         count: 1,
                         isLoading: viewModel.notificationLoading,
                         notificationType: viewModel.notificationCountDatas,
-                        onFilterSelected: (value) {
-                          viewModel.onNotificationFilterClicked(value);
-                        },
+                        onFilterSelected: 
+                        (value) async {
+                            await viewModel.onFilterSelected(value);
+                          viewModel.onNotificationFilterClicked(value.title.toString());
+                        }
+                        //  (value) {
+                        //   viewModel.onNotificationFilterClicked(value);
+                        // },
                       ),
                     ),
                     // SizedBox(

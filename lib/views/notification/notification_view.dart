@@ -113,14 +113,18 @@ class _NotificationViewState extends State<NotificationView> {
                                                   backgroundColor: transparent,
                                                   child: DateRangeView()),
                                         );
-                                        viewModel.startDate =
-                                            dateRange?.first.toString();
-                                        viewModel.endDate =
-                                            dateRange?.last.toString();
+                                        // viewModel.startDate =
+                                        //     dateRange?.first.toString();
+                                        // viewModel.endDate =
+                                        //     dateRange?.last.toString();
                                         viewModel.isDateRangeSelected = true;
                                         if(dateRange==null?.dateRange?.isEmpty&& viewModel.appliedFilters!.isEmpty){
                                           
-                                        }else{
+                                        }
+                                        else if(dateRange==null?.dateRange?.isEmpty){
+                                         
+                                        }
+                                        else{
                                           viewModel.refresh();
                                         }
                                       
