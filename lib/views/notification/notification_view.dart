@@ -36,6 +36,7 @@ class _NotificationViewState extends State<NotificationView> {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
+            isFromDashBoard: viewModel.isFromDashBoard,
               viewModel: viewModel,
               onFilterApplied: () {
                 

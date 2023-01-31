@@ -37,7 +37,7 @@ class NotificationViewModel extends InsiteViewModel {
 
   int? _totalFleetCount = 0;
   int get totalFleetCount => _totalFleetCount!;
-
+ 
   // List<notification.Notification> _assets = [];
   // List<notification.Notification> get assets => _assets;
   List<NotificationRow> _assets = [];
@@ -89,8 +89,9 @@ class NotificationViewModel extends InsiteViewModel {
   bool get loading => _loading;
 
   bool isStatusFilterSelected = false;
-  bool isDirectNotificationPage = false;
 
+ bool isFromDashBoard=true;
+ 
   List<String>? filterValue = [];
   String? productFamilyFilterData;
 
@@ -113,7 +114,9 @@ class NotificationViewModel extends InsiteViewModel {
         }
       }
     });
-   
+   if(filterValue!.isEmpty){
+    isFromDashBoard=false;
+   }
     Future.delayed(Duration(seconds: 1), () async {
         await getSelectedFilterData();
        await getDateRangeFilterData();
@@ -189,11 +192,16 @@ class NotificationViewModel extends InsiteViewModel {
  var isNotification=_isDateRangeSelected==false&&appliedFilters!.isNotEmpty&&filterValue!.isEmpty;
       //await getNotificationData();
 if(_isDateRangeSelected==false&&appliedFilters!.isEmpty){
-  startDate="";
-  endDate="";
+  notificationStatus.clear();
+              notificationStatus.add(1);
+
+  
 }else if(_isDateRangeSelected==false&&appliedFilters!.isNotEmpty&&filterValue!.isNotEmpty){
            notificationStatus.clear();
               notificationStatus.add(1);
+}else if(_isDateRangeSelected==false&&isFromDashBoard==true){
+  startDate=null;
+  endDate=null;
 }
 
       var notificationFilter = appliedFilters!.where((element) =>
@@ -242,13 +250,13 @@ if(_isDateRangeSelected==false&&appliedFilters!.isEmpty){
       notification.NotificationsData? response = await _mainNotificationService!
           .getNotificationsData("0", "0", startDate!, endDate!,
               _graphqlSchemaService!.seeAllNotification(), {
-        "fromDate": _isDateRangeSelected || isDirectNotificationPage
+        "fromDate": _isDateRangeSelected || isFromDashBoard==false
             ? startDate == null
                 ? ""
                 : Utils().getStartDateTimeInGMTFormatForHealth(
                     startDate.toString(), zone)
             : "",
-        "toDate": _isDateRangeSelected || isDirectNotificationPage
+        "toDate": _isDateRangeSelected || isFromDashBoard==false
             ? endDate == null
                 ? ""
                 : Utils().getEndDateTimeInGMTFormatForNotification(
@@ -385,11 +393,12 @@ if(_isDateRangeSelected==false&&appliedFilters!.isEmpty){
     if (!isFirst) {
       filterValue!.clear();
     }
-    if (filterValue!.isEmpty && isFirst&&_isDateRangeSelected==false) {
+   
+    if (isFromDashBoard==false) {
       notificationStatus.clear();
 
       notificationStatus.add(0);
-      isDirectNotificationPage = true;
+     
     }
    
     var notificationFilter = appliedFilters!.where((element) =>

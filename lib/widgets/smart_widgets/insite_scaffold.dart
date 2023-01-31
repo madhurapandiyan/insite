@@ -17,6 +17,7 @@ import 'package:stacked_services/stacked_services.dart' as service;
 import 'package:insite/views/error/error_widget.dart' as error;
 
 class InsiteScaffold extends StatefulWidget {
+  final bool ?isFromDashBoard;
   final ScreenType? screenType;
   final Widget? body;
   final InsiteViewModel? viewModel;
@@ -24,7 +25,8 @@ class InsiteScaffold extends StatefulWidget {
   final VoidCallback? onRefineApplied;
   final Widget? floatingActionButton;
   InsiteScaffold(
-      {this.screenType,
+      {this.isFromDashBoard,
+      this.screenType,
       this.body,
       this.onRefineApplied,
       this.viewModel,
@@ -173,6 +175,7 @@ class _InsiteScaffoldState extends State<InsiteScaffold> {
                     : SizedBox(),
                 _isFilterSelected
                     ? FilterView(
+                      isFromDashBoard: widget.isFromDashBoard,
                         onFilterApplied: (bool) {
                           onFilterApplied(bool);
                         },

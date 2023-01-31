@@ -11,9 +11,10 @@ import 'package:stacked/stacked.dart';
 import 'filter_chip_view.dart';
 
 class FilterView extends StatefulWidget {
+  final bool? isFromDashBoard;
   final Function(bool)? onFilterApplied;
   final ScreenType? screenType;
-  FilterView({this.onFilterApplied, this.screenType});
+  FilterView({this.onFilterApplied, this.screenType,this.isFromDashBoard});
 
   @override
   _FilterViewState createState() => _FilterViewState();
@@ -537,7 +538,7 @@ class _FilterViewState extends State<FilterView> {
                                     },
                                   )
                                 : SizedBox(),
-                                widget.screenType == ScreenType.NOTIFICATIONS
+                             widget.isFromDashBoard==false &&   widget.screenType == ScreenType.NOTIFICATIONS
                                 ? FilterItem(
                                     isExpand: viewModel.isShowing,
                                     filterType: FilterType.NOTIFICATION_STATUS,
