@@ -42,7 +42,7 @@ class _DashboardViewState extends State<DashboardView> {
   String assetDropDown = "All Assets";
   bool switchDropDownState = false;
   final GlobalKey<GoogleMapHomeWidgetState> filterLocationKey = new GlobalKey();
-
+ final ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
@@ -287,6 +287,7 @@ class _DashboardViewState extends State<DashboardView> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: MaintenanceDashBoard(
+                        scrollController: controller,
                         countData: viewModel.maintenanceDashboardCount,
                         isLoading: viewModel.maintenanceLoading,
                         onFilterSelected: (val, filterType, count) {

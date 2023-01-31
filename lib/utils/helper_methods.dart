@@ -1265,6 +1265,7 @@ class Utils {
   }
 
   static String getNotificationCondition(ConfiguredAlerts? alert) {
+    Logger().v(alert?.operands?.first.condition);
     String? data;
     if (alert?.notificationTypeGroupID == 1) {
       data =

@@ -13,6 +13,7 @@ import 'package:insite/core/services/native_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:insite/utils/urls.dart';
 import 'package:insite/views/login/india_stack_login_view.dart';
+import 'package:insite/views/manage_account/manage_account_view.dart';
 import 'package:insite/views/preference/preference_view.dart';
 import 'package:insite/views/splash/india_stack_splash_view.dart';
 import 'package:logger/logger.dart';
@@ -125,6 +126,11 @@ class AppbarViewModel extends InsiteViewModel {
 
   onPreferencePressed() {
     _navigationService.navigateWithTransition(PreferencesView(),
+        transition: "fade");
+  }
+
+  onManageAccountPressed() {
+    _navigationService.navigateWithTransition(ManageAccountView(),
         transition: "fade");
   }
 }

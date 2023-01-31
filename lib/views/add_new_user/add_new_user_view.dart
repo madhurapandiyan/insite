@@ -367,9 +367,9 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                           padding:
                                               const EdgeInsets.only(left: 10.0),
                                           child: CustomDropDownWidget(
-                                            textColorChange: widget.user != null
-                                                ? true
-                                                : false,
+                                            // textColorChange: widget.user != null
+                                            //     ? true
+                                            //     : false,
                                             items: viewModel.jobTypeList,
                                             onChanged: (String? value) {
                                               unfocus();
@@ -437,25 +437,33 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    AddressCustomTextBox(
+                                    CustomTextBox(
                                       title: "Address",
-                                      isenabled: widget.isEdit == null ||
-                                              widget.isEdit == false
-                                          ? true
-                                          : false,
                                       controller: viewModel.addressController,
                                     ),
                                     SizedBox(
                                       height: 20,
                                     ),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: InsiteText(
+                                        text: "Address 2",
+                                        size: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
                                     CustomTextBox(
-                                      showTextColour:
-                                          widget.user != null ? true : false,
-                                      title: "Country",
-                                      isenabled: widget.isEdit == null ||
-                                              widget.isEdit == false
-                                          ? true
-                                          : false,
+                                      title: "Address 2",
+                                      controller: viewModel.addressController2,
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    CustomTextBox(
+                                      title: "City",
                                       controller: viewModel.countryController,
                                     ),
                                     SizedBox(
@@ -465,14 +473,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                       children: [
                                         Expanded(
                                           child: CustomTextBox(
-                                            showTextColour: widget.user != null
-                                                ? true
-                                                : false,
                                             title: "State",
-                                            isenabled: widget.isEdit == null ||
-                                                    widget.isEdit == false
-                                                ? true
-                                                : false,
                                             controller:
                                                 viewModel.stateController,
                                           ),
@@ -482,14 +483,7 @@ class _AddNewUserViewState extends State<AddNewUserView> {
                                         ),
                                         Expanded(
                                           child: CustomTextBox(
-                                            showTextColour: widget.user != null
-                                                ? true
-                                                : false,
                                             title: "Pin code",
-                                            isenabled: widget.isEdit == null ||
-                                                    widget.isEdit == false
-                                                ? true
-                                                : false,
                                             keyPadType: TextInputType.number,
                                             controller:
                                                 viewModel.pinCodeController,

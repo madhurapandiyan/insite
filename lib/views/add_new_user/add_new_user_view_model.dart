@@ -5,11 +5,13 @@ import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/add_user.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
 import 'package:insite/core/models/application.dart';
+import 'package:insite/core/models/customer.dart';
 import 'package:insite/core/models/role_data.dart';
 import 'package:insite/core/models/update_user_data.dart';
 import 'package:insite/core/models/user.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
+import 'package:insite/core/services/local_service.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
@@ -28,6 +30,9 @@ class AddNewUserViewModel extends InsiteViewModel {
   TextEditingController pinCodeController = new TextEditingController();
   TextEditingController stateController = new TextEditingController();
   TextEditingController countryController = new TextEditingController();
+  TextEditingController addressController2 = new TextEditingController();
+
+  LocalService? _localService = locator<LocalService>();
 
   List<ApplicationAccessData> _assetsData = [];
   List<ApplicationAccessData> get assetsData => _assetsData;
@@ -35,6 +40,8 @@ class AddNewUserViewModel extends InsiteViewModel {
   List<ApplicationSelectedDropDown> _applicationSelectedDropDownList = [];
   List<ApplicationSelectedDropDown> get applicationSelectedDropDownList =>
       _applicationSelectedDropDownList;
+
+  Customer? accountSelected;
 
   bool _allowAccessToSecurity = false;
   bool get allowAccessToSecurity => _allowAccessToSecurity;
@@ -89,6 +96,14 @@ class AddNewUserViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  setUp() async {
+    try {
+      accountSelected = await _localService!.getAccountInfo();
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
   String? jobTitleValue;
   String languageTypeValue = "English";
 
@@ -104,6 +119,7 @@ class AddNewUserViewModel extends InsiteViewModel {
     Future.delayed(Duration(seconds: 1), () async {
       await getData();
     });
+    setUp();
   }
 
   getData() async {
@@ -217,25 +233,23 @@ class AddNewUserViewModel extends InsiteViewModel {
     ManageUser? result = await _manageUserService.getUser(
         user!.userUid,
         graphqlSchemaService!
-            .userManagementUserList(pageNo: 1, searchKey: this.user!.loginId));
+            .userManagementUserList(pageNo: 1, searchKey: user!.loginId));
     try {
-      if (result != null) {
+      if (result!.user!.userUid != null) {
+        Logger().w(result.user?.address?.city);
         this.user = result.user;
         emailController.text = result.user?.loginId ?? "";
         firstNameController.text = result.user?.first_name ?? "";
         lastNameController.text = result.user?.last_name ?? "";
         phoneNumberController.text = result.user?.phone ?? "";
-        addressController.text =
-            "${result.user?.address?.addressline1 ?? "" + "${result.user?.address?.addressline2 ?? ""}"}";
-        countryController.text = result.user?.address?.country ?? "";
+        addressController.text = result.user?.address?.addressline1 ?? "";
+        addressController2.text = result.user?.address?.addressline2 ?? "";
+        countryController.text = result.user?.address?.city ?? "";
         stateController.text = result.user?.address?.state ?? "";
         jobTypeValue = result.user?.job_type == "UnKnown"
             ? null
             : result.user?.job_type ?? null;
         jobTitleValue = result.user?.job_title ?? null;
-        addressController.text = result.user?.address?.addressline1 ?? "";
-        countryController.text = result.user?.address?.country ?? "";
-        stateController.text = result.user?.address?.state ?? "";
         pinCodeController.text = result.user?.address?.zipcode ?? "";
         Logger().i("getUser ${result.user?.application_access?.length}");
         for (var applicationAccess in result.user!.application_access!) {
@@ -293,14 +307,15 @@ class AddNewUserViewModel extends InsiteViewModel {
       for (var role in roles) {
         Logger().d("role ${role.toJson()}");
       }
-      var data = UpdateUserData(
+      UpdateUserData data = UpdateUserData(
+          customerUid: accountSelected!.CustomerUID,
           fname: firstNameController.text.isEmpty
               ? null
               : firstNameController.text,
           lname:
               lastNameController.text.isEmpty ? null : lastNameController.text,
           email: emailController.text.isEmpty ? null : emailController.text,
-          // JobType: jobType,
+          jobType: jobTypeValue == "Employee" ? 1 : 2,
           phone: phoneNumberController.text.isEmpty
               ? null
               : phoneNumberController.text,
@@ -311,17 +326,16 @@ class AddNewUserViewModel extends InsiteViewModel {
                   ? null
                   : addressController.text,
               state: stateController.text.isEmpty ? null : stateController.text,
-              addressline2: addressController.text.isEmpty
+              addressline2: addressController2.text.isEmpty
                   ? null
-                  : addressController.text,
-              country: countryController.text.isEmpty
+                  : addressController2.text,
+              city: countryController.text.isEmpty
                   ? null
                   : countryController.text,
               zipcode: pinCodeController.text.isEmpty
                   ? null
                   : pinCodeController.text),
           roles: roles,
-          JobType: jobTypeValue == "Employee" ? 1 : 2,
           details: Details(
               job_title: jobTitleValue != null && jobTitleValue!.isNotEmpty
                   ? jobTitleValue
@@ -334,6 +348,8 @@ class AddNewUserViewModel extends InsiteViewModel {
               //     ? userType
               //     : null
               ));
+
+      Logger().w(data.toJson());
 
       UpdateResponse? updateResponse = await _manageUserService.getSaveUserData(
           data,
@@ -414,18 +430,19 @@ class AddNewUserViewModel extends InsiteViewModel {
               addressline1: addressController.text.isEmpty
                   ? null
                   : addressController.text,
+                
               state: stateController.text.isEmpty ? null : stateController.text,
               addressline2: addressController.text.isEmpty
                   ? null
                   : addressController.text,
-              country: countryController.text.isEmpty
+              city: countryController.text.isEmpty
                   ? null
                   : countryController.text,
               zipcode: pinCodeController.text.isEmpty
                   ? null
                   : pinCodeController.text),
           roles: roles,
-          JobType: jobTypeValue == "Employee" ? 1 : 2,
+          jobType: jobTypeValue == "Employee" ? 1 : 2,
           details: Details(
               job_title: jobTitleValue != null && jobTitleValue!.isNotEmpty
                   ? jobTitleValue
