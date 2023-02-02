@@ -1153,6 +1153,14 @@ faultCountData(startDateTime:"${startDate == null ? "" : startDate}", endDateTim
       createdOn
       createdBy
       emailVerified
+      phone
+      address{
+        city
+        state
+        addressline1
+        addressline2
+        zipcode
+      }
       application_access {
         userUID
         role_name

@@ -10,8 +10,10 @@ import 'package:logger/logger.dart';
 class MaintenanceDashBoard extends StatelessWidget {
   final MaintenanceDashboardCount? countData;
   final bool? isLoading;
+  final ScrollController? scrollController;
+
   final Function(MAINTENANCETOTAL, String, int count)? onFilterSelected;
-  MaintenanceDashBoard({this.countData, this.onFilterSelected, this.isLoading});
+  MaintenanceDashBoard({this.countData, this.onFilterSelected, this.isLoading,this.scrollController});
   Widget maintenanceDetailCount({DashboardData? data}) {
     return InkWell(
       onTap: () {
@@ -49,7 +51,7 @@ class MaintenanceDashBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         child: Container(
-           // height: MediaQuery.of(context).size.height * 0.33,
+            // height: MediaQuery.of(context).size.height * 0.33,
             margin: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,72 +68,80 @@ class MaintenanceDashBoard extends StatelessWidget {
                 ),
                 isLoading!
                     ? Column(
-                      children: [
-                        SizedBox(height: 60,),
-                        InsiteProgressBar(),
-                      ],
-                    )
+                        children: [
+                          SizedBox(
+                            height: 60,
+                          ),
+                          InsiteProgressBar(),
+                        ],
+                      )
                     : countData?.maintenanceDashboard?.dashboardData != null &&
                             countData!
                                 .maintenanceDashboard!.dashboardData!.isNotEmpty
-                        ? ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          // physics: NeverScrollableScrollPhysics(),
-                          itemCount: countData
-                              ?.maintenanceDashboard?.dashboardData?.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            var data = countData?.maintenanceDashboard
-                                ?.dashboardData?[index];
-                            return Column(
-                              children: [
-                                maintenanceDetailCount(data: data),
-                                data?.subCount != null &&
-                                        data!.subCount!.isNotEmpty
-                                    ? Container(
-                                        
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemCount: data.subCount?.length,
-                                          itemBuilder:
-                                              (BuildContext context,
-                                                  int i) {
-                                            return ListTile(
-                                              title: InsiteText(
-                                                  text: data.subCount?[i]
-                                                      .displayName,
-                                                  fontWeight:
-                                                      FontWeight.w700,
-                                                  size: 14.0),
-                                              trailing: InsiteText(
-                                                  text: data
-                                                      .subCount?[i].count
-                                                      .toString(),
-                                                  fontWeight:
-                                                      FontWeight.w700,
-                                                  size: 14.0),
-                                              onTap: () {
-                                                onFilterSelected!(
-                                                    data.subCount![i]
-                                                        .maintenanceTotal!,
-                                                    data.displayName!,
-                                                    data.subCount![i]
-                                                        .count!);
+                        ? Scrollbar(
+                          thickness: 10,
+                            controller: scrollController,
+                            thumbVisibility: true,
+                            child: ListView.builder(
+                              controller: scrollController,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              // physics: NeverScrollableScrollPhysics(),
+                              itemCount: countData
+                                  ?.maintenanceDashboard?.dashboardData?.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                var data = countData?.maintenanceDashboard
+                                    ?.dashboardData?[index];
+                                return Column(
+                                  children: [
+                                    maintenanceDetailCount(data: data),
+                                    data?.subCount != null &&
+                                            data!.subCount!.isNotEmpty
+                                        ? Container(
+                                            height: 150,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.vertical,
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              itemCount: data.subCount?.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int i) {
+                                                return ListTile(
+                                                  title: InsiteText(
+                                                      text: data.subCount?[i]
+                                                          .displayName,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      size: 14.0),
+                                                  trailing: InsiteText(
+                                                      text: data
+                                                          .subCount?[i].count
+                                                          .toString(),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      size: 14.0),
+                                                  onTap: () {
+                                                    onFilterSelected!(
+                                                        data.subCount![i]
+                                                            .maintenanceTotal!,
+                                                        data.displayName!,
+                                                        data.subCount![i]
+                                                            .count!);
+                                                  },
+                                                );
                                               },
-                                            );
-                                          },
-                                        ),
-                                      )
-                                    : SizedBox()
-                              ],
-                            );
-                          },
-                        )
+                                            ),
+                                          )
+                                        : SizedBox()
+                                  ],
+                                );
+                              },
+                            ),
+                          )
                         : Expanded(
                             child: EmptyView(
                               title: "No service information to display",

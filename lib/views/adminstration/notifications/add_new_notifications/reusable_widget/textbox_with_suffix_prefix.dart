@@ -30,16 +30,17 @@ class _TextBoxWithSuffixAndPrefixState
       height: MediaQuery.of(context).size.height * 0.05,
       child: CustomTextBox(
           isenabled: widget.isEnable == null ? true : widget.isEnable,
+          //isenabled: false,
           keyPadType: TextInputType.number,
           controller: widget.controller,
-          title: "",
+          title: "1",
           onChanged: (value) {
             if (widget.onChange == null) {
             } else {
               widget.onChange!(value);
             }
           },
-          suffixWidget: widget.suffixTitle==null
+          suffixWidget: widget.suffixTitle == null
               ? null
               : Container(
                   padding: EdgeInsets.all(10),
@@ -51,9 +52,10 @@ class _TextBoxWithSuffixAndPrefixState
                   child: InsiteText(
                     fontWeight: FontWeight.w500,
                     text: widget.suffixTitle,
+                    color: Colors.grey[700],
                   ),
                 ),
-          prefixWidget: widget.prefixTitle==null
+          prefixWidget: widget.prefixTitle == null
               ? null
               : Container(
                   decoration: BoxDecoration(
@@ -64,10 +66,10 @@ class _TextBoxWithSuffixAndPrefixState
                   padding: EdgeInsets.all(10),
                   child: InsiteText(
                     fontWeight: FontWeight.w500,
-                    text: widget.prefixTitle,
+                    text: "${widget.prefixTitle}${widget.suffixTitle}",
+                    color: Colors.grey[700],
                   ),
                 )),
     );
-    ;
   }
 }

@@ -1,5 +1,5 @@
 {
-    "last_updated": "Wed, 30 Nov 2022 08:39:38 GMT",
+    "last_updated": "Mon, 30 Jan 2023 12:45:45 GMT",
     "routes": [
         {
             "file_path": "views/splash/splash_view.dart",
@@ -260,6 +260,11 @@
             "file_path": "views/preference/preference_view.dart",
             "route_name": "preferenceViewRoute",
             "view_name": "PreferenceView"
+        },
+        {
+            "file_path": "views/manage_account/manage_account_view.dart",
+            "route_name": "manage_accountViewRoute",
+            "view_name": "ManageAccountView"
         }
     ]
 }

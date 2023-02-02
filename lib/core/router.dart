@@ -35,6 +35,7 @@ import 'package:insite/views/maintenance/main/main_detail_popup/main_detail_popu
     as view46;
 import 'package:insite/views/maintenance/main/main_view.dart' as view46;
 import 'package:insite/views/maintenance/maintenance_view.dart' as view44;
+import 'package:insite/views/manage_account/manage_account_view.dart';
 import 'package:insite/views/notification/notification_view.dart' as view37;
 
 import 'package:insite/views/plant/dashboard/plant_dashboard_view.dart'
@@ -245,6 +246,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => view49.AddIntervalsView());
       case preferenceViewRoute:
         return MaterialPageRoute(builder: (_) => view50.PreferencesView());
+      case manageAccountViewRoute:
+        return MaterialPageRoute(builder: (_) => ManageAccountView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

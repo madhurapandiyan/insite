@@ -12,6 +12,7 @@ import 'package:insite/views/appbar/appbar_view_model.dart';
 import 'package:insite/widgets/dumb_widgets/insite_dialog.dart';
 import 'package:insite/widgets/dumb_widgets/insite_image.dart';
 import 'package:insite/widgets/dumb_widgets/insite_text.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -268,6 +269,14 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                         },
                         color: Theme.of(context).buttonColor,
                         icon: Icon(Icons.psychology_outlined))
+                    : SizedBox(),
+                shouldShowAccount!
+                    ? IconButton(
+                        color: Theme.of(context).buttonColor,
+                        onPressed: () {
+                          viewModel.onManageAccountPressed();
+                        },
+                        icon: Icon(Icons.manage_accounts))
                     : SizedBox()
               ],
             ),
