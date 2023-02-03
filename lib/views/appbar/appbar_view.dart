@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insite/core/flavor/flavor.dart';
@@ -201,14 +201,14 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                             ? Theme.of(context).buttonColor
                             : appbarcolor,
                         child: count != null && count > 0
-                            ? Badge(
+                            ? badges.Badge(
                                 badgeContent: Text(count.toString(),
                                     style: TextStyle(
                                       color: Theme.of(context).buttonColor,
                                     )),
                                 badgeColor: white,
-                                position:
-                                    BadgePosition.topStart(start: 25, top: 1),
+                                position: badges.BadgePosition.topStart(
+                                    start: 25, top: 1),
                                 child: IconButton(
                                   icon: SvgPicture.asset(
                                     "assets/images/filter.svg",
