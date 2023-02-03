@@ -296,8 +296,8 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                                                 actions: [
                                                                                   Row(
                                                                                     children: [
-                                                                                      FlatButton.icon(onPressed: () => Navigator.of(context).pop(), icon: Icon(Icons.cancel), label: Text("cancel")),
-                                                                                      FlatButton.icon(
+                                                                                      TextButton.icon(onPressed: () => Navigator.of(context).pop(), icon: Icon(Icons.cancel), label: Text("cancel")),
+                                                                                      TextButton.icon(
                                                                                           onPressed: () {
                                                                                             viewModel.onPolygonCleared();
                                                                                             Navigator.of(context).pop();
@@ -329,7 +329,7 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                                 (ctx) =>
                                                                     AlertDialog(
                                                                       actions: [
-                                                                        FlatButton.icon(
+                                                                        TextButton.icon(
                                                                             onPressed: () {
                                                                               if (viewModel.isDrawingPolygon) {
                                                                                 viewModel.onColorPicked(pickerColor);

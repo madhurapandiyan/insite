@@ -178,7 +178,7 @@ class _SmsScheduleSingleAssetViewState
                                                                         Theme.of(context)
                                                                             .backgroundColor,
                                                                     actions: [
-                                                                      FlatButton.icon(
+                                                                      TextButton.icon(
                                                                           onPressed: () {
                                                                             Navigator.of(context).pop();
                                                                           },
@@ -204,7 +204,7 @@ class _SmsScheduleSingleAssetViewState
                                                                         Theme.of(context)
                                                                             .backgroundColor,
                                                                     actions: [
-                                                                      FlatButton.icon(
+                                                                      TextButton.icon(
                                                                           onPressed: () {
                                                                             Navigator.of(context).pop();
                                                                           },

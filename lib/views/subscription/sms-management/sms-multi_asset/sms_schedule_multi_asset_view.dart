@@ -278,7 +278,7 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
       backgroundColor: tuna,
       actions: [
         isShowingButton!
-            ? FlatButton.icon(
+            ? TextButton.icon(
                 onPressed: () {
                   onBackPress!();
                 },
@@ -291,7 +291,7 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
                 ))
             : Row(
                 children: [
-                  FlatButton.icon(
+                  TextButton.icon(
                       onPressed: () {
                         onPositiveButtonPressed!();
                       },
@@ -302,7 +302,7 @@ class _SmsScheduleMultiAssetViewState extends State<SmsScheduleMultiAssetView> {
                       label: InsiteText(
                         text: "Yes",
                       )),
-                  FlatButton.icon(
+                  TextButton.icon(
                       onPressed: () {
                         onNegativeButtonPressed!();
                       },
