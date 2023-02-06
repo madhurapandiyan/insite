@@ -37,7 +37,7 @@ class NotificationViewModel extends InsiteViewModel {
 
   int? _totalFleetCount = 0;
   int get totalFleetCount => _totalFleetCount!;
- 
+
   // List<notification.Notification> _assets = [];
   // List<notification.Notification> get assets => _assets;
   List<NotificationRow> _assets = [];
@@ -88,10 +88,8 @@ class NotificationViewModel extends InsiteViewModel {
   bool _loading = true;
   bool get loading => _loading;
 
-  bool isStatusFilterSelected = false;
+  bool isFromDashBoard = true;
 
- bool isFromDashBoard=true;
- 
   List<String>? filterValue = [];
   String? productFamilyFilterData;
 
@@ -114,12 +112,12 @@ class NotificationViewModel extends InsiteViewModel {
         }
       }
     });
-   if(filterValue!.isEmpty){
-    isFromDashBoard=false;
-   }
+    if (filterValue!.isEmpty) {
+      isFromDashBoard = false;
+    }
     Future.delayed(Duration(seconds: 1), () async {
-        await getSelectedFilterData();
-       await getDateRangeFilterData();
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
       await getNotificationData(true);
     });
   }
@@ -182,6 +180,7 @@ class NotificationViewModel extends InsiteViewModel {
       await getSelectedFilterData();
       await getDateRangeFilterData();
       pageNumber = 1;
+      List<String?>? filterdata = [];
       //  pageCount = 50;
       _refreshing = true;
       _shouldLoadmore = true;
@@ -189,81 +188,69 @@ class NotificationViewModel extends InsiteViewModel {
       Logger().wtf("start date " + startDate!);
       Logger().wtf("end date " + endDate!);
       List<int>? notificationStatus = [0];
- var isNotification=_isDateRangeSelected==false&&appliedFilters!.isNotEmpty&&filterValue!.isEmpty;
+
+      var isNotification = _isDateRangeSelected == false &&
+          appliedFilters!.isNotEmpty &&
+          filterValue!.isEmpty;
       //await getNotificationData();
-if(_isDateRangeSelected==false&&appliedFilters!.isEmpty){
-  notificationStatus.clear();
-              notificationStatus.add(1);
+      if (appliedFilters!.isEmpty) {
+        Logger().wtf("appliedFilters is empty ");
+        _isDateRangeSelected = false;
 
-  
-}else if(_isDateRangeSelected==false&&appliedFilters!.isNotEmpty&&filterValue!.isNotEmpty){
-           notificationStatus.clear();
-              notificationStatus.add(1);
-}else if(_isDateRangeSelected==false&&isFromDashBoard==true){
-  startDate=null;
-  endDate=null;
-}
+        notificationStatus.first = 1;
+      } else if (_isDateRangeSelected == false &&
+          appliedFilters!.isNotEmpty &&
+          filterValue!.isNotEmpty) {
+        notificationStatus.first = 1;
+      } else if (_isDateRangeSelected == false && isFromDashBoard == true) {
+        startDate = null;
+        endDate = null;
+      }
 
-      var notificationFilter = appliedFilters!.where((element) =>
-          element!.type == FilterType.NOTIFICATION_TYPE ||
-          element.type == FilterType.NOTIFICATION_STATUS);
+      var notificationTypeFilter = appliedFilters!
+          .where((element) => element!.type == FilterType.NOTIFICATION_TYPE);
 
-      var data = notificationFilter.map((e) {
-        if (e!.type == FilterType.NOTIFICATION_STATUS) {
-          isStatusFilterSelected = true;
-          // notificationStatus.clear();
+      notificationTypeFilter.forEach((element) {
+        filterdata.add(element!.title);
+      });
+     
 
-          if (e.title == "Unresolved") {
-            if (_isDateRangeSelected||isNotification) {
-              notificationStatus.clear();
-              notificationStatus.add(1);
-            }
-          } else {
-            if (_isDateRangeSelected||isNotification) {
-              notificationStatus.clear();
-              notificationStatus.add(2);
-            }
-          }
-        } else {
-          isStatusFilterSelected = false;
+      var notificationStatusFilter = appliedFilters!
+          .where((element) => element!.type == FilterType.NOTIFICATION_STATUS);
 
-          if (_isDateRangeSelected||isNotification) {
-            notificationStatus.clear();
-            notificationStatus.add(0);
-          }
-          //    isStatusFilterSelected=false;
-
-          //  if( _isDateRangeSelected){
-          //    notificationStatus.clear();
-          //   notificationStatus.add(0);
-          //  } else{
-          //      notificationStatus.clear();
-          //   notificationStatus.add(1);
-          //  }
+      if (notificationStatusFilter.isNotEmpty &&
+          notificationStatusFilter
+              .every((element) => element!.title == "Unresolved")) {
+        if (_isDateRangeSelected || isNotification) {
+          notificationStatus.first = 1;
         }
-        return e.title;
-      }).toList();
+      } else if (notificationStatusFilter.isNotEmpty &&
+          notificationStatusFilter
+              .every((element) => element!.title == "Resolved")) {
+        if (_isDateRangeSelected || isNotification) {
+          notificationStatus.first = 2;
+        }
+      }
 
-      //var notificationFilter=appliedFilters!.where((element) => element!.type==FilterType.NOTIFICATION_TYPE||element.type==FilterType.NOTIFICATION_STATUS);
-      Logger().wtf("notificationFilters:$notificationFilter");
+      
 
       notification.NotificationsData? response = await _mainNotificationService!
           .getNotificationsData("0", "0", startDate!, endDate!,
               _graphqlSchemaService!.seeAllNotification(), {
-        "fromDate": _isDateRangeSelected || isFromDashBoard==false
+        "fromDate": _isDateRangeSelected || isFromDashBoard == false
             ? startDate == null
                 ? ""
                 : Utils().getStartDateTimeInGMTFormatForHealth(
                     startDate.toString(), zone)
             : "",
-        "toDate": _isDateRangeSelected || isFromDashBoard==false
+        "toDate": _isDateRangeSelected || isFromDashBoard == false
             ? endDate == null
                 ? ""
                 : Utils().getEndDateTimeInGMTFormatForNotification(
                     endDate.toString(), zone)
             : "",
         "pageNumber": pageNumber,
-        "notificationType": isStatusFilterSelected ? [] : data,
+        "notificationType": filterdata,
         "notificationStatus": notificationStatus,
         "notificationUserStatus": 0,
         "productFamily": productFamilyFilterData ?? ""
@@ -388,50 +375,43 @@ if(_isDateRangeSelected==false&&appliedFilters!.isEmpty){
 
   getNotificationData(bool isFirst) async {
     List<int>? notificationStatus = [_isDateRangeSelected ? 0 : 1];
-    
-     
+    List<String?>? filterdata = [];
+    var isNotification = _isDateRangeSelected == false &&
+        appliedFilters!.isNotEmpty &&
+        filterValue!.isEmpty;
     if (!isFirst) {
       filterValue!.clear();
     }
-   
-    if (isFromDashBoard==false) {
-      notificationStatus.clear();
 
-      notificationStatus.add(0);
-     
+    if (isFromDashBoard == false) {
+      notificationStatus.first = 0;
     }
-   
-    var notificationFilter = appliedFilters!.where((element) =>
-        element!.type == FilterType.NOTIFICATION_TYPE ||
-        element.type == FilterType.NOTIFICATION_STATUS);
 
-    var data = notificationFilter.map((e) {
-      if (e!.type == FilterType.NOTIFICATION_STATUS) {
-        isStatusFilterSelected = true;
-        // notificationStatus!.clear();
+    var notificationTypeFilter = appliedFilters!
+        .where((element) => element!.type == FilterType.NOTIFICATION_TYPE);
+    notificationTypeFilter.forEach((element) {
+      filterdata.add(element!.title);
+    });
 
-        if (e.title == "Unresolved") {
-          if (_isDateRangeSelected||(appliedFilters!.isNotEmpty&&filterValue!.isEmpty && isFirst)) {
-            notificationStatus!.clear();
-            notificationStatus.add(1);
-          }
-        } else {
-          if (_isDateRangeSelected||(appliedFilters!.isNotEmpty&&filterValue!.isEmpty && isFirst)) {
-            notificationStatus!.clear();
-            notificationStatus.add(2);
-          }
+    
+
+    var notificationStatusFilter = appliedFilters!
+        .where((element) => element!.type == FilterType.NOTIFICATION_STATUS);
+
+     if (notificationStatusFilter.isNotEmpty &&
+          notificationStatusFilter
+              .every((element) => element!.title == "Unresolved")) {
+        if (_isDateRangeSelected || isNotification) {
+          notificationStatus.first = 1;
         }
-      } else {
-        isStatusFilterSelected = false;
-
-        if (_isDateRangeSelected||(appliedFilters!.isNotEmpty&&filterValue!.isEmpty && isFirst)) {
-          notificationStatus!.clear();
-          notificationStatus.add(0);
+      } else if (notificationStatusFilter.isNotEmpty &&
+          notificationStatusFilter
+              .every((element) => element!.title == "Resolved")) {
+        if (_isDateRangeSelected || isNotification) {
+          notificationStatus.first = 2;
         }
       }
-      return e.title;
-    }).toList();
-
+    
     notification.NotificationsData? response = await _mainNotificationService!
         .getNotificationsData("0", "0", startDate, endDate,
             _graphqlSchemaService!.seeAllNotification(), {
@@ -448,11 +428,7 @@ if(_isDateRangeSelected==false&&appliedFilters!.isEmpty){
               : Utils().getEndDateTimeInGMTFormatForNotification(
                   endDate.toString(), zone),
       "pageNumber": pageNumber,
-      "notificationType": filterValue!.isNotEmpty
-          ? filterValue
-          : isStatusFilterSelected
-              ? []
-              : data,
+      "notificationType": filterValue!.isNotEmpty ? filterValue : filterdata,
       "notificationStatus": notificationStatus,
       "notificationUserStatus": 0,
       "productFamily": productFamilyFilterData ?? ""
