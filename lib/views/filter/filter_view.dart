@@ -527,7 +527,7 @@ class _FilterViewState extends State<FilterView> {
                                     filterType: FilterType.NOTIFICATION_TYPE,
                                     key: filterManageNotificationTypeKey,
                                     data: viewModel.notification,
-                                    isSingleSelection: true,
+                                    //isSingleSelection: true,
                                     onApply: (List<FilterData> list) {
                                       viewModel.onFilterSelected(
                                           list, FilterType.NOTIFICATION_TYPE);
@@ -544,7 +544,7 @@ class _FilterViewState extends State<FilterView> {
                                     filterType: FilterType.NOTIFICATION_STATUS,
                                     key: filterManageNotificationAssetKey,
                                     data: viewModel.notificationStatus,
-                                    isSingleSelection: true,
+                                   // isSingleSelection: true,
                                     onApply: (List<FilterData> list) {
                                       viewModel.onFilterSelected(
                                           list, FilterType.NOTIFICATION_STATUS);
