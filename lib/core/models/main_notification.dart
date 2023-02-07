@@ -69,3 +69,10 @@ class Notification {
 
   Map<String, dynamic> toJson() => _$NotificationToJson(this);
 }
+
+class NotificationRow {
+  final Notification? selectednotifications;
+  bool isSelected;
+  NotificationRow({this.selectednotifications, this.isSelected = false});
+}
+

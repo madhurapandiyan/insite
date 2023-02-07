@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insite/core/models/filter_data.dart';
 import 'package:insite/core/models/notification.dart' as notCount;
 
 import 'package:insite/theme/colors.dart';
@@ -13,7 +14,8 @@ class NotificationWidget extends StatefulWidget {
   final notCount.NotificationData? notificationType;
   final double? count;
   final bool? isLoading;
-  final Function(String)? onFilterSelected;
+//  final Function(String)? onFilterSelected;
+final Function(FilterData)?  onFilterSelected;
 
   NotificationWidget(
       {this.notificationType,
@@ -38,7 +40,15 @@ class _FaultWidgetState extends State<NotificationWidget> {
         InsiteButton(
           title: data.count!.round().toString(),
           onTap: () {
-            widget.onFilterSelected!(data.notificationSubType!);
+             // widget.onFilterSelected!(data.notificationSubType!);
+            widget.onFilterSelected!(FilterData(
+                                            isSelected: true,
+                                            count: data.count
+                                                .toString(),
+                                            title: data.notificationSubType,
+                                            type: FilterType.NOTIFICATION_TYPE),
+                                              
+                                        );
           },
           textColor: white,
         )

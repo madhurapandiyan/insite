@@ -2,8 +2,11 @@ import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/asset_status.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/filter_notification.dart';
+
 import 'package:insite/core/models/maintenance_refine.dart';
 import 'package:insite/core/models/manage_notification_filter.dart';
+import 'package:insite/core/models/notification.dart';
 import 'package:insite/core/models/report_count.dart';
 import 'package:insite/core/services/asset_status_service.dart';
 import 'package:insite/core/services/maintenance_service.dart';
@@ -32,7 +35,8 @@ class FilterViewModel extends InsiteViewModel {
   List<FilterData> filterDataFuelLevel = [];
   List<FilterData> filterDataIdlingLevel = [];
   List<FilterData> filterSeverity = [];
-    List<FilterData> notification=[];
+  List<FilterData> notification=[];
+   List<FilterData> notificationStatus=[];
 
   List<FilterData> filterDataJobType = [];
   List<FilterData> filterDataUserType = [];
@@ -75,8 +79,9 @@ class FilterViewModel extends InsiteViewModel {
         screenType == ScreenType.UTILIZATION ||
         screenType == ScreenType.ASSET_OPERATION ||
         screenType == ScreenType.HEALTH ||
-        screenType == ScreenType.MAINTENANCE ||
-        screenType == ScreenType.NOTIFICATIONS) {
+        screenType == ScreenType.MAINTENANCE
+        // ||screenType == ScreenType.NOTIFICATIONS
+        ) {
       AssetCount? resultModel = await _assetService!.getAssetCount(
           "model",
           FilterType.MODEL,
@@ -172,6 +177,36 @@ class FilterViewModel extends InsiteViewModel {
           result,
            FilterType.NOTIFICATION_TYPE,
           );
+    }
+
+     if (screenType == ScreenType.NOTIFICATIONS) {
+    
+     var data = await _assetService?.getNotificationDashboardCount(
+          query: await graphqlSchemaService!.notificationDashboardCount());
+         Logger().wtf("data:${data?.toJson()}");
+      
+      filterNotification(
+          notification,
+         data,
+         FilterType.NOTIFICATION_TYPE,
+         
+          );
+        
+    }
+    if (screenType == ScreenType.NOTIFICATIONS) {
+     
+       var filterStatus = await _notificationService?.getNotificationStatusCount(
+          query: await graphqlSchemaService!.notificationStatusCount());
+         Logger().wtf("filterStatus:${filterStatus?.toJson()}");
+     
+          
+            filterNotificationItem(
+          notificationStatus,
+          filterStatus,
+          FilterType.NOTIFICATION_STATUS,
+          ); 
+          
+          
     }
     if (screenType == ScreenType.MAINTENANCE) {
       var data = await _maintenanceService!.getRefineData(
@@ -393,6 +428,72 @@ class FilterViewModel extends InsiteViewModel {
       }
    
 
+ filterNotification(filterData, NotificationData? notificationType, filternotificationtype,) {
+  try {
+    
+if ( notificationType!=null&&
+        notificationType.notifications!.isNotEmpty) {
+          var result=notificationType.notifications;
+          Logger().wtf("result:${notificationType.toJson()}");
+          for (var element in result!) {
+            
+             FilterData data = FilterData(
+              count: element.count?.toStringAsFixed(0),
+              title: element.notificationSubType,
+              isSelected: isAlreadSelected(element.notificationSubType, filternotificationtype),
+              extras: [element.notificationType.toString()],
+              type: filternotificationtype,
+            
+              );
+          filterData.add(data);
+         
+          
+          }}
+        
+       } catch (e) {
+    Logger().e(e.toString());
+  }
+      }
+
+       filterNotificationItem(filterItem, FilterNotification? notificationStatus, filterNotificationStatus) {
+  try {
+    
+
+          if ( notificationStatus!=null&&
+        notificationStatus.notifications!.isNotEmpty) {
+          var result=notificationStatus.notifications;
+          Logger().wtf("result:${notificationStatus.toJson()}");
+          for (var element in result!) {
+            
+             FilterData status = FilterData(
+              count: element.countOf.toString(),
+              title: element.notificationStatusInd,
+              isSelected: isAlreadSelected(element.notificationStatusInd, filterNotificationStatus),
+             // extras: [element.notificationSubType.toString()],
+              type: filterNotificationStatus,
+            
+              );
+          filterItem.add(status);
+         
+          
+          }}
+        //  FilterData secondData = FilterData(
+        //       count: notificationType?.count.toString(),
+        //       title: notificationType?.notificationType,
+        //       isSelected: isAlreadSelected(notificationType?.notificationType, filterNotificationAsset),
+        //       extras: [notificationType?.notificationSubType.toString()],
+        //       type: filterNotificationAsset,
+            
+        //       );
+        //   filterAsset.add(secondData);
+        //  Logger() .wtf(filterAsset.length);
+       } catch (e) {
+    Logger().e(e.toString());
+  }
+      }
+   
+
+   
 
   removeAllSelectedFilter() async {
     selectedFilterData!.clear();

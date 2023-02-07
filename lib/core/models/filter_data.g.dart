@@ -119,6 +119,8 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         return FilterType.UTILIZATION_COUNT;
       case 26:
         return FilterType.NOTIFICATION_TYPE;
+      case 27:
+        return FilterType.NOTIFICATION_STATUS;
       default:
         return FilterType.ALL_ASSETS;
     }
@@ -207,6 +209,9 @@ class FilterTypeAdapter extends TypeAdapter<FilterType> {
         break;
       case FilterType.NOTIFICATION_TYPE:
         writer.writeByte(26);
+        break;
+      case FilterType.NOTIFICATION_STATUS:
+        writer.writeByte(27);
         break;
     }
   }
@@ -357,6 +362,7 @@ const _$FilterTypeEnumMap = {
   FilterType.ASSET_TYPE: 'ASSET_TYPE',
   FilterType.UTILIZATION_COUNT: 'UTILIZATION_COUNT',
   FilterType.NOTIFICATION_TYPE: 'NOTIFICATION_TYPE',
+  FilterType.NOTIFICATION_STATUS: 'NOTIFICATION_STATUS',
 };
 
 const _$FilterSubTypeEnumMap = {

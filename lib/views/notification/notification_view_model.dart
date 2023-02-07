@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/admin_manage_user.dart';
+import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/filter_notification.dart';
 import 'package:insite/core/models/fleet.dart';
 import 'package:insite/core/models/main_notification.dart' as notification;
+import 'package:insite/core/models/main_notification.dart';
 import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/fleet_service.dart';
@@ -21,7 +24,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 class NotificationViewModel extends InsiteViewModel {
   Logger? log;
-
+  NotificationService? _notificationService = locator<NotificationService>();
   NotificationService? _mainNotificationService =
       locator<NotificationService>();
   NavigationService? _navigationService = locator<NavigationService>();
@@ -35,8 +38,10 @@ class NotificationViewModel extends InsiteViewModel {
   int? _totalFleetCount = 0;
   int get totalFleetCount => _totalFleetCount!;
 
-  List<notification.Notification> _assets = [];
-  List<notification.Notification> get assets => _assets;
+  // List<notification.Notification> _assets = [];
+  // List<notification.Notification> get assets => _assets;
+  List<NotificationRow> _assets = [];
+  List<NotificationRow> get assets => _assets;
 
   Users? _user;
   Users? get userData => _user;
@@ -62,6 +67,7 @@ class NotificationViewModel extends InsiteViewModel {
   bool _showDeSelect = false;
   bool get showDeSelect => _showDeSelect;
 
+  bool isNotificationResolved = false;
   bool _isDateRangeSelected = false;
   bool get isDateRangeSelected => _isDateRangeSelected;
   set isDateRangeSelected(bool value) {
@@ -81,6 +87,9 @@ class NotificationViewModel extends InsiteViewModel {
 
   bool _loading = true;
   bool get loading => _loading;
+
+  bool isFromDashBoard = true;
+
   List<String>? filterValue = [];
   String? productFamilyFilterData;
 
@@ -103,7 +112,12 @@ class NotificationViewModel extends InsiteViewModel {
         }
       }
     });
+    if (filterValue!.isEmpty) {
+      isFromDashBoard = false;
+    }
     Future.delayed(Duration(seconds: 1), () async {
+      await getSelectedFilterData();
+      await getDateRangeFilterData();
       await getNotificationData(true);
     });
   }
@@ -119,45 +133,146 @@ class NotificationViewModel extends InsiteViewModel {
     checkEditAndDeleteVisibility();
   }
 
+  onResolveSelected(context, index) async {
+    _refreshing = true;
+    _shouldLoadmore = true;
+    notifyListeners();
+    List item = [];
+
+    var notificationSelected =
+        _assets.where((element) => element.isSelected).toList();
+    Logger().wtf("NotificationSelected:$notificationSelected");
+
+    item = notificationSelected
+        .map((e) => e.selectednotifications?.notificationUID)
+        .toList();
+    Logger().wtf("item:$item");
+
+    var result = await _mainNotificationService!
+        .getNotificationStatusData(payLoad: {"notificationUID": item});
+
+    if (result?.status == "SUCCESS") {
+      snackbarService!
+          .showSnackbar(message: "Notifications are Resolved Successfully");
+      _assets.clear();
+      if (_isDateRangeSelected) {
+        getNotificationData(false);
+      } else {
+        getNotificationData(true);
+      }
+
+      _refreshing = false;
+    } else {
+      snackbarService!.showSnackbar(message: "Notifications are UnResolved");
+      _assets.clear();
+      if (_isDateRangeSelected) {
+        getNotificationData(false);
+      } else {
+        getNotificationData(true);
+      }
+
+      _refreshing = false;
+    }
+  }
+
   refresh() async {
     try {
       await getSelectedFilterData();
       await getDateRangeFilterData();
       pageNumber = 1;
-      pageCount = 50;
+      List<String?>? filterdata = [];
+      //  pageCount = 50;
       _refreshing = true;
       _shouldLoadmore = true;
       notifyListeners();
       Logger().wtf("start date " + startDate!);
       Logger().wtf("end date " + endDate!);
+      List<int>? notificationStatus = [0];
 
+      var isNotification = _isDateRangeSelected == false &&
+          appliedFilters!.isNotEmpty &&
+          filterValue!.isEmpty;
       //await getNotificationData();
+      if (appliedFilters!.isEmpty) {
+        Logger().wtf("appliedFilters is empty ");
+        _isDateRangeSelected = false;
 
-      notification.NotificationsData? response =
-          await _mainNotificationService!.getNotificationsData(
-              "0",
-              "0",
-              startDate!,
-              endDate!,
-              _graphqlSchemaService!.seeAllNotification(
-                endDate: Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate),
-                startDate:
-                    Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                pageNo: pageNumber,
-                notificationType: filterValue,
-                notificationUserStatus: 0,
-                notificationStatus: 0,
-              ));
+        notificationStatus.first = 1;
+      } else if (_isDateRangeSelected == false &&
+          appliedFilters!.isNotEmpty &&
+          filterValue!.isNotEmpty) {
+        notificationStatus.first = 1;
+      } else if (_isDateRangeSelected == false && isFromDashBoard == true) {
+        startDate = null;
+        endDate = null;
+      }
+
+      var notificationTypeFilter = appliedFilters!
+          .where((element) => element!.type == FilterType.NOTIFICATION_TYPE);
+
+      notificationTypeFilter.forEach((element) {
+        filterdata.add(element!.title);
+      });
+     
+
+      var notificationStatusFilter = appliedFilters!
+          .where((element) => element!.type == FilterType.NOTIFICATION_STATUS);
+
+      if (notificationStatusFilter.isNotEmpty &&
+          notificationStatusFilter
+              .every((element) => element!.title == "Unresolved")) {
+        if (_isDateRangeSelected || isNotification) {
+          notificationStatus.first = 1;
+        }
+      } else if (notificationStatusFilter.isNotEmpty &&
+          notificationStatusFilter
+              .every((element) => element!.title == "Resolved")) {
+        if (_isDateRangeSelected || isNotification) {
+          notificationStatus.first = 2;
+        }
+      }
+
+      
+
+      notification.NotificationsData? response = await _mainNotificationService!
+          .getNotificationsData("0", "0", startDate!, endDate!,
+              _graphqlSchemaService!.seeAllNotification(), {
+        "fromDate": _isDateRangeSelected || isFromDashBoard == false
+            ? startDate == null
+                ? ""
+                : Utils().getStartDateTimeInGMTFormatForHealth(
+                    startDate.toString(), zone)
+            : "",
+        "toDate": _isDateRangeSelected || isFromDashBoard == false
+            ? endDate == null
+                ? ""
+                : Utils().getEndDateTimeInGMTFormatForNotification(
+                    endDate.toString(), zone)
+            : "",
+        "pageNumber": pageNumber,
+        "notificationType": filterdata,
+        "notificationStatus": notificationStatus,
+        "notificationUserStatus": 0,
+        "productFamily": productFamilyFilterData ?? ""
+      });
       if (response != null) {
         _assets.clear();
         if (response.total!.items != null) {
           _totalCount = response.total!.items;
+          Logger().wtf("_totalCount:$_totalCount");
         }
         if (response.notifications != null &&
             response.notifications!.isNotEmpty) {
-          _assets.addAll(response.notifications!);
+          // _assets.clear();
+          // _assets.addAll(response.notifications!);
+          for (var selectedItem in response.notifications!) {
+            _assets.add(NotificationRow(
+                selectednotifications: selectedItem, isSelected: false));
+          }
         }
+
         _refreshing = false;
+
         notifyListeners();
       } else {
         _refreshing = false;
@@ -203,80 +318,142 @@ class NotificationViewModel extends InsiteViewModel {
 
   deleteSelectedNotification() async {
     try {
+      var result;
       List<String>? ids = [];
       String doubleQuote = "\"";
-      for (int i = 0; i < assets.length; i++) {
-        var data = assets[i];
-        if (data.isSelected!) {
-          ids.add(data.notificationUID!);
-          Logger().e(ids.length.toString());
-        }
-      }
-      if (ids != null) {
-        showLoadingDialog();
-        var result =
-            await _mainNotificationService!.deleteMainNotification(ids);
-        if (result != null) {
-          await deleteNotificationFromList(ids);
-          snackbarService!.showSnackbar(message: "Deleted successfully");
-        } else {
-          snackbarService!.showSnackbar(message: "Deleting failed");
-        }
+      var selectedData =
+          _assets.where((element) => element.isSelected).toList();
 
-        hideLoadingDialog();
+      if (selectedData.isNotEmpty) {
+        ids = selectedData
+            .map((e) => e.selectednotifications!.notificationUID!)
+            .toList();
+        if (ids != null) {
+          showLoadingDialog();
+          if (enableGraphQl) {
+            result = await _mainNotificationService!
+                .deleteNotification(payload: {"notificationUID": ids});
+          } else {
+            result =
+                await _mainNotificationService!.deleteMainNotification(ids);
+          }
+
+          if (result != null) {
+            await deleteNotificationFromList(ids);
+            snackbarService!.showSnackbar(message: "Deleted successfully");
+          } else {
+            snackbarService!.showSnackbar(message: "Deleting failed");
+          }
+
+          hideLoadingDialog();
+        }
       }
     } catch (e) {
       Logger().e(e.toString());
     }
   }
 
-  deleteNotificationFromList(List<String> ids) {
+  deleteNotificationFromList(List<String> ids) async {
     Logger().i("deleteReportFromList");
-    ids.forEach((id) {
-      _assets.removeWhere((element) => element.notificationUID == id);
-    });
+    _assets.clear();
+    if (_isDateRangeSelected) {
+      await getNotificationData(false);
+    } else {
+      await getNotificationData(true);
+    }
 
-    _totalCount = _totalCount! - ids.length;
     notifyListeners();
-    checkEditAndDeleteVisibility();
+    //   ids.forEach((id) {
+    //  //   _assets.removeWhere((element) => element.notificationUID == id);
+    //   _assets.removeWhere((element) => element.selectednotifications?.notificationUID == id);
+    //   });
+
+    //   _totalCount = _totalCount! - ids.length;
+    //   notifyListeners();
+    //   checkEditAndDeleteVisibility();
   }
 
   getNotificationData(bool isFirst) async {
-    notification.NotificationsData? response =
-        await _mainNotificationService!.getNotificationsData(
-            "0",
-            "0",
-            startDate,
-            endDate,
-            _graphqlSchemaService!.seeAllNotification(
-                pageNo: pageNumber,
-                notificationType: filterValue,
-                notificationUserStatus: 0,
-                notificationStatus:filterValue!.isEmpty?[0]:[1] ,
-                productFamily: productFamilyFilterData,
-                startDate: isFirst
-                    ? null
-                    : startDate == null
-                        ? ""
-                        : Utils.getDateInFormatyyyyMMddTHHmmssZStart(startDate),
-                endDate: isFirst
-                    ? null
-                    : endDate == null
-                        ? ""
-                        : Utils.getDateInFormatyyyyMMddTHHmmssZEnd(endDate)));
+    List<int>? notificationStatus = [_isDateRangeSelected ? 0 : 1];
+    List<String?>? filterdata = [];
+    var isNotification = _isDateRangeSelected == false &&
+        appliedFilters!.isNotEmpty &&
+        filterValue!.isEmpty;
+    if (!isFirst) {
+      filterValue!.clear();
+    }
+
+    if (isFromDashBoard == false) {
+      notificationStatus.first = 0;
+    }
+
+    var notificationTypeFilter = appliedFilters!
+        .where((element) => element!.type == FilterType.NOTIFICATION_TYPE);
+    notificationTypeFilter.forEach((element) {
+      filterdata.add(element!.title);
+    });
+
+    
+
+    var notificationStatusFilter = appliedFilters!
+        .where((element) => element!.type == FilterType.NOTIFICATION_STATUS);
+
+     if (notificationStatusFilter.isNotEmpty &&
+          notificationStatusFilter
+              .every((element) => element!.title == "Unresolved")) {
+        if (_isDateRangeSelected || isNotification) {
+          notificationStatus.first = 1;
+        }
+      } else if (notificationStatusFilter.isNotEmpty &&
+          notificationStatusFilter
+              .every((element) => element!.title == "Resolved")) {
+        if (_isDateRangeSelected || isNotification) {
+          notificationStatus.first = 2;
+        }
+      }
+    
+    notification.NotificationsData? response = await _mainNotificationService!
+        .getNotificationsData("0", "0", startDate, endDate,
+            _graphqlSchemaService!.seeAllNotification(), {
+      "fromDate": filterValue!.isNotEmpty
+          ? ""
+          : startDate == null
+              ? ""
+              : Utils().getStartDateTimeInGMTFormatForHealth(
+                  startDate.toString(), zone),
+      "toDate": filterValue!.isNotEmpty
+          ? ""
+          : endDate == null
+              ? ""
+              : Utils().getEndDateTimeInGMTFormatForNotification(
+                  endDate.toString(), zone),
+      "pageNumber": pageNumber,
+      "notificationType": filterValue!.isNotEmpty ? filterValue : filterdata,
+      "notificationStatus": notificationStatus,
+      "notificationUserStatus": 0,
+      "productFamily": productFamilyFilterData ?? ""
+    });
     if (response != null) {
       if (response.total!.items != null) {
         _totalCount = response.total!.items;
       }
       if (response.notifications != null &&
           response.notifications!.isNotEmpty) {
-        _assets.addAll(response.notifications!);
+        for (var selectedItem in response.notifications!) {
+          _assets.add(NotificationRow(
+              selectednotifications: selectedItem, isSelected: false));
+        }
+        //  _assets.addAll(response.notifications!);
 
         _loading = false;
         _loadingMore = false;
         notifyListeners();
       } else {
-        _assets.addAll(response.notifications!);
+        for (var selectedItem in response.notifications!) {
+          _assets.add(NotificationRow(
+              selectednotifications: selectedItem, isSelected: false));
+        }
+        //  _assets.addAll(response.notifications!);
         _loading = false;
         _loadingMore = false;
         _shouldLoadmore = false;
@@ -291,7 +468,7 @@ class NotificationViewModel extends InsiteViewModel {
 
   onItemSelected(index) {
     try {
-      _assets[index].isSelected = !_assets[index].isSelected!;
+      _assets[index].isSelected = !_assets[index].isSelected;
     } catch (e) {
       Logger().e(e);
     }
@@ -299,13 +476,16 @@ class NotificationViewModel extends InsiteViewModel {
     checkEditAndDeleteVisibility();
   }
 
-  onDetailPageSelected(notification.Notification? notification) {
+  onDetailPageSelected(notification.NotificationRow? notification) {
     _navigationService!.navigateTo(assetDetailViewRoute,
         arguments: DetailArguments(
           fleet: Fleet(
-              assetSerialNumber: notification!.serialNumber,
+              assetSerialNumber:
+                  notification!.selectednotifications!.serialNumber,
+              // assetSerialNumber: notification!.serialNumber,
               assetId: null,
-              assetIdentifier: notification.assetUID),
+              // assetIdentifier: notification.assetUID
+              assetIdentifier: notification.selectednotifications!.assetUID),
           index: 0,
         ));
   }
@@ -359,8 +539,9 @@ class NotificationViewModel extends InsiteViewModel {
   onSelectedItemClicK(String value, BuildContext context, int? index) {
     if (value == "deselect") {
       onItemDeselect();
-    } else if (value == "resolve") {
-      onItemDeselect();
+    } else if (value == "Resolve") {
+      onResolveSelected(context, index);
+      // onItemDeselect();
     } else if (value == "Delete") {
       onDeleteClicked(context, index);
     }

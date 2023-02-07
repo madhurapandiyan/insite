@@ -849,6 +849,9 @@ class Utils {
       case FilterType.NOTIFICATION_TYPE:
         title = "NOTIFICATION TYPE";
         break;
+         case FilterType.NOTIFICATION_STATUS:
+        title = "NOTIFICATION STATUS";
+        break;
 
       default:
     }
@@ -2667,5 +2670,25 @@ class Utils {
       dynamic value, UserPreference? userPreference) {
     var data = DateFormat(userPreference!.dateFormat).format(value);
     return data;
+  }
+  String getEndDateTimeInGMTFormatForNotification(date, UserPreferedData? prefData) {
+    try {
+      tz.initializeTimeZones();
+      Logger().i("end Date $date");
+      DateTime parseDate = new DateFormat("yyyy-MM-dd").parse(date, true);
+      var prefFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+      final locationNY = tzo.getLocation(prefData!.zone!.momentTimezone);
+      tzo.TZDateTime nowNY2 = tzo.TZDateTime.from(parseDate, locationNY);
+      final diffMin = nowNY2.timeZoneOffset.inMinutes;
+      var timeZoneDate =
+          DateTime.utc(parseDate.year, parseDate.month, parseDate.day)
+              .add(Duration(hours: 23, minutes: 59, seconds: 59))
+              .add(Duration(minutes: diffMin));
+      Logger().w(timeZoneDate);
+      return prefFormat.format(timeZoneDate).toString();
+    } catch (e) {
+      Logger().e(e.toString());
+      return "";
+    }
   }
 }

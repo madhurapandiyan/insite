@@ -2887,58 +2887,35 @@ mutation{
     return data;
   }
 
-  String seeAllNotification(
-      {int? pageNo,
-      dynamic notificationStatus,
-      String? startDate,
-      String? endDate,
-      int? notificationUserStatus,
-      //String? assetUIDs,
-      List<String>? notificationType,
-      String? productFamily}) {
-    var data = """
-query{
-  seeAllNotificationList(
-    pageNumber:$pageNo,
-    notificationStatus:${notificationStatus ?? [0]},
-    notificationUserStatus:$notificationUserStatus,
-    fromDate:"${startDate != null ? startDate : ""}",
-    toDate:"${endDate != null ? endDate : ""}",
-    
-  
-     notificationType:${Utils.getStringListData(notificationType ?? [])}
-     productFamily:"${productFamily != null ? productFamily : ""}"
-  ){
-    links{
-      next,
-      last
-    }
-    total{
-      items,
+  String seeAllNotification() {
+    var data = """query (\$pageNumber: Int, \$notificationStatus: [Int], \$notificationUserStatus: Int, \$fromDate: String, \$toDate: String, \$notificationType: [String], \$assetUIDs: String, \$productFamily: String) {
+  seeAllNotificationList(pageNumber: \$pageNumber, fromDate: \$fromDate, toDate: \$toDate, notificationUserStatus: \$notificationUserStatus, notificationStatus: \$notificationStatus, notificationType: \$notificationType, assetUIDs: \$assetUIDs, productFamily: \$productFamily) {
+    total {
+      items
       pages
-    },
-    notifications{
+    }
+    notifications {
       notificationUID
-notificationTitle
-occurUTC
-assetUID
-serialNumber
-assetName
-makeCode
-model
-location
-iconKey
-latitude
-longitude
-notificationType
-notificationSubType
-notificationConfigJSON
-resolvedStatus
-readStatus
-    },
-    status
+      notificationTitle
+      occurUTC
+      assetUID
+      serialNumber
+      assetName
+      makeCode
+      model
+      location
+      iconKey
+      latitude
+      longitude
+      notificationType
+      notificationSubType
+      notificationConfigJSON
+      resolvedStatus
+      readStatus
+    }
   }
-}""";
+}
+""";
     return data;
   }
 
@@ -3935,6 +3912,20 @@ createAsset(
     return data;
   }
 
+   notificationStatusCount() {
+    var data =
+        """{
+  seeAllNotificationCountByStatus {
+    notifications {
+      notificationStatusInd
+      countOf
+    }
+  }
+}
+""";
+    return data;
+  }
+
   deleteNotes() {
     var data = """
 mutation deleteMetaDataNotes(\$userAssetNoteUid: String!){
@@ -4028,4 +4019,27 @@ mutation createUpdateUserPreference(\$userPreferenceInput: UserPreferenceInput!,
 """;
 return data;
   }
+
+createupdateNotification(){
+  var data="""mutation updateNotificationResolve(\$notificationUID: [String]) {
+  updateNotificationResolve(notificationUID: \$notificationUID) {
+    successCount
+    failureCount
+    status
+  }
+}""";
+return data;
+}
+
+deleNotification(){
+  var data="""mutation deleteNotification(\$notificationUID: [String]){
+deleteNotification(notificationUID: \$notificationUID){
+successCount,
+failureCount,
+status
+}
+}""";
+return data;
+}
+
 }
