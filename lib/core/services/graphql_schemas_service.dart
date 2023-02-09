@@ -2629,6 +2629,7 @@ mutation createNotification(\$alertCategoryID: Int, \$notificationSubscribers: n
       int? numberOfOccurences,
       String? notificationDeliveryChannel,
       List<Operand>? operand,
+      List<SitOperands>? siteOperand,
       List<Schedule>? schedule,
       List<String>? assetUIDs,
       List<String>? geofenceUIDs,
@@ -2647,13 +2648,13 @@ mutation{
     alertTitle: "$alertTitle"
     alertGroupId: $alertGroupId
     notificationTypeGroupID: $notificationTypeGroupID
-    operands:${Utils.getOperand(operand)}
+    operands:${operand!.isNotEmpty ? Utils.getOperand(operand) : null}
     notificationTypeId: $notificationTypeId
     numberOfOccurences: $numberOfOccurences
     notificationDeliveryChannel:"$notificationDeliveryChannel"
-    geofenceUIDs:${geofenceUIDs != null ? Utils.getStringListData(geofenceUIDs) : null}
+    geofenceUIDs:${geofenceUIDs!.isNotEmpty ? Utils.getStringListData(geofenceUIDs) : null}
     assetGroupUIDs: ${assetGroupUIDs != null ? Utils.getStringListData(assetGroupUIDs) : null}
-    siteOperands: null
+    siteOperands: ${siteOperand!.isNotEmpty ? Utils.getSiteOperand(siteOperand) : null}
     switchOperand: null
     zones: null
     notificationUid:"$alertId"
@@ -2661,6 +2662,8 @@ mutation{
         isUpdated
       }
   }""";
+
+    Logger().wtf(data);
     return data;
   }
 

@@ -790,6 +790,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           if (geoenceData[i].items == geofenceAddedList[j]) {
             Logger().wtf(i);
             Logger().wtf(geoenceData[i].items);
+            geofenceUIDList!.add(geofenceData!.geofences![i].GeofenceUID!);
             geoenceData[i].isSelected = true;
           }
         }
@@ -1086,6 +1087,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   onEditSelectingDropDown(int i) {
     geoenceData[i].isSelected = !geoenceData[i].isSelected!;
+
+    // if (geofenceAddedList.isNotEmpty) {
+    //   for (int i = 0; i < geofenceData!.geofences!.length; i++) {
+    //     if (geofenceAddedNameBR == geofenceData!.geofences![i].GeofenceName!) {
+    //       geofenceUIDList!.add(geofenceData!.geofences![i].GeofenceUID!);
+    //       Logger().wtf(geofenceAddedNameBR);
+    //       Logger().wtf(geofenceData!.geofences![i].GeofenceName!);
+    //     }
+    //   }
+    // }
 
     if (geofenceData != null) {
       if (geoenceData[i].isSelected! == true) {
@@ -1656,6 +1667,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
               _dropDownSubInitialValue = "Conditions";
               operand.operators!.forEach((operator) {
                 _notificationSubTypes.add(operator.name);
+
+                Logger().wtf(operator.operatorID);
               });
             } else if (operand.operandName!.contains("Odometer")) {
               _notificationSubTypes.clear();
@@ -1840,6 +1853,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   onRemovedSelectedContact(int index) {
     try {
       selectedUser.removeAt(index);
+      emailIds!.removeAt(index);
+
       notifyListeners();
     } catch (e) {
       Logger().e(e.toString());
@@ -1969,6 +1984,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       var data = OperandData?.singleWhere(
           (element) => element.operandName == "FaultCode Type");
       faultCodeType.forEach((faultCodeTypeSwitcState) {
+        Logger().wtf(faultCodeTypeSwitcState.text);
         if (faultCodeTypeSwitcState.text == "Event") {
           if (faultCodeTypeSwitcState.state == true) {
             operandData.add(Operand(
@@ -1986,22 +2002,22 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         }
       });
     }
-
+    var faultData = OperandData?.singleWhere(
+        (element) => element.operandName == "FaultCode Identifier");
     Logger().wtf(notificationType!.toJson());
     notificationTypeId = notificationType!.notificationTypeID!;
 
     if (SelectedfaultCodeTypeSearch.isNotEmpty) {
       for (int i = 0; i < SelectedfaultCodeTypeSearch.length; i++) {
         operandData.add(Operand(
-            operandID: 23,
-            operatorId: 40,
+            operandID: faultData!.operandID,
+            operatorId: faultData.operators!.first.operatorID,
             value: SelectedfaultCodeTypeSearch[i].faultCodeIdentifier));
       }
     }
   }
 
   getAssetStatusOperandAndNotificationId() {
-    operandData.clear();
     operandData.clear();
     var notificationTypeGroups = alterTypes!.notificationTypeGroups!
         .singleWhere(
@@ -2014,10 +2030,21 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     var OperandData = notificationType?.operands;
     notificationTypeId = notificationType!.notificationTypeID!;
     notificationTypeId = notificationType!.notificationTypeID!;
-    operandData.add(Operand(
-        operandID: OperandData!.first.operandID,
-        operatorId: OperandData.first.operators!.first.operatorID,
-        value: assetStatusOccurenceController.text));
+
+    for (int i = 0; i < _notificationSubTypes.length; i++) {
+      if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
+        Logger().wtf(OperandData!.first.operators![i].name);
+        Logger().wtf(OperandData.first.operators![i].operatorID);
+        operandData.add(Operand(
+            operandID: OperandData.first.operandID,
+            operatorId: OperandData.first.operators![i].operatorID,
+            value: assetStatusOccurenceController.text));
+      }
+    }
+    // operandData.add(Operand(
+    //     operandID: OperandData!.first.operandID,
+    //     operatorId: OperandData.first.operators!.first.operatorID,
+    //     value: assetStatusOccurenceController.text));
   }
 
   getFuelOperandAndNotificationId() {
@@ -2033,10 +2060,20 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         (element) => element.operandName == "Fuel Level");
     if (fuelOperandData!.operators!
         .any((element) => element.name == _dropDownSubInitialValue)) {
-      operandData.add(Operand(
-          operandID: OperandData!.first.operandID,
-          operatorId: OperandData.first.operators!.first.operatorID,
-          value: assetStatusOccurenceController.text));
+      for (int i = 0; i < _notificationSubTypes.length; i++) {
+        if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
+          Logger().wtf(OperandData!.first.operators![i].name);
+          Logger().wtf(OperandData.first.operators![i].operatorID);
+          operandData.add(Operand(
+              operandID: OperandData.first.operandID,
+              operatorId: OperandData.first.operators![i].operatorID,
+              value: assetStatusOccurenceController.text));
+        }
+      }
+      // operandData.add(Operand(
+      //     operandID: OperandData!.first.operandID,
+      //     operatorId: OperandData.first.operators!.first.operatorID,
+      //     value: assetStatusOccurenceController.text));
     }
   }
 
@@ -2054,12 +2091,16 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         (element) => element.operandName == "Engine Hours");
     if (engineHoursOperandData!.operators!
         .any((element) => element.name == _dropDownSubInitialValue)) {
-
-      Logger().w("fuck1");
-      operandData.add(Operand(
-          operandID: OperandData!.first.operandID,
-          operatorId: OperandData.first.operators!.first.operatorID,
-          value: assetStatusOccurenceController.text));
+      for (int i = 0; i < _notificationSubTypes.length; i++) {
+        if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
+          Logger().wtf(OperandData!.first.operators![i].name);
+          Logger().wtf(OperandData.first.operators![i].operatorID);
+          operandData.add(Operand(
+              operandID: OperandData.first.operandID,
+              operatorId: OperandData.first.operators![i].operatorID,
+              value: assetStatusOccurenceController.text));
+        }
+      }
     }
   }
 
@@ -2077,10 +2118,20 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         (element) => element.operandName == "Excessive Daily Idle");
     if (excessiveDailyIdleOperandData!.operators!
         .any((element) => element.name == _dropDownSubInitialValue)) {
-      operandData.add(Operand(
-          operandID: OperandData!.first.operandID,
-          operatorId: OperandData.first.operators!.first.operatorID,
-          value: assetStatusOccurenceController.text));
+      for (int i = 0; i < _notificationSubTypes.length; i++) {
+        if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
+          Logger().wtf(OperandData!.first.operators![i].name);
+          Logger().wtf(OperandData.first.operators![i].operatorID);
+          operandData.add(Operand(
+              operandID: OperandData.first.operandID,
+              operatorId: OperandData.first.operators![i].operatorID,
+              value: assetStatusOccurenceController.text));
+        }
+      }
+      // operandData.add(Operand(
+      //     operandID: OperandData!.first.operandID,
+      //     operatorId: OperandData.first.operators!.first.operatorID,
+      //     value: assetStatusOccurenceController.text));
     }
   }
 
@@ -2118,11 +2169,14 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       notificationTypeId = notificationType!.notificationTypeID!;
       Logger().wtf(notificationType!.notificationTypeName);
       Logger().wtf(notificationType!.notificationTypeID);
-      if (geofenceUIDList != null) {
+      if (geofenceUIDList!.isNotEmpty) {
         for (int i = 0; i < geofenceUIDList!.length; i++) {
           sitOperands.add(SitOperands(
               operandID: notificationType!.notificationTypeID!,
               siteUID: geofenceUIDList![i]));
+
+          Logger().wtf(notificationType!.notificationTypeID!);
+          Logger().wtf(geofenceUIDList![i]);
         }
       }
 
@@ -2330,6 +2384,20 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     });
 
     await gettingNotificationIdandOperands();
+    // await getGeofenceOperandAndNotificationId();
+
+    // if (geofenceAddedList.isNotEmpty) {
+    //   for (int i = 0; i < geoenceData.length; i++) {
+    //     if (geoenceData[i].isSelected! == true) {
+    //       Logger().wtf(geofenceAddedNameBR);
+    //       geofenceUIDList!.add(geofenceData!.geofences![i].GeofenceUID!);
+    //       Logger().wtf(geofenceData!.geofences![i].GeofenceUID!);
+    //       sitOperands.add(SitOperands(
+    //           operandID: notificationType!.notificationTypeID!,
+    //           siteUID: geofenceData!.geofences![i].GeofenceUID!));
+    //     }
+    //   }
+    // }
 
     AddNotificationPayLoad payLoadData = AddNotificationPayLoad(
         alertCategoryID: alertConfigData!.alertConfig!.alertCategoryID,
@@ -2337,7 +2405,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         alertTitle: notificationController.text,
         allAssets: false,
         assetUIDs: assetSelectionValue == 'Assets' ? assetUidData : [],
-        geofenceUIDs: assetSelectionValue == 'Geofences' ? assetUidData : null,
+        //geofenceUIDs: assetSelectionValue == 'Geofences' ? assetUidData : null,
+        geofenceUIDs: geofenceUIDList,
         currentDate: alertConfigData!.alertConfig!.createdDate,
         notificationDeliveryChannel: "email",
         notificationTypeGroupID:
@@ -2346,13 +2415,14 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         notificationTypeId: alertConfigData!.alertConfig!.notificationTypeID,
         schedule: scheduleDay,
         operands: operandData,
+        siteOperands: sitOperands,
         numberOfOccurences: 1);
     var data = await _notificationService!.editNotification(
         payLoadData,
         alertConfigUid!,
         graphqlSchemaService!.updateNotification(
-            geofenceUIDs:
-                assetSelectionValue == 'Geofences' ? assetUidData : null,
+            // geofenceUIDs:
+            //     assetSelectionValue == 'Geofences' ? assetUidData : null,
             assetUIDs: assetSelectionValue == 'Assets' ? assetUidData : null,
             assetGroupUIDs:
                 assetSelectionValue == 'Groups' ? assetUidData : null,
@@ -2369,9 +2439,11 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
                 alertConfigData!.alertConfig!.notificationTypeID,
             schedule: scheduleDay,
             operand: operandData,
+            siteOperand: sitOperands,
+            geofenceUIDs: geofenceUIDList,
             alertId: alertConfigUid!,
             numberOfOccurences: 1));
-   
+    //Logger().wtf(operandData[0].operatorId);
     if (data != null) {
       _snackBarservice!.showSnackbar(message: "Edit Notification Success");
       gotoManageNotificationsPage();

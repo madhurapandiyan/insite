@@ -149,9 +149,30 @@ class AddIntervalsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onPartListDeleted(int checkListIndex, int partListIndex) {
+  onPartListDeleted(int checkListIndex, int partListIndex) async {
     var data =
         checkListData[checkListIndex].partListData!.removeAt(partListIndex);
+
+    List<int> partId = [];
+
+    var selectedIntervalList =
+        switchState.where((element) => element.state == true).toList();
+    var datas = maintenanceIntervalsData!.intervalList!
+        .where((intervalist) => selectedIntervalList
+            .any((element) => element.text == intervalist.intervalName))
+        .toList();
+    for (var interval in datas) {
+      Logger().w(interval.checkList![checkListIndex].partList!
+          .elementAt(partListIndex)
+          .partName);
+      partId.add(interval.checkList![checkListIndex].partList!
+          .elementAt(partListIndex)
+          .partId!);
+    }
+
+    await _maintenanceService!.deletMaintenanceIntervals(graphqlSchemaService!
+        .deletingMaintenanceIntervals(
+            assetId: assetUid, check: null, interval: null, parts: partId));
     notifyListeners();
   }
 
@@ -160,8 +181,25 @@ class AddIntervalsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onCheckListDelete(int i) {
+  onCheckListDelete(int i) async {
     checkListData.removeAt(i);
+    List<int> checkId = [];
+    var selectedIntervalList =
+        switchState.where((element) => element.state == true).toList();
+    var data = maintenanceIntervalsData!.intervalList!
+        .where((intervalist) => selectedIntervalList
+            .any((element) => element.text == intervalist.intervalName))
+        .toList();
+
+    for (var interval in data) {
+      Logger().w(interval.checkList!.elementAt(i).checkListID);
+      Logger().w(interval.checkList!.elementAt(i).checkListName);
+      checkId.add(interval.checkList!.elementAt(i).checkListID!);
+    }
+
+    await _maintenanceService!.deletMaintenanceIntervals(graphqlSchemaService!
+        .deletingMaintenanceIntervals(
+            assetId: assetUid, check: checkId, interval: null, parts: null));
     notifyListeners();
   }
 
