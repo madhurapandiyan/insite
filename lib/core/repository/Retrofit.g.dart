@@ -137,8 +137,13 @@ Map<String, dynamic> _$AuthenticatePayloadToJson(
 // RetrofitGenerator
 // **************************************************************************
 
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+
 class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl}) {
+  _RestClient(
+    this._dio, {
+    this.baseUrl,
+  }) {
     baseUrl ??= 'https://cloud.api.trimble.com/CTSPulseIndiastg';
   }
 
@@ -152,12 +157,19 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<Sample>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/tasks',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Sample>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/tasks',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) => Sample.fromJson(i as Map<String, dynamic>))
         .toList();
@@ -165,48 +177,64 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<UserInfo> getUserInfo(contentType, authorization) async {
+  Future<UserInfo> getUserInfo(
+    contentType,
+    authorization,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'content-type': contentType,
-      r'Authorization': authorization
+      r'Authorization': authorization,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UserInfo>(Options(
-                method: 'GET',
-                headers: _headers,
-                extra: _extra,
-                contentType: contentType)
-            .compose(_dio.options, '/userinfo?schema=openid',
-                queryParameters: queryParameters, data: _data)
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<UserInfo>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              '/userinfo?schema=openid',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserInfo.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UserInfo> getUserInfoVl(contentType, authorization) async {
+  Future<UserInfo> getUserInfoVl(
+    contentType,
+    authorization,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'content-type': contentType,
-      r'Authorization': authorization
+      r'Authorization': authorization,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UserInfo>(Options(
-                method: 'GET',
-                headers: _headers,
-                extra: _extra,
-                contentType: contentType)
-            .compose(_dio.options, '/oauth/userinfo',
-                queryParameters: queryParameters, data: _data)
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<UserInfo>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              '/oauth/userinfo',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserInfo.fromJson(_result.data!);
     return value;
@@ -214,24 +242,32 @@ class _RestClient implements RestClient {
 
   @override
   Future<UserInfo> getUserInfoV4(
-      contentType, authorization, accessToken) async {
+    contentType,
+    authorization,
+    accessToken,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'content-type': contentType,
-      r'Authorization': authorization
+      r'Authorization': authorization,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(accessToken.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UserInfo>(Options(
-                method: 'POST',
-                headers: _headers,
-                extra: _extra,
-                contentType: contentType)
-            .compose(_dio.options, '/oauth/userinfo',
-                queryParameters: queryParameters, data: _data)
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<UserInfo>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              '/oauth/userinfo',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserInfo.fromJson(_result.data!);
     return value;
@@ -239,35 +275,50 @@ class _RestClient implements RestClient {
 
   @override
   Future<PermissionResponse> getPermission(
-      limit, provider_id, xVisonLinkCustomerId, customerId, user_guid) async {
+    limit,
+    provider_id,
+    xVisonLinkCustomerId,
+    customerId,
+    user_guid,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'limit': limit,
-      r'provider_id': provider_id
+      r'provider_id': provider_id,
     };
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': xVisonLinkCustomerId
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        PermissionResponse>(Options(
-            method: 'GET', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/authorization/1.0.0/users/${user_guid}/organizations/${customerId}/permissions',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<PermissionResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/authorization/1.0.0/users/${user_guid}/organizations/${customerId}/permissions',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = PermissionResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<PermissionResponse> getPermissionVL(
-      limit, provider_id, customerId, xVisonLinkCustomerId) async {
+    limit,
+    provider_id,
+    customerId,
+    xVisonLinkCustomerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'limit': limit,
-      r'provider_id': provider_id
+      r'provider_id': provider_id,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
@@ -275,31 +326,47 @@ class _RestClient implements RestClient {
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        PermissionResponse>(Options(
-            method: 'GET', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/authorization/1.0.0/users/organizations/${customerId}/permissions',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<PermissionResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/authorization/1.0.0/users/organizations/${customerId}/permissions',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = PermissionResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<CustomersResponse> accountHierarchy(
-      url, toplevelsonly, serviceHeader) async {
+    url,
+    toplevelsonly,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'toplevelsonly': toplevelsonly};
     final _headers = <String, dynamic>{r'service': serviceHeader};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CustomersResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CustomersResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CustomersResponse.fromJson(_result.data!);
     return value;
   }
@@ -310,20 +377,29 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{r'toplevelsonly': toplevelsonly};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CustomersResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    '/t/trimble.com/vss-customerservice/1.0/accounthierarchy',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CustomersResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-customerservice/1.0/accounthierarchy',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CustomersResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<CustomersResponse> accountHierarchyChildren(
-      url, targetcustomeruid, serviceHeader) async {
+    url,
+    targetcustomeruid,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'targetcustomeruid': targetcustomeruid
@@ -331,12 +407,19 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{r'service': serviceHeader};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CustomersResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CustomersResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CustomersResponse.fromJson(_result.data!);
     return value;
   }
@@ -350,116 +433,180 @@ class _RestClient implements RestClient {
     };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CustomersResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    '/t/trimble.com/vss-customerservice/1.0/accounthierarchy',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CustomersResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-customerservice/1.0/accounthierarchy',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CustomersResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<FleetSummaryResponse> fleetSummaryURL(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<FleetSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<FleetSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = FleetSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<FleetSummaryResponse> fleetSummaryURLVL(url, customerId) async {
+  Future<FleetSummaryResponse> fleetSummaryURLVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<FleetSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<FleetSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = FleetSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetResponse> assetSummaryURL(url, customerId, serviceHeader) async {
+  Future<AssetResponse> assetSummaryURL(
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetResponse> assetSummaryURLVL(url, customerId) async {
+  Future<AssetResponse> assetSummaryURLVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetLocationData> assetLocationWithCluster(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetLocationData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetLocationData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetLocationData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetLocationData> assetLocationWithClusterVL(latitude, longitude,
-      pageNumber, pageSize, radiusKm, sort, customerId) async {
+  Future<AssetLocationData> assetLocationWithClusterVL(
+    latitude,
+    longitude,
+    pageNumber,
+    pageSize,
+    radiusKm,
+    sort,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'latitude': latitude,
@@ -467,141 +614,212 @@ class _RestClient implements RestClient {
       r'pageNumber': pageNumber,
       r'pageSize': pageSize,
       r'radiuskm': radiusKm,
-      r'sort': sort
+      r'sort': sort,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetLocationData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    '/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetLocationData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleetmap/1.0/location/maps/v1',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetLocationData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetLocationData> assetLocationSummary(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetLocationData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetLocationData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetLocationData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetLocationData> assetLocationSummaryVL(url, customerId) async {
+  Future<AssetLocationData> assetLocationSummaryVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetLocationData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetLocationData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetLocationData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetDetail> assetDetail(
-      url, assetUID, customerId, serviceHeader) async {
+    url,
+    assetUID,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'assetUID': assetUID};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetDetail>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetDetail>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetDetail.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetDetail> assetDetailVL(assetUID, customerId) async {
+  Future<AssetDetail> assetDetailVL(
+    assetUID,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'assetUID': assetUID};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        AssetDetail>(Options(
-            method: 'GET', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetDetail>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetDetails/v1',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetDetail.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetDetail> assetDetailCI(
-      url, assetUID, customerUID, customerId, serviceHeader) async {
+    url,
+    assetUID,
+    customerUID,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUID': assetUID,
-      r'customerUID': customerUID
+      r'customerUID': customerUID,
     };
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetDetail>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetDetail>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetDetail.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<List<Note>> getAssetNotes(
-      url, assetUID, serviceHeader, customerId, userId) async {
+    url,
+    assetUID,
+    serviceHeader,
+    customerId,
+    userId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'assetUID': assetUID};
     final _headers = <String, dynamic>{
       r'service': serviceHeader,
       r'X-VisionLink-CustomerUid': customerId,
-      r'X-VisionLink-UserUid': userId
+      r'X-VisionLink-UserUid': userId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<Note>>(
-        Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Note>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) => Note.fromJson(i as Map<String, dynamic>))
@@ -610,18 +828,28 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<List<Note>> getAssetNotesVL(assetUID, customerId) async {
+  Future<List<Note>> getAssetNotesVL(
+    assetUID,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'assetUID': assetUID};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<List<dynamic>>(_setStreamType<List<Note>>(
-        Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options,
-                '/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1',
-                queryParameters: queryParameters, data: _data)
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<Note>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) => Note.fromJson(i as Map<String, dynamic>))
@@ -630,18 +858,29 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<dynamic> postNotes(url, postnote, serviceHeader) async {
+  Future<dynamic> postNotes(
+    url,
+    postnote,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'service': serviceHeader};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(postnote.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
@@ -653,12 +892,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(postnote.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options,
-                '/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/t/trimble.com/VSS-AssetMetadata/1.0/AssetMetadata/Notes/v1',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
@@ -670,632 +915,968 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(postnote.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/npulse-masterdataapi-in/1.0/v1/ping',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/npulse-masterdataapi-in/1.0/v1/ping',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
-  Future<PingDeviceData> getPingData(assetUID, deviceUID) async {
+  Future<PingDeviceData> getPingData(
+    assetUID,
+    deviceUID,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'AssetUID': assetUID,
-      r'DeviceUID': deviceUID
+      r'DeviceUID': deviceUID,
     };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<PingDeviceData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/npulse-masterdataapi-in/1.0/v1/ping',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<PingDeviceData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/npulse-masterdataapi-in/1.0/v1/ping',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = PingDeviceData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetDeviceResponse> asset(assetUID, customerId) async {
+  Future<AssetDeviceResponse> asset(
+    assetUID,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'assetUID': assetUID};
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetDeviceResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(
-                    _dio.options, '/t/trimble.com/vss-deviceservice/2.0/asset',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetDeviceResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-deviceservice/2.0/asset',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetDeviceResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<SearchData> search(url, customerId, serviceHeader) async {
+  Future<SearchData> search(
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SearchData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<SearchData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SearchData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<SearchData> searchVL(url, customerId) async {
+  Future<SearchData> searchVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SearchData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<SearchData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SearchData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetLocationHistory> assetLocationHistory(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetLocationHistory>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetLocationHistory>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetLocationHistory.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetLocationHistory> assetLocationHistoryVL(url, customerId) async {
+  Future<AssetLocationHistory> assetLocationHistoryVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetLocationHistory>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetLocationHistory>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetLocationHistory.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UtilizationSummaryResponse> utilLizationList(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UtilizationSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<UtilizationSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UtilizationSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UtilizationSummaryResponse> utilLizationListVL(url, customerId) async {
+  Future<UtilizationSummaryResponse> utilLizationListVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UtilizationSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<UtilizationSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UtilizationSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<SingleAssetUtilization> singleAssetUtilization(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SingleAssetUtilization>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SingleAssetUtilization>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleAssetUtilization.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<SingleAssetUtilization> singleAssetUtilizationVL(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SingleAssetUtilization>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SingleAssetUtilization>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleAssetUtilization.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<SingleAssetUtilization> singleAssetUtilizationGraph(
-      assetUID, startDate, endDate) async {
+    assetUID,
+    startDate,
+    endDate,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'AssetUid': assetUID,
       r'startDate': startDate,
-      r'endDate': endDate
+      r'endDate': endDate,
     };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        SingleAssetUtilization>(Options(
-            method: 'GET', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/npulse-utilization-in/1.0/api/v1/Utilization/Details/Aggregate/v1',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<SingleAssetUtilization>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/npulse-utilization-in/1.0/api/v1/Utilization/Details/Aggregate/v1',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleAssetUtilization.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<Utilization> utilization(url, customerId, service) async {
+  Future<Utilization> utilization(
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Utilization>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<Utilization>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Utilization.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<Utilization> utilizationVL(url, customerId) async {
+  Future<Utilization> utilizationVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Utilization>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<Utilization>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Utilization.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> assetCount(url, customerId, service) async {
+  Future<AssetCount> assetCount(
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> assetCountVL(url, customerId) async {
+  Future<AssetCount> assetCountVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> userCount(url, customerId, service) async {
+  Future<AssetCount> userCount(
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> userCountVL(url, customerId) async {
+  Future<AssetCount> userCountVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetLocationData> assetLocationVL(url, customerId) async {
+  Future<AssetLocationData> assetLocationVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetLocationData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetLocationData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetLocationData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> fuelLevel(url, customerId, service) async {
+  Future<AssetCount> fuelLevel(
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> fuelLevelVL(url, customerId) async {
+  Future<AssetCount> fuelLevelVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetUtilization> assetUtilGraphData(url, customerId, service) async {
+  Future<AssetUtilization> assetUtilGraphData(
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetUtilization>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetUtilization>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetUtilization.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetUtilization> assetUtilGraphDataVL(url, customerId) async {
+  Future<AssetUtilization> assetUtilGraphDataVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetUtilization>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetUtilization>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetUtilization.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> idlingLevel(url, customerId, serviceHeader) async {
+  Future<AssetCount> idlingLevel(
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> idlingLevelVL(url, customerId) async {
+  Future<AssetCount> idlingLevelVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<IdlingLevelData> notificationData(status, userStatus) async {
+  Future<IdlingLevelData> notificationData(
+    status,
+    userStatus,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'notificationStatus': status,
-      r'notificationUserStatus': userStatus
+      r'notificationUserStatus': userStatus,
     };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<IdlingLevelData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    '/t/trimble.com/vss-notification/1.0/Notification/Count',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<IdlingLevelData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-notification/1.0/Notification/Count',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = IdlingLevelData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<SingleAssetOperation> singleAssetOperation(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SingleAssetOperation>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SingleAssetOperation>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleAssetOperation.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<SingleAssetOperation> singleAssetOperationVL(url, customerId) async {
+  Future<SingleAssetOperation> singleAssetOperationVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SingleAssetOperation>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SingleAssetOperation>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleAssetOperation.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<RunTimeCumulative> runtimeCumulative(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<RunTimeCumulative>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<RunTimeCumulative>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = RunTimeCumulative.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<RunTimeCumulative> runtimeCumulativeVL(
-      startDate, endDate, customerId) async {
+    startDate,
+    endDate,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'startdatelocal': startDate,
-      r'enddatelocal': endDate
+      r'enddatelocal': endDate,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        RunTimeCumulative>(Options(
-            method: 'POST', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<RunTimeCumulative>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = RunTimeCumulative.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<FuelBurnedCumulative> fuelBurnedCumulative(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<FuelBurnedCumulative>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<FuelBurnedCumulative>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = FuelBurnedCumulative.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<FuelBurnedCumulative> fuelBurnedCumulativeVL(
-      startDate, endDate, customerId) async {
+    startDate,
+    endDate,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'startdatelocal': startDate,
-      r'enddatelocal': endDate
+      r'enddatelocal': endDate,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        FuelBurnedCumulative>(Options(
-            method: 'POST', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<FuelBurnedCumulative>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = FuelBurnedCumulative.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<TotalHours> getTotalHours(url, customerId, serviceHeader) async {
+  Future<TotalHours> getTotalHours(
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<TotalHours>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<TotalHours>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = TotalHours.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<TotalHours> getTotalHoursVL(interval, startDate, endDate, pageNumber,
-      pageSize, includepagination, customerId) async {
+  Future<TotalHours> getTotalHoursVL(
+    interval,
+    startDate,
+    endDate,
+    pageNumber,
+    pageSize,
+    includepagination,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'interval': interval,
@@ -1303,46 +1884,69 @@ class _RestClient implements RestClient {
       r'enddatelocal': endDate,
       r'pageNumber': pageNumber,
       r'pageSize': pageSize,
-      r'includepagination': includepagination
+      r'includepagination': includepagination,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        TotalHours>(Options(
-            method: 'POST', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives/intervals',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<TotalHours>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/hours/cumulatives/intervals',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = TotalHours.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<TotalFuelBurned> getTotalFuelBurned(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<TotalFuelBurned>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<TotalFuelBurned>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = TotalFuelBurned.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<TotalFuelBurned> getTotalFuelBurnedVL(interval, startDate, endDate,
-      pageNumber, pageSize, includepagination, customerId) async {
+  Future<TotalFuelBurned> getTotalFuelBurnedVL(
+    interval,
+    startDate,
+    endDate,
+    pageNumber,
+    pageSize,
+    includepagination,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'interval': interval,
@@ -1350,46 +1954,69 @@ class _RestClient implements RestClient {
       r'enddatelocal': endDate,
       r'pageNumber': pageNumber,
       r'pageSize': pageSize,
-      r'includepagination': includepagination
+      r'includepagination': includepagination,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        TotalFuelBurned>(Options(
-            method: 'POST', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives/intervals',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<TotalFuelBurned>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburned/cumulatives/intervals',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = TotalFuelBurned.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<IdlePercentTrend> getIdlePercentTrend(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<IdlePercentTrend>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<IdlePercentTrend>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = IdlePercentTrend.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<IdlePercentTrend> getIdlePercentTrendVL(interval, startDate, endDate,
-      pageNumber, pageSize, includepagination, customerId) async {
+  Future<IdlePercentTrend> getIdlePercentTrendVL(
+    interval,
+    startDate,
+    endDate,
+    pageNumber,
+    pageSize,
+    includepagination,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'interval': interval,
@@ -1397,46 +2024,69 @@ class _RestClient implements RestClient {
       r'enddatelocal': endDate,
       r'pageNumber': pageNumber,
       r'pageSize': pageSize,
-      r'includepagination': includepagination
+      r'includepagination': includepagination,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        IdlePercentTrend>(Options(
-            method: 'POST', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/idlepercent',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<IdlePercentTrend>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/idlepercent',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = IdlePercentTrend.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<FuelBurnRateTrend> getFuelBurnRateTrend(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<FuelBurnRateTrend>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<FuelBurnRateTrend>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = FuelBurnRateTrend.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<FuelBurnRateTrend> getFuelBurnRateTrendVL(interval, startDate, endDate,
-      pageNumber, pageSize, includepagination, customerId) async {
+  Future<FuelBurnRateTrend> getFuelBurnRateTrendVL(
+    interval,
+    startDate,
+    endDate,
+    pageNumber,
+    pageSize,
+    includepagination,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'interval': interval,
@@ -1444,123 +2094,185 @@ class _RestClient implements RestClient {
       r'enddatelocal': endDate,
       r'pageNumber': pageNumber,
       r'pageSize': pageSize,
-      r'includepagination': includepagination
+      r'includepagination': includepagination,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        FuelBurnRateTrend>(Options(
-            method: 'POST', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburnrate',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<FuelBurnRateTrend>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/Utilization/summary/v2/fuelburnrate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = FuelBurnRateTrend.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<LocationSearchResponse> getLocations(
-      query, maxResults, authToken) async {
+    query,
+    maxResults,
+    authToken,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'query': query,
       r'maxResults': maxResults,
-      r'authToken': authToken
+      r'authToken': authToken,
     };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LocationSearchResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/ww/api/search',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<LocationSearchResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/ww/api/search',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = LocationSearchResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UtilizationSummary> getAssetUtilization(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UtilizationSummary>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UtilizationSummary>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UtilizationSummary.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UtilizationSummary> getAssetUtilizationcustomerUID(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UtilizationSummary>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UtilizationSummary>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UtilizationSummary.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UtilizationSummary> getAssetUtilizationVL(url, customerId) async {
+  Future<UtilizationSummary> getAssetUtilizationVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UtilizationSummary>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UtilizationSummary>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UtilizationSummary.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UtilizationSummary> getAssetUtilizationcustomerUIDVL(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UtilizationSummary>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UtilizationSummary>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UtilizationSummary.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<LoginResponse> getToken(username, password, granttype, clientid,
-      clientsecret, scope, contentType) async {
+  Future<LoginResponse> getToken(
+    username,
+    password,
+    granttype,
+    clientid,
+    clientsecret,
+    scope,
+    contentType,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'username': username,
@@ -1568,84 +2280,113 @@ class _RestClient implements RestClient {
       r'grant_type': granttype,
       r'client_id': clientid,
       r'client_secret': clientsecret,
-      r'scope': scope
+      r'scope': scope,
     };
     final _headers = <String, dynamic>{r'content-type': contentType};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LoginResponse>(Options(
-                method: 'POST',
-                headers: _headers,
-                extra: _extra,
-                contentType: contentType)
-            .compose(_dio.options, '/token',
-                queryParameters: queryParameters, data: _data)
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<LoginResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              '/token',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = LoginResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<LoginResponse> getTokenV4(tokenData, contentType) async {
+  Future<LoginResponse> getTokenV4(
+    tokenData,
+    contentType,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'content-type': contentType};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(tokenData.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LoginResponse>(Options(
-                method: 'POST',
-                headers: _headers,
-                extra: _extra,
-                contentType: contentType)
-            .compose(_dio.options, '/oauth/token',
-                queryParameters: queryParameters, data: _data)
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<LoginResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              '/oauth/token',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = LoginResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<LoginResponse> getRefreshLoginData(contentType, refreshToken) async {
+  Future<LoginResponse> getRefreshLoginData(
+    contentType,
+    refreshToken,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'content-type': contentType};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(refreshToken.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LoginResponse>(Options(
-                method: 'POST',
-                headers: _headers,
-                extra: _extra,
-                contentType: contentType)
-            .compose(_dio.options, '/oauth/token',
-                queryParameters: queryParameters, data: _data)
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<LoginResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              '/oauth/token',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = LoginResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<LoginResponse> getTokenWithoutLogin(authorization, contentType) async {
+  Future<LoginResponse> getTokenWithoutLogin(
+    authorization,
+    contentType,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'Authorization': authorization,
-      r'content-type': contentType
+      r'content-type': contentType,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LoginResponse>(Options(
-                method: 'POST',
-                headers: _headers,
-                extra: _extra,
-                contentType: contentType)
-            .compose(_dio.options, '/oauth/token?grant_type=client_credentials',
-                queryParameters: queryParameters, data: _data)
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<LoginResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              '/oauth/token?grant_type=client_credentials',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = LoginResponse.fromJson(_result.data!);
     return value;
@@ -1653,186 +2394,285 @@ class _RestClient implements RestClient {
 
   @override
   Future<FaultSummaryResponse> faultViewSummaryURL(
-      url, fitlers, customerId, serviceHeader) async {
+    url,
+    fitlers,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = fitlers;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<FaultSummaryResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<FaultSummaryResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = FaultSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<FaultSummaryResponse> faultViewSummaryURLVL(
-      url, fitlers, customerId) async {
+    url,
+    fitlers,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = fitlers;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<FaultSummaryResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<FaultSummaryResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = FaultSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetFaultSummaryResponse> assetViewSummaryURL(
-      url, fitlers, customerId, serviceHeader) async {
+    url,
+    fitlers,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = fitlers;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetFaultSummaryResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetFaultSummaryResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetFaultSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetFaultSummaryResponse> assetViewSummaryURLVL(
-      url, fitlers, customerId) async {
+    url,
+    fitlers,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = fitlers;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetFaultSummaryResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetFaultSummaryResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetFaultSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetFaultSummaryResponse> assetViewDetailSummaryURL(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetFaultSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetFaultSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetFaultSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetFaultSummaryResponse> assetViewDetailSummaryURLVL(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetFaultSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetFaultSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetFaultSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<HealthListResponse> assetViewLocationSummaryURL(
-      url, assetUid, customerId, serviceHeader) async {
+    url,
+    assetUid,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'assetUid': assetUid};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HealthListResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<HealthListResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = HealthListResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<HealthListResponse> assetViewLocationSummaryURLVL(
-      url, assetUid, customerId) async {
+    url,
+    assetUid,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'assetUid': assetUid};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'X-VisionLink-CustomerUid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HealthListResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<HealthListResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = HealthListResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<HealthListResponse> getHealthListData(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HealthListResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<HealthListResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = HealthListResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<HealthListResponse> getHealthListDataVL(assetUid, endDateTime,
-      langDesc, limit, page, startDateTime, customerId) async {
+  Future<HealthListResponse> getHealthListDataVL(
+    assetUid,
+    endDateTime,
+    langDesc,
+    limit,
+    page,
+    startDateTime,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUid': assetUid,
@@ -1840,149 +2680,219 @@ class _RestClient implements RestClient {
       r'langDesc': langDesc,
       r'limit': limit,
       r'page': page,
-      r'startDateTime': startDateTime
+      r'startDateTime': startDateTime,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HealthListResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    '/t/trimble.com/vss-service/1.0/health/FaultDetails/v1',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<HealthListResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-service/1.0/health/FaultDetails/v1',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = HealthListResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<SingleAssetFaultResponse> getDashboardListData(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SingleAssetFaultResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SingleAssetFaultResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleAssetFaultResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<SingleAssetFaultResponse> getDashboardListDataVL(
-      assetUid, endDate, startDate, customerId) async {
+    assetUid,
+    endDate,
+    startDate,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUid': assetUid,
       r'endDateTime': endDate,
-      r'startDateTime': startDate
+      r'startDateTime': startDate,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SingleAssetFaultResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options,
-                    '/t/trimble.com/vss-service/1.0/health/faultSummary/v1',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SingleAssetFaultResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-service/1.0/health/faultSummary/v1',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleAssetFaultResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> faultCount(url, customerId, service) async {
+  Future<AssetCount> faultCount(
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> faultCountVL(url, customerId) async {
+  Future<AssetCount> faultCountVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetCount> assetStatusFilterDataVL(
-      grouping, productfamily, customerId) async {
+    grouping,
+    productfamily,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'grouping': grouping,
-      r'productfamily': productfamily
+      r'productfamily': productfamily,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        AssetCount>(Options(
-            method: 'GET', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> idlingLevelFilterData(url, startDate, idleEfficiencyRanges,
-      productfamily, endDate, customerId, service) async {
+  Future<AssetCount> idlingLevelFilterData(
+    url,
+    startDate,
+    idleEfficiencyRanges,
+    productfamily,
+    endDate,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'startDate': startDate,
       r'idleEfficiencyRanges': idleEfficiencyRanges,
       r'productfamily': productfamily,
-      r'endDate': endDate
+      r'endDate': endDate,
     };
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
@@ -1994,317 +2904,489 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        AssetCount>(Options(
-            method: 'GET', headers: _headers, extra: _extra)
-        .compose(_dio.options,
-            '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/t/trimble.com/vss-unifiedfleet/1.0/UnifiedFleet/AssetCount/v1',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UtilizationSummary> utilizationSummary(
-      url, customerId, service) async {
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UtilizationSummary>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UtilizationSummary>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UtilizationSummary.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UtilizationSummary> utilizationSummaryVL(url, customerId) async {
+  Future<UtilizationSummary> utilizationSummaryVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UtilizationSummary>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UtilizationSummary>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UtilizationSummary.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetLocationData> locationFilterData(url, customerId, service) async {
+  Future<AssetLocationData> locationFilterData(
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetLocationData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetLocationData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetLocationData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetLocationData> locationFilterDataVL(url, customerId) async {
+  Future<AssetLocationData> locationFilterDataVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetLocationData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetLocationData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetLocationData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AdminManageUser> getAdminManagerUserListDataVL(url, customerId) async {
+  Future<AdminManageUser> getAdminManagerUserListDataVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AdminManageUser>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AdminManageUser>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AdminManageUser.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ManageUser> getUser(url, customerId) async {
+  Future<ManageUser> getUser(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageUser>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ManageUser>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageUser.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ApplicationData> getApplicationsData(url, customerId) async {
+  Future<ApplicationData> getApplicationsData(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApplicationData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApplicationData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ApplicationData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UpdateResponse> updateUserData(url, customerId, updateUserData) async {
+  Future<UpdateResponse> updateUserData(
+    url,
+    customerId,
+    updateUserData,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(updateUserData.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UpdateResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UpdateResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UpdateResponse> deleteUsersData(
-      url, customerId, updateUserData) async {
+    url,
+    customerId,
+    updateUserData,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(updateUserData);
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UpdateResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UpdateResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UpdateResponse> deleteUsers(
-      url, updateUserData, customerId, userId, serviceHeader) async {
+    url,
+    updateUserData,
+    customerId,
+    userId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
       r'X-VisionLink-UserUid': userId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(updateUserData);
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UpdateResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UpdateResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AddUser> addUserData(url, customerId, updateUserData) async {
+  Future<AddUser> addUserData(
+    url,
+    customerId,
+    updateUserData,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(updateUserData.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddUser>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<AddUser>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AddUser.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AddUser> inviteUser(
-      url, updateUserData, customerId, userId, serviceHeader) async {
+    url,
+    updateUserData,
+    customerId,
+    userId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
       r'X-VisionLink-UserUid': userId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(updateUserData.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddUser>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<AddUser>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AddUser.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<RoleDataResponse> roles(url, customerId) async {
+  Future<RoleDataResponse> roles(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<RoleDataResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<RoleDataResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = RoleDataResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AdminManageUser> getAdminManagerUserListData(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AdminManageUser>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AdminManageUser>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AdminManageUser.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageAssetConfiguration> getAssetSettingsListDataVL(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageAssetConfiguration>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageAssetConfiguration>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageAssetConfiguration.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageAssetConfiguration> getAssetSettingsListData(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageAssetConfiguration>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageAssetConfiguration>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageAssetConfiguration.fromJson(_result.data!);
     return value;
   }
@@ -2317,11 +3399,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SubscriptionDashboardResult>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SubscriptionDashboardResult>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SubscriptionDashboardResult.fromJson(_result.data!);
     return value;
   }
@@ -2334,11 +3423,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SingleAssetRegistrationSearchModel>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SingleAssetRegistrationSearchModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleAssetRegistrationSearchModel.fromJson(_result.data!);
     return value;
   }
@@ -2351,11 +3447,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SubscriptionDashboardDetailResult>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SubscriptionDashboardDetailResult>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SubscriptionDashboardDetailResult.fromJson(_result.data!);
     return value;
   }
@@ -2366,101 +3469,153 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HierarchyAssets>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<HierarchyAssets>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = HierarchyAssets.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AddSettings> getassetSettingsFuelBurnRateDataVL(
-      url, assetFuelBurnRateSetting, customerId) async {
+    url,
+    assetFuelBurnRateSetting,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(assetFuelBurnRateSetting.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddSettings>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AddSettings>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AddSettings.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AddSettings> getassetSettingsFuelBurnRateData(
-      url, assetFuelBurnRateSetting, customerId, serviceHeader) async {
+    url,
+    assetFuelBurnRateSetting,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(assetFuelBurnRateSetting.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddSettings>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AddSettings>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AddSettings.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<EstimatedResponse> getAssetTargetSettingsDataVL(
-      url, estimatedAssetSetting, customerId) async {
+    url,
+    estimatedAssetSetting,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(estimatedAssetSetting.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EstimatedResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<EstimatedResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EstimatedResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<EstimatedResponse> getAssetTargetSettingsData(
-      url, estimatedAssetSetting, customerId, serviceHeader) async {
+    url,
+    estimatedAssetSetting,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(estimatedAssetSetting.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EstimatedResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<EstimatedResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EstimatedResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<dynamic> postGeofenceAnotherData(
-      url, customeruid, geofencepayload) async {
+    url,
+    customeruid,
+    geofencepayload,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2470,18 +3625,28 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(geofencepayload.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
   Future<dynamic> putGeofenceAnotherData(
-      url, customeruid, geofencepayload) async {
+    url,
+    customeruid,
+    geofencepayload,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2491,17 +3656,27 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(geofencepayload.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'PUT', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
-  Future<Materialmodel> getMaterialModel(url, customeruid) async {
+  Future<Materialmodel> getMaterialModel(
+    url,
+    customeruid,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2510,19 +3685,29 @@ class _RestClient implements RestClient {
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Materialmodel>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<Materialmodel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Materialmodel.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<dynamic> putGeofencePayLoadVL(
-      url, customeruid, geofencepayload) async {
+    url,
+    customeruid,
+    geofencepayload,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2532,57 +3717,88 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(geofencepayload.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'PUT', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
-  Future<AuthenticatedUser> authenticateUser(url, authenticatePayload) async {
+  Future<AuthenticatedUser> authenticateUser(
+    url,
+    authenticatePayload,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(authenticatePayload.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AuthenticatedUser>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AuthenticatedUser>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AuthenticatedUser.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<dynamic> putGeofencePayLoad(
-      url, customeruid, geofencepayload, serviceHeader) async {
+    url,
+    customeruid,
+    geofencepayload,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customeruid,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(geofencepayload.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'PUT', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
   Future<dynamic> postGeofencePayLoadVL(
-      url, customeruid, geofencepayload) async {
+    url,
+    customeruid,
+    geofencepayload,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2592,39 +3808,60 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(geofencepayload.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
   Future<dynamic> postGeofencePayLoad(
-      url, customeruid, geofencepayload, serviceHeader) async {
+    url,
+    customeruid,
+    geofencepayload,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customeruid,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(geofencepayload.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
-  Future<Geofence> getGeofenceDataVL(url, customeruid) async {
+  Future<Geofence> getGeofenceDataVL(
+    url,
+    customeruid,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2633,39 +3870,60 @@ class _RestClient implements RestClient {
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Geofence>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Geofence>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Geofence.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<Geofence> getGeofenceData(url, customeruid, service) async {
+  Future<Geofence> getGeofenceData(
+    url,
+    customeruid,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customeruid,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Geofence>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Geofence>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Geofence.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<dynamic> deleteGeofenceVL(url, customeruid) async {
+  Future<dynamic> deleteGeofenceVL(
+    url,
+    customeruid,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2674,37 +3932,58 @@ class _RestClient implements RestClient {
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'DELETE', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
-  Future<dynamic> deleteGeofence(url, customeruid, service) async {
+  Future<dynamic> deleteGeofence(
+    url,
+    customeruid,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customeruid,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'DELETE', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
-  Future<Geofencemodeldata> getSingleGeofenceVL(url, customeruid) async {
+  Future<Geofencemodeldata> getSingleGeofenceVL(
+    url,
+    customeruid,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2713,40 +3992,61 @@ class _RestClient implements RestClient {
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Geofencemodeldata>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<Geofencemodeldata>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Geofencemodeldata.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<Geofencemodeldata> getSingleGeofence(url, customeruid, service) async {
+  Future<Geofencemodeldata> getSingleGeofence(
+    url,
+    customeruid,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customeruid,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Geofencemodeldata>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<Geofencemodeldata>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Geofencemodeldata.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadDataVL(
-      url, estimatedCycleVolumePayLoad, customerId) async {
+    url,
+    estimatedCycleVolumePayLoad,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
@@ -2754,40 +4054,61 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(estimatedCycleVolumePayLoad.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EstimatedCycleVolumePayLoad>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<EstimatedCycleVolumePayLoad>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EstimatedCycleVolumePayLoad.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<EstimatedCycleVolumePayLoad> getEstimatedCycleVolumePayLoadData(
-      url, estimatedCycleVolumePayLoad, customerId, serviceHeader) async {
+    url,
+    estimatedCycleVolumePayLoad,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(estimatedCycleVolumePayLoad.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EstimatedCycleVolumePayLoad>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<EstimatedCycleVolumePayLoad>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EstimatedCycleVolumePayLoad.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetMileageSettingData> getMileageDataVL(
-      url, assetMileageSettingData, customerId) async {
+    url,
+    assetMileageSettingData,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
@@ -2795,74 +4116,116 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(assetMileageSettingData.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetMileageSettingData>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetMileageSettingData>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetMileageSettingData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<dynamic> markFavouriteVL(url, customerId) async {
+  Future<dynamic> markFavouriteVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'PUT', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
-  Future<dynamic> markFavourite(url, customerId, service) async {
+  Future<dynamic> markFavourite(
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'PUT', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
   Future<AssetMileageSettingData> getMileageData(
-      url, assetMileageSettingData, customerId, serviceHeader) async {
+    url,
+    assetMileageSettingData,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(assetMileageSettingData.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetMileageSettingData>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetMileageSettingData>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetMileageSettingData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<GetAddgeofenceModel> getGeofenceInputData(url, customeruid) async {
+  Future<GetAddgeofenceModel> getGeofenceInputData(
+    url,
+    customeruid,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2872,53 +4235,82 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<GetAddgeofenceModel>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<GetAddgeofenceModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetAddgeofenceModel.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<SingleAssetResponce> postSingleAssetSmsSchedule(
-      url, singleAssetData) async {
+    url,
+    singleAssetData,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = singleAssetData.map((e) => e.toJson()).toList();
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SingleAssetResponce>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SingleAssetResponce>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleAssetResponce.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<EstimatedAssetSetting> getEstimatedTagetListDataVL(
-      url, assetUid, customerId) async {
+    url,
+    assetUid,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = assetUid;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EstimatedAssetSetting>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<EstimatedAssetSetting>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EstimatedAssetSetting.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<EstimatedAssetSetting> getEstimatedTagetListData(
-      url, assetUid, service) async {
+    url,
+    assetUid,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2926,18 +4318,28 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = assetUid;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EstimatedAssetSetting>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<EstimatedAssetSetting>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EstimatedAssetSetting.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<EstimatedCycleVolumePayLoad> getEstimatedCyclePayLoadVoumeListData(
-      url, assetUid, customerId) async {
+    url,
+    assetUid,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -2945,27 +4347,44 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = assetUid;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EstimatedCycleVolumePayLoad>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<EstimatedCycleVolumePayLoad>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EstimatedCycleVolumePayLoad.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<SavingSmsResponce> savingSms(url, singleAssetData) async {
+  Future<SavingSmsResponce> savingSms(
+    url,
+    singleAssetData,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = singleAssetData.map((e) => e.toJson()).toList();
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SavingSmsResponce>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<SavingSmsResponce>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SavingSmsResponce.fromJson(_result.data!);
     return value;
   }
@@ -2977,11 +4396,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SmsReportSummaryModel>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SmsReportSummaryModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SmsReportSummaryModel.fromJson(_result.data!);
     return value;
   }
@@ -2993,49 +4419,78 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SmsReportSummaryModel>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SmsReportSummaryModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SmsReportSummaryModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<dynamic> getAssetIconDataVL(url, assetIconPayLoad, customerId) async {
+  Future<dynamic> getAssetIconDataVL(
+    url,
+    assetIconPayLoad,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(assetIconPayLoad.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'PUT', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
   Future<dynamic> getAssetIconData(
-      url, assetIconPayLoad, customerId, service) async {
+    url,
+    assetIconPayLoad,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(assetIconPayLoad.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'PUT', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
@@ -3047,47 +4502,72 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SerialNumberResults>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SerialNumberResults>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SerialNumberResults.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AddAssetRegistrationData> getSingleAssetRegistrationData(
-      url, addAssetRegistrationData) async {
+    url,
+    addAssetRegistrationData,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(addAssetRegistrationData.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddAssetRegistrationData>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AddAssetRegistrationData>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AddAssetRegistrationData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AddAssetRegistrationData?> postSingleAssetTransferRegistration(
-      url, data) async {
+    url,
+    data,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>?>(
-        _setStreamType<AddAssetRegistrationData>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AddAssetRegistrationData>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data == null
         ? null
         : AddAssetRegistrationData.fromJson(_result.data!);
@@ -3096,18 +4576,27 @@ class _RestClient implements RestClient {
 
   @override
   Future<AssetTransferData> getSingleAssetTransferData(
-      url, assetTransferData) async {
+    url,
+    assetTransferData,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(assetTransferData.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetTransferData>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetTransferData>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetTransferData.fromJson(_result.data!);
     return value;
   }
@@ -3118,12 +4607,19 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<DeviceSearchModel>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<DeviceSearchModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = DeviceSearchModel.fromJson(_result.data!);
     return value;
   }
@@ -3135,11 +4631,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<DeviceSearchModelResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<DeviceSearchModelResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = DeviceSearchModelResponse.fromJson(_result.data!);
     return value;
   }
@@ -3150,28 +4653,45 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ReplaceDeviceModel>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ReplaceDeviceModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ReplaceDeviceModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<dynamic> postNewDeviceId(url, replacementModel) async {
+  Future<dynamic> postNewDeviceId(
+    url,
+    replacementModel,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(replacementModel.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
@@ -3184,11 +4704,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<TotalDeviceReplacementStatusModel>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<TotalDeviceReplacementStatusModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = TotalDeviceReplacementStatusModel.fromJson(_result.data!);
     return value;
   }
@@ -3201,11 +4728,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ReplacementDeviceIdDownload>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ReplacementDeviceIdDownload>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ReplacementDeviceIdDownload.fromJson(_result.data!);
     return value;
   }
@@ -3217,11 +4751,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SingleTransferDeviceId>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SingleTransferDeviceId>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SingleTransferDeviceId.fromJson(_result.data!);
     return value;
   }
@@ -3232,12 +4773,19 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<DeviceDetailsPerId>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<DeviceDetailsPerId>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = DeviceDetailsPerId.fromJson(_result.data!);
     return value;
   }
@@ -3249,11 +4797,18 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetDetailsBySerialNo>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetDetailsBySerialNo>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetDetailsBySerialNo.fromJson(_result.data!);
     return value;
   }
@@ -3264,12 +4819,19 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CustomerDetails>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CustomerDetails>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CustomerDetails.fromJson(_result.data!);
     return value;
   }
@@ -3281,18 +4843,29 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCreationResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetCreationResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCreationResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetFuelBurnRateSettingsListData>
-      getAssetFuelBurnRateSettingsListDataVL(url, assetUid, customerId) async {
+      getAssetFuelBurnRateSettingsListDataVL(
+    url,
+    assetUid,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -3300,11 +4873,18 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = assetUid;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetFuelBurnRateSettingsListData>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetFuelBurnRateSettingsListData>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetFuelBurnRateSettingsListData.fromJson(_result.data!);
     return value;
   }
@@ -3312,29 +4892,43 @@ class _RestClient implements RestClient {
   @override
   Future<AssetFuelBurnRateSettingsListData>
       getAssetFuelBurnRateSettingsListData(
-          url, assetUid, customerId, service) async {
+    url,
+    assetUid,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = assetUid;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetFuelBurnRateSettingsListData>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetFuelBurnRateSettingsListData>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetFuelBurnRateSettingsListData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetMileageSettingsListData> getAssetMileageSettingsListDataVL(
-      url, assetUId, customerId) async {
+    url,
+    assetUId,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -3342,48 +4936,76 @@ class _RestClient implements RestClient {
     _headers.removeWhere((k, v) => v == null);
     final _data = assetUId;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetMileageSettingsListData>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetMileageSettingsListData>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetMileageSettingsListData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetMileageSettingsListData> getAssetMileageSettingsListData(
-      url, assetUId, customerId, service) async {
+    url,
+    assetUId,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = assetUId;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetMileageSettingsListData>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetMileageSettingsListData>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetMileageSettingsListData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<dynamic> deleteSmsSchedule(url, data) async {
+  Future<dynamic> deleteSmsSchedule(
+    url,
+    data,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = data.map((e) => e.toJson()).toList();
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
@@ -3395,18 +5017,28 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SubscriptionDashboardDetailResult>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SubscriptionDashboardDetailResult>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SubscriptionDashboardDetailResult.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ListDeviceTypeResponse> getDeviceTypeVL(
-      url, assetUId, customerId) async {
+    url,
+    assetUId,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
@@ -3414,51 +5046,78 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(assetUId.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ListDeviceTypeResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ListDeviceTypeResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ListDeviceTypeResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ListDeviceTypeResponse> getDeviceType(
-      url, assetUId, service, customerId) async {
+    url,
+    assetUId,
+    service,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(assetUId.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ListDeviceTypeResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ListDeviceTypeResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ListDeviceTypeResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetCreationResetData> submitAssetCreationData(
-      url, assetCreationPayLoad) async {
+    url,
+    assetCreationPayLoad,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(assetCreationPayLoad.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCreationResetData>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetCreationResetData>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCreationResetData.fromJson(_result.data!);
     return value;
   }
@@ -3470,275 +5129,424 @@ class _RestClient implements RestClient {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCreationResetData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetCreationResetData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCreationResetData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<CheckUserResponse> checkUserVL(url, customerId) async {
+  Future<CheckUserResponse> checkUserVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CheckUserResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CheckUserResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CheckUserResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<CheckUserResponse> checkUser(url, service, customerId) async {
+  Future<CheckUserResponse> checkUser(
+    url,
+    service,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CheckUserResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CheckUserResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CheckUserResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<NotificationsData> mainNotificationsData(
-      url, customerId, service) async {
+    url,
+    customerId,
+    service,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NotificationsData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NotificationsData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NotificationsData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<NotificationsData> mainNotificationsDataVL(url, customerId) async {
+  Future<NotificationsData> mainNotificationsDataVL(
+    url,
+    customerId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NotificationsData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NotificationsData.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<AssetGroupSummaryResponse> getGroupListDataVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NotificationsData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = NotificationsData.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<AssetGroupSummaryResponse> getGroupListDataVL(url, customerId) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetGroupSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetGroupSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetGroupSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetGroupSummaryResponse> getGroupListData(
-      url, service, customerId) async {
+    url,
+    service,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetGroupSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetGroupSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetGroupSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AssetCount> getGeoFenceCountData(url, customerId) async {
+  Future<AssetCount> getGeoFenceCountData(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AssetCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetCount.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageGroupSummaryResponse> getManageGroupSummaryListData(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageGroupSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageGroupSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageGroupSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UpdateResponse> getGroupFavoriteData(
-      url, groupFavoritePayLoad, customerId) async {
+    url,
+    groupFavoritePayLoad,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(groupFavoritePayLoad.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UpdateResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UpdateResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UpdateResponse> getDeleteFavoriteData(url, customerId) async {
+  Future<UpdateResponse> getDeleteFavoriteData(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UpdateResponse>(
-            Options(method: 'DELETE', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UpdateResponse>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UpdateResponse> deleteNotificationVL(url, customerId) async {
+  Future<UpdateResponse> deleteNotificationVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UpdateResponse>(
-            Options(method: 'DELETE', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UpdateResponse>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<UpdateResponse> deleteNotification(service, url, customerId) async {
+  Future<UpdateResponse> deleteNotification(
+    service,
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UpdateResponse>(
-            Options(method: 'DELETE', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UpdateResponse>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetGroupSummaryResponse> getAdminProductFamilyFilterData(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetGroupSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetGroupSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetGroupSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AssetGroupSummaryResponse> getManufacturerFilterData(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AssetGroupSummaryResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AssetGroupSummaryResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AssetGroupSummaryResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<AddGroupDataResponse> getAddGroupSaveData(
-      url, addGroupPayLoad, customerId) async {
+    url,
+    addGroupPayLoad,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
@@ -3746,300 +5554,460 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(addGroupPayLoad.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AddGroupDataResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<AddGroupDataResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AddGroupDataResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<EditGroupResponse> getEditGroupResponseData(url, customerId) async {
+  Future<EditGroupResponse> getEditGroupResponseData(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EditGroupResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<EditGroupResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EditGroupResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UpdateResponse> getAddGroupEditData(
-      url, addGroupEditPayload, customerId) async {
+    url,
+    addGroupEditPayload,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(addGroupEditPayload.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UpdateResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UpdateResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageNotificationsData> manageNotificationsDataVL(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageNotificationsData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageNotificationsData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageNotificationsData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageNotificationsData> manageNotificationsData(
-      service, url, customerId) async {
+    service,
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'X-VisionLink-CustomerUID': customerId
+      r'X-VisionLink-CustomerUID': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageNotificationsData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageNotificationsData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageNotificationsData.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AlertTypes> getNotificationTypesDataVL(url, customerId) async {
+  Future<AlertTypes> getNotificationTypesDataVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AlertTypes>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AlertTypes>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AlertTypes.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<AlertTypes> getNotificationTypesData(service, url, customerId) async {
+  Future<AlertTypes> getNotificationTypesData(
+    service,
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AlertTypes>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AlertTypes>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AlertTypes.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<dynamic> loginAudit(
-      url, customerId, service, loginAuditPayload) async {
+    url,
+    customerId,
+    service,
+    loginAuditPayload,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUid': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = loginAuditPayload;
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
   Future<ManageReportResponse> getManageReportListDataVL(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageReportResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageReportResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageReportDeleteAssetResponse> getDeleteManageReportAssetVL(
-      url, reqId, customerId) async {
+    url,
+    reqId,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = reqId;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageReportDeleteAssetResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageReportDeleteAssetResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageReportDeleteAssetResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<TemplateResponse> getTemplateReportAssetDataVL(url, customerId) async {
+  Future<TemplateResponse> getTemplateReportAssetDataVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<TemplateResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<TemplateResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = TemplateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<TemplateResponse> getTemplateReportAssetData(
-      url, service, customerId) async {
+    url,
+    service,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<TemplateResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<TemplateResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = TemplateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<SearchContactReportListResponse> getSearchContactReportDataVL(
-      url, customerId) async {
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SearchContactReportListResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SearchContactReportListResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SearchContactReportListResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<SearchContactReportListResponse> getSearchContactReportData(
-      url, service, customerId) async {
+    url,
+    service,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SearchContactReportListResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<SearchContactReportListResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = SearchContactReportListResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<EditReportResponse> getEditReportDataVL(url, customerId) async {
+  Future<EditReportResponse> getEditReportDataVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EditReportResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<EditReportResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EditReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<EditReportResponse> getEditReportData(url, service, customerId) async {
+  Future<EditReportResponse> getEditReportData(
+    url,
+    service,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<EditReportResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<EditReportResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = EditReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageReportResponse> getAddReportSaveDataVL(
-      url, addReportPayLoad, customerId) async {
+    url,
+    addReportPayLoad,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
@@ -4047,18 +6015,28 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(addReportPayLoad.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageReportResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageReportResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageReportResponse> getEditReportSaveDataVL(
-      url, addReportPayLoad, customerId) async {
+    url,
+    addReportPayLoad,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
@@ -4066,292 +6044,447 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(addReportPayLoad.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageReportResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageReportResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageReportResponse> getEditReportSaveData(
-      url, addReportPayLoad, service, customerId) async {
+    url,
+    addReportPayLoad,
+    service,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(addReportPayLoad.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageReportResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageReportResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageReportResponse> getAddReportSaveData(
-      url, addReportPayLoad, service, customerId) async {
+    url,
+    addReportPayLoad,
+    service,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(addReportPayLoad.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageReportResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageReportResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageReportResponse> getManageReportListData(
-      url, service, customerId, userId) async {
+    url,
+    service,
+    customerId,
+    userId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
       r'x-visionlink-customeruid': customerId,
-      r'X-VisionLink-UserUid': userId
+      r'X-VisionLink-UserUid': userId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageReportResponse>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageReportResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ManageReportDeleteAssetResponse> getDeleteManageReportAsset(
-      url, reqId, service, customerId) async {
+    url,
+    reqId,
+    service,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = reqId;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ManageReportDeleteAssetResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<ManageReportDeleteAssetResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ManageReportDeleteAssetResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<UpdateResponse> deleteMainNotification(
-      url, notifictionIds, customerId) async {
+    url,
+    notifictionIds,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(notifictionIds);
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<UpdateResponse>(
-            Options(method: 'PUT', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<UpdateResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ZoneValues> getCustomerInclusionExclusionVL(url, customerId) async {
+  Future<ZoneValues> getCustomerInclusionExclusionVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ZoneValues>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ZoneValues>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ZoneValues.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<dynamic> createZones(url, customerId, service, zone) async {
+  Future<dynamic> createZones(
+    url,
+    customerId,
+    service,
+    zone,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-VisionLink-CustomerUID': customerId,
-      r'service': service
+      r'service': service,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(zone.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
   Future<ZoneValues> getCustomerInclusionExclusion(
-      service, url, customerId) async {
+    service,
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'X-VisionLink-CustomerUID': customerId
+      r'X-VisionLink-CustomerUID': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ZoneValues>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ZoneValues>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ZoneValues.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<NotificationExist> checkNotificationExistVL(url, customerId) async {
+  Future<NotificationExist> checkNotificationExistVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NotificationExist>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NotificationExist>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NotificationExist.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<NotificationExist> checkNotificationExist(
-      service, url, customerId) async {
+    service,
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NotificationExist>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NotificationExist>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NotificationExist.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<NotificationAdded> addNotificationSaveDataVL(
-      url, addNotificationPayLoad, customerId) async {
+    url,
+    addNotificationPayLoad,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(addNotificationPayLoad.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NotificationAdded>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NotificationAdded>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NotificationAdded.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<NotificationAdded> addNotificationSaveData(
-      service, url, addNotificationPayLoad, customerId) async {
+    service,
+    url,
+    addNotificationPayLoad,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'X-VisionLink-CustomerUID': customerId
+      r'X-VisionLink-CustomerUID': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(addNotificationPayLoad.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<NotificationAdded>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NotificationAdded>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NotificationAdded.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<dynamic> editNotificationSaveData(
-      service, url, addNotificationPayLoad, customerId) async {
+    service,
+    url,
+    addNotificationPayLoad,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'X-VisionLink-CustomerUID': customerId
+      r'X-VisionLink-CustomerUID': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(addNotificationPayLoad.toJson());
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'PUT', headers: _headers, extra: _extra)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '${url}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
 
   @override
-  Future<FaultCodeTypeSearch?> getFaultCodeTypeSearchVL(customerId, url) async {
+  Future<FaultCodeTypeSearch?> getFaultCodeTypeSearchVL(
+    customerId,
+    url,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>?>(
-        _setStreamType<FaultCodeTypeSearch>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<FaultCodeTypeSearch>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data == null
         ? null
         : FaultCodeTypeSearch.fromJson(_result.data!);
@@ -4360,21 +6493,31 @@ class _RestClient implements RestClient {
 
   @override
   Future<FaultCodeTypeSearch?> getFaultCodeTypeSearch(
-      service, customerId, url) async {
+    service,
+    customerId,
+    url,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'X-VisionLink-CustomerUID': customerId
+      r'X-VisionLink-CustomerUID': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>?>(
-        _setStreamType<FaultCodeTypeSearch>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<FaultCodeTypeSearch>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data == null
         ? null
         : FaultCodeTypeSearch.fromJson(_result.data!);
@@ -4382,67 +6525,102 @@ class _RestClient implements RestClient {
   }
 
   @override
-  Future<AlertConfigEdit> getAlertConfig(service, customerId, url) async {
+  Future<AlertConfigEdit> getAlertConfig(
+    service,
+    customerId,
+    url,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
-      r'X-VisionLink-CustomerUID': customerId
+      r'X-VisionLink-CustomerUID': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<AlertConfigEdit>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AlertConfigEdit>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AlertConfigEdit.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<ReportCount> getReportCountDataVL(url, customerId) async {
+  Future<ReportCount> getReportCountDataVL(
+    url,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ReportCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ReportCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ReportCount.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ReportCount> getReportCountData(
-      url, service, customerId, userId) async {
+    url,
+    service,
+    customerId,
+    userId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'service': service,
       r'X-VisionLink-CustomerUID': customerId,
-      r'X-VisionLink-UserUid': userId
+      r'X-VisionLink-UserUid': userId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ReportCount>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ReportCount>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = ReportCount.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<MaintenanceViewData> getMaintenanceViewServicesVL(
-      url, maintenanceViewQuery, customerId) async {
+    url,
+    maintenanceViewQuery,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
@@ -4450,91 +6628,133 @@ class _RestClient implements RestClient {
     final _data = <String, dynamic>{};
     _data.addAll(maintenanceViewQuery);
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<MaintenanceViewData>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<MaintenanceViewData>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MaintenanceViewData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<MaintenanceListData> getMaintenanceListData(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<MaintenanceListData>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<MaintenanceListData>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MaintenanceListData.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<MaintenanceAssetList> getMaintenanceAssetListData(
-      url, customerId, serviceHeader) async {
+    url,
+    customerId,
+    serviceHeader,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'x-visionlink-customeruid': customerId,
-      r'service': serviceHeader
+      r'service': serviceHeader,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<MaintenanceAssetList>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<MaintenanceAssetList>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MaintenanceAssetList.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<MaintenanceAsset> getMaintenanceAssetData(endDateTime, langDesc, limit,
-      page, startDateTime, customerId, url) async {
+  Future<MaintenanceAsset> getMaintenanceAssetData(
+    endDateTime,
+    langDesc,
+    limit,
+    page,
+    startDateTime,
+    customerId,
+    url,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'endDateTime': endDateTime,
       r'langDesc': langDesc,
       r'limit': limit,
       r'page': page,
-      r'startDateTime': startDateTime
+      r'startDateTime': startDateTime,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<MaintenanceAsset>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<MaintenanceAsset>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MaintenanceAsset.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<MaintenanceListService> getMaintenanceListServiceData(
-      assetUid,
-      endDateTime,
-      langDesc,
-      limit,
-      page,
-      startDateTime,
-      customerId,
-      url) async {
+    assetUid,
+    endDateTime,
+    langDesc,
+    limit,
+    page,
+    startDateTime,
+    customerId,
+    url,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'assetUID': assetUid,
@@ -4542,35 +6762,52 @@ class _RestClient implements RestClient {
       r'langDesc': langDesc,
       r'limit': limit,
       r'page': page,
-      r'startDateTime': startDateTime
+      r'startDateTime': startDateTime,
     };
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<MaintenanceListService>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<MaintenanceListService>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MaintenanceListService.fromJson(_result.data!);
     return value;
   }
 
   @override
   Future<ServiceItem?> getServiceCheckListData(
-      serviceId, customerId, url) async {
+    serviceId,
+    customerId,
+    url,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'serviceId': serviceId};
     final _headers = <String, dynamic>{r'x-visionlink-customeruid': customerId};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>?>(
-        _setStreamType<ServiceItem>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>?>(_setStreamType<ServiceItem>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value =
         _result.data == null ? null : ServiceItem.fromJson(_result.data!);
     return value;
@@ -4578,44 +6815,63 @@ class _RestClient implements RestClient {
 
   @override
   Future<Complete> completeResponse(
-      url, completeDataQuery, contentType, customerId) async {
+    url,
+    completeDataQuery,
+    contentType,
+    customerId,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{
       r'content-type': contentType,
-      r'x-visionlink-customeruid': customerId
+      r'x-visionlink-customeruid': customerId,
     };
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(completeDataQuery);
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<Complete>(Options(
-                method: 'POST',
-                headers: _headers,
-                extra: _extra,
-                contentType: contentType)
-            .compose(_dio.options, '${url}',
-                queryParameters: queryParameters, data: _data)
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<Complete>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: contentType,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Complete.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<dynamic> logout(id_Token, redirectUrl) async {
+  Future<dynamic> logout(
+    id_Token,
+    redirectUrl,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'id_token_hint': id_Token,
-      r'post_logout_redirect_uri': redirectUrl
+      r'post_logout_redirect_uri': redirectUrl,
     };
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/oauth/logout',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/oauth/logout',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;
     return value;
   }
@@ -4626,12 +6882,19 @@ class _RestClient implements RestClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<LoginResponse>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '${url}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<LoginResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '${url}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = LoginResponse.fromJson(_result.data!);
     return value;
   }
