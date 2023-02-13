@@ -1763,6 +1763,20 @@ class Utils {
     return operandData;
   }
 
+  static getSiteOperand(List<add.SitOperands>? data) {
+    List<Map<String, dynamic>> siteOperandData = [];
+    String doubleQuote = "\"";
+    data?.forEach((element) {
+      Map<String, dynamic>? singleSiteOperand = null;
+      singleSiteOperand = {
+        'operandID': element.operandID,
+        'siteUID': doubleQuote + element.siteUID! + doubleQuote
+      };
+      siteOperandData.add(singleSiteOperand);
+    });
+    return siteOperandData;
+  }
+
   static getNotificationSubscribers(NotificationSubscribers data) {
     Map<String, dynamic>? notificationSubscribers;
     var email = getStringListData(data.emailIds!);
