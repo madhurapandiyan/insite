@@ -3742,7 +3742,8 @@ maintenanceIntervals(
    name,
    userName,
    code,
-   email
+   email,
+   id
    }
    }""";
     return data;
@@ -4044,5 +4045,21 @@ status
 }""";
 return data;
 }
-
+getHierarchyDetails(){
+  var data="""query assetOrHierarchyByTypeAndId(\$id: Int, \$start: Int!, \$limit: Int!, \$type: HierarchyType, \$name: String, \$code: String) {
+  assetOrHierarchyByTypeAndId(id: \$id, start: \$start, limit: \$limit, type: \$type, name: \$name, code: \$code) {
+    name
+    gpsDeviceID
+    vin
+    model
+    productFamily
+    subscriptionStartDate
+    subscriptionEndDate
+    actualStartDate
+    __typename
+  }
+}
+""";
+return data;
+}
 }

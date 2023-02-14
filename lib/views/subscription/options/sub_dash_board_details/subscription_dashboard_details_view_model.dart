@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:insite/core/base/insite_view_model.dart';
 import 'package:insite/core/locator.dart';
 import 'package:insite/core/models/filter_data.dart';
+import 'package:insite/core/models/plant_hierarcy_details.dart';
 import 'package:insite/core/models/subscription_dashboard_details.dart';
 import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
@@ -19,8 +20,14 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
   PLANTSUBSCRIPTIONFILTERTYPE? _filterType;
   PLANTSUBSCRIPTIONFILTERTYPE? get filterType => _filterType;
 
+  int _totalCount = 0;
+  int get totalCount => _totalCount;
+
   bool _loading = true;
   bool get loading => _loading;
+
+  bool _isDetailLoading = true;
+  bool get isDetailLoading => _isDetailLoading;
 
   bool _loadingMore = false;
   bool get loadingMore => _loadingMore;
@@ -33,9 +40,11 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
 
   int start = 0;
   int limit = 100;
+  int? changingIndex = 0;
+  int? plantListCount = 0;
 
   SubscriptionDashboardDetailResult? result;
-
+  List<DetailResult> assetDetailList = [];
   List<DetailResult> _devices = [];
   List<DetailResult> get devices => _devices;
 
@@ -49,7 +58,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
     scrollController!.addListener(() {
       if (scrollController!.position.pixels ==
           scrollController!.position.maxScrollExtent) {
-        if (result!.subscriptionFleetList!.provisioningInfo!.isEmpty) {
+        if (_totalCount == plantListCount) {
         } else {
           _loadMore();
         }
@@ -76,6 +85,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
           filterType: filterType,
           query:
               graphqlSchemaService!.getHierarchyListData(start, limit, filter));
+      _totalCount = result!.assetOrHierarchyByTypeAndId!.length;
     } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE ||
         type == PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED) {
       if (filter == "active" ||
@@ -94,6 +104,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
               start: start,
               status: filter,
             ));
+        _totalCount = result!.subscriptionFleetList!.count!;
       } else if (filter == "day" || filter == "week" || filter == "month") {
         result = await _subscriptionService!.getSubscriptionDeviceListData(
             filter: filter,
@@ -102,6 +113,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
             filterType: filterType,
             query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
                 limit: limit, start: start, calendar: filter));
+        _totalCount = result!.subscriptionFleetList!.count!;
       } else {
         result = await _subscriptionService!.getSubscriptionDeviceListData(
             filter: filter,
@@ -110,9 +122,9 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
             filterType: filterType,
             query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
                 limit: limit, start: start, model: filter));
+        _totalCount = result!.result!.length;
       }
     }
-   
 
     if (enableGraphQl) {
       Logger().wtf(filter);
@@ -129,6 +141,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
             email: items.email,
           );
           devices.add(fleetListData);
+          plantListCount = devices.length;
         }
         _loading = false;
         _loadingMore = false;
@@ -162,6 +175,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
                   subscriptionEndDate: items.subscriptionEndDate,
                   subscriptionStartDate: items.subscriptionStartDate);
               devices.add(fleetListData);
+              plantListCount = devices.length;
             }
             _loading = false;
             _loadingMore = false;
@@ -198,6 +212,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
                   status: items.status,
                   description: items.description);
               devices.add(fleetListData);
+              plantListCount = devices.length;
             }
             _loading = false;
             _loadingMore = false;
@@ -214,6 +229,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
       if (result!.result!.isNotEmpty) {
         start = start + limit;
         devices.addAll(result!.result![1]);
+        plantListCount = devices.length;
         _loading = false;
         _loadingMore = false;
         notifyListeners();
@@ -235,12 +251,84 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
       log.i("load more called");
 
       _loadingMore = true;
-      start++;
-
+      start = start + 100;
+      Logger().wtf("start:$start");
       notifyListeners();
       getSubcriptionDeviceListData();
     }
   }
 
-  void navigateToDetails() {}
+  onPageChange(int value) {
+    changingIndex = value;
+    notifyListeners();
+  }
+
+  String? getDetailName() {
+    if (type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT) {
+      _filter = "Plant";
+    } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.CUSTOMER) {
+      _filter = "Customer";
+    } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEALER) {
+      _filter = "Dealer";
+    } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE) {
+      _filter = "Plant";
+    }
+    return _filter;
+  }
+
+  void navigateToDetails(int index) async {
+    plantListCount = 0;
+    _totalCount = 0;
+
+    if (type == PLANTSUBSCRIPTIONDETAILTYPE.PLANT) {
+      _filter = "PLANT";
+    } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.CUSTOMER) {
+      _filter = "CUSTOMER";
+    } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEALER) {
+      _filter = "DEALER";
+    } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE) {
+      _filter = "asset";
+    }
+    var assetId;
+
+    for (int i = 0; i < result!.assetOrHierarchyByTypeAndId!.length; i++) {
+      var assetDetail = result?.assetOrHierarchyByTypeAndId![i];
+      if (i == index) assetId = assetDetail!.id;
+    }
+
+    PlantHierarchyDetails? dataDetails =
+        await _subscriptionService!.getHierarcyDetail(payload: {
+      "id": int.parse(assetId.toString()),
+      "start": start,
+      "limit": limit,
+      "type": _filter
+    });
+    _isDetailLoading = false;
+
+    _totalCount = dataDetails!.assetOrHierarchyByTypeAndIdDetail!.length;
+    Logger().wtf("dataDetails:${dataDetails.toJson()}");
+    if (dataDetails.assetOrHierarchyByTypeAndIdDetail != null &&
+        dataDetails.assetOrHierarchyByTypeAndIdDetail!.isNotEmpty) {
+      var hierarcyitem = dataDetails.assetOrHierarchyByTypeAndIdDetail;
+      hierarcyitem!.forEach((element) {
+        assetDetailList.add(DetailResult(
+            name: element.name,
+            model: element.model,
+            vin: element.vin,
+            gpsDeviceId: element.gpsDeviceId,
+            actualStartDate: element.actualStartDate,
+            subscriptionStartDate: element.subscriptionStartDate,
+            subscriptionEndDate: element.subscriptionEndDate,
+            productFamily: element.productFamily));
+      });
+
+      plantListCount = assetDetailList.length;
+      Logger().wtf("loading:$_loading");
+    } else {
+      _isDetailLoading = false;
+      notifyListeners();
+    }
+
+    notifyListeners();
+  }
 }
