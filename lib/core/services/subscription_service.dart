@@ -164,7 +164,6 @@ Future<PlantHierarchyDetails?> getHierarcyDetail({dynamic payload}) async {
       print(e.toString());
       return null;
     }
-    return null;
   }
 
   Future<SubscriptionDashboardDetailResult?> getSubscriptionDeviceListData(
