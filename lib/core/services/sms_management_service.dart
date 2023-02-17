@@ -60,7 +60,7 @@ class SmsManagementService extends BaseService {
   }
 
   Future<SmsReportSummaryModel?> getsmsReportSummaryModel(
-      int startCount, String? query) async {
+      int startCount, String? query,[dynamic payLoad]) async {
     SmsReportSummaryModel? data;
     Map<String, String> queryMap = Map();
     queryMap["OEM"] = "VEhD";
@@ -72,11 +72,12 @@ class SmsManagementService extends BaseService {
     if (enableGraphQl) {
       var data = await Network().getGraphqlPlantData(
         query: query,
+        payLoad: payLoad
       );
 
       SmsReportSummaryModel? deviceDetails =
           SmsReportSummaryModel.fromJson(data.data);
-      Logger().wtf("response:$data");
+      Logger().wtf("response:${deviceDetails.getSMSSummaryReport}");
       return deviceDetails;
     } else {
       data = await MyApi().getClientNine()!.gettingReportSummary(

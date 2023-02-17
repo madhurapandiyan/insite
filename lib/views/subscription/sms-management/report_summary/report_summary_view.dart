@@ -39,8 +39,8 @@ class ReportSummaryView extends StatelessWidget {
                               InsiteText(
                             
                             fontWeight: FontWeight.bold,
-                            text:
-                                "REPORT SUMMARY FOR SMS ( ${viewModel.modelDataList.length} of ${viewModel.totalCount} )",
+                            text:"REPORT SUMMARY FOR SMS",
+                                //"REPORT SUMMARY FOR SMS ( ${viewModel.modelDataList.length} of ${viewModel.totalCount} )",
                           ),
                               viewModel.showDeleteButton
                                   ? InsiteButton(

@@ -66,32 +66,31 @@ class ReportSummaryViewModel extends InsiteViewModel {
         int limit = 100;
         SmsReportSummaryModel? smsSummaryModel = await _smsScheduleService!
             .getsmsReportSummaryModel(
-                0, graphqlSchemaService!.getSmsReportSummary(start, limit));
+                0, graphqlSchemaService!.getSmsReportSummary(),{
+                  "start":start,
+                  "limit":limit
+                });
 
         if (smsSummaryModel != null) {
-          totalCount = int.parse(smsSummaryModel.getSMSSummaryReport!.count!);
-          Logger().wtf("totalCount:$totalCount");
+          // totalCount = smsSummaryModel.getSMSSummaryReport?.length??0;   
+         // Logger().wtf("totalCount:$totalCount");
           if (smsSummaryModel.getSMSSummaryReport != null) {
-            if (smsSummaryModel.getSMSSummaryReport!.result != null) {
-              for (var element
-                  in smsSummaryModel.getSMSSummaryReport!.result!) {
-                modelDataList.add(ReportSummaryModel(
-                    id: element.id,
-                    gpsDeviceId: element.gpsDeviceId,
-                    serialNumber: element.serialNumber,
-                    name: element.name,
-                    number: element.number,
-                    startDate: element.startDate,
-                    language: element.language));
-              }
-              isLoading = false;
-              isLoadMore = false;
-              notifyListeners();
-            } else {
-              isLoading = false;
-              isLoadMore = false;
-              notifyListeners();
+            for (GetSmsSummaryReport element
+                in smsSummaryModel.getSMSSummaryReport!) {
+              modelDataList.add(ReportSummaryModel(
+                  id: element.id,
+                  gpsDeviceId: element.gpsDeviceId,
+                  serialNumber: element.serialNumber,
+                  name: element.name,
+                  number: element.number,
+                  startDate: element.startDate,
+                  language: element.language));
+                  totalCount = modelDataList.length; 
             }
+           
+            isLoading = false;
+            isLoadMore = false;
+            notifyListeners();
           } else {
             isLoading = false;
             isLoadMore = false;

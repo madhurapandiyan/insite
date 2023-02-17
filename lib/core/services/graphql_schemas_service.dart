@@ -527,22 +527,17 @@ assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",c
     return data;
   }
 
-  getSmsReportSummary(int? start, int? limit) {
-    var data = """query {
-   getSMSSummaryReport(start: $start, limit: $limit) {
-     result
-{
-gpsDeviceId
-          id
-             language
-             name
-            number
-             serialNumber
-             startDate
-         }
-        count
+  getSmsReportSummary() {
+    var data = """query getSMSSummaryReport(\$start: Int!, \$limit: Int!) {
+   getSMSSummaryReport(start: \$start, limit: \$limit) {
+     gpsDeviceId
+     id
+     language
+     name
+     number
+     serialNumber
+     startDate
    }
- 
  }""";
     return data;
   }
