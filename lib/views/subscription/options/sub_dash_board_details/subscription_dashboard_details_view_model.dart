@@ -85,7 +85,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
           filterType: filterType,
           query:
               graphqlSchemaService!.getHierarchyListData(start, limit, filter));
-      _totalCount = result!.assetOrHierarchyByTypeAndId!.length;
+      _totalCount = result?.assetOrHierarchyByTypeAndId?.length ?? 0;
     } else if (type == PLANTSUBSCRIPTIONDETAILTYPE.DEVICE ||
         type == PLANTSUBSCRIPTIONDETAILTYPE.TOBEACTIVATED) {
       if (filter == "active" ||
@@ -104,7 +104,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
               start: start,
               status: filter,
             ));
-        _totalCount = result!.subscriptionFleetList!.count!;
+        _totalCount = result?.subscriptionFleetList?.count ?? 0;
       } else if (filter == "day" || filter == "week" || filter == "month") {
         result = await _subscriptionService!.getSubscriptionDeviceListData(
             filter: filter,
@@ -113,7 +113,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
             filterType: filterType,
             query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
                 limit: limit, start: start, calendar: filter));
-        _totalCount = result!.subscriptionFleetList!.count!;
+        _totalCount = result?.subscriptionFleetList?.count ?? 0;
       } else {
         result = await _subscriptionService!.getSubscriptionDeviceListData(
             filter: filter,
@@ -122,7 +122,8 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
             filterType: filterType,
             query: graphqlSchemaService!.getPlantDashboardAndHierarchyListData(
                 limit: limit, start: start, model: filter));
-        _totalCount = result!.result!.length;
+        _totalCount = result?.subscriptionFleetList?.count ?? 0;
+        Logger().wtf("_totalCount:$_totalCount");
       }
     }
 
@@ -293,7 +294,9 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
 
     for (int i = 0; i < result!.assetOrHierarchyByTypeAndId!.length; i++) {
       var assetDetail = result?.assetOrHierarchyByTypeAndId![i];
-      if (i == index) assetId = assetDetail!.id;
+      if (i == index){
+         assetId = assetDetail!.id;
+      }
     }
 
     PlantHierarchyDetails? dataDetails =
@@ -305,8 +308,8 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
     });
     _isDetailLoading = false;
 
-    _totalCount = dataDetails!.assetOrHierarchyByTypeAndIdDetail!.length;
-    Logger().wtf("dataDetails:${dataDetails.toJson()}");
+    _totalCount = dataDetails?.assetOrHierarchyByTypeAndIdDetail?.length ?? 0;
+    Logger().wtf("DetailList:${dataDetails!.toJson()}");
     if (dataDetails.assetOrHierarchyByTypeAndIdDetail != null &&
         dataDetails.assetOrHierarchyByTypeAndIdDetail!.isNotEmpty) {
       var hierarcyitem = dataDetails.assetOrHierarchyByTypeAndIdDetail;
@@ -323,12 +326,21 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
       });
 
       plantListCount = assetDetailList.length;
-      Logger().wtf("loading:$_loading");
     } else {
       _isDetailLoading = false;
       notifyListeners();
     }
 
+    notifyListeners();
+  }
+
+  onBackPressed(PageController controller) {
+   
+    controller.previousPage(
+        duration: Duration(microseconds: 1), curve: Curves.linear);
+
+    assetDetailList.clear();
+    _isDetailLoading = true;
     notifyListeners();
   }
 }

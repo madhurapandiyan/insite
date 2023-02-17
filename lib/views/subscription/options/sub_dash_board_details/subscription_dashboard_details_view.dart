@@ -43,24 +43,24 @@ class SubDashBoardDetailsView extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24, top: 16),
-                    child: InsiteTextOverFlow(
-                      text: Utils.getPageTitle(ScreenType.PLANT),
-                      color: Theme.of(context).textTheme.bodyText1!.color,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.bold,
-                      size: 16,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.5, right: 5),
-                    child: PageHeader(
-                      count: viewModel.plantListCount,
-                      total: viewModel.totalCount,
-                      isDashboard: false,
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 24, top: 16),
+                  //   child: InsiteTextOverFlow(
+                  //     text: Utils.getPageTitle(ScreenType.PLANT),
+                  //     color: Theme.of(context).textTheme.bodyText1!.color,
+                  //     overflow: TextOverflow.ellipsis,
+                  //     fontWeight: FontWeight.bold,
+                  //     size: 16,
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 4.5, right: 5),
+                  //   child: PageHeader(
+                  //     count: viewModel.plantListCount,
+                  //     total: viewModel.totalCount,
+                  //     isDashboard: false,
+                  //   ),
+                  // ),
                   Expanded(
                     child: viewModel.loading
                         ? InsiteProgressBar()
@@ -150,28 +150,35 @@ class SubDashBoardDetailsView extends StatelessWidget {
                                                             );
                                     },
                                   ),
-                                  viewModel.isDetailLoading
-                                      ? InsiteProgressBar()
-                                      : viewModel.assetDetailList.isEmpty
-                                          ? EmptyView(
-                                              title: "No Results",
-                                            )
-                                          : ListView.builder(
-                                              itemCount: viewModel
-                                                  .assetDetailList.length,
-                                              itemBuilder: (context, index) {
-                                                DetailResult assetresult =
-                                                    viewModel
-                                                        .assetDetailList[index];
+                                  WillPopScope(
+                                    onWillPop: () async {
+                                      viewModel.onBackPressed(controller);
 
-                                                return AssetListItem(
-                                                  detailname:
-                                                      viewModel.getDetailName(),
-                                                  detailResult: assetresult,
-                                                  onCallback: () {},
-                                                );
-                                              },
-                                            )
+                                      return false;
+                                    },
+                                    child: viewModel.isDetailLoading
+                                        ? InsiteProgressBar()
+                                        : viewModel.assetDetailList.isEmpty
+                                            ? EmptyView(
+                                                title: "No Device Found",
+                                              )
+                                            : ListView.builder(
+                                                itemCount: viewModel
+                                                    .assetDetailList.length,
+                                                itemBuilder: (context, index) {
+                                                  DetailResult assetresult =
+                                                      viewModel.assetDetailList[
+                                                          index];
+
+                                                  return AssetListItem(
+                                                    detailname: viewModel
+                                                        .getDetailName(),
+                                                    detailResult: assetresult,
+                                                    onCallback: () {},
+                                                  );
+                                                },
+                                              ),
+                                  ),
                                 ],
                               )
                             : EmptyView(
