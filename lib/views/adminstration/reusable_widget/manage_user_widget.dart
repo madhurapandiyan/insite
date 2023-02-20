@@ -208,10 +208,10 @@ class ManageUserWidget extends StatelessWidget {
                                         content: user!.user!.phone),
                                     InsiteTableRowItem(
                                         title: "Address",
-                                        content: "${user!.user!.address!.addressline1}" +" "+
-                                            "${user!.user!.address!.addressline2}" + " "+
-                                            "${user!.user!.address!.city}" +" "+
-                                            "${user!.user!.address!.state}" +" "+
+                                        content: "${user!.user!.address!.addressline1}" +","+
+                                            "${user!.user!.address!.addressline2}" + ","+
+                                            "${user!.user!.address!.city}" +","+
+                                            "${user!.user!.address!.state}" +","+
                                             "${user!.user!.address!.zipcode}"),
                                   ])
                                 ],

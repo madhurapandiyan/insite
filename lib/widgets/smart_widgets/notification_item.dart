@@ -15,50 +15,59 @@ import 'package:insite/core/models/main_notification.dart' as main_notification;
 import 'package:logger/logger.dart';
 
 class NotificationItem extends StatelessWidget {
-   final NotificationRow? selectedNotification;
- 
+  final NotificationRow? selectedNotification;
+
   final notification.Notification? notifications;
-  final UserPreference?dateFormat;
-  final UserPreferedData?timeZone;
+  final UserPreference? dateFormat;
+  final UserPreferedData? timeZone;
   final VoidCallback? onCallback;
   final VoidCallback? showDetails;
-  
 
-   NotificationItem(
-      {this.notifications, this.onCallback, this.showDetails, this.dateFormat, this.timeZone,this.selectedNotification});
+  NotificationItem(
+      {this.notifications,
+      this.onCallback,
+      this.showDetails,
+      this.dateFormat,
+      this.timeZone,
+      this.selectedNotification});
 
   @override
   Widget build(BuildContext context) {
-    final jsonValue = jsonDecode( selectedNotification!.selectednotifications!.notificationConfigJSON);
-   var isResolved=selectedNotification?.selectednotifications?.resolvedStatus=="Resolved";
-    
+    final jsonValue = jsonDecode(
+        selectedNotification!.selectednotifications!.notificationConfigJSON);
+    var isResolved =
+        selectedNotification?.selectednotifications?.resolvedStatus ==
+            "Resolved";
+
     return GestureDetector(
       onTap: () {
-        
         onCallback!();
-       
+
         // Future.delayed(Duration(seconds: 1), () {
         //   showDetails!();
         // });
       },
       child: Card(
-        
         child: Padding(
-          padding: const EdgeInsets.only(right: 10,left: 5),
+          padding: const EdgeInsets.only(right: 10, left: 5),
           child: Row(
-           // crossAxisAlignment: CrossAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 children: [
                   // SizedBox(
                   //   height: 50,
                   // ),
-                 
-                      Icon(
-                       selectedNotification!.isSelected?Icons.check_box_rounded:Icons.check_box_outline_blank,
-                              color: selectedNotification!.isSelected?Theme.of(context).buttonColor: Theme.of(context).textTheme.bodyText1!.color,
-                            ),
-                
+
+                  Icon(
+                    selectedNotification!.isSelected
+                        ? Icons.check_box_rounded
+                        : Icons.check_box_outline_blank,
+                    color: selectedNotification!.isSelected
+                        ? Theme.of(context).buttonColor
+                        : Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+
                   Container(
                     //padding: EdgeInsets.all(8),
                     child: Column(
@@ -86,16 +95,16 @@ class NotificationItem extends StatelessWidget {
                 child: InsiteExpansionTile(
                   tilePadding: EdgeInsets.only(left: 8),
                   title: Theme(
-                  data:   ThemeData(
-                    primarySwatch: Colors.grey,
-                    buttonColor:isResolved?Colors.grey[300]:
-                     Theme.of(context).buttonColor,
-                     
-                            textTheme: TextTheme(
-                                bodyText1: TextStyle(
-                                    color:isResolved
-                                        ?  black.withOpacity(0.2)
-                                        : null))),
+                    data: ThemeData(
+                        primarySwatch: Colors.grey,
+                        buttonColor: isResolved
+                            ? Colors.grey[300]
+                            : Theme.of(context).buttonColor,
+                        textTheme: TextTheme(
+                            bodyText1: TextStyle(
+                                color: isResolved
+                                    ? black.withOpacity(0.2)
+                                    : null))),
                     child: Table(
                       border: TableBorder.all(),
                       columnWidths: {
@@ -148,12 +157,12 @@ class NotificationItem extends StatelessWidget {
                   childrenPadding: EdgeInsets.only(left: 8),
                   children: [
                     Theme(
-                       data:   ThemeData(
-                    textTheme: TextTheme(
-                                bodyText1: TextStyle(
-                                    color: isResolved
-                                        ?   black.withOpacity(0.2)
-                                        : null))),
+                      data: ThemeData(
+                          textTheme: TextTheme(
+                              bodyText1: TextStyle(
+                                  color: isResolved
+                                      ? black.withOpacity(0.2)
+                                      : null))),
                       child: Table(
                         border: TableBorder.all(),
                         children: [
@@ -162,8 +171,8 @@ class NotificationItem extends StatelessWidget {
                               InsiteTableRowItem(
                                 title: "Date & Time",
                                 content: notifications!.occurUTC != null
-                                    ? Utils.getDateUTC(
-                                        notifications!.occurUTC,dateFormat,timeZone)
+                                    ? Utils.getDateUTC(notifications!.occurUTC,
+                                        dateFormat, timeZone)
                                     : "",
                               ),
                               // InsiteTableRowItem(
@@ -180,18 +189,20 @@ class NotificationItem extends StatelessWidget {
                       ),
                     ),
                     Theme(
-                       data:   ThemeData(
-                    textTheme: TextTheme(
-                                bodyText1: TextStyle(
-                                    color: isResolved
-                                        ?   black.withOpacity(0.2)
-                                        : null))),
+                      data: ThemeData(
+                          textTheme: TextTheme(
+                              bodyText1: TextStyle(
+                                  color: isResolved
+                                      ? black.withOpacity(0.2)
+                                      : null))),
                       child: Table(border: TableBorder.all(), children: [
                         TableRow(children: [
                           InsiteTableRowItem(
                             title: "Location",
-                            content: Utils.getLocationDisplay(dateFormat?.locationDisplay)?
-                             notifications!.location:"${notifications!.latitude}/${notifications!.longitude}",
+                            content: Utils.getLocationDisplay(
+                                    dateFormat?.locationDisplay)
+                                ? notifications!.location
+                                : "${notifications!.latitude}/${notifications!.longitude}",
                           ),
                         ]),
                       ]),

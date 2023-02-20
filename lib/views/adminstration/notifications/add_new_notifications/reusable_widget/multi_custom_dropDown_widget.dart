@@ -9,13 +9,15 @@ class MultiSelectionDropDownWidget extends StatefulWidget {
   final Function(List<CheckBoxDropDown>?)? onConform;
   final Function(int)? onSelected;
   final bool? isEnable;
+  final bool? textColorChange;
 
   MultiSelectionDropDownWidget(
       {this.initialValue,
       this.items,
       this.onConform,
       this.onSelected,
-      this.isEnable});
+      this.isEnable,
+      this.textColorChange});
 
   @override
   State<MultiSelectionDropDownWidget> createState() =>

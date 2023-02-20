@@ -13,9 +13,11 @@ import 'package:insite/core/router_constants.dart';
 import 'package:insite/core/services/asset_admin_manage_user_service.dart';
 import 'package:insite/core/services/local_service.dart';
 import 'package:insite/views/add_new_user/model_class/dropdown_model_class.dart';
+import 'package:insite/views/adminstration/manage_user/manage_user_view.dart';
 import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class AddNewUserViewModel extends InsiteViewModel {
   Logger? log;
@@ -33,7 +35,7 @@ class AddNewUserViewModel extends InsiteViewModel {
   TextEditingController addressController2 = new TextEditingController();
 
   LocalService? _localService = locator<LocalService>();
-
+  NavigationService? _navigationService = locator<NavigationService>();
   List<ApplicationAccessData> _assetsData = [];
   List<ApplicationAccessData> get assetsData => _assetsData;
 
@@ -358,7 +360,8 @@ class AddNewUserViewModel extends InsiteViewModel {
               : null);
       hideLoadingDialog();
       if (updateResponse != null) {
-        snackbarService!.showSnackbar(message: "Updated successfully");
+        //snackbarService!.showSnackbar(message: "Updated successfully");
+        gotoManageUserPage();
       } else {
         snackbarService!.showSnackbar(message: "Updating user failed");
       }
@@ -430,7 +433,6 @@ class AddNewUserViewModel extends InsiteViewModel {
               addressline1: addressController.text.isEmpty
                   ? null
                   : addressController.text,
-                
               state: stateController.text.isEmpty ? null : stateController.text,
               addressline2: addressController.text.isEmpty
                   ? null
@@ -573,5 +575,9 @@ class AddNewUserViewModel extends InsiteViewModel {
       _assetsData[i].isPermissionSelected = false;
     }
     notifyListeners();
+  }
+
+  gotoManageUserPage() {
+    _navigationService!.clearTillFirstAndShowView(ManageUserView());
   }
 }

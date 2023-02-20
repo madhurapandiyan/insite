@@ -31,6 +31,7 @@ class NotificationViewModel extends InsiteViewModel {
   GraphqlSchemaService? _graphqlSchemaService = locator<GraphqlSchemaService>();
   FleetService? _fleetService = locator<FleetService>();
   LocalService? _localService = locator<LocalService>();
+  SnackbarService? snackbarService = locator<SnackbarService>();
 
   int? _totalCount = 0;
   int get totalCount => _totalCount!;
@@ -213,7 +214,6 @@ class NotificationViewModel extends InsiteViewModel {
       notificationTypeFilter.forEach((element) {
         filterdata.add(element!.title);
       });
-     
 
       var notificationStatusFilter = appliedFilters!
           .where((element) => element!.type == FilterType.NOTIFICATION_STATUS);
@@ -231,8 +231,6 @@ class NotificationViewModel extends InsiteViewModel {
           notificationStatus.first = 2;
         }
       }
-
-      
 
       notification.NotificationsData? response = await _mainNotificationService!
           .getNotificationsData("0", "0", startDate!, endDate!,
@@ -393,25 +391,23 @@ class NotificationViewModel extends InsiteViewModel {
       filterdata.add(element!.title);
     });
 
-    
-
     var notificationStatusFilter = appliedFilters!
         .where((element) => element!.type == FilterType.NOTIFICATION_STATUS);
 
-     if (notificationStatusFilter.isNotEmpty &&
-          notificationStatusFilter
-              .every((element) => element!.title == "Unresolved")) {
-        if (_isDateRangeSelected || isNotification) {
-          notificationStatus.first = 1;
-        }
-      } else if (notificationStatusFilter.isNotEmpty &&
-          notificationStatusFilter
-              .every((element) => element!.title == "Resolved")) {
-        if (_isDateRangeSelected || isNotification) {
-          notificationStatus.first = 2;
-        }
+    if (notificationStatusFilter.isNotEmpty &&
+        notificationStatusFilter
+            .every((element) => element!.title == "Unresolved")) {
+      if (_isDateRangeSelected || isNotification) {
+        notificationStatus.first = 1;
       }
-    
+    } else if (notificationStatusFilter.isNotEmpty &&
+        notificationStatusFilter
+            .every((element) => element!.title == "Resolved")) {
+      if (_isDateRangeSelected || isNotification) {
+        notificationStatus.first = 2;
+      }
+    }
+
     notification.NotificationsData? response = await _mainNotificationService!
         .getNotificationsData("0", "0", startDate, endDate,
             _graphqlSchemaService!.seeAllNotification(), {
@@ -496,7 +492,7 @@ class NotificationViewModel extends InsiteViewModel {
 
       for (int i = 0; i < _assets.length; i++) {
         var data = _assets[i];
-        if (data.isSelected!) {
+        if (data.isSelected) {
           count++;
         }
       }
@@ -545,5 +541,20 @@ class NotificationViewModel extends InsiteViewModel {
     } else if (value == "Delete") {
       onDeleteClicked(context, index);
     }
+  }
+
+  onMultiClickCheckBoxSelect() {
+    for (var i = 0; i < _assets.length; i++) {
+      if (_assets.length <= 100) {
+        _assets[i].isSelected = true;
+      } else {
+        _assets[i].isSelected = false;
+        snackbarService!.showSnackbar(
+      
+            message:
+                "User Allowed to select up to 100 Notifications only at a time.");
+      }
+    }
+    notifyListeners();
   }
 }

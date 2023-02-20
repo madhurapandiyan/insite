@@ -699,6 +699,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                     borderRadius: BorderRadius.circular(10)),
                                                                                 child: viewModel.isEditing
                                                                                     ? CustomDropDownWidget(
+                                                                                     textColorChange: viewModel.isEditing ? true : false,
                                                                                         onChanged: null,
                                                                                         items: viewModel.notificationSubTypesEdit,
                                                                                         value: viewModel.dropDownSubInitialValueEdit,
@@ -751,6 +752,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                         borderRadius: BorderRadius.circular(10)),
                                                                                     child: viewModel.isEditing
                                                                                         ? CustomDropDownWidget(
+                                                                                            textColorChange: viewModel.isEditing ? true : false,
                                                                                             // istappable:
                                                                                             //     !viewModel
                                                                                             //         .isEditing,
@@ -763,6 +765,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                             value: viewModel.dropDownSubInitialValue,
                                                                                           )
                                                                                         : CustomDropDownWidget(
+                                                                                            //textColorChange: viewModel.isEditing ? true : false,
                                                                                             // istappable:
                                                                                             //     !viewModel
                                                                                             //         .isEditing,

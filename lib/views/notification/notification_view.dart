@@ -36,10 +36,9 @@ class _NotificationViewState extends State<NotificationView> {
         return InsiteInheritedDataProvider(
           count: viewModel.appliedFilters!.length,
           child: InsiteScaffold(
-            isFromDashBoard: viewModel.isFromDashBoard,
+              isFromDashBoard: viewModel.isFromDashBoard,
               viewModel: viewModel,
               onFilterApplied: () {
-                
                 viewModel.refresh();
               },
               onRefineApplied: () {
@@ -119,16 +118,14 @@ class _NotificationViewState extends State<NotificationView> {
                                         // viewModel.endDate =
                                         //     dateRange?.last.toString();
                                         viewModel.isDateRangeSelected = true;
-                                        if(dateRange==null?.dateRange?.isEmpty&& viewModel.appliedFilters!.isEmpty){
-                                          
-                                        }
-                                        else if(dateRange==null?.dateRange?.isEmpty){
-                                         
-                                        }
-                                        else{
+                                        if (dateRange ==
+                                                null?.dateRange?.isEmpty &&
+                                            viewModel.appliedFilters!.isEmpty) {
+                                        } else if (dateRange ==
+                                            null?.dateRange?.isEmpty) {
+                                        } else {
                                           viewModel.refresh();
                                         }
-                                      
                                       },
                                     ),
                                   ],
@@ -220,27 +217,41 @@ class _NotificationViewState extends State<NotificationView> {
                           height: 10,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
-                                      bottomLeft: Radius.circular(10),
-                                    ),
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: InsitePopMenuItemButton(
-                                        width: 40,
-                                        height: 40,
-                                        //icon: Icon(Icons.more_vert),
-                                        widget: onContextMenuSelected(
-                                            viewModel, context, selectedIndex),
-                                      ),
-                                    ))
-                               
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Logger().i("icon is tapped");
+                                  viewModel.onMultiClickCheckBoxSelect();
+                                },
+                                child: Icon(
+                                  Icons.check_box_outline_blank,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color,
+                                ),
+                              ),
+                            ),
+                            ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomRight: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: InsitePopMenuItemButton(
+                                    width: 40,
+                                    height: 40,
+                                    //icon: Icon(Icons.more_vert),
+                                    widget: onContextMenuSelected(
+                                        viewModel, context, selectedIndex),
+                                  ),
+                                ))
                           ],
                         ),
                         SizedBox(
@@ -258,7 +269,7 @@ class _NotificationViewState extends State<NotificationView> {
                                         controller: viewModel.scrollController,
                                         padding: EdgeInsets.all(8),
                                         itemBuilder: (context, index) {
-                                           NotificationRow notificationRow =
+                                          NotificationRow notificationRow =
                                               viewModel.assets[index];
                                           // main_notification.Notification
                                           //     notifications =
@@ -266,8 +277,10 @@ class _NotificationViewState extends State<NotificationView> {
                                           return NotificationItem(
                                             dateFormat: viewModel.userPref,
                                             timeZone: viewModel.zone,
-                                            selectedNotification: notificationRow,
-                                           notifications: notificationRow.selectednotifications,
+                                            selectedNotification:
+                                                notificationRow,
+                                            notifications: notificationRow
+                                                .selectednotifications,
                                             onCallback: () {
                                               viewModel.onItemSelected(index);
                                               selectedIndex = index;
@@ -317,7 +330,8 @@ class _NotificationViewState extends State<NotificationView> {
         //         child: SizedBox(),
         //         height: 0,
         //       ),
-        viewModel.assets.any((element) => element.selectednotifications?.resolvedStatus=="Unresolved")
+        viewModel.assets.any((element) =>
+                element.selectednotifications?.resolvedStatus == "Unresolved")
             ? PopupMenuItem(
                 value: "Resolve",
                 child: InsiteText(
@@ -331,19 +345,19 @@ class _NotificationViewState extends State<NotificationView> {
                 height: 0,
               ),
         // viewModel.showEdit
-        //     ? 
-            PopupMenuItem(
-                value: "Delete",
-                child: InsiteText(
-                  text: "Delete",
-                  fontWeight: FontWeight.w700,
-                  size: 14,
-                ),
-              )
-            // : PopupMenuItem(
-            //     child: SizedBox(),
-            //     height: 0,
-            //   ),
+        //     ?
+        PopupMenuItem(
+          value: "Delete",
+          child: InsiteText(
+            text: "Delete",
+            fontWeight: FontWeight.w700,
+            size: 14,
+          ),
+        )
+        // : PopupMenuItem(
+        //     child: SizedBox(),
+        //     height: 0,
+        //   ),
       ],
       onSelected: (value) {
         viewModel.onSelectedItemClicK(value, context, index);
