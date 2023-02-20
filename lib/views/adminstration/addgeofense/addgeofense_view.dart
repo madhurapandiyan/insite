@@ -254,8 +254,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   )),
                                               LocationSearchBoxView(
                                                 searchBoxWidth: 0.5,
-                                                screenType:
-                                                    ScreenType.ADD_GEOFENCE,
+                                                dropDownItems: [
+                                                  'S/N',
+                                                  'Location'
+                                                ],
+                                                dropDownValue: "S/N",
                                                 onSeletingSuggestion:
                                                     (value, isSerialNo) {
                                                   if (!isSerialNo) {

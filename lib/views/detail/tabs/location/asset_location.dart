@@ -43,7 +43,6 @@ class _AssetLocationViewState extends State<AssetLocationView> {
   @override
   void initState() {
     super.initState();
-    
   }
 
   @override
@@ -105,9 +104,10 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                       //     size: 12),
                       InsiteButton(
                         title: Utils.getDateFormatForDatePicker(
-                                viewModel.startDate,viewModel.userPref) +
+                                viewModel.startDate, viewModel.userPref) +
                             " - " +
-                            Utils.getDateFormatForDatePicker(viewModel.endDate,viewModel.userPref),
+                            Utils.getDateFormatForDatePicker(
+                                viewModel.endDate, viewModel.userPref),
                         // width: 90,
                         //bgColor: Theme.of(context).backgroundColor,
                         textColor: Theme.of(context).textTheme.bodyText1!.color,
@@ -201,7 +201,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                 padding:
                                     const EdgeInsets.only(top: 9, left: 15),
                                 child: LocationSearchBoxView(
-                                  screenType: ScreenType.ASSET_DETAIL,
+                                  dropDownItems: ['Location'],
+                                  dropDownValue: 'Location',
                                   searchBoxWidth: 0.6,
                                   onSeletingSuggestion: (value, isSerialNo) {
                                     viewModel.customInfoWindowController
@@ -267,7 +268,8 @@ class _AssetLocationViewState extends State<AssetLocationView> {
                                               alignment: Alignment.centerRight,
                                               child: GestureDetector(
                                                 onTap: () {
-                                                 viewModel.zoomToCurrentLocation();
+                                                  viewModel
+                                                      .zoomToCurrentLocation();
                                                 },
                                                 child: Container(
                                                   margin: EdgeInsets.only(
@@ -492,8 +494,6 @@ class _AssetLocationViewState extends State<AssetLocationView> {
     controller.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
-
- 
 
   MapType _changemap() {
     switch (_currentSelectedItem) {

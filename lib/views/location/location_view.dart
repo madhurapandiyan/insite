@@ -212,7 +212,8 @@ class _LocationViewState extends State<LocationView> {
                                     padding:
                                         const EdgeInsets.only(top: 7, left: 20),
                                     child: LocationSearchBoxView(
-                                      screenType: ScreenType.LOCATION,
+                                    dropDownItems: ['S/N', 'Location'],
+                                    dropDownValue: "S/N",
                                       searchBoxWidth: 0.6,
                                       onSeletingSuggestion:
                                           (value, isSerialNo) {

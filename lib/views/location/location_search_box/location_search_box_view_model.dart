@@ -13,19 +13,17 @@ import 'package:load/load.dart';
 import 'package:logger/logger.dart';
 
 class LocationSearchBoxViewModel extends InsiteViewModel {
-  LocationSearchBoxViewModel() {
+  LocationSearchBoxViewModel(String? dropDownValue) {
+    onChangeDropDown(dropDownValue!);
     _assetLocationService.setUp();
   }
   var _assetLocationService = locator<AssetLocationService>();
 
-  List<String> dropDownList = ['S/N', 'Location'];
-  List<String> assetDropDownList = ['Location'];
+  // List<String> dropDownList = ['S/N', 'Location'];
 
-  String? searchDropDownValue = "S/N";
+  String? searchDropDownValue;
 
   bool? isSerching = false;
-
-  String? searchLocationDropDownValue = "Location";
 
   TextEditingController searchController = TextEditingController();
 
@@ -83,20 +81,16 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onSearchTextChanged(String? value, ScreenType screenType) async {
+  onSearchTextChanged(String? value) async {
     try {
-      if (screenType == ScreenType.ASSET_DETAIL) {
-        await searchLocation(value!);
-      } else {
-        if (value!.isNotEmpty && value.length > 2) {
-          if (searchDropDownValue == "S/N") {
-            await searchLocationSeralNumber(value);
-          } else {
-            await searchLocation(value);
-          }
+      if (value!.isNotEmpty && value.length > 2) {
+        if (searchDropDownValue == "S/N") {
+          await searchLocationSeralNumber(value);
         } else {
-          list!.clear();
+          await searchLocation(value);
         }
+      } else {
+        list!.clear();
       }
 
       notifyListeners();
@@ -129,13 +123,9 @@ class LocationSearchBoxViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  onChangeDropDownValueTwo(String value) {
-    searchLocationDropDownValue = value;
-    notifyListeners();
-  }
-
   onChangeDropDown(String value) {
     searchDropDownValue = value;
+    Logger().wtf(searchDropDownValue);
     searchController.clear();
     notifyListeners();
   }

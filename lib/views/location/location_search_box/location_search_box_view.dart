@@ -14,11 +14,15 @@ import 'package:stacked/stacked.dart';
 
 class LocationSearchBoxView extends StatelessWidget {
   final Function(dynamic, bool isSerialNo)? onSeletingSuggestion;
-  final ScreenType? screenType;
   final double? searchBoxWidth;
+  final List<String>? dropDownItems;
+  final String? dropDownValue;
 
   LocationSearchBoxView(
-      {this.onSeletingSuggestion, this.searchBoxWidth, this.screenType});
+      {this.onSeletingSuggestion,
+      this.searchBoxWidth,
+      this.dropDownItems,
+      this.dropDownValue});
   @override
   Widget build(BuildContext context) {
     var mediaQuerry = MediaQuery.of(context);
@@ -42,71 +46,37 @@ class LocationSearchBoxView extends StatelessWidget {
                           color: Colors.white,
                           borderRadius:
                               new BorderRadius.all(new Radius.circular(8))),
-                      child: screenType == ScreenType.ASSET_DETAIL
-                          ? DropdownButton<String>(
-
-                              icon: Padding(
-                                padding: const EdgeInsets.only(left: 3),
-                                child: SvgPicture.asset(
-                                  "assets/images/arrowdown.svg",
-                                //  width: 10,
-                                  color: Theme.of(context).iconTheme.color,
-                                  height: 10,
-                                ),
-                              ),
-                              isExpanded: false,
-                              elevation: 0,
-                              underline: Container(),
-                              isDense: true,
-                              iconSize: 0.0,
-                              items: viewModel.assetDropDownList
-                                  .map((map) => DropdownMenuItem(
-                                        value: map,
-                                        child: InsiteTextOverFlow(
-                                          text: map,
-                                          size: 10.0,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ))
-                                  .toList(),
-                              value: viewModel.searchLocationDropDownValue,
-                              onChanged: (String? value) {
-                                viewModel.onChangeDropDownValueTwo(value!);
-                              },
-                            )
-                          : DropdownButton<String>(
-                             icon: Padding(
-                               padding: const EdgeInsets.only(left: 3),
-                               child: SvgPicture.asset(
-                                
-                                  "assets/images/arrowdown.svg",
-                                  width: 10,
-                                  color: Theme.of(context).iconTheme.color,
-                                  height: 10,
-                                ),
-                             ),
-                              isExpanded: false,
-                              elevation: 0,
-                              underline: Container(),
-                              isDense: true,
-                              iconSize: 0.0,
-                              items: viewModel.dropDownList
-                                  .map((map) => DropdownMenuItem(
-                                        value: map,
-                                        child: InsiteTextOverFlow(
-                                          text: map,
-                                          size: 11.0,
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ))
-                                  .toList(),
-                              value: viewModel.searchDropDownValue,
-                              onChanged: (String? value) {
-                                viewModel.onChangeDropDown(value!);
-                              },
-                            ),
+                      child: DropdownButton<String>(
+                        icon: Padding(
+                          padding: const EdgeInsets.only(left: 3),
+                          child: SvgPicture.asset(
+                            "assets/images/arrowdown.svg",
+                            width: 10,
+                            color: Theme.of(context).iconTheme.color,
+                            height: 10,
+                          ),
+                        ),
+                        isExpanded: false,
+                        elevation: 0,
+                        underline: Container(),
+                        isDense: true,
+                        iconSize: 0.0,
+                        items: dropDownItems!
+                            .map((map) => DropdownMenuItem(
+                                  value: map,
+                                  child: InsiteTextOverFlow(
+                                    text: map,
+                                    size: 11.0,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ))
+                            .toList(),
+                        value: dropDownValue,
+                        onChanged: (String? value) {
+                          viewModel.onChangeDropDown(value!);
+                        },
+                      ),
                     ),
 
                     // Expanded(
@@ -131,8 +101,7 @@ class LocationSearchBoxView extends StatelessWidget {
                             Completer<List<LocationKey>> completer =
                                 new Completer();
                             if (pattern.isNotEmpty) {
-                              await viewModel.onSearchTextChanged(
-                                  pattern, screenType!);
+                              await viewModel.onSearchTextChanged(pattern);
                               completer.complete(viewModel.list);
                               return completer.future;
                             } else {
@@ -152,26 +121,20 @@ class LocationSearchBoxView extends StatelessWidget {
                           onSuggestionSelected: (suggestion) {
                             if ((suggestion as LocationKey?) != null) {
                               viewModel.onSelect(suggestion!.value as String);
-                              if (screenType == ScreenType.ASSET_DETAIL) {
+
+                              if (dropDownValue == "S/N") {
+                                var data = viewModel
+                                    .result!.assetLocation!.mapRecords!
+                                    .singleWhere((element) =>
+                                        element!.assetSerialNumber ==
+                                        suggestion.value);
+                                Logger().w(data!.toJson());
+                                onSeletingSuggestion!(data, true);
+                              } else {
                                 onSeletingSuggestion!(
                                     LatLng(suggestion.latitude!,
                                         suggestion.longitude!),
                                     false);
-                              } else {
-                                if (viewModel.searchDropDownValue == "S/N") {
-                                  var data = viewModel
-                                      .result!.assetLocation!.mapRecords!
-                                      .singleWhere((element) =>
-                                          element!.assetSerialNumber ==
-                                          suggestion.value);
-                                  Logger().w(data!.toJson());
-                                  onSeletingSuggestion!(data, true);
-                                } else {
-                                  onSeletingSuggestion!(
-                                      LatLng(suggestion.latitude!,
-                                          suggestion.longitude!),
-                                      false);
-                                }
                               }
                             }
                           },
@@ -207,7 +170,7 @@ class LocationSearchBoxView extends StatelessWidget {
               })),
         );
       },
-      viewModelBuilder: () => LocationSearchBoxViewModel(),
+      viewModelBuilder: () => LocationSearchBoxViewModel(dropDownValue),
     );
   }
 }
