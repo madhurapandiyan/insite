@@ -527,22 +527,17 @@ assetOrHierarchyByTypeAndId( start:$start,limit:$limit,type:$type,name:"$name",c
     return data;
   }
 
-  getSmsReportSummary(int? start, int? limit) {
-    var data = """query {
-   getSMSSummaryReport(start: $start, limit: $limit) {
-     result
-{
-gpsDeviceId
-          id
-             language
-             name
-            number
-             serialNumber
-             startDate
-         }
-        count
+  getSmsReportSummary() {
+    var data = """query getSMSSummaryReport(\$start: Int!, \$limit: Int!) {
+   getSMSSummaryReport(start: \$start, limit: \$limit) {
+     gpsDeviceId
+     id
+     language
+     name
+     number
+     serialNumber
+     startDate
    }
- 
  }""";
     return data;
   }
@@ -3742,7 +3737,8 @@ maintenanceIntervals(
    name,
    userName,
    code,
-   email
+   email,
+   id
    }
    }""";
     return data;
@@ -4044,5 +4040,21 @@ status
 }""";
 return data;
 }
-
+getHierarchyDetails(){
+  var data="""query assetOrHierarchyByTypeAndId(\$id: Int, \$start: Int!, \$limit: Int!, \$type: HierarchyType, \$name: String, \$code: String) {
+  assetOrHierarchyByTypeAndId(id: \$id, start: \$start, limit: \$limit, type: \$type, name: \$name, code: \$code) {
+    name
+    gpsDeviceID
+    vin
+    model
+    productFamily
+    subscriptionStartDate
+    subscriptionEndDate
+    actualStartDate
+    __typename
+  }
+}
+""";
+return data;
+}
 }

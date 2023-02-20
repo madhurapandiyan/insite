@@ -71,7 +71,7 @@ class PlantDashboardViewModel extends InsiteViewModel {
         statusChartData.add(ChartSampleData(
             x: names[3],
             y: (result
-                .frameSubscription!.plantDispatchSummary!.yetToBeActivated),
+                .frameSubscription!.plantDispatchSummary!.subscriptionEnded),
             z: "subscriptionendasset"));
         activatedChartData.clear();
         activatedChartData.add(ChartSampleData(

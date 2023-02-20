@@ -12,6 +12,7 @@ import 'package:insite/core/models/get_single_transfer_device_id.dart';
 import 'package:insite/core/models/hierachy_graphql.dart';
 import 'package:insite/core/models/hierarchy_model.dart';
 import 'package:insite/core/models/industry_list_data.dart';
+import 'package:insite/core/models/plant_hierarcy_details.dart';
 import 'package:insite/core/models/prefill_customer_details.dart';
 
 import 'package:insite/core/models/subscription_dashboard.dart';
@@ -138,6 +139,27 @@ class SubScriptionService extends BaseService {
 
         return deviceDetails;
       }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+Future<PlantHierarchyDetails?> getHierarcyDetail({dynamic payload}) async {
+    try {
+      
+        var data = await Network().getGraphqlPlantData(
+          query:await graphqlSchemaService!.getHierarchyDetails(),
+         payLoad: payload
+        );
+
+        PlantHierarchyDetails? deviceDetails = PlantHierarchyDetails.fromJson(
+            data.data);
+
+        Logger().wtf("deviceDetails:${deviceDetails.toJson()}");
+
+        return deviceDetails;
+      
     } catch (e) {
       print(e.toString());
       return null;
