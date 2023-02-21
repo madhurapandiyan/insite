@@ -156,29 +156,40 @@ class UtilizationListItem extends StatelessWidget {
                                     TableRow(
                                       children: [
                                         InsiteTableRowItem(
-                                          title: "Lifetime Fuel",
+                                          title:
+                                              "Lifetime Fuel (${Utils.getUnit(userPreference: dateFormat)})",
                                           content: utilizationData
-                                                    ?.lastRuntimeFuelConsumptionLitersMeter !=
-                                                null
-                                            ? Utils.convertLitersToGal(
-                                                utilizationData
-                                                    ?.lastRuntimeFuelConsumptionLitersMeter
-                                                    .toString(),
-                                                false,
-                                                dateFormat)
-                                            : "-",
-                                        //  content: "-",
+                                                      ?.lastRuntimeFuelConsumptionLitersMeter !=
+                                                  null
+                                              ? Utils.unitConvert(
+                                                  utilizationData
+                                                      ?.lastRuntimeFuelConsumptionLitersMeter
+                                                      .toString(),
+                                                  dateFormat)
+                                              // Utils.convertLitersToGal(
+                                              //     utilizationData
+                                              //         ?.lastRuntimeFuelConsumptionLitersMeter
+                                              //         .toString(),
+                                              //     false,
+                                              //     dateFormat)
+                                              : "-",
+                                          //  content: "-",
                                         ),
                                         InsiteTableRowItem(
-                                          title: "Fuel Burned",
+                                          title:
+                                              "Fuel Burned (${Utils.getUnit(userPreference: dateFormat)})",
                                           content: utilizationData!
                                                       .runtimeFuelConsumedLiters !=
                                                   null
-                                              ? Utils.convertLitersToGal(
+                                              ? Utils.unitConvert(
                                                   utilizationData!
                                                       .runtimeFuelConsumedLiters!,
-                                                  false,
                                                   dateFormat)
+                                              // Utils.convertLitersToGal(
+                                              //     utilizationData!
+                                              //         .runtimeFuelConsumedLiters!,
+                                              //     false,
+                                              //     dateFormat)
                                               : "-",
                                         ),
                                       ],
@@ -259,28 +270,41 @@ class UtilizationListItem extends StatelessWidget {
                                   TableRow(
                                     children: [
                                       InsiteTableRowItem(
-                                        title: "Lifetime Fuel",
+                                        title:
+                                            "Lifetime Fuel (${Utils.getUnit(userPreference: dateFormat)})",
                                         content: utilizationData
                                                     ?.lastIdleFuelConsumptionLitersMeter !=
                                                 null
-                                            ? Utils.convertLitersToGal(
+                                            ? Utils.unitConvert(
                                                 utilizationData
                                                     ?.lastIdleFuelConsumptionLitersMeter
                                                     .toString(),
-                                                false,
                                                 dateFormat)
+                                            // Utils.convertLitersToGal(
+                                            //     utilizationData
+                                            //         ?.lastIdleFuelConsumptionLitersMeter
+                                            //         .toString(),
+                                            //     false,
+                                            //     dateFormat)
                                             : "-",
                                       ),
                                       InsiteTableRowItem(
-                                        title: "Fuel Burned",
+                                        title:
+                                            "Fuel Burned (${Utils.getUnit(userPreference: dateFormat)})",
                                         content: utilizationData!
                                                     .idleFuelConsumedLiters !=
                                                 null
-                                            ? Utils.convertLitersToGal(
+                                            ? Utils.unitConvert(
                                                 utilizationData!
-                                                    .idleFuelConsumedLiters!,
-                                                false,
-                                                dateFormat)
+                                                    .idleFuelConsumedLiters
+                                                    .toString(),
+                                                dateFormat,
+                                              )
+                                            // Utils.convertLitersToGal(
+                                            //     utilizationData!
+                                            //         .idleFuelConsumedLiters!,
+                                            //     false,
+                                            //     dateFormat)
                                             : "-",
                                       ),
                                     ],

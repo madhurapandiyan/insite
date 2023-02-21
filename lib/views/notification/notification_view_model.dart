@@ -90,7 +90,7 @@ class NotificationViewModel extends InsiteViewModel {
   bool get loading => _loading;
 
   bool isFromDashBoard = true;
-
+  bool isMainSelected = false;
   List<String>? filterValue = [];
   String? productFamilyFilterData;
 
@@ -544,17 +544,36 @@ class NotificationViewModel extends InsiteViewModel {
   }
 
   onMultiClickCheckBoxSelect() {
-    for (var i = 0; i < _assets.length; i++) {
-      if (_assets.length <= 100) {
-        _assets[i].isSelected = true;
+    if (_assets.length > 100) {
+      snackbarService!.showSnackbar(
+          message:
+              "User Allowed to select up to 100 Notifications only at a time.");
+      for (var element in _assets) {
+        element.isSelected = false;
+
+        isMainSelected = false;
+      }
+    } else {
+      if (_assets.every((element) => element.isSelected)) {
+        for (var element in _assets) {
+          element.isSelected = false;
+          isMainSelected = element.isSelected;
+        }
       } else {
-        _assets[i].isSelected = false;
-        snackbarService!.showSnackbar(
-      
-            message:
-                "User Allowed to select up to 100 Notifications only at a time.");
+        if (_assets.any((element) => element.isSelected)) {
+          for (var element in _assets) {
+            element.isSelected = false;
+            isMainSelected = element.isSelected;
+          }
+        } else {
+          for (var element in _assets) {
+            element.isSelected = true;
+            isMainSelected = element.isSelected;
+          }
+        }
       }
     }
+
     notifyListeners();
   }
 }

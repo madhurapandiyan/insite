@@ -94,16 +94,7 @@ class _NotificationViewState extends State<NotificationView> {
                                     // SizedBox(
                                     //   width: 4,
                                     // ),
-                                    InsiteButton(
-                                      title: Utils.getDateFormatForDatePicker(
-                                              viewModel.startDate,
-                                              viewModel.userPref) +
-                                          " - " +
-                                          Utils.getDateFormatForDatePicker(
-                                              viewModel.endDate,
-                                              viewModel.userPref),
-                                      //  bgColor: Theme.of(context).backgroundColor,
-                                      textColor: white,
+                                    GestureDetector(
                                       onTap: () async {
                                         dateRange = [];
                                         dateRange = await showDialog(
@@ -118,16 +109,95 @@ class _NotificationViewState extends State<NotificationView> {
                                         // viewModel.endDate =
                                         //     dateRange?.last.toString();
                                         viewModel.isDateRangeSelected = true;
+                                        // if (dateRange ==
+                                        //         null?.dateRange?.isEmpty &&
+                                        //     viewModel.appliedFilters!.isEmpty) {
+                                        // } else
                                         if (dateRange ==
-                                                null?.dateRange?.isEmpty &&
-                                            viewModel.appliedFilters!.isEmpty) {
-                                        } else if (dateRange ==
                                             null?.dateRange?.isEmpty) {
                                         } else {
                                           viewModel.refresh();
                                         }
                                       },
+                                      child: viewModel.isDateRangeSelected ==
+                                                      false &&
+                                                  viewModel.isFromDashBoard ||
+                                              dateRange ==
+                                                      null
+                                                          ?.dateRange
+                                                          ?.isEmpty &&
+                                                  viewModel.isFromDashBoard
+                                          ? Container(
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                                border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .color!),
+                                                color: Theme.of(context)
+                                                    .buttonColor,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  Icon(Icons.calendar_month),
+                                                  Text("Date Range"),
+                                                ],
+                                              ),
+                                            )
+                                          : InsiteButton(
+                                              title: Utils
+                                                      .getDateFormatForDatePicker(
+                                                          viewModel.startDate,
+                                                          viewModel.userPref) +
+                                                  " - " +
+                                                  Utils
+                                                      .getDateFormatForDatePicker(
+                                                          viewModel.endDate,
+                                                          viewModel.userPref),
+                                              //  bgColor: Theme.of(context).backgroundColor,
+                                              textColor: white,
+                                            ),
                                     ),
+                                    // InsiteButton(
+                                    //   title: Utils.getDateFormatForDatePicker(
+                                    //           viewModel.startDate,
+                                    //           viewModel.userPref) +
+                                    //       " - " +
+                                    //       Utils.getDateFormatForDatePicker(
+                                    //           viewModel.endDate,
+                                    //           viewModel.userPref),
+                                    //   //  bgColor: Theme.of(context).backgroundColor,
+                                    //   textColor: white,
+                                    //   onTap: () async {
+                                    //     dateRange = [];
+                                    //     dateRange = await showDialog(
+                                    //       context: context,
+                                    //       builder: (BuildContext context) =>
+                                    //           Dialog(
+                                    //               backgroundColor: transparent,
+                                    //               child: DateRangeView()),
+                                    //     );
+                                    //     // viewModel.startDate =
+                                    //     //     dateRange?.first.toString();
+                                    //     // viewModel.endDate =
+                                    //     //     dateRange?.last.toString();
+                                    //     viewModel.isDateRangeSelected = true;
+                                    //     if (dateRange ==
+                                    //             null?.dateRange?.isEmpty &&
+                                    //         viewModel.appliedFilters!.isEmpty) {
+                                    //     } else if (dateRange ==
+                                    //         null?.dateRange?.isEmpty) {
+                                    //     } else {
+                                    //       viewModel.refresh();
+                                    //     }
+                                    //   },
+                                    // ),
                                   ],
                                 ),
 
@@ -216,44 +286,54 @@ class _NotificationViewState extends State<NotificationView> {
                         SizedBox(
                           height: 10,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Logger().i("icon is tapped");
-                                  viewModel.onMultiClickCheckBoxSelect();
-                                },
-                                child: Icon(
-                                  Icons.check_box_outline_blank,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color,
-                                ),
-                              ),
-                            ),
-                            ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: InsitePopMenuItemButton(
-                                    width: 40,
-                                    height: 40,
-                                    //icon: Icon(Icons.more_vert),
-                                    widget: onContextMenuSelected(
-                                        viewModel, context, selectedIndex),
+                        viewModel.assets.isNotEmpty
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Logger().i("icon is tapped");
+                                        viewModel.onMultiClickCheckBoxSelect();
+                                      },
+                                      child: Icon(
+                                        viewModel.isMainSelected
+                                            ? Icons.check_box_rounded
+                                            : Icons.check_box_outline_blank,
+                                        color: viewModel.isMainSelected
+                                            ? Theme.of(context).buttonColor
+                                            : Theme.of(context)
+                                                .textTheme
+                                                .bodyText1!
+                                                .color,
+                                      ),
+                                    ),
                                   ),
-                                ))
-                          ],
-                        ),
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: InsitePopMenuItemButton(
+                                          width: 40,
+                                          height: 40,
+                                          //icon: Icon(Icons.more_vert),
+                                          widget: onContextMenuSelected(
+                                              viewModel,
+                                              context,
+                                              selectedIndex),
+                                        ),
+                                      ))
+                                ],
+                              )
+                            : SizedBox(),
                         SizedBox(
                           height: 20,
                         ),

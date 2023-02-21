@@ -849,7 +849,7 @@ class Utils {
       case FilterType.NOTIFICATION_TYPE:
         title = "NOTIFICATION TYPE";
         break;
-         case FilterType.NOTIFICATION_STATUS:
+      case FilterType.NOTIFICATION_STATUS:
         title = "NOTIFICATION STATUS";
         break;
 
@@ -2670,7 +2670,7 @@ class Utils {
     } else if (userPreference.units == "Metric") {
       if (unit == "lbs") {
         return "Kg";
-      } else if (unit == "Gallon"||unit=="gallon") {
+      } else if (unit == "Gallon" || unit == "gallon") {
         return "Litre ";
       } else {
         return unit.toString();
@@ -2685,7 +2685,9 @@ class Utils {
     var data = DateFormat(userPreference!.dateFormat).format(value);
     return data;
   }
-  String getEndDateTimeInGMTFormatForNotification(date, UserPreferedData? prefData) {
+
+  String getEndDateTimeInGMTFormatForNotification(
+      date, UserPreferedData? prefData) {
     try {
       tz.initializeTimeZones();
       Logger().i("end Date $date");
@@ -2703,6 +2705,31 @@ class Utils {
     } catch (e) {
       Logger().e(e.toString());
       return "";
+    }
+  }
+
+  static String unitConvert(l2GValue, prefData, {precision}) {
+    if (l2GValue == null || l2GValue == '_' || prefData == null) {
+      return '-';
+    }
+    if (prefData?.units == 'Metric') {
+      return "${num.parse(l2GValue.toString()).toStringAsFixed(precision != null ? precision : 1)}";
+    } else if (prefData.units == 'US Standard') {
+      return "${(num.parse(l2GValue.toString()) * 0.264172).toStringAsFixed(precision != null ? precision : 1)}";
+    } else if (prefData.units == 'Imperial') {
+      return "${(num.parse(l2GValue.toString()) * 0.219969).toStringAsFixed(precision != null ? precision : 1)}";
+    } else {
+      return '-';
+    }
+  }
+
+  static String getUnit({UserPreference? userPreference}) {
+    Logger().e(userPreference!.units);
+    if (userPreference.units == "US Standard" ||
+        userPreference.units == "Imperial") {
+      return "gal";
+    } else {
+      return "L";
     }
   }
 }
