@@ -38,7 +38,6 @@ class _LocationViewState extends State<LocationView> {
   @override
   void initState() {
     super.initState();
-    
   }
 
   @override
@@ -155,7 +154,7 @@ class _LocationViewState extends State<LocationView> {
                                   },
                                   onMapCreated:
                                       (GoogleMapController controller) async {
-                                        viewModel.googleMapController=controller;
+                                    viewModel.googleMapController = controller;
                                     viewModel.customInfoWindowController
                                         .googleMapController = controller;
                                     viewModel.controller.complete(controller);
@@ -212,8 +211,11 @@ class _LocationViewState extends State<LocationView> {
                                     padding:
                                         const EdgeInsets.only(top: 7, left: 20),
                                     child: LocationSearchBoxView(
-                                    dropDownItems: ['S/N', 'Location'],
-                                    dropDownValue: "S/N",
+                                      dropDownValueCallBack: (String? value) {
+                                        viewModel.onDropDownChangeValue(value);
+                                      },
+                                      dropDownItems: ['S/N', 'Location'],
+                                      dropDownValue: viewModel.dropDownValue,
                                       searchBoxWidth: 0.6,
                                       onSeletingSuggestion:
                                           (value, isSerialNo) {
@@ -332,8 +334,8 @@ class _LocationViewState extends State<LocationView> {
                                                         Alignment.centerRight,
                                                     child: GestureDetector(
                                                       onTap: () {
-                                                      viewModel.zoomToCurrentLocation(
-                                                      );
+                                                        viewModel
+                                                            .zoomToCurrentLocation();
                                                       },
                                                       child: Container(
                                                         margin: EdgeInsets.only(
@@ -516,8 +518,6 @@ class _LocationViewState extends State<LocationView> {
     mapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: targetPosition, zoom: zoomVal)));
   }
-
- 
 
   MapType _changemap() {
     switch (_currentSelectedItem) {

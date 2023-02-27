@@ -699,7 +699,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                                     borderRadius: BorderRadius.circular(10)),
                                                                                 child: viewModel.isEditing
                                                                                     ? CustomDropDownWidget(
-                                                                                     textColorChange: viewModel.isEditing ? true : false,
+                                                                                        textColorChange: viewModel.isEditing ? true : false,
                                                                                         onChanged: null,
                                                                                         items: viewModel.notificationSubTypesEdit,
                                                                                         value: viewModel.dropDownSubInitialValueEdit,
@@ -1288,6 +1288,10 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                                                           context)
                                                                       .unfocus();
                                                                 },
+                                                                name: viewModel
+                                                                    .searchContactListName![
+                                                                        i]
+                                                                    .name,
                                                                 deviceId: viewModel
                                                                     .searchContactListName![
                                                                         i]

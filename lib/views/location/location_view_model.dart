@@ -38,6 +38,8 @@ class LocationViewModel extends InsiteViewModel {
 
   bool? isLocationSelected = false;
 
+  String? dropDownValue = "S/N";
+
   bool _loading = true;
   bool get loading => _loading;
 
@@ -76,18 +78,25 @@ class LocationViewModel extends InsiteViewModel {
   List<flutter_map.Marker> allMarkers = [];
 
   String searchDropDownValue = "S/N";
-   Future<void> zoomToCurrentLocation() async {
+  Future<void> zoomToCurrentLocation() async {
     await Geolocator.requestPermission();
-    final isLocationServiceEnabled=await Geolocator.isLocationServiceEnabled();
-    if(isLocationServiceEnabled){
-      final userLocation=await Geolocator.getCurrentPosition();
+    final isLocationServiceEnabled =
+        await Geolocator.isLocationServiceEnabled();
+    if (isLocationServiceEnabled) {
+      final userLocation = await Geolocator.getCurrentPosition();
       Logger().wtf(userLocation.latitude);
-       Logger().wtf(userLocation.longitude);
-  var cameraPosition=CameraPosition(
-        target: LatLng(userLocation.latitude,userLocation.longitude), zoom: 10);
-    googleMapController!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+      Logger().wtf(userLocation.longitude);
+      var cameraPosition = CameraPosition(
+          target: LatLng(userLocation.latitude, userLocation.longitude),
+          zoom: 10);
+      googleMapController!
+          .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     }
-  
+  }
+
+  onDropDownChangeValue(String? value) {
+    dropDownValue = value;
+    notifyListeners();
   }
 
   clusterMarker() {

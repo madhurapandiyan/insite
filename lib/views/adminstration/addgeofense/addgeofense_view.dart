@@ -258,7 +258,11 @@ class _AddgeofenseViewState extends State<AddgeofenseView> {
                                                   'S/N',
                                                   'Location'
                                                 ],
-                                                dropDownValue: "S/N",
+                                                dropDownValue: viewModel.dropDownValue,
+                                                dropDownValueCallBack:
+                                                    (String? value) {
+                                                  viewModel.onDropDownValue(value);
+                                                },
                                                 onSeletingSuggestion:
                                                     (value, isSerialNo) {
                                                   if (!isSerialNo) {

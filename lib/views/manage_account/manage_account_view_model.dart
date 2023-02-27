@@ -14,6 +14,7 @@ class ManageAccountViewModel extends BaseViewModel {
 
   ManageAccountViewModel() {
     this.log = getLogger(this.runtimeType.toString());
+    
   }
 
   final flutterWebviewPlugin = new FlutterWebviewPlugin();

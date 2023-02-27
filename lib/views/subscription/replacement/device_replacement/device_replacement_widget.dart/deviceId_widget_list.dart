@@ -7,17 +7,30 @@ class DeviceIdListWidget extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final double? size;
   final String? deviceId;
-  DeviceIdListWidget({this.onSelected, this.deviceId, this.size, this.padding});
+  final String? name;
+  DeviceIdListWidget(
+      {this.onSelected, this.deviceId, this.size, this.padding, this.name});
   @override
   Widget build(BuildContext context) {
     return ListTile(
-     // contentPadding: padding,
+      // contentPadding: padding,
       selectedTileColor: tango,
       onTap: onSelected as void Function()?,
-     title: InsiteTextOverFlow(
-        size: size,
-        color: Theme.of(context).textTheme.bodyText2!.color,
-        text: deviceId,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          
+          InsiteText(
+            size: size,
+            color: Theme.of(context).textTheme.bodyText2!.color,
+            text: name,
+          ),
+          InsiteTextOverFlow(
+            size: size,
+            color: Theme.of(context).textTheme.bodyText2!.color,
+            text: deviceId,
+          ),
+        ],
       ),
     );
   }
