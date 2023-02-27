@@ -139,6 +139,9 @@ AssetResult _$AssetResultFromJson(Map<String, dynamic> json) => AssetResult(
           (json['dieselExhaustFluidLitersCalloutTypes'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList(),
+      dailyreportedtimeTypes: (json['dailyreportedtimeTypes'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$AssetResultToJson(AssetResult instance) =>
@@ -214,4 +217,5 @@ Map<String, dynamic> _$AssetResultToJson(AssetResult instance) =>
           instance.dieselExhaustFluidLitersBurnedRate,
       'dieselExhaustFluidLitersCalloutTypes':
           instance.dieselExhaustFluidLitersCalloutTypes,
+      'dailyreportedtimeTypes': instance.dailyreportedtimeTypes,
     };

@@ -2569,9 +2569,9 @@ class Utils {
   }
 
   static List<String> getUnitsDropdown(UserPreference? prefData) {
-    List<String> metricList = ["Gallon", "lbs", "None"];
+    List<String> metricList = ["Gallon", "lbs", "Nos"];
     if (prefData!.units == 'Metric') {
-      return ["Litre", "Kg", "None"];
+      return ["Litre", "Kg", "Nos"];
     } else if (prefData.units == 'US Standard') {
       return metricList;
     } else if (prefData.units == 'Imperial') {
@@ -2730,6 +2730,20 @@ class Utils {
       return "gal";
     } else {
       return "L";
+    }
+  }
+
+  static bool getReport({List<String>? dailyreportedtimeTypes}) {
+    if (dailyreportedtimeTypes!=null&&dailyreportedtimeTypes.isNotEmpty) {
+      if (dailyreportedtimeTypes.first == "NonReported") {
+        Logger().wtf(
+            "dailyreportedtimeTypes?.first:${dailyreportedtimeTypes.first}");
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 }

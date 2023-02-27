@@ -81,6 +81,7 @@ class AssetResult {
     this.lastDieselExhaustFluidLitersMeter,
     this.dieselExhaustFluidLitersBurnedRate,
     this.dieselExhaustFluidLitersCalloutTypes,
+    this.dailyreportedtimeTypes,
   });
 
   String? assetIdentifierSqluid;
@@ -141,6 +142,7 @@ class AssetResult {
   dynamic lastDieselExhaustFluidLitersMeter;
   dynamic dieselExhaustFluidLitersBurnedRate;
   List<String>? dieselExhaustFluidLitersCalloutTypes;
+  List<String>? dailyreportedtimeTypes;
 
   factory AssetResult.fromJson(Map<String, dynamic> json) =>
       _$AssetResultFromJson(json);

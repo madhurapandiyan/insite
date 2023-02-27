@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:insite/core/models/user_preference.dart';
 import 'package:insite/core/models/utilization.dart';
+import 'package:insite/theme/colors.dart';
 import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/preference/model/time_zone.dart';
 import 'package:insite/widgets/dumb_widgets/insite_row_item_text.dart';
@@ -32,125 +33,250 @@ class UtilizationListItem extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: InsiteExpansionTile(
-                      title: Table(
-                        border: TableBorder.symmetric(
-                            outside: BorderSide.none,
-                            inside: BorderSide(
-                                style: BorderStyle.solid,
-                                color: Color(0xFF000000),
-                                width: 1)),
-                        columnWidths: {
-                          0: FlexColumnWidth(4),
-                          1: FlexColumnWidth(4),
-                          2: FlexColumnWidth(3),
-                        },
-                        children: [
-                          TableRow(
-                            children: [
-                              InsiteTableRowItem(
-                                title: "Last Reported Time ",
-                                content: utilizationData!.lastReportedTime !=
-                                        null
-                                    ? "${Utils.getDateTimeWithOutTimeZone(utilizationData!.lastReportedTime, dateFormat)} ${utilizationData?.lastReportedTimeZoneAbbrev ?? ""}"
-                                    : "-",
-                              ),
-                              InsiteTableRowItem(
-                                title: "Runtime",
-                                // content: utilizationData
-                                //             .targetRuntimePerformance !=
-                                //         null
-                                //     ? (utilizationData
-                                //                     .targetRuntimePerformance *
-                                //                 100)
-                                //             .toStringAsFixed(2) +
-                                //         " %"
-                                //     : "",
-                                content: utilizationData!.runtimeHours != null
-                                    ? utilizationData!.runtimeHours!
-                                        .toStringAsFixed(1)
-                                    : "-",
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      tilePadding: EdgeInsets.all(0),
-                      childrenPadding: EdgeInsets.all(0),
-                      children: [
-                        Table(
-                          border: TableBorder(
-                              bottom: BorderSide.none,
-                              verticalInside: BorderSide(
+                    child: Theme(
+                       data: ThemeData(
+                        primarySwatch: Colors.grey,
+                        buttonColor: Utils.getReport(dailyreportedtimeTypes: utilizationData?.dailyreportedtimeTypes)
+                            ? Colors.grey[300]
+                            : Theme.of(context).buttonColor,
+                        textTheme: TextTheme(
+                            bodyText1: TextStyle(
+                                color: Utils.getReport(dailyreportedtimeTypes: utilizationData?.dailyreportedtimeTypes)
+                                    ? black.withOpacity(0.2)
+                                    : null))),
+                      child: InsiteExpansionTile(
+                        title: Table(
+                          border: TableBorder.symmetric(
+                              outside: BorderSide.none,
+                              inside: BorderSide(
                                   style: BorderStyle.solid,
                                   color: Color(0xFF000000),
-                                  width: 1),
-                              top: BorderSide(
-                                  style: BorderStyle.solid,
-                                  color: Color(0xFF000000),
-                                  width: 1),
-                              horizontalInside: BorderSide(
-                                  style: BorderStyle.solid,
-                                  color: Color(0xFF000000),
-                                  width: 1),
-                              left: BorderSide.none,
-                              right: BorderSide.none),
+                                  width: 1)),
                           columnWidths: {
-                            0: FlexColumnWidth(1),
-                            1: FlexColumnWidth(3),
+                            0: FlexColumnWidth(4),
+                            1: FlexColumnWidth(4),
+                            2: FlexColumnWidth(3),
                           },
                           children: [
                             TableRow(
                               children: [
                                 InsiteTableRowItem(
-                                  title: "RunTime",
+                                  title: "Last Reported Time ",
+                                  content: utilizationData!.lastReportedTime !=
+                                          null
+                                      ? "${Utils.getDateTimeWithOutTimeZone(utilizationData!.lastReportedTime, dateFormat)} ${utilizationData?.lastReportedTimeZoneAbbrev ?? ""}"
+                                      : "-",
+                                ),
+                                InsiteTableRowItem(
+                                  title: "Runtime",
+                                  // content: utilizationData
+                                  //             .targetRuntimePerformance !=
+                                  //         null
+                                  //     ? (utilizationData
+                                  //                     .targetRuntimePerformance *
+                                  //                 100)
+                                  //             .toStringAsFixed(2) +
+                                  //         " %"
+                                  //     : "",
+                                  content: utilizationData!.runtimeHours != null
+                                      ? utilizationData!.runtimeHours!
+                                          .toStringAsFixed(1)
+                                      : "-",
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        tilePadding: EdgeInsets.all(0),
+                        childrenPadding: EdgeInsets.all(0),
+                        children: [
+                          Table(
+                            border: TableBorder(
+                                bottom: BorderSide.none,
+                                verticalInside: BorderSide(
+                                    style: BorderStyle.solid,
+                                    color: Color(0xFF000000),
+                                    width: 1),
+                                top: BorderSide(
+                                    style: BorderStyle.solid,
+                                    color: Color(0xFF000000),
+                                    width: 1),
+                                horizontalInside: BorderSide(
+                                    style: BorderStyle.solid,
+                                    color: Color(0xFF000000),
+                                    width: 1),
+                                left: BorderSide.none,
+                                right: BorderSide.none),
+                            columnWidths: {
+                              0: FlexColumnWidth(1),
+                              1: FlexColumnWidth(3),
+                            },
+                            children: [
+                              TableRow(
+                                children: [
+                                  InsiteTableRowItem(
+                                    title: "RunTime",
+                                    content: "-",
+                                  ),
+                                  Table(
+                                    border: TableBorder.all(),
+                                    children: [
+                                      TableRow(children: [
+                                        InsiteTableRowItem(
+                                          title: "Meter (hr)",
+                                          content: utilizationData!
+                                                      .lastRuntimeHourMeter !=
+                                                  null
+                                              ? utilizationData!
+                                                  .lastRuntimeHourMeter!
+                                                  .toStringAsFixed(1)
+                                              : "-",
+                                        ),
+                                        InsiteTableRowItem(
+                                          title: "Daily (hr)",
+                                          content:
+                                              utilizationData!.runtimeHours !=
+                                                      null
+                                                  ? utilizationData!.runtimeHours!
+                                                      .toStringAsFixed(1)
+                                                  : "-",
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        InsiteTableRowItem(
+                                          title: "Target (hr)",
+                                          content: utilizationData!
+                                                      .targetRuntime !=
+                                                  null
+                                              ? utilizationData!.targetRuntime!
+                                                  .toStringAsFixed(1)
+                                              : "-",
+                                        ),
+                                        InsiteTableRowItem(
+                                          title: "Performance",
+                                          content: utilizationData!
+                                                      .targetRuntimePerformance !=
+                                                  null
+                                              ? (utilizationData!
+                                                              .targetRuntimePerformance! *
+                                                          100)
+                                                      .toStringAsFixed(2) +
+                                                  " %"
+                                              : "",
+                                        ),
+                                      ]),
+                                      TableRow(
+                                        children: [
+                                          InsiteTableRowItem(
+                                            title:
+                                                "Lifetime Fuel (${Utils.getUnit(userPreference: dateFormat)})",
+                                            content: utilizationData
+                                                        ?.lastRuntimeFuelConsumptionLitersMeter !=
+                                                    null
+                                                ? Utils.unitConvert(
+                                                    utilizationData
+                                                        ?.lastRuntimeFuelConsumptionLitersMeter
+                                                        .toString(),
+                                                    dateFormat)
+                                                // Utils.convertLitersToGal(
+                                                //     utilizationData
+                                                //         ?.lastRuntimeFuelConsumptionLitersMeter
+                                                //         .toString(),
+                                                //     false,
+                                                //     dateFormat)
+                                                : "-",
+                                            //  content: "-",
+                                          ),
+                                          InsiteTableRowItem(
+                                            title:
+                                                "Fuel Burned (${Utils.getUnit(userPreference: dateFormat)})",
+                                            content: utilizationData!
+                                                        .runtimeFuelConsumedLiters !=
+                                                    null
+                                                ? Utils.unitConvert(
+                                                    utilizationData!
+                                                        .runtimeFuelConsumedLiters!,
+                                                    dateFormat)
+                                                // Utils.convertLitersToGal(
+                                                //     utilizationData!
+                                                //         .runtimeFuelConsumedLiters!,
+                                                //     false,
+                                                //     dateFormat)
+                                                : "-",
+                                          ),
+                                        ],
+                                      ),
+                                      TableRow(children: [
+                                        InsiteTableRowItem(
+                                          title: "Burn Rate",
+                                          content: utilizationData!
+                                                      .runtimeFuelConsumptionRate !=
+                                                  null
+                                              ? Utils.convertLitersToGal(
+                                                  utilizationData!
+                                                      .runtimeFuelConsumptionRate!,
+                                                  false,
+                                                  dateFormat)
+                                              : "-",
+                                        ),
+                                        InsiteTableRowItem(
+                                          title: "",
+                                          content: "",
+                                        ),
+                                      ])
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              TableRow(children: [
+                                InsiteTableRowItem(
+                                  title: "Idle",
                                   content: "-",
                                 ),
                                 Table(
                                   border: TableBorder.all(),
                                   children: [
-                                    TableRow(children: [
-                                      InsiteTableRowItem(
-                                        title: "Meter (hr)",
-                                        content: utilizationData!
-                                                    .lastRuntimeHourMeter !=
-                                                null
-                                            ? utilizationData!
-                                                .lastRuntimeHourMeter!
-                                                .toStringAsFixed(1)
-                                            : "-",
-                                      ),
-                                      InsiteTableRowItem(
-                                        title: "Daily (hr)",
-                                        content:
-                                            utilizationData!.runtimeHours !=
-                                                    null
-                                                ? utilizationData!.runtimeHours!
-                                                    .toStringAsFixed(1)
-                                                : "-",
-                                      ),
-                                    ]),
+                                    TableRow(
+                                      children: [
+                                        InsiteTableRowItem(
+                                          title: "Meter (hr)",
+                                          content: utilizationData!
+                                                      .lastIdleHourMeter !=
+                                                  null
+                                              ? utilizationData!
+                                                  .lastIdleHourMeter!
+                                                  .toStringAsFixed(1)
+                                              : "",
+                                        ),
+                                        InsiteTableRowItem(
+                                          title: "Daily (hr)",
+                                          content:
+                                              utilizationData!.idleHours != null
+                                                  ? utilizationData!.idleHours!
+                                                  : "-",
+                                        ),
+                                      ],
+                                    ),
                                     TableRow(children: [
                                       InsiteTableRowItem(
                                         title: "Target (hr)",
-                                        content: utilizationData!
-                                                    .targetRuntime !=
-                                                null
-                                            ? utilizationData!.targetRuntime!
-                                                .toStringAsFixed(1)
-                                            : "-",
+                                        content:
+                                            utilizationData!.targetIdle != null
+                                                ? utilizationData!.targetIdle!
+                                                    .toStringAsFixed(1)
+                                                : "-",
                                       ),
                                       InsiteTableRowItem(
                                         title: "Performance",
                                         content: utilizationData!
-                                                    .targetRuntimePerformance !=
+                                                    .targetIdlePerformance !=
                                                 null
                                             ? (utilizationData!
-                                                            .targetRuntimePerformance! *
+                                                            .targetIdlePerformance! *
                                                         100)
                                                     .toStringAsFixed(2) +
                                                 " %"
-                                            : "",
+                                            : "-",
                                       ),
                                     ]),
                                     TableRow(
@@ -159,35 +285,36 @@ class UtilizationListItem extends StatelessWidget {
                                           title:
                                               "Lifetime Fuel (${Utils.getUnit(userPreference: dateFormat)})",
                                           content: utilizationData
-                                                      ?.lastRuntimeFuelConsumptionLitersMeter !=
+                                                      ?.lastIdleFuelConsumptionLitersMeter !=
                                                   null
                                               ? Utils.unitConvert(
                                                   utilizationData
-                                                      ?.lastRuntimeFuelConsumptionLitersMeter
+                                                      ?.lastIdleFuelConsumptionLitersMeter
                                                       .toString(),
                                                   dateFormat)
                                               // Utils.convertLitersToGal(
                                               //     utilizationData
-                                              //         ?.lastRuntimeFuelConsumptionLitersMeter
+                                              //         ?.lastIdleFuelConsumptionLitersMeter
                                               //         .toString(),
                                               //     false,
                                               //     dateFormat)
                                               : "-",
-                                          //  content: "-",
                                         ),
                                         InsiteTableRowItem(
                                           title:
                                               "Fuel Burned (${Utils.getUnit(userPreference: dateFormat)})",
                                           content: utilizationData!
-                                                      .runtimeFuelConsumedLiters !=
+                                                      .idleFuelConsumedLiters !=
                                                   null
                                               ? Utils.unitConvert(
                                                   utilizationData!
-                                                      .runtimeFuelConsumedLiters!,
-                                                  dateFormat)
+                                                      .idleFuelConsumedLiters
+                                                      .toString(),
+                                                  dateFormat,
+                                                )
                                               // Utils.convertLitersToGal(
                                               //     utilizationData!
-                                              //         .runtimeFuelConsumedLiters!,
+                                              //         .idleFuelConsumedLiters!,
                                               //     false,
                                               //     dateFormat)
                                               : "-",
@@ -196,7 +323,7 @@ class UtilizationListItem extends StatelessWidget {
                                     ),
                                     TableRow(children: [
                                       InsiteTableRowItem(
-                                        title: "Burn Rate",
+                                        title: "Burn Rate (gal/hr)",
                                         content: utilizationData!
                                                     .runtimeFuelConsumptionRate !=
                                                 null
@@ -214,143 +341,29 @@ class UtilizationListItem extends StatelessWidget {
                                     ])
                                   ],
                                 ),
-                              ],
-                            ),
-                            TableRow(children: [
-                              InsiteTableRowItem(
-                                title: "Idle",
-                                content: "-",
-                              ),
-                              Table(
-                                border: TableBorder.all(),
+                              ]),
+                              TableRow(
                                 children: [
-                                  TableRow(
-                                    children: [
-                                      InsiteTableRowItem(
-                                        title: "Meter (hr)",
-                                        content: utilizationData!
-                                                    .lastIdleHourMeter !=
-                                                null
-                                            ? utilizationData!
-                                                .lastIdleHourMeter!
-                                                .toStringAsFixed(1)
-                                            : "",
-                                      ),
-                                      InsiteTableRowItem(
-                                        title: "Daily (hr)",
-                                        content:
-                                            utilizationData!.idleHours != null
-                                                ? utilizationData!.idleHours!
-                                                : "-",
-                                      ),
-                                    ],
+                                  InsiteTableRowItem(
+                                    title: "Working",
+                                    content: utilizationData!.workingHours != null
+                                        ? utilizationData!.workingHours!
+                                            .toStringAsFixed(1)
+                                        : "-",
                                   ),
-                                  TableRow(children: [
-                                    InsiteTableRowItem(
-                                      title: "Target (hr)",
-                                      content:
-                                          utilizationData!.targetIdle != null
-                                              ? utilizationData!.targetIdle!
-                                                  .toStringAsFixed(1)
-                                              : "-",
-                                    ),
-                                    InsiteTableRowItem(
-                                      title: "Performance",
-                                      content: utilizationData!
-                                                  .targetIdlePerformance !=
-                                              null
-                                          ? (utilizationData!
-                                                          .targetIdlePerformance! *
-                                                      100)
-                                                  .toStringAsFixed(2) +
-                                              " %"
-                                          : "-",
-                                    ),
-                                  ]),
-                                  TableRow(
-                                    children: [
-                                      InsiteTableRowItem(
-                                        title:
-                                            "Lifetime Fuel (${Utils.getUnit(userPreference: dateFormat)})",
-                                        content: utilizationData
-                                                    ?.lastIdleFuelConsumptionLitersMeter !=
-                                                null
-                                            ? Utils.unitConvert(
-                                                utilizationData
-                                                    ?.lastIdleFuelConsumptionLitersMeter
-                                                    .toString(),
-                                                dateFormat)
-                                            // Utils.convertLitersToGal(
-                                            //     utilizationData
-                                            //         ?.lastIdleFuelConsumptionLitersMeter
-                                            //         .toString(),
-                                            //     false,
-                                            //     dateFormat)
-                                            : "-",
-                                      ),
-                                      InsiteTableRowItem(
-                                        title:
-                                            "Fuel Burned (${Utils.getUnit(userPreference: dateFormat)})",
-                                        content: utilizationData!
-                                                    .idleFuelConsumedLiters !=
-                                                null
-                                            ? Utils.unitConvert(
-                                                utilizationData!
-                                                    .idleFuelConsumedLiters
-                                                    .toString(),
-                                                dateFormat,
-                                              )
-                                            // Utils.convertLitersToGal(
-                                            //     utilizationData!
-                                            //         .idleFuelConsumedLiters!,
-                                            //     false,
-                                            //     dateFormat)
-                                            : "-",
-                                      ),
-                                    ],
+                                  InsiteTableRowItem(
+                                    title: "Daily (hr)",
+                                    content: utilizationData!.workingHours != null
+                                        ? utilizationData!.workingHours!
+                                            .toStringAsFixed(1)
+                                        : "-",
                                   ),
-                                  TableRow(children: [
-                                    InsiteTableRowItem(
-                                      title: "Burn Rate (gal/hr)",
-                                      content: utilizationData!
-                                                  .runtimeFuelConsumptionRate !=
-                                              null
-                                          ? Utils.convertLitersToGal(
-                                              utilizationData!
-                                                  .runtimeFuelConsumptionRate!,
-                                              false,
-                                              dateFormat)
-                                          : "-",
-                                    ),
-                                    InsiteTableRowItem(
-                                      title: "",
-                                      content: "",
-                                    ),
-                                  ])
                                 ],
                               ),
-                            ]),
-                            TableRow(
-                              children: [
-                                InsiteTableRowItem(
-                                  title: "Working",
-                                  content: utilizationData!.workingHours != null
-                                      ? utilizationData!.workingHours!
-                                          .toStringAsFixed(1)
-                                      : "-",
-                                ),
-                                InsiteTableRowItem(
-                                  title: "Daily (hr)",
-                                  content: utilizationData!.workingHours != null
-                                      ? utilizationData!.workingHours!
-                                          .toStringAsFixed(1)
-                                      : "-",
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],

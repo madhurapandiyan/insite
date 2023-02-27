@@ -140,15 +140,8 @@ class _NotificationViewState extends State<NotificationView> {
                                                 color: Theme.of(context)
                                                     .buttonColor,
                                               ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  Icon(Icons.calendar_month),
-                                                  Text("Date Range"),
-                                                ],
-                                              ),
+                                              child: Text("Date Range"),
+                                              
                                             )
                                           : InsiteButton(
                                               title: Utils
