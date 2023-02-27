@@ -63,6 +63,8 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   bool? isTitleExist;
 
+  String? dropDownValue = "S/N";
+
   late Addgeofencemodel addGeofencePayLoad;
 
   late GeofenceModelWithMaterialData geofenceWithMaterialData;
@@ -161,6 +163,11 @@ class AddgeofenseViewModel extends InsiteViewModel {
     _navigationService!.navigateToView(ManageGeofenceView());
   }
 
+  onDropDownValue(String? value) {
+    dropDownValue = value;
+    notifyListeners();
+  }
+
 //datepick
   onBackFillDatePicked(DateTime value) {
     backFillDate = value;
@@ -168,7 +175,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
   }
 
   onEndDatePicked(DateTime value) {
-    endingDate = Utils.getDateFormatForDatePicker(value.toString(),userPref) ;
+    endingDate = Utils.getDateFormatForDatePicker(value.toString(), userPref);
 
     notifyListeners();
   }
@@ -699,8 +706,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
               graphqlSchemaService!.addGeofencePayload(
                   actionUTC: DateTime.now().toIso8601String(),
                   description: descriptionController.text,
-                  endDate:
-                      endingDate == null ? null : endingDate!,
+                  endDate: endingDate == null ? null : endingDate!,
                   geofenceName: titleController.text,
                   geometryWKT: finalPolygonWKTstring,
                   geofenceType: initialValue,
@@ -713,8 +719,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
               graphqlSchemaService!.addGeofencePayload(
                   actionUTC: DateTime.now().toIso8601String(),
                   description: descriptionController.text,
-                  endDate:
-                      endingDate == null ? null : endingDate!,
+                  endDate: endingDate == null ? null : endingDate!,
                   geofenceName: titleController.text,
                   geometryWKT: finalPolygonWKTstring,
                   geofenceType: initialValue,
@@ -732,8 +737,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
               graphqlSchemaService!.updateGeofencePayload(
                   actionUTC: DateTime.now().toIso8601String(),
                   description: descriptionController.text,
-                  endDate:
-                      endingDate == null ? null : endingDate!,
+                  endDate: endingDate == null ? null : endingDate!,
                   geofenceName: titleController.text,
                   geometryWKT: finalPolygonWKTstring,
                   geofenceType: initialValue,
@@ -746,8 +750,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
               graphqlSchemaService!.updateGeofencePayload(
                   actionUTC: DateTime.now().toIso8601String(),
                   description: descriptionController.text,
-                  endDate:
-                      endingDate == null ? null : endingDate!,
+                  endDate: endingDate == null ? null : endingDate!,
                   geofenceName: titleController.text,
                   geometryWKT: finalPolygonWKTstring,
                   geofenceType: initialValue,

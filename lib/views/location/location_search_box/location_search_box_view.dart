@@ -17,12 +17,14 @@ class LocationSearchBoxView extends StatelessWidget {
   final double? searchBoxWidth;
   final List<String>? dropDownItems;
   final String? dropDownValue;
+  final Function(String)? dropDownValueCallBack;
 
   LocationSearchBoxView(
       {this.onSeletingSuggestion,
       this.searchBoxWidth,
       this.dropDownItems,
-      this.dropDownValue});
+      this.dropDownValue,
+      this.dropDownValueCallBack});
   @override
   Widget build(BuildContext context) {
     var mediaQuerry = MediaQuery.of(context);
@@ -74,7 +76,8 @@ class LocationSearchBoxView extends StatelessWidget {
                             .toList(),
                         value: dropDownValue,
                         onChanged: (String? value) {
-                          viewModel.onChangeDropDown(value!);
+                          dropDownValueCallBack!(value!);
+                          viewModel.onChangeDropDown(value);
                         },
                       ),
                     ),
