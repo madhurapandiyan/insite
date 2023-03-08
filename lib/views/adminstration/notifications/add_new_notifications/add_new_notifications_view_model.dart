@@ -73,7 +73,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     _geofenceservice?.setUp();
     setUp();
     getEditingSeverityState(data);
-
+    getInitialEndValue();
     Future.delayed(Duration(seconds: 1), () async {
       showLoadingDialog(tapDismiss: false);
       await getNotificationTypesData();
@@ -1408,6 +1408,17 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         duration: Duration(microseconds: 3000), curve: Curves.easeInOut);
     isFaultCodePressed = true;
     notifyListeners();
+  }
+
+  getInitialEndValue() async {
+    await getUserPreference();
+
+ if (userPref?.timeFormat != null && userPref!.timeFormat == "hh:mm a") { 
+      initialEndValue = "11:59 PM";
+      initialStartValue="12:00 AM";
+      Logger().wtf("get initial time");
+      notifyListeners();
+    }
   }
 
   onDiagnosticFrontPressed() async {
