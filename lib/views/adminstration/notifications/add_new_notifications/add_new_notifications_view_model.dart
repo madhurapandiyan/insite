@@ -2031,20 +2031,20 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notificationTypeId = notificationType!.notificationTypeID!;
     notificationTypeId = notificationType!.notificationTypeID!;
 
-    for (int i = 0; i < _notificationSubTypes.length; i++) {
-      if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
-        Logger().wtf(OperandData!.first.operators![i].name);
-        Logger().wtf(OperandData.first.operators![i].operatorID);
-        operandData.add(Operand(
-            operandID: OperandData.first.operandID,
-            operatorId: OperandData.first.operators![i].operatorID,
-            value: assetStatusOccurenceController.text));
-      }
-    }
-    // operandData.add(Operand(
-    //     operandID: OperandData!.first.operandID,
-    //     operatorId: OperandData.first.operators!.first.operatorID,
-    //     value: assetStatusOccurenceController.text));
+    // for (int i = 0; i < _notificationSubTypes.length; i++) {
+    //   if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
+    //     Logger().wtf(OperandData!.first.operators![i].name);
+    //     Logger().wtf(OperandData.first.operators![i].operatorID);
+    //     operandData.add(Operand(
+    //         operandID: OperandData.first.operandID,
+    //         operatorId: OperandData.first.operators![i].operatorID,
+    //         value: assetStatusOccurenceController.text));
+    //   }
+    // }
+    operandData.add(Operand(
+        operandID: OperandData!.first.operandID,
+        operatorId: OperandData.first.operators!.first.operatorID,
+        value: assetStatusOccurenceController.text));
   }
 
   getFuelOperandAndNotificationId() {
@@ -2060,20 +2060,20 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         (element) => element.operandName == "Fuel Level");
     if (fuelOperandData!.operators!
         .any((element) => element.name == _dropDownSubInitialValue)) {
-      for (int i = 0; i < _notificationSubTypes.length; i++) {
-        if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
-          Logger().wtf(OperandData!.first.operators![i].name);
-          Logger().wtf(OperandData.first.operators![i].operatorID);
-          operandData.add(Operand(
-              operandID: OperandData.first.operandID,
-              operatorId: OperandData.first.operators![i].operatorID,
-              value: assetStatusOccurenceController.text));
-        }
-      }
-      // operandData.add(Operand(
-      //     operandID: OperandData!.first.operandID,
-      //     operatorId: OperandData.first.operators!.first.operatorID,
-      //     value: assetStatusOccurenceController.text));
+      // for (int i = 0; i < _notificationSubTypes.length; i++) {
+      //   if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
+      //     Logger().wtf(OperandData!.first.operators![i].name);
+      //     Logger().wtf(OperandData.first.operators![i].operatorID);
+      //     operandData.add(Operand(
+      //         operandID: OperandData.first.operandID,
+      //         operatorId: OperandData.first.operators![i].operatorID,
+      //         value: assetStatusOccurenceController.text));
+      //   }
+      // }
+      operandData.add(Operand(
+          operandID: OperandData!.first.operandID,
+          operatorId: OperandData.first.operators!.first.operatorID,
+          value: assetStatusOccurenceController.text));
     }
   }
 
@@ -2118,20 +2118,20 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         (element) => element.operandName == "Excessive Daily Idle");
     if (excessiveDailyIdleOperandData!.operators!
         .any((element) => element.name == _dropDownSubInitialValue)) {
-      for (int i = 0; i < _notificationSubTypes.length; i++) {
-        if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
-          Logger().wtf(OperandData!.first.operators![i].name);
-          Logger().wtf(OperandData.first.operators![i].operatorID);
-          operandData.add(Operand(
-              operandID: OperandData.first.operandID,
-              operatorId: OperandData.first.operators![i].operatorID,
-              value: assetStatusOccurenceController.text));
-        }
-      }
-      // operandData.add(Operand(
-      //     operandID: OperandData!.first.operandID,
-      //     operatorId: OperandData.first.operators!.first.operatorID,
-      //     value: assetStatusOccurenceController.text));
+      // for (int i = 0; i < _notificationSubTypes.length; i++) {
+      //   if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
+      //     Logger().wtf(OperandData!.first.operators![i].name);
+      //     Logger().wtf(OperandData.first.operators![i].operatorID);
+      //     operandData.add(Operand(
+      //         operandID: OperandData.first.operandID,
+      //         operatorId: OperandData.first.operators![i].operatorID,
+      //         value: assetStatusOccurenceController.text));
+      //   }
+      // }
+      operandData.add(Operand(
+          operandID: OperandData!.first.operandID,
+          operatorId: OperandData.first.operators!.first.operatorID,
+          value: assetStatusOccurenceController.text));
     }
   }
 
