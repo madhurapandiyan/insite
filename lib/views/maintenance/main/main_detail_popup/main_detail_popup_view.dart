@@ -388,6 +388,11 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                                           text: "Quantity",
                                           size: 12,
                                         ),
+                                        InsiteTextWithPadding(
+                                          padding: EdgeInsets.all(8),
+                                          text: "Units",
+                                          size: 12,
+                                        ),
                                       ]),
                                     ],
                                   ),
@@ -416,14 +421,26 @@ class _MainDetailPopupViewState extends State<MainDetailPopupView>
                                               //  size: 12,
                                             ),
                                             InsiteTextWithPadding(
-                                              padding: EdgeInsets.all(8),
-                                              text: Utils.userPreferenceUnitCoversion(
-                                        userPreference: viewModel.userPref,
-                                        unit: part.units.toString(),
-                                        value: part.quantity.toString())
-                                              // part.quantity.toString(),
-                                              //  size: 12,
-                                            ),
+                                                padding: EdgeInsets.all(8),
+                                                text: Utils
+                                                    .userPreferenceUnitCoversion(
+                                                        userPreference:
+                                                            viewModel.userPref,
+                                                        unit: part.units
+                                                            .toString(),
+                                                        value: part.quantity
+                                                            .toString())
+                                                // part.quantity.toString(),
+                                                //  size: 12,
+                                                ),
+                                            InsiteTextWithPadding(
+                                                padding: EdgeInsets.all(8),
+                                                text: Utils
+                                                    .userPreferenceUnitCoversionUnits(
+                                                  userPreference:
+                                                      viewModel.userPref,
+                                                  unit: part.units.toString(),
+                                                )),
                                           ])
                                         ],
                                       );
