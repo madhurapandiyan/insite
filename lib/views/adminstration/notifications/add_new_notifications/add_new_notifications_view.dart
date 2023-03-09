@@ -978,6 +978,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                 height: 20,
                               ),
                               TimeSlots(
+                                initialvalue: viewModel.startTime,
                                 userPreference: viewModel.userPref,
                                   initialTypeValue: viewModel.initialDayOption,
                                   type: viewModel.days,
@@ -991,11 +992,11 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                                   typeChanged: (value) {
                                     viewModel.updateType(value!, 1);
                                   },
-                                  startTimeChanged: (value) {
-                                    viewModel.updateStartTime(value!, 1);
+                                  startTimeChanged: (value,startTime) {
+                                    viewModel.updateStartTime(value!, 1,startTime!);
                                   },
-                                  endTimeChanged: (value) {
-                                    viewModel.updateEndTime(value!, 1);
+                                  endTimeChanged: (value,endTime) {
+                                    viewModel.updateEndTime(value!, 1,endTime!);
                                   }),
                               SizedBox(
                                 height: 20,

@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'add_notification_payload.g.dart';
 
-@JsonSerializable(includeIfNull: false)
+@JsonSerializable(includeIfNull: false,explicitToJson: true)
 class AddNotificationPayLoad {
   int? alertCategoryID;
   String? notificationUid;
@@ -75,7 +75,7 @@ class Schedule {
   Map<String, dynamic> toJson() => _$ScheduleToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Operand {
   int? operandID;
   int? operatorId;
@@ -89,7 +89,7 @@ class Operand {
   Map<String, dynamic> toJson() => _$OperandToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ZonePayload {
   bool? isInclusion;
   String? zoneUID;
@@ -102,7 +102,7 @@ class ZonePayload {
   Map<String, dynamic> toJson() => _$ZonePayloadToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class SitOperands {
   int? operandID;
   String? siteUID;

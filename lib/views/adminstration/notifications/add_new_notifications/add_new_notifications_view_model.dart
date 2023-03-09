@@ -416,7 +416,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   bool isTitleExist = false;
   bool isNotificationNameChange = false;
-
+//  TimeOfDay? startTime=TimeOfDay(hour: 12, minute: 00);
+//  TimeOfDay? endTime=TimeOfDay(hour: 14, minute: 59);
+TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
+ TimeOfDay? endTime=TimeOfDay(hour: 23, minute: 59);
   String initialEndValue = "24:00";
   String initialStartValue = "00:00";
   String initialDayOption = "All Days";
@@ -1414,8 +1417,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     await getUserPreference();
 
  if (userPref?.timeFormat != null && userPref!.timeFormat == "hh:mm a") { 
-      initialEndValue = "11:59 PM";
-      initialStartValue="12:00 AM";
+      initialEndValue = "11:59";
+       endTime=TimeOfDay(hour: 11, minute: 59);
       Logger().wtf("get initial time");
       notifyListeners();
     }
@@ -1570,13 +1573,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  updateStartTime(String value, int i) {
+  updateStartTime(String value, int i,TimeOfDay initialStartTime) {
     Logger().e(value);
+    startTime=initialStartTime;
     initialStartValue = value;
     notifyListeners();
   }
 
-  updateEndTime(String value, int i) {
+  updateEndTime(String value, int i,TimeOfDay initialEndTime) {
+     endTime=initialEndTime;
     initialEndValue = value;
     notifyListeners();
   }
@@ -2469,6 +2474,23 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     selectedAsset!.forEach((element) {
       assetUidData.add(element.assetIdentifier!);
     });
+    var currentDate=DateTime.now();
+    var startDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
+        .add(Duration(
+          hours: startTime!.hour,
+          minutes: startTime!.minute
+        ));
+ Logger().v("startDateTime: $startDateTime");
+        var endDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
+        .add(Duration(
+          hours: endTime!.hour,
+          minutes: endTime!.minute
+        ));
+         Logger().v("endDateTime:$endDateTime");
+    if(endDateTime.isBefore(startDateTime)){
+      _snackBarservice!.showSnackbar(message: "To time must greater than from time"); 
+      return null;
+    }
 
     if (notificationExists?.alertTitleExists == true) {
       Logger().v("show title");

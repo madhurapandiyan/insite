@@ -2751,43 +2751,43 @@ class Utils {
     }
   }
 
-  // static String switchTimeFormat(
-  //     {TimeOfDay? time, UserPreference? userPreference}) {
-  //   try {
-  //     if (time == null || userPreference == null) {
-  //       return "";
-  //     }
-  //     if (userPreference.timeFormat == "hh:mm a") {
-  //       return time.hourOfPeriod.toString().padLeft(2, '0');
-  //     } else {
-  //       return time.hour.toString().padLeft(2, '0');
-  //     }
-  //   } catch (e) {
-  //     Logger().e(e.toString());
-  //     return "";
-  //   }
-  // }
+  static String switchTimeFormat(
+      {TimeOfDay? time, UserPreference? userPreference}) {
+    try {
+      if (time == null || userPreference == null) {
+        return "";
+      }
+      if (userPreference.timeFormat == "hh:mm a") {
+        return time.hourOfPeriod.toString().padLeft(2, '0');
+      } else {
+        return time.hour.toString().padLeft(2, '0');
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      return "";
+    }
+  }
 
-// static String getTime(
-//       {String? hours,String? minutes,TimeOfDay? time, UserPreference? userPreference,}) {
-//     try {
-//       var selectedTime;
-//       if (hours == null||minutes == null ||time == null || userPreference == null) {
-//         return "";
-//       }
-//       if (userPreference.timeFormat == "hh:mm a") {
-//          selectedTime="$hours:$minutes ${time.period.toString().split('.')[1]}";
-//          Logger().wtf(selectedTime);
-//         return selectedTime ;
-//       }else{
-//       return  selectedTime='$hours:$minutes';
-//       }
+static String getTime(
+      {String? hours,String? minutes,TimeOfDay? time, UserPreference? userPreference,}) {
+    try {
+      var selectedTime;
+      if (hours == null||minutes == null ||time == null || userPreference == null) {
+        return "";
+      }
+      if (userPreference.timeFormat == "hh:mm a") {
+         selectedTime="$hours:$minutes ${time.period.toString().split('.')[1]}";
+         Logger().wtf(selectedTime);
+        return selectedTime ;
+      }else{
+      return  selectedTime='$hours:$minutes';
+      }
       
-//     } catch (e) {
-//       Logger().e(e.toString());
-//       return "";
-//     }
-//   }
+    } catch (e) {
+      Logger().e(e.toString());
+      return "";
+    }
+  }
   
 static String  getTimeAbbre( {UserPreference? userPreference,String? hours,String? minutes,String? selectedTime}){
    

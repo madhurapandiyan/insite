@@ -7,19 +7,22 @@ import 'package:logger/logger.dart';
 import '../dumb_widgets/insite_text.dart';
 
 class TimeSlots extends StatelessWidget {
+  TimeOfDay? initialvalue;
   final UserPreference? userPreference;
   final List<String>? type;
   final bool? isSelected;
-  final ValueChanged<String?>? startTimeChanged;
-  final ValueChanged<String?>? typeChanged;
-  final ValueChanged<String?>? endTimeChanged;
+  final Function(String?,TimeOfDay?)? startTimeChanged;
+  final Function(String?)? typeChanged;
+  final Function(String?,TimeOfDay?)? endTimeChanged;
   final String? initialTypeValue;
   final String? initialStartValue;
   final String? initialEndValue;
   final Function(bool)? onSwitchChange;
 
   TimeSlots(
-      {this.userPreference,
+      {
+        this.initialvalue,
+        this.userPreference,
       this.type,
       this.startTimeChanged,
       this.endTimeChanged,
@@ -30,29 +33,32 @@ class TimeSlots extends StatelessWidget {
       this.isSelected,
       this.onSwitchChange});
 
-  showTimePickerWidget(Function(String) callBack, BuildContext ctx) {
+  showTimePickerWidget(Function(String,TimeOfDay) callBack, BuildContext ctx,TimeOfDay initialTime) {
     showTimePicker(
             builder: (context, child) {
               return child!;
             },
             context: ctx,
-            initialTime: TimeOfDay.now())
+            initialTime: initialTime)
         .then((value) {
-      final hours = value!.hour.toString().padLeft(2, '0');
-      // Utils.switchTimeFormat(time: value,userPreference: userPreference);
+          Logger().v("value:$value");
+      final hours =
+      // value!.hour.toString().padLeft(2, '0');
+       Utils.switchTimeFormat(time: value,userPreference: userPreference);
 
-      final minutes = value.minute.toString().padLeft(2, '0');
+      final minutes = value!.minute.toString().padLeft(2, '0');
 
       var data = TimeOfDay(hour: value.hour, minute: value.minute).format(ctx);
        Logger().wtf(data);
        
-      callBack(Utils.getTimeAbbre(
-          hours: hours,
-          minutes: minutes,
-          userPreference: userPreference,
-          selectedTime: data));
+      // callBack(Utils.getTimeAbbre(
+      //     hours: hours,
+      //     minutes: minutes,
+      //     userPreference: userPreference,
+      //     selectedTime: data));
 
       // callBack(Utils.getTime(hours: hours,minutes: minutes,time: value,userPreference: userPreference));
+       callBack('$hours:$minutes',value);
     });
   }
 
@@ -67,7 +73,7 @@ class TimeSlots extends StatelessWidget {
           //width: 100,
           title: initialStartValue,
           onTap: () {
-            showTimePickerWidget(startTimeChanged!, context);
+            showTimePickerWidget(startTimeChanged!, context,TimeOfDay.now());
           },
         ),
         InsiteButton(
@@ -75,7 +81,8 @@ class TimeSlots extends StatelessWidget {
           width: 100,
           title: initialEndValue,
           onTap: () {
-            showTimePickerWidget(endTimeChanged!, context);
+            Logger().d(initialvalue);
+            showTimePickerWidget(endTimeChanged!, context,TimeOfDay.now());
           },
         ),
         Container(
