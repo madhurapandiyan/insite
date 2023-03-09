@@ -1315,6 +1315,10 @@ class Utils {
       data =
           "Fuel Loss ${alert?.operands?.first.condition} ${alert?.operands?.first.value}%";
       return data;
+    } else if (alert?.notificationTypeGroupID == 12) {
+      data =
+          "Excessive Daily Idle ${alert?.operands?.first.condition} ${alert?.operands?.first.value} Hours";
+      return data;
     } else if (alert?.notificationTypeGroupID == 7) {
       data =
           "${alert?.siteOperands!.length} Geofences - ${alert?.notificationType}";
@@ -2734,7 +2738,7 @@ class Utils {
   }
 
   static bool getReport({List<String>? dailyreportedtimeTypes}) {
-    if (dailyreportedtimeTypes!=null&&dailyreportedtimeTypes.isNotEmpty) {
+    if (dailyreportedtimeTypes != null && dailyreportedtimeTypes.isNotEmpty) {
       if (dailyreportedtimeTypes.first == "NonReported") {
         Logger().wtf(
             "dailyreportedtimeTypes?.first:${dailyreportedtimeTypes.first}");
