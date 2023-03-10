@@ -2474,23 +2474,23 @@ TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
     selectedAsset!.forEach((element) {
       assetUidData.add(element.assetIdentifier!);
     });
-    var currentDate=DateTime.now();
-    var startDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
-        .add(Duration(
-          hours: startTime!.hour,
-          minutes: startTime!.minute
-        ));
- Logger().v("startDateTime: $startDateTime");
-        var endDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
-        .add(Duration(
-          hours: endTime!.hour,
-          minutes: endTime!.minute
-        ));
-         Logger().v("endDateTime:$endDateTime");
-    if(endDateTime.isBefore(startDateTime)){
-      _snackBarservice!.showSnackbar(message: "To time must greater than from time"); 
-      return null;
-    }
+//     var currentDate=DateTime.now();
+//     var startDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
+//         .add(Duration(
+//           hours: startTime!.hour,
+//           minutes: startTime!.minute
+//         ));
+//  Logger().v("startDateTime: $startDateTime");
+//         var endDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
+//         .add(Duration(
+//           hours: endTime!.hour,
+//           minutes: endTime!.minute
+//         ));
+//          Logger().v("endDateTime:$endDateTime");
+//     if(endDateTime.isBefore(startDateTime)){
+//       _snackBarservice!.showSnackbar(message: "To time must greater than from time"); 
+//       return null;
+//     }
 
     if (notificationExists?.alertTitleExists == true) {
       Logger().v("show title");
@@ -2502,6 +2502,13 @@ TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
       _snackBarservice!.showSnackbar(message: "Notification Name is required");
       return;
     }
+
+   if (emailIds!.isEmpty) {
+      _snackBarservice!.showSnackbar(message: "Notification email is required");
+      return;
+    }
+
+
     if (_dropDownInitialValue == "Select") {
       _snackBarservice!
           .showSnackbar(message: "Please Select Notification Type");
