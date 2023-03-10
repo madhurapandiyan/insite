@@ -2474,6 +2474,9 @@ TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
     selectedAsset!.forEach((element) {
       assetUidData.add(element.assetIdentifier!);
     });
+
+//To know if initialStartValue greater than initialEndValue
+
 //     var currentDate=DateTime.now();
 //     var startDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
 //         .add(Duration(
