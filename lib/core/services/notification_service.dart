@@ -413,7 +413,7 @@ Future<ManageNotificationFilter?> getManageNotificationFilterData()async{
     String query,
   ) async {
     try {
-      Logger().i(query);
+      Logger().i(addNotificationPayLoad.toJson());
       if (enableGraphQl) {
         var data = await Network().getGraphqlData(
           query: query,

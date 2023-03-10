@@ -60,22 +60,24 @@ Map<String, dynamic> _$AddNotificationPayLoadToJson(
   writeNotNull('alertCategoryID', instance.alertCategoryID);
   writeNotNull('notificationUid', instance.notificationUid);
   writeNotNull('assetUIDs', instance.assetUIDs);
-  writeNotNull('notificationSubscribers', instance.notificationSubscribers);
+  writeNotNull(
+      'notificationSubscribers', instance.notificationSubscribers?.toJson());
   writeNotNull('allAssets', instance.allAssets);
   writeNotNull('currentDate', instance.currentDate);
-  writeNotNull('schedule', instance.schedule);
+  writeNotNull('schedule', instance.schedule?.map((e) => e.toJson()).toList());
   writeNotNull('alertTitle', instance.alertTitle);
   writeNotNull('alertGroupId', instance.alertGroupId);
   writeNotNull('notificationTypeGroupID', instance.notificationTypeGroupID);
-  writeNotNull('operands', instance.operands);
+  writeNotNull('operands', instance.operands?.map((e) => e.toJson()).toList());
   writeNotNull('notificationTypeId', instance.notificationTypeId);
   writeNotNull('numberOfOccurences', instance.numberOfOccurences);
   writeNotNull(
       'notificationDeliveryChannel', instance.notificationDeliveryChannel);
-  writeNotNull('siteOperands', instance.siteOperands);
+  writeNotNull(
+      'siteOperands', instance.siteOperands?.map((e) => e.toJson()).toList());
   writeNotNull('geofenceUIDs', instance.geofenceUIDs);
   writeNotNull('assetGroupUIDs', instance.assetGroupUIDs);
-  writeNotNull('zones', instance.zones);
+  writeNotNull('zones', instance.zones?.map((e) => e.toJson()).toList());
   return val;
 }
 

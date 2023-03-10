@@ -73,7 +73,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     _geofenceservice?.setUp();
     setUp();
     getEditingSeverityState(data);
-
+    getInitialEndValue();
     Future.delayed(Duration(seconds: 1), () async {
       showLoadingDialog(tapDismiss: false);
       await getNotificationTypesData();
@@ -416,7 +416,10 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   bool isTitleExist = false;
   bool isNotificationNameChange = false;
-
+//  TimeOfDay? startTime=TimeOfDay(hour: 12, minute: 00);
+//  TimeOfDay? endTime=TimeOfDay(hour: 14, minute: 59);
+TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
+ TimeOfDay? endTime=TimeOfDay(hour: 23, minute: 59);
   String initialEndValue = "24:00";
   String initialStartValue = "00:00";
   String initialDayOption = "All Days";
@@ -1410,6 +1413,17 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
+  getInitialEndValue() async {
+    await getUserPreference();
+
+ if (userPref?.timeFormat != null && userPref!.timeFormat == "hh:mm a") { 
+      initialEndValue = "11:59";
+       endTime=TimeOfDay(hour: 11, minute: 59);
+      Logger().wtf("get initial time");
+      notifyListeners();
+    }
+  }
+
   onDiagnosticFrontPressed() async {
     showLoadingDialog();
     expansionTitle = "Fault Code Type";
@@ -1559,13 +1573,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     notifyListeners();
   }
 
-  updateStartTime(String value, int i) {
+  updateStartTime(String value, int i,TimeOfDay initialStartTime) {
     Logger().e(value);
+    startTime=initialStartTime;
     initialStartValue = value;
     notifyListeners();
   }
 
-  updateEndTime(String value, int i) {
+  updateEndTime(String value, int i,TimeOfDay initialEndTime) {
+     endTime=initialEndTime;
     initialEndValue = value;
     notifyListeners();
   }
@@ -2459,6 +2475,26 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       assetUidData.add(element.assetIdentifier!);
     });
 
+//To know if initialStartValue greater than initialEndValue
+
+//     var currentDate=DateTime.now();
+//     var startDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
+//         .add(Duration(
+//           hours: startTime!.hour,
+//           minutes: startTime!.minute
+//         ));
+//  Logger().v("startDateTime: $startDateTime");
+//         var endDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
+//         .add(Duration(
+//           hours: endTime!.hour,
+//           minutes: endTime!.minute
+//         ));
+//          Logger().v("endDateTime:$endDateTime");
+//     if(endDateTime.isBefore(startDateTime)){
+//       _snackBarservice!.showSnackbar(message: "To time must greater than from time"); 
+//       return null;
+//     }
+
     if (notificationExists?.alertTitleExists == true) {
       Logger().v("show title");
       _snackBarservice!.showSnackbar(message: "Notification title exists");
@@ -2469,6 +2505,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
       _snackBarservice!.showSnackbar(message: "Notification Name is required");
       return;
     }
+
+   if (emailIds!.isEmpty) {
+      _snackBarservice!.showSnackbar(message: "Notification email is required");
+      return;
+    }
+
+
     if (_dropDownInitialValue == "Select") {
       _snackBarservice!
           .showSnackbar(message: "Please Select Notification Type");
