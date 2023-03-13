@@ -418,8 +418,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   bool isNotificationNameChange = false;
 //  TimeOfDay? startTime=TimeOfDay(hour: 12, minute: 00);
 //  TimeOfDay? endTime=TimeOfDay(hour: 14, minute: 59);
-TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
- TimeOfDay? endTime=TimeOfDay(hour: 23, minute: 59);
+  TimeOfDay? startTime = TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay? endTime = TimeOfDay(hour: 23, minute: 59);
   String initialEndValue = "24:00";
   String initialStartValue = "00:00";
   String initialDayOption = "All Days";
@@ -1416,9 +1416,9 @@ TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
   getInitialEndValue() async {
     await getUserPreference();
 
- if (userPref?.timeFormat != null && userPref!.timeFormat == "hh:mm a") { 
+    if (userPref?.timeFormat != null && userPref!.timeFormat == "hh:mm a") {
       initialEndValue = "11:59";
-       endTime=TimeOfDay(hour: 11, minute: 59);
+      endTime = TimeOfDay(hour: 11, minute: 59);
       Logger().wtf("get initial time");
       notifyListeners();
     }
@@ -1573,15 +1573,15 @@ TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
     notifyListeners();
   }
 
-  updateStartTime(String value, int i,TimeOfDay initialStartTime) {
+  updateStartTime(String value, int i, TimeOfDay initialStartTime) {
     Logger().e(value);
-    startTime=initialStartTime;
+    startTime = initialStartTime;
     initialStartValue = value;
     notifyListeners();
   }
 
-  updateEndTime(String value, int i,TimeOfDay initialEndTime) {
-     endTime=initialEndTime;
+  updateEndTime(String value, int i, TimeOfDay initialEndTime) {
+    endTime = initialEndTime;
     initialEndValue = value;
     notifyListeners();
   }
@@ -1947,6 +1947,18 @@ TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
                 scheduleDay.clear();
                 _dropDownInitialValue = "select";
                 _dropDownSubInitialValue = "Options";
+                if (userPref?.timeFormat != null &&
+                    userPref!.timeFormat == "hh:mm a") {
+                  initialStartValue = "00:00";
+                  initialEndValue = "11:59";
+                  startTime = TimeOfDay(hour: 00, minute: 00);
+                  endTime = TimeOfDay(hour: 11, minute: 59);
+                } else {
+                  initialStartValue = "00:00";
+                  initialEndValue = "23:59";
+                  startTime = TimeOfDay(hour: 00, minute: 00);
+                  endTime = TimeOfDay(hour: 23, minute: 59);
+                }
                 notifyListeners();
               },
               onNegativeActionClicked: () {
@@ -2491,7 +2503,7 @@ TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
 //         ));
 //          Logger().v("endDateTime:$endDateTime");
 //     if(endDateTime.isBefore(startDateTime)){
-//       _snackBarservice!.showSnackbar(message: "To time must greater than from time"); 
+//       _snackBarservice!.showSnackbar(message: "To time must greater than from time");
 //       return null;
 //     }
 
@@ -2506,11 +2518,10 @@ TimeOfDay? startTime=TimeOfDay(hour: 00, minute: 00);
       return;
     }
 
-   if (emailIds!.isEmpty) {
+    if (emailIds!.isEmpty) {
       _snackBarservice!.showSnackbar(message: "Notification email is required");
       return;
     }
-
 
     if (_dropDownInitialValue == "Select") {
       _snackBarservice!

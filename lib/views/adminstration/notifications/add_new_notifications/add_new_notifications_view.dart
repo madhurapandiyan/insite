@@ -979,6 +979,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
                               ),
                               TimeSlots(
                                 initialvalue: viewModel.startTime,
+                                endValue: viewModel.endTime,
                                 userPreference: viewModel.userPref,
                                   initialTypeValue: viewModel.initialDayOption,
                                   type: viewModel.days,
