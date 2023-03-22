@@ -731,6 +731,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   editingNotification(AlertConfigEdit data) async {
     List<String> assetList = ["Asset On", "Asset Off", "Not Reporting"];
     List<String> engineHourList = [
+      "Conditions",
       "Equal to",
       "Greater than",
       "Less than",
@@ -2121,12 +2122,12 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     if (engineHoursOperandData!.operators!
         .any((element) => element.name == _dropDownSubInitialValue)) {
       for (int i = 0; i < _notificationSubTypes.length; i++) {
-        if (_notificationSubTypes[i] == _dropDownSubInitialValue) {
-          Logger().wtf(OperandData!.first.operators![i].name);
-          Logger().wtf(OperandData.first.operators![i].operatorID);
+        if (_notificationSubTypes[i] == dropDownSubInitialValue) {
+          Logger().wtf(OperandData!.first.operators![i - 1].name);
+          Logger().wtf(OperandData.first.operators![i - 1].operatorID);
           operandData.add(Operand(
               operandID: OperandData.first.operandID,
-              operatorId: OperandData.first.operators![i].operatorID,
+              operatorId: OperandData.first.operators![i - 1].operatorID,
               value: assetStatusOccurenceController.text));
         }
       }
@@ -2192,8 +2193,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           .singleWhere(
               (element) => element.notificationTypeGroupName == "Geofence");
       notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
-      notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
-          (element) => element.notificationTypeName == "Site Exit");
+      if (dropDownSubInitialValue == "Site Entry") {
+        notificationType = notificationTypeGroups.notificationTypes!
+            .singleWhere(
+                (element) => element.notificationTypeName == dropDownSubInitialValue);
+      } else if (dropDownSubInitialValue == "Site Exit") {
+        notificationType = notificationTypeGroups.notificationTypes!
+            .singleWhere(
+                (element) => element.notificationTypeName == dropDownSubInitialValue);
+      }
 
       notificationTypeId = notificationType!.notificationTypeID!;
       Logger().wtf(notificationType!.notificationTypeName);
@@ -2205,6 +2213,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
               siteUID: geofenceUIDList![i]));
 
           Logger().wtf(notificationType!.notificationTypeID!);
+          Logger().wtf(notificationType!.notificationTypeName);
           Logger().wtf(geofenceUIDList![i]);
         }
       }

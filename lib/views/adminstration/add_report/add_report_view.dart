@@ -704,7 +704,6 @@ class _AddReportViewState extends State<AddReportView> {
                         viewModel.isHideSearchList
                             ? Container(
                                 height: 200,
-                                margin: EdgeInsets.symmetric(horizontal: 8),
                                 decoration: BoxDecoration(
                                     color: Theme.of(context).cardColor,
                                     boxShadow: [
@@ -726,6 +725,8 @@ class _AddReportViewState extends State<AddReportView> {
                                                       .email!);
                                               FocusScope.of(context).unfocus();
                                             },
+                                            name: viewModel
+                                                .searchContactListName![i].name,
                                             deviceId: viewModel
                                                 .searchContactListName![i]
                                                 .email)),
@@ -943,7 +944,7 @@ class _AddReportViewState extends State<AddReportView> {
       print(pickedStartDate);
       //String formattedDate =Utils.getDateFormatForDatePicker(pickedStartDate.toString(),viewModel.userPref);
       // DateFormat('MM/dd/yyyy').format(pickedStartDate);
-       String formattedDate =
+      String formattedDate =
           DateFormat(viewModel.userPref?.dateFormat.toString())
               .format(pickedStartDate);
 
