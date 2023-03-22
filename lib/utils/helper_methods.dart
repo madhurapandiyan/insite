@@ -2768,40 +2768,37 @@ class Utils {
     }
   }
 
-//below methods is to give implemented to give am and pm  with time
+  static String getTimeAbbre(
+      {UserPreference? userPreference,
+      String? hours,
+      String? minutes,
+      String? selectedTime}) {
+    if (userPreference == null ||
+        hours == null ||
+        minutes == null ||
+        selectedTime == null) {
+      return "";
+    }
+    if (userPreference.timeFormat == "hh:mm a") {
+      return selectedTime;
+    } else {
+      selectedTime = '$hours:$minutes';
+      return selectedTime;
+    }
+  }
 
-// static String getTime(
-//       {String? hours,String? minutes,TimeOfDay? time, UserPreference? userPreference,}) {
-//     try {
-//       var selectedTime;
-//       if (hours == null||minutes == null ||time == null || userPreference == null) {
-//         return "";
-//       }
-//       if (userPreference.timeFormat == "hh:mm a") {
-//          selectedTime="$hours:$minutes ${time.period.toString().split('.')[1]}";
-//          Logger().wtf(selectedTime);
-//         return selectedTime ;
-//       }else{
-//       return  selectedTime='$hours:$minutes';
-//       }
-      
-//     } catch (e) {
-//       Logger().e(e.toString());
-//       return "";
-//     }
-//   }
-  
-// static String  getTimeAbbre( {UserPreference? userPreference,String? hours,String? minutes,String? selectedTime}){
-   
-// if(userPreference==null||hours==null||minutes==null||selectedTime==null){
-//   return "";
-// }
-// if(userPreference.timeFormat=="hh:mm a"){
-
-// return selectedTime;
-// }else {
-//  selectedTime= '$hours:$minutes';
-//   return selectedTime;
-// }
-//   }
- }
+  static String get24hrFormat({TimeOfDay? time}) {
+    try {
+      if (time == null) {
+        return "";
+      }
+      final hours = time.hour.toString().padLeft(2, '0');
+      final minutes = time.minute.toString().padLeft(2, '0');
+      Logger().wtf('24hrTime:$hours:$minutes');
+      return '$hours:$minutes';
+    } catch (e) {
+      Logger().e(e.toString());
+      return "";
+    }
+  }
+}

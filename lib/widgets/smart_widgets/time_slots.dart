@@ -45,7 +45,7 @@ class TimeSlots extends StatelessWidget {
         .then((value) {
       Logger().v("value:$value");
       final hours =
-          // value!.hour.toString().padLeft(2, '0');
+          //value!.hour.toString().padLeft(2, '0');
           Utils.switchTimeFormat(time: value, userPreference: userPreference);
 
       final minutes = value!.minute.toString().padLeft(2, '0');
@@ -53,14 +53,15 @@ class TimeSlots extends StatelessWidget {
       var data = TimeOfDay(hour: value.hour, minute: value.minute).format(ctx);
       Logger().wtf(data);
 
-      // callBack(Utils.getTimeAbbre(
-      //     hours: hours,
-      //     minutes: minutes,
-      //     userPreference: userPreference,
-      //     selectedTime: data));
+      callBack(
+          Utils.getTimeAbbre(
+              hours: hours,
+              minutes: minutes,
+              userPreference: userPreference,
+              selectedTime: data),
+          value);
 
-      // callBack(Utils.getTime(hours: hours,minutes: minutes,time: value,userPreference: userPreference));
-      callBack('$hours:$minutes', value);
+      // callBack('$hours:$minutes', value);
     });
   }
 

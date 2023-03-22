@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:insite/core/models/manage_group_summary_response.dart';
 import 'package:insite/core/models/manage_notifications.dart';
 import 'package:insite/core/services/graphql_schemas_service.dart';
+import 'package:insite/utils/helper_methods.dart';
 import 'package:insite/views/adminstration/addgeofense/model/geofencemodel.dart';
 import 'package:insite/views/adminstration/notifications/add_new_notifications/model/alert_config_edit.dart';
 import 'package:dio/dio.dart';
@@ -420,7 +421,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 //  TimeOfDay? endTime=TimeOfDay(hour: 14, minute: 59);
   TimeOfDay? startTime = TimeOfDay(hour: 00, minute: 00);
   TimeOfDay? endTime = TimeOfDay(hour: 23, minute: 59);
-  String initialEndValue = "24:00";
+  String initialEndValue = "23:59";
   String initialStartValue = "00:00";
   String initialDayOption = "All Days";
   bool checkingAllDay = true;
@@ -1417,8 +1418,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     await getUserPreference();
 
     if (userPref?.timeFormat != null && userPref!.timeFormat == "hh:mm a") {
-      initialEndValue = "11:59";
-      endTime = TimeOfDay(hour: 11, minute: 59);
+      initialEndValue = "11:59 PM";
+      initialStartValue = "12:00 AM";
       Logger().wtf("get initial time");
       notifyListeners();
     }
@@ -2489,23 +2490,20 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
 //To know if initialStartValue greater than initialEndValue
 
-//     var currentDate=DateTime.now();
-//     var startDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
-//         .add(Duration(
-//           hours: startTime!.hour,
-//           minutes: startTime!.minute
-//         ));
-//  Logger().v("startDateTime: $startDateTime");
-//         var endDateTime=DateTime(currentDate.year, currentDate.month, currentDate.day)
-//         .add(Duration(
-//           hours: endTime!.hour,
-//           minutes: endTime!.minute
-//         ));
-//          Logger().v("endDateTime:$endDateTime");
-//     if(endDateTime.isBefore(startDateTime)){
-//       _snackBarservice!.showSnackbar(message: "To time must greater than from time");
-//       return null;
-//     }
+    var currentDate = DateTime.now();
+    var startDateTime =
+        DateTime(currentDate.year, currentDate.month, currentDate.day)
+            .add(Duration(hours: startTime!.hour, minutes: startTime!.minute));
+    Logger().v("startDateTime: $startDateTime");
+    var endDateTime =
+        DateTime(currentDate.year, currentDate.month, currentDate.day)
+            .add(Duration(hours: endTime!.hour, minutes: endTime!.minute));
+    Logger().v("endDateTime:$endDateTime");
+    if (endDateTime.isBefore(startDateTime)) {
+      _snackBarservice!
+          .showSnackbar(message: "To time must greater than from time");
+      return null;
+    }
 
     if (notificationExists?.alertTitleExists == true) {
       Logger().v("show title");
@@ -2546,6 +2544,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
     if (scheduleDay.isEmpty) {
       _snackBarservice!.showSnackbar(message: "Please Schedule Notification");
       return;
+    }
+    if (userPref!.timeFormat == "hh:mm a") {
+      scheduleDay.forEach((element) {
+        final format = DateFormat.jm();
+        element.endTime = Utils.get24hrFormat(
+            time: TimeOfDay.fromDateTime(format.parse(element.endTime!)));
+        element.startTime = Utils.get24hrFormat(
+            time: TimeOfDay.fromDateTime(format.parse(element.startTime!)));
+      });
     }
 
     if (isEditing) {
