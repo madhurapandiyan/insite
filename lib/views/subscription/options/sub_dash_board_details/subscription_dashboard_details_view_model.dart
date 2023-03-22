@@ -8,12 +8,12 @@ import 'package:insite/core/services/subscription_service.dart';
 import 'package:insite/utils/enums.dart';
 import 'package:logger/logger.dart';
 import 'package:insite/core/logger.dart';
-import 'package:stacked_services/stacked_services.dart';
+//import 'package:stacked_services/stacked_services.dart';
 
 class SubDashBoardDetailsViewModel extends InsiteViewModel {
   late Logger log;
   SubScriptionService? _subscriptionService = locator<SubScriptionService>();
-   final SnackbarService? _snackBarservice = locator<SnackbarService>();
+  // final SnackbarService? _snackBarservice = locator<SnackbarService>();
   ScrollController? scrollController;
 
   String? _filter;
@@ -338,7 +338,7 @@ class SubDashBoardDetailsViewModel extends InsiteViewModel {
     } catch (e) {
       _isDetailLoading=false;
       assetDetailList.clear();
-     _snackBarservice!.showSnackbar(message: e.toString()) ;
+    // _snackBarservice!.showSnackbar(message: e.toString()) ;
      notifyListeners();
     }
     
