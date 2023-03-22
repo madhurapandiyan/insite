@@ -2192,8 +2192,15 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
           .singleWhere(
               (element) => element.notificationTypeGroupName == "Geofence");
       notificationTypeGroupID = notificationTypeGroups.notificationTypeGroupID!;
-      notificationType = notificationTypeGroups.notificationTypes!.singleWhere(
-          (element) => element.notificationTypeName == "Site Exit");
+      if (dropDownSubInitialValue == "Site Entry") {
+        notificationType = notificationTypeGroups.notificationTypes!
+            .singleWhere(
+                (element) => element.notificationTypeName == dropDownSubInitialValue);
+      } else if (dropDownSubInitialValue == "Site Exit") {
+        notificationType = notificationTypeGroups.notificationTypes!
+            .singleWhere(
+                (element) => element.notificationTypeName == dropDownSubInitialValue);
+      }
 
       notificationTypeId = notificationType!.notificationTypeID!;
       Logger().wtf(notificationType!.notificationTypeName);
@@ -2205,6 +2212,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
               siteUID: geofenceUIDList![i]));
 
           Logger().wtf(notificationType!.notificationTypeID!);
+          Logger().wtf(notificationType!.notificationTypeName);
           Logger().wtf(geofenceUIDList![i]);
         }
       }
