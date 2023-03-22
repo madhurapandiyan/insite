@@ -30,6 +30,7 @@ class InsiteTableRowItem extends StatelessWidget {
             overflow: overFlow != null ? overFlow : null,
           ),
           InsiteText(
+            maxLines: 20,
             text: content.toString(),
             color: unVerifiedUserColor != null
                 ? unVerifiedUserColor
@@ -293,7 +294,6 @@ class InsiteTableRowItemWithMultipleButton extends StatelessWidget {
             size: 14,
             fontWeight: FontWeight.bold,
           ),
-
           Container(
             height: 30,
             child: ListView(
