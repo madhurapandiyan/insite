@@ -65,8 +65,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
   final GlobalKey<AssetSelectionWidgetViewState> assetSelectionState =
       new GlobalKey();
-
-  AddNewNotificationsViewModel(AlertConfigEdit? data) {
+BuildContext ctx;
+  AddNewNotificationsViewModel(AlertConfigEdit? data,this.ctx) {
     localData = data;
     this.log = getLogger(this.runtimeType.toString());
     _notificationService!.setUp();
@@ -873,7 +873,65 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
 
     if (alertConfigData!.alertConfig!.scheduleDetails!.isNotEmpty) {
       scheduleDay.clear();
-      for (var i = 0;
+     if(userPref!.timeFormat=="hh:mm a"){
+       for (var i = 0;
+          i < alertConfigData!.alertConfig!.scheduleDetails!.length;
+          i++) {
+        var data = alertConfigData!.alertConfig!.scheduleDetails;
+        var editedEndTime =
+            TimeOfDay.fromDateTime(DateTime.parse(data![i].scheduleEndTime!)).format(ctx);
+          Logger().wtf("editedEndTime:$editedEndTime") ;     
+        
+        var editedStartTime =
+            TimeOfDay.fromDateTime(DateTime.parse(data[i].scheduleStartTime!)).format(ctx);
+               Logger().wtf("editedStartTime:$editedStartTime") ;   
+       
+        if (data[i].scheduleDayNum == 0) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Sunday",
+              endTime: editedEndTime,
+              startTime: editedStartTime));
+        } else if (data[i].scheduleDayNum == 1) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Monday",
+              endTime: editedEndTime,
+              startTime: editedStartTime));
+        } else if (data[i].scheduleDayNum == 2) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Tuesday",
+              endTime: editedEndTime,
+              startTime: editedStartTime));
+        } else if (data[i].scheduleDayNum == 3) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Wednesday",
+              endTime: editedEndTime,
+              startTime: editedStartTime));
+        } else if (data[i].scheduleDayNum == 4) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Thursday",
+              endTime: editedEndTime,
+              startTime: editedStartTime));
+        } else if (data[i].scheduleDayNum == 5) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Friday",
+              endTime: editedEndTime,
+              startTime: editedStartTime));
+        } else if (data[i].scheduleDayNum == 6) {
+          scheduleDay.add(Schedule(
+              day: data[i].scheduleDayNum,
+              title: "Saturday",
+              endTime: editedEndTime,
+              startTime: editedStartTime));
+        }
+      }
+     }else{
+       for (var i = 0;
           i < alertConfigData!.alertConfig!.scheduleDetails!.length;
           i++) {
         var data = alertConfigData!.alertConfig!.scheduleDetails;
@@ -941,6 +999,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
               startTime: "$startTimeHour:$startTimeMinute"));
         }
       }
+     }
       // alertConfigData?.alertConfig?.scheduleDetails?.forEach((element) {
       //   scheduleDay.add(Schedule(
       //     day: element.scheduleDayNum,
@@ -2492,7 +2551,8 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
   }
 
   saveAddNotificationData() async {
-    assetUidData.clear();
+    try {
+      assetUidData.clear();
     selectedAsset!.forEach((element) {
       assetUidData.add(element.assetIdentifier!);
     });
@@ -2629,7 +2689,7 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         Logger().w(notificationPayLoad.toJson());
       }
 
-      try {
+      
         NotificationAdded? response = await _notificationService!
             .addNewNotification(notificationPayLoad,
                 graphqlSchemaService!.createNotification());
@@ -2646,10 +2706,13 @@ class AddNewNotificationsViewModel extends InsiteViewModel {
         hideLoadingDialog();
         Logger().i(response!.toJson());
         notifyListeners();
-      } catch (e) {
-        Logger().e(e.toString());
-      }
+      
     }
+      
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    
   }
 
   onItemContactSelected(int index) {
