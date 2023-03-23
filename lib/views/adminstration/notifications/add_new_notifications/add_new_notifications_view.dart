@@ -1525,7 +1525,7 @@ class _AddNewNotificationsViewState extends State<AddNewNotificationsView>
           ),
         );
       },
-      viewModelBuilder: () => AddNewNotificationsViewModel(widget.alertData),
+      viewModelBuilder: () => AddNewNotificationsViewModel(widget.alertData,context),
     );
   }
 
