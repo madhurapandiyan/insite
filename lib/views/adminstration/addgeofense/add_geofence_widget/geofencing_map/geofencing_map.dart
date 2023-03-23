@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
+
 import 'package:google_maps_controller/google_maps_controller.dart';
 
 class GeofencingMap extends StatefulWidget {

@@ -190,7 +190,7 @@ class AddNewUserViewModel extends InsiteViewModel {
     } on DioError catch (e) {
       Logger().e(e.type);
       hideLoadingDialog();
-      if (e.type == DioErrorType.other) {
+      if (e.type == DioErrorType.unknown) {
         _enableAdd = true;
       }
     }

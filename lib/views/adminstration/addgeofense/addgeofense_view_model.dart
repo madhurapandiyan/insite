@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart' as flutter_map;
-import 'package:geobase/geobase.dart';
+import 'package:geobase/geobase.dart' as geobase;
 import 'package:geodesy/geodesy.dart' as geodesy;
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -43,6 +43,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   AddgeofenseViewModel() {
     _geofenceService!.setUp();
+    getUserPreference();
     this.log = getLogger(this.runtimeType.toString());
 
     _geofenceService!.setUp();
@@ -61,7 +62,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   Geofencepayload? geofenceRequestPayload;
 
-  bool? isTitleExist;
+  bool isTitleExist = false;
 
   String? dropDownValue = "S/N";
 
@@ -526,23 +527,25 @@ class AddgeofenseViewModel extends InsiteViewModel {
 
   convertingPolyOBJtoWKT() {
     try {
-      var writer = wktFormat().geometriesToText();
+      var writer = geobase.WKT.geometry;
+      var encoder = writer.encoder();
       listOfNumber.clear();
       lastLatLong = correctedListofLatlang.first;
       correctedListofLatlang.add(lastLatLong);
-      List<Geographic> data = [];
+      List<geobase.Geographic> data = [];
+      List<List<double>> pts = [];
       for (var i = 0; i < correctedListofLatlang.length; i++) {
         double latitude = correctedListofLatlang[i]!.latitude;
         double longitude = correctedListofLatlang[i]!.longitude;
-        data.add(Geographic(lon: longitude, lat: latitude));
-        List<num> json = [longitude, latitude];
+        data.add(geobase.Geographic(lon: longitude, lat: latitude));
+        List<double> json = [longitude, latitude];
+        pts.add(json);
       }
-      Logger().i(data);
-      var wridata = writer
-        ..geometryWithPositions2D(type: Geom.polygon, coordinates: [data])
-        ..toString();
-      finalPolygonWKTstring = wridata.toString();
-
+      geobase.Polygon.build(pts).toText();
+      Logger().i(pts);
+      encoder.writer.polygon(pts, type: geobase.Coords.xy);
+      finalPolygonWKTstring = encoder.toText();
+      print(finalPolygonWKTstring);
       // listOfNumber.forEach((element) {
       //   element.forEach((values) {
       //     data.add(Geographic(lon: lon, lat: lat));
@@ -650,7 +653,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
     GeofenceTitleName? result = await _geofenceService!.getGeofenceName(value);
     Logger().i(result!.getGeofenceName!.toJson());
     if (result.getGeofenceName!.geofenceNameExist != null) {
-      isTitleExist = result.getGeofenceName!.geofenceNameExist;
+      isTitleExist = result.getGeofenceName!.geofenceNameExist!;
     }
     notifyListeners();
   }
@@ -668,7 +671,7 @@ class AddgeofenseViewModel extends InsiteViewModel {
           return;
         }
       }
-      if (isTitleExist!) {
+      if (isTitleExist) {
         snackbarService!.showSnackbar(message: "Geofence name must be unique");
         return;
       }

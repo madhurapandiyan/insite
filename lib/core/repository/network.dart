@@ -335,8 +335,8 @@ class HttpWrapper {
   HttpWrapper._internal() {
     BaseOptions options = new BaseOptions(
       baseUrl: AppConfig.instance!.baseUrl,
-      connectTimeout: 60000,
-      receiveTimeout: 60000,
+      connectTimeout: Duration(seconds: 6000),
+      receiveTimeout:  Duration(seconds: 6000),
     );
     dio = Dio(options);
     dioOne = Dio(options);
@@ -352,7 +352,7 @@ class HttpWrapper {
         },
         onError: (DioError error,
             ErrorInterceptorHandler errorInterceptorHandler) async {
-          dio.interceptors.requestLock;
+          
           if (error.response?.statusCode == 401) {
             var refreshLoginResponce = await refreshToken();
             if (refreshLoginResponce != null) {

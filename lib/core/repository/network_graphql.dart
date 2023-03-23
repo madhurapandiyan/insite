@@ -42,7 +42,7 @@ class Network {
         responseBody: true,
         requestBody: true,
       ));
-    client.clear();
+    
   }
   getGraphqlPlantData({String? query, dynamic payLoad}) async {
     try {

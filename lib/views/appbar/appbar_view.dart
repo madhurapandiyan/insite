@@ -206,7 +206,8 @@ class InsiteAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     style: TextStyle(
                                       color: Theme.of(context).buttonColor,
                                     )),
-                                badgeColor: white,
+                                badgeStyle:
+                                    badges.BadgeStyle(badgeColor: white),
                                 position: badges.BadgePosition.topStart(
                                     start: 25, top: 1),
                                 child: IconButton(

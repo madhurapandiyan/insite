@@ -123,7 +123,7 @@ class SmsScheduleSingleAssetViewModel extends InsiteViewModel {
     } on DioError catch (e) {
       hideLoadingDialog();
       final error = DioException.fromDioError(e);
-      snackbarService!.showSnackbar(message: e.message);
+      snackbarService!.showSnackbar(message: e.message!);
       notifyListeners();
     }
   }
