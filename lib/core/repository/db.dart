@@ -12,7 +12,7 @@ abstract class DataBaseService extends BaseService {
   Customer? accountSelected;
   Customer? customerSelected;
   LocalService? _localService = locator<LocalService>();
-  late var filterBox;
+  late Box filterBox;
   late var assetCountBox;
   late var accountBox;
   setUp() async {
